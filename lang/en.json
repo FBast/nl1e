@@ -1,22 +1,26 @@
 {
-  "BOILERPLATE.AbilityStr": "Strength",
-  "BOILERPLATE.AbilityCon": "Constitution",
-  "BOILERPLATE.AbilityDex": "Dexterity",
-  "BOILERPLATE.AbilityInt": "Intelligence",
-  "BOILERPLATE.AbilityWis": "Wisdom",
-  "BOILERPLATE.AbilityCha": "Charisma",
+  "PL1E.AbilityStr": "Strength",
+  "PL1E.AbilityAgi": "Agility",
+  "PL1E.AbilityPer": "Perception",
+  "PL1E.AbilityCon": "Constitution",
+  "PL1E.AbilityInt": "Intelligence",
+  "PL1E.AbilityCun": "Cunning",
+  "PL1E.AbilityWis": "Wisdom",
+  "PL1E.AbilityWil": "Will",
 
-  "BOILERPLATE.AbilityStrAbbr": "str",
-  "BOILERPLATE.AbilityConAbbr": "con",
-  "BOILERPLATE.AbilityDexAbbr": "dex",
-  "BOILERPLATE.AbilityIntAbbr": "int",
-  "BOILERPLATE.AbilityWisAbbr": "wis",
-  "BOILERPLATE.AbilityChaAbbr": "cha",
+  "PL1E.AbilityStrAbbr": "str",
+  "PL1E.AbilityAgiAbbr": "agi",
+  "PL1E.AbilityPerAbbr": "per",
+  "PL1E.AbilityConAbbr": "con",
+  "PL1E.AbilityIntAbbr": "int",
+  "PL1E.AbilityCunAbbr": "cun",
+  "PL1E.AbilityWisAbbr": "wis",
+  "PL1E.AbilityWilAbbr": "wil",
 
-  "BOILERPLATE.EffectCreate": "Create Effect",
-  "BOILERPLATE.EffectToggle": "Toggle Effect",
-  "BOILERPLATE.EffectEdit": "Edit Effect",
-  "BOILERPLATE.EffectDelete": "Delete Effect",
+  "PL1E.EffectCreate": "Create Effect",
+  "PL1E.EffectToggle": "Toggle Effect",
+  "PL1E.EffectEdit": "Edit Effect",
+  "PL1E.EffectDelete": "Delete Effect",
 
-  "BOILERPLATE.Add": "Add"
+  "PL1E.Add": "Add"
 }
