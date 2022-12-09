@@ -1,0 +1,26 @@
+{
+  "PL1E.AbilityStr": "Force",
+  "PL1E.AbilityAgi": "Agilité",
+  "PL1E.AbilityPer": "Perception",
+  "PL1E.AbilityCon": "Constitution",
+  "PL1E.AbilityInt": "Intelligence",
+  "PL1E.AbilityCun": "Ruse",
+  "PL1E.AbilityWis": "Sagesse",
+  "PL1E.AbilityWil": "Volonté",
+
+  "PL1E.AbilityStrAbbr": "for",
+  "PL1E.AbilityAgiAbbr": "agi",
+  "PL1E.AbilityPerAbbr": "per",
+  "PL1E.AbilityConAbbr": "con",
+  "PL1E.AbilityIntAbbr": "int",
+  "PL1E.AbilityCunAbbr": "rus",
+  "PL1E.AbilityWisAbbr": "sag",
+  "PL1E.AbilityWilAbbr": "vol",
+
+  "PL1E.EffectCreate": "Create Effect",
+  "PL1E.EffectToggle": "Toggle Effect",
+  "PL1E.EffectEdit": "Edit Effect",
+  "PL1E.EffectDelete": "Delete Effect",
+
+  "PL1E.Add": "Add"
+}
