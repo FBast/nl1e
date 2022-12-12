@@ -10,7 +10,7 @@ export class Pl1eActorSheet extends ActorSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["pl1e", "sheet", "actor"],
-      template: "systems/pl1e/templates/actor/actor-sheet.html",
+      template: "systems/pl1e/templates/actor/actor-sheet.hbs",
       width: 600,
       height: 600,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "features" }]
@@ -19,7 +19,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
   /** @override */
   get template() {
-    return `systems/pl1e/templates/actor/actor-${this.actor.type}-sheet.html`;
+    return `systems/pl1e/templates/actor/actor-${this.actor.type}-sheet.hbs`;
   }
 
   /* -------------------------------------------- */
@@ -67,9 +67,28 @@ export class Pl1eActorSheet extends ActorSheet {
    * @return {undefined}
    */
   _prepareCharacterData(context) {
-    // Handle ability scores.
-    for (let [k, v] of Object.entries(context.system.abilities)) {
-      v.label = game.i18n.localize(CONFIG.PL1E.abilities[k]) ?? k;
+    var characteristics = context.system.characteristics;
+    var skills = context.system.skills;
+    var attributes = context.system.attributes;
+    // Handle attributes scores.
+    attributes.initiative = attributes.speed + characteristics.agi.value + characteristics.per.value 
+      + characteristics.cun.value + characteristics.wis.value;
+    // Handle resources scores.
+    context.system.health.max = (characteristics.con.value + characteristics.wil.value) * 5 + attributes.size;
+    context.system.stamina.max = (characteristics.str.value + characteristics.con.value) * 5 + attributes.size;
+    context.system.mana.max = (characteristics.int.value + characteristics.wil.value) * 5 + attributes.size;
+    // Handle characteristics scores.
+    for (let [id, characteristic] of Object.entries(characteristics)) {
+      characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
+      characteristic.value = characteristic.base + characteristic.mod;
+    }
+    // Handle skills scores.
+    for (let [id, skill] of Object.entries(skills)) {
+      skill.label = game.i18n.localize(CONFIG.PL1E.skills[id]) ?? id;
+      var firstCharacteristic = characteristics[skill.firstCharacteristic];
+      var secondCharacteristic = characteristics[skill.secondCharacteristic];
+      skill.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / 2);
+      skill.dice = 2 + skill.mastery * 2;
     }
   }
 
@@ -84,7 +103,7 @@ export class Pl1eActorSheet extends ActorSheet {
     // Initialize containers.
     const gear = [];
     const features = [];
-    const spells = {
+    const abilities = {
       0: [],
       1: [],
       2: [],
@@ -108,10 +127,10 @@ export class Pl1eActorSheet extends ActorSheet {
       else if (i.type === 'feature') {
         features.push(i);
       }
-      // Append to spells.
+      // Append to abilities.
       else if (i.type === 'spell') {
         if (i.system.spellLevel != undefined) {
-          spells[i.system.spellLevel].push(i);
+          abilities[i.system.spellLevel].push(i);
         }
       }
     }
@@ -119,7 +138,7 @@ export class Pl1eActorSheet extends ActorSheet {
     // Assign and return
     context.gear = gear;
     context.features = features;
-    context.spells = spells;
+    context.abilities = abilities;
   }
 
   /* -------------------------------------------- */
@@ -153,7 +172,7 @@ export class Pl1eActorSheet extends ActorSheet {
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
-    // Rollable abilities.
+    // Rollable characteristic.
     html.find('.rollable').click(this._onRoll.bind(this));
 
     // Drag events for macros.

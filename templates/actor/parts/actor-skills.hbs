@@ -1,0 +1,34 @@
+<div>
+  <table>
+    <tr>
+      <th>Skill</th>
+      <th>Mastery</th>
+      <th>Roll</th>
+    </tr>
+    {{#each system.skills as |skill key|}}
+    <tr>
+      <td>
+        <label for="{{skill.label}}" class="resource-label rollable flexlarge align-left" 
+        data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">{{skill.label}}</label>
+      </td>
+      <td>
+        <!--<select name="system.skills.{{key}}.mastery" data-type="Number">
+          {{#select skill.mastery}}
+          <option value="1">Novice</option>
+          <option value="2">Apprenti</option>
+          <option value="3">Adepte</option>
+          <option value="4">Expert</option>
+          <option value="5">Maitre</option>
+          {{/select}}
+        </select>-->
+        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-1" value="1" data-dtype="Number" {{checked (eq skill.mastery 1)}} />
+        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-2" value="2" data-dtype="Number" {{checked (eq skill.mastery 2)}} />
+        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-3" value="3" data-dtype="Number" {{checked (eq skill.mastery 3)}} />
+        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-4" value="4" data-dtype="Number" {{checked (eq skill.mastery 4)}} />
+        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-5" value="5" data-dtype="Number" {{checked (eq skill.mastery 5)}} />
+      </td>
+      <td>{{skill.number}}D{{skill.dice}}</td>
+    </tr>
+    {{/each}}
+  </table>
+</div>

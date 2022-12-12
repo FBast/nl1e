@@ -48,11 +48,11 @@ export class Pl1eActor extends Actor {
     // Make modifications to data here. For example:
     const systemData = actorData.system;
 
-    // Loop through ability scores, and add their modifiers to our sheet output.
-    for (let [key, ability] of Object.entries(systemData.abilities)) {
+    // Loop through characteristic scores, and add their modifiers to our sheet output.
+    /*for (let [key, ability] of Object.entries(systemData.characteristics)) {
       // Calculate the modifier using d20 rules.
       ability.mod = Math.floor((ability.value - 10) / 2);
-    }
+    }*/
   }
 
   /**
@@ -85,10 +85,10 @@ export class Pl1eActor extends Actor {
   _getCharacterRollData(data) {
     if (this.type !== 'character') return;
 
-    // Copy the ability scores to the top level, so that rolls can use
+    // Copy the characteristic scores to the top level, so that rolls can use
     // formulas like `@str.mod + 4`.
-    if (data.abilities) {
-      for (let [k, v] of Object.entries(data.abilities)) {
+    if (data.characteristics) {
+      for (let [k, v] of Object.entries(data.characteristics)) {
         data[k] = foundry.utils.deepClone(v);
       }
     }
