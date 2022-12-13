@@ -82,42 +82,37 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     {{!-- Default tab is specified in actor-sheet.mjs --}}
-    <a class="item" data-tab="character">{{localize "PL1E.Character"}}</a>
-    <a class="item" data-tab="skills">{{localize "PL1E.Skills"}}</a>
+    <a class="item" data-tab="stats">{{localize "PL1E.Stats"}}</a>
+    <a class="item" data-tab="features">{{localize "PL1E.Features"}}</a>
     <a class="item" data-tab="items">{{localize "PL1E.Items"}}</a>
-    <a class="item" data-tab="abilities">{{localize "PL1E.Abilities"}}</a>
     <a class="item" data-tab="effects">{{localize "PL1E.Effects"}}</a>
   </nav>
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
 
-    {{!-- Character Tab --}}
-    <div class="tab character" data-group="primary" data-tab="character">
+    {{!-- Stats Tab --}}
+    <div class="tab stats flexcol" data-group="primary" data-tab="stats">
+      {{> "systems/pl1e/templates/actor/parts/actor-stats.hbs"}}
+    </div>
+
+    {{!-- Features Tab --}}
+    <div class="tab features flexcol" data-group="primary" data-tab="features">
       {{> "systems/pl1e/templates/actor/parts/actor-features.hbs"}}
     </div>
 
-    {{!-- Skills Tab --}}
-    <div class="tab skills" data-group="primary" data-tab="skills">
-      {{> "systems/pl1e/templates/actor/parts/actor-skills.hbs"}}
-      {{!-- If you want TinyMCE editors to output inline rolls when rendered, you need to pass the actor's roll data to the rollData property. --}}
-      {{!-- editor system.skills target="system.skills" rollData=rollData button=true owner=owner editable=editable --}}
-    </div>
-
-    {{!-- Owned Items Tab --}}
-    <div class="tab items" data-group="primary" data-tab="items">
+    {{!-- Items Tab --}}
+    <div class="tab items flexcol" data-group="primary" data-tab="items">
        {{> "systems/pl1e/templates/actor/parts/actor-items.hbs"}}
-    </div>
-
-    {{!-- Owned Abilities Tab --}}
-    <div class="tab abilities" data-group="primary" data-tab="abilities">
-      {{> "systems/pl1e/templates/actor/parts/actor-abilities.hbs"}}
     </div>
 
     {{!-- Active Effects Tab --}}
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{> "systems/pl1e/templates/actor/parts/actor-effects.hbs"}}
     </div>
+
+    {{!-- If you want TinyMCE editors to output inline rolls when rendered, you need to pass the actor's roll data to the rollData property. --}}
+    {{!-- editor system.skills target="system.skills" rollData=rollData button=true owner=owner editable=editable --}}
 
   </section>
 </form>

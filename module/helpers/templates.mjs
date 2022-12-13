@@ -7,10 +7,9 @@
   return loadTemplates([
 
     // Actor partials.
+    "systems/pl1e/templates/actor/parts/actor-stats.hbs",
     "systems/pl1e/templates/actor/parts/actor-features.hbs",
-    "systems/pl1e/templates/actor/parts/actor-skills.hbs",
     "systems/pl1e/templates/actor/parts/actor-items.hbs",
-    "systems/pl1e/templates/actor/parts/actor-abilities.hbs",
     "systems/pl1e/templates/actor/parts/actor-effects.hbs"
   ]);
 };

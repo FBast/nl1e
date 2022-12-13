@@ -28,6 +28,11 @@
   "PL1E.CharacteristicWisAbbr": "WIS",
   "PL1E.CharacteristicWilAbbr": "WIL",
 
+  "PL1E.ResistanceVig": "Vigor",
+  "PL1E.ResistanceRef": "Reflex",
+  "PL1E.ResistanceRes": "Resiliance",
+  "PL1E.ResistanceInt": "Intuition",
+
   "PL1E.SkillHan": "Handling",
   "PL1E.SkillThr": "Throwing",
   "PL1E.SkillAth": "Athletics",
@@ -45,10 +50,9 @@
   "PL1E.SkillDiv": "Divine Magic",
   "PL1E.SkillSec": "Secular Magic",
 
-  "PL1E.Character": "Character",
-  "PL1E.Skills": "Skills",
+  "PL1E.Stats": "Stats",
+  "PL1E.Features": "Features & Abilities",
   "PL1E.Items": "Items",
-  "PL1E.Abilities": "Abilities",
   "PL1E.Effects": "Effects",
 
   "PL1E.EffectCreate": "Create Effect",

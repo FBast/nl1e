@@ -70,6 +70,7 @@ export class Pl1eActorSheet extends ActorSheet {
     var characteristics = context.system.characteristics;
     var skills = context.system.skills;
     var attributes = context.system.attributes;
+    var resistances = context.system.resistances;
     // Handle attributes scores.
     attributes.initiative = attributes.speed + characteristics.agi.value + characteristics.per.value 
       + characteristics.cun.value + characteristics.wis.value;
@@ -89,6 +90,13 @@ export class Pl1eActorSheet extends ActorSheet {
       var secondCharacteristic = characteristics[skill.secondCharacteristic];
       skill.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / 2);
       skill.dice = 2 + skill.mastery * 2;
+    }
+    // Handle resistances scores.
+    for (let [id, resistance] of Object.entries(resistances)) {
+      resistance.label = game.i18n.localize(CONFIG.PL1E.resistances[id]) ?? id;
+      var firstCharacteristic = characteristics[resistance.firstCharacteristic];
+      var secondCharacteristic = characteristics[resistance.secondCharacteristic];
+      resistance.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / resistance.divider);
     }
   }
 

@@ -139,6 +139,36 @@
             "movementPenalty": false,
             "magicPenalty": true
           }
+        },
+        "resistances": {
+          "vig": {
+            "firstCharacteristic": "str",
+            "secondCharacteristic": "con",
+            "movementPenalty": false,
+            "dice": 8,
+            "divider": 3
+          },
+          "ref": {
+            "firstCharacteristic": "agi",
+            "secondCharacteristic": "per",
+            "movementPenalty": true,
+            "dice": 8,
+            "divider": 3
+          },
+          "res": {
+            "firstCharacteristic": "int",
+            "secondCharacteristic": "wil",
+            "movementPenalty": false,
+            "dice": 8,
+            "divider": 2
+          },
+          "int": {
+            "firstCharacteristic": "cun",
+            "secondCharacteristic": "wis",
+            "movementPenalty": false,
+            "dice": 8,
+            "divider": 2
+          }
         }
       }
     },

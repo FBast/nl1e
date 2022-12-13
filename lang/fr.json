@@ -28,6 +28,11 @@
   "PL1E.CharacteristicWisAbbr": "SAG",
   "PL1E.CharacteristicWilAbbr": "VOL",
 
+  "PL1E.ResistanceVig": "Vigueur",
+  "PL1E.ResistanceRef": "Réflexe",
+  "PL1E.ResistanceRes": "Resiliance",
+  "PL1E.ResistanceInt": "Intuition",
+
   "PL1E.SkillHan": "Maniement",
   "PL1E.SkillThr": "Projection",
   "PL1E.SkillAth": "Athlétisme",
@@ -45,10 +50,9 @@
   "PL1E.SkillDiv": "Magie Divine",
   "PL1E.SkillSec": "Magie Profane",
 
-  "PL1E.Character": "Personnage",
-  "PL1E.Skills": "Compétences",
-  "PL1E.Items": "Equipement",
-  "PL1E.Abilities": "Aptitudes",
+  "PL1E.Stats": "Statistiques",
+  "PL1E.Features": "Traits & Capacités",
+  "PL1E.Items": "Inventaire",
   "PL1E.Effects": "Effets",
 
   "PL1E.EffectCreate": "Create Effect",

@@ -1,9 +1,5 @@
 export const PL1E = {};
 
-/**
- * The set of Ability Scores used within the sytem.
- * @type {Object}
- */
  PL1E.characteristics = {
   "str": "PL1E.CharacteristicStr",
   "agi": "PL1E.CharacteristicAgi",
@@ -44,3 +40,10 @@ PL1E.skills = {
   "div": "PL1E.SkillDiv",
   "sec": "PL1E.SkillSec"
 };
+
+PL1E.resistances = {
+  "vig": "PL1E.ResistanceVig",
+  "ref": "PL1E.ResistanceRef",
+  "res": "PL1E.ResistanceRes",
+  "int": "PL1E.ResistanceInt",
+}
