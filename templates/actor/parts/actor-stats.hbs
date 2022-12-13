@@ -1,39 +1,39 @@
 <!-- Listing characteristics -->
-<section class="grid grid-8col">
+<div class="flexrow">
   {{#each system.characteristics as |characteristic key|}}
-  <div class="resource flex-group-center">
-    <label class="resource-label flexlarge align-left">{{characteristic.label}}</label>
-    <div class="characteristic flexrow flex-group-center">
+  <div class="characteristic flex-group-center">
+    <label class="characteristic-label align-left">{{characteristic.label}}</label>
+    <div class="characteristic-values flexrow flex-group-center">
       <input type="number" min="{{characteristic.min}}" max="{{characteristic.max}}" name="system.characteristics.{{key}}.base" value="{{characteristic.base}}" data-dtype="Number"/>
       <span class="characteristic-mod">{{numberFormat characteristic.mod decimals=0 sign=true}}</span>
     </div>
   </div>
   {{/each}}
-</section>
-
-<section class="grid grid-3col">
+</div>
+<section class="main grid grid-5col">
   <!-- Listing skills -->
-  <ul class="skills">
+  <ul class="skills flexcol grid-span-2">
     {{#each system.skills as |skill key|}}
-    <li class="skill flexrow">
-      <label class="skill-label rollable flexcol align-left" for="{{skill.label}}" 
+    <li class="skill flexrow flex-between">
+      <label class="skill-label rollable align-left" for="{{skill.label}}" 
         data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">{{skill.label}}</label>
-      <div class="skill-masteries flexrow">
+      <div class="skill-masteries flexrow flexbetween align-center">
         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-1" value="1" data-dtype="Number" {{checked (eq skill.mastery 1)}} />
         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-2" value="2" data-dtype="Number" {{checked (eq skill.mastery 2)}} />
         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-3" value="3" data-dtype="Number" {{checked (eq skill.mastery 3)}} />
         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-4" value="4" data-dtype="Number" {{checked (eq skill.mastery 4)}} />
         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-5" value="5" data-dtype="Number" {{checked (eq skill.mastery 5)}} />
-      <div>
-      <label class="skill-roll flexcol align-right">{{skill.number}}D{{skill.dice}}</label>
+      </div>
+      <label class="skill-roll align-right">{{skill.number}}D{{skill.dice}}</label>
+    </li>
     {{/each}}
   </ul>
   <!-- Listing resistances -->
-  <ul class="resistances flexrow">
+  <ul class="resistances flexcol grid-span-3">
     {{#each system.resistances as |resistance key|}}
-    <li class="resistance">
-      <label class="resistance-label rollable flexlarge"
-        data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4" data-label="{{resistance.label}}">{{resistance.label}}</label>
+    <li class="resistance flexrow">
+      <label class="resistance-label rollable " data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4" 
+        data-label="{{resistance.label}}">{{resistance.label}}</label>
       <div class="resistance-value">
         {{resistance.number}}D{{resistance.dice}}
       </div>
