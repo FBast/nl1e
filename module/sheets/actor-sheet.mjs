@@ -79,7 +79,7 @@ export class Pl1eActorSheet extends ActorSheet {
     context.system.mana.max = (characteristics.int.value + characteristics.wil.value) * 5 + attributes.size;
     // Handle characteristics scores.
     for (let [id, characteristic] of Object.entries(characteristics)) {
-      characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
+      characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristicsAbbreviations[id]) ?? id;
       characteristic.value = characteristic.base + characteristic.mod;
     }
     // Handle skills scores.
