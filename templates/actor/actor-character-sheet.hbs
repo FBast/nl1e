@@ -2,17 +2,15 @@
 
   {{!-- Sheet Header --}}
   <header class="sheet-header">
+
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+
     <div class="header-fields">
+
       <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-      {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-      use both the "grid" and "grid-Ncol" class where "N" can be any number
-      from 1 to 12 and will create that number of columns.  --}}
+
       <div class="resources grid grid-3col">
 
-        {{!-- "flex-group-center" is also defined in the _grid.scss file
-        and it will add a small amount of padding, a border, and will
-        center all of its child elements content and text. --}}
         <div class="resource flex-group-center">
           <label for="system.health.value" class="resource-label">{{localize "PL1E.Health"}}</label>
           <div class="resource-content flexrow flex-center flex-between">
@@ -40,7 +38,7 @@
           </div>
         </div>
 
-        <div class="attribute flex-group-center">
+        <!--<div class="attribute flex-group-center">
           <div class="resource-content flexrow flex-center flex-between">
             <label for="system.attributes.size" class="attribute-label">{{localize "PL1E.Size"}}</label>
             <input type="text" name="system.attributes.size" value="{{system.attributes.size}}" data-dtype="Number"/>
@@ -73,7 +71,7 @@
             <label for="system.attributes.parry" class="attribute-label">{{localize "PL1E.Parry"}}</label>
             <input type="text" name="system.attributes.parry" value="{{system.attributes.parry}}" data-dtype="Number"/>
           </div>
-        </div>
+        </div>-->
 
       </div>
     </div>

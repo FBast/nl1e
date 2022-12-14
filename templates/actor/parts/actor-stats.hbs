@@ -1,5 +1,5 @@
 <!-- Listing characteristics -->
-<div class="flexrow">
+<div class="flexrow flexshrink">
   {{#each system.characteristics as |characteristic key|}}
   <div class="characteristic flex-group-center">
     <label class="characteristic-label align-left">{{characteristic.label}}</label>
@@ -14,7 +14,7 @@
   <!-- Listing skills -->
   <ul class="skills flexcol grid-span-2">
     {{#each system.skills as |skill key|}}
-    <li class="skill flexrow flex-between">
+    <li class="skill flexrow flexshrink">
       <label class="skill-label rollable align-left" for="{{skill.label}}" 
         data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">{{skill.label}}</label>
       <div class="skill-masteries flexrow flexbetween align-center">
@@ -24,17 +24,17 @@
         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-4" value="4" data-dtype="Number" {{checked (eq skill.mastery 4)}} />
         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-5" value="5" data-dtype="Number" {{checked (eq skill.mastery 5)}} />
       </div>
-      <label class="skill-roll align-right">{{skill.number}}D{{skill.dice}}</label>
+      <label class="skill-roll align-center">{{skill.number}}D{{skill.dice}}</label>
     </li>
     {{/each}}
   </ul>
   <!-- Listing resistances -->
-  <ul class="resistances flexcol grid-span-3">
+  <ul class="items-list flexrow grid-span-3">
     {{#each system.resistances as |resistance key|}}
-    <li class="resistance flexrow">
-      <label class="resistance-label rollable " data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4" 
+    <li class="item-list flex-group-center  style="list-style-type: none;"">
+      <label class="item-name rollable " data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4" 
         data-label="{{resistance.label}}">{{resistance.label}}</label>
-      <div class="resistance-value">
+      <div class="item">
         {{resistance.number}}D{{resistance.dice}}
       </div>
     </li>

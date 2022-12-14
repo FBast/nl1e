@@ -13,7 +13,9 @@ export class Pl1eActorSheet extends ActorSheet {
       template: "systems/pl1e/templates/actor/actor-sheet.hbs",
       width: 600,
       height: 600,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "features" }]
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "features" }],
+      width: 720,
+      height: 680
     });
   }
 
