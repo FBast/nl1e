@@ -50,6 +50,12 @@
   "PL1E.SkillDiv": "Magie Divine",
   "PL1E.SkillSec": "Magie Profane",
 
+  "PL1E.SizeSmall": "Petite",
+  "PL1E.SizeMedium": "Moyenne",
+  "PL1E.SizeLarge": "Large",
+  "PL1E.SizeHuge": "Enorme",
+  "PL1E.SizeGargantuan": "Gargantuesque",
+
   "PL1E.Stats": "Statistiques",
   "PL1E.Features": "Traits & Capacités",
   "PL1E.Items": "Inventaire",

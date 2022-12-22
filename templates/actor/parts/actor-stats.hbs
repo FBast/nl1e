@@ -1,5 +1,5 @@
 <!-- Listing characteristics -->
-<div class="flexrow flexshrink">
+<div class="characteristics flexrow flexshrink">
   {{#each system.characteristics as |characteristic key|}}
   <div class="characteristic flex-group-center">
     <label class="characteristic-label align-left">{{characteristic.label}}</label>
@@ -10,43 +10,121 @@
   </div>
   {{/each}}
 </div>
-<section class="main grid grid-5col">
-  <!-- Listing skills -->
-  <ul class="skills flexcol grid-span-2">
-    {{#each system.skills as |skill key|}}
-    <li class="skill flexrow flexshrink">
-      <label class="skill-label rollable align-left" for="{{skill.label}}" 
-        data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">{{skill.label}}</label>
-      <div class="skill-masteries flexrow flexbetween align-center">
-        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-1" value="1" data-dtype="Number" {{checked (eq skill.mastery 1)}} />
-        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-2" value="2" data-dtype="Number" {{checked (eq skill.mastery 2)}} />
-        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-3" value="3" data-dtype="Number" {{checked (eq skill.mastery 3)}} />
-        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-4" value="4" data-dtype="Number" {{checked (eq skill.mastery 4)}} />
-        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-5" value="5" data-dtype="Number" {{checked (eq skill.mastery 5)}} />
-      </div>
-      <label class="skill-roll align-center">{{skill.number}}D{{skill.dice}}</label>
-    </li>
-    {{/each}}
-  </ul>
-  <!-- Listing resistances -->
-  <ul class="items-list flexrow grid-span-3">
-    {{#each system.resistances as |resistance key|}}
-    <li class="item-list flex-group-center  style="list-style-type: none;"">
-      <label class="item-name rollable " data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4" 
-        data-label="{{resistance.label}}">{{resistance.label}}</label>
-      <div class="item">
-        {{resistance.number}}D{{resistance.dice}}
-      </div>
-    </li>
-    {{/each}}
-  </ul>
+<section class="grid grid-5col">
+  <!-- Left column -->
+  <div class="grid-span-2">
+    <!-- Listing skills -->
+    <ul class="skills">
+      {{#each system.skills as |skill key|}}
+      <li class="skill grid grid-5col">
+        <label class="skill-label grid-span-2 rollable align-left" for="{{skill.label}}" 
+          data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">{{skill.label}} </label>
+        <label class="skill-roll align-center">({{skill.number}}D{{skill.dice}})</label>
+        <div class="skill-masteries grid-span-2 align-center">
+          <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-1" value="1" data-dtype="Number" id="card" {{checked (eq skill.mastery 1)}} >
+          <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-2" value="2" data-dtype="Number" {{checked (eq skill.mastery 2)}} />
+          <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-3" value="3" data-dtype="Number" {{checked (eq skill.mastery 3)}} />
+          <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-4" value="4" data-dtype="Number" {{checked (eq skill.mastery 4)}} />
+          <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-5" value="5" data-dtype="Number" {{checked (eq skill.mastery 5)}} />
+        </div>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  <!-- Right column -->
+  <div class="grid-span-3">
+    <!-- Listing resistances -->
+    <ul class="resistances flexrow">
+      {{#each system.resistances as |resistance key|}}
+      <li class="resistance flex-group-center" style="list-style-type: none;">
+        <label class="resistance-name rollable " data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4" 
+          data-label="{{resistance.label}}">{{resistance.label}}</label>
+        <div class="resistance-roll">
+          ({{resistance.number}}D{{resistance.dice}})
+        </div>
+      </li>
+      {{/each}}
+    </ul>
+    <!-- Listing resistances -->
+    <div class="form-group">
+      <label>Size</label>
+      <select class="actor-size" name="system.attributes.size">
+        {{#select system.attributes.size}}
+        {{#each config.sizeMods as |label size|}}
+          <option value="{{size}}">{{label}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Speed</label>
+      <input type="text" name="system.attributes.speed" value="{{system.attributes.speed}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group">
+      <label>Initiative</label>
+      <input type="text" name="system.attributes.initiative" value="{{system.attributes.initiative}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group">
+      <label>Dodge</label>
+      <input type="text" name="system.attributes.dodge" value="{{system.attributes.dodge}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group">
+      <label>Parry</label>
+      <input type="text" name="system.attributes.parry" value="{{system.attributes.parry}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group">
+      <label>Night Vision</label>
+      <input type="text" name="system.attributes.nightVision" value="{{system.attributes.nightVision}}" data-dtype="Number"/>
+    </div>
+    <hr>
+    <div class="form-group">
+      <label>Damage Reduction</label>
+      <input type="text" name="system.reductions.damage" value="{{system.reductions.damage}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group">
+      <label>Impact Reduction</label>
+      <input type="text" name="system.reductions.impact" value="{{system.reductions.impact}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group">
+      <label>Fire Reduction</label>
+      <input type="text" name="system.reductions.fire" value="{{system.reductions.fire}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group">
+      <label>Cold Reduction</label>
+      <input type="text" name="system.reductions.cold" value="{{system.reductions.cold}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group">
+      <label>Acid Reduction</label>
+      <input type="text" name="system.reductions.acid" value="{{system.reductions.acid}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group">
+      <label>Shock Reduction</label>
+      <input type="text" name="system.reductions.shock" value="{{system.reductions.shock}}" data-dtype="Number"/>
+    </div>
+    <hr>
+    <div class="form-group {{system.traits.languages.cssClass}}">
+      <label>{{localize "DND5E.Languages"}}</label>
+      <a class="trait-selector" data-options="languages" data-target="system.traits.languages" 
+        title="{{localize 'DND5E.TraitConfig' trait=(localize 'DND5E.Languages')}}" tabindex="0">
+        <i class="fas fa-edit"></i>
+      </a>
+      <ul class="traits-list">
+      {{#each system.traits.languages.selected as |v k|}}
+        <li class="tag {{k}}">{{v}}</li>
+      {{/each}}
+      </ul>
+    </div>
+    <div class="form-group {{system.traits.di.cssClass}}">
+      <label>{{localize "PL1E.DamImm"}}</label>
+      <a class="trait-selector" data-options="damageTypes" data-target="system.traits.di" 
+        title="{{localize 'DND5E.TraitConfig' trait=(localize 'DND5E.DamImm')}}" tabindex="0">
+        <i class="fas fa-edit"></i>
+      </a>
+      <ul class="traits-list">
+      {{#each system.traits.di.selected as |v k|}}
+        <li class="tag {{k}}">{{v}}</li>
+      {{/each}}
+      </ul>
+    </div>
+  </div>
 </section>
-<!--<select name="system.skills.{{key}}.mastery" data-type="Number">
-  {{#select skill.mastery}}
-  <option value="1">Novice</option>
-  <option value="2">Apprenti</option>
-  <option value="3">Adepte</option>
-  <option value="4">Expert</option>
-  <option value="5">Maitre</option>
-  {{/select}}
-</select>-->

@@ -19,12 +19,13 @@
           "max": 5
         },
         "attributes": {
-          "size": 15,
+          "size": 0,
+          "sizeMod": 0,
           "speed": 4.5,
-          "nightVision": 9,
           "initiative": 0,
           "dodge": 1,
-          "parry": 0
+          "parry": 0,
+          "nightVision": 9
         },
         "skills": {
           "han": {
@@ -169,6 +170,14 @@
             "dice": 8,
             "divider": 2
           }
+        },
+        "reductions": {
+          "damage": 0,
+          "impact": 0,
+          "fire": 0,
+          "cold": 0,
+          "acid": 0,
+          "shock": 0
         }
       }
     },

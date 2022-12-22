@@ -370,7 +370,23 @@
 .pl1e .effects .item .effect-controls {
   border: none;
 }
+.pl1e .options input {
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 .pl1e.sheet.actor {
-  min-width: 720px;
-  min-height: 680px;
+  min-width: 800px;
+  min-height: 720px;
+}
+.pl1e .characteristics {
+  border: 1px groove #111;
+}
+.pl1e .skills {
+  border: 1px groove #111;
+}
+.pl1e .resistances {
+  border: 1px groove #111;
 }/*# sourceMappingURL=pl1e.css.map */

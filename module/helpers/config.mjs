@@ -47,3 +47,19 @@ PL1E.resistances = {
   "res": "PL1E.ResistanceRes",
   "int": "PL1E.ResistanceInt",
 }
+
+PL1E.sizes = {
+  "sm": "PL1E.SizeSmall",
+  "med": "PL1E.SizeMedium",
+  "lg": "PL1E.SizeLarge",
+  "huge": "PL1E.SizeHuge",
+  "grg": "PL1E.SizeGargantuan"
+};
+
+PL1E.sizeMods = {
+  "sm": "10",
+  "med": "20",
+  "lg": "40",
+  "huge": "80",
+  "grg": "160"
+};
