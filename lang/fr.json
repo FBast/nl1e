@@ -3,13 +3,6 @@
   "PL1E.Stamina": "Endurance",
   "PL1E.Mana": "Mana",
 
-  "PL1E.Size": "Taille",
-  "PL1E.Speed": "Vitesse",
-  "PL1E.NightVision": "Vision Nocturne",
-  "PL1E.Initiative": "Initiative",
-  "PL1E.Dodge": "Esquive",
-  "PL1E.Parry": "Parade",
-
   "PL1E.CharacteristicStr": "Force",
   "PL1E.CharacteristicAgi": "Agilité",
   "PL1E.CharacteristicPer": "Perception",
@@ -27,6 +20,9 @@
   "PL1E.CharacteristicCunAbbr": "RUS",
   "PL1E.CharacteristicWisAbbr": "SAG",
   "PL1E.CharacteristicWilAbbr": "VOL",
+
+  "PL1E.DefensePar": "Parade",
+  "PL1E.DefenseDod": "Esquive",
 
   "PL1E.ResistanceVig": "Vigueur",
   "PL1E.ResistanceRef": "Réflexe",
@@ -49,6 +45,21 @@
   "PL1E.SkillEru": "Erudition",
   "PL1E.SkillDiv": "Magie Divine",
   "PL1E.SkillSec": "Magie Profane",
+
+  "PL1E.Size": "Taille",
+  "PL1E.Speed": "Vitesse",
+  "PL1E.NightVision": "Vision Nocturne",
+  "PL1E.Initiative": "Initiative",
+  "PL1E.DodgeBonus": "Bonus d'Esquive",
+  "PL1E.ParryBonus": "Bonus de Parade",
+  "PL1E.DamageReduction": "Reduction de Dégâts",
+  "PL1E.ImpactReduction": "Reduction d'Impact",
+  "PL1E.FireReduction": "Reduction de Feu",
+  "PL1E.ColdReduction": "Reduction de Froid",
+  "PL1E.AcidReduction": "Reduction d'Acide",
+  "PL1E.ShockReduction": "Reduction d'Electricité",
+  "PL1E.Languages": "Langues",
+  "PL1E.Immunities": "Immunitées",
 
   "PL1E.SizeSmall": "Petite",
   "PL1E.SizeMedium": "Moyenne",

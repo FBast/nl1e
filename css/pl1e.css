@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+/* ----------------------------------------- */
+/*  Sheet Styles                             */
+/* ----------------------------------------- */
 /* Global styles */
 .window-app {
   font-family: "Roboto", sans-serif;
@@ -204,61 +207,86 @@
 }
 
 /* Styles limited to pl1e sheets */
-.pl1e {
-  /* ----------------------------------------- */
-  /*  Items Lists                              */
-  /* ----------------------------------------- */
-  /* Example style for Pl1e (can be removed if not needed) */
-}
-.pl1e .item-form {
+.item-form {
   font-family: "Roboto", sans-serif;
 }
-.pl1e .sheet-header {
+
+.sheet.actor .window-content {
+  overflow-y: hidden;
+}
+.sheet.actor .window-content form {
+  height: 100%;
+}
+.sheet.actor .window-content form .sheet-header {
   flex: 0 auto;
-  overflow: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 10px;
+  position: -webkit-sticky;
+  position: sticky;
 }
-.pl1e .sheet-header .profile-img {
-  flex: 0 0 100px;
-  height: 100px;
-  margin-right: 10px;
+.sheet.actor .window-content form .sheet-header .profile {
+  flex: 0 0 160px;
+  max-width: 160px;
+  height: 160px;
+  width: 160px;
 }
-.pl1e .sheet-header .header-fields {
-  flex: 1;
-}
-.pl1e .sheet-header h1.charname {
+.sheet.actor .window-content form .sheet-header h1.charname {
   height: 50px;
   padding: 0px;
   margin: 5px 0;
   border-bottom: 0;
 }
-.pl1e .sheet-header h1.charname input {
+.sheet.actor .window-content form .sheet-header h1.charname input {
   width: 100%;
   height: 100%;
   margin: 0;
 }
-.pl1e .sheet-tabs {
-  flex: 0;
+.sheet.actor .window-content form .sheet-header .header-fields {
+  flex: 1;
 }
-.pl1e .sheet-body,
-.pl1e .sheet-body .tab,
-.pl1e .sheet-body .tab .editor {
-  height: 100%;
-}
-.pl1e .tox .tox-editor-container {
-  background: #fff;
-}
-.pl1e .tox .tox-edit-area {
-  padding: 0 8px;
-}
-.pl1e .resource-label {
+.sheet.actor .window-content form .sheet-header .header-fields .resource-label {
+  text-transform: uppercase;
+  border-bottom-style: none;
   font-weight: bold;
 }
-.pl1e .items-header {
+
+.tab {
+  overflow: hidden;
+}
+
+.scroll-hidden {
+  overflow-y: hidden;
+}
+
+.scroll-auto {
+  overflow-y: auto;
+}
+
+.sheet-tabs {
+  flex: 0;
+}
+
+.sheet-body {
+  overflow: hidden;
+}
+
+.sheet-body,
+.sheet-body .tab,
+.sheet-body .tab .editor {
+  height: 100%;
+}
+
+.tox .tox-editor-container {
+  background: #fff;
+}
+.tox .tox-edit-area {
+  padding: 0 8px;
+}
+
+.items-header {
   height: 28px;
   margin: 2px 0;
   padding: 0;
@@ -267,30 +295,34 @@
   border: 2px groove #eeede0;
   font-weight: bold;
 }
-.pl1e .items-header > * {
+.items-header > * {
   font-size: 14px;
   text-align: center;
 }
-.pl1e .items-header .item-name {
+.items-header .item-name {
   font-weight: bold;
   padding-left: 5px;
   text-align: left;
   display: flex;
 }
-.pl1e .items-list {
+
+/* ----------------------------------------- */
+/*  Items Lists                              */
+/* ----------------------------------------- */
+.items-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
   color: #444;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
-.pl1e .items-list .item-list {
+.items-list .item-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.pl1e .items-list .item-name {
+.items-list .item-name {
   flex: 2;
   margin: 0;
   overflow: hidden;
@@ -299,46 +331,46 @@
   align-items: center;
   display: flex;
 }
-.pl1e .items-list .item-name h3, .pl1e .items-list .item-name h4 {
+.items-list .item-name h3, .items-list .item-name h4 {
   margin: 0;
   white-space: nowrap;
   overflow-x: hidden;
 }
-.pl1e .items-list .item-controls {
+.items-list .item-controls {
   display: flex;
   flex: 0 0 100px;
   justify-content: flex-end;
 }
-.pl1e .items-list .item-controls a {
+.items-list .item-controls a {
   font-size: 12px;
   text-align: center;
   margin: 0 6px;
 }
-.pl1e .items-list .item {
+.items-list .item {
   align-items: center;
   padding: 0 2px;
   border-bottom: 1px solid #c9c7b8;
 }
-.pl1e .items-list .item:last-child {
+.items-list .item:last-child {
   border-bottom: none;
 }
-.pl1e .items-list .item .item-name {
+.items-list .item .item-name {
   color: #191813;
 }
-.pl1e .items-list .item .item-name .item-image {
+.items-list .item .item-name .item-image {
   flex: 0 0 30px;
   height: 30px;
   background-size: 30px;
   border: none;
   margin-right: 5px;
 }
-.pl1e .items-list .item-prop {
+.items-list .item-prop {
   text-align: center;
   border-left: 1px solid #c9c7b8;
   border-right: 1px solid #c9c7b8;
   font-size: 12px;
 }
-.pl1e .items-list .items-header {
+.items-list .items-header {
   height: 28px;
   margin: 2px 0;
   padding: 0;
@@ -347,46 +379,56 @@
   border: 2px groove #eeede0;
   font-weight: bold;
 }
-.pl1e .items-list .items-header > * {
+.items-list .items-header > * {
   font-size: 12px;
   text-align: center;
 }
-.pl1e .items-list .items-header .item-name {
+.items-list .items-header .item-name {
   padding-left: 5px;
   text-align: left;
 }
-.pl1e .item-formula {
+
+/* Example style for Pl1e (can be removed if not needed) */
+.item-formula {
   flex: 0 0 200px;
   padding: 0 8px;
 }
-.pl1e .effects .item .effect-source,
-.pl1e .effects .item .effect-duration,
-.pl1e .effects .item .effect-controls {
+
+.effects .item .effect-source,
+.effects .item .effect-duration,
+.effects .item .effect-controls {
   text-align: center;
   border-left: 1px solid #c9c7b8;
   border-right: 1px solid #c9c7b8;
   font-size: 12px;
 }
-.pl1e .effects .item .effect-controls {
+.effects .item .effect-controls {
   border: none;
 }
-.pl1e .options input {
+
+.options input {
   margin: 0;
   padding: 0;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 }
-.pl1e.sheet.actor {
+
+.sheet.actor {
   min-width: 800px;
-  min-height: 720px;
+  min-height: 950px;
 }
-.pl1e .characteristics {
-  border: 1px groove #111;
+.sheet.actor .characteristics {
+  padding: 0 0.5em 0 0.5em;
 }
-.pl1e .skills {
-  border: 1px groove #111;
+.sheet.actor .characteristics .characteristic {
+  margin: 0 0 1em 0;
 }
-.pl1e .resistances {
+.sheet.actor .skills {
   border: 1px groove #111;
+  padding: 0 0.5em 0 0.5em;
+  margin: 0 0 1em 0;
+}
+.sheet.actor .attributes {
+  padding: 0 0.5em 0 0.5em;
 }/*# sourceMappingURL=pl1e.css.map */

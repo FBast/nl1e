@@ -13,13 +13,7 @@
 @import 'global/flex';
 
 /* Styles limited to pl1e sheets */
-.pl1e {
-  @import 'components/forms';
-  @import 'components/resource';
-  @import 'components/items';
-  @import 'components/effects';
-  @import 'components/sheets';
-  @import 'components/characteristics';
-  @import 'components/skills';
-  @import 'components/resistances';
-}
+@import 'components/forms';
+@import 'components/items';
+@import 'components/effects';
+@import 'components/character';

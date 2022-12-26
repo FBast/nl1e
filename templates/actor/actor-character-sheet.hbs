@@ -3,7 +3,7 @@
   {{!-- Sheet Header --}}
   <header class="sheet-header">
 
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
 
     <div class="header-fields">
 
@@ -12,66 +12,31 @@
       <div class="resources grid grid-3col">
 
         <div class="resource flex-group-center">
-          <label for="system.health.value" class="resource-label">{{localize "PL1E.Health"}}</label>
+          <label for="system.resources.health.value" class="resource-label">{{localize "PL1E.Health"}}</label>
           <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+            <input type="number" name="system.resources.health.value" value="{{system.resources.health.value}}" data-dtype="Number"/>
             <span> / </span>
-            <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+            <input type="number" name="system.resources.health.max" value="{{system.resources.health.max}}" data-dtype="Number"/>
           </div>
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.stamina.value" class="resource-label">{{localize "PL1E.Stamina"}}</label>
+          <label for="system.resources.stamina.value" class="resource-label">{{localize "PL1E.Stamina"}}</label>
           <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.stamina.value" value="{{system.stamina.value}}" data-dtype="Number"/>
+            <input type="number" name="system.resources.stamina.value" value="{{system.resources.stamina.value}}" data-dtype="Number"/>
             <span> / </span>
-            <input type="text" name="system.stamina.max" value="{{system.stamina.max}}" data-dtype="Number"/>
+            <input type="number" name="system.resources.stamina.max" value="{{system.resources.stamina.max}}" data-dtype="Number"/>
           </div>
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.mana.value" class="resource-label">{{localize "PL1E.Mana"}}</label>
+          <label for="system.resources.mana.value" class="resource-label">{{localize "PL1E.Mana"}}</label>
           <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.mana.value" value="{{system.mana.value}}" data-dtype="Number"/>
+            <input type="number" name="system.resources.mana.value" value="{{system.resources.mana.value}}" data-dtype="Number"/>
             <span> / </span>
-            <input type="text" name="system.mana.max" value="{{system.mana.max}}" data-dtype="Number"/>
+            <input type="number" name="system.resources.mana.max" value="{{system.resources.mana.max}}" data-dtype="Number"/>
           </div>
         </div>
-
-        <!--<div class="attribute flex-group-center">
-          <div class="resource-content flexrow flex-center flex-between">
-            <label for="system.attributes.size" class="attribute-label">{{localize "PL1E.Size"}}</label>
-            <input type="text" name="system.attributes.size" value="{{system.attributes.size}}" data-dtype="Number"/>
-          </div>
-        </div>
-
-        <div class="attribute flex-group-center">
-          <div class="resource-content flexrow flex-center flex-between">
-            <label for="system.attributes.speed" class="attribute-label">{{localize "PL1E.Speed"}}</label>
-            <input type="text" name="system.attributes.speed" value="{{system.attributes.speed}}" data-dtype="Number"/>
-          </div>
-        </div>
-
-        <div class="attribute flex-group-center">
-          <div class="resource-content flexrow flex-center flex-between">
-            <label for="system.attributes.initiative" class="attribute-label">{{localize "PL1E.Initiative"}}</label>
-            <input type="text" name="system.attributes.initiative" value="{{system.attributes.initiative}}" data-dtype="Number"/>
-          </div>
-        </div>
-
-        <div class="attribute flex-group-center">
-          <div class="resource-content flexrow flex-center flex-between">
-            <label for="system.attributes.dodge" class="attribute-label">{{localize "PL1E.Dodge"}}</label>
-            <input type="text" name="system.attributes.dodge" value="{{system.attributes.dodge}}" data-dtype="Number"/>
-          </div>
-        </div>
-
-        <div class="attribute flex-group-center">
-          <div class="resource-content flexrow flex-center flex-between">
-            <label for="system.attributes.parry" class="attribute-label">{{localize "PL1E.Parry"}}</label>
-            <input type="text" name="system.attributes.parry" value="{{system.attributes.parry}}" data-dtype="Number"/>
-          </div>
-        </div>-->
 
       </div>
     </div>

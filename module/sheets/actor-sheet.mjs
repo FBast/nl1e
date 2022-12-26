@@ -11,11 +11,15 @@ export class Pl1eActorSheet extends ActorSheet {
     return mergeObject(super.defaultOptions, {
       classes: ["pl1e", "sheet", "actor"],
       template: "systems/pl1e/templates/actor/actor-sheet.hbs",
-      width: 600,
-      height: 600,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "features" }],
-      width: 720,
-      height: 680
+      width: 800,
+      height: 850,
+      scrollY: [
+        ".stats",
+        ".features",
+        ".items",
+        ".effects"
+      ],
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats" }]
     });
   }
 
@@ -45,6 +49,7 @@ export class Pl1eActorSheet extends ActorSheet {
     if (actorData.type == 'character') {
       this._prepareItems(context);
       this._prepareCharacterData(context);
+      this._prepareTraits(context);
     }
 
     // Prepare NPC data and items.
@@ -54,7 +59,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
-
+    
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
@@ -69,36 +74,48 @@ export class Pl1eActorSheet extends ActorSheet {
    * @return {undefined}
    */
   _prepareCharacterData(context) {
+    const resources = context.system.resources;
     const characteristics = context.system.characteristics;
+    const defenses = context.system.defenses;
+    const resistances = context.system.resistances;
     const skills = context.system.skills;
     const attributes = context.system.attributes;
-    const resistances = context.system.resistances;
     // Handle attributes scores.
-    attributes.initiative = attributes.speed + characteristics.agi.value + characteristics.per.value + characteristics.cun.value + characteristics.wis.value;
+    attributes.initiative = attributes.speed + characteristics.agility.value + characteristics.perception.value + characteristics.cunning.value + characteristics.wisdom.value;
+    attributes.sizeMod = CONFIG.PL1E.sizeMods[attributes.size];
     // Handle resources scores.
-    const sizeMod = CONFIG.PL1E.sizeMods[attributes.size || "med"];
-    context.system.health.max = (characteristics.con.value + characteristics.wil.value) * 5 + parseInt(sizeMod);
-    context.system.stamina.max = (characteristics.str.value + characteristics.con.value) * 5 + parseInt(sizeMod);
-    context.system.mana.max = (characteristics.int.value + characteristics.wil.value) * 5 + parseInt(sizeMod);
+    for (let [id, resource] of Object.entries(resources)) {
+      var firstCharacteristic = characteristics[resource.firstCharacteristic];
+      var secondCharacteristic = characteristics[resource.secondCharacteristic];
+      resource.max = (firstCharacteristic.value + secondCharacteristic.value) * 5 + parseInt(attributes.sizeMod);
+    }
     // Handle characteristics scores.
     for (let [id, characteristic] of Object.entries(characteristics)) {
-      characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristicsAbbreviations[id]) ?? id;
+      characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
       characteristic.value = characteristic.base + characteristic.mod;
     }
-    // Handle skills scores.
-    for (let [id, skill] of Object.entries(skills)) {
-      skill.label = game.i18n.localize(CONFIG.PL1E.skills[id]) ?? id;
-      const firstCharacteristic = characteristics[skill.firstCharacteristic];
-      const secondCharacteristic = characteristics[skill.secondCharacteristic];
-      skill.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / 2);
-      skill.dice = 2 + skill.mastery * 2;
+    // Handle defenses scores.
+    for (let [id, defense] of Object.entries(defenses)) { 
+      defense.label = game.i18n.localize(CONFIG.PL1E.defenses[id]) ?? id;
+      var firstCharacteristic = characteristics[defense.firstCharacteristic];
+      var secondCharacteristic = characteristics[defense.secondCharacteristic];
+      var attributeBonus = attributes[defense.attributeBonus];
+      defense.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / defense.divider) + parseInt(attributeBonus);
     }
     // Handle resistances scores.
     for (let [id, resistance] of Object.entries(resistances)) {
       resistance.label = game.i18n.localize(CONFIG.PL1E.resistances[id]) ?? id;
-      const firstCharacteristic = characteristics[resistance.firstCharacteristic];
-      const secondCharacteristic = characteristics[resistance.secondCharacteristic];
+      var firstCharacteristic = characteristics[resistance.firstCharacteristic];
+      var secondCharacteristic = characteristics[resistance.secondCharacteristic];
       resistance.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / resistance.divider);
+    }
+    // Handle skills scores.
+    for (let [id, skill] of Object.entries(skills)) {
+      skill.label = game.i18n.localize(CONFIG.PL1E.skills[id]) ?? id;
+      var firstCharacteristic = characteristics[skill.firstCharacteristic];
+      var secondCharacteristic = characteristics[skill.secondCharacteristic];
+      skill.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / 2);
+      skill.dice = 2 + skill.mastery * 2;
     }
   }
 
@@ -254,5 +271,65 @@ export class Pl1eActorSheet extends ActorSheet {
       return roll;
     }
   }
+
+  /**
+   * Prepare the data structure for traits data like languages, resistances & vulnerabilities, and proficiencies.
+   * @param {object} traits   The raw traits data object from the actor data. *Will be mutated.*
+   * @private
+   */
+    _prepareTraits(context) {
+      const traits = context.system.traits;
+      const map = {
+        /*dr: CONFIG.DND5E.damageResistanceTypes,
+        di: CONFIG.DND5E.damageResistanceTypes,
+        dv: CONFIG.DND5E.damageResistanceTypes,
+        ci: CONFIG.DND5E.conditionTypes,*/
+        languages: CONFIG.PL1E.languages
+      };
+      const config = CONFIG.PL1E;
+      for ( const [key, choices] of Object.entries(map) ) {
+        const trait = traits[key];
+        if ( !trait ) continue;
+        let values = (trait.value ?? []) instanceof Array ? trait.value : [trait.value];
+  
+        // Split physical damage types from others if bypasses is set
+        /*const physical = [];
+        if ( trait.bypasses?.length ) {
+          values = values.filter(t => {
+            if ( !config.physicalDamageTypes[t] ) return true;
+            physical.push(t);
+            return false;
+          });
+        }*/
+  
+        // Fill out trait values
+        trait.selected = values.reduce((obj, t) => {
+          obj[t] = choices[t];
+          return obj;
+        }, {});
+  
+        // Display bypassed damage types
+        /*if ( physical.length ) {
+          const damageTypesFormatter = new Intl.ListFormat(game.i18n.lang, { style: "long", type: "conjunction" });
+          const bypassFormatter = new Intl.ListFormat(game.i18n.lang, { style: "long", type: "disjunction" });
+          trait.selected.physical = game.i18n.format("DND5E.DamagePhysicalBypasses", {
+            damageTypes: damageTypesFormatter.format(physical.map(t => choices[t])),
+            bypassTypes: bypassFormatter.format(trait.bypasses.map(t => config.physicalWeaponProperties[t]))
+          });
+        }*/
+  
+        // Add custom entry
+        if ( trait.custom ) trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
+        trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
+      }
+  
+      // Populate and localize proficiencies
+      /*for ( const t of ["armor", "weapon", "tool"] ) {
+        const trait = traits[`${t}Prof`];
+        if ( !trait ) continue;
+        Actor5e.prepareProficiencies(trait, t);
+        trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
+      }*/
+    }
 
 }

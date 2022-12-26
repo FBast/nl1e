@@ -1,0 +1,29 @@
+.sheet.actor {
+  min-width: 800px;
+  min-height: 950px;
+
+  .characteristics {
+    padding: 0 0.5em 0 0.5em;
+
+    .characteristic {
+      margin: 0 0 1em 0;
+
+      .characteristic-label {}
+
+      .characteristic-content {}
+    }
+  }
+
+  .skills {
+    border: 1px groove #111;
+    padding: 0 0.5em 0 0.5em;
+    margin: 0 0 1em 0;
+
+    .skill {}
+  }
+
+  .attributes {
+    padding: 0 0.5em 0 0.5em;
+  }
+
+}

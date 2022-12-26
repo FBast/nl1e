@@ -4,6 +4,7 @@ import { Pl1eItem } from "./documents/item.mjs";
 // Import sheet classes.
 import { Pl1eActorSheet } from "./sheets/actor-sheet.mjs";
 import { Pl1eItemSheet } from "./sheets/item-sheet.mjs";
+import { TraitSelector } from "./sheets/trait-selector.mjs";
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { PL1E } from "./helpers/config.mjs";

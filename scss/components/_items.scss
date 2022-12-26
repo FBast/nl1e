@@ -28,9 +28,9 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
   color: $c-tan;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   // Child lists
   .item-list {

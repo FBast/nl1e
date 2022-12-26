@@ -2,40 +2,78 @@
   font-family: $font-primary;
 }
 
-.sheet-header {
-  flex: 0 auto;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-bottom: 10px;
+.sheet.actor {
 
-  .profile-img {
-    flex: 0 0 100px;
-    height: 100px;
-    margin-right: 10px;
-  }
+  .window-content {
+    overflow-y: hidden;
 
-  .header-fields {
-    flex: 1;
-  }
-
-  h1.charname {
-    height: 50px;
-    padding: 0px;
-    margin: 5px 0;
-    border-bottom: 0;
-    input {
-      width: 100%;
+    form {
       height: 100%;
-      margin: 0;
+
+      .sheet-header {
+        flex: 0 auto;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        position: sticky;
+
+        .profile {
+          flex: 0 0 160px;
+          max-width: 160px;
+          height: 160px;
+          width: 160px;
+        }
+
+        h1.charname {
+          height: 50px;
+          padding: 0px;
+          margin: 5px 0;
+          border-bottom: 0;
+
+          input {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+          }
+        }
+
+        .header-fields {
+          flex: 1;
+
+          .resource-label {
+            text-transform: uppercase;
+            border-bottom-style: none;
+            font-weight: bold;
+          }
+
+        }
+
+      }
     }
   }
+
+}
+
+.tab {
+  overflow: hidden;
+}
+
+.scroll-hidden {
+  overflow-y: hidden;
+}
+
+.scroll-auto {
+  overflow-y: auto;
 }
 
 .sheet-tabs {
   flex: 0;
+}
+
+.sheet-body {
+  overflow: hidden;
 }
 
 .sheet-body,

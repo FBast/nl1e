@@ -3,181 +3,288 @@
     "types": ["character", "npc"],
     "templates": {
       "base": {
-        "health": {
+        "experience": {
           "value": 10,
-          "min": 0,
-          "max": 10
+          "max": 60
         },
-        "stamina": {
-          "value": 10,
-          "min": 0,
-          "max": 10
-        },
-        "mana": {
-          "value": 5,
-          "min": 0,
-          "max": 5
-        },
-        "attributes": {
-          "size": 0,
-          "sizeMod": 0,
-          "speed": 4.5,
-          "initiative": 0,
-          "dodge": 1,
-          "parry": 0,
-          "nightVision": 9
-        },
-        "skills": {
-          "han": {
-            "mastery": 1,
-            "firstCharacteristic": "str",
-            "secondCharacteristic": "agi",
-            "movementPenalty": false,
-            "magicPenalty": false
+        "resources": {
+          "health": {
+            "value": 10,
+            "min": 0,
+            "max": 10,
+            "temp": 0,
+            "tempMax": 0,
+            "firstCharacteristic": "constitution",
+            "secondCharacteristic": "will"
           },
-          "thr": {
-            "mastery": 1,
-            "firstCharacteristic": "str",
-            "secondCharacteristic": "per",
-            "movementPenalty": false,
-            "magicPenalty": false
+          "stamina": {
+            "value": 10,
+            "min": 0,
+            "max": 10,
+            "temp": 0,
+            "tempMax": 0,
+            "firstCharacteristic": "strength",
+            "secondCharacteristic": "constitution"
           },
-          "ath": {
-            "mastery": 1,
-            "firstCharacteristic": "str",
-            "secondCharacteristic": "con",
+          "mana": {
+            "value": 5,
+            "min": 0,
+            "max": 10,
+            "temp": 0,
+            "tempMax": 0,
+            "firstCharacteristic": "intellect",
+            "secondCharacteristic": "will"
+          }
+        },
+        "characteristics": {
+          "strength": {
+            "base": 3,
+            "value": 3,
+            "min": 2,
+            "max": 5,
+            "mod": 0
+          },
+          "agility": {
+            "base": 3,
+            "value": 3,
+            "min": 2,
+            "max": 5,
+            "mod": 0
+          },
+          "perception": {
+            "base": 3,
+            "value": 3,
+            "min": 2,
+            "max": 5,
+            "mod": 0
+          },
+          "constitution": {
+            "base": 3,
+            "value": 3,
+            "min": 2,
+            "max": 5,
+            "mod": 0
+          },
+          "intellect": {
+            "base": 3,
+            "value": 3,
+            "min": 2,
+            "max": 5,
+            "mod": 0
+          },
+          "cunning": {
+            "base": 3,
+            "value": 3,
+            "min": 2,
+            "max": 5,
+            "mod": 0
+          },
+          "wisdom": {
+            "base": 3,
+            "value": 3,
+            "min": 2,
+            "max": 5,
+            "mod": 0
+          },
+          "will": {
+            "base": 3,
+            "value": 3,
+            "min": 2,
+            "max": 5,
+            "mod": 0
+          }
+        },
+        "defenses": {
+          "parry": {
+            "mastery": 3,
+            "firstCharacteristic": "strength",
+            "secondCharacteristic": "constitution",
+            "attributeBonus": "parryBonus",
+            "movementPenalty": false,
+            "dice": 8,
+            "divider": 3
+          },
+          "dodge": {
+            "mastery": 3,
+            "firstCharacteristic": "agility",
+            "secondCharacteristic": "perception",
+            "attributeBonus": "dodgeBonus",
             "movementPenalty": true,
-            "magicPenalty": false
-          },
-          "acr": {
-            "mastery": 1,
-            "firstCharacteristic": "agi",
-            "secondCharacteristic": "per",
-            "movementPenalty": true,
-            "magicPenalty": false
-          },
-          "acc": {
-            "mastery": 1,
-            "firstCharacteristic": "agi",
-            "secondCharacteristic": "per",
-            "movementPenalty": false,
-            "magicPenalty": false
-          },
-          "sea": {
-            "mastery": 1,
-            "firstCharacteristic": "cun",
-            "secondCharacteristic": "wis",
-            "movementPenalty": false,
-            "magicPenalty": false
-          },
-          "vig": {
-            "mastery": 1,
-            "firstCharacteristic": "per",
-            "secondCharacteristic": "wis",
-            "movementPenalty": false,
-            "magicPenalty": false
-          },
-          "dis": {
-            "mastery": 1,
-            "firstCharacteristic": "agi",
-            "secondCharacteristic": "per",
-            "movementPenalty": true,
-            "magicPenalty": false
-          },
-          "per": {
-            "mastery": 1,
-            "firstCharacteristic": "wis",
-            "secondCharacteristic": "wil",
-            "movementPenalty": false,
-            "magicPenalty": false
-          },
-          "dip": {
-            "mastery": 1,
-            "firstCharacteristic": "int",
-            "secondCharacteristic": "wis",
-            "movementPenalty": false,
-            "magicPenalty": false
-          },
-          "int": {
-            "mastery": 1,
-            "firstCharacteristic": "cun",
-            "secondCharacteristic": "wis",
-            "movementPenalty": false,
-            "magicPenalty": false
-          },
-          "blu": {
-            "mastery": 1,
-            "firstCharacteristic": "int",
-            "secondCharacteristic": "cun",
-            "movementPenalty": false,
-            "magicPenalty": false
-          },
-          "cra": {
-            "mastery": 1,
-            "firstCharacteristic": "agi",
-            "secondCharacteristic": "cun",
-            "movementPenalty": false,
-            "magicPenalty": false
-          },
-          "eru": {
-            "mastery": 1,
-            "firstCharacteristic": "int",
-            "secondCharacteristic": "cun",
-            "movementPenalty": false,
-            "magicPenalty": false
-          },
-          "div": {
-            "mastery": 1,
-            "firstCharacteristic": "wis",
-            "secondCharacteristic": "wil",
-            "movementPenalty": false,
-            "magicPenalty": true
-          },
-          "sec": {
-            "mastery": 1,
-            "firstCharacteristic": "int",
-            "secondCharacteristic": "cun",
-            "movementPenalty": false,
-            "magicPenalty": true
+            "dice": 8,
+            "divider": 3
           }
         },
         "resistances": {
-          "vig": {
-            "firstCharacteristic": "str",
-            "secondCharacteristic": "con",
-            "movementPenalty": false,
-            "dice": 8,
-            "divider": 3
-          },
-          "ref": {
-            "firstCharacteristic": "agi",
-            "secondCharacteristic": "per",
-            "movementPenalty": true,
-            "dice": 8,
-            "divider": 3
-          },
-          "res": {
-            "firstCharacteristic": "int",
-            "secondCharacteristic": "wil",
+          "vigor": {
+            "mastery": 3,
+            "firstCharacteristic": "strength",
+            "secondCharacteristic": "constitution",
             "movementPenalty": false,
             "dice": 8,
             "divider": 2
           },
-          "int": {
-            "firstCharacteristic": "cun",
-            "secondCharacteristic": "wis",
+          "reflex": {
+            "mastery": 3,
+            "firstCharacteristic": "agility",
+            "secondCharacteristic": "perception",
+            "movementPenalty": true,
+            "dice": 8,
+            "divider": 2
+          },
+          "resiliance": {
+            "mastery": 3,
+            "firstCharacteristic": "intellect",
+            "secondCharacteristic": "will",
+            "movementPenalty": false,
+            "dice": 8,
+            "divider": 2
+          },
+          "intuition": {
+            "mastery": 3,
+            "firstCharacteristic": "cunning",
+            "secondCharacteristic": "wisdom",
             "movementPenalty": false,
             "dice": 8,
             "divider": 2
           }
         },
-        "reductions": {
-          "damage": 0,
-          "impact": 0,
-          "fire": 0,
-          "cold": 0,
-          "acid": 0,
-          "shock": 0
+        "skills": {
+          "handling": {
+            "mastery": 1,
+            "firstCharacteristic": "strength",
+            "secondCharacteristic": "agility",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "throwing": {
+            "mastery": 1,
+            "firstCharacteristic": "strength",
+            "secondCharacteristic": "perception",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "athletics": {
+            "mastery": 1,
+            "firstCharacteristic": "strength",
+            "secondCharacteristic": "constitution",
+            "movementPenalty": true,
+            "magicPenalty": false
+          },
+          "acrobatics": {
+            "mastery": 1,
+            "firstCharacteristic": "agility",
+            "secondCharacteristic": "perception",
+            "movementPenalty": true,
+            "magicPenalty": false
+          },
+          "accuracy": {
+            "mastery": 1,
+            "firstCharacteristic": "agility",
+            "secondCharacteristic": "perception",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "search": {
+            "mastery": 1,
+            "firstCharacteristic": "cunning",
+            "secondCharacteristic": "wisdom",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "vigilance": {
+            "mastery": 1,
+            "firstCharacteristic": "perception",
+            "secondCharacteristic": "wisdom",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "discretion": {
+            "mastery": 1,
+            "firstCharacteristic": "agility",
+            "secondCharacteristic": "perception",
+            "movementPenalty": true,
+            "magicPenalty": false
+          },
+          "perfomance": {
+            "mastery": 1,
+            "firstCharacteristic": "wisdom",
+            "secondCharacteristic": "will",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "diplomacy": {
+            "mastery": 1,
+            "firstCharacteristic": "intellect",
+            "secondCharacteristic": "wisdom",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "intimidation": {
+            "mastery": 1,
+            "firstCharacteristic": "cunning",
+            "secondCharacteristic": "wisdom",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "bluff": {
+            "mastery": 1,
+            "firstCharacteristic": "intellect",
+            "secondCharacteristic": "cunning",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "craft": {
+            "mastery": 1,
+            "firstCharacteristic": "agility",
+            "secondCharacteristic": "cunning",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "erudition": {
+            "mastery": 1,
+            "firstCharacteristic": "intellect",
+            "secondCharacteristic": "cunning",
+            "movementPenalty": false,
+            "magicPenalty": false
+          },
+          "divineMagic": {
+            "mastery": 1,
+            "firstCharacteristic": "wisdom",
+            "secondCharacteristic": "will",
+            "movementPenalty": false,
+            "magicPenalty": true
+          },
+          "secularMagic": {
+            "mastery": 1,
+            "firstCharacteristic": "intellect",
+            "secondCharacteristic": "cunning",
+            "movementPenalty": false,
+            "magicPenalty": true
+          }
+        },
+        "attributes": {
+          "experience": 10,
+          "bonuses": 0,
+          "advantage": 0,
+          "size": "medium",
+          "sizeMod": 0,
+          "speed": 4.5,
+          "initiative": 0,
+          "dodgeBonus": 1,
+          "parryBonus": 0,
+          "nightVision": 9,
+          "damageReduction": 0,
+          "impactReduction": 0,
+          "fireReduction": 0,
+          "coldReduction": 0,
+          "acidReduction": 0,
+          "shockReduction": 0
+        },
+        "traits": {
+          "languages": {
+            "value": [],
+            "custom": ""
+          }
         }
       }
     },
@@ -186,64 +293,6 @@
       "attributes": {
         "level": {
           "value": 1
-        }
-      },
-      "characteristics": {
-        "str": {
-          "base": 3,
-          "value": 3,
-          "min": 2,
-          "max": 5,
-          "mod": 0
-        },
-        "agi": {
-          "base": 3,
-          "value": 3,
-          "min": 2,
-          "max": 5,
-          "mod": 0
-        },
-        "per": {
-          "base": 3,
-          "value": 3,
-          "min": 2,
-          "max": 5,
-          "mod": 0
-        },
-        "con": {
-          "base": 3,
-          "value": 3,
-          "min": 2,
-          "max": 5,
-          "mod": 0
-        },
-        "int": {
-          "base": 3,
-          "value": 3,
-          "min": 2,
-          "max": 5,
-          "mod": 0
-        },
-        "cun": {
-          "base": 3,
-          "value": 3,
-          "min": 2,
-          "max": 5,
-          "mod": 0
-        },
-        "wis": {
-          "base": 3,
-          "value": 3,
-          "min": 2,
-          "max": 5,
-          "mod": 0
-        },
-        "wil": {
-          "base": 3,
-          "value": 3,
-          "min": 2,
-          "max": 5,
-          "mod": 0
         }
       }
     },
