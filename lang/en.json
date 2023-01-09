@@ -74,6 +74,10 @@
   "PL1E.Items": "Items",
   "PL1E.Effects": "Effects",
 
+  "PL1E.Traits": "Traits",
+  "PL1E.AbilitiesLevel": "Abilities Level ",
+  "PL1E.Mod": "Mod.",
+
   "PL1E.EffectCreate": "Create Effect",
   "PL1E.EffectToggle": "Toggle Effect",
   "PL1E.EffectEdit": "Edit Effect",

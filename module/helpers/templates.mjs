@@ -10,6 +10,12 @@
     "systems/pl1e/templates/actor/parts/actor-stats.hbs",
     "systems/pl1e/templates/actor/parts/actor-features.hbs",
     "systems/pl1e/templates/actor/parts/actor-items.hbs",
-    "systems/pl1e/templates/actor/parts/actor-effects.hbs"
+    "systems/pl1e/templates/actor/parts/actor-effects.hbs",
+
+    // Feature partials.
+    "systems/pl1e/templates/item/parts/feature-attributes.hbs",
+    "systems/pl1e/templates/item/parts/feature-description.hbs",
+    "systems/pl1e/templates/item/parts/feature-linked.hbs"
+    
   ]);
 };

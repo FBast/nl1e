@@ -1,0 +1,62 @@
+{{#if system.attributes.size.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.Size"}}</label>
+        <label class="align-right">{{localize system.attributes.size.value}}</label>
+    </div>
+{{/if}}
+{{#if system.attributes.speed.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.Speed"}}</label>
+        <label class="align-right">{{system.attributes.speed.value}}</label>
+    </div>
+{{/if}}
+{{#if system.attributes.strengthMod.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.CharacteristicStr"}} {{localize "PL1E.Mod"}}</label>
+        <label class="align-right">{{system.attributes.strengthMod.value}}</label>
+    </div>
+{{/if}}
+{{#if system.attributes.agilityMod.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.CharacteristicAgi"}} {{localize "PL1E.Mod"}}</label>
+        <label class="align-right">{{system.attributes.agilityMod.value}}</label>
+    </div>
+{{/if}}
+{{#if system.attributes.perceptionMod.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.CharacteristicPer"}} {{localize "PL1E.Mod"}}</label>
+        <label class="align-right">{{system.attributes.perceptionMod.value}}</label>
+    </div>
+{{/if}}
+{{#if system.attributes.constitutionMod.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.CharacteristicCon"}} {{localize "PL1E.Mod"}}</label>
+        <label class="align-right">{{system.attributes.constitutionMod.value}}</label>
+    </div>
+{{/if}}
+{{#if system.attributes.intellectMod.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.CharacteristicInt"}} {{localize "PL1E.Mod"}}</label>
+        <label class="align-right">{{system.attributes.intellectMod.value}}</label>
+    </div>
+{{/if}}
+{{#if system.attributes.cunningMod.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.CharacteristicCun"}} {{localize "PL1E.Mod"}}</label>
+        <label class="align-right">{{system.attributes.cunningMod.value}}</label>
+    </div>
+{{/if}}
+{{#if system.attributes.wisdomMod.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.CharacteristicWis"}} {{localize "PL1E.Mod"}}</label>
+        <label class="align-right">{{system.attributes.wisdomMod.value}}</label>
+    </div>
+{{/if}}
+{{#if system.attributes.willMod.apply}}
+    <div class="form-group">
+        <label>{{localize "PL1E.CharacteristicWil"}} {{localize "PL1E.Mod"}}</label>
+        <label class="align-right">{{system.attributes.willMod.value}}</label>
+    </div>
+{{/if}}
+<hr>
+{{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}

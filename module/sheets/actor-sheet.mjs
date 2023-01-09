@@ -145,11 +145,7 @@ export class Pl1eActorSheet extends ActorSheet {
       2: [],
       3: [],
       4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: [],
-      9: []
+      5: []
     };
 
     // Iterate through items, allocating to containers
@@ -316,59 +312,28 @@ export class Pl1eActorSheet extends ActorSheet {
    * @param {object} traits   The raw traits data object from the actor data. *Will be mutated.*
    * @private
    */
-    _prepareTraits(context) {
-      const traits = context.system.traits;
-      const map = {
-        /*dr: CONFIG.DND5E.damageResistanceTypes,
-        di: CONFIG.DND5E.damageResistanceTypes,
-        dv: CONFIG.DND5E.damageResistanceTypes,
-        ci: CONFIG.DND5E.conditionTypes,*/
-        languages: CONFIG.PL1E.languages
-      };
-      const config = CONFIG.PL1E;
-      for ( const [key, choices] of Object.entries(map) ) {
-        const trait = traits[key];
-        if ( !trait ) continue;
-        let values = (trait.value ?? []) instanceof Array ? trait.value : [trait.value];
-  
-        // Split physical damage types from others if bypasses is set
-        /*const physical = [];
-        if ( trait.bypasses?.length ) {
-          values = values.filter(t => {
-            if ( !config.physicalDamageTypes[t] ) return true;
-            physical.push(t);
-            return false;
-          });
-        }*/
-  
-        // Fill out trait values
-        trait.selected = values.reduce((obj, t) => {
-          obj[t] = choices[t];
-          return obj;
-        }, {});
-  
-        // Display bypassed damage types
-        /*if ( physical.length ) {
-          const damageTypesFormatter = new Intl.ListFormat(game.i18n.lang, { style: "long", type: "conjunction" });
-          const bypassFormatter = new Intl.ListFormat(game.i18n.lang, { style: "long", type: "disjunction" });
-          trait.selected.physical = game.i18n.format("DND5E.DamagePhysicalBypasses", {
-            damageTypes: damageTypesFormatter.format(physical.map(t => choices[t])),
-            bypassTypes: bypassFormatter.format(trait.bypasses.map(t => config.physicalWeaponProperties[t]))
-          });
-        }*/
-  
-        // Add custom entry
-        if ( trait.custom ) trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
-        trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
-      }
-  
-      // Populate and localize proficiencies
-      /*for ( const t of ["armor", "weapon", "tool"] ) {
-        const trait = traits[`${t}Prof`];
-        if ( !trait ) continue;
-        Actor5e.prepareProficiencies(trait, t);
-        trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
-      }*/
+  _prepareTraits(context) {
+    const traits = context.system.traits;
+    const map = {
+      languages: CONFIG.PL1E.languages
+    };
+    const config = CONFIG.PL1E;
+    for ( const [key, choices] of Object.entries(map) ) {
+      const trait = traits[key];
+      if ( !trait ) continue;
+      let values = (trait.value ?? []) instanceof Array ? trait.value : [trait.value];
+
+      // Fill out trait values
+      trait.selected = values.reduce((obj, t) => {
+        obj[t] = choices[t];
+        return obj;
+      }, {});
+
+      // Add custom entry
+      if ( trait.custom ) trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
+      trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
     }
+
+  }
 
 }

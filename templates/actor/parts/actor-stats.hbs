@@ -62,6 +62,9 @@
           <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-5" value="5" data-dtype="Number" {{checked (eq skill.mastery 5)}} />
         </div>
       </li>
+      {{#if skill.separator}}
+      <hr>
+      {{/if}}
       {{/each}}
     </ul>
   </div>

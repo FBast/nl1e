@@ -12,7 +12,8 @@ export class Pl1eItemSheet extends ItemSheet {
       classes: ["pl1e", "sheet", "item"],
       width: 520,
       height: 480,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
+      dragDrop: [{ dragSelector: ".item-list .item", dropSelector: null}]
     });
   }
 
@@ -65,4 +66,48 @@ export class Pl1eItemSheet extends ItemSheet {
 
     // Roll handlers, click handlers, etc. would go here.
   }
+
+  _prepareItems(context) {
+    // Initialize containers.
+    const features = [];
+    const abilities = {
+      0: [],
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: []
+    };
+
+    // Iterate through items, allocating to containers
+    for (let i of context.items) {
+      i.img = i.img || DEFAULT_TOKEN;
+      // Append to features.
+      if (i.type === 'feature') {
+        features.push(i);
+      }
+      // Append to abilities.
+      else if (i.type === 'ability') {
+        if (i.system.level != undefined) {
+          abilities[i.system.level].push(i);
+        }
+      }
+    }
+
+    // Assign and return
+    context.features = features;
+    context.abilities = abilities;
+  }
+
+  async _onDrop(event) {
+    let data;
+    try {
+      data = JSON.parse(event.dataTransfer.getData('text/plain'));
+    }
+    catch (err) {
+      return false;
+    }
+    console.log(data);
+  } 
+
 }

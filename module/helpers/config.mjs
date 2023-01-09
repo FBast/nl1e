@@ -62,17 +62,17 @@ PL1E.sizes = {
 };
 
 PL1E.sizeMods = {
-  "small": "10",
-  "medium": "20",
-  "large": "40",
-  "huge": "80",
-  "gargantuan": "160"
+  "PL1E.SizeSmall": "10",
+  "PL1E.SizeMedium": "20",
+  "PL1E.SizeLarge": "40",
+  "PL1E.SizeHuge": "80",
+  "PL1E.SizeGargantuan": "160"
 };
 
 PL1E.sizeTokens = {
-  "small": "1",
-  "medium": "1",
-  "large": "2",
-  "huge": "3",
-  "gargantuan": "4"
+  "PL1E.SizeSmall": "1",
+  "PL1E.SizeMedium": "1",
+  "PL1E.SizeLarge": "2",
+  "PL1E.SizeHuge": "3",
+  "PL1E.SizeGargantuan": "4"
 };
