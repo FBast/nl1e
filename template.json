@@ -265,7 +265,7 @@
         "attributes": {
           "experience": 10,
           "bonuses": 0,
-          "advantage": 0,
+          "advantages": 0,
           "size": "medium",
           "sizeMod": 0,
           "speed": 4.5,
@@ -302,7 +302,7 @@
     }
   },
   "Item": {
-    "types": ["item", "feature", "spell"],
+    "types": ["item", "feature", "ability"],
     "templates": {
       "base": {
         "description": ""
@@ -323,11 +323,51 @@
       "formula": "d20 + @str.mod + ceil(@lvl / 2)"
     },
     "feature": {
-      "templates": ["base"]
-    },
-    "spell": {
       "templates": ["base"],
-      "spellLevel": 1
+      "size": {
+        "value": "medium",
+        "apply": false
+      },
+      "speed": {
+        "value": 4.5,
+        "apply": false
+      },
+      "strengthMod": {
+        "value": 0,
+        "apply": false
+      },
+      "agilityMod": {
+        "value": 0,
+        "apply": false
+      },
+      "perceptionMod": {
+        "value": 0,
+        "apply": false
+      },
+      "constitutionMod": {
+        "value": 0,
+        "apply": false
+      },
+      "intellectMod": {
+        "value": 0,
+        "apply": false
+      },
+      "cunningMod": {
+        "value": 0,
+        "apply": false
+      },
+      "wisdomMod": {
+        "value": 0,
+        "apply": false
+      },
+      "willMod": {
+        "value": 0,
+        "apply": false
+      }
+    },
+    "ability": {
+      "templates": ["base"],
+      "level": 1
     }
   }
 }

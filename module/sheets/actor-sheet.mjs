@@ -152,12 +152,42 @@ export class Pl1eActorSheet extends ActorSheet {
       }
       // Append to features.
       else if (i.type === 'feature') {
+        if (i.system.size.apply) {
+          context.system.attributes.size = i.system.size.value;
+        }
+        if (i.system.speed.apply) {
+          context.system.attributes.speed = i.system.speed.value;
+        }
+        if (i.system.speed.strengthMod.apply) {
+          context.system.characteristics.strength.mod = i.system.strengthMod.value;
+        }
+        if (i.system.speed.agilityMod.apply) {
+          context.system.characteristics.agility.mod = i.system.agilityMod.value;
+        }
+        if (i.system.speed.perceptionMod.apply) {
+          context.system.characteristics.perception.mod = i.system.perceptionMod.value;
+        }
+        if (i.system.speed.constitutionMod.apply) {
+          context.system.characteristics.constitution.mod = i.system.constitutionMod.value;
+        }
+        if (i.system.speed.intellectMod.apply) {
+          context.system.characteristics.intellect.mod = i.system.intellectMod.value;
+        }
+        if (i.system.speed.cunningMod.apply) {
+          context.system.characteristics.cunning.mod = i.system.cunningMod.value;
+        }
+        if (i.system.speed.wisdomMod.apply) {
+          context.system.characteristics.wisdom.mod = i.system.wisdomMod.value;
+        }
+        if (i.system.speed.willMod.apply) {
+          context.system.characteristics.will.mod = i.system.willMod.value;
+        }
         features.push(i);
       }
       // Append to abilities.
-      else if (i.type === 'spell') {
-        if (i.system.spellLevel != undefined) {
-          abilities[i.system.spellLevel].push(i);
+      else if (i.type === 'ability') {
+        if (i.system.level != undefined) {
+          abilities[i.system.level].push(i);
         }
       }
     }

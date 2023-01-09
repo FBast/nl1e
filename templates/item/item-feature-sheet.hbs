@@ -23,6 +23,62 @@
     {{!-- Attributes Tab --}}
     <div class="tab attributes" data-group="primary" data-tab="attributes">
       {{!-- As you add new fields, add them in here! --}}
+      <div class="form-group">
+        <input type="checkbox" name="system.size.apply" {{checked system.size.apply}} >
+        <label>{{localize "PL1E.Size"}}</label>
+        <select name="system.size">
+            {{#select system.size}}
+            {{#each sizes as |label size|}}
+                <option value="{{size}}">{{localize label}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+      </div>
+      <div class="form-group">
+        <input type="checkbox" name="system.speed.apply">
+        <label>Speed</label>
+        <input type="text" name="system.speed" value="{{system.speed}}" data-dtype="Number"/>
+      </div>
+      <div class="form-group">
+        <input type="checkbox">
+        <label>Strength Mod</label>
+        <input type="text" name="system.strengthMod" value="{{system.strengthMod}}" data-dtype="Number"/>
+      </div>
+      <div class="form-group">
+        <input type="checkbox">
+        <label>Agility Mod</label>
+        <input type="text" name="system.agilityMod" value="{{system.agilityMod}}" data-dtype="Number"/>
+      </div>
+      <div class="form-group">
+        <input type="checkbox">
+        <label>Perception Mod</label>
+        <input type="text" name="system.perceptionMod" value="{{system.perceptionMod}}" data-dtype="Number"/>
+      </div>
+      <div class="form-group">
+        <input type="checkbox">
+        <label>Constitution Mod</label>
+        <input type="text" name="system.constitutionMod" value="{{system.constitutionMod}}" data-dtype="Number"/>
+      </div>
+      <div class="form-group">
+        <input type="checkbox">
+        <label>Intellect Mod</label>
+        <input type="text" name="system.intellectMod" value="{{system.intellectMod}}" data-dtype="Number"/>
+      </div>
+      <div class="form-group">
+        <input type="checkbox">
+        <label>Cunning Mod</label>
+        <input type="text" name="system.cunningMod" value="{{system.cunningMod}}" data-dtype="Number"/>
+      </div>
+      <div class="form-group">
+        <input type="checkbox">
+        <label>Wisdom Mod</label>
+        <input type="text" name="system.wisdomMod" value="{{system.wisdomMod}}" data-dtype="Number"/>
+      </div>
+      <div class="form-group">
+        <input type="checkbox">
+        <label>Will Mod</label>
+        <input type="text" name="system.willMod" value="{{system.willMod}}" data-dtype="Number"/>
+      </div>
     </div>
   </section>
 

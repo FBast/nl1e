@@ -72,13 +72,44 @@
       <input type="number" step="1" min="0" max="60" name="system.attributes.experience" value="{{system.attributes.experience}}" data-dtype="Number"/>
     </div>
     <div class="form-group">
-      <label>Bonuses</label>
-      <input type="range" min="-5" max="5" name="system.attributes.bonuses" value="{{system.attributes.bonuses}}" data-dtype="Number"/>
-      <output name="{{system.attributes.bonuses}}.value" for="{{system.attributes.bonuses}}">{{system.attributes.bonuses}}</output>
+      <label>{{localize "PL1E.Bonuses"}}</label>
+      <select name="system.attributes.bonuses">
+        {{#select system.attributes.bonuses}}
+        {{#each CONFIG.PL1E.modificators as |label mod|}}
+          <option value="{{mod}}">{{label}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
     </div>
     <div class="form-group">
-      <label>Advantage</label>
-      <input type="range" min="-5" max="5" name="system.attributes.advantage" value="{{system.attributes.advantage}}" data-dtype="Number"/>
+      <label>{{localize "PL1E.Advantages"}}</label>
+      <select name="system.attributes.advantages">
+        {{#select system.attributes.advantages}}
+        {{#each CONFIG.PL1E.modificators as |label mod|}}
+          <option value="{{mod}}">{{label}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>{{localize "PL1E.Bonuses"}}</label>
+      <div class="attribute-mods grid-span-2 align-center">
+          <input type="radio" name="system.attributes.bonuses" class="mod-1" value="-2" data-dtype="Number" {{checked (eq system.attributes.bonuses -2)}}/>
+          <input type="radio" name="system.attributes.bonuses" class="mod-2" value="-1" data-dtype="Number" {{checked (eq system.attributes.bonuses -1)}}/>
+          <input type="radio" name="system.attributes.bonuses" class="mod-3" value="0" data-dtype="Number" {{checked (eq system.attributes.bonuses 0)}}/>
+          <input type="radio" name="system.attributes.bonuses" class="mod-4" value="1" data-dtype="Number" {{checked (eq system.attributes.bonuses 1)}}/>
+          <input type="radio" name="system.attributes.bonuses" class="mod-5" value="2" data-dtype="Number" {{checked (eq system.attributes.bonuses 2)}}/>
+        </div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "PL1E.Advantages"}}</label>
+      <div class="attribute-mods grid-span-2 align-center">
+          <input type="radio" name="system.attributes.advantages" class="mod-1" value="-2" data-dtype="Number" {{checked (eq system.attributes.advantages -2)}}/>
+          <input type="radio" name="system.attributes.advantages" class="mod-2" value="-1" data-dtype="Number" {{checked (eq system.attributes.advantages -1)}}/>
+          <input type="radio" name="system.attributes.advantages" class="mod-3" value="0" data-dtype="Number" {{checked (eq system.attributes.advantages 0)}}/>
+          <input type="radio" name="system.attributes.advantages" class="mod-4" value="1" data-dtype="Number" {{checked (eq system.attributes.bonuses 1)}}/>
+          <input type="radio" name="system.attributes.advantages" class="mod-5" value="2" data-dtype="Number" {{checked (eq system.attributes.bonuses 2)}}/>
+        </div>
     </div>
     <div class="form-group">
       <label>{{localize "PL1E.Size"}}</label>
@@ -103,106 +134,6 @@
     <div class="form-group">
       <label>{{localize "PL1E.NightVision"}}</label>
       <label class="align-right">{{system.attributes.nightVision}}</label>
-    </div>
-    <hr>
-    <div class="form-group">
-      <label>{{localize "PL1E.DamageReduction"}}</label>
-      <label class="align-right">{{system.attributes.damageReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ImpactReduction"}}</label>
-      <label class="align-right">{{system.attributes.impactReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.FireReduction"}}</label>
-      <label class="align-right">{{system.attributes.fireReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ColdReduction"}}</label>
-      <label class="align-right">{{system.attributes.coldReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.AcidReduction"}}</label>
-      <label class="align-right">{{system.attributes.acidReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ShockReduction"}}</label>
-      <label class="align-right">{{system.attributes.shockReduction}}</label>
-    </div>
-    <hr>
-    <div class="form-group">
-      <label>{{localize "PL1E.DamageReduction"}}</label>
-      <label class="align-right">{{system.attributes.damageReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ImpactReduction"}}</label>
-      <label class="align-right">{{system.attributes.impactReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.FireReduction"}}</label>
-      <label class="align-right">{{system.attributes.fireReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ColdReduction"}}</label>
-      <label class="align-right">{{system.attributes.coldReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.AcidReduction"}}</label>
-      <label class="align-right">{{system.attributes.acidReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ShockReduction"}}</label>
-      <label class="align-right">{{system.attributes.shockReduction}}</label>
-    </div>
-    <hr>
-    <div class="form-group">
-      <label>{{localize "PL1E.DamageReduction"}}</label>
-      <label class="align-right">{{system.attributes.damageReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ImpactReduction"}}</label>
-      <label class="align-right">{{system.attributes.impactReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.FireReduction"}}</label>
-      <label class="align-right">{{system.attributes.fireReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ColdReduction"}}</label>
-      <label class="align-right">{{system.attributes.coldReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.AcidReduction"}}</label>
-      <label class="align-right">{{system.attributes.acidReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ShockReduction"}}</label>
-      <label class="align-right">{{system.attributes.shockReduction}}</label>
-    </div>
-    <hr>
-    <div class="form-group">
-      <label>{{localize "PL1E.DamageReduction"}}</label>
-      <label class="align-right">{{system.attributes.damageReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ImpactReduction"}}</label>
-      <label class="align-right">{{system.attributes.impactReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.FireReduction"}}</label>
-      <label class="align-right">{{system.attributes.fireReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ColdReduction"}}</label>
-      <label class="align-right">{{system.attributes.coldReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.AcidReduction"}}</label>
-      <label class="align-right">{{system.attributes.acidReduction}}</label>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.ShockReduction"}}</label>
-      <label class="align-right">{{system.attributes.shockReduction}}</label>
     </div>
     <hr>
     <div class="form-group">

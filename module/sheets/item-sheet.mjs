@@ -1,3 +1,5 @@
+import { PL1E } from "../helpers/config.mjs";
+
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -45,6 +47,7 @@ export class Pl1eItemSheet extends ItemSheet {
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
     context.flags = itemData.flags;
+    context.sizes = PL1E.sizes;
 
     return context;
   }

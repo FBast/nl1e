@@ -69,15 +69,10 @@ PL1E.sizeMods = {
   "gargantuan": "160"
 };
 
-PL1E.languages = {
-  acid: "DND5E.DamageAcid",
-  cold: "DND5E.DamageCold",
-  fire: "DND5E.DamageFire",
-  force: "DND5E.DamageForce",
-  lightning: "DND5E.DamageLightning",
-  necrotic: "DND5E.DamageNecrotic",
-  poison: "DND5E.DamagePoison",
-  psychic: "DND5E.DamagePsychic",
-  radiant: "DND5E.DamageRadiant",
-  thunder: "DND5E.DamageThunder"
+PL1E.sizeTokens = {
+  "small": "1",
+  "medium": "1",
+  "large": "2",
+  "huge": "3",
+  "gargantuan": "4"
 };
