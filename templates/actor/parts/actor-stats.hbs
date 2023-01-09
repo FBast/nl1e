@@ -73,26 +73,6 @@
     </div>
     <div class="form-group">
       <label>{{localize "PL1E.Bonuses"}}</label>
-      <select name="system.attributes.bonuses">
-        {{#select system.attributes.bonuses}}
-        {{#each CONFIG.PL1E.modificators as |label mod|}}
-          <option value="{{mod}}">{{label}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.Advantages"}}</label>
-      <select name="system.attributes.advantages">
-        {{#select system.attributes.advantages}}
-        {{#each CONFIG.PL1E.modificators as |label mod|}}
-          <option value="{{mod}}">{{label}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
-    <div class="form-group">
-      <label>{{localize "PL1E.Bonuses"}}</label>
       <div class="attribute-mods grid-span-2 align-center">
           <input type="radio" name="system.attributes.bonuses" class="mod-1" value="-2" data-dtype="Number" {{checked (eq system.attributes.bonuses -2)}}/>
           <input type="radio" name="system.attributes.bonuses" class="mod-2" value="-1" data-dtype="Number" {{checked (eq system.attributes.bonuses -1)}}/>
@@ -113,7 +93,7 @@
     </div>
     <div class="form-group">
       <label>{{localize "PL1E.Size"}}</label>
-      <label class="align-right">{{system.attributes.size}}</label>
+      <label class="align-right">{{localize system.attributes.sizeLabel}}</label>
     </div>
     <div class="form-group">
       <label>{{localize "PL1E.Speed"}}</label>

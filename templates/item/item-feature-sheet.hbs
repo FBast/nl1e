@@ -26,58 +26,58 @@
       <div class="form-group">
         <input type="checkbox" name="system.size.apply" {{checked system.size.apply}} >
         <label>{{localize "PL1E.Size"}}</label>
-        <select name="system.size">
-            {{#select system.size}}
-            {{#each sizes as |label size|}}
-                <option value="{{size}}">{{localize label}}</option>
-            {{/each}}
-            {{/select}}
+        <select name="system.size.value">
+          {{#select system.size.value}}
+          {{#each sizes as |label size|}}
+            <option value="{{size}}">{{localize label}}</option>
+          {{/each}}
+          {{/select}}
         </select>
       </div>
       <div class="form-group">
-        <input type="checkbox" name="system.speed.apply">
+        <input type="checkbox" name="system.speed.apply" {{checked system.speed.apply}} >
         <label>Speed</label>
-        <input type="text" name="system.speed" value="{{system.speed}}" data-dtype="Number"/>
+        <input type="text" name="system.speed.value" value="{{system.speed.value}}" data-dtype="Number"/>
       </div>
       <div class="form-group">
-        <input type="checkbox">
+        <input type="checkbox" name="system.strengthMod.apply" {{checked system.strengthMod.apply}} >
         <label>Strength Mod</label>
-        <input type="text" name="system.strengthMod" value="{{system.strengthMod}}" data-dtype="Number"/>
+        <input type="text" name="system.strengthMod.value" value="{{system.strengthMod.value}}" data-dtype="Number"/>
       </div>
       <div class="form-group">
-        <input type="checkbox">
+        <input type="checkbox" name="system.agilityMod.apply" {{checked system.agilityMod.apply}} >
         <label>Agility Mod</label>
-        <input type="text" name="system.agilityMod" value="{{system.agilityMod}}" data-dtype="Number"/>
+        <input type="text" name="system.agilityMod.value" value="{{system.agilityMod.value}}" data-dtype="Number"/>
       </div>
       <div class="form-group">
-        <input type="checkbox">
+        <input type="checkbox" name="system.perceptionMod.apply" {{checked system.perceptionMod.apply}} >
         <label>Perception Mod</label>
-        <input type="text" name="system.perceptionMod" value="{{system.perceptionMod}}" data-dtype="Number"/>
+        <input type="text" name="system.perceptionMod.value" value="{{system.perceptionMod.value}}" data-dtype="Number"/>
       </div>
       <div class="form-group">
-        <input type="checkbox">
+        <input type="checkbox" name="system.constitutionMod.apply" {{checked system.constitutionMod.apply}} >
         <label>Constitution Mod</label>
-        <input type="text" name="system.constitutionMod" value="{{system.constitutionMod}}" data-dtype="Number"/>
+        <input type="text" name="system.constitutionMod.value" value="{{system.constitutionMod.value}}" data-dtype="Number"/>
       </div>
       <div class="form-group">
-        <input type="checkbox">
+        <input type="checkbox" name="system.intellectMod.apply" {{checked system.intellectMod.apply}} >
         <label>Intellect Mod</label>
-        <input type="text" name="system.intellectMod" value="{{system.intellectMod}}" data-dtype="Number"/>
+        <input type="text" name="system.intellectMod.value" value="{{system.intellectMod.value}}" data-dtype="Number"/>
       </div>
       <div class="form-group">
-        <input type="checkbox">
+        <input type="checkbox" name="system.cunningMod.apply" {{checked system.cunningMod.apply}} >
         <label>Cunning Mod</label>
-        <input type="text" name="system.cunningMod" value="{{system.cunningMod}}" data-dtype="Number"/>
+        <input type="text" name="system.cunningMod.value" value="{{system.cunningMod.value}}" data-dtype="Number"/>
       </div>
       <div class="form-group">
-        <input type="checkbox">
+        <input type="checkbox" name="system.wisdomMod.apply" {{checked system.wisdomMod.apply}} >
         <label>Wisdom Mod</label>
-        <input type="text" name="system.wisdomMod" value="{{system.wisdomMod}}" data-dtype="Number"/>
+        <input type="text" name="system.wisdomMod.value" value="{{system.wisdomMod.value}}" data-dtype="Number"/>
       </div>
       <div class="form-group">
-        <input type="checkbox">
+        <input type="checkbox" name="system.willMod.apply" {{checked system.willMod.apply}} >
         <label>Will Mod</label>
-        <input type="text" name="system.willMod" value="{{system.willMod}}" data-dtype="Number"/>
+        <input type="text" name="system.willMod.value" value="{{system.willMod.value}}" data-dtype="Number"/>
       </div>
     </div>
   </section>

@@ -48,8 +48,8 @@ export class Pl1eActorSheet extends ActorSheet {
     // Prepare character data and items.
     if (actorData.type == 'character') {
       this._prepareItems(context);
-      this._prepareCharacterData(context);
       this._prepareTraits(context);
+      this._prepareCharacterData(context);
     }
 
     // Prepare NPC data and items.
@@ -82,7 +82,9 @@ export class Pl1eActorSheet extends ActorSheet {
     const attributes = context.system.attributes;
     // Handle attributes scores.
     attributes.initiative = attributes.speed + characteristics.agility.value + characteristics.perception.value + characteristics.cunning.value + characteristics.wisdom.value;
+    attributes.sizeLabel = CONFIG.PL1E.sizes[attributes.size];
     attributes.sizeMod = CONFIG.PL1E.sizeMods[attributes.size];
+    attributes.sizeToken = CONFIG.PL1E.sizeTokens[attributes.size];
     // Handle resources scores.
     for (let [id, resource] of Object.entries(resources)) {
       var firstCharacteristic = characteristics[resource.firstCharacteristic];
@@ -128,6 +130,13 @@ export class Pl1eActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
+    const resources = context.system.resources;
+    const characteristics = context.system.characteristics;
+    const defenses = context.system.defenses;
+    const resistances = context.system.resistances;
+    const skills = context.system.skills;
+    const attributes = context.system.attributes;
+
     const gear = [];
     const features = [];
     const abilities = {
@@ -152,37 +161,37 @@ export class Pl1eActorSheet extends ActorSheet {
       }
       // Append to features.
       else if (i.type === 'feature') {
+        features.push(i);
         if (i.system.size.apply) {
-          context.system.attributes.size = i.system.size.value;
+          attributes.size = i.system.size.value;
         }
         if (i.system.speed.apply) {
-          context.system.attributes.speed = i.system.speed.value;
+          attributes.speed = i.system.speed.value;
         }
-        if (i.system.speed.strengthMod.apply) {
-          context.system.characteristics.strength.mod = i.system.strengthMod.value;
+        if (i.system.strengthMod.apply) {
+          characteristics.strength.mod = i.system.strengthMod.value;
         }
-        if (i.system.speed.agilityMod.apply) {
-          context.system.characteristics.agility.mod = i.system.agilityMod.value;
+        if (i.system.agilityMod.apply) {
+          characteristics.agility.mod = i.system.agilityMod.value;
         }
-        if (i.system.speed.perceptionMod.apply) {
-          context.system.characteristics.perception.mod = i.system.perceptionMod.value;
+        if (i.system.perceptionMod.apply) {
+          characteristics.perception.mod = i.system.perceptionMod.value;
         }
-        if (i.system.speed.constitutionMod.apply) {
-          context.system.characteristics.constitution.mod = i.system.constitutionMod.value;
+        if (i.system.constitutionMod.apply) {
+          characteristics.constitution.mod = i.system.constitutionMod.value;
         }
-        if (i.system.speed.intellectMod.apply) {
-          context.system.characteristics.intellect.mod = i.system.intellectMod.value;
+        if (i.system.intellectMod.apply) {
+          characteristics.intellect.mod = i.system.intellectMod.value;
         }
-        if (i.system.speed.cunningMod.apply) {
-          context.system.characteristics.cunning.mod = i.system.cunningMod.value;
+        if (i.system.cunningMod.apply) {
+          characteristics.cunning.mod = i.system.cunningMod.value;
         }
-        if (i.system.speed.wisdomMod.apply) {
-          context.system.characteristics.wisdom.mod = i.system.wisdomMod.value;
+        if (i.system.wisdomMod.apply) {
+          characteristics.wisdom.mod = i.system.wisdomMod.value;
         }
-        if (i.system.speed.willMod.apply) {
-          context.system.characteristics.will.mod = i.system.willMod.value;
+        if (i.system.willMod.apply) {
+          characteristics.will.mod = i.system.willMod.value;
         }
-        features.push(i);
       }
       // Append to abilities.
       else if (i.type === 'ability') {

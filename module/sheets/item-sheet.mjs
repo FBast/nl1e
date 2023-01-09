@@ -47,6 +47,8 @@ export class Pl1eItemSheet extends ItemSheet {
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
     context.flags = itemData.flags;
+
+    // Add the config data
     context.sizes = PL1E.sizes;
 
     return context;
