@@ -8,8 +8,8 @@ export class Pl1eItem extends Item {
      * A reference to the Collection of embedded Item instances in the document, indexed by _id.
      * @returns {Collection<BaseItem>}
      */
-    get items() {
-        return this.system.items || new Map();
+    get itemsMap() {
+        return this.system.itemsMap || new Map();
     }
 
     /**
@@ -21,9 +21,9 @@ export class Pl1eItem extends Item {
         super.prepareData();
 
         // Prepare Embed items
-        if (!(this.system.items instanceof Map)) {
-            const itemsData = Array.isArray(this.system.items) ? this.system.items : [];
-            this.system.items = new Map();
+        if (!(this.system.itemsMap instanceof Map)) {
+            const itemsData = Array.isArray(this.system.itemsMap) ? this.system.itemsMap : [];
+            this.system.itemsMap = new Map();
 
             itemsData.forEach((item) => {
                 this.addEmbedItem(item, { save: false, newId: false });
@@ -100,6 +100,16 @@ export class Pl1eItem extends Item {
         return parent;
     }
 
+    // ***** Embedded items management *****
+    /**
+     * Shortcut for this.items.get
+     * @param id
+     * @return {Pl1eItem|null}
+     */
+    getEmbedItem(id) {
+        return this.itemsMap?.get(id) || null;
+    }
+
     /**
      * Add a Embed Item
      * @param {Pl1eItem} item Object to add
@@ -133,7 +143,7 @@ export class Pl1eItem extends Item {
         item.system.parent_id = this.getParentsIds();
 
         // Object
-        this.system.items.set(item._id, item);
+        this.system.itemsMap.set(item._id, item);
 
         if (save) {
             await this.saveEmbedItems();
@@ -147,9 +157,38 @@ export class Pl1eItem extends Item {
      */
     async saveEmbedItems() {
         await this.update({
-            "system.items": Array.from(this.system.items).map(([id, item]) => item.toObject(false)),
+            "system.itemsMap": Array.from(this.system.itemsMap).map(([id, item]) => item.toObject(false)),
         });
         this.sheet.render(false);
+    }
+
+    /**
+     * Delete the Embed Item and clear the actor bonus if any
+     * @param id Item id
+     * @param {boolean} save   if we save in db or not (used internally)
+     * @param {boolean} removeBonusFromActor if we update the actor bonus for advancements
+     * @return {Promise<void>}
+     */
+    async deleteEmbedItem(id, { save = true, removeBonusFromActor = true } = {}) {
+        if (!this.system.itemsMap.has(id)) {
+            return;
+        }
+
+        // Remove bonus from actor
+        // if (removeBonusFromActor) {
+        //     const actor = this.actor;
+        //     const item = this.system.items.get(id);
+        //     if (item instanceof Item && actor instanceof Actor) {
+        //         actor.removeBonus(item);
+        //     }
+        // }
+
+        // Remove the embed item
+        this.system.itemsMap.delete(id);
+
+        if (save) {
+            await this.saveEmbedItems();
+        }
     }
 
 }

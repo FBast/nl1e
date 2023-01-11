@@ -46,8 +46,10 @@ export class Pl1eItemSheet extends ItemSheet {
             context.rollData = actor.getRollData();
         }
 
-        // Prepare OwnedItems
-        context.embedItemsList = this._prepareEmbedItems(itemData.system.items);
+        // Prepare character data and items.
+        if (itemData.type == 'feature') {
+            this._prepareItems(context);
+        }
 
         // Add the actor's data to context.data for easier access, as well as flags.
         context.system = itemData.system;
@@ -69,6 +71,8 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         // Roll handlers, click handlers, etc. would go here.
+        html.find(`.item-edit`).on("click", this._editSubItem.bind(this));
+        html.find(`.item-delete`).on("click", this._deleteSubItem.bind(this));
     }
 
     _prepareItems(context) {
@@ -82,6 +86,9 @@ export class Pl1eItemSheet extends ItemSheet {
             4: [],
             5: []
         };
+
+        // Prepare OwnedItems
+        context.items = this._prepareEmbedItems(context.item.system.itemsMap);
 
         // Iterate through items, allocating to containers
         for (let i of context.items) {
@@ -141,6 +148,37 @@ export class Pl1eItemSheet extends ItemSheet {
         const data = item.toObject(false);
 
         this.document.addEmbedItem(data);
+    }
+
+    /**
+     * Add a embed item
+     * @param {Event} event
+     * @private
+     */
+    _editSubItem(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const itemId = $(event.currentTarget).data("item-id");
+        const item = this.document.items.get(itemId);
+        if (item) {
+            item.sheet.render(true);
+        }
+    }
+
+    /**
+     * Delete a embed item
+     * @param {Event} event
+     * @private
+     */
+    _deleteSubItem(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const itemId = $(event.currentTarget).data("item-id");
+        const item = this.document.getEmbedItem(itemId);
+        if (!item) {
+            return;
+        }
+        this.document.deleteEmbedItem(itemId);
     }
 
 }

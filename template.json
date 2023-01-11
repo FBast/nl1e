@@ -341,7 +341,7 @@
     },
     "feature": {
       "templates": ["base"],
-      "items": [],
+      "itemsMap": [],
       "attributes": {
         "size": {
           "value": "medium",
