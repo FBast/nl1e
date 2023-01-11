@@ -99,15 +99,79 @@ export class Pl1eItemSheet extends ItemSheet {
     context.abilities = abilities;
   }
 
+  /** @inheritdoc */
   async _onDrop(event) {
-    let data;
-    try {
-      data = JSON.parse(event.dataTransfer.getData('text/plain'));
+    const data = TextEditor.getDragEventData(event);
+
+    // Handle different data types
+    switch ( data.type ) {
+      case "Item":
+        return this._onDropItem(event, data);
+      case "Folder":
+        return this._onDropFolder(event, data);
     }
-    catch (err) {
-      return false;
+  }
+
+  /**
+   * Handle dropping of an item reference or item data onto an Actor Sheet
+   * @param {DragEvent} event            The concluding DragEvent which contains drop data
+   * @param {object} data                The data transfer extracted from the event
+   * @returns {Promise<Item[]|boolean>}  The created or updated Item instances, or false if the drop was not permitted.
+   * @protected
+   */
+  async _onDropItem(event, data) {
+    const item = await Item.implementation.fromDropData(data);
+
+    const existingItems = foundry.utils.getProperty(this.data.configuration, this.options.dropKeyPath);
+
+    // Abort if this uuid is the parent item
+    if ( item.uuid === this.item.uuid ) {
+      return ui.notifications.error(game.i18n.localize("DND5E.AdvancementItemGrantRecursiveWarning"));
     }
-    console.log(data);
-  } 
+
+    // Abort if this uuid exists already
+    if ( existingItems.includes(item.uuid) ) {
+      return ui.notifications.warn(game.i18n.localize("DND5E.AdvancementItemGrantDuplicateWarning"));
+    }
+
+    await this.item.update({[`configuration.${this.options.dropKeyPath}`]: [...existingItems, item.uuid]});
+    this.render();
+  }
+
+  /**
+   * Handle dropping of a Folder on an Actor Sheet.
+   * The core sheet currently supports dropping a Folder of Items to create all items as owned items.
+   * @param {DragEvent} event     The concluding DragEvent which contains drop data
+   * @param {object} data         The data transfer extracted from the event
+   * @returns {Promise<Item[]>}
+   * @protected
+   */
+  async _onDropFolder(event, data) {
+    if ( !this.actor.isOwner ) return [];
+    if ( data.documentName !== "Item" ) return [];
+    const folder = await Folder.implementation.fromDropData(data);
+    if ( !folder ) return [];
+    return this._onDropItemCreate(folder.contents.map(item => {
+      return game.items.fromCompendium(item);
+    }));
+  }
+
+  /**
+     * Handle deleting an existing Item entry from the Advancement.
+     * @param {Event} event        The originating click event.
+     * @returns {Promise<Item5e>}  The updated parent Item after the application re-renders.
+     * @protected
+     */
+  async _onItemDelete(event) {
+    event.preventDefault();
+    const uuidToDelete = event.currentTarget.closest("[data-item-uuid]")?.dataset.itemUuid;
+    if ( !uuidToDelete ) return;
+    const items = foundry.utils.getProperty(this.advancement.data.configuration, this.options.dropKeyPath);
+    const updates = { configuration: await this.prepareConfigurationUpdate({
+      [this.options.dropKeyPath]: items.filter(uuid => uuid !== uuidToDelete)
+    }) };
+    await this.advancement.update(updates);
+    this.render();
+  }
 
 }

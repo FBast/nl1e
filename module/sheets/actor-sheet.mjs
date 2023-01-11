@@ -263,6 +263,7 @@ export class Pl1eActorSheet extends ActorSheet {
     // Initialize a default name.
     const name = `New ${type.capitalize()}`;
     // Prepare the item object.
+    
     const itemData = {
       name: name,
       type: type,
