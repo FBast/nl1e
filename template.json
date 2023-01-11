@@ -341,6 +341,7 @@
     },
     "feature": {
       "templates": ["base"],
+      "items": [],
       "attributes": {
         "size": {
           "value": "medium",

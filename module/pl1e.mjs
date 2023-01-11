@@ -6,6 +6,7 @@ import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 // Import helper/utility classes and constants.
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
+import { HelpersPl1e } from "./helpers/helpers.js";
 import {PL1E} from "./helpers/config.mjs";
 
 /* -------------------------------------------- */

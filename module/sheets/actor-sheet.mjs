@@ -124,7 +124,7 @@ export class Pl1eActorSheet extends ActorSheet {
     /**
      * Organize and classify Items for Character sheets.
      *
-     * @param {Object} actorData The actor to prepare.
+     * @param {Object} context The actor to prepare.
      *
      * @return {undefined}
      */
@@ -158,35 +158,35 @@ export class Pl1eActorSheet extends ActorSheet {
             // Append to features.
             else if (i.type === 'feature') {
                 features.push(i);
-                if (i.system.size.apply) {
-                    attributes.size = i.system.size.value;
+                if (i.system.attributes.size.apply) {
+                    attributes.size = i.system.attributes.size.value;
                 }
-                if (i.system.speed.apply) {
-                    attributes.speed = i.system.speed.value;
+                if (i.system.attributes.speed.apply) {
+                    attributes.speed = i.system.attributes.speed.value;
                 }
-                if (i.system.strengthMod.apply) {
-                    characteristics.strength.mod = i.system.strengthMod.value;
+                if (i.system.attributes.strengthMod.apply) {
+                    characteristics.strength.mod = i.system.attributes.strengthMod.value;
                 }
-                if (i.system.agilityMod.apply) {
-                    characteristics.agility.mod = i.system.agilityMod.value;
+                if (i.system.attributes.agilityMod.apply) {
+                    characteristics.agility.mod = i.system.attributes.agilityMod.value;
                 }
-                if (i.system.perceptionMod.apply) {
-                    characteristics.perception.mod = i.system.perceptionMod.value;
+                if (i.system.attributes.perceptionMod.apply) {
+                    characteristics.perception.mod = i.system.attributes.perceptionMod.value;
                 }
-                if (i.system.constitutionMod.apply) {
-                    characteristics.constitution.mod = i.system.constitutionMod.value;
+                if (i.system.attributes.constitutionMod.apply) {
+                    characteristics.constitution.mod = i.system.attributes.constitutionMod.value;
                 }
-                if (i.system.intellectMod.apply) {
-                    characteristics.intellect.mod = i.system.intellectMod.value;
+                if (i.system.attributes.intellectMod.apply) {
+                    characteristics.intellect.mod = i.system.attributes.intellectMod.value;
                 }
-                if (i.system.cunningMod.apply) {
-                    characteristics.cunning.mod = i.system.cunningMod.value;
+                if (i.system.attributes.cunningMod.apply) {
+                    characteristics.cunning.mod = i.system.attributes.cunningMod.value;
                 }
-                if (i.system.wisdomMod.apply) {
-                    characteristics.wisdom.mod = i.system.wisdomMod.value;
+                if (i.system.attributes.wisdomMod.apply) {
+                    characteristics.wisdom.mod = i.system.attributes.wisdomMod.value;
                 }
-                if (i.system.willMod.apply) {
-                    characteristics.will.mod = i.system.willMod.value;
+                if (i.system.attributes.willMod.apply) {
+                    characteristics.will.mod = i.system.attributes.willMod.value;
                 }
             }
             // Append to abilities.

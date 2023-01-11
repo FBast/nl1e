@@ -3,6 +3,15 @@
  * @extends {Item}
  */
 export class Pl1eItem extends Item {
+
+    /**
+     * A reference to the Collection of embedded Item instances in the document, indexed by _id.
+     * @returns {Collection<BaseItem>}
+     */
+    get items() {
+        return this.system.items || new Map();
+    }
+
     /**
      * Augment the basic Item data model with additional dynamic data.
      */
@@ -10,6 +19,16 @@ export class Pl1eItem extends Item {
         // As with the actor class, items are documents that can have their data
         // preparation methods overridden (such as prepareBaseData()).
         super.prepareData();
+
+        // Prepare Embed items
+        if (!(this.system.items instanceof Map)) {
+            const itemsData = Array.isArray(this.system.items) ? this.system.items : [];
+            this.system.items = new Map();
+
+            itemsData.forEach((item) => {
+                this.addEmbedItem(item, { save: false, newId: false });
+            });
+        }
     }
 
     /**
@@ -65,4 +84,72 @@ export class Pl1eItem extends Item {
             return roll;
         }
     }
+
+    // ***** parent ids management *****
+    /**
+     * Return a string with idemId + actorId if any
+     * @return {{item_id: (string|null), actor_id?: (string|null)}}
+     */
+    getParentsIds() {
+        const parent = {
+            item_id: this.id,
+        };
+        if (this.actor?._id) {
+            parent.actor_id = this.actor._id;
+        }
+        return parent;
+    }
+
+    /**
+     * Add a Embed Item
+     * @param {Pl1eItem} item Object to add
+     * @param {boolean} save   if we save in db or not (used internally)
+     * @param {boolean} newId  if we change the id
+     * @param {boolean} addBonusToActor if we update the actor bonus for advancements
+     * @return {Promise<string>}
+     */
+    async addEmbedItem(item, { save = true, newId = true } = {}) {
+        if (!item) return;
+
+        if (!(item instanceof Item) && item?.name && item?.type) {
+            // Data -> Item
+            item = new Pl1eItem(item);
+        }
+
+        // New id
+        if (newId || !item._id) {
+            // Bypass the readonly for "_id"
+            const tmpData = item.toJSON();
+            tmpData._id = foundry.utils.randomID();
+            item = new Pl1eItem(tmpData);
+        }
+
+        // Copy the parent permission to the sub item
+        // In v10 actor's items inherit the ownership from the actor, but theirs ownership do not reflect that.
+        // So we must take actor's ownership for sub-item
+        item.ownership = this.actor?.ownership ?? this.ownership;
+
+        // Tag parent (flags won't work as we have no id in db)
+        item.system.parent_id = this.getParentsIds();
+
+        // Object
+        this.system.items.set(item._id, item);
+
+        if (save) {
+            await this.saveEmbedItems();
+        }
+        return item._id;
+    }
+
+    /**
+     * Save all the Embed Items
+     * @return {Promise<void>}
+     */
+    async saveEmbedItems() {
+        await this.update({
+            "system.items": Array.from(this.system.items).map(([id, item]) => item.toObject(false)),
+        });
+        this.sheet.render(false);
+    }
+
 }
