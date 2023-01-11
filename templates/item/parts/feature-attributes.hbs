@@ -3,54 +3,66 @@
     <label>{{localize "PL1E.Size"}}</label>
     <select name="system.attributes.size.value">
         {{#select system.attributes.size.value}}
-        {{#each sizes as |label size|}}
-            <option value="{{label}}">{{localize label}}</option>
-        {{/each}}
+            {{#each sizes as |label size|}}
+                <option value="{{label}}">{{localize label}}</option>
+            {{/each}}
         {{/select}}
     </select>
 </div>
 <div class="form-group">
     <input type="checkbox" name="system.attributes.speed.apply" {{checked system.attributes.speed.apply}} >
     <label>{{localize "PL1E.Speed"}} {{localize "PL1E.Mod"}}</label>
-    <input type="text" name="system.attributes.speed.value" value="{{system.attributes.speed.value}}" data-dtype="Number"/>
+    <input type="text" name="system.attributes.speed.value" value="{{system.attributes.speed.value}}"
+           data-dtype="Number"/>
 </div>
 <div class="form-group">
     <input type="checkbox" name="system.attributes.strengthMod.apply" {{checked system.attributes.strengthMod.apply}} >
     <label>{{localize "PL1E.CharacteristicStr"}} {{localize "PL1E.Mod"}}</label>
-    <input type="text" name="system.attributes.strengthMod.value" value="{{system.attributes.strengthMod.value}}" data-dtype="Number"/>
+    <input type="text" name="system.attributes.strengthMod.value" value="{{system.attributes.strengthMod.value}}"
+           data-dtype="Number"/>
 </div>
 <div class="form-group">
     <input type="checkbox" name="system.attributes.agilityMod.apply" {{checked system.attributes.agilityMod.apply}} >
     <label>{{localize "PL1E.CharacteristicAgi"}} {{localize "PL1E.Mod"}}</label>
-    <input type="text" name="system.attributes.agilityMod.value" value="{{system.attributes.agilityMod.value}}" data-dtype="Number"/>
+    <input type="text" name="system.attributes.agilityMod.value" value="{{system.attributes.agilityMod.value}}"
+           data-dtype="Number"/>
 </div>
 <div class="form-group">
-    <input type="checkbox" name="system.attributes.perceptionMod.apply" {{checked system.attributes.perceptionMod.apply}} >
+    <input type="checkbox" name="system.attributes.perceptionMod.apply" {{checked
+            system.attributes.perceptionMod.apply}} >
     <label>{{localize "PL1E.CharacteristicPer"}} {{localize "PL1E.Mod"}}</label>
-    <input type="text" name="system.attributes.perceptionMod.value" value="{{system.attributes.perceptionMod.value}}" data-dtype="Number"/>
+    <input type="text" name="system.attributes.perceptionMod.value" value="{{system.attributes.perceptionMod.value}}"
+           data-dtype="Number"/>
 </div>
 <div class="form-group">
-    <input type="checkbox" name="system.attributes.constitutionMod.apply" {{checked system.attributes.constitutionMod.apply}} >
+    <input type="checkbox" name="system.attributes.constitutionMod.apply" {{checked
+            system.attributes.constitutionMod.apply}} >
     <label>{{localize "PL1E.CharacteristicCon"}} {{localize "PL1E.Mod"}}</label>
-    <input type="text" name="system.attributes.constitutionMod.value" value="{{system.attributes.constitutionMod.value}}" data-dtype="Number"/>
+    <input type="text" name="system.attributes.constitutionMod.value"
+           value="{{system.attributes.constitutionMod.value}}" data-dtype="Number"/>
 </div>
 <div class="form-group">
-    <input type="checkbox" name="system.attributes.intellectMod.apply" {{checked system.attributes.intellectMod.apply}} >
+    <input type="checkbox" name="system.attributes.intellectMod.apply" {{checked
+            system.attributes.intellectMod.apply}} >
     <label>{{localize "PL1E.CharacteristicInt"}} {{localize "PL1E.Mod"}}</label>
-    <input type="text" name="system.attributes.intellectMod.value" value="{{system.attributes.intellectMod.value}}" data-dtype="Number"/>
+    <input type="text" name="system.attributes.intellectMod.value" value="{{system.attributes.intellectMod.value}}"
+           data-dtype="Number"/>
 </div>
 <div class="form-group">
     <input type="checkbox" name="system.attributes.cunningMod.apply" {{checked system.attributes.cunningMod.apply}} >
     <label>{{localize "PL1E.CharacteristicCun"}} {{localize "PL1E.Mod"}}</label>
-    <input type="text" name="system.attributes.cunningMod.value" value="{{system.attributes.cunningMod.value}}" data-dtype="Number"/>
+    <input type="text" name="system.attributes.cunningMod.value" value="{{system.attributes.cunningMod.value}}"
+           data-dtype="Number"/>
 </div>
 <div class="form-group">
     <input type="checkbox" name="system.attributes.wisdomMod.apply" {{checked system.attributes.wisdomMod.apply}} >
     <label>{{localize "PL1E.CharacteristicWis"}} {{localize "PL1E.Mod"}}</label>
-    <input type="text" name="system.attributes.wisdomMod.value" value="{{system.attributes.wisdomMod.value}}" data-dtype="Number"/>
+    <input type="text" name="system.attributes.wisdomMod.value" value="{{system.attributes.wisdomMod.value}}"
+           data-dtype="Number"/>
 </div>
 <div class="form-group">
     <input type="checkbox" name="system.attributes.willMod.apply" {{checked system.attributes.willMod.apply}} >
     <label>{{localize "PL1E.CharacteristicWil"}} {{localize "PL1E.Mod"}}</label>
-    <input type="text" name="system.attributes.willMod.value" value="{{system.attributes.willMod.value}}" data-dtype="Number"/>
+    <input type="text" name="system.attributes.willMod.value" value="{{system.attributes.willMod.value}}"
+           data-dtype="Number"/>
 </div>

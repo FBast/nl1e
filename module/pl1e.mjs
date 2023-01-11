@@ -1,52 +1,51 @@
 // Import document classes.
-import { Pl1eActor } from "./documents/actor.mjs";
-import { Pl1eItem } from "./documents/item.mjs";
+import {Pl1eActor} from "./documents/actor.mjs";
+import {Pl1eItem} from "./documents/item.mjs";
 // Import sheet classes.
-import { Pl1eActorSheet } from "./sheets/actor-sheet.mjs";
-import { Pl1eItemSheet } from "./sheets/item-sheet.mjs";
-import { TraitSelector } from "./sheets/trait-selector.mjs";
+import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
+import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 // Import helper/utility classes and constants.
-import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { PL1E } from "./helpers/config.mjs";
+import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
+import {PL1E} from "./helpers/config.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 
-Hooks.once('init', async function() {
+Hooks.once('init', async function () {
 
-  // Add utility classes to the global game object so that they're more easily
-  // accessible in global contexts.
-  game.pl1e = {
-    Pl1eActor,
-    Pl1eItem,
-    rollItemMacro
-  };
+    // Add utility classes to the global game object so that they're more easily
+    // accessible in global contexts.
+    game.pl1e = {
+        Pl1eActor,
+        Pl1eItem,
+        rollItemMacro
+    };
 
-  // Add custom constants for configuration.
-  CONFIG.PL1E = PL1E;
+    // Add custom constants for configuration.
+    CONFIG.PL1E = PL1E;
 
-  /**
-   * Set an initiative formula for the system
-   * @type {String}
-   */
-  CONFIG.Combat.initiative = {
-    formula: "1d20 + @characteristics.agi.mod",
-    decimals: 2
-  };
+    /**
+     * Set an initiative formula for the system
+     * @type {String}
+     */
+    CONFIG.Combat.initiative = {
+        formula: "1d20 + @characteristics.agi.mod",
+        decimals: 2
+    };
 
-  // Define custom Document classes
-  CONFIG.Actor.documentClass = Pl1eActor;
-  CONFIG.Item.documentClass = Pl1eItem;
+    // Define custom Document classes
+    CONFIG.Actor.documentClass = Pl1eActor;
+    CONFIG.Item.documentClass = Pl1eItem;
 
-  // Register sheet application classes
-  Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("pl1e", Pl1eActorSheet, { makeDefault: true });
-  Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("pl1e", Pl1eItemSheet, { makeDefault: true });
+    // Register sheet application classes
+    Actors.unregisterSheet("core", ActorSheet);
+    Actors.registerSheet("pl1e", Pl1eActorSheet, {makeDefault: true});
+    Items.unregisterSheet("core", ItemSheet);
+    Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
 
-  // Preload Handlebars templates.
-  return preloadHandlebarsTemplates();
+    // Preload Handlebars templates.
+    return preloadHandlebarsTemplates();
 });
 
 /* -------------------------------------------- */
@@ -54,31 +53,32 @@ Hooks.once('init', async function() {
 /* -------------------------------------------- */
 
 // If you need to add Handlebars helpers, here are a few useful examples:
-Handlebars.registerHelper('concat', function() {
-  var outStr = '';
-  for (var arg in arguments) {
-    if (typeof arguments[arg] != 'object') {
-      outStr += arguments[arg];
+Handlebars.registerHelper('concat', function () {
+    var outStr = '';
+    for (var arg in arguments) {
+        if (typeof arguments[arg] != 'object') {
+            outStr += arguments[arg];
+        }
     }
-  }
-  return outStr;
+    return outStr;
 });
 
-Handlebars.registerHelper('toLowerCase', function(str) {
-  return str.toLowerCase();
+Handlebars.registerHelper('toLowerCase', function (str) {
+    return str.toLowerCase();
 });
 
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
-Hooks.once("ready", async function() {
-  // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-  Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
+Hooks.once("ready", async function () {
+    // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
+    Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
 });
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
+
 /* -------------------------------------------- */
 
 /**
@@ -89,28 +89,28 @@ Hooks.once("ready", async function() {
  * @returns {Promise}
  */
 async function createItemMacro(data, slot) {
-  // First, determine if this is a valid owned item.
-  if (data.type !== "Item") return;
-  if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
-    return ui.notifications.warn("You can only create macro buttons for owned Items");
-  }
-  // If it is, retrieve it based on the uuid.
-  const item = await Item.fromDropData(data);
+    // First, determine if this is a valid owned item.
+    if (data.type !== "Item") return;
+    if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
+        return ui.notifications.warn("You can only create macro buttons for owned Items");
+    }
+    // If it is, retrieve it based on the uuid.
+    const item = await Item.fromDropData(data);
 
-  // Create the macro command using the uuid.
-  const command = `game.pl1e.rollItemMacro("${data.uuid}");`;
-  let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
-  if (!macro) {
-    macro = await Macro.create({
-      name: item.name,
-      type: "script",
-      img: item.img,
-      command: command,
-      flags: { "pl1e.itemMacro": true }
-    });
-  }
-  game.user.assignHotbarMacro(macro, slot);
-  return false;
+    // Create the macro command using the uuid.
+    const command = `game.pl1e.rollItemMacro("${data.uuid}");`;
+    let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
+    if (!macro) {
+        macro = await Macro.create({
+            name: item.name,
+            type: "script",
+            img: item.img,
+            command: command,
+            flags: {"pl1e.itemMacro": true}
+        });
+    }
+    game.user.assignHotbarMacro(macro, slot);
+    return false;
 }
 
 /**
@@ -119,20 +119,20 @@ async function createItemMacro(data, slot) {
  * @param {string} itemUuid
  */
 function rollItemMacro(itemUuid) {
-  // Reconstruct the drop data so that we can load the item.
-  const dropData = {
-    type: 'Item',
-    uuid: itemUuid
-  };
-  // Load the item from the uuid.
-  Item.fromDropData(dropData).then(item => {
-    // Determine if the item loaded and if it's an owned item.
-    if (!item || !item.parent) {
-      const itemName = item?.name ?? itemUuid;
-      return ui.notifications.warn(`Could not find item ${itemName}. You may need to delete and recreate this macro.`);
-    }
+    // Reconstruct the drop data so that we can load the item.
+    const dropData = {
+        type: 'Item',
+        uuid: itemUuid
+    };
+    // Load the item from the uuid.
+    Item.fromDropData(dropData).then(item => {
+        // Determine if the item loaded and if it's an owned item.
+        if (!item || !item.parent) {
+            const itemName = item?.name ?? itemUuid;
+            return ui.notifications.warn(`Could not find item ${itemName}. You may need to delete and recreate this macro.`);
+        }
 
-    // Trigger the item roll
-    item.roll();
-  });
+        // Trigger the item roll
+        item.roll();
+    });
 }

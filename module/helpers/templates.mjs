@@ -3,19 +3,19 @@
  * Pre-loaded templates are compiled and cached for fast access when rendering
  * @return {Promise}
  */
- export const preloadHandlebarsTemplates = async function() {
-  return loadTemplates([
+export const preloadHandlebarsTemplates = async function () {
+    return loadTemplates([
 
-    // Actor partials.
-    "systems/pl1e/templates/actor/parts/actor-stats.hbs",
-    "systems/pl1e/templates/actor/parts/actor-features.hbs",
-    "systems/pl1e/templates/actor/parts/actor-items.hbs",
-    "systems/pl1e/templates/actor/parts/actor-effects.hbs",
+        // Actor partials.
+        "systems/pl1e/templates/actor/parts/actor-stats.hbs",
+        "systems/pl1e/templates/actor/parts/actor-features.hbs",
+        "systems/pl1e/templates/actor/parts/actor-items.hbs",
+        "systems/pl1e/templates/actor/parts/actor-effects.hbs",
 
-    // Feature partials.
-    "systems/pl1e/templates/item/parts/feature-attributes.hbs",
-    "systems/pl1e/templates/item/parts/feature-description.hbs",
-    "systems/pl1e/templates/item/parts/feature-linked.hbs"
-    
-  ]);
+        // Feature partials.
+        "systems/pl1e/templates/item/parts/feature-attributes.hbs",
+        "systems/pl1e/templates/item/parts/feature-description.hbs",
+        "systems/pl1e/templates/item/parts/feature-linked.hbs"
+
+    ]);
 };
