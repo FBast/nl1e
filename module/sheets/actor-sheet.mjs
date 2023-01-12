@@ -69,7 +69,7 @@ export class Pl1eActorSheet extends ActorSheet {
     /**
      * Organize and classify Items for Character sheets.
      *
-     * @param {Object} actorData The actor to prepare.
+     * @param {Object} context The actor to prepare.
      *
      * @return {undefined}
      */
@@ -310,7 +310,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /**
      * Prepare the data structure for traits data like languages, resistances & vulnerabilities, and proficiencies.
-     * @param {object} traits   The raw traits data object from the actor data. *Will be mutated.*
+     * @param {object} context   The raw traits data object from the actor data. *Will be mutated.*
      * @private
      */
     _prepareTraits(context) {

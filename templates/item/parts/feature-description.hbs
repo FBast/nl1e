@@ -58,5 +58,10 @@
         <label class="align-right">{{system.attributes.willMod.value}}</label>
     </div>
 {{/if}}
+<ul class="traits-list">
+{{#each items as |item id|}}
+    <li class="tag {{id}}"><a>{{item.name}}</a></li>
+{{/each}}
+</ul>
 <hr>
 {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
