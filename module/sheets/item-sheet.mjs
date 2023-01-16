@@ -48,7 +48,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Prepare character data and items.
         if (itemData.type === 'feature' || itemData.type === 'item') {
-            this._prepareSubItems(context);
+            this.#_prepareSubItems(context);
         }
 
         // Add the actor's data to context.data for easier access, as well as flags.
@@ -71,11 +71,40 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         // Roll handlers, click handlers, etc. would go here.
-        html.find(`.item-edit`).on("click", this._editSubItem.bind(this));
-        html.find(`.item-delete`).on("click", this._deleteSubItem.bind(this));
+        html.find(`.item-edit`).on("click", this.#_editSubItem.bind(this));
+        html.find(`.item-delete`).on("click", this.#_deleteSubItem.bind(this));
     }
 
-    _prepareSubItems(context) {
+    /**
+     * Callback actions which occur when a dragged element is dropped on a target.
+     * @param {DragEvent} event       The originating DragEvent
+     * @private
+     */
+    async _onDrop(event) {
+        // Everything below here is only needed if the sheet is editable
+        if (!this.isEditable) return;
+
+        // Check item type and subtype
+        let item = await HelpersPl1e.getDragNDropTargetObject(event);
+        if (!item || item.documentName !== "Item" || !["feature", "ability"].includes(item.type)) return;
+
+        // Check if same item
+        if (this.object._id === item._id) return;
+
+        const data = item.toObject(false);
+
+        const linkedId = randomID();
+        data.system.linkedId = linkedId;
+
+        this.document.addEmbedItem(data);
+
+        for(let [key, value] of data.system.subItemsMap) {
+            value.system.linkedId = linkedId;
+            this.document.addEmbedItem(value);
+        }
+    }
+
+    #_prepareSubItems(context) {
         // Initialize containers.
         const features = [];
         const abilities = {
@@ -110,51 +139,12 @@ export class Pl1eItemSheet extends ItemSheet {
         context.abilities = abilities;
     }
 
-    // /**
-    //  * Prepare Embed items
-    //  * @param {[]|Map} itemsMap
-    //  * @return {[]}
-    //  * @private
-    //  */
-    // _prepareEmbedItems(itemsMap) {
-    //     let itemsList = itemsMap;
-    //     if (itemsMap instanceof Map) {
-    //         itemsList = Array.from(itemsMap).map(([id, item]) => item);
-    //     }
-    //
-    //     // Sort by rank desc
-    //     //itemsList.sort((a, b) => (b.system.rank || 0) - (a.system.rank || 0));
-    //
-    //     return itemsList;
-    // }
-
-    /**
-     * Callback actions which occur when a dragged element is dropped on a target.
-     * @param {DragEvent} event       The originating DragEvent
-     * @private
-     */
-    async _onDrop(event) {
-        // Everything below here is only needed if the sheet is editable
-        if (!this.isEditable) return;
-
-        // Check item type and subtype
-        let item = await HelpersPl1e.getDragnDropTargetObject(event);
-        if (!item || item.documentName !== "Item" || !["feature", "ability"].includes(item.type)) return;
-
-        // Check if same item
-        if (this.object._id === item._id) return;
-
-        const data = item.toObject(false);
-
-        this.document.addEmbedItem(data);
-    }
-
     /**
      * Add a embed item
      * @param {Event} event
      * @private
      */
-    _editSubItem(event) {
+    #_editSubItem(event) {
         event.preventDefault();
         event.stopPropagation();
         const itemId = $(event.currentTarget).data("item-id");
@@ -169,7 +159,7 @@ export class Pl1eItemSheet extends ItemSheet {
      * @param {Event} event
      * @private
      */
-    _deleteSubItem(event) {
+    #_deleteSubItem(event) {
         event.preventDefault();
         event.stopPropagation();
         const itemId = $(event.currentTarget).data("item-id");

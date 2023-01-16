@@ -10,7 +10,7 @@ export class HelpersPl1e {
      * @param {DragEvent} event
      * @return {Promise<null>}
      */
-    static async getDragnDropTargetObject(event) {
+    static async getDragNDropTargetObject(event) {
         let data;
         try {
             data = JSON.parse(event.dataTransfer?.getData("text/plain"));

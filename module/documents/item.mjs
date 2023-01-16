@@ -175,15 +175,6 @@ export class Pl1eItem extends Item {
             return;
         }
 
-        // Remove bonus from actor
-        // if (removeBonusFromActor) {
-        //     const actor = this.actor;
-        //     const item = this.system.items.get(id);
-        //     if (item instanceof Item && actor instanceof Actor) {
-        //         actor.removeBonus(item);
-        //     }
-        // }
-
         // Remove the embed item
         this.system.subItemsMap.delete(id);
 

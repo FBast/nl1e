@@ -35,35 +35,8 @@ export class Pl1eActor extends Actor {
 
         // Make separate methods for each Actor type (character, npc, etc.) to keep
         // things organized.
-        this._prepareCharacterData(actorData);
-        this._prepareNpcData(actorData);
-    }
-
-    /**
-     * Prepare Character type specific data
-     */
-    _prepareCharacterData(actorData) {
-        if (actorData.type !== 'character') return;
-
-        // Make modifications to data here. For example:
-        const systemData = actorData.system;
-
-        // Loop through characteristic scores, and add their modifiers to our sheet output.
-        /*for (let [key, ability] of Object.entries(systemData.characteristics)) {
-          // Calculate the modifier using d20 rules.
-          ability.mod = Math.floor((ability.value - 10) / 2);
-        }*/
-    }
-
-    /**
-     * Prepare NPC type specific data.
-     */
-    _prepareNpcData(actorData) {
-        if (actorData.type !== 'npc') return;
-
-        // Make modifications to data here. For example:
-        const systemData = actorData.system;
-        systemData.xp = (systemData.cr * systemData.cr) * 100;
+        this.#_prepareCharacterData(actorData);
+        this.#_prepareNpcData(actorData);
     }
 
     /**
@@ -73,16 +46,83 @@ export class Pl1eActor extends Actor {
         const data = super.getRollData();
 
         // Prepare character roll data.
-        this._getCharacterRollData(data);
-        this._getNpcRollData(data);
+        this.#_getCharacterRollData(data);
+        this.#_getNpcRollData(data);
 
         return data;
     }
 
     /**
+     * Prepare Character type specific data
+     */
+    #_prepareCharacterData(actorData) {
+        if (actorData.type !== 'character') return;
+        // Make modifications to data here. For example:
+        const systemData = actorData.system;
+        const resources = systemData.resources;
+        const characteristics = systemData.characteristics;
+        const defenses = systemData.defenses;
+        const resistances = systemData.resistances;
+        const skills = systemData.skills;
+        const attributes = systemData.attributes;
+        // Handle attributes scores.
+        attributes.initiative = attributes.speed + characteristics.agility.value + characteristics.perception.value + characteristics.cunning.value + characteristics.wisdom.value;
+        attributes.sizeLabel = CONFIG.PL1E.sizes[attributes.size];
+        attributes.sizeMod = CONFIG.PL1E.sizeMods[attributes.size];
+        attributes.sizeToken = CONFIG.PL1E.sizeTokens[attributes.size];
+        // Handle resources scores.
+        let firstCharacteristic;
+        let secondCharacteristic;
+        for (let [id, resource] of Object.entries(resources)) {
+            firstCharacteristic = characteristics[resource.firstCharacteristic];
+            secondCharacteristic = characteristics[resource.secondCharacteristic];
+            resource.max = (firstCharacteristic.value + secondCharacteristic.value) * 5 + parseInt(attributes.sizeMod);
+        }
+        // Handle characteristics scores.
+        for (let [id, characteristic] of Object.entries(characteristics)) {
+            characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
+            characteristic.value = characteristic.base + characteristic.mod;
+        }
+        // Handle defenses scores.
+        for (let [id, defense] of Object.entries(defenses)) {
+            defense.label = game.i18n.localize(CONFIG.PL1E.defenses[id]) ?? id;
+            firstCharacteristic = characteristics[defense.firstCharacteristic];
+            secondCharacteristic = characteristics[defense.secondCharacteristic];
+            var attributeBonus = attributes[defense.attributeBonus];
+            defense.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / defense.divider) + parseInt(attributeBonus);
+        }
+        // Handle resistances scores.
+        for (let [id, resistance] of Object.entries(resistances)) {
+            resistance.label = game.i18n.localize(CONFIG.PL1E.resistances[id]) ?? id;
+            firstCharacteristic = characteristics[resistance.firstCharacteristic];
+            secondCharacteristic = characteristics[resistance.secondCharacteristic];
+            resistance.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / resistance.divider);
+        }
+        // Handle skills scores.
+        for (let [id, skill] of Object.entries(skills)) {
+            skill.label = game.i18n.localize(CONFIG.PL1E.skills[id]) ?? id;
+            firstCharacteristic = characteristics[skill.firstCharacteristic];
+            secondCharacteristic = characteristics[skill.secondCharacteristic];
+            skill.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / 2);
+            skill.dice = 2 + skill.mastery * 2;
+        }
+    }
+
+    /**
+     * Prepare NPC type specific data.
+     */
+    #_prepareNpcData(actorData) {
+        if (actorData.type !== 'npc') return;
+
+        // Make modifications to data here. For example:
+        const systemData = actorData.system;
+        systemData.xp = (systemData.cr * systemData.cr) * 100;
+    }
+
+    /**
      * Prepare character roll data.
      */
-    _getCharacterRollData(data) {
+    #_getCharacterRollData(data) {
         if (this.type !== 'character') return;
 
         // Copy the characteristic scores to the top level, so that rolls can use
@@ -102,7 +142,7 @@ export class Pl1eActor extends Actor {
     /**
      * Prepare NPC roll data.
      */
-    _getNpcRollData(data) {
+    #_getNpcRollData(data) {
         if (this.type !== 'npc') return;
 
         // Process additional NPC data here.

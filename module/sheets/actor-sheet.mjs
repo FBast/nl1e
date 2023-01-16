@@ -73,51 +73,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @return {undefined}
      */
     _prepareCharacterData(context) {
-        const resources = context.system.resources;
-        const characteristics = context.system.characteristics;
-        const defenses = context.system.defenses;
-        const resistances = context.system.resistances;
-        const skills = context.system.skills;
-        const attributes = context.system.attributes;
-        // Handle attributes scores.
-        attributes.initiative = attributes.speed + characteristics.agility.value + characteristics.perception.value + characteristics.cunning.value + characteristics.wisdom.value;
-        attributes.sizeLabel = CONFIG.PL1E.sizes[attributes.size];
-        attributes.sizeMod = CONFIG.PL1E.sizeMods[attributes.size];
-        attributes.sizeToken = CONFIG.PL1E.sizeTokens[attributes.size];
-        // Handle resources scores.
-        for (let [id, resource] of Object.entries(resources)) {
-            var firstCharacteristic = characteristics[resource.firstCharacteristic];
-            var secondCharacteristic = characteristics[resource.secondCharacteristic];
-            resource.max = (firstCharacteristic.value + secondCharacteristic.value) * 5 + parseInt(attributes.sizeMod);
-        }
-        // Handle characteristics scores.
-        for (let [id, characteristic] of Object.entries(characteristics)) {
-            characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
-            characteristic.value = characteristic.base + characteristic.mod;
-        }
-        // Handle defenses scores.
-        for (let [id, defense] of Object.entries(defenses)) {
-            defense.label = game.i18n.localize(CONFIG.PL1E.defenses[id]) ?? id;
-            var firstCharacteristic = characteristics[defense.firstCharacteristic];
-            var secondCharacteristic = characteristics[defense.secondCharacteristic];
-            var attributeBonus = attributes[defense.attributeBonus];
-            defense.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / defense.divider) + parseInt(attributeBonus);
-        }
-        // Handle resistances scores.
-        for (let [id, resistance] of Object.entries(resistances)) {
-            resistance.label = game.i18n.localize(CONFIG.PL1E.resistances[id]) ?? id;
-            var firstCharacteristic = characteristics[resistance.firstCharacteristic];
-            var secondCharacteristic = characteristics[resistance.secondCharacteristic];
-            resistance.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / resistance.divider);
-        }
-        // Handle skills scores.
-        for (let [id, skill] of Object.entries(skills)) {
-            skill.label = game.i18n.localize(CONFIG.PL1E.skills[id]) ?? id;
-            var firstCharacteristic = characteristics[skill.firstCharacteristic];
-            var secondCharacteristic = characteristics[skill.secondCharacteristic];
-            skill.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / 2);
-            skill.dice = 2 + skill.mastery * 2;
-        }
+
     }
 
     /**
