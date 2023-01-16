@@ -141,6 +141,9 @@ export class Pl1eItemSheet extends ItemSheet {
         let item = await HelpersPl1e.getDragnDropTargetObject(event);
         if (!item || item.documentName !== "Item" || !["feature", "ability"].includes(item.type)) return;
 
+        // Check if same item
+        if (this.object._id === item._id) return;
+
         const data = item.toObject(false);
 
         this.document.addEmbedItem(data);
