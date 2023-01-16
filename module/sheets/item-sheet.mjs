@@ -47,8 +47,8 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Prepare character data and items.
-        if (itemData.type == 'feature') {
-            this._prepareItems(context);
+        if (itemData.type === 'feature' || itemData.type === 'item') {
+            this._prepareSubItems(context);
         }
 
         // Add the actor's data to context.data for easier access, as well as flags.
@@ -75,7 +75,7 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find(`.item-delete`).on("click", this._deleteSubItem.bind(this));
     }
 
-    _prepareItems(context) {
+    _prepareSubItems(context) {
         // Initialize containers.
         const features = [];
         const abilities = {
@@ -88,19 +88,19 @@ export class Pl1eItemSheet extends ItemSheet {
         };
 
         // Prepare OwnedItems
-        context.items = this._prepareEmbedItems(context.item.system.itemsMap);
+        //context.subItems = this._prepareEmbedItems(context.item.system.subItemsMap);
 
         // Iterate through items, allocating to containers
-        for (let i of context.items) {
-            i.img = i.img || DEFAULT_TOKEN;
+        for (let [key, value] of context.item.system.subItemsMap) {
+            value.img = value.img || DEFAULT_TOKEN;
             // Append to features.
-            if (i.type === 'feature') {
-                features.push(i);
+            if (value.type === 'feature') {
+                features.push(value);
             }
             // Append to abilities.
-            else if (i.type === 'ability') {
-                if (i.system.level != undefined) {
-                    abilities[i.system.level].push(i);
+            else if (value.type === 'ability') {
+                if (value.system.level != undefined) {
+                    abilities[value.system.level].push(value);
                 }
             }
         }
@@ -110,23 +110,23 @@ export class Pl1eItemSheet extends ItemSheet {
         context.abilities = abilities;
     }
 
-    /**
-     * Prepare Embed items
-     * @param {[]|Map} itemsMap
-     * @return {[]}
-     * @private
-     */
-    _prepareEmbedItems(itemsMap) {
-        let itemsList = itemsMap;
-        if (itemsMap instanceof Map) {
-            itemsList = Array.from(itemsMap).map(([id, item]) => item);
-        }
-
-        // Sort by rank desc
-        //itemsList.sort((a, b) => (b.system.rank || 0) - (a.system.rank || 0));
-
-        return itemsList;
-    }
+    // /**
+    //  * Prepare Embed items
+    //  * @param {[]|Map} itemsMap
+    //  * @return {[]}
+    //  * @private
+    //  */
+    // _prepareEmbedItems(itemsMap) {
+    //     let itemsList = itemsMap;
+    //     if (itemsMap instanceof Map) {
+    //         itemsList = Array.from(itemsMap).map(([id, item]) => item);
+    //     }
+    //
+    //     // Sort by rank desc
+    //     //itemsList.sort((a, b) => (b.system.rank || 0) - (a.system.rank || 0));
+    //
+    //     return itemsList;
+    // }
 
     /**
      * Callback actions which occur when a dragged element is dropped on a target.

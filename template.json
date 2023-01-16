@@ -213,7 +213,7 @@
             "magicPenalty": false,
             "separator": true
           },
-          "perfomance": {
+          "performance": {
             "mastery": 1,
             "firstCharacteristic": "wisdom",
             "secondCharacteristic": "will",
@@ -322,7 +322,8 @@
     "types": ["item", "feature", "ability"],
     "templates": {
       "base": {
-        "description": ""
+        "description": "",
+        "subItemsMap": []
       }
     },
     "item": {
@@ -341,7 +342,6 @@
     },
     "feature": {
       "templates": ["base"],
-      "itemsMap": [],
       "attributes": {
         "size": {
           "value": "medium",

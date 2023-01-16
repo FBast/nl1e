@@ -21,9 +21,9 @@ export class Pl1eItem extends Item {
         super.prepareData();
 
         // Prepare Embed items
-        if (!(this.system.itemsMap instanceof Map)) {
-            const itemsData = Array.isArray(this.system.itemsMap) ? this.system.itemsMap : [];
-            this.system.itemsMap = new Map();
+        if (!(this.system.subItemsMap instanceof Map)) {
+            const itemsData = Array.isArray(this.system.subItemsMap) ? this.system.subItemsMap : [];
+            this.system.subItemsMap = new Map();
 
             itemsData.forEach((item) => {
                 this.addEmbedItem(item, { save: false, newId: false });
@@ -143,7 +143,7 @@ export class Pl1eItem extends Item {
         item.system.parent_id = this.getParentsIds();
 
         // Object
-        this.system.itemsMap.set(item._id, item);
+        this.system.subItemsMap.set(item._id, item);
 
         if (save) {
             await this.saveEmbedItems();
@@ -157,7 +157,7 @@ export class Pl1eItem extends Item {
      */
     async saveEmbedItems() {
         await this.update({
-            "system.itemsMap": Array.from(this.system.itemsMap).map(([id, item]) => item.toObject(false)),
+            "system.subItemsMap": Array.from(this.system.subItemsMap).map(([id, item]) => item.toObject(false)),
         });
         this.sheet.render(false);
     }
@@ -170,7 +170,7 @@ export class Pl1eItem extends Item {
      * @return {Promise<void>}
      */
     async deleteEmbedItem(id, { save = true, removeBonusFromActor = true } = {}) {
-        if (!this.system.itemsMap.has(id)) {
+        if (!this.system.subItemsMap.has(id)) {
             return;
         }
 
@@ -184,7 +184,7 @@ export class Pl1eItem extends Item {
         // }
 
         // Remove the embed item
-        this.system.itemsMap.delete(id);
+        this.system.subItemsMap.delete(id);
 
         if (save) {
             await this.saveEmbedItems();

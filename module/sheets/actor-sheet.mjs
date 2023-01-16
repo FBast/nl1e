@@ -48,7 +48,6 @@ export class Pl1eActorSheet extends ActorSheet {
         // Prepare character data and items.
         if (actorData.type == 'character') {
             this._prepareItems(context);
-            this._prepareTraits(context);
             this._prepareCharacterData(context);
         }
 
@@ -226,8 +225,12 @@ export class Pl1eActorSheet extends ActorSheet {
         // Delete Inventory Item
         html.find('.item-delete').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
-            const item = this.actor.items.get(li.data("itemId"));
-            item.delete();
+            const parentItem = this.actor.items.get(li.data("itemId"));
+            for (let item of this.actor.items) {
+                if (item.linkId === undefined || parentItem.linkId !== item.linkId) continue;
+                item.delete();
+            }
+            //parentItem.delete();
             li.slideUp(200, () => this.render(false));
         });
 
@@ -246,6 +249,30 @@ export class Pl1eActorSheet extends ActorSheet {
                 li.addEventListener("dragstart", handler, false);
             });
         }
+    }
+
+    /**
+     * Handle sub items to be added as other items
+     * @param event
+     * @param data
+     * @returns {Promise<unknown>}
+     * @private
+     */
+    async _onDropItem(event, data) {
+        if ( !this.actor.isOwner ) return false;
+        const item = await Item.implementation.fromDropData(data);
+        const itemData = item.toObject();
+
+        const linkId = randomID();
+        const newItem = await this._onDropItemCreate(itemData);
+        for (let value of itemData.system.subItemsMap) {
+            const newSubItem = await this._onDropItemCreate(value);
+            newSubItem[0].linkId = linkId;
+        }
+        newItem[0].linkId = linkId;
+
+        // Create the owned item
+        return newItem;
     }
 
     /**
@@ -306,35 +333,6 @@ export class Pl1eActorSheet extends ActorSheet {
             });
             return roll;
         }
-    }
-
-    /**
-     * Prepare the data structure for traits data like languages, resistances & vulnerabilities, and proficiencies.
-     * @param {object} context   The raw traits data object from the actor data. *Will be mutated.*
-     * @private
-     */
-    _prepareTraits(context) {
-        const traits = context.system.traits;
-        const map = {
-            languages: CONFIG.PL1E.languages
-        };
-        const config = CONFIG.PL1E;
-        for (const [key, choices] of Object.entries(map)) {
-            const trait = traits[key];
-            if (!trait) continue;
-            let values = (trait.value ?? []) instanceof Array ? trait.value : [trait.value];
-
-            // Fill out trait values
-            trait.selected = values.reduce((obj, t) => {
-                obj[t] = choices[t];
-                return obj;
-            }, {});
-
-            // Add custom entry
-            if (trait.custom) trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i + 1}`] = c.trim());
-            trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
-        }
-
     }
 
 }
