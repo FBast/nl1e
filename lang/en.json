@@ -26,7 +26,7 @@
 
   "PL1E.ResistanceVig": "Vigor",
   "PL1E.ResistanceRef": "Reflex",
-  "PL1E.ResistanceRes": "Resiliance",
+  "PL1E.ResistanceRes": "Resilience",
   "PL1E.ResistanceInt": "Intuition",
 
   "PL1E.SkillHan": "Handling",
@@ -37,7 +37,7 @@
   "PL1E.SkillSea": "Search",
   "PL1E.SkillVig": "Vigilance",
   "PL1E.SkillDis": "Discretion",
-  "PL1E.SkillPer": "Perfomance",
+  "PL1E.SkillPer": "Performance",
   "PL1E.SkillDip": "Diplomacy",
   "PL1E.SkillInt": "Intimidation",
   "PL1E.SkillBlu": "Bluff",
@@ -47,7 +47,7 @@
   "PL1E.SkillSec": "Secular Magic",
 
   "PL1E.Bonuses": "Bonuses",
-  "PL1E.Advantages": "Avantages",
+  "PL1E.Advantages": "Advantages",
   "PL1E.Size": "Size",
   "PL1E.Speed": "Speed",
   "PL1E.NightVision": "Night Vision",

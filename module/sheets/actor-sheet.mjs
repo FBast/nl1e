@@ -227,7 +227,7 @@ export class Pl1eActorSheet extends ActorSheet {
             const li = $(ev.currentTarget).parents(".item");
             const parentItem = this.actor.items.get(li.data("itemId"));
             for (let item of this.actor.items) {
-                if (item.linkId === undefined || parentItem.linkId !== item.linkId) continue;
+                if (item.system.linkId === undefined || parentItem.system.linkId !== item.system.linkId) continue;
                 item.delete();
             }
             //parentItem.delete();
@@ -267,10 +267,9 @@ export class Pl1eActorSheet extends ActorSheet {
         const newItem = await this._onDropItemCreate(itemData);
         for (let value of itemData.system.subItemsMap) {
             const newSubItem = await this._onDropItemCreate(value);
-            newSubItem[0].linkId = linkId;
+            await newSubItem[0].update({'system.linkId': linkId});
         }
-        newItem[0].linkId = linkId;
-
+        await newItem[0].update({'system.linkId': linkId})
         // Create the owned item
         return newItem;
     }
