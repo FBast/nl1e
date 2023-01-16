@@ -135,15 +135,11 @@ export class Pl1eItemSheet extends ItemSheet {
      */
     async _onDrop(event) {
         // Everything below here is only needed if the sheet is editable
-        if (!this.isEditable) {
-            return;
-        }
+        if (!this.isEditable) return;
 
         // Check item type and subtype
         let item = await HelpersPl1e.getDragnDropTargetObject(event);
-        if (!item || item.documentName !== "Item" || !["feature", "ability"].includes(item.type)) {
-            return;
-        }
+        if (!item || item.documentName !== "Item" || !["feature", "ability"].includes(item.type)) return;
 
         const data = item.toObject(false);
 
@@ -159,7 +155,7 @@ export class Pl1eItemSheet extends ItemSheet {
         event.preventDefault();
         event.stopPropagation();
         const itemId = $(event.currentTarget).data("item-id");
-        const item = this.document.items.get(itemId);
+        const item = this.document.getEmbedItem(itemId);
         if (item) {
             item.sheet.render(true);
         }

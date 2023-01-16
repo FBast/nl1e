@@ -264,9 +264,9 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemData = item.toObject();
 
         const linkId = randomID();
-        const newItem = await this._onDropItemCreate(itemData);
-        for (let value of itemData.system.subItemsMap) {
-            const newSubItem = await this._onDropItemCreate(value);
+        const newItem = await this._onDropItemCreate(item);
+        for (let subItem of itemData.system.subItemsMap) {
+            const newSubItem = await this._onDropItemCreate(subItem);
             await newSubItem[0].update({'system.linkId': linkId});
         }
         await newItem[0].update({'system.linkId': linkId})

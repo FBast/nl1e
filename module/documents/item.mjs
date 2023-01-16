@@ -5,14 +5,6 @@
 export class Pl1eItem extends Item {
 
     /**
-     * A reference to the Collection of embedded Item instances in the document, indexed by _id.
-     * @returns {Collection<BaseItem>}
-     */
-    get itemsMap() {
-        return this.system.itemsMap || new Map();
-    }
-
-    /**
      * Augment the basic Item data model with additional dynamic data.
      */
     prepareData() {
@@ -101,13 +93,22 @@ export class Pl1eItem extends Item {
     }
 
     // ***** Embedded items management *****
+
+    /**
+     * A reference to the Collection of embedded Item instances in the document, indexed by _id.
+     * @returns {Collection<BaseItem>}
+     */
+    get subItemsMap() {
+        return this.system.subItemsMap || new Map();
+    }
+
     /**
      * Shortcut for this.items.get
      * @param id
      * @return {Pl1eItem|null}
      */
     getEmbedItem(id) {
-        return this.itemsMap?.get(id) || null;
+        return this.subItemsMap?.get(id) || null;
     }
 
     /**
