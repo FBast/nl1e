@@ -77,21 +77,6 @@ export class Pl1eItem extends Item {
         }
     }
 
-    // ***** parent ids management *****
-    /**
-     * Return a string with idemId + actorId if any
-     * @return {{item_id: (string|null), actor_id?: (string|null)}}
-     */
-    getParentsIds() {
-        const parent = {
-            item_id: this.id,
-        };
-        if (this.actor?._id) {
-            parent.actor_id = this.actor._id;
-        }
-        return parent;
-    }
-
     // ***** Embedded items management *****
 
     /**
@@ -116,7 +101,6 @@ export class Pl1eItem extends Item {
      * @param {Pl1eItem} item Object to add
      * @param {boolean} save   if we save in db or not (used internally)
      * @param {boolean} newId  if we change the id
-     * @param {boolean} addBonusToActor if we update the actor bonus for advancements
      * @return {Promise<string>}
      */
     async addEmbedItem(item, { save = true, newId = true } = {}) {
@@ -140,8 +124,14 @@ export class Pl1eItem extends Item {
         // So we must take actor's ownership for sub-item
         item.ownership = this.actor?.ownership ?? this.ownership;
 
-        // Tag parent (flags won't work as we have no id in db)
-        item.system.parent_id = this.getParentsIds();
+        // If this item has sub items
+        if (item.system.subItemsMap !== undefined) {
+            const linkId = randomID();
+            item.system.linkId = linkId;
+            for (let [key, subItem] of item.system.subItemsMap) {
+                await this.addSubEmbedItem(subItem, linkId);
+            }
+        }
 
         // Object
         this.system.subItemsMap.set(item._id, item);
@@ -149,6 +139,45 @@ export class Pl1eItem extends Item {
         if (save) {
             await this.saveEmbedItems();
         }
+        return item._id;
+    }
+
+    /**
+     *
+     * @param item
+     * @param linkId
+     * @param save
+     * @param newId
+     * @returns {Promise<void>}
+     */
+    async addSubEmbedItem(item, linkId, { save = true, newId = true } = {}) {
+        if (!item) return;
+
+        if (!(item instanceof Item) && item?.name && item?.type) {
+            // Data -> Item
+            item = new Pl1eItem(item);
+        }
+
+        // New id
+        if (newId || !item._id) {
+            // Bypass the readonly for "_id"
+            const tmpData = item.toJSON();
+            tmpData._id = foundry.utils.randomID();
+            item = new Pl1eItem(tmpData);
+        }
+
+        // Copy the parent permission to the sub item
+        // In v10 actor's items inherit the ownership from the actor, but theirs ownership do not reflect that.
+        // So we must take actor's ownership for sub-item
+        item.ownership = this.actor?.ownership ?? this.ownership;
+
+        // Notify as subItem
+        item.system.isSubItem = true;
+        item.system.linkId = linkId;
+
+        // Object
+        this.system.subItemsMap.set(item._id, item);
+
         return item._id;
     }
 

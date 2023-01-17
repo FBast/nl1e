@@ -98,10 +98,10 @@ export class Pl1eItemSheet extends ItemSheet {
 
         this.document.addEmbedItem(data);
 
-        for(let [key, value] of data.system.subItemsMap) {
-            value.system.linkedId = linkedId;
-            this.document.addEmbedItem(value);
-        }
+        // for(let [key, value] of data.system.subItemsMap) {
+        //     value.system.linkedId = linkedId;
+        //     this.document.addEmbedItem(value);
+        // }
     }
 
     #_prepareSubItems(context) {
