@@ -229,9 +229,10 @@ export class Pl1eActorSheet extends ActorSheet {
             const li = $(ev.currentTarget).parents(".item");
             const parentItem = this.actor.items.get(li.data("itemId"));
             for (let item of this.actor.items) {
-                if (item.system.linkId === undefined || parentItem.system.linkId !== item.system.linkId) continue;
+                if (parentItem === item || parentItem.system.parentId !== item.system.childId) continue;
                 item.delete();
             }
+            parentItem.delete();
             li.slideUp(200, () => this.render(false));
         });
 
@@ -264,13 +265,18 @@ export class Pl1eActorSheet extends ActorSheet {
         const item = await Item.implementation.fromDropData(data);
         const itemData = item.toObject();
 
-        const linkId = randomID();
         const newItem = await this._onDropItemCreate(item);
-        for (let subItem of itemData.system.subItemsMap) {
-            const newSubItem = await this._onDropItemCreate(subItem);
-            await newSubItem[0].update({'system.linkId': linkId});
+        if (itemData.system.subItemsMap !== undefined && itemData.system.subItemsMap.length > 0) {
+            let linkedId = randomID();
+            await newItem[0].update({'system.parentId': linkedId});
+            //newItem[0].system.parentId = linkId;
+            for (let subItem of itemData.system.subItemsMap) {
+                const newSubItem = await this._onDropItemCreate(subItem);
+                //newSubItem[0].system.childId = linkId;
+                await newSubItem[0].update({'system.childId': linkedId});
+            }
         }
-        await newItem[0].update({'system.linkId': linkId})
+        //await newItem[0].update({'system.linkedId': linkedId})
         // Create the owned item
         return newItem;
     }

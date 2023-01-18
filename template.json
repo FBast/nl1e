@@ -323,7 +323,6 @@
     "templates": {
       "base": {
         "description": "",
-        "isSubItem": false,
         "subItemsMap": []
       }
     },

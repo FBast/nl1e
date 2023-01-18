@@ -14,7 +14,9 @@
                 </div>
                 <div class="item-controls">
                     <a class="item-control item-edit" data-item-id="{{item._id}}" title="Edit Item"><i class="fas fa-edit"></i></a>
-                    <a class="item-control item-delete" data-item-id="{{item._id}}" title="Delete Item"><i class="fas fa-trash"></i></a>
+                    {{#if (eq item.system.childId undefined)}}
+                        <a class="item-control item-delete" data-item-id="{{item._id}}" title="Delete Item"><i class="fas fa-trash"></i></a>
+                    {{/if}}
                 </div>
             </li>
         {{/each}}
@@ -35,9 +37,9 @@
                     </div>
                     <div class="item-controls">
                         <a class="item-control item-edit" data-item-id="{{item._id}}" title="Edit Item"><i class="fas fa-edit"></i></a>
-                        {{#unless item.system.isSubItem}}
+                        {{#if (eq item.system.childId undefined)}}
                             <a class="item-control item-delete" data-item-id="{{item._id}}" title="Delete Item"><i class="fas fa-trash"></i></a>
-                        {{/unless}}
+                        {{/if}}
                     </div>
                 </li>
             {{/each}}

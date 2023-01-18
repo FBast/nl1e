@@ -17,7 +17,7 @@
                     <h4>{{item.name}}</h4>
                 </div>
                 <div class="item-controls">
-                    {{#if (eq system.parent_id undefined)}}
+                    {{#if (eq item.system.childId undefined)}}
                         <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
                     {{/if}}
                     <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -46,7 +46,7 @@
                         <h4>{{item.name}}</h4>
                     </div>
                     <div class="item-controls">
-                        {{#if (eq system.parent_id undefined)}}
+                        {{#if (eq item.system.childId undefined)}}
                             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
                         {{/if}}
                         <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>

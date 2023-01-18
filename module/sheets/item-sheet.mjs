@@ -93,15 +93,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         const data = item.toObject(false);
 
-        const linkedId = randomID();
-        data.system.linkedId = linkedId;
-
         this.document.addEmbedItem(data);
-
-        // for(let [key, value] of data.system.subItemsMap) {
-        //     value.system.linkedId = linkedId;
-        //     this.document.addEmbedItem(value);
-        // }
     }
 
     #_prepareSubItems(context) {
@@ -115,9 +107,6 @@ export class Pl1eItemSheet extends ItemSheet {
             4: [],
             5: []
         };
-
-        // Prepare OwnedItems
-        //context.subItems = this._prepareEmbedItems(context.item.system.subItemsMap);
 
         // Iterate through items, allocating to containers
         for (let [key, value] of context.item.system.subItemsMap) {
@@ -166,6 +155,10 @@ export class Pl1eItemSheet extends ItemSheet {
         const item = this.document.getEmbedItem(itemId);
         if (!item) {
             return;
+        }
+        for (let [key, value] of this.item.system.subItemsMap) {
+            if (value === item || value.system.childId !== item.system.parentId) continue;
+            this.document.deleteEmbedItem(value._id);
         }
         this.document.deleteEmbedItem(itemId);
     }
