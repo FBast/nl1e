@@ -229,7 +229,8 @@ export class Pl1eActorSheet extends ActorSheet {
             const li = $(ev.currentTarget).parents(".item");
             const parentItem = this.actor.items.get(li.data("itemId"));
             for (let item of this.actor.items) {
-                if (parentItem === item || parentItem.system.parentId !== item.system.childId) continue;
+                if (parentItem === item || item.system.childId === undefined) continue;
+                if (parentItem.system.parentId !== item.system.childId) continue;
                 item.delete();
             }
             parentItem.delete();
