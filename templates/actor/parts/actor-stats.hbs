@@ -15,8 +15,8 @@
     </div>
     <!-- Middle column -->
     <div class="grid-span-2">
-        <!-- Listing defenses -->
-        <ul class="skills">
+        <ul class="skills box">
+            <!-- Listing resistances -->
             {{#each system.defenses as |defense key|}}
                 <li class="skill grid grid-5col">
                     <label class="skill-label grid-span-2 rollable align-left" for="{{defense.label}}"
@@ -42,9 +42,8 @@
                     </div>
                 </li>
             {{/each}}
-        </ul>
-        <!-- Listing resistances -->
-        <ul class="skills">
+            <hr>
+            <!-- Listing defenses -->
             {{#each system.resistances as |resistance key|}}
                 <li class="skill grid grid-5col">
                     <label class="skill-label grid-span-2 rollable align-left" for="{{resistance.label}}"
@@ -70,9 +69,8 @@
                     </div>
                 </li>
             {{/each}}
-        </ul>
-        <!-- Listing skills -->
-        <ul class="skills">
+            <hr>
+            <!-- Listing skills -->
             {{#each system.skills as |skill key|}}
                 <li class="skill grid grid-5col">
                     <label class="skill-label grid-span-2 rollable align-left" for="{{skill.label}}"

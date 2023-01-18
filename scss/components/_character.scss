@@ -1,6 +1,6 @@
 .sheet.actor {
-  min-width: 800px;
-  min-height: 970px;
+  min-width: 820px;
+  min-height: 940px;
 
   .characteristics {
     padding: 0 0.5em 0 0.5em;
@@ -15,8 +15,7 @@
   }
 
   .skills {
-    border: 1px groove #111;
-    padding: 0 0.5em 0 0.5em;
+    padding: 0 1em 0 1em;
     margin: 0 0 1em 0;
 
     .skill {}
