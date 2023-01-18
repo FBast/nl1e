@@ -105,7 +105,7 @@ export class Pl1eActorSheet extends ActorSheet {
             var defenseBonus = attributes[defense.defenseBonus];
             defense.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / defense.divider) + parseInt(defenseBonus);
             defense.number = Math.clamped(defense.number + attributes.bonuses, 1, 10);
-            defense.mastery = Math.clamped(3 + (attributes.advantages), 1, 5);
+            defense.mastery = Math.clamped(3 + attributes.advantages, 1, 5);
             defense.dice = 2 + defense.mastery * 2;
         }
         // Handle resistances scores.
@@ -115,7 +115,7 @@ export class Pl1eActorSheet extends ActorSheet {
             secondCharacteristic = characteristics[resistance.secondCharacteristic];
             resistance.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / resistance.divider);
             resistance.number = Math.clamped(resistance.number + attributes.bonuses, 1, 10);
-            resistance.mastery = Math.clamped(3 + (attributes.advantages), 1, 5);
+            resistance.mastery = Math.clamped(3 + attributes.advantages, 1, 5);
             resistance.dice = 2 + resistance.mastery * 2;
         }
         // Handle skills scores.
@@ -125,8 +125,8 @@ export class Pl1eActorSheet extends ActorSheet {
             secondCharacteristic = characteristics[skill.secondCharacteristic];
             skill.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / 2);
             skill.number = Math.clamped(skill.number + attributes.bonuses, 1, 10);
+            skill.dice = Math.clamped(skill.mastery + attributes.advantages, 1, 5)
             skill.dice = 2 + skill.mastery * 2;
-            skill.dice = Math.clamped(skill.dice + (attributes.advantages * 2), 4, 12)
         }
     }
 
@@ -273,19 +273,15 @@ export class Pl1eActorSheet extends ActorSheet {
         if ( !this.actor.isOwner ) return false;
         const item = await Item.implementation.fromDropData(data);
         const itemData = item.toObject();
-
         const newItem = await this._onDropItemCreate(item);
         if (itemData.system.subItemsMap !== undefined && itemData.system.subItemsMap.length > 0) {
             let linkedId = randomID();
             await newItem[0].update({'system.parentId': linkedId});
-            //newItem[0].system.parentId = linkId;
             for (let subItem of itemData.system.subItemsMap) {
                 const newSubItem = await this._onDropItemCreate(subItem);
-                //newSubItem[0].system.childId = linkId;
                 await newSubItem[0].update({'system.childId': linkedId});
             }
         }
-        //await newItem[0].update({'system.linkedId': linkedId})
         // Create the owned item
         return newItem;
     }
