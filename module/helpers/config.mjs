@@ -43,7 +43,7 @@ PL1E.skills = {
     "search": "PL1E.SkillSea",
     "vigilance": "PL1E.SkillVig",
     "discretion": "PL1E.SkillDis",
-    "perfomance": "PL1E.SkillPer",
+    "performance": "PL1E.SkillPer",
     "diplomacy": "PL1E.SkillDip",
     "intimidation": "PL1E.SkillInt",
     "bluff": "PL1E.SkillBlu",
