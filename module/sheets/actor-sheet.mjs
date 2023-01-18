@@ -46,13 +46,13 @@ export class Pl1eActorSheet extends ActorSheet {
         context.flags = actorData.flags;
 
         // Prepare character data and items.
-        if (actorData.type == 'character') {
+        if (actorData.type === 'character') {
             this._prepareItems(context);
             this._prepareCharacterData(context);
         }
 
         // Prepare NPC data and items.
-        if (actorData.type == 'npc') {
+        if (actorData.type === 'npc') {
             this._prepareItems(context);
         }
 
@@ -104,6 +104,9 @@ export class Pl1eActorSheet extends ActorSheet {
             secondCharacteristic = characteristics[defense.secondCharacteristic];
             var defenseBonus = attributes[defense.defenseBonus];
             defense.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / defense.divider) + parseInt(defenseBonus);
+            defense.number = Math.clamped(defense.number + attributes.bonuses, 1, 10);
+            defense.mastery = Math.clamped(3 + (attributes.advantages), 1, 5);
+            defense.dice = 2 + defense.mastery * 2;
         }
         // Handle resistances scores.
         for (let [id, resistance] of Object.entries(resistances)) {
@@ -111,6 +114,9 @@ export class Pl1eActorSheet extends ActorSheet {
             firstCharacteristic = characteristics[resistance.firstCharacteristic];
             secondCharacteristic = characteristics[resistance.secondCharacteristic];
             resistance.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / resistance.divider);
+            resistance.number = Math.clamped(resistance.number + attributes.bonuses, 1, 10);
+            resistance.mastery = Math.clamped(3 + (attributes.advantages), 1, 5);
+            resistance.dice = 2 + resistance.mastery * 2;
         }
         // Handle skills scores.
         for (let [id, skill] of Object.entries(skills)) {
@@ -118,7 +124,9 @@ export class Pl1eActorSheet extends ActorSheet {
             firstCharacteristic = characteristics[skill.firstCharacteristic];
             secondCharacteristic = characteristics[skill.secondCharacteristic];
             skill.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / 2);
+            skill.number = Math.clamped(skill.number + attributes.bonuses, 1, 10);
             skill.dice = 2 + skill.mastery * 2;
+            skill.dice = Math.clamped(skill.dice + (attributes.advantages * 2), 4, 12)
         }
     }
 
@@ -192,7 +200,7 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             // Append to abilities.
             else if (i.type === 'ability') {
-                if (i.system.level != undefined) {
+                if (i.system.level !== undefined) {
                     abilities[i.system.level].push(i);
                 }
             }
