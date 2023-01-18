@@ -102,8 +102,8 @@ export class Pl1eActorSheet extends ActorSheet {
             defense.label = game.i18n.localize(CONFIG.PL1E.defenses[id]) ?? id;
             firstCharacteristic = characteristics[defense.firstCharacteristic];
             secondCharacteristic = characteristics[defense.secondCharacteristic];
-            var attributeBonus = attributes[defense.attributeBonus];
-            defense.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / defense.divider) + parseInt(attributeBonus);
+            var defenseBonus = attributes[defense.defenseBonus];
+            defense.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / defense.divider) + parseInt(defenseBonus);
         }
         // Handle resistances scores.
         for (let [id, resistance] of Object.entries(resistances)) {

@@ -99,7 +99,7 @@
             "mastery": 3,
             "firstCharacteristic": "strength",
             "secondCharacteristic": "constitution",
-            "attributeBonus": "parryBonus",
+            "defenseBonus": "parryBonus",
             "movementPenalty": false,
             "dice": 8,
             "divider": 3
@@ -108,7 +108,7 @@
             "mastery": 3,
             "firstCharacteristic": "agility",
             "secondCharacteristic": "perception",
-            "attributeBonus": "dodgeBonus",
+            "defenseBonus": "dodgeBonus",
             "movementPenalty": true,
             "dice": 8,
             "divider": 3
