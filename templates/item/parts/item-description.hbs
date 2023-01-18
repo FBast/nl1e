@@ -34,5 +34,15 @@
         <label class="align-right">{{system.attributes.range.value}}</label>
     </div>
 {{/if}}
+<ul class="traits-list">
+    {{#each abilities as |abilities level|}}
+        {{#each abilities as |item id|}}
+            <li class="tag {{id}}"><a>{{level }} {{item.name}}</a></li>
+        {{/each}}
+    {{/each}}
+    {{#each features as |item id|}}
+        <li class="tag {{id}}"><a>{{item.name}}</a></li>
+    {{/each}}
+</ul>
 <hr>
 {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}

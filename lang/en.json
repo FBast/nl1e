@@ -63,6 +63,7 @@
   "PL1E.Languages": "Languages",
   "PL1E.Immunities": "Immunities",
 
+
   "PL1E.SizeSmall": "Small",
   "PL1E.SizeMedium": "Medium",
   "PL1E.SizeLarge": "Large",
@@ -73,10 +74,22 @@
   "PL1E.Features": "Features & Abilities",
   "PL1E.Items": "Items",
   "PL1E.Effects": "Effects",
+  "PL1E.Description": "Description",
+  "PL1E.Attributes": "Attributes",
+  "PL1E.LinkedItems": "Items Linked",
 
   "PL1E.Traits": "Traits",
   "PL1E.AbilitiesLevel": "Abilities Level ",
   "PL1E.Mod": "Mod.",
+
+  "PL1E.Price": "Price",
+  "PL1E.Rarity": "Rarity",
+  "PL1E.Damage": "Damage",
+  "PL1E.Impact": "Impact",
+  "PL1E.Parry": "Parry",
+  "PL1E.Hands": "Hands",
+  "PL1E.Ammo": "Ammo",
+  "PL1E.Range": "Range",
 
   "PL1E.EffectCreate": "Create Effect",
   "PL1E.EffectToggle": "Toggle Effect",

@@ -73,10 +73,22 @@
   "PL1E.Features": "Traits & Capacités",
   "PL1E.Items": "Inventaire",
   "PL1E.Effects": "Effets",
+  "PL1E.Description": "Description",
+  "PL1E.Attributes": "Attributs",
+  "PL1E.LinkedItems": "Objets Liés",
 
   "PL1E.Traits": "Traits",
   "PL1E.AbilitiesLevel": "Aptitudes Niveau ",
   "PL1E.Mod": "Mod.",
+
+  "PL1E.Price": "Prix",
+  "PL1E.Rarity": "Rareté",
+  "PL1E.Damage": "Dégâts",
+  "PL1E.Impact": "Impact",
+  "PL1E.Parry": "Parade",
+  "PL1E.Hands": "Mains",
+  "PL1E.Ammo": "Munitions",
+  "PL1E.Range": "Portée",
 
   "PL1E.EffectCreate": "Create Effect",
   "PL1E.EffectToggle": "Toggle Effect",
