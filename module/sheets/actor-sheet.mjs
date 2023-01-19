@@ -293,7 +293,6 @@ export class Pl1eActorSheet extends ActorSheet {
         const attributes = context.system.attributes;
         // Handle attributes scores.
         attributes.initiative = attributes.speed + characteristics.agility.value + characteristics.perception.value + characteristics.cunning.value + characteristics.wisdom.value;
-        attributes.sizeLabel = CONFIG.PL1E.sizes[attributes.size];
         attributes.sizeMod = CONFIG.PL1E.sizeMods[attributes.size];
         attributes.sizeToken = CONFIG.PL1E.sizeTokens[attributes.size];
         // Handle resources scores.
@@ -320,10 +319,12 @@ export class Pl1eActorSheet extends ActorSheet {
                 characteristicSum += characteristics[characteristic].value;
             }
             var defenseBonus = attributes[defense.defenseBonus];
+            defense.numberMod = attributes.bonuses;
             defense.number = Math.floor(characteristicSum / defense.divider) + parseInt(defenseBonus);
-            defense.number = Math.clamped(defense.number + attributes.bonuses, 1, 10);
-            defense.mastery = Math.clamped(3 + attributes.advantages, 1, 5);
-            defense.dice = 2 + defense.mastery * 2;
+            defense.number = Math.clamped(defense.number + defense.numberMod, 1, 10);
+            defense.mastery = 3
+            defense.diceMod = attributes.advantages;
+            defense.dice = Math.clamped((1 + defense.mastery + defense.diceMod) * 2, 4, 12);
         }
         // Handle resistances scores.
         for (let [id, resistance] of Object.entries(resistances)) {
@@ -333,10 +334,12 @@ export class Pl1eActorSheet extends ActorSheet {
             for (let characteristic of resistance.characteristics) {
                 characteristicSum += characteristics[characteristic].value;
             }
+            resistance.numberMod = attributes.bonuses;
             resistance.number = Math.floor(characteristicSum / resistance.divider);
-            resistance.number = Math.clamped(resistance.number + attributes.bonuses, 1, 10);
-            resistance.mastery = Math.clamped(3 + attributes.advantages, 1, 5);
-            resistance.dice = 2 + resistance.mastery * 2;
+            resistance.number = Math.clamped(resistance.number + resistance.numberMod, 1, 10);
+            resistance.mastery = 3;
+            resistance.diceMod = attributes.advantages;
+            resistance.dice = Math.clamped((1 + resistance.mastery + resistance.diceMod) * 2, 4, 12);
         }
         // Handle skills scores.
         for (let [id, skill] of Object.entries(skills)) {
@@ -346,10 +349,11 @@ export class Pl1eActorSheet extends ActorSheet {
             for (let characteristic of skill.characteristics) {
                 characteristicSum += characteristics[characteristic].value;
             }
+            skill.numberMod = attributes.bonuses;
             skill.number = Math.floor(characteristicSum / 2);
-            skill.number = Math.clamped(skill.number + attributes.bonuses, 1, 10);
-            skill.dice = Math.clamped(skill.mastery + attributes.advantages, 1, 5)
-            skill.dice = 2 + skill.mastery * 2;
+            skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
+            skill.diceMod = attributes.advantages;
+            skill.dice = Math.clamped((1 + skill.mastery + skill.diceMod) * 2, 4, 12)
         }
     }
 

@@ -411,7 +411,7 @@
           "experience": 10,
           "bonuses": 0,
           "advantages": 0,
-          "size": "none",
+          "size": "-",
           "sizeMod": 0,
           "sizeToken": 1,
           "speed": 4.5,

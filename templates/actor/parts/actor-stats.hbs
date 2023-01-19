@@ -2,7 +2,6 @@
     <!-- Left column : Listing characteristics -->
     <div class="characteristics">
         {{#each system.characteristics as |characteristic key|}}
-            {{log characteristic}}
             <div class="characteristic flex-group-center">
                 <h3 class="characteristic-label hoverable align-left" data-id="{{characteristic.id}}"
                     data-resources="{{characteristic.resources}}" data-skills="{{characteristic.skills}}">{{characteristic.label}}</h3>
@@ -21,8 +20,12 @@
             <!-- Listing resistances -->
             {{#each system.defenses as |defense key|}}
                 <li class="skill grid grid-6col">
-                    <i class="skill-roll fas fa-dice-d{{defense.dice}} rollable" data-roll="{{defense.number}}d{{defense.dice}}xo{{defense.dice}}cs>=4"
-                       data-label="{{defense.label}}"> {{defense.number}}</i>
+                    <i class="skill-roll fas fa-dice-d{{defense.dice}} rollable {{#if (gt defense.diceMod 0)}}color-green{{/if}} {{#if (lt defense.diceMod 0)}}color-red{{/if}}"
+                       data-roll="{{defense.number}}d{{defense.dice}}xo{{defense.dice}}cs>=4" data-label="{{defense.label}}">
+                        <label class="{{#if (gt defense.numberMod 0)}}color-green{{/if}}
+                            {{#if (lt defense.numberMod 0)}}color-red{{/if}}
+                            {{#if (eq defense.numberMod 0)}}color-black{{/if}}">{{defense.number}}</label>
+                    </i>
                     <label class="skill-label hoverable grid-span-2 align-left" data-id="{{defense.id}}" data-characteristics="{{defense.characteristics}}">{{defense.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.defenses.{{key}}.mastery" class="mastery-1" value="1"
@@ -42,8 +45,12 @@
             <!-- Listing defenses -->
             {{#each system.resistances as |resistance key|}}
                 <li class="skill grid grid-6col">
-                    <i class="skill-roll fas fa-dice-d{{resistance.dice}} rollable" data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4"
-                       data-label="{{resistance.label}}"> {{resistance.number}}</i>
+                    <i class="skill-roll fas fa-dice-d{{resistance.dice}} rollable {{#if (gt resistance.diceMod 0)}}color-green{{/if}} {{#if (lt resistance.diceMod 0)}}color-red{{/if}}"
+                       data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4" data-label="{{resistance.label}}">
+                        <label class="{{#if (gt resistance.numberMod 0)}}color-green{{/if}}
+                            {{#if (lt resistance.numberMod 0)}}color-red{{/if}}
+                            {{#if (eq resistance.numberMod 0)}}color-black{{/if}}">{{resistance.number}}</label>
+                    </i>
                     <label class="skill-label hoverable grid-span-2 align-left" data-id="{{resistance.id}}" data-characteristics="{{resistance.characteristics}}">{{resistance.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.resistances.{{key}}.mastery" class="mastery-1" value="1"
@@ -63,8 +70,12 @@
             <!-- Listing skills -->
             {{#each system.skills as |skill key|}}
                 <li class="skill grid grid-6col">
-                    <i class="skill-roll fas fa-dice-d{{skill.dice}} rollable" data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4"
-                       data-label="{{skill.label}}"> {{skill.number}}</i>
+                    <i class="skill-roll fas fa-dice-d{{skill.dice}} rollable {{#if (gt skill.diceMod 0)}}color-green{{/if}} {{#if (lt skill.diceMod 0)}}color-red{{/if}}"
+                       data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">
+                        <label class="{{#if (gt skill.numberMod 0)}}color-green{{/if}}
+                            {{#if (lt skill.numberMod 0)}}color-red{{/if}}
+                            {{#if (eq skill.numberMod 0)}}color-black{{/if}}">{{skill.number}}</label>
+                    </i>
                     <label class="skill-label hoverable grid-span-2 align-left" data-id="{{skill.id}}" data-characteristics="{{skill.characteristics}}">{{skill.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-1" value="1"
@@ -94,37 +105,19 @@
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.Bonuses"}}</label>
-            <div class="attribute-mods grid-span-2 align-center">
-                -2 <input type="radio" name="system.attributes.bonuses" class="mod-1" value="-2"
-                       data-dtype="Number" {{checked (eq system.attributes.bonuses -2)}}/>
-                -1 <input type="radio" name="system.attributes.bonuses" class="mod-2" value="-1"
-                       data-dtype="Number" {{checked (eq system.attributes.bonuses -1)}}/>
-                <input type="radio" name="system.attributes.bonuses" class="mod-3" value="0"
-                       data-dtype="Number" {{checked (eq system.attributes.bonuses 0)}}/>
-                <input type="radio" name="system.attributes.bonuses" class="mod-4" value="1"
-                       data-dtype="Number" {{checked (eq system.attributes.bonuses 1)}}/> 1
-                <input type="radio" name="system.attributes.bonuses" class="mod-5" value="2"
-                       data-dtype="Number" {{checked (eq system.attributes.bonuses 2)}}/> 2
+            <div class="form-group">
+                {{rangePicker name="system.attributes.bonuses" value=system.attributes.bonuses min=-2 max=2 step=1}}
             </div>
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.Advantages"}}</label>
-            <div class="attribute-mods grid-span-2 align-center">
-                -2 <input type="radio" name="system.attributes.advantages" class="mod-1" value="-2"
-                       data-dtype="Number" {{checked (eq system.attributes.advantages -2)}}/>
-                -1 <input type="radio" name="system.attributes.advantages" class="mod-2" value="-1"
-                       data-dtype="Number" {{checked (eq system.attributes.advantages -1)}}/>
-                <input type="radio" name="system.attributes.advantages" class="mod-3" value="0"
-                       data-dtype="Number" {{checked (eq system.attributes.advantages 0)}}/>
-                <input type="radio" name="system.attributes.advantages" class="mod-4" value="1"
-                       data-dtype="Number" {{checked (eq system.attributes.advantages 1)}}/> 1
-                <input type="radio" name="system.attributes.advantages" class="mod-5" value="2"
-                       data-dtype="Number" {{checked (eq system.attributes.advantages 2)}}/> 2
+            <div class="form-group">
+                {{rangePicker name="system.attributes.advantages" value=system.attributes.advantages min=-2 max=2 step=1}}
             </div>
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.Size"}}</label>
-            <label class="align-right">{{localize system.attributes.sizeLabel}}</label>
+            <label class="align-right">{{localize system.attributes.size}}</label>
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.Speed"}}</label>
