@@ -23,6 +23,15 @@ export class Pl1eItem extends Item {
         }
     }
 
+    /** @override */
+    async _preCreate(data, options, userId) {
+        await super._preCreate(data, options, userId);
+        if (data.img === undefined) {
+            const img = CONFIG.PL1E.icons[data.type];
+            if (img) await this.data.update({ img });
+        }
+    }
+
     /**
      * Prepare a data object which is passed to any Roll formulas which are created related to this Item
      * @private

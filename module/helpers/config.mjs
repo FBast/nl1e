@@ -1,5 +1,14 @@
 export const PL1E = {};
 
+PL1E.icons = {
+    "item": "systems/pl1e/assets/icons/key.svg",
+    "feature": "systems/pl1e/assets/icons/skills.svg",
+    "ability": "systems/pl1e/assets/icons/power-lightning.svg",
+    "weapon": "systems/pl1e/assets/icons/combat.svg",
+    "wearable": "systems/pl1e/assets/icons/armor-vest.svg",
+    "consumable": "systems/pl1e/assets/icons/round-potion.svg",
+}
+
 PL1E.resources = {
     "health": "PL1E.Health",
     "stamina": "PL1E.Stamina",

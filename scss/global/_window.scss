@@ -2,25 +2,5 @@
   font-family: $font-primary;
 }
 
-.rollable {
-  &:hover,
-  &:focus {
-    color: #000;
-    text-shadow: 0 0 10px red;
-    cursor: pointer;
-  }
-}
 
-.hoverable {
-  &:hover,
-  &:focus {
-  color: #000;
-  text-shadow: 0 0 10px green;
-  }
-}
-
-.highlight {
-  color: #000;
-  text-shadow: 0 0 10px green;
-}
 

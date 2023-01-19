@@ -186,7 +186,7 @@
               "strength",
               "constitution"
             ],
-            "defenseBonus": "parryBonus",
+            "defenseBonus": "parryBonuses",
             "movementPenalty": false,
             "dice": 8,
             "divider": 3
@@ -197,10 +197,10 @@
               "agility",
               "perception"
             ],
-            "defenseBonus": "dodgeBonus",
+            "defenseBonus": "dodgeBonuses",
             "movementPenalty": true,
             "dice": 8,
-            "divider": 3
+            "divider": 2
           }
         },
         "resistances": {
@@ -416,8 +416,9 @@
           "sizeToken": 1,
           "speed": 4.5,
           "initiative": 0,
-          "dodgeBonus": 1,
-          "parryBonus": 0,
+          "movementPenalty": 0,
+          "dodgeBonuses": 0,
+          "parryBonuses": 0,
           "nightVision": 9,
           "damageReduction": 0,
           "impactReduction": 0,
@@ -448,49 +449,144 @@
     }
   },
   "Item": {
-    "types": ["item", "feature", "ability"],
+    "types": ["item", "wearable", "weapon", "feature", "ability"],
     "templates": {
       "base": {
         "description": "",
+        "attributes": {
+          "price": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Price"
+          },
+          "rarity": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Rarity"
+          },
+          "strengthMod": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Strength"
+          },
+          "agilityMod": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Agility"
+          },
+          "perceptionMod": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Perception"
+          },
+          "constitutionMod": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Constitution"
+          },
+          "intellectMod": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Intellect"
+          },
+          "cunningMod": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Cunning"
+          },
+          "wisdomMod": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Wisdom"
+          },
+          "willMod": {
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Will"
+          }
+        },
         "subItemsMap": []
       }
     },
     "item": {
       "templates": ["base"],
       "attributes": {
-        "price": {
+        "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+      }
+    },
+    "wearable": {
+      "templates": ["base"],
+      "attributes": {
+        "movementPenalty": {
           "value": 0,
-          "apply": false
+          "apply": false,
+          "label": "PL1E.MovementPenalty"
         },
-        "rarity": {
+        "damageReduction": {
           "value": 0,
-          "apply": false
+          "apply": false,
+          "label": "PL1E.DamageReduction"
         },
+        "impactReduction": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.ImpactReduction"
+        },
+        "fireReduction": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.FireReduction"
+        },
+        "coldReduction": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.ColdReduction"
+        },
+        "acidReduction": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.AcidReduction"
+        },
+        "shockReduction": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.ShockReduction"
+        }
+      }
+    },
+    "weapon": {
+      "templates": ["base"],
+      "attributes": {
         "damage": {
           "value": 0,
-          "apply": false
+          "apply": false,
+          "label": "PL1E.Damage"
         },
         "impact": {
           "value": 0,
-          "apply": false
+          "apply": false,
+          "label": "PL1E.Impact"
         },
         "parry": {
           "value": 0,
-          "apply": false
+          "apply": false,
+          "label": "PL1E.Parry"
         },
         "hands": {
           "value": 0,
-          "apply": false
+          "apply": false,
+          "label": "PL1E.Hands"
         },
         "ammo": {
           "value": 0,
-          "apply": false
+          "apply": false,
+          "label": "PL1E.Ammo"
         },
         "range": {
           "value": 0,
-          "apply": false
-        },
-        "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+          "apply": false,
+          "label": "PL1E.Range"
+        }
       }
     },
     "feature": {
@@ -498,43 +594,13 @@
       "attributes": {
         "size": {
           "value": "medium",
-          "apply": false
+          "apply": false,
+          "label": "PL1E.Size"
         },
         "speed": {
           "value": 4.5,
-          "apply": false
-        },
-        "strengthMod": {
-          "value": 0,
-          "apply": false
-        },
-        "agilityMod": {
-          "value": 0,
-          "apply": false
-        },
-        "perceptionMod": {
-          "value": 0,
-          "apply": false
-        },
-        "constitutionMod": {
-          "value": 0,
-          "apply": false
-        },
-        "intellectMod": {
-          "value": 0,
-          "apply": false
-        },
-        "cunningMod": {
-          "value": 0,
-          "apply": false
-        },
-        "wisdomMod": {
-          "value": 0,
-          "apply": false
-        },
-        "willMod": {
-          "value": 0,
-          "apply": false
+          "apply": false,
+          "label": "PL1E.Speed"
         }
       }
     },
