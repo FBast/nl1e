@@ -2,8 +2,10 @@
     <!-- Left column : Listing characteristics -->
     <div class="characteristics">
         {{#each system.characteristics as |characteristic key|}}
+            {{log characteristic}}
             <div class="characteristic flex-group-center">
-                <h3 class="characteristic-label align-left" data-id="{{characteristic.id}}">{{characteristic.label}}</h3>
+                <h3 class="characteristic-label hoverable align-left" data-id="{{characteristic.id}}"
+                    data-resources="{{characteristic.resources}}" data-skills="{{characteristic.skills}}">{{characteristic.label}}</h3>
                 <div class="characteristic-values flexrow flex-group-center">
                     <input type="number" min="{{characteristic.min}}" max="{{characteristic.max}}"
                            name="system.characteristics.{{key}}.base" value="{{characteristic.base}}"
@@ -21,7 +23,7 @@
                 <li class="skill grid grid-6col">
                     <i class="skill-roll fas fa-dice-d{{defense.dice}} rollable" data-roll="{{defense.number}}d{{defense.dice}}xo{{defense.dice}}cs>=4"
                        data-label="{{defense.label}}"> {{defense.number}}</i>
-                    <label class="skill-label grid-span-2 align-left" data-characteristics="{{defense.characteristics}}">{{defense.label}}</label>
+                    <label class="skill-label hoverable grid-span-2 align-left" data-id="{{defense.id}}" data-characteristics="{{defense.characteristics}}">{{defense.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.defenses.{{key}}.mastery" class="mastery-1" value="1"
                                data-dtype="Number" {{checked (eq defense.mastery 1)}} {{disabled (ne defense.mastery 1)}}/>
@@ -42,8 +44,7 @@
                 <li class="skill grid grid-6col">
                     <i class="skill-roll fas fa-dice-d{{resistance.dice}} rollable" data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4"
                        data-label="{{resistance.label}}"> {{resistance.number}}</i>
-                    <label class="skill-label grid-span-2 align-left" for="{{resistance.label}}"
-                           data-label="{{resistance.label}}">{{resistance.label}}</label>
+                    <label class="skill-label hoverable grid-span-2 align-left" data-id="{{resistance.id}}" data-characteristics="{{resistance.characteristics}}">{{resistance.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.resistances.{{key}}.mastery" class="mastery-1" value="1"
                                data-dtype="Number" {{checked (eq resistance.mastery 1)}} {{disabled (ne resistance.mastery 1)}}/>
@@ -64,8 +65,7 @@
                 <li class="skill grid grid-6col">
                     <i class="skill-roll fas fa-dice-d{{skill.dice}} rollable" data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4"
                        data-label="{{skill.label}}"> {{skill.number}}</i>
-                    <label class="skill-label grid-span-2 align-left" for="{{skill.label}}"
-                           data-label="{{skill.label}}">{{skill.label}}</label>
+                    <label class="skill-label hoverable grid-span-2 align-left" data-id="{{skill.id}}" data-characteristics="{{skill.characteristics}}">{{skill.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-1" value="1"
                                data-dtype="Number" {{checked (eq skill.mastery 1)}} />

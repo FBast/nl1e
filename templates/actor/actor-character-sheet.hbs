@@ -11,39 +11,16 @@
 
             <div class="resources grid grid-3col">
 
-                <div class="resource flex-group-center">
-                    <label for="system.resources.health.value" class="resource-label">{{localize "PL1E.Health"}}</label>
-                    <div class="resource-content flexrow flex-center flex-between">
-                        <input type="number" name="system.resources.health.value"
-                               value="{{system.resources.health.value}}" data-dtype="Number"/>
-                        <span> / </span>
-                        <input type="number" name="system.resources.health.max" value="{{system.resources.health.max}}"
-                               data-dtype="Number"/>
+                {{#each system.resources as |resource key|}}
+                    <div class="resource flex-group-center">
+                        <label class="resource-label hoverable" data-id="{{resource.id}}" data-characteristics="{{resource.characteristics}}">{{resource.label}}</label>
+                        <div class="resource-content flexrow flex-center flex-between">
+                            <input type="number" name="{{resource.value}}" value="{{resource.value}}" data-dtype="Number"/>
+                            <span> / </span>
+                            <input type="number" name="{{resource.max}}" value="{{resource.max}}" data-dtype="Number"/>
+                        </div>
                     </div>
-                </div>
-
-                <div class="resource flex-group-center">
-                    <label for="system.resources.stamina.value" class="resource-label">{{localize
-                            "PL1E.Stamina"}}</label>
-                    <div class="resource-content flexrow flex-center flex-between">
-                        <input type="number" name="system.resources.stamina.value"
-                               value="{{system.resources.stamina.value}}" data-dtype="Number"/>
-                        <span> / </span>
-                        <input type="number" name="system.resources.stamina.max"
-                               value="{{system.resources.stamina.max}}" data-dtype="Number"/>
-                    </div>
-                </div>
-
-                <div class="resource flex-group-center">
-                    <label for="system.resources.mana.value" class="resource-label">{{localize "PL1E.Mana"}}</label>
-                    <div class="resource-content flexrow flex-center flex-between">
-                        <input type="number" name="system.resources.mana.value" value="{{system.resources.mana.value}}"
-                               data-dtype="Number"/>
-                        <span> / </span>
-                        <input type="number" name="system.resources.mana.max" value="{{system.resources.mana.max}}"
-                               data-dtype="Number"/>
-                    </div>
-                </div>
+                {{/each}}
 
             </div>
         </div>

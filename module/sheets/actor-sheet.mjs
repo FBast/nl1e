@@ -47,13 +47,13 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Prepare character data and items.
         if (actorData.type === 'character') {
-            this._prepareItems(context);
-            this._prepareCharacterData(context);
+            this.#_prepareItems(context);
+            this.#_prepareCharacterData(context);
         }
 
         // Prepare NPC data and items.
         if (actorData.type === 'npc') {
-            this._prepareItems(context);
+            this.#_prepareItems(context);
         }
 
         // Add roll data for TinyMCE editors.
@@ -102,11 +102,15 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
         // Rollable characteristic.
-        html.find('.rollable').click(this._onRoll.bind(this));
+        html.find('.rollable').click(this.#_onRoll.bind(this));
 
-        html.find('.skill-label').mouseenter(this._onHighLightEnter.bind(this));
+        html.find('.skill-label,.resource-label').mouseenter(this.#_onEnterResourceOrSkill.bind(this));
 
-        html.find('.skill-label').mouseleave(this._onHighLightLeave.bind(this));
+        html.find('.skill-label,.resource-label').mouseleave(this.#_onLeaveResourceOrSkill.bind(this));
+
+        html.find('.characteristic-label').mouseenter(this.#_onEnterCharacteristic.bind(this));
+
+        html.find('.characteristic-label').mouseleave(this.#_onLeaveCharacteristic.bind(this));
 
         // Drag events for macros.
         if (this.actor.isOwner) {
@@ -176,7 +180,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param {Event} event   The originating click event
      * @private
      */
-    _onRoll(event) {
+    #_onRoll(event) {
         event.preventDefault();
         const element = event.currentTarget;
         const dataset = element.dataset;
@@ -204,17 +208,16 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Handle highlight between stats
+     * Handle highlight characteristics
      * @param event
      * @private
      */
-    _onHighLightEnter(event) {
+    #_onEnterResourceOrSkill(event) {
         event.preventDefault();
         event.stopPropagation();
         let characteristics = $(event.currentTarget).data("characteristics");
         characteristics = characteristics.split(",");
-        let elements = document.getElementsByClassName('characteristic-label');
-        for (let characteristic of elements) {
+        for (let characteristic of document.getElementsByClassName('characteristic-label')) {
             let id = $(characteristic).data("id");
             if (!characteristics.includes(id)) continue;
             characteristic.classList.add('highlight');
@@ -222,16 +225,55 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Handle highlight between stats
+     * Handle highlight characteristics
      * @param event
      * @private
      */
-    _onHighLightLeave(event) {
+    #_onLeaveResourceOrSkill(event) {
         event.preventDefault();
         event.stopPropagation();
-        let elements = document.getElementsByClassName('characteristic-label');
-        for (let characteristic of elements) {
+        for (let characteristic of document.getElementsByClassName('characteristic-label')) {
             characteristic.classList.remove('highlight')
+        }
+    }
+
+    /**
+     * Handle highlight resources and skills
+     * @param event
+     * @private
+     */
+    #_onEnterCharacteristic(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        let resources = $(event.currentTarget).data("resources");
+        resources = resources.split(",");
+        for (let resource of document.getElementsByClassName('resource-label')) {
+            let id = $(resource).data("id");
+            if (!resources.includes(id)) continue;
+            resource.classList.add('highlight');
+        }
+        let skills = $(event.currentTarget).data("skills");
+        skills = skills.split(",");
+        for (let skill of document.getElementsByClassName('skill-label')) {
+            let id = $(skill).data("id");
+            if (!skills.includes(id)) continue;
+            skill.classList.add('highlight');
+        }
+    }
+
+    /**
+     * Handle highlight resources and skills
+     * @param event
+     * @private
+     */
+    #_onLeaveCharacteristic(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        for (let resource of document.getElementsByClassName('resource-label')) {
+            resource.classList.remove('highlight')
+        }
+        for (let skill of document.getElementsByClassName('skill-label')) {
+            skill.classList.remove('highlight')
         }
     }
 
@@ -242,9 +284,7 @@ export class Pl1eActorSheet extends ActorSheet {
      *
      * @return {undefined}
      */
-    _prepareCharacterData(context) {
-        let secondCharacteristic;
-        let firstCharacteristic;
+    #_prepareCharacterData(context) {
         const resources = context.system.resources;
         const characteristics = context.system.characteristics;
         const defenses = context.system.defenses;
@@ -258,6 +298,8 @@ export class Pl1eActorSheet extends ActorSheet {
         attributes.sizeToken = CONFIG.PL1E.sizeTokens[attributes.size];
         // Handle resources scores.
         for (let [id, resource] of Object.entries(resources)) {
+            resource.id = id;
+            resource.label = game.i18n.localize(CONFIG.PL1E.resources[id]) ?? id;
             for(let characteristic of resource.characteristics) {
                 resource.max += characteristics[characteristic].value;
             }
@@ -271,6 +313,7 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Handle defenses scores.
         for (let [id, defense] of Object.entries(defenses)) {
+            defense.id = id;
             defense.label = game.i18n.localize(CONFIG.PL1E.defenses[id]) ?? id;
             let characteristicSum = 0;
             for (let characteristic of defense.characteristics) {
@@ -284,20 +327,26 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Handle resistances scores.
         for (let [id, resistance] of Object.entries(resistances)) {
+            resistance.id = id;
             resistance.label = game.i18n.localize(CONFIG.PL1E.resistances[id]) ?? id;
-            firstCharacteristic = characteristics[resistance.firstCharacteristic];
-            secondCharacteristic = characteristics[resistance.secondCharacteristic];
-            resistance.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / resistance.divider);
+            let characteristicSum = 0;
+            for (let characteristic of resistance.characteristics) {
+                characteristicSum += characteristics[characteristic].value;
+            }
+            resistance.number = Math.floor(characteristicSum / resistance.divider);
             resistance.number = Math.clamped(resistance.number + attributes.bonuses, 1, 10);
             resistance.mastery = Math.clamped(3 + attributes.advantages, 1, 5);
             resistance.dice = 2 + resistance.mastery * 2;
         }
         // Handle skills scores.
         for (let [id, skill] of Object.entries(skills)) {
+            skill.id = id;
             skill.label = game.i18n.localize(CONFIG.PL1E.skills[id]) ?? id;
-            firstCharacteristic = characteristics[skill.firstCharacteristic];
-            secondCharacteristic = characteristics[skill.secondCharacteristic];
-            skill.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / 2);
+            let characteristicSum = 0;
+            for (let characteristic of skill.characteristics) {
+                characteristicSum += characteristics[characteristic].value;
+            }
+            skill.number = Math.floor(characteristicSum / 2);
             skill.number = Math.clamped(skill.number + attributes.bonuses, 1, 10);
             skill.dice = Math.clamped(skill.mastery + attributes.advantages, 1, 5)
             skill.dice = 2 + skill.mastery * 2;
@@ -311,7 +360,7 @@ export class Pl1eActorSheet extends ActorSheet {
      *
      * @return {undefined}
      */
-    _prepareItems(context) {
+    #_prepareItems(context) {
         // Initialize containers.
         const resources = context.system.resources;
         const characteristics = context.system.characteristics;

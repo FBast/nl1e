@@ -1,5 +1,11 @@
 export const PL1E = {};
 
+PL1E.resources = {
+    "health": "PL1E.Health",
+    "stamina": "PL1E.Stamina",
+    "mana": "PL1E.Mana"
+};
+
 PL1E.characteristics = {
     "strength": "PL1E.CharacteristicStr",
     "agility": "PL1E.CharacteristicAgi",
