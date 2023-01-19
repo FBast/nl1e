@@ -14,8 +14,10 @@
             "max": 10,
             "temp": 0,
             "tempMax": 0,
-            "firstCharacteristic": "constitution",
-            "secondCharacteristic": "will"
+            "characteristics": [
+              "constitution",
+              "will"
+            ]
           },
           "stamina": {
             "value": 10,
@@ -23,8 +25,10 @@
             "max": 10,
             "temp": 0,
             "tempMax": 0,
-            "firstCharacteristic": "strength",
-            "secondCharacteristic": "constitution"
+            "characteristics": [
+              "strength",
+              "constitution"
+            ]
           },
           "mana": {
             "value": 5,
@@ -32,8 +36,10 @@
             "max": 10,
             "temp": 0,
             "tempMax": 0,
-            "firstCharacteristic": "intellect",
-            "secondCharacteristic": "will"
+            "characteristics": [
+              "intellect",
+              "will"
+            ]
           }
         },
         "characteristics": {
@@ -97,8 +103,10 @@
         "defenses": {
           "parry": {
             "mastery": 3,
-            "firstCharacteristic": "strength",
-            "secondCharacteristic": "constitution",
+            "characteristics": [
+              "strength",
+              "constitution"
+            ],
             "defenseBonus": "parryBonus",
             "movementPenalty": false,
             "dice": 8,
@@ -106,8 +114,10 @@
           },
           "dodge": {
             "mastery": 3,
-            "firstCharacteristic": "agility",
-            "secondCharacteristic": "perception",
+            "characteristics": [
+              "agility",
+              "perception"
+            ],
             "defenseBonus": "dodgeBonus",
             "movementPenalty": true,
             "dice": 8,
@@ -131,7 +141,7 @@
             "dice": 8,
             "divider": 2
           },
-          "resiliance": {
+          "resilience": {
             "mastery": 3,
             "firstCharacteristic": "intellect",
             "secondCharacteristic": "will",

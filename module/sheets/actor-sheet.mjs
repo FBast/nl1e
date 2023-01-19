@@ -65,6 +65,176 @@ export class Pl1eActorSheet extends ActorSheet {
         return context;
     }
 
+    /* -------------------------------------------- */
+
+    /** @override */
+    activateListeners(html) {
+        super.activateListeners(html);
+
+        // Render the item sheet for viewing/editing prior to the editable check.
+        html.find('.item-edit').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const item = this.actor.items.get(li.data("itemId"));
+            item.sheet.render(true);
+        });
+
+        // -------------------------------------------------------------
+        // Everything below here is only needed if the sheet is editable
+        if (!this.isEditable) return;
+
+        // Add Inventory Item
+        html.find('.item-create').click(this._onItemCreate.bind(this));
+
+        // Delete Inventory Item
+        html.find('.item-delete').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const parentItem = this.actor.items.get(li.data("itemId"));
+            for (let item of this.actor.items) {
+                if (parentItem === item || item.system.childId === undefined) continue;
+                if (parentItem.system.parentId !== item.system.childId) continue;
+                item.delete();
+            }
+            parentItem.delete();
+            li.slideUp(200, () => this.render(false));
+        });
+
+        // Active Effect management
+        html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
+
+        // Rollable characteristic.
+        html.find('.rollable').click(this._onRoll.bind(this));
+
+        html.find('.skill-label').mouseenter(this._onHighLightEnter.bind(this));
+
+        html.find('.skill-label').mouseleave(this._onHighLightLeave.bind(this));
+
+        // Drag events for macros.
+        if (this.actor.isOwner) {
+            let handler = ev => this._onDragStart(ev);
+            html.find('li.item').each((i, li) => {
+                if (li.classList.contains("inventory-header")) return;
+                li.setAttribute("draggable", true);
+                li.addEventListener("dragstart", handler, false);
+            });
+        }
+    }
+
+    /**
+     * Handle sub items to be added as other items
+     * @param event
+     * @param data
+     * @returns {Promise<unknown>}
+     * @private
+     */
+    async _onDropItem(event, data) {
+        if ( !this.actor.isOwner ) return false;
+        const item = await Item.implementation.fromDropData(data);
+        const itemData = item.toObject();
+        const newItem = await this._onDropItemCreate(item);
+        if (itemData.system.subItemsMap !== undefined && itemData.system.subItemsMap.length > 0) {
+            let linkedId = randomID();
+            await newItem[0].update({'system.parentId': linkedId});
+            for (let subItem of itemData.system.subItemsMap) {
+                const newSubItem = await this._onDropItemCreate(subItem);
+                await newSubItem[0].update({'system.childId': linkedId});
+            }
+        }
+        // Create the owned item
+        return newItem;
+    }
+
+    /**
+     * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
+     * @param {Event} event   The originating click event
+     * @private
+     */
+    async _onItemCreate(event) {
+        event.preventDefault();
+        const header = event.currentTarget;
+        // Get the type of item to create.
+        const type = header.dataset.type;
+        // Grab any data associated with this control.
+        const data = duplicate(header.dataset);
+        // Initialize a default name.
+        const name = `New ${type.capitalize()}`;
+        // Prepare the item object.
+
+        const itemData = {
+            name: name,
+            type: type,
+            system: data
+        };
+        // Remove the type from the dataset since it's in the itemData.type prop.
+        delete itemData.system["type"];
+
+        // Finally, create the item!
+        return await Item.create(itemData, {parent: this.actor});
+    }
+
+    /**
+     * Handle clickable rolls.
+     * @param {Event} event   The originating click event
+     * @private
+     */
+    _onRoll(event) {
+        event.preventDefault();
+        const element = event.currentTarget;
+        const dataset = element.dataset;
+
+        // Handle item rolls.
+        if (dataset.rollType) {
+            if (dataset.rollType == 'item') {
+                const itemId = element.closest('.item').dataset.itemId;
+                const item = this.actor.items.get(itemId);
+                if (item) return item.roll();
+            }
+        }
+
+        // Handle rolls that supply the formula directly.
+        if (dataset.roll) {
+            let label = dataset.label ? `[ability] ${dataset.label}` : '';
+            let roll = new Roll(dataset.roll, this.actor.getRollData());
+            roll.toMessage({
+                speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                flavor: label,
+                rollMode: game.settings.get('core', 'rollMode'),
+            });
+            return roll;
+        }
+    }
+
+    /**
+     * Handle highlight between stats
+     * @param event
+     * @private
+     */
+    _onHighLightEnter(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        let characteristics = $(event.currentTarget).data("characteristics");
+        characteristics = characteristics.split(",");
+        let elements = document.getElementsByClassName('characteristic-label');
+        for (let characteristic of elements) {
+            let id = $(characteristic).data("id");
+            if (!characteristics.includes(id)) continue;
+            characteristic.classList.add('highlight');
+        }
+    }
+
+    /**
+     * Handle highlight between stats
+     * @param event
+     * @private
+     */
+    _onHighLightLeave(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        let elements = document.getElementsByClassName('characteristic-label');
+        for (let characteristic of elements) {
+            characteristic.classList.remove('highlight')
+        }
+    }
+
     /**
      * Organize and classify Items for Character sheets.
      *
@@ -88,22 +258,26 @@ export class Pl1eActorSheet extends ActorSheet {
         attributes.sizeToken = CONFIG.PL1E.sizeTokens[attributes.size];
         // Handle resources scores.
         for (let [id, resource] of Object.entries(resources)) {
-            firstCharacteristic = characteristics[resource.firstCharacteristic];
-            secondCharacteristic = characteristics[resource.secondCharacteristic];
-            resource.max = (firstCharacteristic.value + secondCharacteristic.value) * 5 + parseInt(attributes.sizeMod);
+            for(let characteristic of resource.characteristics) {
+                resource.max += characteristics[characteristic].value;
+            }
+            resource.max = resource.max * 5 + parseInt(attributes.sizeMod);
         }
         // Handle characteristics scores.
         for (let [id, characteristic] of Object.entries(characteristics)) {
+            characteristic.id = id;
             characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
             characteristic.value = characteristic.base + characteristic.mod;
         }
         // Handle defenses scores.
         for (let [id, defense] of Object.entries(defenses)) {
             defense.label = game.i18n.localize(CONFIG.PL1E.defenses[id]) ?? id;
-            firstCharacteristic = characteristics[defense.firstCharacteristic];
-            secondCharacteristic = characteristics[defense.secondCharacteristic];
+            let characteristicSum = 0;
+            for (let characteristic of defense.characteristics) {
+                characteristicSum += characteristics[characteristic].value;
+            }
             var defenseBonus = attributes[defense.defenseBonus];
-            defense.number = Math.floor((firstCharacteristic.value + secondCharacteristic.value) / defense.divider) + parseInt(defenseBonus);
+            defense.number = Math.floor(characteristicSum / defense.divider) + parseInt(defenseBonus);
             defense.number = Math.clamped(defense.number + attributes.bonuses, 1, 10);
             defense.mastery = Math.clamped(3 + attributes.advantages, 1, 5);
             defense.dice = 2 + defense.mastery * 2;
@@ -210,140 +384,6 @@ export class Pl1eActorSheet extends ActorSheet {
         context.gear = gear;
         context.features = features;
         context.abilities = abilities;
-    }
-
-    /* -------------------------------------------- */
-
-    /** @override */
-    activateListeners(html) {
-        super.activateListeners(html);
-
-        // Render the item sheet for viewing/editing prior to the editable check.
-        html.find('.item-edit').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const item = this.actor.items.get(li.data("itemId"));
-            item.sheet.render(true);
-        });
-
-        // -------------------------------------------------------------
-        // Everything below here is only needed if the sheet is editable
-        if (!this.isEditable) return;
-
-        // Add Inventory Item
-        html.find('.item-create').click(this._onItemCreate.bind(this));
-
-        // Delete Inventory Item
-        html.find('.item-delete').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const parentItem = this.actor.items.get(li.data("itemId"));
-            for (let item of this.actor.items) {
-                if (parentItem === item || item.system.childId === undefined) continue;
-                if (parentItem.system.parentId !== item.system.childId) continue;
-                item.delete();
-            }
-            parentItem.delete();
-            li.slideUp(200, () => this.render(false));
-        });
-
-        // Active Effect management
-        html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
-
-        // Rollable characteristic.
-        html.find('.rollable').click(this._onRoll.bind(this));
-
-        // Drag events for macros.
-        if (this.actor.isOwner) {
-            let handler = ev => this._onDragStart(ev);
-            html.find('li.item').each((i, li) => {
-                if (li.classList.contains("inventory-header")) return;
-                li.setAttribute("draggable", true);
-                li.addEventListener("dragstart", handler, false);
-            });
-        }
-    }
-
-    /**
-     * Handle sub items to be added as other items
-     * @param event
-     * @param data
-     * @returns {Promise<unknown>}
-     * @private
-     */
-    async _onDropItem(event, data) {
-        if ( !this.actor.isOwner ) return false;
-        const item = await Item.implementation.fromDropData(data);
-        const itemData = item.toObject();
-        const newItem = await this._onDropItemCreate(item);
-        if (itemData.system.subItemsMap !== undefined && itemData.system.subItemsMap.length > 0) {
-            let linkedId = randomID();
-            await newItem[0].update({'system.parentId': linkedId});
-            for (let subItem of itemData.system.subItemsMap) {
-                const newSubItem = await this._onDropItemCreate(subItem);
-                await newSubItem[0].update({'system.childId': linkedId});
-            }
-        }
-        // Create the owned item
-        return newItem;
-    }
-
-    /**
-     * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-     * @param {Event} event   The originating click event
-     * @private
-     */
-    async _onItemCreate(event) {
-        event.preventDefault();
-        const header = event.currentTarget;
-        // Get the type of item to create.
-        const type = header.dataset.type;
-        // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
-        // Initialize a default name.
-        const name = `New ${type.capitalize()}`;
-        // Prepare the item object.
-
-        const itemData = {
-            name: name,
-            type: type,
-            system: data
-        };
-        // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.system["type"];
-
-        // Finally, create the item!
-        return await Item.create(itemData, {parent: this.actor});
-    }
-
-    /**
-     * Handle clickable rolls.
-     * @param {Event} event   The originating click event
-     * @private
-     */
-    _onRoll(event) {
-        event.preventDefault();
-        const element = event.currentTarget;
-        const dataset = element.dataset;
-
-        // Handle item rolls.
-        if (dataset.rollType) {
-            if (dataset.rollType == 'item') {
-                const itemId = element.closest('.item').dataset.itemId;
-                const item = this.actor.items.get(itemId);
-                if (item) return item.roll();
-            }
-        }
-
-        // Handle rolls that supply the formula directly.
-        if (dataset.roll) {
-            let label = dataset.label ? `[ability] ${dataset.label}` : '';
-            let roll = new Roll(dataset.roll, this.actor.getRollData());
-            roll.toMessage({
-                speaker: ChatMessage.getSpeaker({actor: this.actor}),
-                flavor: label,
-                rollMode: game.settings.get('core', 'rollMode'),
-            });
-            return roll;
-        }
     }
 
 }

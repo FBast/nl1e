@@ -25,7 +25,7 @@ PL1E.characteristicsAbbreviations = {
 PL1E.resistances = {
     "vigor": "PL1E.ResistanceVig",
     "reflex": "PL1E.ResistanceRef",
-    "resiliance": "PL1E.ResistanceRes",
+    "resilience": "PL1E.ResistanceRes",
     "intuition": "PL1E.ResistanceInt",
 }
 
