@@ -90,10 +90,20 @@
   "PL1E.Ammo": "Munitions",
   "PL1E.Range": "Portée",
 
-  "PL1E.EffectCreate": "Create Effect",
-  "PL1E.EffectToggle": "Toggle Effect",
-  "PL1E.EffectEdit": "Edit Effect",
-  "PL1E.EffectDelete": "Delete Effect",
+  "PL1E.EffectCreate": "Créer Effet",
+  "PL1E.EffectToggle": "Activer Effet",
+  "PL1E.EffectEdit": "Editer Effet",
+  "PL1E.EffectDelete": "Supprimer Effet",
+
+  "PL1E.NewCharacter": "Nouveau Personnage",
+  "PL1E.NewNPC": "Nouveau PNJ",
+  "PL1E.NewMerchant": "Nouveau Marchand",
+  "PL1E.NewFeature": "Nouveau Trait",
+  "PL1E.NewAbility": "Nouvelle Aptitude",
+  "PL1E.NewWeapon": "Nouvelle Arme",
+  "PL1E.NewWearable": "Nouveau Vêtement",
+  "PL1E.NewConsumable": "Nouveau Consommable",
+  "PL1E.NewItem": "Nouvel Objet",
 
   "PL1E.Add": "Add"
 }

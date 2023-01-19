@@ -96,5 +96,15 @@
   "PL1E.EffectEdit": "Edit Effect",
   "PL1E.EffectDelete": "Delete Effect",
 
+  "PL1E.NewCharacter": "New Character",
+  "PL1E.NewNPC": "New NPC",
+  "PL1E.NewMerchant": "New Merchant",
+  "PL1E.NewFeature": "New Feature",
+  "PL1E.NewAbility": "New Ability",
+  "PL1E.NewWeapon": "New Weapon",
+  "PL1E.NewWearable": "New Wearable",
+  "PL1E.NewConsumable": "New Consumable",
+  "PL1E.NewItem": "New Item",
+
   "PL1E.Add": "Add"
 }

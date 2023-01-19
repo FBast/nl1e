@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character", "npc"],
+    "types": ["character", "npc", "merchant"],
     "templates": {
       "base": {
         "experience": {
@@ -446,10 +446,13 @@
     "npc": {
       "templates": ["base"],
       "cr": 0
+    },
+    "merchant": {
+      "templates": ["base"]
     }
   },
   "Item": {
-    "types": ["item", "wearable", "weapon", "feature", "ability"],
+    "types": ["feature", "ability", "weapon", "wearable", "consumable", "item"],
     "templates": {
       "base": {
         "description": "",
@@ -508,10 +511,58 @@
         "subItemsMap": []
       }
     },
-    "item": {
+    "feature": {
       "templates": ["base"],
       "attributes": {
-        "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+        "size": {
+          "value": "medium",
+          "apply": false,
+          "label": "PL1E.Size"
+        },
+        "speed": {
+          "value": 4.5,
+          "apply": false,
+          "label": "PL1E.Speed"
+        }
+      }
+    },
+    "ability": {
+      "templates": ["base"],
+      "level": 1
+    },
+    "weapon": {
+      "templates": ["base"],
+      "attributes": {
+        "damage": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.Damage"
+        },
+        "impact": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.Impact"
+        },
+        "parry": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.Parry"
+        },
+        "hands": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.Hands"
+        },
+        "ammo": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.Ammo"
+        },
+        "range": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.Range"
+        }
       }
     },
     "wearable": {
@@ -554,59 +605,15 @@
         }
       }
     },
-    "weapon": {
+    "consumable": {
+      "templates": ["base"],
+      "attributes": {}
+    },
+    "item": {
       "templates": ["base"],
       "attributes": {
-        "damage": {
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Damage"
-        },
-        "impact": {
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Impact"
-        },
-        "parry": {
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Parry"
-        },
-        "hands": {
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Hands"
-        },
-        "ammo": {
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Ammo"
-        },
-        "range": {
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Range"
-        }
+        "formula": "d20 + @str.mod + ceil(@lvl / 2)"
       }
-    },
-    "feature": {
-      "templates": ["base"],
-      "attributes": {
-        "size": {
-          "value": "medium",
-          "apply": false,
-          "label": "PL1E.Size"
-        },
-        "speed": {
-          "value": 4.5,
-          "apply": false,
-          "label": "PL1E.Speed"
-        }
-      }
-    },
-    "ability": {
-      "templates": ["base"],
-      "level": 1
     }
   }
 }

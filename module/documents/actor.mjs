@@ -19,6 +19,17 @@ export class Pl1eActor extends Actor {
         // documents or derived data.
     }
 
+    /** @override */
+    async _preCreate(data, options, userId) {
+        await super._preCreate(data, options, userId);
+        if (data.img === undefined) {
+            const img = CONFIG.PL1E.defaultIcons[data.type];
+            const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
+            if (img) await this.data.update({ img });
+            if (name) await this.data.update({ name });
+        }
+    }
+
     /**
      * @override
      * Augment the basic actor data with additional dynamic data. Typically,

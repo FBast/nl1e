@@ -1,12 +1,27 @@
 export const PL1E = {};
 
-PL1E.icons = {
-    "item": "systems/pl1e/assets/icons/key.svg",
+PL1E.defaultIcons = {
+    "character": "systems/pl1e/assets/icons/elf-helmet.svg",
+    "npc": "systems/pl1e/assets/icons/goblin-head.svg",
+    "merchant": "systems/pl1e/assets/icons/shop.svg",
     "feature": "systems/pl1e/assets/icons/skills.svg",
     "ability": "systems/pl1e/assets/icons/power-lightning.svg",
     "weapon": "systems/pl1e/assets/icons/combat.svg",
     "wearable": "systems/pl1e/assets/icons/armor-vest.svg",
     "consumable": "systems/pl1e/assets/icons/round-potion.svg",
+    "item": "systems/pl1e/assets/icons/key.svg",
+}
+
+PL1E.defaultNames = {
+    "character": "PL1E.NewCharacter",
+    "npc": "PL1E.NewNPC",
+    "merchant": "PL1E.NewMerchant",
+    "feature": "PL1E.NewFeature",
+    "ability": "PL1E.NewAbility",
+    "weapon": "PL1E.NewWeapon",
+    "wearable": "PL1E.NewWearable",
+    "consumable": "PL1E.NewConsumable",
+    "item": "PL1E.NewItem",
 }
 
 PL1E.resources = {
