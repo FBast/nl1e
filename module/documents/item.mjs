@@ -26,12 +26,16 @@ export class Pl1eItem extends Item {
     /** @override */
     async _preCreate(data, options, userId) {
         await super._preCreate(data, options, userId);
+        const updateData = {};
         if (data.img === undefined) {
             const img = CONFIG.PL1E.defaultIcons[data.type];
-            const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
-            if (img) await this.data.update({ img });
-            if (name) await this.data.update({ name });
+            if (img) updateData['img'] = img;
         }
+        if (data.name.includes("New Item")) {
+            const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
+            if (name) updateData['name'] = name;
+        }
+        await this.data.update( updateData );
     }
 
     /**

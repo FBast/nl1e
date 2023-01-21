@@ -546,6 +546,7 @@
     "templates": {
       "base": {
         "description": "",
+        "subItemsMap": [],
         "attributes": {
           "price": {
             "value": 0,
@@ -613,8 +614,7 @@
             "path": "characteristics.will.mods",
             "type": "add"
           }
-        },
-        "subItemsMap": []
+        }
       }
     },
     "feature": {
@@ -642,6 +642,7 @@
     },
     "weapon": {
       "templates": ["base"],
+      "isEquipped": false,
       "attributes": {
         "damage": {
           "value": 0,
@@ -677,6 +678,7 @@
     },
     "wearable": {
       "templates": ["base"],
+      "isEquipped": false,
       "attributes": {
         "movementPenalty": {
           "value": 0,

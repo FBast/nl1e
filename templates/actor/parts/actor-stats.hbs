@@ -3,8 +3,8 @@
     <div class="characteristics">
         {{#each system.characteristics as |characteristic key|}}
             <div class="characteristic flex-group-center">
-                <h3 class="characteristic-label hoverable align-left" data-id="{{characteristic.id}}"
-                    data-resources="{{characteristic.resources}}" data-skills="{{characteristic.skills}}">{{characteristic.label}}</h3>
+                <h2 class="characteristic-label hoverable align-left" data-id="{{characteristic.id}}"
+                    data-resources="{{characteristics.weights.resources}}" data-skills="{{characteristic.weights.skills}}">{{characteristic.label}}</h2>
                 <div class="characteristic-values flexrow flex-group-center">
                     <input type="number" min="{{characteristic.min}}" max="{{characteristic.max}}"
                            name="system.characteristics.{{key}}.base" value="{{characteristic.base}}"
@@ -21,6 +21,9 @@
         <ul class="skills box">
             <!-- Listing defenses, resistances and skills -->
             {{#each system.skills as |skill key|}}
+                {{#if (ne skill.header undefined) }}
+                    <h3>{{localize skill.header}}</h3>
+                {{/if}}
                 <li class="skill grid grid-6col">
                     <i class="skill-roll fas fa-dice-d{{skill.dice}} rollable {{#if (gt skill.diceMod 0)}}color-green{{/if}} {{#if (lt skill.diceMod 0)}}color-red{{/if}}"
                        data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">
@@ -28,7 +31,8 @@
                             {{#if (lt skill.numberMod 0)}}color-red{{/if}}
                             {{#if (eq skill.numberMod 0)}}color-black{{/if}}">{{skill.number}}</label>
                     </i>
-                    <label class="skill-label hoverable grid-span-2 align-left" data-id="{{skill.id}}" data-characteristics="{{skill.characteristics}}">{{skill.label}}</label>
+                    <label class="skill-label hoverable grid-span-2 align-left" data-id="{{skill.id}}"
+                           data-characteristics="{{skill.weights.characteristics}}">{{skill.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-1" value="1"
                                data-dtype="Number" {{checked (eq skill.mastery 1)}} {{disabled skill.masteryDisabled}}/>

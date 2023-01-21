@@ -44,6 +44,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Add the actor's data to context.data for easier access, as well as flags.
         context.system = actorData.system;
         context.flags = actorData.flags;
+        context.items = actorData.items;
 
         // Prepare character data and items.
         if (actorData.type === 'character') {
@@ -104,13 +105,9 @@ export class Pl1eActorSheet extends ActorSheet {
         // Rollable characteristic.
         html.find('.rollable').click(this.#_onRoll.bind(this));
 
-        html.find('.skill-label,.resource-label').mouseenter(this.#_onEnterResourceOrSkill.bind(this));
-
-        html.find('.skill-label,.resource-label').mouseleave(this.#_onLeaveResourceOrSkill.bind(this));
-
-        html.find('.characteristic-label').mouseenter(this.#_onEnterCharacteristic.bind(this));
-
-        html.find('.characteristic-label').mouseleave(this.#_onLeaveCharacteristic.bind(this));
+        // Highlights indications
+        html.find('.resource-label,.characteristic-label,.skill-label').mouseenter(this.#_onCreateHighlights.bind(this));
+        html.find('.resource-label,.characteristic-label,.skill-label').mouseleave(this.#_onRemoveHighlights.bind(this));
 
         // Drag events for macros.
         if (this.actor.isOwner) {
@@ -208,65 +205,53 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Handle highlight characteristics
+     * Create highlights
      * @param event
      * @private
      */
-    #_onEnterResourceOrSkill(event) {
+    #_onCreateHighlights(event) {
         event.preventDefault();
         event.stopPropagation();
+        let resources = $(event.currentTarget).data("resources");
         let characteristics = $(event.currentTarget).data("characteristics");
-        for (let characteristic of document.getElementsByClassName('characteristic-label')) {
-            let id = $(characteristic).data("id");
-            if (!characteristics.includes(id)) continue;
-            characteristic.classList.add('highlight');
+        let skills = $(event.currentTarget).data("skills");
+        // resources
+        if (resources !== undefined) {
+            for (let resource of document.getElementsByClassName('resource-label')) {
+                let id = $(resource).data("id");
+                if (!resources.includes(id)) continue;
+                resource.classList.add('highlight');
+            }
+        }
+        // characteristics
+        if (characteristics !== undefined) {
+            for (let characteristic of document.getElementsByClassName('characteristic-label')) {
+                let id = $(characteristic).data("id");
+                if (!characteristics.includes(id)) continue;
+                characteristic.classList.add('highlight');
+            }
+        }
+        // skills
+        if (skills !== undefined) {
+            for (let skill of document.getElementsByClassName('skill-label')) {
+                let id = $(skill).data("id");
+                if (!skills.includes(id)) continue;
+                skill.classList.add('highlight');
+            }
         }
     }
 
     /**
-     * Handle highlight characteristics
+     * Remove highlights
      * @param event
      * @private
      */
-    #_onLeaveResourceOrSkill(event) {
+    #_onRemoveHighlights(event) {
         event.preventDefault();
         event.stopPropagation();
         for (let characteristic of document.getElementsByClassName('characteristic-label')) {
             characteristic.classList.remove('highlight')
         }
-    }
-
-    /**
-     * Handle highlight resources and skills
-     * @param event
-     * @private
-     */
-    #_onEnterCharacteristic(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        let resources = $(event.currentTarget).data("resources");
-        for (let resource of document.getElementsByClassName('resource-label')) {
-            let id = $(resource).data("id");
-            if (!resources.includes(id)) continue;
-            resource.classList.add('highlight');
-        }
-        let skills = $(event.currentTarget).data("skills");
-        skills = skills.split(",");
-        for (let skill of document.getElementsByClassName('skill-label')) {
-            let id = $(skill).data("id");
-            if (!skills.includes(id)) continue;
-            skill.classList.add('highlight');
-        }
-    }
-
-    /**
-     * Handle highlight resources and skills
-     * @param event
-     * @private
-     */
-    #_onLeaveCharacteristic(event) {
-        event.preventDefault();
-        event.stopPropagation();
         for (let resource of document.getElementsByClassName('resource-label')) {
             resource.classList.remove('highlight')
         }
@@ -359,6 +344,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Iterate items to apply data on actor
         for (let item of context.items) {
+            if (item.system.isEquipped !== undefined && !item.system.isEquipped) continue;
             for (let [id, attribute] of Object.entries(item.system.attributes)) {
                 if (!attribute.apply || attribute.path === undefined) continue;
                 if (attribute.type === 'set') {

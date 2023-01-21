@@ -77,6 +77,9 @@
   "PL1E.Description": "Description",
   "PL1E.Attributes": "Attributes",
   "PL1E.LinkedItems": "Items Linked",
+  "PL1E.Defenses": "Defenses",
+  "PL1E.Resistances": "Resistances",
+  "PL1E.Skills": "Skills",
 
   "PL1E.Traits": "Traits",
   "PL1E.AbilitiesLevel": "Abilities Level ",
