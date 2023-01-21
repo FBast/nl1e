@@ -384,51 +384,35 @@ export class Pl1eActorSheet extends ActorSheet {
             5: []
         };
 
+        // Iterate items to apply data on actor
+        for (let item of context.items) {
+            for (let [id, attribute] of Object.entries(item.system.attributes)) {
+                if (!attribute.apply || attribute.path === undefined) continue;
+                if (attribute.operator === 'set') {
+                    foundry.utils.setProperty(context.system, attribute.path, attribute.value);
+                }
+                else if (attribute.operator === 'add') {
+                    let currentValue = foundry.utils.getProperty(context.system, attribute.path);
+                    foundry.utils.setProperty(context.system, attribute.path, currentValue + attribute.value);
+                }
+            }
+        }
+
         // Iterate through items, allocating to containers
-        for (let i of context.items) {
-            i.img = i.img || DEFAULT_TOKEN;
+        for (let item of context.items) {
+            item.img = item.img || DEFAULT_TOKEN;
             // Append to gear.
-            if (i.type === 'item') {
-                gear.push(i);
+            if (['weapon','wearable','consumable','item'].includes(item.type)) {
+                gear.push(item);
             }
             // Append to features.
-            else if (i.type === 'feature') {
-                features.push(i);
-                if (i.system.attributes.size.apply) {
-                    attributes.size = i.system.attributes.size.value;
-                }
-                if (i.system.attributes.speed.apply) {
-                    attributes.speed = i.system.attributes.speed.value;
-                }
-                if (i.system.attributes.strengthMod.apply) {
-                    characteristics.strength.mod = i.system.attributes.strengthMod.value;
-                }
-                if (i.system.attributes.agilityMod.apply) {
-                    characteristics.agility.mod = i.system.attributes.agilityMod.value;
-                }
-                if (i.system.attributes.perceptionMod.apply) {
-                    characteristics.perception.mod = i.system.attributes.perceptionMod.value;
-                }
-                if (i.system.attributes.constitutionMod.apply) {
-                    characteristics.constitution.mod = i.system.attributes.constitutionMod.value;
-                }
-                if (i.system.attributes.intellectMod.apply) {
-                    characteristics.intellect.mod = i.system.attributes.intellectMod.value;
-                }
-                if (i.system.attributes.cunningMod.apply) {
-                    characteristics.cunning.mod = i.system.attributes.cunningMod.value;
-                }
-                if (i.system.attributes.wisdomMod.apply) {
-                    characteristics.wisdom.mod = i.system.attributes.wisdomMod.value;
-                }
-                if (i.system.attributes.willMod.apply) {
-                    characteristics.will.mod = i.system.attributes.willMod.value;
-                }
+            else if (item.type === 'feature') {
+                features.push(item);
             }
             // Append to abilities.
-            else if (i.type === 'ability') {
-                if (i.system.level !== undefined) {
-                    abilities[i.system.level].push(i);
+            else if (item.type === 'ability') {
+                if (item.system.level !== undefined) {
+                    abilities[item.system.level].push(item);
                 }
             }
         }

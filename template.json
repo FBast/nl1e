@@ -470,42 +470,44 @@
           "strengthMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.Strength"
+            "label": "PL1E.StrengthMod",
+            "path": "characteristics.strength.mod",
+            "operator": "add"
           },
           "agilityMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.Agility"
+            "label": "PL1E.AgilityMod"
           },
           "perceptionMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.Perception"
+            "label": "PL1E.PerceptionMod"
           },
           "constitutionMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.Constitution"
+            "label": "PL1E.ConstitutionMod"
           },
           "intellectMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.Intellect"
+            "label": "PL1E.IntellectMod"
           },
           "cunningMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.Cunning"
+            "label": "PL1E.CunningMod"
           },
           "wisdomMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.Wisdom"
+            "label": "PL1E.WisdomMod"
           },
           "willMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.Will"
+            "label": "PL1E.WillMod"
           }
         },
         "subItemsMap": []

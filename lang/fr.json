@@ -79,7 +79,6 @@
 
   "PL1E.Traits": "Traits",
   "PL1E.AbilitiesLevel": "Aptitudes Niveau ",
-  "PL1E.Mod": "Mod.",
 
   "PL1E.Price": "Prix",
   "PL1E.Rarity": "Rareté",
@@ -89,6 +88,15 @@
   "PL1E.Hands": "Mains",
   "PL1E.Ammo": "Munitions",
   "PL1E.Range": "Portée",
+  "PL1E.StrengthMod": "Force Mod.",
+  "PL1E.AgilityMod": "Agilité Mod.",
+  "PL1E.PerceptionMod": "Perception Mod.",
+  "PL1E.ConstitutionMod": "Constitution Mod.",
+  "PL1E.IntellectMod": "Intelligence Mod.",
+  "PL1E.CunningMod": "Ruse Mod.",
+  "PL1E.WisdomMod": "Sagesse Mod.",
+  "PL1E.WillMod": "Volonté Mod.",
+  "PL1E.MovementPenalty": "Malus de Mouvement",
 
   "PL1E.EffectCreate": "Créer Effet",
   "PL1E.EffectToggle": "Activer Effet",

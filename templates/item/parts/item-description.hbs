@@ -1,39 +1,11 @@
-{{#if system.attributes.damage.apply}}
-    <div class="form-group">
-        <label>{{localize "PL1E.Damage"}}</label>
-        <label class="align-right">{{localize system.attributes.damage.value}}</label>
-    </div>
-{{/if}}
-{{#if system.attributes.impact.apply}}
-    <div class="form-group">
-        <label>{{localize "PL1E.Impact"}}</label>
-        <label class="align-right">{{system.attributes.impact.value}}</label>
-    </div>
-{{/if}}
-{{#if system.attributes.parry.apply}}
-    <div class="form-group">
-        <label>{{localize "PL1E.Parry"}}</label>
-        <label class="align-right">{{system.attributes.parry.value}}</label>
-    </div>
-{{/if}}
-{{#if system.attributes.hands.apply}}
-    <div class="form-group">
-        <label>{{localize "PL1E.Hands"}}</label>
-        <label class="align-right">{{system.attributes.hands.value}}</label>
-    </div>
-{{/if}}
-{{#if system.attributes.ammo.apply}}
-    <div class="form-group">
-        <label>{{localize "PL1E.Ammo"}}</label>
-        <label class="align-right">{{system.attributes.ammo.value}}</label>
-    </div>
-{{/if}}
-{{#if system.attributes.range.apply}}
-    <div class="form-group">
-        <label>{{localize "PL1E.Range"}}</label>
-        <label class="align-right">{{system.attributes.range.value}}</label>
-    </div>
-{{/if}}
+{{#each system.attributes as |attribute id|}}
+    {{#if attribute.apply}}
+        <div class="form-group">
+            <label>{{localize attribute.label}}</label>
+            <label class="align-right">{{attribute.value}}</label>
+        </div>
+    {{/if}}
+{{/each}}
 <ul class="traits-list">
     {{#each abilities as |abilities level|}}
         {{#each abilities as |item id|}}

@@ -80,7 +80,6 @@
 
   "PL1E.Traits": "Traits",
   "PL1E.AbilitiesLevel": "Abilities Level ",
-  "PL1E.Mod": "Mod.",
 
   "PL1E.Price": "Price",
   "PL1E.Rarity": "Rarity",
@@ -90,6 +89,15 @@
   "PL1E.Hands": "Hands",
   "PL1E.Ammo": "Ammo",
   "PL1E.Range": "Range",
+  "PL1E.StrengthMod": "Strength Mod.",
+  "PL1E.AgilityMod": "Agility Mod.",
+  "PL1E.PerceptionMod": "Perception Mod.",
+  "PL1E.ConstitutionMod": "Constitution Mod.",
+  "PL1E.IntellectMod": "Intellect Mod.",
+  "PL1E.CunningMod": "Cunning Mod.",
+  "PL1E.WisdomMod": "Wisdom Mod.",
+  "PL1E.WillMod": "Will Mod.",
+  "PL1E.MovementPenalty": "Movement Penalty",
 
   "PL1E.EffectCreate": "Create Effect",
   "PL1E.EffectToggle": "Toggle Effect",

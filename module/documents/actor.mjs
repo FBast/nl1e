@@ -59,6 +59,7 @@ export class Pl1eActor extends Actor {
         // Prepare character roll data.
         this.#_getCharacterRollData(data);
         this.#_getNpcRollData(data);
+        this.#_prepareMerchantData(data);
 
         return data;
     }
@@ -88,6 +89,16 @@ export class Pl1eActor extends Actor {
         // Make modifications to data here. For example:
         const systemData = actorData.system;
         systemData.xp = (systemData.cr * systemData.cr) * 100;
+    }
+
+    /**
+     * Prepare NPC type specific data.
+     */
+    #_prepareMerchantData(actorData) {
+        if (actorData.type !== 'merchant') return;
+
+        // Make modifications to data here. For example:
+        const systemData = actorData.system;
     }
 
     /**

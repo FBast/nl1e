@@ -9,7 +9,9 @@
                     <input type="number" min="{{characteristic.min}}" max="{{characteristic.max}}"
                            name="system.characteristics.{{key}}.base" value="{{characteristic.base}}"
                            data-dtype="Number"/>
-                    <span class="characteristic-mod">{{numberFormat characteristic.mod decimals=0 sign=true}}</span>
+                    <span class="characteristic-mod {{#if (gt characteristic.mod 0)}}color-green{{/if}} {{#if (lt characteristic.mod 0)}}color-red{{/if}}">
+                        {{numberFormat characteristic.mod decimals=0 sign=true}}
+                    </span>
                 </div>
             </div>
         {{/each}}

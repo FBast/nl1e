@@ -1,8 +1,8 @@
+{{log system.attributes}}
 {{#each system.attributes as |attribute id|}}
     <div class="form-group">
-        <input type="checkbox" name="{{attribute}}.apply" {{checked attribute.apply}} >
+        <input type="checkbox" name="system.attributes.{{id}}.apply" {{checked attribute.apply}} >
         <label>{{localize attribute.label}}</label>
-        <input type="text" name="{{attribute}}.value" value="{{attribute.value}}"
-               data-dtype="Number"/>
+        <input type="text" name="system.attributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
     </div>
 {{/each}}
