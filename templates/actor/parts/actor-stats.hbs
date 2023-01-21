@@ -19,57 +19,7 @@
     <!-- Middle column -->
     <div class="grid-span-2">
         <ul class="skills box">
-            <!-- Listing resistances -->
-            {{#each system.defenses as |defense key|}}
-                <li class="skill grid grid-6col">
-                    <i class="skill-roll fas fa-dice-d{{defense.dice}} rollable {{#if (gt defense.diceMod 0)}}color-green{{/if}} {{#if (lt defense.diceMod 0)}}color-red{{/if}}"
-                       data-roll="{{defense.number}}d{{defense.dice}}xo{{defense.dice}}cs>=4" data-label="{{defense.label}}">
-                        <label class="{{#if (gt defense.numberMod 0)}}color-green{{/if}}
-                            {{#if (lt defense.numberMod 0)}}color-red{{/if}}
-                            {{#if (eq defense.numberMod 0)}}color-black{{/if}}">{{defense.number}}</label>
-                    </i>
-                    <label class="skill-label hoverable grid-span-2 align-left" data-id="{{defense.id}}" data-characteristics="{{defense.characteristics}}">{{defense.label}}</label>
-                    <div class="skill-masteries grid-span-3 align-right">
-                        <input type="radio" name="system.defenses.{{key}}.mastery" class="mastery-1" value="1"
-                               data-dtype="Number" {{checked (eq defense.mastery 1)}} {{disabled (ne defense.mastery 1)}}/>
-                        <input type="radio" name="system.defenses.{{key}}.mastery" class="mastery-2" value="2"
-                               data-dtype="Number" {{checked (eq defense.mastery 2)}} {{disabled (ne defense.mastery 2)}}/>
-                        <input type="radio" name="system.defenses.{{key}}.mastery" class="mastery-3" value="3"
-                               data-dtype="Number" {{checked (eq defense.mastery 3)}} {{disabled (ne defense.mastery 3)}}/>
-                        <input type="radio" name="system.defenses.{{key}}.mastery" class="mastery-4" value="4"
-                               data-dtype="Number" {{checked (eq defense.mastery 4)}} {{disabled (ne defense.mastery 4)}}/>
-                        <input type="radio" name="system.defenses.{{key}}.mastery" class="mastery-5" value="5"
-                               data-dtype="Number" {{checked (eq defense.mastery 5)}} {{disabled (ne defense.mastery 5)}}/>
-                    </div>
-                </li>
-            {{/each}}
-            <hr>
-            <!-- Listing defenses -->
-            {{#each system.resistances as |resistance key|}}
-                <li class="skill grid grid-6col">
-                    <i class="skill-roll fas fa-dice-d{{resistance.dice}} rollable {{#if (gt resistance.diceMod 0)}}color-green{{/if}} {{#if (lt resistance.diceMod 0)}}color-red{{/if}}"
-                       data-roll="{{resistance.number}}d{{resistance.dice}}xo{{resistance.dice}}cs>=4" data-label="{{resistance.label}}">
-                        <label class="{{#if (gt resistance.numberMod 0)}}color-green{{/if}}
-                            {{#if (lt resistance.numberMod 0)}}color-red{{/if}}
-                            {{#if (eq resistance.numberMod 0)}}color-black{{/if}}">{{resistance.number}}</label>
-                    </i>
-                    <label class="skill-label hoverable grid-span-2 align-left" data-id="{{resistance.id}}" data-characteristics="{{resistance.characteristics}}">{{resistance.label}}</label>
-                    <div class="skill-masteries grid-span-3 align-right">
-                        <input type="radio" name="system.resistances.{{key}}.mastery" class="mastery-1" value="1"
-                               data-dtype="Number" {{checked (eq resistance.mastery 1)}} {{disabled (ne resistance.mastery 1)}}/>
-                        <input type="radio" name="system.resistances.{{key}}.mastery" class="mastery-2" value="2"
-                               data-dtype="Number" {{checked (eq resistance.mastery 2)}} {{disabled (ne resistance.mastery 2)}}/>
-                        <input type="radio" name="system.resistances.{{key}}.mastery" class="mastery-3" value="3"
-                               data-dtype="Number" {{checked (eq resistance.mastery 3)}} {{disabled (ne resistance.mastery 3)}}/>
-                        <input type="radio" name="system.resistances.{{key}}.mastery" class="mastery-4" value="4"
-                               data-dtype="Number" {{checked (eq resistance.mastery 4)}} {{disabled (ne resistance.mastery 4)}}/>
-                        <input type="radio" name="system.resistances.{{key}}.mastery" class="mastery-5" value="5"
-                               data-dtype="Number" {{checked (eq resistance.mastery 5)}} {{disabled (ne resistance.mastery 5)}}/>
-                    </div>
-                </li>
-            {{/each}}
-            <hr>
-            <!-- Listing skills -->
+            <!-- Listing defenses, resistances and skills -->
             {{#each system.skills as |skill key|}}
                 <li class="skill grid grid-6col">
                     <i class="skill-roll fas fa-dice-d{{skill.dice}} rollable {{#if (gt skill.diceMod 0)}}color-green{{/if}} {{#if (lt skill.diceMod 0)}}color-red{{/if}}"
@@ -81,20 +31,17 @@
                     <label class="skill-label hoverable grid-span-2 align-left" data-id="{{skill.id}}" data-characteristics="{{skill.characteristics}}">{{skill.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-1" value="1"
-                               data-dtype="Number" {{checked (eq skill.mastery 1)}} />
+                               data-dtype="Number" {{checked (eq skill.mastery 1)}} {{disabled skill.masteryDisabled}}/>
                         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-2" value="2"
-                               data-dtype="Number" {{checked (eq skill.mastery 2)}} />
+                               data-dtype="Number" {{checked (eq skill.mastery 2)}} {{disabled skill.masteryDisabled}}/>
                         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-3" value="3"
-                               data-dtype="Number" {{checked (eq skill.mastery 3)}} />
+                               data-dtype="Number" {{checked (eq skill.mastery 3)}} {{disabled skill.masteryDisabled}}/>
                         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-4" value="4"
-                               data-dtype="Number" {{checked (eq skill.mastery 4)}} />
+                               data-dtype="Number" {{checked (eq skill.mastery 4)}} {{disabled skill.masteryDisabled}}/>
                         <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-5" value="5"
-                               data-dtype="Number" {{checked (eq skill.mastery 5)}} />
+                               data-dtype="Number" {{checked (eq skill.mastery 5)}} {{disabled skill.masteryDisabled}}/>
                     </div>
                 </li>
-                {{#if skill.separator}}
-                    <hr>
-                {{/if}}
             {{/each}}
         </ul>
     </div>
@@ -136,6 +83,10 @@
         <div class="form-group">
             <label>{{localize "PL1E.ParryBonuses"}}</label>
             <label class="align-right">{{system.attributes.parryBonuses}}</label>
+        </div>
+        <div class="form-group">
+            <label>{{localize "PL1E.MovementPenalty"}}</label>
+            <label class="align-right">{{system.attributes.movementPenalty}}</label>
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.NightVision"}}</label>

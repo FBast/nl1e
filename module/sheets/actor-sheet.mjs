@@ -216,7 +216,6 @@ export class Pl1eActorSheet extends ActorSheet {
         event.preventDefault();
         event.stopPropagation();
         let characteristics = $(event.currentTarget).data("characteristics");
-        characteristics = characteristics.split(",");
         for (let characteristic of document.getElementsByClassName('characteristic-label')) {
             let id = $(characteristic).data("id");
             if (!characteristics.includes(id)) continue;
@@ -246,7 +245,6 @@ export class Pl1eActorSheet extends ActorSheet {
         event.preventDefault();
         event.stopPropagation();
         let resources = $(event.currentTarget).data("resources");
-        resources = resources.split(",");
         for (let resource of document.getElementsByClassName('resource-label')) {
             let id = $(resource).data("id");
             if (!resources.includes(id)) continue;
@@ -285,75 +283,57 @@ export class Pl1eActorSheet extends ActorSheet {
      * @return {undefined}
      */
     #_prepareCharacterData(context) {
-        const resources = context.system.resources;
-        const characteristics = context.system.characteristics;
-        const defenses = context.system.defenses;
-        const resistances = context.system.resistances;
-        const skills = context.system.skills;
-        const attributes = context.system.attributes;
-        // Handle attributes scores.
-        attributes.initiative = attributes.speed + characteristics.agility.value + characteristics.perception.value + characteristics.cunning.value + characteristics.wisdom.value;
-        attributes.sizeMod = CONFIG.PL1E.sizeMods[attributes.size];
-        attributes.sizeToken = CONFIG.PL1E.sizeTokens[attributes.size];
-        // Handle resources scores.
-        for (let [id, resource] of Object.entries(resources)) {
+        const actorResources = context.system.resources;
+        const actorCharacteristics = context.system.characteristics;
+        const actorSkills = context.system.skills;
+        const actorAttributes = context.system.attributes;
+        // Handle actorAttributes scores.
+        actorAttributes.initiative = actorAttributes.speed + actorCharacteristics.agility.value + actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
+        actorAttributes.sizeMod = CONFIG.PL1E.sizeMods[actorAttributes.size];
+        actorAttributes.sizeToken = CONFIG.PL1E.sizeTokens[actorAttributes.size];
+        actorAttributes.movementPenalty = actorAttributes.movementPenalties.reduce((a, b) => a + b, 0);
+        actorAttributes.damageReduction = actorAttributes.damageReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.impactReduction = actorAttributes.impactReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.fireReduction = actorAttributes.fireReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.coldReduction = actorAttributes.coldReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.acidReduction = actorAttributes.acidReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.shockReduction = actorAttributes.shockReductions.reduce((a, b) => a + b, 0);
+        // Handle actorResources scores.
+        for (let [id, resource] of Object.entries(actorResources)) {
             resource.id = id;
             resource.label = game.i18n.localize(CONFIG.PL1E.resources[id]) ?? id;
-            for(let characteristic of resource.characteristics) {
-                resource.max += characteristics[characteristic].value;
+            for(let characteristic of resource.weights.characteristics) {
+                resource.max += actorCharacteristics[characteristic].value;
             }
-            resource.max = resource.max * 5 + parseInt(attributes.sizeMod);
+            resource.max = resource.max * 5 + parseInt(actorAttributes.sizeMod);
         }
-        // Handle characteristics scores.
-        for (let [id, characteristic] of Object.entries(characteristics)) {
+        // Handle actorCharacteristics scores.
+        for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
             characteristic.id = id;
             characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
+            characteristic.mod = characteristic.mods.filter(value => value < 0).reduce((a, b) => a + b, 0)
+                + Math.max(...characteristic.mods.filter(value => value > 0), 0);
             characteristic.value = characteristic.base + characteristic.mod;
         }
-        // Handle defenses scores.
-        for (let [id, defense] of Object.entries(defenses)) {
-            defense.id = id;
-            defense.label = game.i18n.localize(CONFIG.PL1E.defenses[id]) ?? id;
-            let characteristicSum = 0;
-            for (let characteristic of defense.characteristics) {
-                characteristicSum += characteristics[characteristic].value;
-            }
-            var defenseBonus = attributes[defense.defenseBonus];
-            defense.numberMod = attributes.bonuses;
-            defense.number = Math.floor(characteristicSum / defense.divider) + parseInt(defenseBonus);
-            defense.number = Math.clamped(defense.number + defense.numberMod, 1, 10);
-            defense.mastery = 3
-            defense.diceMod = attributes.advantages;
-            defense.dice = Math.clamped((1 + defense.mastery + defense.diceMod) * 2, 4, 12);
-        }
-        // Handle resistances scores.
-        for (let [id, resistance] of Object.entries(resistances)) {
-            resistance.id = id;
-            resistance.label = game.i18n.localize(CONFIG.PL1E.resistances[id]) ?? id;
-            let characteristicSum = 0;
-            for (let characteristic of resistance.characteristics) {
-                characteristicSum += characteristics[characteristic].value;
-            }
-            resistance.numberMod = attributes.bonuses;
-            resistance.number = Math.floor(characteristicSum / resistance.divider);
-            resistance.number = Math.clamped(resistance.number + resistance.numberMod, 1, 10);
-            resistance.mastery = 3;
-            resistance.diceMod = attributes.advantages;
-            resistance.dice = Math.clamped((1 + resistance.mastery + resistance.diceMod) * 2, 4, 12);
-        }
-        // Handle skills scores.
-        for (let [id, skill] of Object.entries(skills)) {
+        // Handle actorSkills scores.
+        for (let [id, skill] of Object.entries(actorSkills)) {
             skill.id = id;
             skill.label = game.i18n.localize(CONFIG.PL1E.skills[id]) ?? id;
-            let characteristicSum = 0;
-            for (let characteristic of skill.characteristics) {
-                characteristicSum += characteristics[characteristic].value;
+            let characteristicsSum = 0;
+            for (let characteristic of skill.weights.characteristics) {
+                characteristicsSum += actorCharacteristics[characteristic].value;
             }
-            skill.numberMod = attributes.bonuses;
-            skill.number = Math.floor(characteristicSum / 2);
+            let attributesSum = 0;
+            if (skill.weights.attributes !== undefined) {
+                for (let attribute of skill.weights.attributes) {
+                    attributesSum += actorAttributes[attribute];
+                }
+            }
+            skill.numberMod = attributesSum + actorAttributes.bonuses;
+            skill.number = Math.floor(characteristicsSum / skill.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
-            skill.diceMod = attributes.advantages;
-            skill.dice = Math.clamped((1 + skill.mastery + skill.diceMod) * 2, 4, 12)
+            skill.diceMod = actorAttributes.advantages;
+            skill.dice = Math.clamped((1 + skill.mastery + skill.diceMod) * 2, 4, 12);
         }
     }
 
@@ -366,13 +346,6 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     #_prepareItems(context) {
         // Initialize containers.
-        const resources = context.system.resources;
-        const characteristics = context.system.characteristics;
-        const defenses = context.system.defenses;
-        const resistances = context.system.resistances;
-        const skills = context.system.skills;
-        const attributes = context.system.attributes;
-
         const gear = [];
         const features = [];
         const abilities = {
@@ -388,12 +361,14 @@ export class Pl1eActorSheet extends ActorSheet {
         for (let item of context.items) {
             for (let [id, attribute] of Object.entries(item.system.attributes)) {
                 if (!attribute.apply || attribute.path === undefined) continue;
-                if (attribute.operator === 'set') {
+                if (attribute.type === 'set') {
                     foundry.utils.setProperty(context.system, attribute.path, attribute.value);
                 }
-                else if (attribute.operator === 'add') {
+                else if (attribute.type === 'add') {
                     let currentValue = foundry.utils.getProperty(context.system, attribute.path);
-                    foundry.utils.setProperty(context.system, attribute.path, currentValue + attribute.value);
+                    if (currentValue === undefined) currentValue = [];
+                    currentValue.push(attribute.value);
+                    foundry.utils.setProperty(context.system, attribute.path, currentValue);
                 }
             }
         }

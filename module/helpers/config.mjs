@@ -52,19 +52,13 @@ PL1E.characteristicsAbbreviations = {
     "will": "PL1E.CharacteristicWilAbbr"
 };
 
-PL1E.resistances = {
+PL1E.skills = {
+    "parry": "PL1E.DefensePar",
+    "dodge": "PL1E.DefenseDod",
     "vigor": "PL1E.ResistanceVig",
     "reflex": "PL1E.ResistanceRef",
     "resilience": "PL1E.ResistanceRes",
     "intuition": "PL1E.ResistanceInt",
-}
-
-PL1E.defenses = {
-    "parry": "PL1E.DefensePar",
-    "dodge": "PL1E.DefenseDod",
-}
-
-PL1E.skills = {
     "handling": "PL1E.SkillHan",
     "throwing": "PL1E.SkillThr",
     "athletics": "PL1E.SkillAth",

@@ -14,10 +14,12 @@
             "max": 10,
             "temp": 0,
             "tempMax": 0,
-            "characteristics": [
-              "constitution",
-              "will"
-            ]
+            "weights": {
+              "characteristics": [
+                "constitution",
+                "will"
+              ]
+            }
           },
           "stamina": {
             "value": 10,
@@ -25,10 +27,12 @@
             "max": 10,
             "temp": 0,
             "tempMax": 0,
-            "characteristics": [
-              "strength",
-              "constitution"
-            ]
+            "weights": {
+              "characteristics": [
+                "strength",
+                "constitution"
+              ]
+            }
           },
           "mana": {
             "value": 5,
@@ -36,10 +40,12 @@
             "max": 10,
             "temp": 0,
             "tempMax": 0,
-            "characteristics": [
-              "intellect",
-              "will"
-            ]
+            "weights": {
+              "characteristics": [
+                "intellect",
+                "will"
+              ]
+            }
           }
         },
         "characteristics": {
@@ -48,363 +54,440 @@
             "value": 3,
             "min": 2,
             "max": 5,
+            "mods": [],
             "mod": 0,
-            "resources": [
-              "stamina"
-            ],
-            "skills": [
-              "parry",
-              "vigor",
-              "handling",
-              "throwing",
-              "athletics"
-            ]
+            "weights": {
+              "resources": ["stamina"],
+              "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
+            }
           },
           "agility": {
             "base": 3,
             "value": 3,
             "min": 2,
             "max": 5,
+            "mods": [],
             "mod": 0,
-            "resources": [],
-            "skills": [
-              "dodge",
-              "reflex",
-              "handling",
-              "acrobatics",
-              "accuracy",
-              "discretion",
-              "craft"
-            ]
+            "weights": {
+              "resources": [],
+              "skills": [
+                "dodge",
+                "reflex",
+                "handling",
+                "acrobatics",
+                "accuracy",
+                "discretion",
+                "craft"
+              ]
+            }
           },
           "perception": {
             "base": 3,
             "value": 3,
             "min": 2,
             "max": 5,
+            "mods": [],
             "mod": 0,
-            "resources": [],
-            "skills": [
-              "dodge",
-              "reflex",
-              "throwing",
-              "acrobatics",
-              "accuracy",
-              "vigilance",
-              "discretion"
-            ]
+            "weights": {
+              "resources": [],
+              "skills": [
+                "dodge",
+                "reflex",
+                "throwing",
+                "acrobatics",
+                "accuracy",
+                "vigilance",
+                "discretion"
+              ]
+            }
           },
           "constitution": {
             "base": 3,
             "value": 3,
             "min": 2,
             "max": 5,
+            "mods": [],
             "mod": 0,
-            "resources": [
-              "health",
-              "stamina"
-            ],
-            "skills": [
-              "parry",
-              "vigor",
-              "athletics"
-            ]
+            "weights": {
+              "resources": [
+                "health",
+                "stamina"
+              ],
+              "skills": [
+                "parry",
+                "vigor",
+                "athletics"
+              ]
+            }
           },
           "intellect": {
             "base": 3,
             "value": 3,
             "min": 2,
             "max": 5,
+            "mods": [],
             "mod": 0,
-            "resources": [
-              "mana"
-            ],
-            "skills": [
-              "resilience",
-              "diplomacy",
-              "bluff",
-              "erudition",
-              "secularMagic"
-            ]
+            "weights": {
+              "resources": [
+                "mana"
+              ],
+              "skills": [
+                "resilience",
+                "diplomacy",
+                "bluff",
+                "erudition",
+                "secularMagic"
+              ]
+            }
           },
           "cunning": {
             "base": 3,
             "value": 3,
             "min": 2,
             "max": 5,
+            "mods": [],
             "mod": 0,
-            "resources": [],
-            "skills": [
-              "intuition",
-              "search",
-              "intimidation",
-              "bluff",
-              "craft",
-              "erudition",
-              "secularMagic"
-            ]
+            "weights": {
+              "resources": [],
+              "skills": [
+                "intuition",
+                "search",
+                "intimidation",
+                "bluff",
+                "craft",
+                "erudition",
+                "secularMagic"
+              ]
+            }
           },
           "wisdom": {
             "base": 3,
             "value": 3,
             "min": 2,
             "max": 5,
+            "mods": [],
             "mod": 0,
-            "resources": [],
-            "skills": [
-              "intuition",
-              "search",
-              "vigilance",
-              "performance",
-              "diplomacy",
-              "intimidation",
-              "divineMagic"
-            ]
+            "weights": {
+              "resources": [],
+              "skills": [
+                "intuition",
+                "search",
+                "vigilance",
+                "performance",
+                "diplomacy",
+                "intimidation",
+                "divineMagic"
+              ]
+            }
           },
           "will": {
             "base": 3,
             "value": 3,
             "min": 2,
             "max": 5,
+            "mods": [],
             "mod": 0,
-            "resources": [
-              "health",
-              "mana"
-            ],
-            "skills": [
-              "resilience",
-              "performance",
-              "handling",
-              "divineMagic"
-            ]
+            "weights": {
+              "resources": [
+                "health",
+                "mana"
+              ],
+              "skills": [
+                "resilience",
+                "performance",
+                "handling",
+                "divineMagic"
+              ]
+            }
           }
         },
-        "defenses": {
+        "skills": {
           "parry": {
             "mastery": 3,
-            "characteristics": [
-              "strength",
-              "constitution"
-            ],
-            "defenseBonus": "parryBonuses",
-            "movementPenalty": false,
-            "dice": 8,
-            "divider": 3
+            "masteryDisabled": true,
+            "weights": {
+              "characteristics": [
+                "strength",
+                "constitution"
+              ],
+              "attributes": [
+                "parryBonuses"
+              ]
+            },
+            "divider": 3,
+            "header": "PL1E.Defenses"
           },
           "dodge": {
             "mastery": 3,
-            "characteristics": [
-              "agility",
-              "perception"
-            ],
-            "defenseBonus": "dodgeBonuses",
-            "movementPenalty": true,
-            "dice": 8,
+            "masteryDisabled": true,
+            "weights": {
+              "characteristics": [
+                "agility",
+                "perception"
+              ],
+              "attributes": [
+                "dodgeBonuses",
+                "movementPenalty"
+              ]
+            },
             "divider": 2
-          }
-        },
-        "resistances": {
+          },
           "vigor": {
             "mastery": 3,
-            "characteristics": [
-              "strength",
-              "constitution"
-            ],
-            "movementPenalty": false,
-            "dice": 8,
-            "divider": 2
+            "masteryDisabled": true,
+            "weights": {
+              "characteristics": [
+                "strength",
+                "constitution"
+              ]
+            },
+            "divider": 2,
+            "header": "PL1E.Resistances"
           },
           "reflex": {
             "mastery": 3,
-            "characteristics": [
-              "agility",
-              "perception"
-            ],
-            "movementPenalty": true,
-            "dice": 8,
+            "masteryDisabled": true,
+            "weights": {
+              "characteristics": [
+                "agility",
+                "perception"
+              ],
+              "attributes": [
+                "movementPenalty"
+              ]
+            },
             "divider": 2
           },
           "resilience": {
             "mastery": 3,
-            "characteristics": [
-              "intellect",
-              "will"
-            ],
-            "movementPenalty": false,
-            "dice": 8,
+            "masteryDisabled": true,
+            "weights": {
+              "characteristics": [
+                "intellect",
+                "will"
+              ]
+            },
             "divider": 2
           },
           "intuition": {
             "mastery": 3,
-            "characteristics": [
-              "cunning",
-              "wisdom"
-            ],
-            "movementPenalty": false,
-            "dice": 8,
+            "masteryDisabled": true,
+            "weights": {
+              "characteristics": [
+                "cunning",
+                "wisdom"
+              ]
+            },
             "divider": 2
-          }
-        },
-        "skills": {
+          },
           "handling": {
             "mastery": 1,
-            "characteristics": [
-              "strength",
-              "agility"
-            ],
-            "movementPenalty": false,
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "strength",
+                "agility"
+              ]
+            },
+            "divider": 2,
             "magicPenalty": false,
-            "separator": false
+            "header": "PL1E.Skills"
           },
           "throwing": {
             "mastery": 1,
-            "characteristics": [
-              "strength",
-              "perception"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "strength",
+                "perception"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "athletics": {
             "mastery": 1,
-            "characteristics": [
-              "strength",
-              "constitution"
-            ],
-            "movementPenalty": true,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "strength",
+                "constitution"
+              ],
+              "attributes": [
+                "movementPenalty"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "acrobatics": {
             "mastery": 1,
-            "characteristics": [
-              "agility",
-              "perception"
-            ],
-            "movementPenalty": true,
-            "magicPenalty": false,
-            "separator": true
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "agility",
+                "perception"
+              ],
+              "attributes": [
+                "movementPenalty"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "accuracy": {
             "mastery": 1,
-            "characteristics": [
-              "agility",
-              "perception"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "agility",
+                "perception"
+              ],
+              "attributes": [
+                "movementPenalty"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "search": {
             "mastery": 1,
-            "characteristics": [
-              "cunning",
-              "wisdom"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "cunning",
+                "wisdom"]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "vigilance": {
             "mastery": 1,
-            "characteristics": [
-              "perception",
-              "wisdom"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "perception",
+                "wisdom"]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "discretion": {
             "mastery": 1,
-            "characteristics": [
-              "agility",
-              "perception"
-            ],
-            "movementPenalty": true,
-            "magicPenalty": false,
-            "separator": true
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "agility",
+                "perception"
+              ],
+              "attributes": [
+                "movementPenalty"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "performance": {
             "mastery": 1,
-            "characteristics": [
-              "wisdom",
-              "will"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "wisdom",
+                "will"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "diplomacy": {
             "mastery": 1,
-            "characteristics": [
-              "intellect",
-              "wisdom"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "intellect",
+                "wisdom"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "intimidation": {
             "mastery": 1,
-            "characteristics": [
-              "cunning",
-              "wisdom"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "cunning",
+                "wisdom"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "bluff": {
             "mastery": 1,
-            "characteristics": [
-              "intellect",
-              "cunning"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": true
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "intellect",
+                "cunning"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "craft": {
             "mastery": 1,
-            "characteristics": [
-              "agility",
-              "cunning"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "agility",
+                "cunning"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "erudition": {
             "mastery": 1,
-            "characteristics": [
-              "intellect",
-              "cunning"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": false,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "intellect",
+                "cunning"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": false
           },
           "divineMagic": {
             "mastery": 1,
-            "characteristics": [
-              "wisdom",
-              "will"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": true,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "wisdom",
+                "will"
+              ],
+              "attributes": [
+                "movementPenalty"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": true
           },
           "secularMagic": {
             "mastery": 1,
-            "characteristics": [
-              "intellect",
-              "cunning"
-            ],
-            "movementPenalty": false,
-            "magicPenalty": true,
-            "separator": false
+            "masteryDisabled": false,
+            "weights": {
+              "characteristics": [
+                "intellect",
+                "cunning"
+              ],
+              "attributes": [
+                "movementPenalty"
+              ]
+            },
+            "divider": 2,
+            "magicPenalty": true
           }
         },
         "attributes": {
@@ -416,15 +499,22 @@
           "sizeToken": 1,
           "speed": 4.5,
           "initiative": 0,
+          "movementPenalties": [],
           "movementPenalty": 0,
           "dodgeBonuses": 0,
           "parryBonuses": 0,
           "nightVision": 9,
+          "damageReductions": [],
           "damageReduction": 0,
+          "impactReductions": [],
           "impactReduction": 0,
+          "fireReductions": [],
           "fireReduction": 0,
+          "coldReductions": [],
           "coldReduction": 0,
+          "acidReductions": [],
           "acidReduction": 0,
+          "shockReductions": [],
           "shockReduction": 0
         },
         "traits": {
@@ -471,43 +561,57 @@
             "value": 0,
             "apply": false,
             "label": "PL1E.StrengthMod",
-            "path": "characteristics.strength.mod",
-            "operator": "add"
+            "path": "characteristics.strength.mods",
+            "type": "add"
           },
           "agilityMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.AgilityMod"
+            "label": "PL1E.AgilityMod",
+            "path": "characteristics.agility.mods",
+            "type": "add"
           },
           "perceptionMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.PerceptionMod"
+            "label": "PL1E.PerceptionMod",
+            "path": "characteristics.perception.mods",
+            "type": "add"
           },
           "constitutionMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.ConstitutionMod"
+            "label": "PL1E.ConstitutionMod",
+            "path": "characteristics.constitution.mods",
+            "type": "add"
           },
           "intellectMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.IntellectMod"
+            "label": "PL1E.IntellectMod",
+            "path": "characteristics.intellect.mods",
+            "type": "add"
           },
           "cunningMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.CunningMod"
+            "label": "PL1E.CunningMod",
+            "path": "characteristics.cunning.mods",
+            "type": "add"
           },
           "wisdomMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.WisdomMod"
+            "label": "PL1E.WisdomMod",
+            "path": "characteristics.wisdom.mods",
+            "type": "add"
           },
           "willMod": {
             "value": 0,
             "apply": false,
-            "label": "PL1E.WillMod"
+            "label": "PL1E.WillMod",
+            "path": "characteristics.will.mods",
+            "type": "add"
           }
         },
         "subItemsMap": []
@@ -519,12 +623,16 @@
         "size": {
           "value": "medium",
           "apply": false,
-          "label": "PL1E.Size"
+          "label": "PL1E.Size",
+          "path": "attributes.size",
+          "type": "set"
         },
         "speed": {
           "value": 4.5,
           "apply": false,
-          "label": "PL1E.Speed"
+          "label": "PL1E.Speed",
+          "path": "attributes.speed",
+          "type": "set"
         }
       }
     },
@@ -573,37 +681,51 @@
         "movementPenalty": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.MovementPenalty"
+          "label": "PL1E.MovementPenalty",
+          "path": "attributes.movementPenalties",
+          "type": "add"
         },
         "damageReduction": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.DamageReduction"
+          "label": "PL1E.DamageReduction",
+          "path": "attributes.damageReductions",
+          "type": "add"
         },
         "impactReduction": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.ImpactReduction"
+          "label": "PL1E.ImpactReduction",
+          "path": "attributes.impactReductions",
+          "type": "add"
         },
         "fireReduction": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.FireReduction"
+          "label": "PL1E.FireReduction",
+          "path": "attributes.fireReductions",
+          "type": "add"
         },
         "coldReduction": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.ColdReduction"
+          "label": "PL1E.ColdReduction",
+          "path": "attributes.coldReductions",
+          "type": "add"
         },
         "acidReduction": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.AcidReduction"
+          "label": "PL1E.AcidReduction",
+          "path": "attributes.acidReductions",
+          "type": "add"
         },
         "shockReduction": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.ShockReduction"
+          "label": "PL1E.ShockReduction",
+          "path": "attributes.ShockReductions",
+          "type": "add"
         }
       }
     },
