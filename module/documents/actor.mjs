@@ -16,7 +16,7 @@ export class Pl1eActor extends Actor {
             const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
             if (name) updateData['name'] = name;
         }
-        await this.data.update( updateData );
+        await this.updateSource( updateData );
     }
 
     /** @override */
@@ -30,11 +30,10 @@ export class Pl1eActor extends Actor {
 
     /** @override */
     prepareBaseData() {
-        const actorData = this.data;
-        const data = actorData.data;
-        const actorResources = data.resources;
-        const actorCharacteristics = data.characteristics;
-        const actorAttributes = data.attributes;
+        const system = this.system;
+        const actorResources = system.resources;
+        const actorCharacteristics = system.characteristics;
+        const actorAttributes = system.attributes;
 
         // Handle actorCharacteristics scores.
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
@@ -57,22 +56,21 @@ export class Pl1eActor extends Actor {
 
     /** @override */
     prepareEmbeddedDocuments() {
-        const actorData = this.data;
-        const data = actorData.data;
+        const system = this.system;
 
-        // Iterate items to apply data on actor
-        for (let item of actorData.items) {
+        // Iterate items to apply system on actor
+        for (let item of this.items) {
             if (item.system.isEquipped !== undefined && !item.system.isEquipped) continue;
             for (let [id, attribute] of Object.entries(item.system.attributes)) {
                 if (!attribute.apply || attribute.path === undefined) continue;
                 if (attribute.type === 'set') {
-                    foundry.utils.setProperty(data.system, attribute.path, attribute.value);
+                    foundry.utils.setProperty(system, attribute.path, attribute.value);
                 }
                 else if (attribute.type === 'add') {
-                    let currentValue = foundry.utils.getProperty(data.system, attribute.path);
+                    let currentValue = foundry.utils.getProperty(system, attribute.path);
                     if (currentValue === undefined) currentValue = [];
                     currentValue.push(attribute.value);
-                    foundry.utils.setProperty(data.system, attribute.path, currentValue);
+                    foundry.utils.setProperty(system, attribute.path, currentValue);
                 }
             }
         }
@@ -89,16 +87,15 @@ export class Pl1eActor extends Actor {
      * is queried and has a roll executed directly from it).
      */
     prepareDerivedData() {
-        const actorData = this.data;
-        const systemData = actorData.system;
-        const flags = actorData.flags.pl1e || {};
+        const systemData = this.system;
+        const flags = this.flags.pl1e || {};
 
         // Make separate methods for each Actor type (character, npc, etc.) to keep
         // things organized.
-        this.#_prepareCommonData(actorData);
-        // this.#_prepareCharacterData(actorData);
-        // this.#_prepareNpcData(actorData);
-        // this.#_prepareMerchantData(actorData);
+        this._prepareCommonData(systemData);
+        // this._prepareCharacterData(systemData);
+        // this._prepareNpcData(systemData);
+        // this._prepareMerchantData(systemData);
     }
 
     /**
@@ -108,22 +105,21 @@ export class Pl1eActor extends Actor {
         const data = super.getRollData();
 
         // Prepare character roll data.
-        // this.#_getCharacterRollData(data);
-        // this.#_getNpcRollData(data);
-        // this.#_getMerchantRollData(data);
+        // this._getCharacterRollData(data);
+        // this._getNpcRollData(data);
+        // this._getMerchantRollData(data);
 
         return data;
     }
 
     /**
      * Prepare common actor data
-     * @param actorData
+     * @param systemData
      */
-    #_prepareCommonData(actorData) {
-        const data = actorData.data;
-        const actorAttributes = data.attributes;
-        const actorCharacteristics = data.characteristics;
-        const actorSkills = data.skills;
+    _prepareCommonData(systemData) {
+        const actorAttributes = systemData.attributes;
+        const actorCharacteristics = systemData.characteristics;
+        const actorSkills = systemData.skills;
 
         // Handle actorAttributes scores.
         actorAttributes.initiative = actorAttributes.speed + actorCharacteristics.agility.value + actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
@@ -161,16 +157,16 @@ export class Pl1eActor extends Actor {
     /**
      * Prepare Character type specific data
      */
-    #_prepareCharacterData(actorData) {
-        if (actorData.type !== 'character') return;
+    _prepareCharacterData(systemData) {
+        if (this.type !== 'character') return;
 
     }
 
     /**
      * Prepare NPC type specific data.
      */
-    #_prepareNpcData(actorData) {
-        if (actorData.type !== 'npc') return;
+    _prepareNpcData(systemData) {
+        if (this.type !== 'npc') return;
 
         // Make modifications to data here. For example:
         // const systemData = actorData.system;
@@ -180,8 +176,8 @@ export class Pl1eActor extends Actor {
     /**
      * Prepare NPC type specific data.
      */
-    #_prepareMerchantData(actorData) {
-        if (actorData.type !== 'merchant') return;
+    _prepareMerchantData(systemData) {
+        if (this.type !== 'merchant') return;
 
         // Make modifications to data here. For example:
         // const systemData = actorData.system;
@@ -190,7 +186,7 @@ export class Pl1eActor extends Actor {
     /**
      * Prepare character roll data.
      */
-    #_getCharacterRollData(data) {
+    _getCharacterRollData(data) {
         if (this.type !== 'character') return;
 
         // Copy the characteristic scores to the top level, so that rolls can use
@@ -210,7 +206,7 @@ export class Pl1eActor extends Actor {
     /**
      * Prepare NPC roll data.
      */
-    #_getNpcRollData(data) {
+    _getNpcRollData(data) {
         if (this.type !== 'npc') return;
 
         // Process additional NPC data here.
@@ -219,7 +215,7 @@ export class Pl1eActor extends Actor {
     /**
      * Prepare Merchant roll data.
      */
-    #_getMerchantRollData(data) {
+    _getMerchantRollData(data) {
         if (this.type !== 'npc') return;
 
         // Process additional NPC data here.
