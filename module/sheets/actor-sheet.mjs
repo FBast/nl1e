@@ -49,7 +49,6 @@ export class Pl1eActorSheet extends ActorSheet {
         // Prepare character data and items.
         if (actorData.type === 'character') {
             this.#_prepareItems(context);
-            this.#_prepareCharacterData(context);
         }
 
         // Prepare NPC data and items.
@@ -267,68 +266,6 @@ export class Pl1eActorSheet extends ActorSheet {
      *
      * @return {undefined}
      */
-    #_prepareCharacterData(context) {
-        const actorResources = context.system.resources;
-        const actorCharacteristics = context.system.characteristics;
-        const actorSkills = context.system.skills;
-        const actorAttributes = context.system.attributes;
-        // Handle actorAttributes scores.
-        actorAttributes.initiative = actorAttributes.speed + actorCharacteristics.agility.value + actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
-        actorAttributes.sizeMod = CONFIG.PL1E.sizeMods[actorAttributes.size];
-        actorAttributes.sizeToken = CONFIG.PL1E.sizeTokens[actorAttributes.size];
-        actorAttributes.movementPenalty = actorAttributes.movementPenalties.reduce((a, b) => a + b, 0);
-        actorAttributes.damageReduction = actorAttributes.damageReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.impactReduction = actorAttributes.impactReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.fireReduction = actorAttributes.fireReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.coldReduction = actorAttributes.coldReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.acidReduction = actorAttributes.acidReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.shockReduction = actorAttributes.shockReductions.reduce((a, b) => a + b, 0);
-        // Handle actorResources scores.
-        for (let [id, resource] of Object.entries(actorResources)) {
-            resource.id = id;
-            resource.label = game.i18n.localize(CONFIG.PL1E.resources[id]) ?? id;
-            for(let characteristic of resource.weights.characteristics) {
-                resource.max += actorCharacteristics[characteristic].value;
-            }
-            resource.max = resource.max * 5 + parseInt(actorAttributes.sizeMod);
-        }
-        // Handle actorCharacteristics scores.
-        for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
-            characteristic.id = id;
-            characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
-            characteristic.mod = characteristic.mods.filter(value => value < 0).reduce((a, b) => a + b, 0)
-                + Math.max(...characteristic.mods.filter(value => value > 0), 0);
-            characteristic.value = characteristic.base + characteristic.mod;
-        }
-        // Handle actorSkills scores.
-        for (let [id, skill] of Object.entries(actorSkills)) {
-            skill.id = id;
-            skill.label = game.i18n.localize(CONFIG.PL1E.skills[id]) ?? id;
-            let characteristicsSum = 0;
-            for (let characteristic of skill.weights.characteristics) {
-                characteristicsSum += actorCharacteristics[characteristic].value;
-            }
-            let attributesSum = 0;
-            if (skill.weights.attributes !== undefined) {
-                for (let attribute of skill.weights.attributes) {
-                    attributesSum += actorAttributes[attribute];
-                }
-            }
-            skill.numberMod = attributesSum + actorAttributes.bonuses;
-            skill.number = Math.floor(characteristicsSum / skill.divider);
-            skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
-            skill.diceMod = actorAttributes.advantages;
-            skill.dice = Math.clamped((1 + skill.mastery + skill.diceMod) * 2, 4, 12);
-        }
-    }
-
-    /**
-     * Organize and classify Items for Character sheets.
-     *
-     * @param {Object} context The actor to prepare.
-     *
-     * @return {undefined}
-     */
     #_prepareItems(context) {
         // Initialize containers.
         const gear = [];
@@ -341,23 +278,6 @@ export class Pl1eActorSheet extends ActorSheet {
             4: [],
             5: []
         };
-
-        // Iterate items to apply data on actor
-        for (let item of context.items) {
-            if (item.system.isEquipped !== undefined && !item.system.isEquipped) continue;
-            for (let [id, attribute] of Object.entries(item.system.attributes)) {
-                if (!attribute.apply || attribute.path === undefined) continue;
-                if (attribute.type === 'set') {
-                    foundry.utils.setProperty(context.system, attribute.path, attribute.value);
-                }
-                else if (attribute.type === 'add') {
-                    let currentValue = foundry.utils.getProperty(context.system, attribute.path);
-                    if (currentValue === undefined) currentValue = [];
-                    currentValue.push(attribute.value);
-                    foundry.utils.setProperty(context.system, attribute.path, currentValue);
-                }
-            }
-        }
 
         // Iterate through items, allocating to containers
         for (let item of context.items) {
