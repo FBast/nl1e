@@ -3,10 +3,6 @@
     "types": ["character", "npc", "merchant"],
     "templates": {
       "base": {
-        "experience": {
-          "value": 10,
-          "max": 60
-        },
         "resources": {
           "health": {
             "value": 10,
