@@ -1,4 +1,5 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
+import {PL1E} from "../helpers/config.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -285,6 +286,10 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     #_prepareItems(context) {
         // Initialize containers.
+        const weapons = [];
+        const wearables = [];
+        const consumables = [];
+        const commons = [];
         const gear = [];
         const features = [];
         const abilities = {
@@ -299,8 +304,21 @@ export class Pl1eActorSheet extends ActorSheet {
         // Iterate through items, allocating to containers
         for (let item of context.items) {
             item.img = item.img || DEFAULT_TOKEN;
+            // Append to item categories
+            if (item.type === 'weapon') {
+                weapons.push(item);
+            }
+            else if (item.type === 'wearable') {
+                wearables.push(item);
+            }
+            else if (item.type === 'consumable') {
+                consumables.push(item);
+            }
+            else if (item.type === 'common') {
+                commons.push(item);
+            }
             // Append to gear.
-            if (['weapon','wearable','consumable','item'].includes(item.type)) {
+            if (['weapon','wearable','consumable','common'].includes(item.type)) {
                 gear.push(item);
             }
             // Append to features.
@@ -316,6 +334,10 @@ export class Pl1eActorSheet extends ActorSheet {
         }
 
         // Assign and return
+        context.weapons = weapons;
+        context.wearables = wearables;
+        context.consumables = consumables;
+        context.commons = commons;
         context.gear = gear;
         context.features = features;
         context.abilities = abilities;

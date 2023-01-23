@@ -1,8 +1,13 @@
-{{log system.attributes}}
 {{#each system.attributes as |attribute id|}}
     <div class="form-group">
         <input type="checkbox" name="system.attributes.{{id}}.apply" {{checked attribute.apply}} >
         <label>{{localize attribute.label}}</label>
-        <input type="text" name="system.attributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
+        {{#if (ne attribute.select undefined)}}
+            <select name="system.attributes.{{id}}.value">
+                {{selectOptions (lookup ../config attribute.select) selected=attribute.value localize=true}}
+            </select>
+        {{else}}
+            <input type="text" name="system.attributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
+        {{/if}}
     </div>
 {{/each}}

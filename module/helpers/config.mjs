@@ -9,7 +9,7 @@ PL1E.defaultIcons = {
     "weapon": "systems/pl1e/assets/icons/combat.svg",
     "wearable": "systems/pl1e/assets/icons/armor-vest.svg",
     "consumable": "systems/pl1e/assets/icons/round-potion.svg",
-    "item": "systems/pl1e/assets/icons/key.svg",
+    "common": "systems/pl1e/assets/icons/key.svg",
 }
 
 PL1E.defaultNames = {
@@ -21,7 +21,7 @@ PL1E.defaultNames = {
     "weapon": "PL1E.NewWeapon",
     "wearable": "PL1E.NewWearable",
     "consumable": "PL1E.NewConsumable",
-    "item": "PL1E.NewItem",
+    "common": "PL1E.NewCommon",
 }
 
 PL1E.resources = {
@@ -100,3 +100,26 @@ PL1E.sizeTokens = {
     "PL1E.SizeHuge": "3",
     "PL1E.SizeGargantuan": "4"
 };
+
+PL1E.masteries = {
+    "none": "PL1E.None",
+    "crossbows": "PL1E.Crossbows",
+    "bows": "PL1E.Bows",
+    "poleArms": "PL1E.PoleArms",
+    "shields": "PL1E.Shields",
+    "shortAxes": "PL1E.ShortAxes",
+    "longAxes": "PL1E.LongAxes",
+    "shortBlades": "PL1E.ShortBlades",
+    "mediumBlades": "PL1E.MediumBlades",
+    "longBlades": "PL1E.LongBlades",
+    "shortHammers": "PL1E.ShortHammers",
+    "longHammers": "PL1E.LongHammers",
+    "arcana": "PL1E.Arcana",
+    "aramancia": "PL1E.Aramancia",
+    "biomancia": "PL1E.Biomancia",
+    "diastamancia": "PL1E.Diastamancia",
+    "goetia": "PL1E.Goetia",
+    "myalomancia": "PL1E.Myalomancia",
+    "necromancia": "PL1E.Necromancia",
+    "theurgy": "PL1E.Theurgy"
+}

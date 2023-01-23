@@ -55,6 +55,26 @@
     }
   }
 
+  // Item Stats
+  .item-stats {
+    flex: 2;
+    margin: 0;
+    overflow: hidden;
+    font-size: 13px;
+    text-align: center;
+    align-items: center;
+    place-content: center;
+    display: flex;
+    h3, h4 {
+      margin: 0;
+      white-space: nowrap;
+      overflow-x: hidden;
+    }
+    .item-stat {
+      padding: 5px;
+    }
+  }
+
   // Control Buttons
   .item-controls {
     display: flex;

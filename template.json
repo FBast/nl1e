@@ -199,8 +199,8 @@
         },
         "skills": {
           "parry": {
-            "mastery": 3,
-            "masteryDisabled": true,
+            "rank": 3,
+            "rankDisabled": true,
             "weights": {
               "characteristics": [
                 "strength",
@@ -214,8 +214,8 @@
             "header": "PL1E.Defenses"
           },
           "dodge": {
-            "mastery": 3,
-            "masteryDisabled": true,
+            "rank": 3,
+            "rankDisabled": true,
             "weights": {
               "characteristics": [
                 "agility",
@@ -229,8 +229,8 @@
             "divider": 2
           },
           "vigor": {
-            "mastery": 3,
-            "masteryDisabled": true,
+            "rank": 3,
+            "rankDisabled": true,
             "weights": {
               "characteristics": [
                 "strength",
@@ -241,8 +241,8 @@
             "header": "PL1E.Resistances"
           },
           "reflex": {
-            "mastery": 3,
-            "masteryDisabled": true,
+            "rank": 3,
+            "rankDisabled": true,
             "weights": {
               "characteristics": [
                 "agility",
@@ -255,8 +255,8 @@
             "divider": 2
           },
           "resilience": {
-            "mastery": 3,
-            "masteryDisabled": true,
+            "rank": 3,
+            "rankDisabled": true,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -266,8 +266,8 @@
             "divider": 2
           },
           "intuition": {
-            "mastery": 3,
-            "masteryDisabled": true,
+            "rank": 3,
+            "rankDisabled": true,
             "weights": {
               "characteristics": [
                 "cunning",
@@ -277,8 +277,8 @@
             "divider": 2
           },
           "handling": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "strength",
@@ -290,8 +290,8 @@
             "header": "PL1E.Skills"
           },
           "throwing": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "strength",
@@ -302,8 +302,8 @@
             "magicPenalty": false
           },
           "athletics": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "strength",
@@ -317,8 +317,8 @@
             "magicPenalty": false
           },
           "acrobatics": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "agility",
@@ -332,8 +332,8 @@
             "magicPenalty": false
           },
           "accuracy": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "agility",
@@ -347,8 +347,8 @@
             "magicPenalty": false
           },
           "search": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "cunning",
@@ -358,8 +358,8 @@
             "magicPenalty": false
           },
           "vigilance": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "perception",
@@ -369,8 +369,8 @@
             "magicPenalty": false
           },
           "discretion": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "agility",
@@ -384,8 +384,8 @@
             "magicPenalty": false
           },
           "performance": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "wisdom",
@@ -396,8 +396,8 @@
             "magicPenalty": false
           },
           "diplomacy": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -408,8 +408,8 @@
             "magicPenalty": false
           },
           "intimidation": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "cunning",
@@ -420,8 +420,8 @@
             "magicPenalty": false
           },
           "bluff": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -432,8 +432,8 @@
             "magicPenalty": false
           },
           "craft": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "agility",
@@ -444,8 +444,8 @@
             "magicPenalty": false
           },
           "erudition": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -456,8 +456,8 @@
             "magicPenalty": false
           },
           "divineMagic": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "wisdom",
@@ -471,8 +471,8 @@
             "magicPenalty": true
           },
           "secularMagic": {
-            "mastery": 1,
-            "masteryDisabled": false,
+            "rank": 1,
+            "rankDisabled": false,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -500,10 +500,12 @@
           "dodgeBonuses": 0,
           "parryBonuses": 0,
           "nightVision": 9,
-          "damageReductions": [],
-          "damageReduction": 0,
-          "impactReductions": [],
-          "impactReduction": 0,
+          "slashingReductions": [],
+          "slashingReduction": 0,
+          "crushingReductions": [],
+          "crushingReduction": 0,
+          "piercingReductions": [],
+          "piercingReduction": 0,
           "fireReductions": [],
           "fireReduction": 0,
           "coldReductions": [],
@@ -538,7 +540,7 @@
     }
   },
   "Item": {
-    "types": ["feature", "ability", "weapon", "wearable", "consumable", "item"],
+    "types": ["feature", "ability", "weapon", "wearable", "consumable", "common"],
     "templates": {
       "base": {
         "description": "",
@@ -640,15 +642,26 @@
       "templates": ["base"],
       "isEquipped": false,
       "attributes": {
-        "damage": {
-          "value": 0,
+        "mastery": {
+          "value": "none",
           "apply": false,
-          "label": "PL1E.Damage"
+          "label": "PL1E.Mastery",
+          "select": "masteries"
         },
-        "impact": {
+        "slashing": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.Impact"
+          "label": "PL1E.Slashing"
+        },
+        "crushing": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.Crushing"
+        },
+        "piercing": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.Piercing"
         },
         "parry": {
           "value": 0,
@@ -683,18 +696,25 @@
           "path": "attributes.movementPenalties",
           "type": "add"
         },
-        "damageReduction": {
+        "slashingReduction": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.DamageReduction",
-          "path": "attributes.damageReductions",
+          "label": "PL1E.SlashingReduction",
+          "path": "attributes.slashingReductions",
           "type": "add"
         },
-        "impactReduction": {
+        "crushingReduction": {
           "value": 0,
           "apply": false,
-          "label": "PL1E.ImpactReduction",
-          "path": "attributes.impactReductions",
+          "label": "PL1E.CrushingReduction",
+          "path": "attributes.crushingReductions",
+          "type": "add"
+        },
+        "piercingReduction": {
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.PiercingReduction",
+          "path": "attributes.piercingReductions",
           "type": "add"
         },
         "fireReduction": {
@@ -731,7 +751,7 @@
       "templates": ["base"],
       "attributes": {}
     },
-    "item": {
+    "common": {
       "templates": ["base"],
       "attributes": {
         "formula": "d20 + @str.mod + ceil(@lvl / 2)"

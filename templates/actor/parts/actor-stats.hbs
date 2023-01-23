@@ -34,16 +34,16 @@
                     <label class="skill-label hoverable grid-span-2 align-left" data-id="{{skill.id}}"
                            data-characteristics="{{skill.weights.characteristics}}">{{skill.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
-                        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-1" value="1"
-                               data-dtype="Number" {{checked (eq skill.mastery 1)}} {{disabled skill.masteryDisabled}}/>
-                        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-2" value="2"
-                               data-dtype="Number" {{checked (eq skill.mastery 2)}} {{disabled skill.masteryDisabled}}/>
-                        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-3" value="3"
-                               data-dtype="Number" {{checked (eq skill.mastery 3)}} {{disabled skill.masteryDisabled}}/>
-                        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-4" value="4"
-                               data-dtype="Number" {{checked (eq skill.mastery 4)}} {{disabled skill.masteryDisabled}}/>
-                        <input type="radio" name="system.skills.{{key}}.mastery" class="mastery-5" value="5"
-                               data-dtype="Number" {{checked (eq skill.mastery 5)}} {{disabled skill.masteryDisabled}}/>
+                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-1" value="1"
+                               data-dtype="Number" {{checked (eq skill.rank 1)}} {{disabled skill.rankDisabled}}/>
+                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-2" value="2"
+                               data-dtype="Number" {{checked (eq skill.rank 2)}} {{disabled skill.rankDisabled}}/>
+                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-3" value="3"
+                               data-dtype="Number" {{checked (eq skill.rank 3)}} {{disabled skill.rankDisabled}}/>
+                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-4" value="4"
+                               data-dtype="Number" {{checked (eq skill.rank 4)}} {{disabled skill.rankDisabled}}/>
+                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-5" value="5"
+                               data-dtype="Number" {{checked (eq skill.rank 5)}} {{disabled skill.rankDisabled}}/>
                     </div>
                 </li>
             {{/each}}
@@ -98,12 +98,16 @@
         </div>
         <hr>
         <div class="form-group">
-            <label>{{localize "PL1E.DamageReduction"}}</label>
-            <label class="align-right">{{system.attributes.damageReduction}}</label>
+            <label>{{localize "PL1E.SlashingReduction"}}</label>
+            <label class="align-right">{{system.attributes.slashingReduction}}</label>
         </div>
         <div class="form-group">
-            <label>{{localize "PL1E.ImpactReduction"}}</label>
-            <label class="align-right">{{system.attributes.impactReduction}}</label>
+            <label>{{localize "PL1E.CrushingReduction"}}</label>
+            <label class="align-right">{{system.attributes.crushingReduction}}</label>
+        </div>
+        <div class="form-group">
+            <label>{{localize "PL1E.PiercingReduction"}}</label>
+            <label class="align-right">{{system.attributes.piercingReduction}}</label>
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.FireReduction"}}</label>

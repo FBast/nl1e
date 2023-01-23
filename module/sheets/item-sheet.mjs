@@ -56,7 +56,7 @@ export class Pl1eItemSheet extends ItemSheet {
         context.flags = itemData.flags;
 
         // Add the config data
-        context.sizes = PL1E.sizes;
+        context.config = PL1E;
 
         return context;
     }

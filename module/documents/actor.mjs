@@ -126,8 +126,9 @@ export class Pl1eActor extends Actor {
         actorAttributes.sizeMod = CONFIG.PL1E.sizeMods[actorAttributes.size];
         actorAttributes.sizeToken = CONFIG.PL1E.sizeTokens[actorAttributes.size];
         actorAttributes.movementPenalty = actorAttributes.movementPenalties.reduce((a, b) => a + b, 0);
-        actorAttributes.damageReduction = actorAttributes.damageReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.impactReduction = actorAttributes.impactReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.slashingReduction = actorAttributes.slashingReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.crushingReduction = actorAttributes.crushingReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.piercingReduction = actorAttributes.piercingReductions.reduce((a, b) => a + b, 0);
         actorAttributes.fireReduction = actorAttributes.fireReductions.reduce((a, b) => a + b, 0);
         actorAttributes.coldReduction = actorAttributes.coldReductions.reduce((a, b) => a + b, 0);
         actorAttributes.acidReduction = actorAttributes.acidReductions.reduce((a, b) => a + b, 0);
@@ -150,7 +151,7 @@ export class Pl1eActor extends Actor {
             skill.number = Math.floor(characteristicsSum / skill.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
             skill.diceMod = actorAttributes.advantages;
-            skill.dice = Math.clamped((1 + skill.mastery + skill.diceMod) * 2, 4, 12);
+            skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
         }
     }
 
