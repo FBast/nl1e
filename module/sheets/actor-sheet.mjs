@@ -104,6 +104,9 @@ export class Pl1eActorSheet extends ActorSheet {
         // Rollable characteristic.
         html.find('.rollable').click(this.#_onRoll.bind(this));
 
+        // Items management
+        html.find(".item-toggle").click(this._onToggleItem.bind(this));
+
         // Highlights indications
         html.find('.resource-label,.characteristic-label,.skill-label').mouseenter(this.#_onCreateHighlights.bind(this));
         html.find('.resource-label,.characteristic-label,.skill-label').mouseleave(this.#_onRemoveHighlights.bind(this));
@@ -169,6 +172,20 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Finally, create the item!
         return await Item.create(itemData, {parent: this.actor});
+    }
+
+    /**
+     * Handle toggling the state of an Owned Item within the Actor.
+     * @param {Event} event        The triggering click event.
+     * @returns {Promise<Item5e>}  Item with the updates applied.
+     * @private
+     */
+    _onToggleItem(event) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+        // const attr = item.type === "spell" ? "system.preparation.prepared" : "system.equipped";
+        return item.update({["system.isEquipped"]: !foundry.utils.getProperty(item, "system.isEquipped")});
     }
 
     /**
