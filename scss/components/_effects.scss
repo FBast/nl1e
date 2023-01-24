@@ -53,3 +53,10 @@
   //color: #000;
   text-shadow: 0 0 10px green;
 }
+
+.icon-flipped {
+  transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+}

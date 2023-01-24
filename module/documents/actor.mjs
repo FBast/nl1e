@@ -29,44 +29,22 @@ export class Pl1eActor extends Actor {
     }
 
     /** @override */
-    prepareBaseData() {
-        const system = this.system;
-        const actorResources = system.resources;
-        const actorCharacteristics = system.characteristics;
-        const actorAttributes = system.attributes;
-
-        // Handle actorCharacteristics scores.
-        for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
-            characteristic.id = id;
-            characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
-            characteristic.mod = characteristic.mods.filter(value => value < 0).reduce((a, b) => a + b, 0)
-                + Math.max(...characteristic.mods.filter(value => value > 0), 0);
-            characteristic.value = characteristic.base + characteristic.mod;
-        }
-        // Handle actorResources scores.
-        for (let [id, resource] of Object.entries(actorResources)) {
-            resource.id = id;
-            resource.label = game.i18n.localize(CONFIG.PL1E.resources[id]) ?? id;
-            for(let characteristic of resource.weights.characteristics) {
-                resource.max += actorCharacteristics[characteristic].value;
-            }
-            resource.max = resource.max * 5 + parseInt(actorAttributes.sizeMod);
-        }
-    }
+    prepareBaseData() {}
 
     /** @override */
     prepareEmbeddedDocuments() {
         const system = this.system;
-
         // Iterate items to apply system on actor
         for (let item of this.items) {
-            if (item.system.isEquipped !== undefined && !item.system.isEquipped) continue;
+            if (!['weapon', 'wearable'].includes(item.type)) continue;
+            if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
+            if (item.type === 'wearable' && !item.system.isEquipped) continue;
             for (let [id, attribute] of Object.entries(item.system.attributes)) {
                 if (!attribute.apply || attribute.path === undefined) continue;
-                if (attribute.type === 'set') {
+                if (attribute.operator === 'set') {
                     foundry.utils.setProperty(system, attribute.path, attribute.value);
                 }
-                else if (attribute.type === 'add') {
+                else if (attribute.operator === 'add') {
                     let currentValue = foundry.utils.getProperty(system, attribute.path);
                     if (currentValue === undefined) currentValue = [];
                     currentValue.push(attribute.value);
@@ -118,9 +96,9 @@ export class Pl1eActor extends Actor {
      */
     _prepareCommonData(systemData) {
         const actorAttributes = systemData.attributes;
+        const actorResources = systemData.resources;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
-
         // Handle actorAttributes scores.
         actorAttributes.initiative = actorAttributes.speed + actorCharacteristics.agility.value + actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
         actorAttributes.sizeMod = CONFIG.PL1E.sizeMods[actorAttributes.size];
@@ -133,6 +111,23 @@ export class Pl1eActor extends Actor {
         actorAttributes.coldReduction = actorAttributes.coldReductions.reduce((a, b) => a + b, 0);
         actorAttributes.acidReduction = actorAttributes.acidReductions.reduce((a, b) => a + b, 0);
         actorAttributes.shockReduction = actorAttributes.shockReductions.reduce((a, b) => a + b, 0);
+        // Handle actorCharacteristics scores.
+        for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
+            characteristic.id = id;
+            characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
+            characteristic.mod = characteristic.mods.filter(value => value < 0).reduce((a, b) => a + b, 0)
+                + Math.max(...characteristic.mods.filter(value => value > 0), 0);
+            characteristic.value = characteristic.base + characteristic.mod;
+        }
+        // Handle actorResources scores.
+        for (let [id, resource] of Object.entries(actorResources)) {
+            resource.id = id;
+            resource.label = game.i18n.localize(CONFIG.PL1E.resources[id]) ?? id;
+            for(let characteristic of resource.weights.characteristics) {
+                resource.max += actorCharacteristics[characteristic].value;
+            }
+            resource.max = resource.max * 5 + parseInt(actorAttributes.sizeMod);
+        }
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
             skill.id = id;

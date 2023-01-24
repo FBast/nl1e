@@ -56,14 +56,13 @@
   "PL1E.ParryBonuses": "Parry Bonuses",
   "PL1E.SlashingReduction": "Slashing Reduction",
   "PL1E.CrushingReduction": "Crushing Reduction",
-  "PL1E.PiercingReduction": "Crushing Reduction",
+  "PL1E.PiercingReduction": "Piercing Reduction",
   "PL1E.FireReduction": "Fire Reduction",
   "PL1E.ColdReduction": "Cold Reduction",
   "PL1E.AcidReduction": "Acid Reduction",
   "PL1E.ShockReduction": "Shock Reduction",
   "PL1E.Languages": "Languages",
   "PL1E.Immunities": "Immunities",
-
 
   "PL1E.SizeSmall": "Small",
   "PL1E.SizeMedium": "Medium",
@@ -81,20 +80,27 @@
   "PL1E.Defenses": "Defenses",
   "PL1E.Resistances": "Resistances",
   "PL1E.Skills": "Skills",
-
+  "PL1E.Add": "Add",
   "PL1E.Traits": "Traits",
   "PL1E.AbilitiesLevel": "Abilities Level ",
 
+  "PL1E.Weapon": "Weapon",
+  "PL1E.Wearable": "Wearable",
+  "PL1E.Consumable": "Consumable",
+  "PL1E.Common": "Common",
   "PL1E.Price": "Price",
   "PL1E.Rarity": "Rarity",
   "PL1E.Mastery": "Mastery",
+  "PL1E.Slot": "Slot",
+  "PL1E.ContactAttackRange": "Contact attack (Range)",
+  "PL1E.RangedAttackRange": "Ranged attack (Range)",
+  "PL1E.ParryProjectiles": "Parry ranged attacks",
   "PL1E.Slashing": "Slashing",
   "PL1E.Crushing": "Crushing",
   "PL1E.Piercing": "Piercing",
   "PL1E.Parry": "Parry",
   "PL1E.Hands": "Hands",
   "PL1E.Ammo": "Ammo",
-  "PL1E.Range": "Range",
   "PL1E.StrengthMod": "Strength Mod.",
   "PL1E.AgilityMod": "Agility Mod.",
   "PL1E.PerceptionMod": "Perception Mod.",
@@ -141,5 +147,9 @@
   "PL1E.Necromancia": "Necromancia",
   "PL1E.Theurgy": "Theurgy",
 
-  "PL1E.Add": "Add"
+  "PL1E.Clothes": "Clothes",
+  "PL1E.Armor": "Armor",
+  "PL1E.Ring": "Ring",
+  "PL1E.Amulet": "Amulet"
+
 }

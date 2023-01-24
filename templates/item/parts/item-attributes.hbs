@@ -2,12 +2,14 @@
     <div class="form-group">
         <input type="checkbox" name="system.attributes.{{id}}.apply" {{checked attribute.apply}} >
         <label>{{localize attribute.label}}</label>
-        {{#if (ne attribute.select undefined)}}
+        {{#if (eq attribute.type "number")}}
+            <input type="text" name="system.attributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
+        {{else if (eq attribute.type "bool")}}
+            <input type="checkbox" name="system.attributes.{{id}}.value" value="{{attribute.value}}" {{checked attribute.value}} data-dtype="Boolean"/>
+        {{else if (eq attribute.type "select")}}
             <select name="system.attributes.{{id}}.value">
                 {{selectOptions (lookup ../config attribute.select) selected=attribute.value localize=true}}
             </select>
-        {{else}}
-            <input type="text" name="system.attributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
         {{/if}}
     </div>
 {{/each}}

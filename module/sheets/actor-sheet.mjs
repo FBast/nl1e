@@ -63,6 +63,9 @@ export class Pl1eActorSheet extends ActorSheet {
         // Prepare active effects
         context.effects = prepareActiveEffectCategories(this.actor.effects);
 
+        // Add the config data
+        context.config = PL1E;
+
         return context;
     }
 
@@ -106,7 +109,8 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find('.rollable').click(this.#_onRoll.bind(this));
 
         // Items management
-        html.find(".item-toggle").click(this._onToggleItem.bind(this));
+        html.find(".weapon-toggle").click(this._onToggleWeapon.bind(this));
+        html.find(".wearable-toggle").click(this._onToggleWearable.bind(this));
 
         // Highlights indications
         html.find('.resource-label,.characteristic-label,.skill-label').mouseenter(this.#_onCreateHighlights.bind(this));
@@ -162,7 +166,6 @@ export class Pl1eActorSheet extends ActorSheet {
         // Initialize a default name.
         const name = `New ${type.capitalize()}`;
         // Prepare the item object.
-
         const itemData = {
             name: name,
             type: type,
@@ -176,17 +179,117 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Handle toggling the state of an Owned Item within the Actor.
-     * @param {Event} event        The triggering click event.
-     * @returns {Promise<Item5e>}  Item with the updates applied.
-     * @private
+     * Handle toggling the state of an Owned Weapon within the Actor.
+     * @param {Event} event The triggering click event.
+     * @privateItem
      */
-    _onToggleItem(event) {
+    async _onToggleWeapon(event) {
+        event.preventDefault();
+        const main = $(event.currentTarget).data("main");
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+        const hands = item.system.attributes.hands.value;
+        // Toggle item hands
+        if (hands === 2) {
+            await item.update({
+                ["system.isEquippedMain"]: !foundry.utils.getProperty(item, "system.isEquippedMain"),
+                ["system.isEquippedSecondary"]: !foundry.utils.getProperty(item, "system.isEquippedSecondary")
+            });
+        } else if (main) {
+            // Switch hand case
+            if (!item.system.isEquippedMain && item.system.isEquippedSecondary) {
+                await item.update({["system.isEquippedSecondary"]: false});
+            }
+            await item.update({["system.isEquippedMain"]: !foundry.utils.getProperty(item, "system.isEquippedMain")})
+        } else {
+            // Switch hand case
+            if (!item.system.isEquippedSecondary && item.system.isEquippedMain) {
+                await item.update({["system.isEquippedMain"]: false});
+            }
+            await item.update({["system.isEquippedSecondary"]: !foundry.utils.getProperty(item, "system.isEquippedSecondary")});
+        }
+        // Unequip other items
+        for (let otherItem of this.actor.items) {
+            // Ignore if otherItem is item
+            if (otherItem === item) continue;
+            // If other item is equipped on main and this item is equipped on main
+            if (otherItem.system.isEquippedMain && item.system.isEquippedMain) {
+                // If other item is equipped on two hands
+                if (otherItem.system.attributes.hands.value === 2) {
+                    await otherItem.update({
+                        ["system.isEquippedMain"]: false,
+                        ["system.isEquippedSecondary"]: false
+                    });
+                }
+                // Else other item only equip main hand
+                else {
+                    await otherItem.update({
+                        ["system.isEquippedMain"]: false
+                    });
+                }
+            }
+            // If other item is equipped on secondary and this item is equipped on secondary
+            if (otherItem.system.isEquippedSecondary && item.system.isEquippedSecondary) {
+                // If other item is equipped on two hands
+                if (otherItem.system.attributes.hands.value === 2) {
+                    await otherItem.update({
+                        ["system.isEquippedMain"]: false,
+                        ["system.isEquippedSecondary"]: false
+                    });
+                }
+                // Else other item only equip secondary hand
+                else {
+                    await otherItem.update({
+                        ["system.isEquippedSecondary"]: false
+                    });
+                }
+            }
+        }
+    }
+
+    /**
+     * Handle toggling the state of an Owned Wearable within the Actor.
+     * @param {Event} event The triggering click event.
+     * @privateItem
+     */
+    async _onToggleWearable(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
-        // const attr = item.type === "spell" ? "system.preparation.prepared" : "system.equipped";
-        return item.update({["system.isEquipped"]: !foundry.utils.getProperty(item, "system.isEquipped")});
+        const slot = item.system.attributes.slot.value;
+        if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
+        // Toggle item slot
+        await item.update({
+            ["system.isEquipped"]: !foundry.utils.getProperty(item, "system.isEquipped"),
+        });
+        // If unequipped then return
+        if (!item.system.isEquipped) return;
+        let ringCount = 1;
+        // Unequip other items
+        for (let otherItem of this.actor.items) {
+            // Ignore if otherItem is item
+            if (otherItem === item) continue;
+            // Count same items slot
+            if (otherItem.system.isEquipped && otherItem.system.attributes.slot.value === slot) {
+                // Unequipped immediately if clothes, armor or amulet
+                if (['clothes', 'armor', 'amulet'].includes(slot)) {
+                    await otherItem.update({
+                        ["system.isEquipped"]: false
+                    });
+                }
+                // Count equipped rings if ring
+                else if (['ring'].includes(slot)) {
+                    if (ringCount >= 2) {
+                        await otherItem.update({
+                            ["system.isEquipped"]: false
+                        });
+                    }
+                    else {
+                        ringCount++;
+                    }
+                }
+            }
+        }
     }
 
     /**
