@@ -4,7 +4,7 @@
         {{#each system.characteristics as |characteristic key|}}
             <div class="characteristic flex-group-center">
                 <h2 class="characteristic-label hoverable align-left" data-tooltip="{{localize characteristic.tooltip}}" data-id="{{characteristic.id}}"
-                    data-resources="{{characteristics.weights.resources}}" data-skills="{{characteristic.weights.skills}}">{{characteristic.label}}</h2>
+                    data-resources="{{characteristic.weights.resources}}" data-skills="{{characteristic.weights.skills}}">{{characteristic.label}}</h2>
                 <div class="characteristic-values flexrow flex-group-center">
                     <input type="number" min="{{characteristic.min}}" max="{{characteristic.max}}"
                            name="system.characteristics.{{key}}.base" value="{{characteristic.base}}"
@@ -32,7 +32,7 @@
                             {{#if (eq skill.numberMod 0)}}color-black{{/if}}">{{skill.number}}</label>
                     </i>
                     <label class="skill-label hoverable grid-span-2 align-left" data-tooltip="{{localize skill.tooltip}}" data-id="{{skill.id}}"
-                           data-characteristics="{{skill.weights.characteristics}}">{{skill.label}}</label>
+                           data-attributes="{{skill.weights.attributes}}" data-characteristics="{{skill.weights.characteristics}}">{{skill.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.skills.{{key}}.rank" class="rank-1" value="1"
                                data-dtype="Number" {{checked (eq skill.rank 1)}} {{disabled skill.rankDisabled}}/>

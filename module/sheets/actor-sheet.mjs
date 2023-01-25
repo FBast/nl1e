@@ -49,12 +49,12 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Prepare character data and items.
         if (actorData.type === 'character') {
-            this.#_prepareItems(context);
+            this._prepareItems(context);
         }
 
         // Prepare NPC data and items.
         if (actorData.type === 'npc') {
-            this.#_prepareItems(context);
+            this._prepareItems(context);
         }
 
         // Add roll data for TinyMCE editors.
@@ -106,15 +106,15 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
         // Rollable characteristic.
-        html.find('.rollable').click(this.#_onRoll.bind(this));
+        html.find('.rollable').click(this._onRoll.bind(this));
 
         // Items management
         html.find(".weapon-toggle").click(this._onToggleWeapon.bind(this));
         html.find(".wearable-toggle").click(this._onToggleWearable.bind(this));
 
         // Highlights indications
-        html.find('.resource-label,.characteristic-label,.skill-label').mouseenter(this.#_onCreateHighlights.bind(this));
-        html.find('.resource-label,.characteristic-label,.skill-label').mouseleave(this.#_onRemoveHighlights.bind(this));
+        html.find('.resource-label,.characteristic-label,.skill-label').mouseenter(this._onCreateHighlights.bind(this));
+        html.find('.resource-label,.characteristic-label,.skill-label').mouseleave(this._onRemoveHighlights.bind(this));
 
         // Drag events for macros.
         if (this.actor.isOwner) {
@@ -297,7 +297,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param {Event} event   The originating click event
      * @private
      */
-    #_onRoll(event) {
+    _onRoll(event) {
         event.preventDefault();
         const element = event.currentTarget;
         const dataset = element.dataset;
@@ -329,7 +329,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      * @private
      */
-    #_onCreateHighlights(event) {
+    _onCreateHighlights(event) {
         event.preventDefault();
         event.stopPropagation();
         let resources = $(event.currentTarget).data("resources");
@@ -366,7 +366,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      * @private
      */
-    #_onRemoveHighlights(event) {
+    _onRemoveHighlights(event) {
         event.preventDefault();
         event.stopPropagation();
         for (let characteristic of document.getElementsByClassName('characteristic-label')) {
@@ -387,7 +387,7 @@ export class Pl1eActorSheet extends ActorSheet {
      *
      * @return {undefined}
      */
-    #_prepareItems(context) {
+    _prepareItems(context) {
         // Initialize containers.
         const weapons = [];
         const wearables = [];
