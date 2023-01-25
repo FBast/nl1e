@@ -1,4 +1,5 @@
 {
+
   "PL1E.Health": "Vie",
   "PL1E.Stamina": "Endurance",
   "PL1E.Mana": "Mana",
@@ -61,6 +62,8 @@
   "PL1E.ColdReduction": "Reduction de Froid",
   "PL1E.AcidReduction": "Reduction d'Acide",
   "PL1E.ShockReduction": "Reduction d'Electricité",
+  "PL1E.Reloadable": "Rechargeable",
+  "PL1E.Uses": "Utilisations",
   "PL1E.Languages": "Langues",
   "PL1E.Immunities": "Immunitées",
 
@@ -92,6 +95,7 @@
   "PL1E.Rarity": "Rareté",
   "PL1E.Mastery": "Maitrise",
   "PL1E.Slot": "Emplacement",
+  "PL1E.Activation": "Activation",
   "PL1E.ContactAttackRange": "Attaque au contact (Portée)",
   "PL1E.RangedAttackRange": "Attaque à distance (Portée)",
   "PL1E.ParryProjectiles": "Pare les attaques à distance",
@@ -99,6 +103,7 @@
   "PL1E.Crushing": "Contondant",
   "PL1E.Piercing": "Perforant",
   "PL1E.Parry": "Parade",
+  "PL1E.Dodge": "Esquive",
   "PL1E.Hands": "Mains",
   "PL1E.Ammo": "Munitions",
   "PL1E.StrengthMod": "Force Mod.",
@@ -115,6 +120,13 @@
   "PL1E.EffectToggle": "Activer Effet",
   "PL1E.EffectEdit": "Editer Effet",
   "PL1E.EffectDelete": "Supprimer Effet",
+  "PL1E.Edit": "Editer",
+  "PL1E.Delete": "Supprimer",
+  "PL1E.Use": "Utiliser",
+  "PL1E.Reload": "Recharger",
+  "PL1E.Equip": "Equiper",
+  "PL1E.EquipMain": "Equiper en main principale",
+  "PL1E.EquipSecondary": "Equiper en main secondaire",
 
   "PL1E.NewCharacter": "Nouveau Personnage",
   "PL1E.NewNPC": "Nouveau PNJ",
@@ -151,6 +163,17 @@
   "PL1E.Armor": "Armure",
   "PL1E.Ring": "Anneau",
   "PL1E.Amulet": "Amulette",
+
+  "PL1E.Passive": "Passif",
+  "PL1E.Reaction": "Réaction",
+  "PL1E.Free": "Gratuit",
+  "PL1E.Action": "Action",
+  "PL1E.Round": "Tour",
+  "PL1E.Special": "Spécial",
+
+  "PL1E.HealthRecovery": "Récupération de vie",
+  "PL1E.StaminaRecovery": "Récupération d'endurance",
+  "PL1E.ManaRecovery": "Récupération de mana",
 
   "PL1E.TooltipStr": "La force représente la puissance musculaire instantané, c'est-à-dire lors d'un effort bref et intense. Plus un personnage est fort plus sa masse musculaire est importante.",
   "PL1E.TooltipAgi": "L'agilité représente la précision et la rapidité musculaire, plus un personnage en possédera plus il sera à même d'effectuer des mouvements délicats et ceci rapidement.",

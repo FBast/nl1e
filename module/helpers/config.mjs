@@ -131,3 +131,12 @@ PL1E.slots = {
     "ring": "PL1E.Ring",
     "amulet": "PL1E.Amulet"
 }
+
+PL1E.activations = {
+    "passive": "PL1E.Passive",
+    "reaction": "PL1E.Reaction",
+    "free": "PL1E.Free",
+    "action": "PL1E.Action",
+    "round": "PL1E.Round",
+    "special": "PL1E.Special"
+}

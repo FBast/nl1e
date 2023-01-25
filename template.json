@@ -629,6 +629,82 @@
             "label": "PL1E.WillMod",
             "path": "characteristics.will.mods",
             "operator": "add"
+          },
+          "movementPenalty": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.MovementPenalty",
+            "path": "attributes.movementPenalties",
+            "operator": "add"
+          },
+          "parry": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Parry"
+          },
+          "dodge": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Dodge"
+          },
+          "slashingReduction": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.SlashingReduction",
+            "path": "attributes.slashingReductions",
+            "operator": "add"
+          },
+          "crushingReduction": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.CrushingReduction",
+            "path": "attributes.crushingReductions",
+            "operator": "add"
+          },
+          "piercingReduction": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.PiercingReduction",
+            "path": "attributes.piercingReductions",
+            "operator": "add"
+          },
+          "fireReduction": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.FireReduction",
+            "path": "attributes.fireReductions",
+            "operator": "add"
+          },
+          "coldReduction": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.ColdReduction",
+            "path": "attributes.coldReductions",
+            "operator": "add"
+          },
+          "acidReduction": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.AcidReduction",
+            "path": "attributes.acidReductions",
+            "operator": "add"
+          },
+          "shockReduction": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.ShockReduction",
+            "path": "attributes.shockReductions",
+            "operator": "add"
           }
         }
       }
@@ -706,12 +782,6 @@
           "apply": false,
           "label": "PL1E.Piercing"
         },
-        "parry": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Parry"
-        },
         "hands": {
           "type": "number",
           "value": 0,
@@ -723,14 +793,6 @@
           "value": 0,
           "apply": false,
           "label": "PL1E.Ammo"
-        },
-        "movementPenalty": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.MovementPenalty",
-          "path": "attributes.movementPenalties",
-          "operator": "add"
         }
       }
     },
@@ -744,76 +806,57 @@
           "apply": false,
           "label": "PL1E.Slot",
           "select": "slots"
-        },
-        "movementPenalty": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.MovementPenalty",
-          "path": "attributes.movementPenalties",
-          "operator": "add"
-        },
-        "slashingReduction": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.SlashingReduction",
-          "path": "attributes.slashingReductions",
-          "operator": "add"
-        },
-        "crushingReduction": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.CrushingReduction",
-          "path": "attributes.crushingReductions",
-          "operator": "add"
-        },
-        "piercingReduction": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.PiercingReduction",
-          "path": "attributes.piercingReductions",
-          "operator": "add"
-        },
-        "fireReduction": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.FireReduction",
-          "path": "attributes.fireReductions",
-          "operator": "add"
-        },
-        "coldReduction": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.ColdReduction",
-          "path": "attributes.coldReductions",
-          "operator": "add"
-        },
-        "acidReduction": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.AcidReduction",
-          "path": "attributes.acidReductions",
-          "operator": "add"
-        },
-        "shockReduction": {
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.ShockReduction",
-          "path": "attributes.ShockReductions",
-          "operator": "add"
         }
       }
     },
     "consumable": {
       "templates": ["base"],
-      "attributes": {}
+      "removedUses": 0,
+      "attributes": {
+        "slot": {
+          "type": "select",
+          "value": "action",
+          "apply": false,
+          "label": "PL1E.Activation",
+          "select": "activations"
+        },
+        "healthRecovery": {
+          "type": "number",
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.HealthRecovery",
+          "path": "resources.health.value",
+          "operator": "add"
+        },
+        "staminaRecovery": {
+          "type": "number",
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.StaminaRecovery",
+          "path": "resources.health.value",
+          "operator": "add"
+        },
+        "manaRecovery": {
+          "type": "number",
+          "value": 0,
+          "apply": false,
+          "label": "PL1E.ManaRecovery",
+          "path": "resources.health.value",
+          "operator": "add"
+        },
+        "reloadable": {
+          "type": "bool",
+          "value": false,
+          "apply": false,
+          "label": "PL1E.Reloadable"
+        },
+        "uses": {
+          "type": "number",
+          "value": 1,
+          "apply": false,
+          "label": "PL1E.Uses"
+        }
+      }
     },
     "common": {
       "templates": ["base"],

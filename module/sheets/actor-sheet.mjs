@@ -111,6 +111,8 @@ export class Pl1eActorSheet extends ActorSheet {
         // Items management
         html.find(".weapon-toggle").click(this._onToggleWeapon.bind(this));
         html.find(".wearable-toggle").click(this._onToggleWearable.bind(this));
+        html.find(".consumable-toggle").click(this._onUseConsumable.bind(this));
+        html.find(".consumable-reload").click(this._onReloadConsumable.bind(this));
 
         // Highlights indications
         html.find('.resource-label,.characteristic-label,.skill-label').mouseenter(this._onCreateHighlights.bind(this));
@@ -189,6 +191,7 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
         const hands = item.system.attributes.hands.value;
+
         // Toggle item hands
         if (hands === 2) {
             await item.update({
@@ -290,6 +293,45 @@ export class Pl1eActorSheet extends ActorSheet {
                 }
             }
         }
+    }
+
+    /**
+     * Handle use of an Owned Consumable within the Actor.
+     * @param {Event} event The triggering click event.
+     * @privateItem
+     */
+    async _onUseConsumable(event) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+
+        // The item still have uses
+        if (item.system.attributes.uses.value > item.system.removedUses) {
+            // Removed one use
+            await item.update({
+                ["system.removedUses"]: foundry.utils.getProperty(item, "system.removedUses") + 1,
+            });
+        }
+        // If no more uses and item is not reloadable then destroy
+        else if (!item.system.attributes.reloadable.value) {
+            this.deleteEmbedItem(item._id);
+        }
+    }
+
+    /**
+     * Handle reload of an Owned Consumable within the Actor.
+     * @param {Event} event The triggering click event.
+     * @privateItem
+     */
+    async _onReloadConsumable(event) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+
+        // Reset removed uses
+        await item.update({
+            ["system.removedUses"]: 0
+        });
     }
 
     /**

@@ -61,6 +61,8 @@
   "PL1E.ColdReduction": "Cold Reduction",
   "PL1E.AcidReduction": "Acid Reduction",
   "PL1E.ShockReduction": "Shock Reduction",
+  "PL1E.Reloadable": "Reloadable",
+  "PL1E.Uses": "Uses",
   "PL1E.Languages": "Languages",
   "PL1E.Immunities": "Immunities",
 
@@ -92,6 +94,7 @@
   "PL1E.Rarity": "Rarity",
   "PL1E.Mastery": "Mastery",
   "PL1E.Slot": "Slot",
+  "PL1E.Activation": "Activation",
   "PL1E.ContactAttackRange": "Contact attack (Range)",
   "PL1E.RangedAttackRange": "Ranged attack (Range)",
   "PL1E.ParryProjectiles": "Parry ranged attacks",
@@ -99,6 +102,7 @@
   "PL1E.Crushing": "Crushing",
   "PL1E.Piercing": "Piercing",
   "PL1E.Parry": "Parry",
+  "PL1E.Dodge": "Esquive",
   "PL1E.Hands": "Hands",
   "PL1E.Ammo": "Ammo",
   "PL1E.StrengthMod": "Strength Mod.",
@@ -115,6 +119,13 @@
   "PL1E.EffectToggle": "Toggle Effect",
   "PL1E.EffectEdit": "Edit Effect",
   "PL1E.EffectDelete": "Delete Effect",
+  "PL1E.Edit": "Edit Item",
+  "PL1E.Delete": "Delete Item",
+  "PL1E.Use": "Use",
+  "PL1E.Reload": "Reload",
+  "PL1E.Equip": "Equip",
+  "PL1E.EquipMain": "Equip in main hand",
+  "PL1E.EquipSecondary": "Equip in secondary hand",
 
   "PL1E.NewCharacter": "New Character",
   "PL1E.NewNPC": "New NPC",
@@ -147,9 +158,20 @@
   "PL1E.Necromancia": "Necromancia",
   "PL1E.Theurgy": "Theurgy",
 
+  "PL1E.HealthRecovery": "Health recovery",
+  "PL1E.StaminaRecovery": "Stamina recovery",
+  "PL1E.ManaRecovery": "Mana recovery",
+
   "PL1E.Clothes": "Clothes",
   "PL1E.Armor": "Armor",
   "PL1E.Ring": "Ring",
-  "PL1E.Amulet": "Amulet"
+  "PL1E.Amulet": "Amulet",
+
+  "PL1E.Passive": "Passive",
+  "PL1E.Reaction": "Reaction",
+  "PL1E.Free": "Free",
+  "PL1E.Action": "Action",
+  "PL1E.Round": "Round",
+  "PL1E.Special": "Special"
 
 }
