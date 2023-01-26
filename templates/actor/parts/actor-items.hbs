@@ -211,11 +211,6 @@
                             <label>{{item.system.attributes.manaRecovery.value}}</label>
                         </i>
                     {{/if}}
-                    {{#if item.system.attributes.reloadable.apply}}
-                        {{#if item.system.attributes.reloadable.value}}
-                            <i class="item-info fas fa-repeat hoverable" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
-                        {{/if}}
-                    {{/if}}
                     {{#if item.system.attributes.uses.apply}}
                         {{#if (gt item.system.attributes.uses.value 1)}}
                             {{#if (eq item.system.removedUses 0)}}
@@ -231,6 +226,11 @@
                                     <label>{{minus item.system.attributes.uses.value item.system.removedUses}}</label>
                                 </i>
                             {{/if}}
+                        {{/if}}
+                    {{/if}}
+                    {{#if item.system.attributes.reloadable.apply}}
+                        {{#if item.system.attributes.reloadable.value}}
+                            <i class="item-info fas fa-repeat hoverable" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
                         {{/if}}
                     {{/if}}
                 </div>

@@ -572,7 +572,7 @@
             "apply": false,
             "label": "PL1E.StrengthMod",
             "path": "characteristics.strength.mods",
-            "operator": "add"
+            "operator": "push"
           },
           "agilityMod": {
             "type": "number",
@@ -580,7 +580,7 @@
             "apply": false,
             "label": "PL1E.AgilityMod",
             "path": "characteristics.agility.mods",
-            "operator": "add"
+            "operator": "push"
           },
           "perceptionMod": {
             "type": "number",
@@ -588,7 +588,7 @@
             "apply": false,
             "label": "PL1E.PerceptionMod",
             "path": "characteristics.perception.mods",
-            "operator": "add"
+            "operator": "push"
           },
           "constitutionMod": {
             "type": "number",
@@ -596,7 +596,7 @@
             "apply": false,
             "label": "PL1E.ConstitutionMod",
             "path": "characteristics.constitution.mods",
-            "operator": "add"
+            "operator": "push"
           },
           "intellectMod": {
             "type": "number",
@@ -604,7 +604,7 @@
             "apply": false,
             "label": "PL1E.IntellectMod",
             "path": "characteristics.intellect.mods",
-            "operator": "add"
+            "operator": "push"
           },
           "cunningMod": {
             "type": "number",
@@ -612,7 +612,7 @@
             "apply": false,
             "label": "PL1E.CunningMod",
             "path": "characteristics.cunning.mods",
-            "operator": "add"
+            "operator": "push"
           },
           "wisdomMod": {
             "type": "number",
@@ -620,7 +620,7 @@
             "apply": false,
             "label": "PL1E.WisdomMod",
             "path": "characteristics.wisdom.mods",
-            "operator": "add"
+            "operator": "push"
           },
           "willMod": {
             "type": "number",
@@ -628,7 +628,7 @@
             "apply": false,
             "label": "PL1E.WillMod",
             "path": "characteristics.will.mods",
-            "operator": "add"
+            "operator": "push"
           },
           "movementPenalty": {
             "type": "number",
@@ -636,7 +636,7 @@
             "apply": false,
             "label": "PL1E.MovementPenalty",
             "path": "attributes.movementPenalties",
-            "operator": "add"
+            "operator": "push"
           },
           "parry": {
             "type": "number",
@@ -656,7 +656,7 @@
             "apply": false,
             "label": "PL1E.SlashingReduction",
             "path": "attributes.slashingReductions",
-            "operator": "add"
+            "operator": "push"
           },
           "crushingReduction": {
             "type": "number",
@@ -664,7 +664,7 @@
             "apply": false,
             "label": "PL1E.CrushingReduction",
             "path": "attributes.crushingReductions",
-            "operator": "add"
+            "operator": "push"
           },
           "piercingReduction": {
             "type": "number",
@@ -672,7 +672,7 @@
             "apply": false,
             "label": "PL1E.PiercingReduction",
             "path": "attributes.piercingReductions",
-            "operator": "add"
+            "operator": "push"
           },
           "fireReduction": {
             "type": "number",
@@ -680,7 +680,7 @@
             "apply": false,
             "label": "PL1E.FireReduction",
             "path": "attributes.fireReductions",
-            "operator": "add"
+            "operator": "push"
           },
           "coldReduction": {
             "type": "number",
@@ -688,7 +688,7 @@
             "apply": false,
             "label": "PL1E.ColdReduction",
             "path": "attributes.coldReductions",
-            "operator": "add"
+            "operator": "push"
           },
           "acidReduction": {
             "type": "number",
@@ -696,7 +696,7 @@
             "apply": false,
             "label": "PL1E.AcidReduction",
             "path": "attributes.acidReductions",
-            "operator": "add"
+            "operator": "push"
           },
           "shockReduction": {
             "type": "number",
@@ -704,7 +704,7 @@
             "apply": false,
             "label": "PL1E.ShockReduction",
             "path": "attributes.shockReductions",
-            "operator": "add"
+            "operator": "push"
           }
         }
       }
@@ -713,15 +713,16 @@
       "templates": ["base"],
       "attributes": {
         "size": {
-          "type": "bool",
+          "type": "select",
           "value": "medium",
           "apply": false,
           "label": "PL1E.Size",
           "path": "attributes.size",
-          "operator": "set"
+          "operator": "set",
+          "select": "sizes"
         },
         "speed": {
-          "type": "bool",
+          "type": "number",
           "value": 4.5,
           "apply": false,
           "label": "PL1E.Speed",
@@ -833,7 +834,7 @@
           "value": 0,
           "apply": false,
           "label": "PL1E.StaminaRecovery",
-          "path": "resources.health.value",
+          "path": "resources.stamina.value",
           "operator": "add"
         },
         "manaRecovery": {
@@ -841,7 +842,7 @@
           "value": 0,
           "apply": false,
           "label": "PL1E.ManaRecovery",
-          "path": "resources.health.value",
+          "path": "resources.mana.value",
           "operator": "add"
         },
         "reloadable": {
@@ -859,10 +860,10 @@
       }
     },
     "common": {
-      "templates": ["base"],
       "attributes": {
         "formula": "d20 + @str.mod + ceil(@lvl / 2)"
-      }
+      },
+      "templates": ["base"]
     }
   }
 }

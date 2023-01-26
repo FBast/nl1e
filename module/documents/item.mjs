@@ -175,10 +175,9 @@ export class Pl1eItem extends Item {
      * Delete the Embed Item and clear the actor bonus if any
      * @param id Item id
      * @param {boolean} save   if we save in db or not (used internally)
-     * @param {boolean} removeBonusFromActor if we update the actor bonus for advancements
      * @return {Promise<void>}
      */
-    async deleteEmbedItem(id, { save = true, removeBonusFromActor = true } = {}) {
+    async deleteEmbedItem(id, { save = true} = {}) {
         if (!this.system.subItemsMap.has(id)) {
             return;
         }

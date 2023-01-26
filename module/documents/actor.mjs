@@ -36,7 +36,7 @@ export class Pl1eActor extends Actor {
         const system = this.system;
         // Iterate items to apply system on actor
         for (let item of this.items) {
-            if (!['weapon', 'wearable'].includes(item.type)) continue;
+            if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
             for (let [id, attribute] of Object.entries(item.system.attributes)) {

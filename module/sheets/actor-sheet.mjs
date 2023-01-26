@@ -305,16 +305,35 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        // The item still have uses
-        if (item.system.attributes.uses.value > item.system.removedUses) {
-            // Removed one use
-            await item.update({
-                ["system.removedUses"]: foundry.utils.getProperty(item, "system.removedUses") + 1,
-            });
+        // Removed one use
+        await item.update({
+            ["system.removedUses"]: foundry.utils.getProperty(item, "system.removedUses") + 1,
+        });
+
+        // Launch consumable effect
+        for (let [id, attribute] of Object.entries(item.system.attributes)) {
+            if (!attribute.apply || attribute.path === undefined) continue;
+            if (attribute.operator === 'set') {
+                foundry.utils.setProperty(this.actor.system, attribute.path, attribute.value);
+            }
+            else if (attribute.operator === 'push') {
+                let currentValue = foundry.utils.getProperty(this.actor.system, attribute.path);
+                if (currentValue === undefined) currentValue = [];
+                currentValue.push(attribute.value);
+                foundry.utils.setProperty(this.actor.system, attribute.path, currentValue);
+            }
+            else if (attribute.operator === 'add') {
+                let currentValue = foundry.utils.getProperty(this.actor.system, attribute.path);
+                if (currentValue === undefined) currentValue = 0;
+                await this.actor.update({
+                    ["system." + attribute.path]: currentValue + attribute.value
+                });
+            }
         }
-        // If no more uses and item is not reloadable then destroy
-        else if (!item.system.attributes.reloadable.value) {
-            this.deleteEmbedItem(item._id);
+
+        // The item have no more uses and is not reloadable
+        if (item.system.removedUses >= item.system.attributes.uses.value && !item.system.attributes.reloadable.value) {
+            item.delete();
         }
     }
 
