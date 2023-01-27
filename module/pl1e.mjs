@@ -68,9 +68,26 @@ Handlebars.registerHelper('toLowerCase', function (str) {
     return str.toLowerCase();
 });
 
-Handlebars.registerHelper('minus', function(a, b) {
+Handlebars.registerHelper('minus', function (a, b) {
     return a - b;
 })
+
+Handlebars.registerHelper('configEntry', function (key, entry) {
+    return PL1E[key][entry];
+})
+
+Handlebars.registerHelper('config', function (key) {
+    return PL1E[key];
+})
+
+Handlebars.registerHelper('count', function (object, property, value) {
+    let count = 0;
+    for (let [id, subObject] of Object.entries(object)) {
+        if (subObject[property] === value) count++;
+    }
+    return count;
+})
+
 
 /* -------------------------------------------- */
 /*  Ready Hook                                  */

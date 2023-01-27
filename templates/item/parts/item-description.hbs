@@ -1,21 +1,24 @@
-{{log sortedAttributes}}
-{{#each sortedAttributes as |attributeGroup key|}}
-    <button type="button" class="collapsible">{{localize (lookup ../config.groups attributeGroup.[0])}}</button>
-    <div class="content">
-    {{#each attributeGroup.[1] as |attribute|}}
-        {{#if attribute.apply}}
-            <div class="form-group">
-                <label>{{localize attribute.label}}</label>
-                {{#if (eq attribute.type "number")}}
-                    <label class="align-right">{{attribute.value}}</label>
-                {{else if (eq attribute.type "bool")}}
-                {{else if (eq attribute.type "select")}}
-                    <label class="align-right">{{localize (lookup (lookup ../config attribute.select) attribute.value)}}</label>
-                {{/if}}
-            </div>
-        {{/if}}
-    {{/each}}
+{{#each system.attributes as |attributeGroup groupId|}}
+    {{#if (ne (count attributeGroup "apply" true) 0)}}
+    <button type="button" data-toggle="collapse" data-target="#{{groupId}}" aria-expanded="false" aria-controls="{{groupId}}">
+        {{localize (configEntry "groups" groupId)}}
+    </button>
+    <div class="collapse" id="{{groupId}}">
+        {{#each attributeGroup as |attribute id|}}
+            {{#if attribute.apply}}
+                <div class="form-group">
+                    <label>{{localize attribute.label}}</label>
+                    {{#if (eq attribute.type "number")}}
+                        <label class="align-right">{{attribute.value}}</label>
+                    {{else if (eq attribute.type "bool")}}
+                    {{else if (eq attribute.type "select")}}
+                        <label class="align-right">{{localize (configEntry attribute.select attribute.value)}}</label>
+                    {{/if}}
+                </div>
+            {{/if}}
+        {{/each}}
     </div>
+    {{/if}}
 {{/each}}
 <ul class="traits-list">
     {{#each abilities as |abilities level|}}
@@ -23,9 +26,5 @@
             <li class="tag {{id}}"><a>{{level }} {{item.name}}</a></li>
         {{/each}}
     {{/each}}
-    {{#each features as |item id|}}
-        <li class="tag {{id}}"><a>{{item.name}}</a></li>
-    {{/each}}
 </ul>
-<hr>
 {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}

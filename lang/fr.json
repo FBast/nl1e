@@ -175,6 +175,12 @@
   "PL1E.StaminaRecovery": "Récupération d'endurance",
   "PL1E.ManaRecovery": "Récupération de mana",
 
+  "PL1E.General": "Général",
+  "PL1E.Modificators": "Modificateurs",
+  "PL1E.Attack": "Attaque",
+  "PL1E.Defense": "Défense",
+  "PL1E.Recovery": "Récupération",
+
   "PL1E.TooltipStr": "La force représente la puissance musculaire instantané, c'est-à-dire lors d'un effort bref et intense. Plus un personnage est fort plus sa masse musculaire est importante.",
   "PL1E.TooltipAgi": "L'agilité représente la précision et la rapidité musculaire, plus un personnage en possédera plus il sera à même d'effectuer des mouvements délicats et ceci rapidement.",
   "PL1E.TooltipPer": "La perception représente la précision des sens, comprenant la vue, l'ouïe, l'odorat, le touché et le goût. Bien que les deux premiers soient les plus concernés, les autres ne sont pas dénué d'intérêt.",

@@ -157,7 +157,6 @@ export class Pl1eItemSheet extends ItemSheet {
                 sortedAttributes.set(attribute.group, sortedAttribute);
             }
         }
-
         context.sortedAttributes = sortedAttributes;
     }
 

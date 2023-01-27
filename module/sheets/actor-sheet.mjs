@@ -190,7 +190,7 @@ export class Pl1eActorSheet extends ActorSheet {
         const main = $(event.currentTarget).data("main");
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
-        const hands = item.system.attributes.hands.value;
+        const hands = item.system.attributes.general.hands.value;
 
         // Toggle item hands
         if (hands === 2) {
@@ -218,7 +218,7 @@ export class Pl1eActorSheet extends ActorSheet {
             // If other item is equipped on main and this item is equipped on main
             if (otherItem.system.isEquippedMain && item.system.isEquippedMain) {
                 // If other item is equipped on two hands
-                if (otherItem.system.attributes.hands.value === 2) {
+                if (otherItem.system.attributes.general.hands.value === 2) {
                     await otherItem.update({
                         ["system.isEquippedMain"]: false,
                         ["system.isEquippedSecondary"]: false
@@ -234,7 +234,7 @@ export class Pl1eActorSheet extends ActorSheet {
             // If other item is equipped on secondary and this item is equipped on secondary
             if (otherItem.system.isEquippedSecondary && item.system.isEquippedSecondary) {
                 // If other item is equipped on two hands
-                if (otherItem.system.attributes.hands.value === 2) {
+                if (otherItem.system.attributes.general.hands.value === 2) {
                     await otherItem.update({
                         ["system.isEquippedMain"]: false,
                         ["system.isEquippedSecondary"]: false
@@ -259,7 +259,7 @@ export class Pl1eActorSheet extends ActorSheet {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
-        const slot = item.system.attributes.slot.value;
+        const slot = item.system.attributes.general.slot.value;
         if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
         // Toggle item slot
         await item.update({
@@ -273,7 +273,7 @@ export class Pl1eActorSheet extends ActorSheet {
             // Ignore if otherItem is item
             if (otherItem === item) continue;
             // Count same items slot
-            if (otherItem.system.isEquipped && otherItem.system.attributes.slot.value === slot) {
+            if (otherItem.system.isEquipped && otherItem.system.attributes.general.slot.value === slot) {
                 // Unequipped immediately if clothes, armor or amulet
                 if (['clothes', 'armor', 'amulet'].includes(slot)) {
                     await otherItem.update({
@@ -311,28 +311,28 @@ export class Pl1eActorSheet extends ActorSheet {
         });
 
         // Launch consumable effect
-        for (let [id, attribute] of Object.entries(item.system.attributes)) {
-            if (!attribute.apply || attribute.path === undefined) continue;
-            if (attribute.operator === 'set') {
-                foundry.utils.setProperty(this.actor.system, attribute.path, attribute.value);
-            }
-            else if (attribute.operator === 'push') {
-                let currentValue = foundry.utils.getProperty(this.actor.system, attribute.path);
-                if (currentValue === undefined) currentValue = [];
-                currentValue.push(attribute.value);
-                foundry.utils.setProperty(this.actor.system, attribute.path, currentValue);
-            }
-            else if (attribute.operator === 'add') {
-                let currentValue = foundry.utils.getProperty(this.actor.system, attribute.path);
-                if (currentValue === undefined) currentValue = 0;
-                await this.actor.update({
-                    ["system." + attribute.path]: currentValue + attribute.value
-                });
+        for (let [groupId, attributeGroup] of Object.entries(item.system.attributes)) {
+            for (let [id, attribute] of Object.entries(attributeGroup)) {
+                if (!attribute.apply || attribute.path === undefined) continue;
+                if (attribute.operator === 'set') {
+                    foundry.utils.setProperty(this.actor.system, attribute.path, attribute.value);
+                } else if (attribute.operator === 'push') {
+                    let currentValue = foundry.utils.getProperty(this.actor.system, attribute.path);
+                    if (currentValue === undefined) currentValue = [];
+                    currentValue.push(attribute.value);
+                    foundry.utils.setProperty(this.actor.system, attribute.path, currentValue);
+                } else if (attribute.operator === 'add') {
+                    let currentValue = foundry.utils.getProperty(this.actor.system, attribute.path);
+                    if (currentValue === undefined) currentValue = 0;
+                    await this.actor.update({
+                        ["system." + attribute.path]: currentValue + attribute.value
+                    });
+                }
             }
         }
 
         // The item have no more uses and is not reloadable
-        if (item.system.removedUses >= item.system.attributes.uses.value && !item.system.attributes.reloadable.value) {
+        if (item.system.removedUses >= item.system.attributes.general.uses.value && !item.system.attributes.general.reloadable.value) {
             item.delete();
         }
     }

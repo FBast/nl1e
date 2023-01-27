@@ -554,177 +554,163 @@
         "description": "",
         "subItemsMap": [],
         "attributes": {
-          "price": {
-            "group": "general",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.Price"
+          "general": {
+            "price": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.Price"
+            },
+            "rarity": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.Rarity"
+            },
+            "movementPenalty": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.MovementPenalty",
+              "path": "attributes.movementPenalties",
+              "operator": "push"
+            },
+            "parry": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.Parry"
+            },
+            "dodge": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.Dodge"
+            }
           },
-          "rarity": {
-            "group": "general",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.Rarity"
+          "modificators": {
+            "strengthMod": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.StrengthMod",
+              "path": "characteristics.strength.mods",
+              "operator": "push"
+            },
+            "agilityMod": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.AgilityMod",
+              "path": "characteristics.agility.mods",
+              "operator": "push"
+            },
+            "perceptionMod": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.PerceptionMod",
+              "path": "characteristics.perception.mods",
+              "operator": "push"
+            },
+            "constitutionMod": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.ConstitutionMod",
+              "path": "characteristics.constitution.mods",
+              "operator": "push"
+            },
+            "intellectMod": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.IntellectMod",
+              "path": "characteristics.intellect.mods",
+              "operator": "push"
+            },
+            "cunningMod": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.CunningMod",
+              "path": "characteristics.cunning.mods",
+              "operator": "push"
+            },
+            "wisdomMod": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.WisdomMod",
+              "path": "characteristics.wisdom.mods",
+              "operator": "push"
+            },
+            "willMod": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.WillMod",
+              "path": "characteristics.will.mods",
+              "operator": "push"
+            }
           },
-          "strengthMod": {
-            "group": "modificator",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.StrengthMod",
-            "path": "characteristics.strength.mods",
-            "operator": "push"
-          },
-          "agilityMod": {
-            "group": "modificator",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.AgilityMod",
-            "path": "characteristics.agility.mods",
-            "operator": "push"
-          },
-          "perceptionMod": {
-            "group": "modificator",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.PerceptionMod",
-            "path": "characteristics.perception.mods",
-            "operator": "push"
-          },
-          "constitutionMod": {
-            "group": "modificator",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.ConstitutionMod",
-            "path": "characteristics.constitution.mods",
-            "operator": "push"
-          },
-          "intellectMod": {
-            "group": "modificator",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.IntellectMod",
-            "path": "characteristics.intellect.mods",
-            "operator": "push"
-          },
-          "cunningMod": {
-            "group": "modificator",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.CunningMod",
-            "path": "characteristics.cunning.mods",
-            "operator": "push"
-          },
-          "wisdomMod": {
-            "group": "modificator",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.WisdomMod",
-            "path": "characteristics.wisdom.mods",
-            "operator": "push"
-          },
-          "willMod": {
-            "group": "modificator",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.WillMod",
-            "path": "characteristics.will.mods",
-            "operator": "push"
-          },
-          "movementPenalty": {
-            "group": "general",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.MovementPenalty",
-            "path": "attributes.movementPenalties",
-            "operator": "push"
-          },
-          "parry": {
-            "group": "general",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.Parry"
-          },
-          "dodge": {
-            "group": "general",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.Dodge"
-          },
-          "slashingReduction": {
-            "group": "protection",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.SlashingReduction",
-            "path": "attributes.slashingReductions",
-            "operator": "push"
-          },
-          "crushingReduction": {
-            "group": "protection",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.CrushingReduction",
-            "path": "attributes.crushingReductions",
-            "operator": "push"
-          },
-          "piercingReduction": {
-            "group": "protection",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.PiercingReduction",
-            "path": "attributes.piercingReductions",
-            "operator": "push"
-          },
-          "fireReduction": {
-            "group": "protection",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.FireReduction",
-            "path": "attributes.fireReductions",
-            "operator": "push"
-          },
-          "coldReduction": {
-            "group": "protection",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.ColdReduction",
-            "path": "attributes.coldReductions",
-            "operator": "push"
-          },
-          "acidReduction": {
-            "group": "protection",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.AcidReduction",
-            "path": "attributes.acidReductions",
-            "operator": "push"
-          },
-          "shockReduction": {
-            "group": "protection",
-            "type": "number",
-            "value": 0,
-            "apply": false,
-            "label": "PL1E.ShockReduction",
-            "path": "attributes.shockReductions",
-            "operator": "push"
+          "defense": {
+            "slashingReduction": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.SlashingReduction",
+              "path": "attributes.slashingReductions",
+              "operator": "push"
+            },
+            "crushingReduction": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.CrushingReduction",
+              "path": "attributes.crushingReductions",
+              "operator": "push"
+            },
+            "piercingReduction": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.PiercingReduction",
+              "path": "attributes.piercingReductions",
+              "operator": "push"
+            },
+            "fireReduction": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.FireReduction",
+              "path": "attributes.fireReductions",
+              "operator": "push"
+            },
+            "coldReduction": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.ColdReduction",
+              "path": "attributes.coldReductions",
+              "operator": "push"
+            },
+            "acidReduction": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.AcidReduction",
+              "path": "attributes.acidReductions",
+              "operator": "push"
+            },
+            "shockReduction": {
+              "type": "number",
+              "value": 0,
+              "apply": false,
+              "label": "PL1E.ShockReduction",
+              "path": "attributes.shockReductions",
+              "operator": "push"
+            }
           }
         }
       }
@@ -732,24 +718,24 @@
     "feature": {
       "templates": ["base"],
       "attributes": {
-        "size": {
-          "group": "general",
-          "type": "select",
-          "value": "medium",
-          "apply": false,
-          "label": "PL1E.Size",
-          "path": "attributes.size",
-          "operator": "set",
-          "select": "sizes"
-        },
-        "speed": {
-          "group": "general",
-          "type": "number",
-          "value": 4.5,
-          "apply": false,
-          "label": "PL1E.Speed",
-          "path": "attributes.speed",
-          "operator": "set"
+        "general": {
+          "size": {
+            "type": "select",
+            "value": "medium",
+            "apply": false,
+            "label": "PL1E.Size",
+            "path": "attributes.size",
+            "operator": "set",
+            "select": "sizes"
+          },
+          "speed": {
+            "type": "number",
+            "value": 4.5,
+            "apply": false,
+            "label": "PL1E.Speed",
+            "path": "attributes.speed",
+            "operator": "set"
+          }
         }
       }
     },
@@ -762,82 +748,80 @@
       "isEquippedMain": false,
       "isEquippedSecondary": false,
       "attributes": {
-        "mastery": {
-          "group": "general",
-          "type": "select",
-          "value": "none",
-          "apply": false,
-          "label": "PL1E.Mastery",
-          "select": "masteries"
+        "general": {
+          "mastery": {
+            "type": "select",
+            "value": "none",
+            "apply": false,
+            "label": "PL1E.Mastery",
+            "select": "masteries"
+          },
+          "contactAttackRange": {
+            "type": "number",
+            "value": 1,
+            "apply": false,
+            "label": "PL1E.ContactAttackRange"
+          },
+          "rangedAttackRange": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.RangedAttackRange"
+          },
+          "parryProjectiles": {
+            "type": "bool",
+            "value": false,
+            "apply": false,
+            "label": "PL1E.ParryProjectiles"
+          }
         },
-        "contactAttackRange": {
-          "group": "general",
-          "type": "number",
-          "value": 1,
-          "apply": false,
-          "label": "PL1E.ContactAttackRange"
-        },
-        "rangedAttackRange": {
-          "group": "general",
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.RangedAttackRange"
-        },
-        "parryProjectiles": {
-          "group": "general",
-          "type": "bool",
-          "value": false,
-          "apply": false,
-          "label": "PL1E.ParryProjectiles"
-        },
-        "slashing": {
-          "group": "fight",
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Slashing"
-        },
-        "crushing": {
-          "group": "fight",
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Crushing"
-        },
-        "piercing": {
-          "group": "fight",
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Piercing"
-        },
-        "hands": {
-          "group": "fight",
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Hands"
-        },
-        "ammo": {
-          "group": "fight",
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.Ammo"
+        "attack": {
+          "slashing": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Slashing"
+          },
+          "crushing": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Crushing"
+          },
+          "piercing": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Piercing"
+          },
+          "hands": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Hands"
+          },
+          "ammo": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.Ammo"
+          }
         }
+
       }
     },
     "wearable": {
       "templates": ["base"],
       "isEquipped": false,
       "attributes": {
-        "slot": {
-          "type": "select",
-          "value": "none",
-          "apply": false,
-          "label": "PL1E.Slot",
-          "select": "slots"
+        "general": {
+          "slot": {
+            "type": "select",
+            "value": "none",
+            "apply": false,
+            "label": "PL1E.Slot",
+            "select": "slots"
+          }
         }
       }
     },
@@ -845,54 +829,52 @@
       "templates": ["base"],
       "removedUses": 0,
       "attributes": {
-        "slot": {
-          "group": "general",
-          "type": "select",
-          "value": "action",
-          "apply": false,
-          "label": "PL1E.Activation",
-          "select": "activations"
+        "general": {
+          "slot": {
+            "type": "select",
+            "value": "action",
+            "apply": false,
+            "label": "PL1E.Activation",
+            "select": "activations"
+          },
+          "reloadable": {
+            "type": "bool",
+            "value": false,
+            "apply": false,
+            "label": "PL1E.Reloadable"
+          },
+          "uses": {
+            "type": "number",
+            "value": 1,
+            "apply": true,
+            "label": "PL1E.Uses"
+          }
         },
-        "healthRecovery": {
-          "group": "recovery",
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.HealthRecovery",
-          "path": "resources.health.value",
-          "operator": "add"
-        },
-        "staminaRecovery": {
-          "group": "recovery",
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.StaminaRecovery",
-          "path": "resources.stamina.value",
-          "operator": "add"
-        },
-        "manaRecovery": {
-          "group": "recovery",
-          "type": "number",
-          "value": 0,
-          "apply": false,
-          "label": "PL1E.ManaRecovery",
-          "path": "resources.mana.value",
-          "operator": "add"
-        },
-        "reloadable": {
-          "group": "general",
-          "type": "bool",
-          "value": false,
-          "apply": false,
-          "label": "PL1E.Reloadable"
-        },
-        "uses": {
-          "group": "general",
-          "type": "number",
-          "value": 1,
-          "apply": true,
-          "label": "PL1E.Uses"
+        "recovery": {
+          "healthRecovery": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.HealthRecovery",
+            "path": "resources.health.value",
+            "operator": "add"
+          },
+          "staminaRecovery": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.StaminaRecovery",
+            "path": "resources.stamina.value",
+            "operator": "add"
+          },
+          "manaRecovery": {
+            "type": "number",
+            "value": 0,
+            "apply": false,
+            "label": "PL1E.ManaRecovery",
+            "path": "resources.mana.value",
+            "operator": "add"
+          }
         }
       }
     },

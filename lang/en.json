@@ -172,6 +172,12 @@
   "PL1E.Free": "Free",
   "PL1E.Action": "Action",
   "PL1E.Round": "Round",
-  "PL1E.Special": "Special"
+  "PL1E.Special": "Special",
+
+  "PL1E.General": "General",
+  "PL1E.Modificators": "Modificators",
+  "PL1E.Attack": "Attack",
+  "PL1E.Defense": "Defense",
+  "PL1E.Recovery": "Recovery"
 
 }

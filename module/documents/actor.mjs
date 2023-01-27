@@ -39,16 +39,18 @@ export class Pl1eActor extends Actor {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
-            for (let [id, attribute] of Object.entries(item.system.attributes)) {
-                if (!attribute.apply || attribute.path === undefined) continue;
-                if (attribute.operator === 'set') {
-                    foundry.utils.setProperty(system, attribute.path, attribute.value);
-                }
-                else if (attribute.operator === 'add') {
-                    let currentValue = foundry.utils.getProperty(system, attribute.path);
-                    if (currentValue === undefined) currentValue = [];
-                    currentValue.push(attribute.value);
-                    foundry.utils.setProperty(system, attribute.path, currentValue);
+            for (let [groupId, attributeGroup] of Object.entries(item.system.attributes)) {
+                for (let [id, attribute] of Object.entries(attributeGroup)) {
+                    if (!attribute.apply || attribute.path === undefined) continue;
+                    if (attribute.operator === 'set') {
+                        foundry.utils.setProperty(system, attribute.path, attribute.value);
+                    }
+                    else if (attribute.operator === 'add') {
+                        let currentValue = foundry.utils.getProperty(system, attribute.path);
+                        if (currentValue === undefined) currentValue = [];
+                        currentValue.push(attribute.value);
+                        foundry.utils.setProperty(system, attribute.path, currentValue);
+                    }
                 }
             }
         }

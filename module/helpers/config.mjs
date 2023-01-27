@@ -143,7 +143,8 @@ PL1E.activations = {
 
 PL1E.groups = {
     "general": "PL1E.General",
-    "modificator": "PL1E.Modificator",
-    "fight": "PL1E.Fight",
-    "protection": "PL1E.Protection"
+    "modificators": "PL1E.Modificators",
+    "attack": "PL1E.Attack",
+    "defense": "PL1E.Defense",
+    "recovery": "PL1E.Recovery"
 }
