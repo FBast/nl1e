@@ -854,7 +854,7 @@
         "uses": {
           "type": "number",
           "value": 1,
-          "apply": false,
+          "apply": true,
           "label": "PL1E.Uses"
         }
       }

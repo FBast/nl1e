@@ -1,16 +1,19 @@
-{{#each system.attributes as |attribute id|}}
-    {{#if attribute.apply}}
-        <div class="form-group">
-            <label>{{localize attribute.label}}</label>
-            {{#if (eq attribute.type "number")}}
-                <label class="align-right">{{attribute.value}}</label>
-            {{else if (eq attribute.type "bool")}}
-            {{else if (eq attribute.type "select")}}
-                <label class="align-right">{{localize (lookup (lookup ../config attribute.select) attribute.value)}}</label>
-            {{/if}}
-        </div>
-    {{/if}}
-{{/each}}
+<button type="button" class="collapsible">Open Collapsible</button>
+<div class="content">
+    {{#each system.attributes as |attribute id|}}
+        {{#if attribute.apply}}
+            <div class="form-group">
+                <label>{{localize attribute.label}}</label>
+                {{#if (eq attribute.type "number")}}
+                    <label class="align-right">{{attribute.value}}</label>
+                {{else if (eq attribute.type "bool")}}
+                {{else if (eq attribute.type "select")}}
+                    <label class="align-right">{{localize (lookup (lookup ../config attribute.select) attribute.value)}}</label>
+                {{/if}}
+            </div>
+        {{/if}}
+    {{/each}}
+</div>
 <ul class="traits-list">
     {{#each abilities as |abilities level|}}
         {{#each abilities as |item id|}}

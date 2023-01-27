@@ -5,7 +5,7 @@
   padding: 0;
   align-items: center;
   background: rgba(0, 0, 0, 0.05);
-  border: $border-groove;
+  border: 2px groove #eeede0;
   font-weight: bold;
   > * {
     font-size: 14px;
@@ -127,7 +127,7 @@
     padding: 0;
     align-items: center;
     background: rgba(0, 0, 0, 0.05);
-    border: $border-groove;
+    border: $borderGroove;
     font-weight: bold;
     > * {
       font-size: 12px;
