@@ -555,18 +555,21 @@
         "subItemsMap": [],
         "attributes": {
           "price": {
+            "group": "general",
             "type": "number",
             "value": 0,
             "apply": false,
             "label": "PL1E.Price"
           },
           "rarity": {
+            "group": "general",
             "type": "number",
             "value": 0,
             "apply": false,
             "label": "PL1E.Rarity"
           },
           "strengthMod": {
+            "group": "modificator",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -575,6 +578,7 @@
             "operator": "push"
           },
           "agilityMod": {
+            "group": "modificator",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -583,6 +587,7 @@
             "operator": "push"
           },
           "perceptionMod": {
+            "group": "modificator",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -591,6 +596,7 @@
             "operator": "push"
           },
           "constitutionMod": {
+            "group": "modificator",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -599,6 +605,7 @@
             "operator": "push"
           },
           "intellectMod": {
+            "group": "modificator",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -607,6 +614,7 @@
             "operator": "push"
           },
           "cunningMod": {
+            "group": "modificator",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -615,6 +623,7 @@
             "operator": "push"
           },
           "wisdomMod": {
+            "group": "modificator",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -623,6 +632,7 @@
             "operator": "push"
           },
           "willMod": {
+            "group": "modificator",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -631,6 +641,7 @@
             "operator": "push"
           },
           "movementPenalty": {
+            "group": "general",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -639,18 +650,21 @@
             "operator": "push"
           },
           "parry": {
+            "group": "general",
             "type": "number",
             "value": 0,
             "apply": false,
             "label": "PL1E.Parry"
           },
           "dodge": {
+            "group": "general",
             "type": "number",
             "value": 0,
             "apply": false,
             "label": "PL1E.Dodge"
           },
           "slashingReduction": {
+            "group": "protection",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -659,6 +673,7 @@
             "operator": "push"
           },
           "crushingReduction": {
+            "group": "protection",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -667,6 +682,7 @@
             "operator": "push"
           },
           "piercingReduction": {
+            "group": "protection",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -675,6 +691,7 @@
             "operator": "push"
           },
           "fireReduction": {
+            "group": "protection",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -683,6 +700,7 @@
             "operator": "push"
           },
           "coldReduction": {
+            "group": "protection",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -691,6 +709,7 @@
             "operator": "push"
           },
           "acidReduction": {
+            "group": "protection",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -699,6 +718,7 @@
             "operator": "push"
           },
           "shockReduction": {
+            "group": "protection",
             "type": "number",
             "value": 0,
             "apply": false,
@@ -713,6 +733,7 @@
       "templates": ["base"],
       "attributes": {
         "size": {
+          "group": "general",
           "type": "select",
           "value": "medium",
           "apply": false,
@@ -722,6 +743,7 @@
           "select": "sizes"
         },
         "speed": {
+          "group": "general",
           "type": "number",
           "value": 4.5,
           "apply": false,
@@ -741,6 +763,7 @@
       "isEquippedSecondary": false,
       "attributes": {
         "mastery": {
+          "group": "general",
           "type": "select",
           "value": "none",
           "apply": false,
@@ -748,48 +771,56 @@
           "select": "masteries"
         },
         "contactAttackRange": {
+          "group": "general",
           "type": "number",
           "value": 1,
           "apply": false,
           "label": "PL1E.ContactAttackRange"
         },
         "rangedAttackRange": {
+          "group": "general",
           "type": "number",
           "value": 0,
           "apply": false,
           "label": "PL1E.RangedAttackRange"
         },
         "parryProjectiles": {
+          "group": "general",
           "type": "bool",
           "value": false,
           "apply": false,
           "label": "PL1E.ParryProjectiles"
         },
         "slashing": {
+          "group": "fight",
           "type": "number",
           "value": 0,
           "apply": false,
           "label": "PL1E.Slashing"
         },
         "crushing": {
+          "group": "fight",
           "type": "number",
           "value": 0,
           "apply": false,
           "label": "PL1E.Crushing"
         },
         "piercing": {
+          "group": "fight",
           "type": "number",
           "value": 0,
           "apply": false,
           "label": "PL1E.Piercing"
         },
         "hands": {
+          "group": "fight",
           "type": "number",
           "value": 0,
           "apply": false,
           "label": "PL1E.Hands"
         },
         "ammo": {
+          "group": "fight",
           "type": "number",
           "value": 0,
           "apply": false,
@@ -815,6 +846,7 @@
       "removedUses": 0,
       "attributes": {
         "slot": {
+          "group": "general",
           "type": "select",
           "value": "action",
           "apply": false,
@@ -822,6 +854,7 @@
           "select": "activations"
         },
         "healthRecovery": {
+          "group": "recovery",
           "type": "number",
           "value": 0,
           "apply": false,
@@ -830,6 +863,7 @@
           "operator": "add"
         },
         "staminaRecovery": {
+          "group": "recovery",
           "type": "number",
           "value": 0,
           "apply": false,
@@ -838,6 +872,7 @@
           "operator": "add"
         },
         "manaRecovery": {
+          "group": "recovery",
           "type": "number",
           "value": 0,
           "apply": false,
@@ -846,12 +881,14 @@
           "operator": "add"
         },
         "reloadable": {
+          "group": "general",
           "type": "bool",
           "value": false,
           "apply": false,
           "label": "PL1E.Reloadable"
         },
         "uses": {
+          "group": "general",
           "type": "number",
           "value": 1,
           "apply": true,

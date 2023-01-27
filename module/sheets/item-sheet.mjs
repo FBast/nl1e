@@ -51,6 +51,8 @@ export class Pl1eItemSheet extends ItemSheet {
             this._prepareSubItems(context);
         }
 
+        this._prepareAttributes(context);
+
         // Add the actor's data to context.data for easier access, as well as flags.
         context.system = itemData.system;
         context.flags = itemData.flags;
@@ -136,6 +138,27 @@ export class Pl1eItemSheet extends ItemSheet {
         // Assign and return
         context.features = features;
         context.abilities = abilities;
+    }
+
+    _prepareAttributes(context) {
+        // Prepare Attributes
+        const sortedAttributes = new Map();
+        for (let [id, attribute] of Object.entries(context.item.system.attributes)) {
+            if (!attribute.apply) continue;
+            // Add attribute to existing group
+            if (sortedAttributes.has(attribute.group)) {
+                let sortedAttribute = sortedAttributes.get(attribute.group);
+                sortedAttribute.push(attribute)
+            }
+            // Create group and add attribute
+            else {
+                let sortedAttribute = [];
+                sortedAttribute.push(attribute);
+                sortedAttributes.set(attribute.group, sortedAttribute);
+            }
+        }
+
+        context.sortedAttributes = sortedAttributes;
     }
 
     /**

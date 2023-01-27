@@ -4,6 +4,7 @@
  */
 export class Pl1eItem extends Item {
 
+    /** @override */
     async _preCreate(data, options, userId) {
         await super._preCreate(data, options, userId);
         const updateData = {};
@@ -15,7 +16,7 @@ export class Pl1eItem extends Item {
             const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
             if (name) updateData['name'] = name;
         }
-        await this.updateSource( updateData );
+        await this.updateSource(updateData);
     }
 
     /**
@@ -35,6 +36,7 @@ export class Pl1eItem extends Item {
                 this.addEmbedItem(item, { save: false, newId: false });
             });
         }
+
     }
 
     /**
@@ -166,7 +168,7 @@ export class Pl1eItem extends Item {
      */
     async saveEmbedItems() {
         await this.update({
-            "system.subItemsMap": Array.from(this.system.subItemsMap).map(([id, item]) => item.toObject(false)),
+            "system.subItemsMap": Array.from(this.system.subItemsMap).map(([id, item]) => item.toObject(false))
         });
         this.sheet.render(false);
     }

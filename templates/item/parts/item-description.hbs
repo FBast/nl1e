@@ -1,6 +1,8 @@
-<button type="button" class="collapsible">Open Collapsible</button>
-<div class="content">
-    {{#each system.attributes as |attribute id|}}
+{{log sortedAttributes}}
+{{#each sortedAttributes as |attributeGroup key|}}
+    <button type="button" class="collapsible">{{localize (lookup ../config.groups attributeGroup.[0])}}</button>
+    <div class="content">
+    {{#each attributeGroup.[1] as |attribute|}}
         {{#if attribute.apply}}
             <div class="form-group">
                 <label>{{localize attribute.label}}</label>
@@ -13,7 +15,8 @@
             </div>
         {{/if}}
     {{/each}}
-</div>
+    </div>
+{{/each}}
 <ul class="traits-list">
     {{#each abilities as |abilities level|}}
         {{#each abilities as |item id|}}
