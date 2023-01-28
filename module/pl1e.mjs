@@ -72,6 +72,18 @@ Handlebars.registerHelper('minus', function(a, b) {
     return a - b;
 })
 
+Handlebars.registerHelper('getAttribute', function (name, properties) {
+    return PL1E.attributes[name][properties];
+})
+
+Handlebars.registerHelper('configEntry', function (key, entry) {
+    return PL1E[key][entry];
+})
+
+Handlebars.registerHelper('config', function (key) {
+    return PL1E[key];
+})
+
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */

@@ -34,21 +34,22 @@ export class Pl1eActor extends Actor {
     /** @override */
     prepareEmbeddedDocuments() {
         const system = this.system;
+        const attributes = CONFIG.PL1E.attributes;
         // Iterate items to apply system on actor
         for (let item of this.items) {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
             for (let [id, attribute] of Object.entries(item.system.attributes)) {
-                if (!attribute.apply || attribute.path === undefined) continue;
-                if (attribute.operator === 'set') {
-                    foundry.utils.setProperty(system, attribute.path, attribute.value);
+                if (!attribute.apply || attributes[id]["path"] === undefined) continue;
+                if (attributes[id]["operator"] === 'set') {
+                    foundry.utils.setProperty(system, attributes[id]["path"], attribute.value);
                 }
-                else if (attribute.operator === 'add') {
-                    let currentValue = foundry.utils.getProperty(system, attribute.path);
+                else if (attributes[id]["operator"] === 'push') {
+                    let currentValue = foundry.utils.getProperty(system, attributes[id]["path"]);
                     if (currentValue === undefined) currentValue = [];
                     currentValue.push(attribute.value);
-                    foundry.utils.setProperty(system, attribute.path, currentValue);
+                    foundry.utils.setProperty(system, attributes[id]["path"], currentValue);
                 }
             }
         }

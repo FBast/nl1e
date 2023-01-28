@@ -140,3 +140,204 @@ PL1E.activations = {
     "round": "PL1E.Round",
     "special": "PL1E.Special"
 }
+
+PL1E.attributes = {
+    // General
+    "price": {
+        "type": "number",
+        "label": "PL1E.Price"
+    },
+    "rarity": {
+        "type": "number",
+        "label": "PL1E.Rarity"
+    },
+    "size": {
+        "type": "select",
+        "label": "PL1E.Size",
+        "path": "attributes.size",
+        "operator": "set",
+        "select": "sizes"
+    },
+    "speed": {
+        "type": "number",
+        "label": "PL1E.Speed",
+        "path": "attributes.speed",
+        "operator": "set"
+    },
+    "mastery": {
+        "type": "select",
+        "label": "PL1E.Mastery",
+        "select": "masteries"
+    },
+    "slot": {
+        "type": "select",
+        "label": "PL1E.Slot",
+        "select": "slots"
+    },
+    "uses": {
+        "type": "number",
+        "label": "PL1E.Uses"
+    },
+    "reloadable": {
+        "type": "bool",
+        "label": "PL1E.Reloadable"
+    },
+    // Modificators
+    "movementPenalty": {
+        "type": "number",
+        "label": "PL1E.MovementPenalty",
+        "path": "attributes.movementPenalties",
+        "operator": "push"
+    },
+    "strengthMod": {
+        "type": "number",
+        "label": "PL1E.StrengthMod",
+        "path": "characteristics.strength.mods",
+        "operator": "push"
+    },
+    "agilityMod": {
+        "type": "number",
+        "label": "PL1E.AgilityMod",
+        "path": "characteristics.agility.mods",
+        "operator": "push"
+    },
+    "perceptionMod": {
+        "type": "number",
+        "label": "PL1E.PerceptionMod",
+        "path": "characteristics.perception.mods",
+        "operator": "push"
+    },
+    "constitutionMod": {
+        "type": "number",
+        "label": "PL1E.ConstitutionMod",
+        "path": "characteristics.constitution.mods",
+        "operator": "push"
+    },
+    "intellectMod": {
+        "type": "number",
+        "label": "PL1E.IntellectMod",
+        "path": "characteristics.intellect.mods",
+        "operator": "push"
+    },
+    "cunningMod": {
+        "type": "number",
+        "label": "PL1E.CunningMod",
+        "path": "characteristics.cunning.mods",
+        "operator": "push"
+    },
+    "wisdomMod": {
+        "type": "number",
+        "label": "PL1E.WisdomMod",
+        "path": "characteristics.wisdom.mods",
+        "operator": "push"
+    },
+    "willMod": {
+        "type": "number",
+        "label": "PL1E.WillMod",
+        "path": "characteristics.will.mods",
+        "operator": "push"
+    },
+    // Defense
+    "parry": {
+        "type": "number",
+        "label": "PL1E.Parry"
+    },
+    "dodge": {
+        "type": "number",
+        "label": "PL1E.Dodge"
+    },
+    "slashingReduction": {
+        "type": "number",
+        "label": "PL1E.SlashingReduction",
+        "path": "attributes.slashingReductions",
+        "operator": "push"
+    },
+    "crushingReduction": {
+        "type": "number",
+        "label": "PL1E.CrushingReduction",
+        "path": "attributes.crushingReductions",
+        "operator": "push"
+    },
+    "piercingReduction": {
+        "type": "number",
+        "label": "PL1E.PiercingReduction",
+        "path": "attributes.piercingReductions",
+        "operator": "push"
+    },
+    "fireReduction": {
+        "type": "number",
+        "label": "PL1E.FireReduction",
+        "path": "attributes.fireReductions",
+        "operator": "push"
+    },
+    "coldReduction": {
+        "type": "number",
+        "label": "PL1E.ColdReduction",
+        "path": "attributes.coldReductions",
+        "operator": "push"
+    },
+    "acidReduction": {
+        "type": "number",
+        "label": "PL1E.AcidReduction",
+        "path": "attributes.acidReductions",
+        "operator": "push"
+    },
+    "shockReduction": {
+        "type": "number",
+        "label": "PL1E.ShockReduction",
+        "path": "attributes.shockReductions",
+        "operator": "push"
+    },
+    // Attack
+    "contactAttackRange": {
+        "type": "number",
+        "label": "PL1E.ContactAttackRange"
+    },
+    "rangedAttackRange": {
+        "type": "number",
+        "label": "PL1E.RangedAttackRange"
+    },
+    "parryProjectiles": {
+        "type": "bool",
+        "label": "PL1E.ParryProjectiles"
+    },
+    "slashing": {
+        "type": "number",
+        "label": "PL1E.Slashing"
+    },
+    "crushing": {
+        "type": "number",
+        "label": "PL1E.Crushing"
+    },
+    "piercing": {
+        "type": "number",
+        "label": "PL1E.Piercing"
+    },
+    "hands": {
+        "type": "number",
+        "label": "PL1E.Hands"
+    },
+    "ammo": {
+        "type": "number",
+        "label": "PL1E.Ammo"
+    },
+    // Recovery
+    "healthRecovery": {
+        "type": "number",
+        "label": "PL1E.HealthRecovery",
+        "path": "resources.health.value",
+        "operator": "add"
+    },
+    "staminaRecovery": {
+        "type": "number",
+        "label": "PL1E.StaminaRecovery",
+        "path": "resources.stamina.value",
+        "operator": "add"
+    },
+    "manaRecovery": {
+        "type": "number",
+        "label": "PL1E.ManaRecovery",
+        "path": "resources.mana.value",
+        "operator": "add"
+    }
+}

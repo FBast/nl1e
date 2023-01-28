@@ -1,14 +1,14 @@
 {{#each system.attributes as |attribute id|}}
     <div class="form-group">
         <input type="checkbox" name="system.attributes.{{id}}.apply" {{checked attribute.apply}} >
-        <label>{{localize attribute.label}}</label>
-        {{#if (eq attribute.type "number")}}
+        <label>{{localize (getAttribute id "label")}}</label>
+        {{#if (eq (getAttribute id "type") "number")}}
             <input type="text" name="system.attributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
-        {{else if (eq attribute.type "bool")}}
+        {{else if (eq (getAttribute id "type") "bool")}}
             <input type="checkbox" name="system.attributes.{{id}}.value" value="{{attribute.value}}" {{checked attribute.value}} data-dtype="Boolean"/>
-        {{else if (eq attribute.type "select")}}
+        {{else if (eq (getAttribute id "type") "select")}}
             <select name="system.attributes.{{id}}.value">
-                {{selectOptions (lookup ../config attribute.select) selected=attribute.value localize=true}}
+                {{selectOptions (config (getAttribute id "select")) selected=attribute.value localize=true}}
             </select>
         {{/if}}
     </div>

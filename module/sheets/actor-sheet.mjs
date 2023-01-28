@@ -304,6 +304,7 @@ export class Pl1eActorSheet extends ActorSheet {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
+        const attributes = PL1E.attributes;
 
         // Removed one use
         await item.update({
@@ -312,21 +313,21 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Launch consumable effect
         for (let [id, attribute] of Object.entries(item.system.attributes)) {
-            if (!attribute.apply || attribute.path === undefined) continue;
-            if (attribute.operator === 'set') {
-                foundry.utils.setProperty(this.actor.system, attribute.path, attribute.value);
+            if (!attribute.apply || attributes[id]["path"] === undefined) continue;
+            if (attributes[id]["operator"] === 'set') {
+                foundry.utils.setProperty(this.actor.system, attributes[id]["path"], attribute.value);
             }
-            else if (attribute.operator === 'push') {
-                let currentValue = foundry.utils.getProperty(this.actor.system, attribute.path);
+            else if (attributes[id]["operator"] === 'push') {
+                let currentValue = foundry.utils.getProperty(this.actor.system, attributes[id]["path"]);
                 if (currentValue === undefined) currentValue = [];
                 currentValue.push(attribute.value);
-                foundry.utils.setProperty(this.actor.system, attribute.path, currentValue);
+                foundry.utils.setProperty(this.actor.system, attributes[id]["path"], currentValue);
             }
-            else if (attribute.operator === 'add') {
-                let currentValue = foundry.utils.getProperty(this.actor.system, attribute.path);
+            else if (attributes[id]["operator"] === 'add') {
+                let currentValue = foundry.utils.getProperty(this.actor.system, attributes[id]["path"]);
                 if (currentValue === undefined) currentValue = 0;
                 await this.actor.update({
-                    ["system." + attribute.path]: currentValue + attribute.value
+                    ["system." + attributes[id]["path"]]: currentValue + attribute.value
                 });
             }
         }
