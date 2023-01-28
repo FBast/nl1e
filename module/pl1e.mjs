@@ -15,8 +15,8 @@ import {PL1E} from "./helpers/config.mjs";
 
 Hooks.once('init', async function () {
 
-    // Add utility classes to the global game object so that they're more easily
-    // accessible in global contexts.
+    // Add utility classes to the layout game object so that they're more easily
+    // accessible in layout contexts.
     game.pl1e = {
         Pl1eActor,
         Pl1eItem,

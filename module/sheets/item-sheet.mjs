@@ -48,7 +48,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Prepare character data and items.
         if (itemData.type === 'feature' || itemData.type === 'item') {
-            this.#_prepareSubItems(context);
+            this._prepareSubItems(context);
         }
 
         // Add the actor's data to context.data for easier access, as well as flags.
@@ -71,8 +71,8 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         // Roll handlers, click handlers, etc. would go here.
-        html.find(`.item-edit`).on("click", this.#_editSubItem.bind(this));
-        html.find(`.item-delete`).on("click", this.#_deleteSubItem.bind(this));
+        html.find(`.item-edit`).on("click", this._editSubItem.bind(this));
+        html.find(`.item-delete`).on("click", this._deleteSubItem.bind(this));
     }
 
     /**
@@ -96,7 +96,7 @@ export class Pl1eItemSheet extends ItemSheet {
         this.document.addEmbedItem(data);
     }
 
-    #_prepareSubItems(context) {
+    _prepareSubItems(context) {
         // Initialize containers.
         const features = [];
         const abilities = {
@@ -133,7 +133,7 @@ export class Pl1eItemSheet extends ItemSheet {
      * @param {Event} event
      * @private
      */
-    #_editSubItem(event) {
+    _editSubItem(event) {
         event.preventDefault();
         event.stopPropagation();
         const itemId = $(event.currentTarget).data("item-id");
@@ -148,7 +148,7 @@ export class Pl1eItemSheet extends ItemSheet {
      * @param {Event} event
      * @private
      */
-    #_deleteSubItem(event) {
+    _deleteSubItem(event) {
         event.preventDefault();
         event.stopPropagation();
         const itemId = $(event.currentTarget).data("item-id");
