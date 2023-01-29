@@ -1,4 +1,18 @@
 <section class="scroll-auto">
+    <div class="grid grid-4col">
+        <div class="form-group">
+            <label>{{localize "PL1E.Currency"}}</label>
+            <a class="currency-convert rollable" data-action="convertCurrency" title="{{localize 'DND5E.CurrencyConvert'}}">
+                <i class="fas fa-coins"></i>
+            </a>
+        </div>
+        {{#each system.currency as |value key|}}
+            <div class="form-group">
+                <label>{{localize (configEntry "currencies" key)}}</label>
+                {{numberInput value name=(concat "system.currency." key)}}
+            </div>
+        {{/each}}
+    </div>
     <ol class="items-list">
         <li class="item flexrow items-header">
             <div class="item-name">{{localize "PL1E.Weapon"}}</div>

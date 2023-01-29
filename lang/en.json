@@ -158,10 +158,6 @@
   "PL1E.Necromancia": "Necromancia",
   "PL1E.Theurgy": "Theurgy",
 
-  "PL1E.HealthRecovery": "Health recovery",
-  "PL1E.StaminaRecovery": "Stamina recovery",
-  "PL1E.ManaRecovery": "Mana recovery",
-
   "PL1E.Clothes": "Clothes",
   "PL1E.Armor": "Armor",
   "PL1E.Ring": "Ring",
@@ -172,6 +168,15 @@
   "PL1E.Free": "Free",
   "PL1E.Action": "Action",
   "PL1E.Round": "Round",
-  "PL1E.Special": "Special"
+  "PL1E.Special": "Special",
+
+  "PL1E.HealthRecovery": "Health recovery",
+  "PL1E.StaminaRecovery": "Stamina recovery",
+  "PL1E.ManaRecovery": "Mana recovery",
+
+  "PL1E.Currency": "Currency",
+  "PL1E.Gold": "Gold",
+  "PL1E.Silver": "Silver",
+  "PL1E.Copper": "Copper"
 
 }

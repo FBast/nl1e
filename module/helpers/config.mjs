@@ -101,6 +101,12 @@ PL1E.sizeTokens = {
     "gargantuan": "4"
 };
 
+PL1E.currencies = {
+    "gp": "PL1E.Gold",
+    "sp": "PL1E.Silver",
+    "cp": "PL1E.Copper"
+}
+
 PL1E.masteries = {
     "none": "PL1E.None",
     "crossbows": "PL1E.Crossbows",
