@@ -3,12 +3,16 @@
     <div class="characteristics">
         {{#each system.characteristics as |characteristic key|}}
             <div class="characteristic flex-group-center">
-                <h2 class="characteristic-label hoverable align-left" data-tooltip="{{localize characteristic.tooltip}}" data-id="{{characteristic.id}}"
+                <h2 class="characteristic-label tooltip align-left" data-tooltip="{{localize characteristic.tooltip}}" data-id="{{characteristic.id}}"
                     data-resources="{{characteristic.weights.resources}}" data-skills="{{characteristic.weights.skills}}">{{characteristic.label}}</h2>
                 <div class="characteristic-values flexrow flex-group-center">
-                    <input type="number" min="{{characteristic.min}}" max="{{characteristic.max}}"
-                           name="system.characteristics.{{key}}.base" value="{{characteristic.base}}"
-                           data-dtype="Number"/>
+                    <div class="input-spin">
+                        <input name="characteristics.{{key}}.value" type="number" value="{{characteristic.value}}" data-dtype="Number" min="0" placeholder="0" disabled/>
+                        <span>
+                            <i class="input-spin-control pointer fa fa-plus-square" data-path="characteristics.{{key}}.value" data-value="1"></i>
+                            <i class="input-spin-control pointer fa fa-minus-square" data-path="characteristics.{{key}}.value" data-value="-1"></i>
+                        </span>
+                    </div>
                     <span class="characteristic-mod {{#if (gt characteristic.mod 0)}}color-green{{/if}} {{#if (lt characteristic.mod 0)}}color-red{{/if}}">
                         {{numberFormat characteristic.mod decimals=0 sign=true}}
                     </span>
@@ -31,7 +35,7 @@
                             {{#if (lt skill.numberMod 0)}}color-red{{/if}}
                             {{#if (eq skill.numberMod 0)}}color-black{{/if}}">{{skill.number}}</label>
                     </i>
-                    <label class="skill-label hoverable grid-span-2 align-left" data-tooltip="{{localize skill.tooltip}}" data-id="{{skill.id}}"
+                    <label class="skill-label tooltip grid-span-2 align-left" data-tooltip="{{localize skill.tooltip}}" data-id="{{skill.id}}"
                            data-attributes="{{skill.weights.attributes}}" data-characteristics="{{skill.weights.characteristics}}">{{skill.label}}</label>
                     <div class="skill-masteries grid-span-3 align-right">
                         <input type="radio" name="system.skills.{{key}}.rank" class="rank-1" value="1"
@@ -51,104 +55,114 @@
     </div>
     <!-- Right column -->
     <div class="attributes scroll-auto grid-span-2">
-        <div class="form-group">
-            <label>Experience</label>
-            <input type="number" step="1" min="0" max="60" name="system.attributes.experience"
-                   value="{{system.attributes.experience}}" data-dtype="Number"/>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.Bonuses"}}</label>
+        <fieldset>
+            <legend class="section-header">General</legend>
             <div class="form-group">
-                {{rangePicker name="system.attributes.bonuses" value=system.attributes.bonuses min=-2 max=2 step=1}}
+                <label>Experience</label>
+                <input type="number" step="1" min="0" max="60" name="system.attributes.experience"
+                       value="{{system.attributes.experience}}" data-dtype="Number"/>
             </div>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.Advantages"}}</label>
             <div class="form-group">
-                {{rangePicker name="system.attributes.advantages" value=system.attributes.advantages min=-2 max=2 step=1}}
+                <label>{{localize "PL1E.Bonuses"}}</label>
+                <div class="form-group">
+                    {{rangePicker name="system.attributes.bonuses" value=system.attributes.bonuses min=-2 max=2 step=1}}
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.Size"}}</label>
-            <label class="align-right">{{localize (lookup config.sizes system.attributes.size)}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.Speed"}}</label>
-            <label class="align-right">{{system.attributes.speed}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.Initiative"}}</label>
-            <label class="align-right">{{system.attributes.initiative}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.DodgeBonuses"}}</label>
-            <label class="align-right">{{system.attributes.dodgeBonuses}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.ParryBonuses"}}</label>
-            <label class="align-right">{{system.attributes.parryBonuses}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.MovementPenalty"}}</label>
-            <label class="align-right">{{system.attributes.movementPenalty}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.NightVision"}}</label>
-            <label class="align-right">{{system.attributes.nightVision}}</label>
-        </div>
-        <hr>
-        <div class="form-group">
-            <label>{{localize "PL1E.SlashingReduction"}}</label>
-            <label class="align-right">{{system.attributes.slashingReduction}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.CrushingReduction"}}</label>
-            <label class="align-right">{{system.attributes.crushingReduction}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.PiercingReduction"}}</label>
-            <label class="align-right">{{system.attributes.piercingReduction}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.FireReduction"}}</label>
-            <label class="align-right">{{system.attributes.fireReduction}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.ColdReduction"}}</label>
-            <label class="align-right">{{system.attributes.coldReduction}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.AcidReduction"}}</label>
-            <label class="align-right">{{system.attributes.acidReduction}}</label>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.ShockReduction"}}</label>
-            <label class="align-right">{{system.attributes.shockReduction}}</label>
-        </div>
-        <hr>
-        <div class="form-group">
-            <label>{{localize "PL1E.Languages"}}</label>
-            <a class="trait-selector" data-options="languages" data-target="system.traits.languages"
-               title="{{localize 'PL1E.TraitConfig' trait=(localize 'PL1E.Languages')}}" tabindex="0">
-                <i class="fas fa-edit"></i>
-            </a>
-            <ul class="traits-list">
-                {{#each system.traits.languages.selected as |v k|}}
-                    <li class="tag {{k}}">{{v}}</li>
-                {{/each}}
-            </ul>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.Immunities"}}</label>
-            <a class="trait-selector" data-options="damageTypes" data-target="system.traits.di"
-               title="{{localize 'PL1E.TraitConfig' trait=(localize 'PL1E.Immunities')}}" tabindex="0">
-                <i class="fas fa-edit"></i>
-            </a>
-            <ul class="traits-list">
-                {{#each system.traits.di.selected as |v k|}}
-                    <li class="tag {{k}}">{{v}}</li>
-                {{/each}}
-            </ul>
-        </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.Advantages"}}</label>
+                <div class="form-group">
+                    {{rangePicker name="system.attributes.advantages" value=system.attributes.advantages min=-2 max=2 step=1}}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend class="section-header">Base</legend>
+            <div class="form-group">
+                <label>{{localize "PL1E.Size"}}</label>
+                <label class="align-right">{{localize (lookup config.sizes system.attributes.size)}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.Speed"}}</label>
+                <label class="align-right">{{system.attributes.speed}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.Initiative"}}</label>
+                <label class="align-right">{{system.attributes.initiative}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.DodgeBonuses"}}</label>
+                <label class="align-right">{{system.attributes.dodgeBonuses}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.ParryBonuses"}}</label>
+                <label class="align-right">{{system.attributes.parryBonuses}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MovementPenalty"}}</label>
+                <label class="align-right">{{system.attributes.movementPenalty}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.NightVision"}}</label>
+                <label class="align-right">{{system.attributes.nightVision}}</label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend class="section-header">Reduction</legend>
+            <div class="form-group">
+                <label>{{localize "PL1E.SlashingReduction"}}</label>
+                <label class="align-right">{{system.attributes.slashingReduction}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.CrushingReduction"}}</label>
+                <label class="align-right">{{system.attributes.crushingReduction}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.PiercingReduction"}}</label>
+                <label class="align-right">{{system.attributes.piercingReduction}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.FireReduction"}}</label>
+                <label class="align-right">{{system.attributes.fireReduction}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.ColdReduction"}}</label>
+                <label class="align-right">{{system.attributes.coldReduction}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.AcidReduction"}}</label>
+                <label class="align-right">{{system.attributes.acidReduction}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.ShockReduction"}}</label>
+                <label class="align-right">{{system.attributes.shockReduction}}</label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend class="section-header">Others</legend>
+            <div class="form-group">
+                <label>{{localize "PL1E.Languages"}}</label>
+                <a class="trait-selector" data-options="languages" data-target="system.traits.languages"
+                   title="{{localize 'PL1E.TraitConfig' trait=(localize 'PL1E.Languages')}}" tabindex="0">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <ul class="traits-list">
+                    {{#each system.traits.languages.selected as |v k|}}
+                        <li class="tag {{k}}">{{v}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.Immunities"}}</label>
+                <a class="trait-selector" data-options="damageTypes" data-target="system.traits.di"
+                   title="{{localize 'PL1E.TraitConfig' trait=(localize 'PL1E.Immunities')}}" tabindex="0">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <ul class="traits-list">
+                    {{#each system.traits.di.selected as |v k|}}
+                        <li class="tag {{k}}">{{v}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </fieldset>
     </div>
 </section>

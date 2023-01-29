@@ -20,22 +20,26 @@
 .rollable {
   &:hover,
   &:focus {
-    //color: #000;
     text-shadow: 0 0 10px red;
     cursor: pointer;
   }
 }
 
-.hoverable {
+.pointer {
   &:hover,
   &:focus {
-    //color: #000;
+    cursor: pointer;
+  }
+}
+
+.tooltip {
+  &:hover,
+  &:focus {
     text-shadow: 0 0 10px green;
   }
 }
 
 .highlight {
-  //color: #000;
   text-shadow: 0 0 10px green;
 }
 
@@ -80,4 +84,17 @@
   border: 1px solid #999;
   border-radius: 3px;
   background: rgba(0, 0, 0, 0.05);
+}
+
+.input-spin {
+  display: flex;
+  //flex: calc(100% / 3);
+  //padding: 0.5rem;
+  font-size: 0.85rem;
+  input {
+    margin-left: 0.5rem;
+  }
+  span {
+    line-height: 13px;
+  }
 }

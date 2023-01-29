@@ -1,18 +1,19 @@
 <section class="scroll-auto">
-    <div class="grid grid-4col">
-        <div class="form-group">
-            <label>{{localize "PL1E.Currency"}}</label>
-            <a class="currency-convert rollable" data-action="convertCurrency" title="{{localize 'DND5E.CurrencyConvert'}}">
-                <i class="fas fa-coins"></i>
-            </a>
-        </div>
-        {{#each system.currency as |value key|}}
-            <div class="form-group">
+    <fieldset>
+        <legend class="section-header">Currency</legend>
+        <div class="currencies flexrow">
+            {{#each system.currencies as |currency key|}}
+            <div class="input-spin currency">
                 <label>{{localize (configEntry "currencies" key)}}</label>
-                {{numberInput value name=(concat "system.currency." key)}}
+                <input name="system.currency.{{key}}" type="number" value="{{currency}}" data-dtype="Number" min="0" placeholder="0" disabled/>
+                <span>
+                    <i class="input-spin pointer fa fa-plus-square" data-path="currencies.{{key}}" data-value="1"></i>
+                    <i class="input-spin pointer fa fa-minus-square" data-path="currencies.{{key}}" data-value="-1"></i>
+                </span>
             </div>
-        {{/each}}
-    </div>
+            {{/each}}
+        </div>
+    </fieldset>
     <ol class="items-list">
         <li class="item flexrow items-header">
             <div class="item-name">{{localize "PL1E.Weapon"}}</div>
@@ -34,72 +35,72 @@
                 </div>
                 <div class="item-infos">
                     {{#if item.system.attributes.contactAttackRange.apply}}
-                        <i class="item-info fas fa-swords hoverable" data-tooltip="{{localize "PL1E.ContactAttackRange"}}">
+                        <i class="item-info fas fa-swords tooltip" data-tooltip="{{localize "PL1E.ContactAttackRange"}}">
                             <label>{{item.system.attributes.contactAttackRange.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.rangedAttackRange.apply}}
-                        <i class="item-info fas fa-bow-arrow hoverable" data-tooltip="{{localize "PL1E.RangedAttackRange"}}">
+                        <i class="item-info fas fa-bow-arrow tooltip" data-tooltip="{{localize "PL1E.RangedAttackRange"}}">
                             <label>{{item.system.attributes.rangedAttackRange.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.parryProjectiles.apply}}
                         {{#if item.system.attributes.parryProjectiles.value}}
-                            <i class="item-info fas fa-shield-halved hoverable" data-tooltip="{{localize "PL1E.ParryProjectiles"}}"></i>
+                            <i class="item-info fas fa-shield-halved tooltip" data-tooltip="{{localize "PL1E.ParryProjectiles"}}"></i>
                         {{/if}}
                     {{/if}}
                     {{#if item.system.attributes.slashing.apply}}
-                        <i class="item-info fas fa-axe-battle hoverable" data-tooltip="{{localize "PL1E.Slashing"}}">
+                        <i class="item-info fas fa-axe-battle tooltip" data-tooltip="{{localize "PL1E.Slashing"}}">
                             <label>{{item.system.attributes.slashing.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.crushing.apply}}
-                        <i class="item-info fas fa-hammer-war hoverable" data-tooltip='{{localize "PL1E.Crushing"}}'>
+                        <i class="item-info fas fa-hammer-war tooltip" data-tooltip='{{localize "PL1E.Crushing"}}'>
                             <label>{{item.system.attributes.crushing.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.piercing.apply}}
-                        <i class="item-info fas fa-dagger hoverable" data-tooltip='{{localize "PL1E.Piercing"}}'>
+                        <i class="item-info fas fa-dagger tooltip" data-tooltip='{{localize "PL1E.Piercing"}}'>
                             <label>{{item.system.attributes.piercing.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.parry.apply}}
-                        <i class="item-info fas fa-shield hoverable" data-tooltip='{{localize "PL1E.Parry"}}'>
+                        <i class="item-info fas fa-shield tooltip" data-tooltip='{{localize "PL1E.Parry"}}'>
                             <label>{{item.system.attributes.parry.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.hands.apply}}
-                        <i class="item-info fas fa-hand hoverable" data-tooltip='{{localize "PL1E.Hands"}}'>
+                        <i class="item-info fas fa-hand tooltip" data-tooltip='{{localize "PL1E.Hands"}}'>
                             <label>{{item.system.attributes.hands.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.ammo.apply}}
-                        <i class="item-info fas fa-tally hoverable" data-tooltip='{{localize "PL1E.Ammo"}}'>
+                        <i class="item-info fas fa-tally tooltip" data-tooltip='{{localize "PL1E.Ammo"}}'>
                             <label>{{item.system.attributes.ammo.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.movementPenalty.apply}}
-                        <i class="item-info fas fa-weight-hanging hoverable" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
+                        <i class="item-info fas fa-weight-hanging tooltip" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
                             <label>{{item.system.attributes.movementPenalty.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.slashingReduction.apply}}
-                        <i class="item-info far fa-axe-battle hoverable" data-tooltip='{{localize "PL1E.SlashingReduction"}}'>
+                        <i class="item-info far fa-axe-battle tooltip" data-tooltip='{{localize "PL1E.SlashingReduction"}}'>
                             <label>{{item.system.attributes.slashingReduction.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.crushingReduction.apply}}
-                        <i class="item-info far fa-hammer-war hoverable" data-tooltip='{{localize "PL1E.CrushingReduction"}}'>
+                        <i class="item-info far fa-hammer-war tooltip" data-tooltip='{{localize "PL1E.CrushingReduction"}}'>
                             <label>{{item.system.attributes.crushingReduction.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.piercingReduction.apply}}
-                        <i class="item-info far fa-dagger hoverable" data-tooltip='{{localize "PL1E.PiercingReduction"}}'>
+                        <i class="item-info far fa-dagger tooltip" data-tooltip='{{localize "PL1E.PiercingReduction"}}'>
                             <label>{{item.system.attributes.piercingReduction.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.movementPenalty.apply}}
-                        <i class="item-info fas fa-weight-hanging hoverable" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
+                        <i class="item-info fas fa-weight-hanging tooltip" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
                             <label>{{item.system.attributes.movementPenalty.value}}</label>
                         </i>
                     {{/if}}
@@ -141,22 +142,22 @@
                 </div>
                 <div class="item-infos">
                     {{#if item.system.attributes.slashingReduction.apply}}
-                        <i class="item-info far fa-axe-battle hoverable" data-tooltip='{{localize "PL1E.SlashingReduction"}}'>
+                        <i class="item-info far fa-axe-battle tooltip" data-tooltip='{{localize "PL1E.SlashingReduction"}}'>
                             <label>{{item.system.attributes.slashingReduction.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.crushingReduction.apply}}
-                        <i class="item-info far fa-hammer-war hoverable" data-tooltip='{{localize "PL1E.CrushingReduction"}}'>
+                        <i class="item-info far fa-hammer-war tooltip" data-tooltip='{{localize "PL1E.CrushingReduction"}}'>
                             <label>{{item.system.attributes.crushingReduction.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.piercingReduction.apply}}
-                        <i class="item-info far fa-dagger hoverable" data-tooltip='{{localize "PL1E.PiercingReduction"}}'>
+                        <i class="item-info far fa-dagger tooltip" data-tooltip='{{localize "PL1E.PiercingReduction"}}'>
                             <label>{{item.system.attributes.piercingReduction.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.movementPenalty.apply}}
-                        <i class="item-info fas fa-weight-hanging hoverable" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
+                        <i class="item-info fas fa-weight-hanging tooltip" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
                             <label>{{item.system.attributes.movementPenalty.value}}</label>
                         </i>
                     {{/if}}
@@ -211,32 +212,32 @@
                 </div>
                 <div class="item-infos">
                     {{#if item.system.attributes.healthRecovery.apply}}
-                        <i class="item-info fas fa-heart hoverable" data-tooltip='{{localize "PL1E.HealthRecovery"}}'>
+                        <i class="item-info fas fa-heart tooltip" data-tooltip='{{localize "PL1E.HealthRecovery"}}'>
                             <label>{{item.system.attributes.healthRecovery.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.staminaRecovery.apply}}
-                        <i class="item-info fas fa-wave-pulse hoverable" data-tooltip='{{localize "PL1E.StaminaRecovery"}}'>
+                        <i class="item-info fas fa-wave-pulse tooltip" data-tooltip='{{localize "PL1E.StaminaRecovery"}}'>
                             <label>{{item.system.attributes.staminaRecovery.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.manaRecovery.apply}}
-                        <i class="item-info fas fa-sparkles hoverable" data-tooltip='{{localize "PL1E.ManaRecovery"}}'>
+                        <i class="item-info fas fa-sparkles tooltip" data-tooltip='{{localize "PL1E.ManaRecovery"}}'>
                             <label>{{item.system.attributes.manaRecovery.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.uses.apply}}
                         {{#if (gt item.system.attributes.uses.value 1)}}
                             {{#if (eq item.system.removedUses 0)}}
-                                <i class="item-info fas fa-hourglass-start hoverable" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <i class="item-info fas fa-hourglass-start tooltip" data-tooltip='{{localize "PL1E.Uses"}}'>
                                     <label>{{minus item.system.attributes.uses.value item.system.removedUses}}</label>
                                 </i>
                             {{else if (eq item.system.removedUses item.system.attributes.uses.value)}}
-                                <i class="item-info fas fa-hourglass-end hoverable" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <i class="item-info fas fa-hourglass-end tooltip" data-tooltip='{{localize "PL1E.Uses"}}'>
                                     <label>{{minus item.system.attributes.uses.value item.system.removedUses}}</label>
                                 </i>
                             {{else}}
-                                <i class="item-info fas fa-hourglass-half hoverable" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <i class="item-info fas fa-hourglass-half tooltip" data-tooltip='{{localize "PL1E.Uses"}}'>
                                     <label>{{minus item.system.attributes.uses.value item.system.removedUses}}</label>
                                 </i>
                             {{/if}}
@@ -244,7 +245,7 @@
                     {{/if}}
                     {{#if item.system.attributes.reloadable.apply}}
                         {{#if item.system.attributes.reloadable.value}}
-                            <i class="item-info fas fa-repeat hoverable" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
+                            <i class="item-info fas fa-repeat tooltip" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
                         {{/if}}
                     {{/if}}
                 </div>

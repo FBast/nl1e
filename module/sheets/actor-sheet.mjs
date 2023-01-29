@@ -108,6 +108,9 @@ export class Pl1eActorSheet extends ActorSheet {
         // Rollable characteristic.
         html.find('.rollable').click(this._onRoll.bind(this));
 
+        // Custom objects
+        html.find('.input-spin-control').click(this._onInputSpin.bind(this));
+
         // Items management
         html.find(".weapon-toggle").click(this._onToggleWeapon.bind(this));
         html.find(".wearable-toggle").click(this._onToggleWearable.bind(this));
@@ -352,6 +355,26 @@ export class Pl1eActorSheet extends ActorSheet {
         await item.update({
             ["system.removedUses"]: 0
         });
+    }
+
+    /**
+     * Add or Subtract input (+/- buttons)
+     * @param {Event} event
+     * @private
+     */
+    _onInputSpin(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const elmt = $(event.currentTarget);
+        const path = elmt.data("path");
+        let mod = elmt.data("value");
+        if (!mod || !path) return;
+
+        let value = foundry.utils.getProperty(this.actor.system, path);
+        foundry.utils.setProperty(this.actor.system, path, value + mod);
+
+        this.render(false);
     }
 
     /**
