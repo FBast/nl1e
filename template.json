@@ -47,9 +47,6 @@
         "characteristics": {
           "strength": {
             "base": 3,
-            "value": 3,
-            "min": 2,
-            "max": 5,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipStr",
@@ -60,9 +57,6 @@
           },
           "agility": {
             "base": 3,
-            "value": 3,
-            "min": 2,
-            "max": 5,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipAgi",
@@ -81,9 +75,6 @@
           },
           "perception": {
             "base": 3,
-            "value": 3,
-            "min": 2,
-            "max": 5,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipPer",
@@ -102,9 +93,6 @@
           },
           "constitution": {
             "base": 3,
-            "value": 3,
-            "min": 2,
-            "max": 5,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipCon",
@@ -122,9 +110,6 @@
           },
           "intellect": {
             "base": 3,
-            "value": 3,
-            "min": 2,
-            "max": 5,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipInt",
@@ -143,9 +128,6 @@
           },
           "cunning": {
             "base": 3,
-            "value": 3,
-            "min": 2,
-            "max": 5,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipCun",
@@ -164,9 +146,6 @@
           },
           "wisdom": {
             "base": 3,
-            "value": 3,
-            "min": 2,
-            "max": 5,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipWis",
@@ -185,9 +164,6 @@
           },
           "will": {
             "base": 3,
-            "value": 3,
-            "min": 2,
-            "max": 5,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipWil",
@@ -496,6 +472,7 @@
         },
         "attributes": {
           "experience": 0,
+          "remainingCharacteristics": 0,
           "bonuses": 0,
           "advantages": 0,
           "size": "-",

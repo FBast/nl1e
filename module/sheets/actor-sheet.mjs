@@ -109,7 +109,8 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find('.rollable').click(this._onRoll.bind(this));
 
         // Custom objects
-        html.find('.input-spin-control').click(this._onInputSpin.bind(this));
+        html.find('.characteristic-control').click(this._onCharacteristicChange.bind(this));
+        html.find('.currency-control').click(this._onCurrencyChange.bind(this));
 
         // Items management
         html.find(".weapon-toggle").click(this._onToggleWeapon.bind(this));
@@ -358,21 +359,48 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Add or Subtract input (+/- buttons)
+     * Handle characteristics changes
      * @param {Event} event
      * @private
      */
-    _onInputSpin(event) {
+    _onCharacteristicChange(event) {
         event.preventDefault();
         event.stopPropagation();
 
-        const elmt = $(event.currentTarget);
-        const path = elmt.data("path");
-        let mod = elmt.data("value");
-        if (!mod || !path) return;
+        const element = $(event.currentTarget);
+        const characteristic = element.data("characteristic");
+        let value = element.data("value");
+        if (!value || !characteristic) return;
 
-        let value = foundry.utils.getProperty(this.actor.system, path);
-        foundry.utils.setProperty(this.actor.system, path, value + mod);
+        let remaining = foundry.utils.getProperty(this.actor.system.attributes, "remainingCharacteristics");
+        if (remaining === 0 && value > 0) return;
+
+        let oldValue = foundry.utils.getProperty(this.actor.system.characteristics, characteristic + ".base");
+        let newValue = oldValue + value;
+        if (newValue > 5 || newValue < 2) return;
+
+        foundry.utils.setProperty(this.actor.system.characteristics, characteristic + ".base", newValue);
+        foundry.utils.setProperty(this.actor.system.attributes, "remainingCharacteristics", remaining - value);
+
+        this.render(false);
+    }
+
+    /**
+     * Handle currency changes
+     * @param {Event} event
+     * @private
+     */
+    _onCurrencyChange(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const element = $(event.currentTarget);
+        const currency = element.data("currency");
+        let value = element.data("value");
+        if (!value || !currency) return;
+
+        let oldValue = foundry.utils.getProperty(this.actor.system.currencies, currency);
+        foundry.utils.setProperty(this.actor.system, currency, oldValue + value);
 
         this.render(false);
     }

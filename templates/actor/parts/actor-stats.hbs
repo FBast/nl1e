@@ -7,10 +7,10 @@
                     data-resources="{{characteristic.weights.resources}}" data-skills="{{characteristic.weights.skills}}">{{characteristic.label}}</h2>
                 <div class="characteristic-values flexrow flex-group-center">
                     <div class="input-spin">
-                        <input name="characteristics.{{key}}.value" type="number" value="{{characteristic.value}}" data-dtype="Number" min="0" placeholder="0" disabled/>
+                        <input name="characteristics.{{key}}.base" type="number" value="{{characteristic.base}}" data-dtype="Number" min="0" placeholder="0" disabled/>
                         <span>
-                            <i class="input-spin-control pointer fa fa-plus-square" data-path="characteristics.{{key}}.value" data-value="1"></i>
-                            <i class="input-spin-control pointer fa fa-minus-square" data-path="characteristics.{{key}}.value" data-value="-1"></i>
+                            <i class="characteristic-control pointer fa fa-plus-square" data-characteristic="{{key}}" data-value="1"></i>
+                            <i class="characteristic-control pointer fa fa-minus-square" data-characteristic="{{key}}" data-value="-1"></i>
                         </span>
                     </div>
                     <span class="characteristic-mod {{#if (gt characteristic.mod 0)}}color-green{{/if}} {{#if (lt characteristic.mod 0)}}color-red{{/if}}">
