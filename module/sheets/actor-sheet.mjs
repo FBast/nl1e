@@ -12,8 +12,8 @@ export class Pl1eActorSheet extends ActorSheet {
         return mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "actor"],
             template: "systems/pl1e/templates/actor/actor-sheet.hbs",
-            width: 800,
-            height: 850,
+            width: 700,
+            height: 830,
             scrollY: [
                 ".stats",
                 ".features",

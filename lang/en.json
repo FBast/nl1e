@@ -43,9 +43,16 @@
   "PL1E.SkillBlu": "Bluff",
   "PL1E.SkillCra": "Craft",
   "PL1E.SkillEru": "Erudition",
-  "PL1E.SkillDiv": "Divine Magic",
-  "PL1E.SkillSec": "Secular Magic",
+  "PL1E.SkillDiv": "Divine M.",
+  "PL1E.SkillSec": "Secular M.",
 
+  "PL1E.General": "General",
+  "PL1E.Base": "Base",
+  "PL1E.Reduction": "Reduction",
+  "PL1E.Others": "Others",
+
+  "PL1E.Experience": "Experience",
+  "PL1E.Characteristics": "Characteristics",
   "PL1E.Bonuses": "Bonuses",
   "PL1E.Advantages": "Advantages",
   "PL1E.Size": "Size",

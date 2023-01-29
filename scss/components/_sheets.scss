@@ -1,6 +1,6 @@
 .sheet.actor {
-  min-width: 850px;
-  min-height: 980px;
+  min-width: 700px;
+  min-height: 830px;
 
   .characteristics {
     padding: 0 0.5em 0 0.5em;
@@ -13,10 +13,25 @@
   .skills {
     padding: 0.5em 1em 0.5em 1em;
     margin: 0 0 0 0;
+    .skill {
+      gap: 0;
+      margin: 0;
+      padding: 3px;
+      .skill-label {
+        font-size: small;
+      }
+    }
   }
 
   .attributes {
     padding: 0 0.5em 0 0.5em;
+    .attribute {
+      margin: 0;
+      align-items: center;
+      label {
+        font-size: small;
+      }
+    }
   }
 
 }

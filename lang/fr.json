@@ -44,9 +44,16 @@
   "PL1E.SkillBlu": "Bluff",
   "PL1E.SkillCra": "Artisanat",
   "PL1E.SkillEru": "Erudition",
-  "PL1E.SkillDiv": "Magie Divine",
-  "PL1E.SkillSec": "Magie Profane",
+  "PL1E.SkillDiv": "M. Divine",
+  "PL1E.SkillSec": "M. Profane",
 
+  "PL1E.General": "Général",
+  "PL1E.Base": "Base",
+  "PL1E.Reduction": "Réduction",
+  "PL1E.Others": "Divers",
+
+  "PL1E.Experience": "Experience",
+  "PL1E.Characteristics": "Caractéristiques",
   "PL1E.Bonuses": "Bonus",
   "PL1E.Advantages": "Avantages",
   "PL1E.Size": "Taille",
