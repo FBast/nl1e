@@ -1,7 +1,7 @@
 <section class="scroll-auto">
     <fieldset>
         <legend class="section-header">Currency</legend>
-        <div class="currencies flexrow">
+        <div class="currencies flexrow flex-between">
             {{#each system.currencies as |currency key|}}
             <div class="input-spin currency">
                 <label>{{localize (configEntry "currencies" key)}}</label>

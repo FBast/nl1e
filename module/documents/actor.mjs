@@ -101,7 +101,6 @@ export class Pl1eActor extends Actor {
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
         // Handle actorAttributes scores.
-        actorAttributes.initiative = actorAttributes.speed + actorCharacteristics.agility.value + actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
         actorAttributes.sizeMod = CONFIG.PL1E.sizeMods[actorAttributes.size];
         actorAttributes.sizeToken = CONFIG.PL1E.sizeTokens[actorAttributes.size];
         actorAttributes.movementPenalty = actorAttributes.movementPenalties.reduce((a, b) => a + b, 0);
@@ -120,6 +119,8 @@ export class Pl1eActor extends Actor {
                 + Math.max(...characteristic.mods.filter(value => value > 0), 0);
             characteristic.value = characteristic.base + characteristic.mod;
         }
+        actorAttributes.initiative = actorAttributes.speed + actorCharacteristics.agility.value +
+            actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
         // Handle actorResources scores.
         for (let [id, resource] of Object.entries(actorResources)) {
             resource.id = id;
