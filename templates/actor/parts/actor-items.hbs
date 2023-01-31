@@ -15,25 +15,21 @@
         </div>
     </fieldset>
     <ol class="items-list">
-        <li class="item flexrow items-header">
+        <li class="item items-header grid grid-4col">
             <div class="item-name">{{localize "PL1E.Weapon"}}</div>
-            <div class="item-infos">{{localize "PL1E.Stats"}}</div>
-            <div class="item-infos">{{localize "PL1E.Mastery"}}</div>
-            <div class="item-controls">
-<!--                <a class="item-control item-create" title="Create Item" data-type="common"><i class="fas fa-plus"></i> Add item</a>-->
-            </div>
+            <div class="item-stats grid-span-2">{{localize "PL1E.Stats"}}</div>
         </li>
         {{#each weapons as |item key|}}
-            <li class="item flexrow" data-item-id="{{item._id}}">
+            <li class="item grid grid-4col" data-item-id="{{item._id}}">
                 <div class="item-name">
                     <div class="item-image">
-                        <a class="rollable" data-roll-type="item">
+                        <a class="interactable" data-roll-type="item">
                             <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
                         </a>
                     </div>
-                    <h4>{{item.name}}</h4>
+                    <label>{{item.name}}</label>
                 </div>
-                <div class="item-infos">
+                <div class="item-stats grid-span-2">
                     {{#if item.system.attributes.contactAttackRange.apply}}
                         <i class="item-info fas fa-swords tooltip" data-tooltip="{{localize "PL1E.ContactAttackRange"}}">
                             <label>{{item.system.attributes.contactAttackRange.value}}</label>
@@ -105,9 +101,6 @@
                         </i>
                     {{/if}}
                 </div>
-                <div class="item-infos">
-                    <label>{{localize (lookup (lookup ../config item.system.attributes.mastery.select) item.system.attributes.mastery.value)}}</label>
-                </div>
                 <div class="item-controls">
                     <a class="item-control item-toggle weapon-toggle" data-main='false' data-tooltip='{{localize "PL1E.EquipSecondary"}}'>
                         <i class="fas fa-hand icon-flipped {{#unless item.system.isEquippedSecondary}}item-inactive{{/unless}}"></i>
@@ -122,25 +115,21 @@
         {{/each}}
     </ol>
     <ol class="items-list">
-        <li class="item flexrow items-header">
+        <li class="item flexrow items-header grid grid-4col">
             <div class="item-name">{{localize "PL1E.Wearable"}}</div>
-            <div class="item-infos">{{localize "PL1E.Stats"}}</div>
-            <div class="item-infos">{{localize "PL1E.Slot"}}</div>
-            <div class="item-controls">
-<!--                <a class="item-control item-create" title="Create Item" data-type="common"><i class="fas fa-plus"></i> Add item</a>-->
-            </div>
+            <div class="item-stats grid-span-2">{{localize "PL1E.Stats"}}</div>
         </li>
         {{#each wearables as |item key|}}
-            <li class="item flexrow" data-item-id="{{item._id}}">
+            <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
                 <div class="item-name">
                     <div class="item-image">
-                        <a class="rollable" data-roll-type="item">
+                        <a class="interactable" data-roll-type="item">
                             <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
                         </a>
                     </div>
-                    <h4>{{item.name}}</h4>
+                    <label>{{item.name}}</label>
                 </div>
-                <div class="item-infos">
+                <div class="item-stats grid-span-2">
                     {{#if item.system.attributes.slashingReduction.apply}}
                         <i class="item-info far fa-axe-battle tooltip" data-tooltip='{{localize "PL1E.SlashingReduction"}}'>
                             <label>{{item.system.attributes.slashingReduction.value}}</label>
@@ -161,9 +150,6 @@
                             <label>{{item.system.attributes.movementPenalty.value}}</label>
                         </i>
                     {{/if}}
-                </div>
-                <div class="item-infos">
-                    <label>{{localize (lookup (lookup ../config item.system.attributes.slot.select) item.system.attributes.slot.value)}}</label>
                 </div>
                 <div class="item-controls">
                     {{#if (eq item.system.attributes.slot.value "clothes")}}
@@ -194,23 +180,22 @@
         {{/each}}
     </ol>
     <ol class="items-list">
-        <li class="item flexrow items-header">
+        <li class="item flexrow items-header grid grid-4col">
             <div class="item-name">{{localize "PL1E.Consumable"}}</div>
-            <div class="item-infos">{{localize "PL1E.Stats"}}</div>
-            <div class="item-infos">{{localize "PL1E.Activation"}}</div>
+            <div class="item-stats grid-span-2">{{localize "PL1E.Stats"}}</div>
             <div class="item-controls"></div>
         </li>
         {{#each consumables as |item key|}}
-            <li class="item flexrow" data-item-id="{{item._id}}">
+            <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
                 <div class="item-name">
                     <div class="item-image">
-                        <a class="rollable" data-roll-type="item">
+                        <a class="interactable" data-roll-type="item">
                             <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
                         </a>
                     </div>
-                    <h4>{{item.name}}</h4>
+                    <label>{{item.name}}</label>
                 </div>
-                <div class="item-infos">
+                <div class="item-stats grid-span-2">
                     {{#if item.system.attributes.healthRecovery.apply}}
                         <i class="item-info fas fa-heart tooltip" data-tooltip='{{localize "PL1E.HealthRecovery"}}'>
                             <label>{{item.system.attributes.healthRecovery.value}}</label>
@@ -249,9 +234,6 @@
                         {{/if}}
                     {{/if}}
                 </div>
-                <div class="item-infos">
-                    <label>{{localize (lookup (lookup ../config item.system.attributes.slot.select) item.system.attributes.slot.value)}}</label>
-                </div>
                 <div class="item-controls">
                     {{#if (eq item.system.attributes.uses.value item.system.removedUses)}}
                         {{#if item.system.attributes.reloadable.value}}
@@ -272,21 +254,21 @@
         {{/each}}
     </ol>
     <ol class="items-list">
-        <li class="item flexrow items-header">
-            <div class="item-name">{{localize "PL1E.Common"}}</div>
+        <li class="item flexrow items-header grid grid-4col">
+            <div class="item-name grid-span-3">{{localize "PL1E.Common"}}</div>
             <div class="item-controls">
                 <a class="item-control item-create" title="Create Item" data-type="common"><i class="fas fa-plus"></i> Add item</a>
             </div>
         </li>
         {{#each commons as |item key|}}
-            <li class="item flexrow" data-item-id="{{item._id}}">
-                <div class="item-name">
+            <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
+                <div class="item-name grid-span-3">
                     <div class="item-image">
-                        <a class="rollable" data-roll-type="item">
+                        <a class="interactable" data-roll-type="item">
                             <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
                         </a>
                     </div>
-                    <h4>{{item.name}}</h4>
+                    <label>{{item.name}}</label>
                 </div>
                 <div class="item-controls">
                     <a class="item-control item-edit" data-tooltip='{{localize "PL1E.Edit"}}'><i class="fas fa-eye"></i></a>

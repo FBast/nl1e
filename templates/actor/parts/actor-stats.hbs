@@ -1,4 +1,4 @@
-<section class="scroll-hidden grid grid-5col">
+<section class="scroll-hidden grid grid-6col">
     <!-- Left column : Listing characteristics -->
     <div class="characteristics">
         {{#each system.characteristics as |characteristic key|}}
@@ -25,33 +25,54 @@
         <ul class="skills box">
             <!-- Listing defenses, resistances and skills -->
             {{#each system.skills as |skill key|}}
-                <li class="skill grid grid-6col">
-                    <i class="skill-roll fas fa-dice-d{{skill.dice}} rollable {{#if (gt skill.diceMod 0)}}color-green{{/if}} {{#if (lt skill.diceMod 0)}}color-red{{/if}}"
+                <li class="skill grid grid-5col">
+                    <i class="skill-roll fas fa-dice-d{{skill.dice}} interactable {{#if (gt skill.diceMod 0)}}color-green{{/if}} {{#if (lt skill.diceMod 0)}}color-red{{/if}}"
                        data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">
                         <label class="{{#if (gt skill.numberMod 0)}}color-green{{/if}}
                             {{#if (lt skill.numberMod 0)}}color-red{{/if}}
                             {{#if (eq skill.numberMod 0)}}color-black{{/if}}">{{skill.number}}</label>
                     </i>
-                    <label class="skill-label tooltip grid-span-2 align-left" data-tooltip="{{localize skill.tooltip}}" data-id="{{skill.id}}"
+                    <label class="skill-label tooltip grid-span-3 align-left" data-tooltip="{{localize skill.tooltip}}" data-id="{{skill.id}}"
                            data-attributes="{{skill.weights.attributes}}" data-characteristics="{{skill.weights.characteristics}}">{{skill.label}}</label>
-                    <div class="skill-masteries grid-span-3 align-right">
-                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-1" value="1"
-                               data-dtype="Number" {{checked (eq skill.rank 1)}} {{disabled skill.rankDisabled}}/>
-                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-2" value="2"
-                               data-dtype="Number" {{checked (eq skill.rank 2)}} {{disabled skill.rankDisabled}}/>
-                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-3" value="3"
-                               data-dtype="Number" {{checked (eq skill.rank 3)}} {{disabled skill.rankDisabled}}/>
-                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-4" value="4"
-                               data-dtype="Number" {{checked (eq skill.rank 4)}} {{disabled skill.rankDisabled}}/>
-                        <input type="radio" name="system.skills.{{key}}.rank" class="rank-5" value="5"
-                               data-dtype="Number" {{checked (eq skill.rank 5)}} {{disabled skill.rankDisabled}}/>
+                    <div class="skill-ranks align-right">
+                        {{#if (eq skill.rank 1)}}
+                            {{#if skill.rankDisabled}}
+                                <i class="fas fa-circle-1"></i>
+                            {{else}}
+                                <i class="rank-control far fa-circle-1 interactable" data-skill="{{key}}"></i>
+                            {{/if}}
+                        {{else if (eq skill.rank 2)}}
+                            {{#if skill.rankDisabled}}
+                                <i class="fas fa-circle-2"></i>
+                            {{else}}
+                                <i class="rank-control far fa-circle-2 interactable" data-skill="{{key}}"></i>
+                            {{/if}}
+                        {{else if (eq skill.rank 3)}}
+                            {{#if skill.rankDisabled}}
+                                <i class="fas fa-circle-3"></i>
+                            {{else}}
+                                <i class="rank-control far fa-circle-3 interactable" data-skill="{{key}}"></i>
+                            {{/if}}
+                        {{else if (eq skill.rank 4)}}
+                            {{#if skill.rankDisabled}}
+                                <i class="fas fa-circle-4"></i>
+                            {{else}}
+                                <i class="rank-control far fa-circle-4 interactable" data-skill="{{key}}"></i>
+                            {{/if}}
+                        {{else if (eq skill.rank 5)}}
+                            {{#if skill.rankDisabled}}
+                                <i class="fas fa-circle-5"></i>
+                            {{else}}
+                                <i class="rank-control far fa-circle-5 interactable" data-skill="{{key}}"></i>
+                            {{/if}}
+                        {{/if}}
                     </div>
                 </li>
             {{/each}}
         </ul>
     </div>
     <!-- Right column -->
-    <div class="attributes scroll-auto grid-span-2">
+    <div class="attributes scroll-auto grid-span-3">
         <fieldset>
             <legend class="section-header">{{localize "PL1E.General"}}</legend>
             <div class="grid grid-2col attribute">

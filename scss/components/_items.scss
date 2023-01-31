@@ -56,7 +56,7 @@
   }
 
   // Item Stats
-  .item-infos {
+  .item-stats {
     flex: 2;
     margin: 0;
     overflow: hidden;
@@ -102,6 +102,9 @@
         border: none;
         margin-right: 5px;
       }
+    }
+    .item-stats {
+      flex-flow: wrap;
     }
   }
 

@@ -26,6 +26,7 @@
       margin: 0;
       padding: 3px;
       .skill-label {
+        margin-left: 5px;
         font-size: small;
       }
     }
@@ -37,8 +38,8 @@
       margin: 0;
       align-items: center;
       label {
-        font-size: x-small;
-        font-weight: bolder;
+        font-size: small;
+        //font-weight: bolder;
       }
     }
   }

@@ -111,6 +111,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Custom objects
         html.find('.characteristic-control').click(this._onCharacteristicChange.bind(this));
         html.find('.currency-control').click(this._onCurrencyChange.bind(this));
+        html.find('.rank-control').click(this._onRankChange.bind(this));
 
         // Items management
         html.find(".weapon-toggle").click(this._onToggleWeapon.bind(this));
@@ -401,6 +402,28 @@ export class Pl1eActorSheet extends ActorSheet {
 
         let oldValue = foundry.utils.getProperty(this.actor.system.currencies, currency);
         foundry.utils.setProperty(this.actor.system, currency, oldValue + value);
+
+        this.render(false);
+    }
+
+    /**
+     * Handle rank changes
+     * @param {Event} event
+     * @private
+     */
+    async _onRankChange(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const element = $(event.currentTarget);
+        const skill = element.data("skill");
+        if (!skill) return;
+
+        let oldValue = foundry.utils.getProperty(this.actor.system.skills, skill + ".rank");
+
+        await this.actor.update({
+            ["system.skills." + skill + ".rank"]: oldValue === 5 ? 1 : oldValue + 1
+        });
 
         this.render(false);
     }
