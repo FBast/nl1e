@@ -25,9 +25,6 @@
         <ul class="skills box">
             <!-- Listing defenses, resistances and skills -->
             {{#each system.skills as |skill key|}}
-                {{#if (ne skill.header undefined) }}
-                    <h4>{{localize skill.header}}</h4>
-                {{/if}}
                 <li class="skill grid grid-6col">
                     <i class="skill-roll fas fa-dice-d{{skill.dice}} rollable {{#if (gt skill.diceMod 0)}}color-green{{/if}} {{#if (lt skill.diceMod 0)}}color-red{{/if}}"
                        data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">
