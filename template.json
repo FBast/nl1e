@@ -46,7 +46,7 @@
         },
         "characteristics": {
           "strength": {
-            "base": 3,
+            "base": 2,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipStr",
@@ -56,7 +56,7 @@
             }
           },
           "agility": {
-            "base": 3,
+            "base": 2,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipAgi",
@@ -74,7 +74,7 @@
             }
           },
           "perception": {
-            "base": 3,
+            "base": 2,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipPer",
@@ -92,7 +92,7 @@
             }
           },
           "constitution": {
-            "base": 3,
+            "base": 2,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipCon",
@@ -109,7 +109,7 @@
             }
           },
           "intellect": {
-            "base": 3,
+            "base": 2,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipInt",
@@ -127,7 +127,7 @@
             }
           },
           "cunning": {
-            "base": 3,
+            "base": 2,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipCun",
@@ -145,7 +145,7 @@
             }
           },
           "wisdom": {
-            "base": 3,
+            "base": 2,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipWis",
@@ -163,7 +163,7 @@
             }
           },
           "will": {
-            "base": 3,
+            "base": 2,
             "mods": [],
             "mod": 0,
             "tooltip": "PL1E.TooltipWil",
@@ -184,7 +184,7 @@
         "skills": {
           "parry": {
             "rank": 3,
-            "rankDisabled": true,
+            "fixedRank": true,
             "weights": {
               "characteristics": [
                 "strength",
@@ -199,7 +199,7 @@
           },
           "dodge": {
             "rank": 3,
-            "rankDisabled": true,
+            "fixedRank": true,
             "weights": {
               "characteristics": [
                 "agility",
@@ -214,7 +214,7 @@
           },
           "vigor": {
             "rank": 3,
-            "rankDisabled": true,
+            "fixedRank": true,
             "weights": {
               "characteristics": [
                 "strength",
@@ -226,7 +226,7 @@
           },
           "reflex": {
             "rank": 3,
-            "rankDisabled": true,
+            "fixedRank": true,
             "weights": {
               "characteristics": [
                 "agility",
@@ -240,7 +240,7 @@
           },
           "resilience": {
             "rank": 3,
-            "rankDisabled": true,
+            "fixedRank": true,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -251,7 +251,7 @@
           },
           "intuition": {
             "rank": 3,
-            "rankDisabled": true,
+            "fixedRank": true,
             "weights": {
               "characteristics": [
                 "cunning",
@@ -262,7 +262,7 @@
           },
           "handling": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "strength",
@@ -275,7 +275,7 @@
           },
           "throwing": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "strength",
@@ -287,7 +287,7 @@
           },
           "athletics": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "strength",
@@ -302,7 +302,7 @@
           },
           "acrobatics": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "agility",
@@ -317,7 +317,7 @@
           },
           "accuracy": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "agility",
@@ -332,7 +332,7 @@
           },
           "search": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "cunning",
@@ -343,7 +343,7 @@
           },
           "vigilance": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "perception",
@@ -354,7 +354,7 @@
           },
           "discretion": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "agility",
@@ -369,7 +369,7 @@
           },
           "performance": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "wisdom",
@@ -381,7 +381,7 @@
           },
           "diplomacy": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -393,7 +393,7 @@
           },
           "intimidation": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "cunning",
@@ -405,7 +405,7 @@
           },
           "bluff": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -417,7 +417,7 @@
           },
           "craft": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "agility",
@@ -429,7 +429,7 @@
           },
           "erudition": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -441,7 +441,7 @@
           },
           "divineMagic": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "wisdom",
@@ -456,7 +456,7 @@
           },
           "secularMagic": {
             "rank": 1,
-            "rankDisabled": false,
+            "fixedRank": false,
             "weights": {
               "characteristics": [
                 "intellect",
@@ -471,8 +471,9 @@
           }
         },
         "attributes": {
+          "creationMod": true,
           "experience": 0,
-          "remainingCharacteristics": 0,
+          "remainingCharacteristics": 8,
           "bonuses": 0,
           "advantages": 0,
           "size": "medium",

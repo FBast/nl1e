@@ -52,8 +52,12 @@
   "PL1E.Reduction": "Réduction",
   "PL1E.Others": "Divers",
 
+  "PL1E.CreationMod": "Mode de Création",
   "PL1E.Experience": "Experience",
   "PL1E.Characteristics": "Caractéristiques",
+  "PL1E.Slots": "Emplacements",
+  "PL1E.Ranks": "Rangs",
+  "PL1E.MaxRank": "Rang Maximal",
   "PL1E.Bonuses": "Bonus",
   "PL1E.Advantages": "Avantages",
   "PL1E.Size": "Taille",

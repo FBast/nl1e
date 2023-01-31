@@ -8,10 +8,12 @@
                 <div class="characteristic-values flexrow flex-group-center">
                     <div class="input-spin">
                         <input name="characteristics.{{key}}.base" type="number" value="{{characteristic.base}}" data-dtype="Number" min="0" placeholder="0" disabled/>
+                        {{#if ../system.attributes.creationMod}}
                         <span>
                             <i class="characteristic-control pointer fa fa-plus-square" data-characteristic="{{key}}" data-value="1"></i>
                             <i class="characteristic-control pointer fa fa-minus-square" data-characteristic="{{key}}" data-value="-1"></i>
                         </span>
+                        {{/if}}
                     </div>
                     <span class="characteristic-mod {{#if (gt characteristic.mod 0)}}color-green{{/if}} {{#if (lt characteristic.mod 0)}}color-red{{/if}}">
                         {{numberFormat characteristic.mod decimals=0 sign=true}}
@@ -26,7 +28,7 @@
             <!-- Listing defenses, resistances and skills -->
             {{#each system.skills as |skill key|}}
                 <li class="skill grid grid-5col">
-                    <i class="skill-roll fas fa-dice-d{{skill.dice}} interactable {{#if (gt skill.diceMod 0)}}color-green{{/if}} {{#if (lt skill.diceMod 0)}}color-red{{/if}}"
+                    <i class="skill-roll fas fa-dice-d{{skill.dice}} interactable rollable {{#if (gt skill.diceMod 0)}}color-green{{/if}} {{#if (lt skill.diceMod 0)}}color-red{{/if}}"
                        data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">
                         <label class="{{#if (gt skill.numberMod 0)}}color-green{{/if}}
                             {{#if (lt skill.numberMod 0)}}color-red{{/if}}
@@ -36,34 +38,34 @@
                            data-attributes="{{skill.weights.attributes}}" data-characteristics="{{skill.weights.characteristics}}">{{skill.label}}</label>
                     <div class="skill-ranks align-right">
                         {{#if (eq skill.rank 1)}}
-                            {{#if skill.rankDisabled}}
-                                <i class="fas fa-circle-1"></i>
+                            {{#if skill.fixedRank}}
+                                <i class="fas fa-circle-1 fa-lg"></i>
                             {{else}}
-                                <i class="rank-control far fa-circle-1 interactable" data-skill="{{key}}"></i>
+                                <i class="rank-control far fa-circle-1 fa-lg interactable" data-skill="{{key}}"></i>
                             {{/if}}
                         {{else if (eq skill.rank 2)}}
-                            {{#if skill.rankDisabled}}
-                                <i class="fas fa-circle-2"></i>
+                            {{#if skill.fixedRank}}
+                                <i class="fas fa-circle-2 fa-lg"></i>
                             {{else}}
-                                <i class="rank-control far fa-circle-2 interactable" data-skill="{{key}}"></i>
+                                <i class="rank-control far fa-circle-2 fa-lg interactable" data-skill="{{key}}"></i>
                             {{/if}}
                         {{else if (eq skill.rank 3)}}
-                            {{#if skill.rankDisabled}}
-                                <i class="fas fa-circle-3"></i>
+                            {{#if skill.fixedRank}}
+                                <i class="fas fa-circle-3 fa-lg"></i>
                             {{else}}
-                                <i class="rank-control far fa-circle-3 interactable" data-skill="{{key}}"></i>
+                                <i class="rank-control far fa-circle-3 fa-lg interactable" data-skill="{{key}}"></i>
                             {{/if}}
                         {{else if (eq skill.rank 4)}}
-                            {{#if skill.rankDisabled}}
-                                <i class="fas fa-circle-4"></i>
+                            {{#if skill.fixedRank}}
+                                <i class="fas fa-circle-4 fa-lg"></i>
                             {{else}}
-                                <i class="rank-control far fa-circle-4 interactable" data-skill="{{key}}"></i>
+                                <i class="rank-control far fa-circle-4 fa-lg interactable" data-skill="{{key}}"></i>
                             {{/if}}
                         {{else if (eq skill.rank 5)}}
-                            {{#if skill.rankDisabled}}
-                                <i class="fas fa-circle-5"></i>
+                            {{#if skill.fixedRank}}
+                                <i class="fas fa-circle-5 fa-lg"></i>
                             {{else}}
-                                <i class="rank-control far fa-circle-5 interactable" data-skill="{{key}}"></i>
+                                <i class="rank-control far fa-circle-5 fa-lg interactable" data-skill="{{key}}"></i>
                             {{/if}}
                         {{/if}}
                     </div>
@@ -75,23 +77,49 @@
     <div class="attributes scroll-auto grid-span-3">
         <fieldset>
             <legend class="section-header">{{localize "PL1E.General"}}</legend>
-            <div class="grid grid-2col attribute">
+            <div class="form-group grid grid-2col attribute">
+                <label>{{localize "PL1E.CreationMod"}}</label>
+                <input class="message" type="checkbox" name="system.attributes.creationMod" {{checked system.attributes.creationMod}}/>
+            </div>
+            <div class="form-group grid grid-2col attribute">
                 <label>{{localize "PL1E.Experience"}}</label>
                 <input type="number" step="1" min="0" max="60" name="system.attributes.experience"
                        value="{{system.attributes.experience}}" data-dtype="Number"/>
             </div>
-            <div class="grid grid-2col attribute">
+            <div class="form-group grid grid-2col attribute">
                 <label>{{localize "PL1E.Characteristics"}}</label>
                 <input type="number" step="1" min="0" max="60" name="system.attributes.remainingCharacteristics"
                        value="{{system.attributes.remainingCharacteristics}}" data-dtype="Number" disabled/>
             </div>
-            <div class="grid grid-2col attribute">
+            <div class="form-group grid grid-2col attribute">
+                <label>{{localize "PL1E.Slots"}}</label>
+                <label class="align-right">{{system.attributes.slots}}</label>
+            </div>
+            <div class="form-group grid grid-2col attribute">
+                <label>{{localize "PL1E.Ranks"}}</label>
+                <label class="align-right">{{system.attributes.ranks}}</label>
+            </div>
+            <div class="form-group grid grid-2col attribute">
+                <label>{{localize "PL1E.MaxRank"}}</label>
+                {{#if (eq system.attributes.maxRank 1)}}
+                    <i class="far fa-circle-1 fa-lg align-right"></i>
+                {{else if (eq system.attributes.maxRank 2)}}
+                    <i class="far fa-circle-2 fa-lg align-right"></i>
+                {{else if (eq system.attributes.maxRank 3)}}
+                    <i class="far fa-circle-3 fa-lg align-right"></i>
+                {{else if (eq system.attributes.maxRank 4)}}
+                    <i class="far fa-circle-4 fa-lg align-right"></i>
+                {{else if (eq system.attributes.maxRank 5)}}
+                    <i class="far fa-circle-5 fa-lg align-right"></i>
+                {{/if}}
+            </div>
+            <div class="form-group grid grid-2col attribute">
                 <label>{{localize "PL1E.Bonuses"}}</label>
                 <div class="form-group">
                     {{rangePicker name="system.attributes.bonuses" value=system.attributes.bonuses min=-2 max=2 step=1}}
                 </div>
             </div>
-            <div class="grid grid-2col attribute">
+            <div class="form-group grid grid-2col attribute">
                 <label>{{localize "PL1E.Advantages"}}</label>
                 <div class="form-group">
                     {{rangePicker name="system.attributes.advantages" value=system.attributes.advantages min=-2 max=2 step=1}}

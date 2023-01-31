@@ -1,5 +1,6 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
 import {PL1E} from "../helpers/config.mjs";
+import {HelpersPl1e} from "../helpers/helpers.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -105,8 +106,9 @@ export class Pl1eActorSheet extends ActorSheet {
         // Active Effect management
         html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
-        // Rollable characteristic.
+        // Chat messages
         html.find('.rollable').click(this._onRoll.bind(this));
+        html.find('.message').click(this._onChatMessage.bind(this))
 
         // Custom objects
         html.find('.characteristic-control').click(this._onCharacteristicChange.bind(this));
@@ -364,7 +366,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param {Event} event
      * @private
      */
-    _onCharacteristicChange(event) {
+    async _onCharacteristicChange(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -378,10 +380,14 @@ export class Pl1eActorSheet extends ActorSheet {
 
         let oldValue = foundry.utils.getProperty(this.actor.system.characteristics, characteristic + ".base");
         let newValue = oldValue + value;
-        if (newValue > 5 || newValue < 2) return;
 
         foundry.utils.setProperty(this.actor.system.characteristics, characteristic + ".base", newValue);
         foundry.utils.setProperty(this.actor.system.attributes, "remainingCharacteristics", remaining - value);
+
+        await this.actor.update({
+            ["system.characteristics." + characteristic + ".base"]: newValue,
+            ["system.attributes.remainingCharacteristics"]: remaining - value
+        });
 
         this.render(false);
     }
@@ -391,7 +397,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param {Event} event
      * @private
      */
-    _onCurrencyChange(event) {
+    async _onCurrencyChange(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -400,8 +406,11 @@ export class Pl1eActorSheet extends ActorSheet {
         let value = element.data("value");
         if (!value || !currency) return;
 
-        let oldValue = foundry.utils.getProperty(this.actor.system.currencies, currency);
-        foundry.utils.setProperty(this.actor.system, currency, oldValue + value);
+        let oldValue = this.actor.system.currencies[currency];
+
+        await this.actor.update({
+            ["system.currencies." + currency]: oldValue + value
+        });
 
         this.render(false);
     }
@@ -419,10 +428,17 @@ export class Pl1eActorSheet extends ActorSheet {
         const skill = element.data("skill");
         if (!skill) return;
 
-        let oldValue = foundry.utils.getProperty(this.actor.system.skills, skill + ".rank");
+        let oldValue = this.actor.system.skills[skill].rank;
+        let maxRank = this.actor.system.attributes.maxRank;
+        let newValue = oldValue + 1;
+
+        if (newValue > maxRank || this.actor.system.attributes.ranks - newValue < 0) {
+            if (this.actor.system.attributes.creationMod) newValue = 1;
+            else return;
+        }
 
         await this.actor.update({
-            ["system.skills." + skill + ".rank"]: oldValue === 5 ? 1 : oldValue + 1
+            ["system.skills." + skill + ".rank"]: newValue
         });
 
         this.render(false);
@@ -440,7 +456,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Handle item rolls.
         if (dataset.rollType) {
-            if (dataset.rollType == 'item') {
+            if (dataset.rollType === 'item') {
                 const itemId = element.closest('.item').dataset.itemId;
                 const item = this.actor.items.get(itemId);
                 if (item) return item.roll();
@@ -458,6 +474,21 @@ export class Pl1eActorSheet extends ActorSheet {
             });
             return roll;
         }
+    }
+
+    /***
+     * Handle quick chat message
+     * @param event
+     * @private
+     */
+    _onChatMessage(event) {
+        //TODO-improve
+        ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({actor: this.actor}),
+            rollMode: game.settings.get('core', 'rollMode'),
+            flavor: '[permission] Creation Mod switched',
+            content: 'Creation mod cannot be switch with DM permission !'
+        });
     }
 
     /**

@@ -1,3 +1,5 @@
+import {HelpersPl1e} from "../helpers/helpers.js";
+
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
@@ -111,6 +113,9 @@ export class Pl1eActor extends Actor {
         actorAttributes.coldReduction = actorAttributes.coldReductions.reduce((a, b) => a + b, 0);
         actorAttributes.acidReduction = actorAttributes.acidReductions.reduce((a, b) => a + b, 0);
         actorAttributes.shockReduction = actorAttributes.shockReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.slots = Math.floor(actorAttributes.experience / 3);
+        actorAttributes.ranks = actorAttributes.experience;
+        actorAttributes.maxRank = Math.min(1 + Math.floor(actorAttributes.experience / 10), 5);
         // Handle actorCharacteristics scores.
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
             characteristic.id = id;
@@ -149,6 +154,7 @@ export class Pl1eActor extends Actor {
             skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
             skill.diceMod = actorAttributes.advantages;
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
+            if (!skill.fixedRank) actorAttributes.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
     }
 
