@@ -1,12 +1,12 @@
 {{#each system.attributes as |attribute id|}}
     {{#if attribute.apply}}
         <div class="form-group">
-            <label>{{localize (getAttribute id "label")}}</label>
-            {{#if (eq (getAttribute id "type") "number")}}
+            <label>{{localize attribute.label}}</label>
+            {{#if (eq attribute.type "number")}}
                 <label class="align-right">{{attribute.value}}</label>
-            {{else if (eq (getAttribute id "type") "bool")}}
-            {{else if (eq (getAttribute id "type") "select")}}
-                <label class="align-right">{{localize (configEntry (getAttribute id "select") attribute.value)}}</label>
+            {{else if (eq attribute.type "bool")}}
+            {{else if (eq attribute.type "select")}}
+                <label class="align-right">{{localize (configEntry attribute.select attribute.value)}}</label>
             {{/if}}
         </div>
     {{/if}}

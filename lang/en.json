@@ -12,15 +12,6 @@
   "PL1E.CharacteristicWis": "Wisdom",
   "PL1E.CharacteristicWil": "Will",
 
-  "PL1E.CharacteristicStrAbbr": "STR",
-  "PL1E.CharacteristicAgiAbbr": "AGI",
-  "PL1E.CharacteristicPerAbbr": "PER",
-  "PL1E.CharacteristicConAbbr": "CON",
-  "PL1E.CharacteristicIntAbbr": "INT",
-  "PL1E.CharacteristicCunAbbr": "CUN",
-  "PL1E.CharacteristicWisAbbr": "WIS",
-  "PL1E.CharacteristicWilAbbr": "WIL",
-
   "PL1E.DefensePar": "Parry",
   "PL1E.DefenseDod": "Dodge",
 

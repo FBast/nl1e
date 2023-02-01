@@ -183,19 +183,7 @@
         },
         "skills": {
           "parry": {
-            "rank": 3,
-            "fixedRank": true,
-            "weights": {
-              "characteristics": [
-                "strength",
-                "constitution"
-              ],
-              "attributes": [
-                "parryBonuses"
-              ]
-            },
-            "divider": 3,
-            "header": "PL1E.Defenses"
+            "rank": 3
           },
           "dodge": {
             "rank": 3,
@@ -508,9 +496,15 @@
           }
         },
         "currencies": {
-          "gp": 0,
-          "sp": 0,
-          "cp": 0
+          "gp": {
+            "value": 0
+          },
+          "sp": {
+            "value": 0
+          },
+          "cp": {
+            "value": 0
+          }
         }
       }
     },
@@ -535,7 +529,9 @@
     "templates": {
       "base": {
         "description": "",
-        "subItemsMap": [],
+        "subItemsMap": []
+      },
+      "item": {
         "attributes": {
           "price": {
             "value": 0,
@@ -544,7 +540,57 @@
           "rarity": {
             "value": 0,
             "apply": false
+          }
+        }
+      },
+      "reductions": {
+        "slashingReduction": {
+          "value": 0,
+          "apply": false
+        },
+        "crushingReduction": {
+          "value": 0,
+          "apply": false
+        },
+        "piercingReduction": {
+          "value": 0,
+          "apply": false
+        },
+        "fireReduction": {
+          "value": 0,
+          "apply": false
+        },
+        "coldReduction": {
+          "value": 0,
+          "apply": false
+        },
+        "acidReduction": {
+          "value": 0,
+          "apply": false
+        },
+        "shockReduction": {
+          "value": 0,
+          "apply": false
+        }
+      },
+      "fightMods": {
+        "attributes": {
+          "movementPenalty": {
+            "value": 0,
+            "apply": false
           },
+          "parry": {
+            "value": 0,
+            "apply": false
+          },
+          "dodge": {
+            "value": 0,
+            "apply": false
+          }
+        }
+      },
+      "characteristicsMods": {
+        "attributes": {
           "strengthMod": {
             "value": 0,
             "apply": false
@@ -576,52 +622,12 @@
           "willMod": {
             "value": 0,
             "apply": false
-          },
-          "movementPenalty": {
-            "value": 0,
-            "apply": false
-          },
-          "parry": {
-            "value": 0,
-            "apply": false
-          },
-          "dodge": {
-            "value": 0,
-            "apply": false
-          },
-          "slashingReduction": {
-            "value": 0,
-            "apply": false
-          },
-          "crushingReduction": {
-            "value": 0,
-            "apply": false
-          },
-          "piercingReduction": {
-            "value": 0,
-            "apply": false
-          },
-          "fireReduction": {
-            "value": 0,
-            "apply": false
-          },
-          "coldReduction": {
-            "value": 0,
-            "apply": false
-          },
-          "acidReduction": {
-            "value": 0,
-            "apply": false
-          },
-          "shockReduction": {
-            "value": 0,
-            "apply": false
           }
         }
       }
     },
     "feature": {
-      "templates": ["base"],
+      "templates": ["base", "reductions", "characteristicsMods"],
       "attributes": {
         "size": {
           "value": "medium",
@@ -638,7 +644,7 @@
       "level": 1
     },
     "weapon": {
-      "templates": ["base"],
+      "templates": ["base", "fightMods", "characteristicsMods"],
       "isEquippedMain": false,
       "isEquippedSecondary": false,
       "attributes": {
@@ -681,7 +687,7 @@
       }
     },
     "wearable": {
-      "templates": ["base"],
+      "templates": ["base", "reductions", "fightMods", "characteristicsMods"],
       "isEquipped": false,
       "attributes": {
         "slot": {
@@ -694,9 +700,17 @@
       "templates": ["base"],
       "removedUses": 0,
       "attributes": {
-        "slot": {
+        "activation": {
           "value": "action",
+          "apply": true
+        },
+        "reloadable": {
+          "value": false,
           "apply": false
+        },
+        "uses": {
+          "value": 1,
+          "apply": true
         },
         "healthRecovery": {
           "value": 0,
@@ -709,22 +723,14 @@
         "manaRecovery": {
           "value": 0,
           "apply": false
-        },
-        "reloadable": {
-          "value": false,
-          "apply": false
-        },
-        "uses": {
-          "value": 1,
-          "apply": false
         }
       }
     },
     "common": {
+      "templates": ["base"],
       "attributes": {
         "formula": "d20 + @str.mod + ceil(@lvl / 2)"
-      },
-      "templates": ["base"]
+      }
     }
   }
 }

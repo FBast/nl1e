@@ -31,27 +31,34 @@ export class Pl1eActor extends Actor {
     }
 
     /** @override */
-    prepareBaseData() {}
+    prepareBaseData() {
+        const system = this.system;
+        // Merge config data
+        system.resources = HelpersPl1e.mergeDeep(system.resources, CONFIG.PL1E.resources);
+        system.characteristics = HelpersPl1e.mergeDeep(system.characteristics, CONFIG.PL1E.characteristics);
+        system.skills = HelpersPl1e.mergeDeep(system.skills, CONFIG.PL1E.skills);
+        system.currencies = HelpersPl1e.mergeDeep(system.currencies, CONFIG.PL1E.currencies);
+    }
 
     /** @override */
     prepareEmbeddedDocuments() {
         const system = this.system;
-        const attributes = CONFIG.PL1E.attributes;
+        const configAttributes = CONFIG.PL1E.attributes;
         // Iterate items to apply system on actor
         for (let item of this.items) {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
             for (let [id, attribute] of Object.entries(item.system.attributes)) {
-                if (!attribute.apply || attributes[id]["path"] === undefined) continue;
-                if (attributes[id]["operator"] === 'set') {
-                    foundry.utils.setProperty(system, attributes[id]["path"], attribute.value);
+                if (!attribute.apply || configAttributes[id]["path"] === undefined) continue;
+                if (configAttributes[id]["operator"] === 'set') {
+                    foundry.utils.setProperty(system, configAttributes[id]["path"], attribute.value);
                 }
-                else if (attributes[id]["operator"] === 'push') {
-                    let currentValue = foundry.utils.getProperty(system, attributes[id]["path"]);
+                else if (configAttributes[id]["operator"] === 'push') {
+                    let currentValue = foundry.utils.getProperty(system, configAttributes[id]["path"]);
                     if (currentValue === undefined) currentValue = [];
                     currentValue.push(attribute.value);
-                    foundry.utils.setProperty(system, attributes[id]["path"], currentValue);
+                    foundry.utils.setProperty(system, configAttributes[id]["path"], currentValue);
                 }
             }
         }
@@ -118,8 +125,6 @@ export class Pl1eActor extends Actor {
         actorAttributes.maxRank = Math.min(1 + Math.floor(actorAttributes.experience / 10), 5);
         // Handle actorCharacteristics scores.
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
-            characteristic.id = id;
-            characteristic.label = game.i18n.localize(CONFIG.PL1E.characteristics[id]) ?? id;
             characteristic.mod = characteristic.mods.filter(value => value < 0).reduce((a, b) => a + b, 0)
                 + Math.max(...characteristic.mods.filter(value => value > 0), 0);
             characteristic.value = characteristic.base + characteristic.mod;
@@ -128,8 +133,6 @@ export class Pl1eActor extends Actor {
             actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
         // Handle actorResources scores.
         for (let [id, resource] of Object.entries(actorResources)) {
-            resource.id = id;
-            resource.label = game.i18n.localize(CONFIG.PL1E.resources[id]) ?? id;
             for(let characteristic of resource.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
             }
@@ -137,8 +140,6 @@ export class Pl1eActor extends Actor {
         }
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
-            skill.id = id;
-            skill.label = game.i18n.localize(CONFIG.PL1E.skills[id]) ?? id;
             let characteristicsSum = 0;
             for (let characteristic of skill.weights.characteristics) {
                 characteristicsSum += actorCharacteristics[characteristic].value;

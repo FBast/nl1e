@@ -13,8 +13,8 @@
 
                 {{#each system.resources as |resource key|}}
                     <div class="resource flex-group-center">
-                        <label class="resource-label tooltip" data-id="{{resource.id}}"
-                               data-characteristics="{{resource.weights.characteristics}}">{{resource.label}}</label>
+                        <label class="resource-label tooltip" data-id="{{key}}"
+                               data-characteristics="{{resource.weights.characteristics}}">{{localize resource.label}}</label>
                         <div class="resource-content flexrow flex-center flex-between">
                             <input type="number" name="{{resource.value}}" value="{{resource.value}}" data-dtype="Number"/>
                             <span> / </span>

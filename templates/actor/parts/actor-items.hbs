@@ -4,8 +4,8 @@
         <div class="currencies flexrow flex-between">
             {{#each system.currencies as |currency key|}}
             <div class="input-spin currency">
-                <label>{{localize (configEntry "currencies" key)}}</label>
-                <input name="system.currency.{{key}}" type="number" value="{{currency}}" data-dtype="Number" min="0" placeholder="0" disabled/>
+                <label>{{localize currency.label}}</label>
+                <input name="system.currency.{{key}}" type="number" value="{{currency.value}}" data-dtype="Number" min="0" placeholder="0" disabled/>
                 <span>
                     <i class="currency-control pointer fa fa-plus-square" data-currency="{{key}}" data-value="1"></i>
                     <i class="currency-control pointer fa fa-minus-square" data-currency="{{key}}" data-value="-1"></i>

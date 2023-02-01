@@ -1,3 +1,5 @@
+import {HelpersPl1e} from "../helpers/helpers.js";
+
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -36,6 +38,13 @@ export class Pl1eItem extends Item {
                 this.addEmbedItem(item, { save: false, newId: false });
             });
         }
+    }
+
+    /** @override */
+    prepareBaseData() {
+        const system = this.system;
+        // Merge config data
+        system.attributes = HelpersPl1e.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
     }
 
     /**

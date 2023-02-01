@@ -1,150 +1,337 @@
 export const PL1E = {};
 
-PL1E.defaultIcons = {
-    "character": "systems/pl1e/assets/icons/elf-helmet.svg",
-    "npc": "systems/pl1e/assets/icons/goblin-head.svg",
-    "merchant": "systems/pl1e/assets/icons/shop.svg",
-    "feature": "systems/pl1e/assets/icons/skills.svg",
-    "ability": "systems/pl1e/assets/icons/power-lightning.svg",
-    "weapon": "systems/pl1e/assets/icons/combat.svg",
-    "wearable": "systems/pl1e/assets/icons/armor-vest.svg",
-    "consumable": "systems/pl1e/assets/icons/round-potion.svg",
-    "common": "systems/pl1e/assets/icons/key.svg",
-}
-
-PL1E.defaultNames = {
-    "character": "PL1E.NewCharacter",
-    "npc": "PL1E.NewNPC",
-    "merchant": "PL1E.NewMerchant",
-    "feature": "PL1E.NewFeature",
-    "ability": "PL1E.NewAbility",
-    "weapon": "PL1E.NewWeapon",
-    "wearable": "PL1E.NewWearable",
-    "consumable": "PL1E.NewConsumable",
-    "common": "PL1E.NewCommon",
-}
+/**
+ * Merged Objects
+ */
 
 PL1E.resources = {
-    "health": "PL1E.Health",
-    "stamina": "PL1E.Stamina",
-    "mana": "PL1E.Mana"
+    "health": {
+        "label": "PL1E.Health"
+    },
+    "stamina": {
+        "label": "PL1E.Stamina"
+    },
+    "mana": {
+        "label": "PL1E.Mana"
+    }
 };
 
 PL1E.characteristics = {
-    "strength": "PL1E.CharacteristicStr",
-    "agility": "PL1E.CharacteristicAgi",
-    "perception": "PL1E.CharacteristicPer",
-    "constitution": "PL1E.CharacteristicCon",
-    "intellect": "PL1E.CharacteristicInt",
-    "cunning": "PL1E.CharacteristicCun",
-    "wisdom": "PL1E.CharacteristicWis",
-    "will": "PL1E.CharacteristicWil"
-};
-
-PL1E.characteristicsAbbreviations = {
-    "strength": "PL1E.CharacteristicStrAbbr",
-    "agility": "PL1E.CharacteristicAgiAbbr",
-    "perception": "PL1E.CharacteristicPerAbbr",
-    "constitution": "PL1E.CharacteristicConAbbr",
-    "intellect": "PL1E.CharacteristicIntAbbr",
-    "cunning": "PL1E.CharacteristicCunAbbr",
-    "wisdom": "PL1E.CharacteristicWisAbbr",
-    "will": "PL1E.CharacteristicWilAbbr"
+    "strength": {
+        "label": "PL1E.CharacteristicStr"
+    },
+    "agility": {
+        "label": "PL1E.CharacteristicAgi"
+    },
+    "perception": {
+        "label": "PL1E.CharacteristicPer"
+    },
+    "constitution": {
+        "label": "PL1E.CharacteristicCon"
+    },
+    "intellect": {
+        "label": "PL1E.CharacteristicInt"
+    },
+    "cunning": {
+        "label": "PL1E.CharacteristicCun"
+    },
+    "wisdom": {
+        "label": "PL1E.CharacteristicWis"
+    },
+    "will": {
+        "label": "PL1E.CharacteristicWil"
+    }
 };
 
 PL1E.skills = {
-    "parry": "PL1E.DefensePar",
-    "dodge": "PL1E.DefenseDod",
-    "vigor": "PL1E.ResistanceVig",
-    "reflex": "PL1E.ResistanceRef",
-    "resilience": "PL1E.ResistanceRes",
-    "intuition": "PL1E.ResistanceInt",
-    "handling": "PL1E.SkillHan",
-    "throwing": "PL1E.SkillThr",
-    "athletics": "PL1E.SkillAth",
-    "acrobatics": "PL1E.SkillAcr",
-    "accuracy": "PL1E.SkillAcc",
-    "search": "PL1E.SkillSea",
-    "vigilance": "PL1E.SkillVig",
-    "discretion": "PL1E.SkillDis",
-    "performance": "PL1E.SkillPer",
-    "diplomacy": "PL1E.SkillDip",
-    "intimidation": "PL1E.SkillInt",
-    "bluff": "PL1E.SkillBlu",
-    "craft": "PL1E.SkillCra",
-    "erudition": "PL1E.SkillEru",
-    "divineMagic": "PL1E.SkillDiv",
-    "secularMagic": "PL1E.SkillSec"
-}
-
-PL1E.sizes = {
-    "small": "PL1E.SizeSmall",
-    "medium": "PL1E.SizeMedium",
-    "large": "PL1E.SizeLarge",
-    "huge": "PL1E.SizeHuge",
-    "gargantuan": "PL1E.SizeGargantuan"
-};
-
-PL1E.sizeMods = {
-    "small": "10",
-    "medium": "20",
-    "large": "40",
-    "huge": "80",
-    "gargantuan": "160"
-};
-
-PL1E.sizeTokens = {
-    "small": "1",
-    "medium": "1",
-    "large": "2",
-    "huge": "3",
-    "gargantuan": "4"
-};
-
-PL1E.currencies = {
-    "gp": "PL1E.Gold",
-    "sp": "PL1E.Silver",
-    "cp": "PL1E.Copper"
-}
-
-PL1E.masteries = {
-    "none": "PL1E.None",
-    "crossbows": "PL1E.Crossbows",
-    "bows": "PL1E.Bows",
-    "poleArms": "PL1E.PoleArms",
-    "shields": "PL1E.Shields",
-    "shortAxes": "PL1E.ShortAxes",
-    "longAxes": "PL1E.LongAxes",
-    "shortBlades": "PL1E.ShortBlades",
-    "mediumBlades": "PL1E.MediumBlades",
-    "longBlades": "PL1E.LongBlades",
-    "shortHammers": "PL1E.ShortHammers",
-    "longHammers": "PL1E.LongHammers",
-    "arcana": "PL1E.Arcana",
-    "aramancia": "PL1E.Aramancia",
-    "biomancia": "PL1E.Biomancia",
-    "diastamancia": "PL1E.Diastamancia",
-    "goetia": "PL1E.Goetia",
-    "myalomancia": "PL1E.Myalomancia",
-    "necromancia": "PL1E.Necromancia",
-    "theurgy": "PL1E.Theurgy"
-}
-
-PL1E.slots = {
-    "none": "PL1E.None",
-    "clothes": "PL1E.Clothes",
-    "armor": "PL1E.Armor",
-    "ring": "PL1E.Ring",
-    "amulet": "PL1E.Amulet"
-}
-
-PL1E.activations = {
-    "passive": "PL1E.Passive",
-    "reaction": "PL1E.Reaction",
-    "free": "PL1E.Free",
-    "action": "PL1E.Action",
-    "round": "PL1E.Round",
-    "special": "PL1E.Special"
+    "parry": {
+        "label": "PL1E.DefensePar",
+        "fixedRank": true,
+        "divider": 3,
+        "weights": {
+            "characteristics": [
+                "strength",
+                "constitution"
+            ],
+            "attributes": [
+                "parryBonuses"
+            ]
+        }
+    },
+    "dodge": {
+        "label": "PL1E.DefenseDod",
+        "fixedRank": true,
+        "divider": 2,
+        "weights": {
+            "characteristics": [
+                "agility",
+                "perception"
+            ],
+            "attributes": [
+                "dodgeBonuses",
+                "movementPenalty"
+            ]
+        }
+    },
+    "vigor": {
+        "label": "PL1E.ResistanceVig",
+        "fixedRank": true,
+        "divider": 2,
+        "weights": {
+            "characteristics": [
+                "strength",
+                "constitution"
+            ]
+        }
+    },
+    "reflex": {
+        "label": "PL1E.ResistanceRef",
+        "fixedRank": true,
+        "divider": 2,
+        "weights": {
+            "characteristics": [
+                "agility",
+                "perception"
+            ],
+            "attributes": [
+                "movementPenalty"
+            ]
+        }
+    },
+    "resilience": {
+        "label": "PL1E.ResistanceRes",
+        "fixedRank": true,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "intellect",
+                "will"
+            ]
+        }
+    },
+    "intuition": {
+        "label": "PL1E.ResistanceInt",
+        "fixedRank": true,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "cunning",
+                "wisdom"
+            ]
+        }
+    },
+    "handling": {
+        "label": "PL1E.SkillHan",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "strength",
+                "agility"
+            ]
+        }
+    },
+    "throwing": {
+        "label": "PL1E.SkillThr",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "strength",
+                "perception"
+            ]
+        }
+    },
+    "athletics": {
+        "label": "PL1E.SkillAth",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "strength",
+                "constitution"
+            ],
+            "attributes": [
+                "movementPenalty"
+            ]
+        }
+    },
+    "acrobatics": {
+        "label": "PL1E.SkillAcr",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "agility",
+                "perception"
+            ],
+            "attributes": [
+                "movementPenalty"
+            ]
+        }
+    },
+    "accuracy": {
+        "label": "PL1E.SkillAcc",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "agility",
+                "perception"
+            ],
+            "attributes": [
+                "movementPenalty"
+            ]
+        }
+    },
+    "search": {
+        "label": "PL1E.SkillSea",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "cunning",
+                "wisdom"
+            ]
+        }
+    },
+    "vigilance": {
+        "label": "PL1E.SkillVig",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "perception",
+                "wisdom"
+            ]
+        }
+    },
+    "discretion": {
+        "label": "PL1E.SkillDis",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "agility",
+                "perception"
+            ],
+            "attributes": [
+                "movementPenalty"
+            ]
+        }
+    },
+    "performance": {
+        "label": "PL1E.SkillPer",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "wisdom",
+                "will"
+            ]
+        }
+    },
+    "diplomacy": {
+        "label": "PL1E.SkillDip",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "intellect",
+                "wisdom"
+            ]
+        }
+    },
+    "intimidation": {
+        "label": "PL1E.SkillInt",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "cunning",
+                "wisdom"
+            ]
+        }
+    },
+    "bluff": {
+        "label": "PL1E.SkillBlu",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "intellect",
+                "cunning"
+            ]
+        }
+    },
+    "craft": {
+        "label": "PL1E.SkillCra",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "agility",
+                "cunning"
+            ]
+        }
+    },
+    "erudition": {
+        "label": "PL1E.SkillEru",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": false,
+        "weights": {
+            "characteristics": [
+                "intellect",
+                "cunning"
+            ]
+        }
+    },
+    "divineMagic": {
+        "label": "PL1E.SkillDiv",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": true,
+        "weights": {
+            "characteristics": [
+                "wisdom",
+                "will"
+            ],
+            "attributes": [
+                "movementPenalty"
+            ]
+        }
+    },
+    "secularMagic": {
+        "label": "PL1E.SkillSec",
+        "fixedRank": false,
+        "divider": 2,
+        "magicPenalty": true,
+        "weights": {
+            "characteristics": [
+                "intellect",
+                "cunning"
+            ],
+            "attributes": [
+                "movementPenalty"
+            ]
+        }
+    }
 }
 
 PL1E.attributes = {
@@ -179,6 +366,11 @@ PL1E.attributes = {
         "type": "select",
         "label": "PL1E.Slot",
         "select": "slots"
+    },
+    "activation": {
+        "type": "select",
+        "label": "PL1E.Activation",
+        "select": "activations"
     },
     "uses": {
         "type": "number",
@@ -347,3 +539,108 @@ PL1E.attributes = {
         "operator": "add"
     }
 }
+
+PL1E.currencies = {
+    "gp": {
+        "label": "PL1E.Gold"
+    },
+    "sp": {
+        "label": "PL1E.Silver"
+    },
+    "cp": {
+        "label": "PL1E.Copper"
+    }
+}
+
+/**
+ * Not Merged Objects
+ */
+
+PL1E.defaultIcons = {
+    "character": "systems/pl1e/assets/icons/elf-helmet.svg",
+    "npc": "systems/pl1e/assets/icons/goblin-head.svg",
+    "merchant": "systems/pl1e/assets/icons/shop.svg",
+    "feature": "systems/pl1e/assets/icons/skills.svg",
+    "ability": "systems/pl1e/assets/icons/power-lightning.svg",
+    "weapon": "systems/pl1e/assets/icons/combat.svg",
+    "wearable": "systems/pl1e/assets/icons/armor-vest.svg",
+    "consumable": "systems/pl1e/assets/icons/round-potion.svg",
+    "common": "systems/pl1e/assets/icons/key.svg",
+}
+
+PL1E.defaultNames = {
+    "character": "PL1E.NewCharacter",
+    "npc": "PL1E.NewNPC",
+    "merchant": "PL1E.NewMerchant",
+    "feature": "PL1E.NewFeature",
+    "ability": "PL1E.NewAbility",
+    "weapon": "PL1E.NewWeapon",
+    "wearable": "PL1E.NewWearable",
+    "consumable": "PL1E.NewConsumable",
+    "common": "PL1E.NewCommon",
+}
+
+PL1E.sizes = {
+    "small": "PL1E.SizeSmall",
+    "medium": "PL1E.SizeMedium",
+    "large": "PL1E.SizeLarge",
+    "huge": "PL1E.SizeHuge",
+    "gargantuan": "PL1E.SizeGargantuan"
+};
+
+PL1E.sizeMods = {
+    "small": "10",
+    "medium": "20",
+    "large": "40",
+    "huge": "80",
+    "gargantuan": "160"
+};
+
+PL1E.sizeTokens = {
+    "small": "1",
+    "medium": "1",
+    "large": "2",
+    "huge": "3",
+    "gargantuan": "4"
+};
+
+PL1E.masteries = {
+    "none": "PL1E.None",
+    "crossbows": "PL1E.Crossbows",
+    "bows": "PL1E.Bows",
+    "poleArms": "PL1E.PoleArms",
+    "shields": "PL1E.Shields",
+    "shortAxes": "PL1E.ShortAxes",
+    "longAxes": "PL1E.LongAxes",
+    "shortBlades": "PL1E.ShortBlades",
+    "mediumBlades": "PL1E.MediumBlades",
+    "longBlades": "PL1E.LongBlades",
+    "shortHammers": "PL1E.ShortHammers",
+    "longHammers": "PL1E.LongHammers",
+    "arcana": "PL1E.Arcana",
+    "aramancia": "PL1E.Aramancia",
+    "biomancia": "PL1E.Biomancia",
+    "diastamancia": "PL1E.Diastamancia",
+    "goetia": "PL1E.Goetia",
+    "myalomancia": "PL1E.Myalomancia",
+    "necromancia": "PL1E.Necromancia",
+    "theurgy": "PL1E.Theurgy"
+}
+
+PL1E.slots = {
+    "none": "PL1E.None",
+    "clothes": "PL1E.Clothes",
+    "armor": "PL1E.Armor",
+    "ring": "PL1E.Ring",
+    "amulet": "PL1E.Amulet"
+}
+
+PL1E.activations = {
+    "passive": "PL1E.Passive",
+    "reaction": "PL1E.Reaction",
+    "free": "PL1E.Free",
+    "action": "PL1E.Action",
+    "round": "PL1E.Round",
+    "special": "PL1E.Special"
+}
+

@@ -3,8 +3,9 @@
     <div class="characteristics">
         {{#each system.characteristics as |characteristic key|}}
             <div class="characteristic flex-group-center">
-                <h3 class="characteristic-label tooltip align-left" data-tooltip="{{localize characteristic.tooltip}}" data-id="{{characteristic.id}}"
-                    data-resources="{{characteristic.weights.resources}}" data-skills="{{characteristic.weights.skills}}">{{characteristic.label}}</h3>
+                {{log characteristic}}
+                <h3 class="characteristic-label align-left" data-id="{{key}}"
+                    data-resources="{{characteristic.weights.resources}}" data-skills="{{characteristic.weights.skills}}">{{localize characteristic.label}}</h3>
                 <div class="characteristic-values flexrow flex-group-center">
                     <div class="input-spin">
                         <input name="characteristics.{{key}}.base" type="number" value="{{characteristic.base}}" data-dtype="Number" min="0" placeholder="0" disabled/>
@@ -34,8 +35,8 @@
                             {{#if (lt skill.numberMod 0)}}color-red{{/if}}
                             {{#if (eq skill.numberMod 0)}}color-black{{/if}}">{{skill.number}}</label>
                     </i>
-                    <label class="skill-label tooltip grid-span-3 align-left" data-tooltip="{{localize skill.tooltip}}" data-id="{{skill.id}}"
-                           data-attributes="{{skill.weights.attributes}}" data-characteristics="{{skill.weights.characteristics}}">{{skill.label}}</label>
+                    <label class="skill-label tooltip grid-span-3 align-left" data-id="{{key}}"
+                           data-attributes="{{skill.weights.attributes}}" data-characteristics="{{skill.weights.characteristics}}">{{localize skill.label}}</label>
                     <div class="skill-ranks align-right">
                         {{#if (eq skill.rank 1)}}
                             {{#if skill.fixedRank}}
@@ -130,7 +131,7 @@
             <legend class="section-header">{{localize "PL1E.Base"}}</legend>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.Size"}}</label>
-                <label class="align-right">{{localize (lookup config.sizes system.attributes.size)}}</label>
+                <label class="align-right">{{localize (configEntry "sizes" system.attributes.size)}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.Speed"}}</label>
