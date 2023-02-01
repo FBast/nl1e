@@ -538,156 +538,84 @@
         "subItemsMap": [],
         "attributes": {
           "price": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.Price"
+            "apply": false
           },
           "rarity": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.Rarity"
+            "apply": false
           },
           "strengthMod": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.StrengthMod",
-            "path": "characteristics.strength.mods",
-            "operator": "push"
+            "apply": false
           },
           "agilityMod": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.AgilityMod",
-            "path": "characteristics.agility.mods",
-            "operator": "push"
+            "apply": false
           },
           "perceptionMod": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.PerceptionMod",
-            "path": "characteristics.perception.mods",
-            "operator": "push"
+            "apply": false
           },
           "constitutionMod": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.ConstitutionMod",
-            "path": "characteristics.constitution.mods",
-            "operator": "push"
+            "apply": false
           },
           "intellectMod": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.IntellectMod",
-            "path": "characteristics.intellect.mods",
-            "operator": "push"
+            "apply": false
           },
           "cunningMod": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.CunningMod",
-            "path": "characteristics.cunning.mods",
-            "operator": "push"
+            "apply": false
           },
           "wisdomMod": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.WisdomMod",
-            "path": "characteristics.wisdom.mods",
-            "operator": "push"
+            "apply": false
           },
           "willMod": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.WillMod",
-            "path": "characteristics.will.mods",
-            "operator": "push"
+            "apply": false
           },
           "movementPenalty": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.MovementPenalty",
-            "path": "attributes.movementPenalties",
-            "operator": "push"
+            "apply": false
           },
           "parry": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.Parry"
+            "apply": false
           },
           "dodge": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.Dodge"
+            "apply": false
           },
           "slashingReduction": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.SlashingReduction",
-            "path": "attributes.slashingReductions",
-            "operator": "push"
+            "apply": false
           },
           "crushingReduction": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.CrushingReduction",
-            "path": "attributes.crushingReductions",
-            "operator": "push"
+            "apply": false
           },
           "piercingReduction": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.PiercingReduction",
-            "path": "attributes.piercingReductions",
-            "operator": "push"
+            "apply": false
           },
           "fireReduction": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.FireReduction",
-            "path": "attributes.fireReductions",
-            "operator": "push"
+            "apply": false
           },
           "coldReduction": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.ColdReduction",
-            "path": "attributes.coldReductions",
-            "operator": "push"
+            "apply": false
           },
           "acidReduction": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.AcidReduction",
-            "path": "attributes.acidReductions",
-            "operator": "push"
+            "apply": false
           },
           "shockReduction": {
-            "type": "number",
             "value": 0,
-            "apply": false,
-            "label": "PL1E.ShockReduction",
-            "path": "attributes.shockReductions",
-            "operator": "push"
+            "apply": false
           }
         }
       }
@@ -696,21 +624,12 @@
       "templates": ["base"],
       "attributes": {
         "size": {
-          "type": "select",
           "value": "medium",
-          "apply": false,
-          "label": "PL1E.Size",
-          "path": "attributes.size",
-          "operator": "set",
-          "select": "sizes"
+          "apply": false
         },
         "speed": {
-          "type": "number",
           "value": 4.5,
-          "apply": false,
-          "label": "PL1E.Speed",
-          "path": "attributes.speed",
-          "operator": "set"
+          "apply": false
         }
       }
     },
@@ -724,59 +643,40 @@
       "isEquippedSecondary": false,
       "attributes": {
         "mastery": {
-          "type": "select",
           "value": "none",
-          "apply": false,
-          "label": "PL1E.Mastery",
-          "select": "masteries"
+          "apply": false
         },
         "contactAttackRange": {
-          "type": "number",
           "value": 1,
-          "apply": false,
-          "label": "PL1E.ContactAttackRange"
+          "apply": false
         },
         "rangedAttackRange": {
-          "type": "number",
           "value": 0,
-          "apply": false,
-          "label": "PL1E.RangedAttackRange"
+          "apply": false
         },
         "parryProjectiles": {
-          "type": "bool",
           "value": false,
-          "apply": false,
-          "label": "PL1E.ParryProjectiles"
+          "apply": false
         },
         "slashing": {
-          "type": "number",
           "value": 0,
-          "apply": false,
-          "label": "PL1E.Slashing"
+          "apply": false
         },
         "crushing": {
-          "type": "number",
           "value": 0,
-          "apply": false,
-          "label": "PL1E.Crushing"
+          "apply": false
         },
         "piercing": {
-          "type": "number",
           "value": 0,
-          "apply": false,
-          "label": "PL1E.Piercing"
+          "apply": false
         },
         "hands": {
-          "type": "number",
           "value": 0,
-          "apply": false,
-          "label": "PL1E.Hands"
+          "apply": false
         },
         "ammo": {
-          "type": "number",
           "value": 0,
-          "apply": false,
-          "label": "PL1E.Ammo"
+          "apply": false
         }
       }
     },
@@ -785,11 +685,8 @@
       "isEquipped": false,
       "attributes": {
         "slot": {
-          "type": "select",
           "value": "none",
-          "apply": false,
-          "label": "PL1E.Slot",
-          "select": "slots"
+          "apply": false
         }
       }
     },
@@ -798,47 +695,28 @@
       "removedUses": 0,
       "attributes": {
         "slot": {
-          "type": "select",
           "value": "action",
-          "apply": false,
-          "label": "PL1E.Activation",
-          "select": "activations"
+          "apply": false
         },
         "healthRecovery": {
-          "type": "number",
           "value": 0,
-          "apply": false,
-          "label": "PL1E.HealthRecovery",
-          "path": "resources.health.value",
-          "operator": "add"
+          "apply": false
         },
         "staminaRecovery": {
-          "type": "number",
           "value": 0,
-          "apply": false,
-          "label": "PL1E.StaminaRecovery",
-          "path": "resources.stamina.value",
-          "operator": "add"
+          "apply": false
         },
         "manaRecovery": {
-          "type": "number",
           "value": 0,
-          "apply": false,
-          "label": "PL1E.ManaRecovery",
-          "path": "resources.mana.value",
-          "operator": "add"
+          "apply": false
         },
         "reloadable": {
-          "type": "bool",
           "value": false,
-          "apply": false,
-          "label": "PL1E.Reloadable"
+          "apply": false
         },
         "uses": {
-          "type": "number",
           "value": 1,
-          "apply": false,
-          "label": "PL1E.Uses"
+          "apply": false
         }
       }
     },
