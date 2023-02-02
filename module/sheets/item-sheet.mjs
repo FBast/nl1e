@@ -117,8 +117,8 @@ export class Pl1eItemSheet extends ItemSheet {
             }
             // Append to abilities.
             else if (value.type === 'ability') {
-                if (value.system.level != undefined) {
-                    abilities[value.system.level].push(value);
+                if (value.system.attributes.level !== undefined) {
+                    abilities[value.system.attributes.level].push(value);
                 }
             }
         }

@@ -115,6 +115,9 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find('.currency-control').click(this._onCurrencyChange.bind(this));
         html.find('.rank-control').click(this._onRankChange.bind(this));
 
+        // Features management
+        html.find(".ability-toggle").click(this._onToggleAbility.bind(this));
+
         // Items management
         html.find(".weapon-toggle").click(this._onToggleWeapon.bind(this));
         html.find(".wearable-toggle").click(this._onToggleWearable.bind(this));
@@ -185,6 +188,17 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Finally, create the item!
         return await Item.create(itemData, {parent: this.actor});
+    }
+
+    async _onToggleAbility(event) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+
+        // Reset removed uses
+        await item.update({
+            ["system.isMemorized"]: !item.system.isMemorized
+        });
     }
 
     /**
@@ -596,9 +610,7 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             // Append to abilities.
             else if (item.type === 'ability') {
-                if (item.system.level !== undefined) {
-                    abilities[item.system.level].push(item);
-                }
+                abilities[item.system.attributes.level.value].push(item);
             }
         }
 

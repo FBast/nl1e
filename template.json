@@ -510,11 +510,7 @@
     },
     "character": {
       "templates": ["base"],
-      "attributes": {
-        "level": {
-          "value": 1
-        }
-      }
+      "level": 1
     },
     "npc": {
       "templates": ["base"],
@@ -641,7 +637,13 @@
     },
     "ability": {
       "templates": ["base"],
-      "level": 1
+      "isMemorized": false,
+      "attributes": {
+        "level": {
+          "value": 1,
+          "apply": true
+        }
+      }
     },
     "weapon": {
       "templates": ["base", "fightMods", "characteristicsMods"],

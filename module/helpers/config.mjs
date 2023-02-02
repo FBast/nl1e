@@ -344,6 +344,25 @@ PL1E.attributes = {
         "type": "number",
         "label": "PL1E.Rarity"
     },
+    "mastery": {
+        "type": "select",
+        "label": "PL1E.Mastery",
+        "select": "masteries"
+    },
+    "level": {
+        "type": "number",
+        "label": "PL1E.Level"
+    },
+    "slot": {
+        "type": "select",
+        "label": "PL1E.Slot",
+        "select": "slots"
+    },
+    "activation": {
+        "type": "select",
+        "label": "PL1E.Activation",
+        "select": "activations"
+    },
     "size": {
         "type": "select",
         "label": "PL1E.Size",
@@ -356,21 +375,6 @@ PL1E.attributes = {
         "label": "PL1E.Speed",
         "path": "attributes.speed",
         "operator": "set"
-    },
-    "mastery": {
-        "type": "select",
-        "label": "PL1E.Mastery",
-        "select": "masteries"
-    },
-    "slot": {
-        "type": "select",
-        "label": "PL1E.Slot",
-        "select": "slots"
-    },
-    "activation": {
-        "type": "select",
-        "label": "PL1E.Activation",
-        "select": "activations"
     },
     "uses": {
         "type": "number",

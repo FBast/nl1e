@@ -15,12 +15,11 @@
         </div>
     </fieldset>
     <ol class="items-list">
-        <li class="item items-header grid grid-4col">
+        <li class="item flexrow items-header">
             <div class="item-name">{{localize "PL1E.Weapon"}}</div>
-            <div class="item-stats grid-span-2">{{localize "PL1E.Stats"}}</div>
         </li>
         {{#each weapons as |item key|}}
-            <li class="item grid grid-4col" data-item-id="{{item._id}}">
+            <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
                 <div class="item-name">
                     <div class="item-image">
                         <a class="interactable rollable" data-roll-type="item">
@@ -115,9 +114,8 @@
         {{/each}}
     </ol>
     <ol class="items-list">
-        <li class="item flexrow items-header grid grid-4col">
+        <li class="item flexrow items-header">
             <div class="item-name">{{localize "PL1E.Wearable"}}</div>
-            <div class="item-stats grid-span-2">{{localize "PL1E.Stats"}}</div>
         </li>
         {{#each wearables as |item key|}}
             <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
@@ -180,10 +178,8 @@
         {{/each}}
     </ol>
     <ol class="items-list">
-        <li class="item flexrow items-header grid grid-4col">
+        <li class="item flexrow items-header">
             <div class="item-name">{{localize "PL1E.Consumable"}}</div>
-            <div class="item-stats grid-span-2">{{localize "PL1E.Stats"}}</div>
-            <div class="item-controls"></div>
         </li>
         {{#each consumables as |item key|}}
             <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
