@@ -28,6 +28,7 @@ export class Pl1eActor extends Actor {
         // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
         // prepareDerivedData().
         super.prepareData();
+        randomID()
     }
 
     /** @override */

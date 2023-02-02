@@ -106,9 +106,12 @@ export class Pl1eActorSheet extends ActorSheet {
         // Active Effect management
         html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
+        // Button activation
+        html.find(".activate-button").click(this._onActivateButton.bind(this));
+
         // Chat messages
         html.find('.rollable').click(this._onRoll.bind(this));
-        html.find('.message').click(this._onChatMessage.bind(this))
+        html.find('.message').click(this._onChatMessage.bind(this));
 
         // Custom objects
         html.find('.characteristic-control').click(this._onCharacteristicChange.bind(this));
@@ -455,6 +458,16 @@ export class Pl1eActorSheet extends ActorSheet {
         });
 
         this.render(false);
+    }
+
+    /**
+     * Handle button activation
+     * @param event
+     * @private
+     */
+    async _onActivateButton(event) {
+        event.preventDefault();
+        await HelpersPl1e.resetClones();
     }
 
     /**

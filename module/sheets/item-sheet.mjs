@@ -29,6 +29,19 @@ export class Pl1eItemSheet extends ItemSheet {
         return `${path}/item-${this.item.type}-sheet.hbs`;
     }
 
+    _getHeaderButtons() {
+        const buttons = super._getHeaderButtons();
+        if (game.user.isGM) {
+            buttons.unshift({
+                label: 'PL1E.ResetClones',
+                class: 'reset-clones',
+                icon: 'fas fa-clone',
+                onclick: () => HelpersPl1e.resetClones(),
+            });
+        }
+        return buttons;
+    }
+
     /* -------------------------------------------- */
 
     /** @override */
@@ -117,9 +130,7 @@ export class Pl1eItemSheet extends ItemSheet {
             }
             // Append to abilities.
             else if (value.type === 'ability') {
-                if (value.system.attributes.level !== undefined) {
-                    abilities[value.system.attributes.level].push(value);
-                }
+                abilities[value.system.attributes.level.value].push(value);
             }
         }
 

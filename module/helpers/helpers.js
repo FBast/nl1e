@@ -188,4 +188,22 @@ export class HelpersPl1e {
         return this.mergeDeep(target, ...sources);
     }
 
+    /**
+     * Reset all clones using their sourceId
+     * @returns {Promise<void>}
+     */
+    static async resetClones() {
+        for (let [uuid, key] of Object.entries(game.documentIndex.uuids)) {
+            for (let leaf of key.leaves) {
+                let document = leaf.entry;
+                if (document.flags.core === undefined) continue;
+                if (document.flags.core.sourceId === undefined) continue;
+                let original = await fromUuid(document.flags.core.sourceId);
+                await document.update({
+                    "system": original.system
+                })
+            }
+        }
+    }
+
 }
