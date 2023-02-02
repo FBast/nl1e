@@ -3,7 +3,6 @@
     <div class="characteristics">
         {{#each system.characteristics as |characteristic key|}}
             <div class="characteristic flex-group-center">
-                {{log characteristic}}
                 <h3 class="characteristic-label align-left" data-id="{{key}}"
                     data-resources="{{characteristic.weights.resources}}" data-skills="{{characteristic.weights.skills}}">{{localize characteristic.label}}</h3>
                 <div class="characteristic-values flexrow flex-group-center">

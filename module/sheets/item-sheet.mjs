@@ -47,7 +47,7 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Prepare character data and items.
-        if (itemData.type === 'feature' || itemData.type === 'item') {
+        if (['feature', 'weapon', 'wearable'].includes(itemData.type)) {
             this._prepareSubItems(context);
         }
 
@@ -153,11 +153,11 @@ export class Pl1eItemSheet extends ItemSheet {
         event.stopPropagation();
         const itemId = $(event.currentTarget).data("item-id");
         const item = this.document.getEmbedItem(itemId);
-        if (!item) {
-            return;
-        }
+        if (!item) return;
         for (let [key, value] of this.item.system.subItemsMap) {
-            if (value === item || value.system.childId !== item.system.parentId) continue;
+            if (value === item) continue;
+            if (value.system.childId === undefined) continue;
+            if (value.system.childId !== item.system.parentId) continue;
             this.document.deleteEmbedItem(value._id);
         }
         this.document.deleteEmbedItem(itemId);

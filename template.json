@@ -460,7 +460,7 @@
         },
         "attributes": {
           "creationMod": true,
-          "experience": 0,
+          "experience": 10,
           "remainingCharacteristics": 8,
           "bonuses": 0,
           "advantages": 0,
