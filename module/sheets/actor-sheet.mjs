@@ -375,14 +375,13 @@ export class Pl1eActorSheet extends ActorSheet {
         let value = element.data("value");
         if (!value || !characteristic) return;
 
-        let remaining = foundry.utils.getProperty(this.actor.system.attributes, "remainingCharacteristics");
+        let remaining = this.actor.system.attributes.remainingCharacteristics;
         if (remaining === 0 && value > 0) return;
 
-        let oldValue = foundry.utils.getProperty(this.actor.system.characteristics, characteristic + ".base");
+        let oldValue = this.actor.system.characteristics[characteristic].base;
         let newValue = oldValue + value;
 
-        foundry.utils.setProperty(this.actor.system.characteristics, characteristic + ".base", newValue);
-        foundry.utils.setProperty(this.actor.system.attributes, "remainingCharacteristics", remaining - value);
+        if (newValue < 2 || newValue > 5) return;
 
         await this.actor.update({
             ["system.characteristics." + characteristic + ".base"]: newValue,
