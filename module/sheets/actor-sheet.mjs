@@ -60,12 +60,12 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
-
         // Prepare active effects
         context.effects = prepareActiveEffectCategories(this.actor.effects);
-
         // Add the config data
         context.config = PL1E;
+        // Add game access
+        context.game = game;
 
         return context;
     }
