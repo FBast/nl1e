@@ -192,13 +192,13 @@ export class HelpersPl1e {
      * Reset all clones using their sourceId
      * @returns {Promise<void>}
      */
-    static async resetClones() {
+    static async resetClones(sourceId) {
         for (let [uuid, key] of Object.entries(game.documentIndex.uuids)) {
             for (let leaf of key.leaves) {
                 let document = leaf.entry;
-                if (document.flags.core === undefined) continue;
-                if (document.flags.core.sourceId === undefined) continue;
-                let original = await fromUuid(document.flags.core.sourceId);
+                if (document.getFlag('core', 'sourceId') === undefined) continue;
+                if (document.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
+                let original = await fromUuid(document.getFlag('core', 'sourceId'));
                 await document.update({
                     "system": original.system
                 })

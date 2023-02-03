@@ -32,12 +32,14 @@ export class Pl1eItemSheet extends ItemSheet {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            buttons.unshift({
-                label: 'PL1E.ResetClones',
-                class: 'reset-clones',
-                icon: 'fas fa-clone',
-                onclick: () => HelpersPl1e.resetClones(),
-            });
+            if (this.item.getFlag('core','sourceId') === undefined) {
+                buttons.unshift({
+                    label: 'PL1E.ResetClones',
+                    class: 'reset-clones',
+                    icon: 'fas fa-clone',
+                    onclick: () => HelpersPl1e.resetClones(this.item._id)
+                });
+            }
         }
         return buttons;
     }
