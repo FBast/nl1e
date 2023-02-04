@@ -17,14 +17,6 @@
   color: black;
 }
 
-.interactable {
-  &:hover,
-  &:focus {
-    text-shadow: 0 0 10px red;
-    cursor: pointer;
-  }
-}
-
 .pointer {
   &:hover,
   &:focus {
@@ -32,14 +24,22 @@
   }
 }
 
-.tooltip {
+.hover-red {
+  &:hover,
+  &:focus {
+    text-shadow: 0 0 10px red;
+    cursor: pointer;
+  }
+}
+
+.hover-green {
   &:hover,
   &:focus {
     text-shadow: 0 0 10px green;
   }
 }
 
-.highlight {
+.highlight-green {
   text-shadow: 0 0 10px green;
 }
 

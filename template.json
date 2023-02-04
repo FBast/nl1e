@@ -540,33 +540,35 @@
         }
       },
       "reductions": {
-        "slashingReduction": {
-          "value": 0,
-          "apply": false
-        },
-        "crushingReduction": {
-          "value": 0,
-          "apply": false
-        },
-        "piercingReduction": {
-          "value": 0,
-          "apply": false
-        },
-        "fireReduction": {
-          "value": 0,
-          "apply": false
-        },
-        "coldReduction": {
-          "value": 0,
-          "apply": false
-        },
-        "acidReduction": {
-          "value": 0,
-          "apply": false
-        },
-        "shockReduction": {
-          "value": 0,
-          "apply": false
+        "attributes": {
+          "slashingReduction": {
+            "value": 0,
+            "apply": false
+          },
+          "crushingReduction": {
+            "value": 0,
+            "apply": false
+          },
+          "piercingReduction": {
+            "value": 0,
+            "apply": false
+          },
+          "fireReduction": {
+            "value": 0,
+            "apply": false
+          },
+          "coldReduction": {
+            "value": 0,
+            "apply": false
+          },
+          "acidReduction": {
+            "value": 0,
+            "apply": false
+          },
+          "shockReduction": {
+            "value": 0,
+            "apply": false
+          }
         }
       },
       "fightMods": {

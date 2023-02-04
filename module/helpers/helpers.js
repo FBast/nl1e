@@ -199,9 +199,17 @@ export class HelpersPl1e {
                 if (document.getFlag('core', 'sourceId') === undefined) continue;
                 if (document.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
                 let original = await fromUuid(document.getFlag('core', 'sourceId'));
-                await document.update({
-                    "system": original.system
-                })
+                if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(document.type)) {
+                    await document.update({
+                        "name": original.name,
+                        "img": original.img,
+                        "system.description": original.system.description,
+                        "system.attributes": original.system.attributes
+                    })
+                }
+                else {
+                    console.warn("Unknown type : " + document.type);
+                }
             }
         }
     }

@@ -29,6 +29,11 @@ export class Pl1eItemSheet extends ItemSheet {
         return `${path}/item-${this.item.type}-sheet.hbs`;
     }
 
+    /**
+     * Custom header buttons
+     * @returns {Application.HeaderButton[]}
+     * @private
+     */
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {

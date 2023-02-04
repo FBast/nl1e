@@ -77,56 +77,42 @@ export class Pl1eActorSheet extends ActorSheet {
         super.activateListeners(html);
 
         // Render the item sheet for viewing/editing prior to the editable check.
-        html.find('.item-edit').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const item = this.actor.items.get(li.data("itemId"));
-            item.sheet.render(true);
-        });
+        html.find('.item-edit').on("click", this._onItemEdit.bind(this));
 
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
         // Add Inventory Item
-        html.find('.item-create').click(this._onItemCreate.bind(this));
+        html.find('.item-create').on("click", this._onItemCreate.bind(this));
 
         // Delete Inventory Item
-        html.find('.item-delete').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const parentItem = this.actor.items.get(li.data("itemId"));
-            for (let item of this.actor.items) {
-                if (parentItem === item || item.system.childId === undefined) continue;
-                if (parentItem.system.parentId !== item.system.childId) continue;
-                item.delete();
-            }
-            parentItem.delete();
-            li.slideUp(200, () => this.render(false));
-        });
+        html.find('.item-delete').on("click", this._onItemDelete.bind(this));
 
         // Active Effect management
-        html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
+        html.find(".effect-control").on("click", ev => onManageActiveEffect(ev, this.actor));
 
         // Chat messages
-        html.find('.rollable').click(this._onRoll.bind(this));
-        html.find('.message').click(this._onChatMessage.bind(this));
+        html.find('.rollable').on("click", this._onRoll.bind(this));
+        html.find('.message').on("click", this._onChatMessage.bind(this));
 
         // Custom objects
-        html.find('.characteristic-control').click(this._onCharacteristicChange.bind(this));
-        html.find('.currency-control').click(this._onCurrencyChange.bind(this));
-        html.find('.rank-control').click(this._onRankChange.bind(this));
-
-        // Features management
-        html.find(".ability-toggle").click(this._onToggleAbility.bind(this));
+        html.find('.characteristic-control').on("click", this._onCharacteristicChange.bind(this));
+        html.find('.currency-control').on("click", this._onCurrencyChange.bind(this));
+        html.find('.rank-control').on("click", this._onRankChange.bind(this));
 
         // Items management
-        html.find(".weapon-toggle").click(this._onToggleWeapon.bind(this));
-        html.find(".wearable-toggle").click(this._onToggleWearable.bind(this));
-        html.find(".consumable-toggle").click(this._onUseConsumable.bind(this));
-        html.find(".consumable-reload").click(this._onReloadConsumable.bind(this));
+        html.find(".weapon-toggle").on("click", this._onToggleWeapon.bind(this));
+        html.find(".wearable-toggle").on("click", this._onToggleWearable.bind(this));
+        html.find(".consumable-toggle").on("click", this._onUseConsumable.bind(this));
+        html.find(".consumable-reload").on("click", this._onReloadConsumable.bind(this));
+        html.find(".ability-toggle").on("click", this._onToggleAbility.bind(this));
 
         // Highlights indications
-        html.find('.resource-label,.characteristic-label,.skill-label').mouseenter(this._onCreateHighlights.bind(this));
-        html.find('.resource-label,.characteristic-label,.skill-label').mouseleave(this._onRemoveHighlights.bind(this));
+        html.find('.resource-label,.characteristic-label,.skill-label')
+            .on("mouseenter", this._onCreateHighlights.bind(this));
+        html.find('.resource-label,.characteristic-label,.skill-label')
+            .on("mouseleave", this._onRemoveHighlights.bind(this));
 
         // Drag events for macros.
         if (this.actor.isOwner) {
@@ -164,6 +150,17 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
+     * Open item sheet
+     * @private
+     * @param {Event} event   The originating click event
+     */
+    _onItemEdit(event) {
+        const itemId = $(event.currentTarget).data("item-id");
+        const item = this.actor.items.get(itemId);
+        item.sheet.render(true);
+    }
+
+    /**
      * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
      * @param {Event} event   The originating click event
      * @private
@@ -190,12 +187,31 @@ export class Pl1eActorSheet extends ActorSheet {
         return await Item.create(itemData, {parent: this.actor});
     }
 
+    /**
+     * Handle deletion of item
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onItemDelete(event) {
+        const itemId = $(event.currentTarget).data("item-id");
+        const parentItem = this.actor.items.get(itemId);
+        for (let item of this.actor.items) {
+            if (parentItem === item || item.system.childId === undefined) continue;
+            if (parentItem.system.parentId !== item.system.childId) continue;
+            item.delete();
+        }
+        await parentItem.delete();
+    }
+
     async _onToggleAbility(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        // Reset removed uses
+        if (!item.system.isMemorized && this.actor.system.attributes.slots - item.system.attributes.level.value < 0) return;
+
+        // Toggle ability
         await item.update({
             ["system.isMemorized"]: !item.system.isMemorized
         });
@@ -234,6 +250,8 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Unequip other items
         for (let otherItem of this.actor.items) {
+            // Ignore if otherItem is not a weapon
+            if (otherItem.type !== 'weapon') continue;
             // Ignore if otherItem is item
             if (otherItem === item) continue;
             // If other item is equipped on main and this item is equipped on main
@@ -281,6 +299,7 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
         const slot = item.system.attributes.slot.value;
+        // Ignore if not using a slot
         if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
         // Toggle item slot
         await item.update({
@@ -291,6 +310,8 @@ export class Pl1eActorSheet extends ActorSheet {
         let ringCount = 1;
         // Unequip other items
         for (let otherItem of this.actor.items) {
+            // Ignore if otherItem is not a wearable
+            if (otherItem.type !== 'wearable') continue;
             // Ignore if otherItem is item
             if (otherItem === item) continue;
             // Count same items slot
@@ -520,7 +541,7 @@ export class Pl1eActorSheet extends ActorSheet {
             for (let resource of document.getElementsByClassName('resource-label')) {
                 let id = $(resource).data("id");
                 if (!resources.includes(id)) continue;
-                resource.classList.add('highlight');
+                resource.classList.add('highlight-green');
             }
         }
         // characteristics
@@ -528,7 +549,7 @@ export class Pl1eActorSheet extends ActorSheet {
             for (let characteristic of document.getElementsByClassName('characteristic-label')) {
                 let id = $(characteristic).data("id");
                 if (!characteristics.includes(id)) continue;
-                characteristic.classList.add('highlight');
+                characteristic.classList.add('highlight-green');
             }
         }
         // skills
@@ -536,7 +557,7 @@ export class Pl1eActorSheet extends ActorSheet {
             for (let skill of document.getElementsByClassName('skill-label')) {
                 let id = $(skill).data("id");
                 if (!skills.includes(id)) continue;
-                skill.classList.add('highlight');
+                skill.classList.add('highlight-green');
             }
         }
     }
@@ -550,13 +571,13 @@ export class Pl1eActorSheet extends ActorSheet {
         event.preventDefault();
         event.stopPropagation();
         for (let characteristic of document.getElementsByClassName('characteristic-label')) {
-            characteristic.classList.remove('highlight')
+            characteristic.classList.remove('highlight-green')
         }
         for (let resource of document.getElementsByClassName('resource-label')) {
-            resource.classList.remove('highlight')
+            resource.classList.remove('highlight-green')
         }
         for (let skill of document.getElementsByClassName('skill-label')) {
-            skill.classList.remove('highlight')
+            skill.classList.remove('highlight-green')
         }
     }
 

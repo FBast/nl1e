@@ -121,6 +121,10 @@ export class Pl1eActor extends Actor {
         actorAttributes.acidReduction = actorAttributes.acidReductions.reduce((a, b) => a + b, 0);
         actorAttributes.shockReduction = actorAttributes.shockReductions.reduce((a, b) => a + b, 0);
         actorAttributes.slots = Math.floor(actorAttributes.experience / 3);
+        for (let otherItem of this.items) {
+            if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
+            actorAttributes.slots -= otherItem.system.attributes.level.value;
+        }
         actorAttributes.ranks = actorAttributes.experience;
         actorAttributes.maxRank = Math.min(1 + Math.floor(actorAttributes.experience / 10), 5);
         // Handle actorCharacteristics scores.
