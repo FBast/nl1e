@@ -187,21 +187,16 @@
             </fieldset>
         {{/if}}
         <fieldset>
-            <legend class="section-header">{{localize "PL1E.Template"}}</legend>
+            <legend class="section-header">{{localize "PL1E.Templates"}}</legend>
             <div class="form-group attribute">
-                <select name="system.attributes.characteristicsTemplate">
-                    {{selectOptions (config "characteristicsTemplates") selected=system.attributes.characteristicsTemplate localize=true}}
+                <select name="system.attributes.NPCTemplate">
+                    {{selectOptions (config "NPCTemplates") selected=system.attributes.NPCTemplate localize=true}}
                 </select>
             </div>
             <div class="form-group attribute">
-                <select name="system.attributes.skillsTemplate">
-                    {{selectOptions (config "skillsTemplates") selected=system.attributes.skillsTemplate localize=true}}
+                <select name="system.attributes.experienceTemplate">
+                    {{selectOptions (config "experienceTemplates") selected=system.attributes.experienceTemplate localize=true}}
                 </select>
-            </div>
-            <div class="form-group grid grid-2col attribute">
-                <label>{{localize "PL1E.Experience"}}</label>
-                <input type="number" step="1" min="0" max="60" name="system.attributes.experience"
-                       value="{{system.attributes.experience}}" data-dtype="Number"/>
             </div>
             <div class="form-group grid grid-2col attribute">
                 <label>{{localize "PL1E.Slots"}}</label>

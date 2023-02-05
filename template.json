@@ -180,8 +180,8 @@
     "npc": {
       "templates": ["base"],
       "attributes": {
-        "characteristicsTemplate": "balanced",
-        "skillsTemplate": "balanced"
+        "NPCTemplate": "balanced",
+        "experienceTemplate": "novice"
       }
     },
     "merchant": {

@@ -636,134 +636,194 @@ PL1E.activations = {
     "special": "PL1E.Special"
 }
 
-PL1E.characteristicsTemplates = {
+PL1E.NPCTemplates = {
     "balanced": "PL1E.Balanced",
-    "brute": "PL1E.Brute",
     "soldier": "PL1E.Soldier",
-    "sentinel": "PL1E.Sentinel",
-    "genius": "PL1E.Genius",
-    "wise": "PL1E.Wise",
-    "shadow": "PL1E.Shadow",
+    "brute": "PL1E.Brute",
+    "killer": "PL1E.Killer",
+    "hunter": "PL1E.Hunter",
+    "mystic": "PL1E.Mystic",
+    "wizard": "PL1E.Wizard",
+    "priest": "PL1E.Priest",
+    "battleMage": "PL1E.BattleMage",
     "crusader": "PL1E.Crusader",
-    "hermit": "PL1E.Hermit",
-    "noble": "PL1E.Noble"
+    "assassin": "PL1E.Assassin",
+    "monk": "PL1E.Monk"
 }
 
-PL1E.characteristicsTemplatesValues = {
+PL1E.NPCTemplatesValues = {
     "balanced": {
-        "strength": 3,
-        "agility": 3,
-        "perception": 3,
-        "constitution": 3,
-        "intellect": 3,
-        "cunning": 3,
-        "wisdom": 3,
-        "will": 3
-    },
-    "brute": {
-        "strength": 5,
-        "agility": 3,
-        "perception": 2,
-        "constitution": 5,
-        "intellect": 2,
-        "cunning": 2,
-        "wisdom": 2,
-        "will": 3
+        "characteristics": {
+            "strength": 3,
+            "agility": 3,
+            "perception": 3,
+            "constitution": 3,
+            "intellect": 3,
+            "cunning": 3,
+            "wisdom": 3,
+            "will": 3
+        },
+        "skills": ["handling", "throwing", "accuracy", "divineMagic", "secularMagic", "athletics", "acrobatics", "vigilance"]
     },
     "soldier": {
-        "strength": 5,
-        "agility": 5,
-        "perception": 3,
-        "constitution": 3,
-        "intellect": 2,
-        "cunning": 2,
-        "wisdom": 2,
-        "will": 2
+        "characteristics": {
+            "strength": 4,
+            "agility": 4,
+            "perception": 4,
+            "constitution": 4,
+            "intellect": 2,
+            "cunning": 2,
+            "wisdom": 2,
+            "will": 2
+        },
+        "skills": ["handling", "throwing", "accuracy", "athletics", "vigilance"]
     },
-    "sentinel": {
-        "strength": 2,
-        "agility": 5,
-        "perception": 5,
-        "constitution": 3,
-        "intellect": 2,
-        "cunning": 3,
-        "wisdom": 2,
-        "will": 2
+    "brute": {
+        "characteristics": {
+            "strength": 5,
+            "agility": 3,
+            "perception": 2,
+            "constitution": 5,
+            "intellect": 2,
+            "cunning": 2,
+            "wisdom": 2,
+            "will": 3
+        },
+        "skills": ["handling", "athletics", "intimidation", "vigilance", "search"]
     },
-    "genius": {
-        "strength": 2,
-        "agility": 2,
-        "perception": 2,
-        "constitution": 2,
-        "intellect": 5,
-        "cunning": 5,
-        "wisdom": 3,
-        "will": 3
+    "killer": {
+        "characteristics": {
+            "strength": 2,
+            "agility": 5,
+            "perception": 5,
+            "constitution": 3,
+            "intellect": 2,
+            "cunning": 3,
+            "wisdom": 2,
+            "will": 2
+        },
+        "skills": ["accuracy", "acrobatics", "discretion", "bluff", "vigilance"]
     },
-    "wise": {
-        "strength": 2,
-        "agility": 2,
-        "perception": 2,
-        "constitution": 2,
-        "intellect": 3,
-        "cunning": 3,
-        "wisdom": 5,
-        "will": 5
+    "hunter": {
+        "characteristics": {
+            "strength": 5,
+            "agility": 3,
+            "perception": 5,
+            "constitution": 3,
+            "intellect": 2,
+            "cunning": 2,
+            "wisdom": 2,
+            "will": 2
+        },
+        "skills": ["throwing", "acrobatics", "vigilance", "search", "craft"]
     },
-    "shadow": {
-        "strength": 2,
-        "agility": 4,
-        "perception": 4,
-        "constitution": 2,
-        "intellect": 4,
-        "cunning": 4,
-        "wisdom": 2,
-        "will": 2
+    "mystic": {
+        "characteristics": {
+            "strength": 2,
+            "agility": 2,
+            "perception": 2,
+            "constitution": 2,
+            "intellect": 4,
+            "cunning": 4,
+            "wisdom": 4,
+            "will": 4
+        },
+        "skills": ["secularMagic", "divineMagic", "erudition", "craft", "diplomacy", "performance"]
+    },
+    "wizard": {
+        "characteristics": {
+            "strength": 2,
+            "agility": 2,
+            "perception": 2,
+            "constitution": 2,
+            "intellect": 5,
+            "cunning": 5,
+            "wisdom": 3,
+            "will": 3
+        },
+        "skills": ["secularMagic", "erudition", "diplomacy", "craft", "search"]
+    },
+    "priest": {
+        "characteristics": {
+            "strength": 2,
+            "agility": 2,
+            "perception": 2,
+            "constitution": 2,
+            "intellect": 3,
+            "cunning": 3,
+            "wisdom": 5,
+            "will": 5
+        },
+        "skills": ["divineMagic", "performance", "diplomacy", "search", "vigilance"]
+    },
+    "battleMage": {
+        "characteristics": {
+            "strength": 4,
+            "agility": 4,
+            "perception": 2,
+            "constitution": 2,
+            "intellect": 4,
+            "cunning": 4,
+            "wisdom": 2,
+            "will": 2
+        },
+        "skills": ["handling", "secularMagic", "diplomacy", "vigilance", "search"]
     },
     "crusader": {
-        "strength": 4,
-        "agility": 2,
-        "perception": 2,
-        "constitution": 4,
-        "intellect": 2,
-        "cunning": 2,
-        "wisdom": 4,
-        "will": 4
+        "characteristics": {
+            "strength": 4,
+            "agility": 4,
+            "perception": 2,
+            "constitution": 2,
+            "intellect": 2,
+            "cunning": 2,
+            "wisdom": 4,
+            "will": 4
+        },
+        "skills": ["handling", "divineMagic", "intimidation", "search", "performance"]
     },
-    "hermit": {
-        "strength": 2,
-        "agility": 4,
-        "perception": 4,
-        "constitution": 2,
-        "intellect": 2,
-        "cunning": 2,
-        "wisdom": 4,
-        "will": 4
+    "assassin": {
+        "characteristics": {
+            "strength": 2,
+            "agility": 4,
+            "perception": 4,
+            "constitution": 2,
+            "intellect": 4,
+            "cunning": 4,
+            "wisdom": 2,
+            "will": 2
+        },
+        "skills": ["accuracy", "secularMagic", "discretion", "bluff", "vigilance"]
     },
-    "noble": {
-        "strength": 4,
-        "agility": 2,
-        "perception": 2,
-        "constitution": 4,
-        "intellect": 4,
-        "cunning": 4,
-        "wisdom": 2,
-        "will": 2
+    "monk": {
+        "characteristics": {
+            "strength": 2,
+            "agility": 4,
+            "perception": 4,
+            "constitution": 2,
+            "intellect": 2,
+            "cunning": 2,
+            "wisdom": 4,
+            "will": 4
+        },
+        "skills": ["accuracy", "divineMagic", "acrobatics", "performance", "vigilance"]
     }
 }
 
-PL1E.skillsTemplates = {
-    "none": "PL1E.Balanced",
-    "closeCombatBruiser": "PL1E.CloseCombatBruiser",
-    "closeCombatAssassin": "PL1E.CloseCombatAssassin",
-    "rangedCombatSkirmisher": "PL1E.RangedCombatSkirmisher",
-    "rangedCombatSharpshooter": "PL1E.RangedCombatSharpshooter"
+PL1E.experienceTemplates = {
+    "novice": "PL1E.Novice",
+    "apprentice": "PL1E.Apprentice",
+    "adept": "PL1E.Adept",
+    "expert": "PL1E.Expert",
+    "master": "PL1E.Master",
+    "grandMaster": "PL1E.GrandMaster"
 }
 
-PL1E.skillsTemplatesValues = {
-    "none": [],
-    "closeCombatBruiser": ["handling", "throwing", "athletics", "intimidation", "vigilance", "search"],
-    "closeCombatAssassin": ["accuracy", "acrobatics", "bluff", "discretion", "vigilance"],
-    "rangedCombatSkirmisher": ["throwing", "handling", "acrobatics", "search", "discretion", "vigilance"],
-    "rangedCombatSharpshooter": ["accuracy", "throwing", "acrobatics", "search", "vigilance"],
+PL1E.experienceTemplatesValues = {
+    "novice": 10,
+    "apprentice": 20,
+    "adept": 30,
+    "expert": 40,
+    "master": 50,
+    "grandMaster": 60
 }

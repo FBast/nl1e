@@ -28,7 +28,6 @@ export class Pl1eActor extends Actor {
         // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
         // prepareDerivedData().
         super.prepareData();
-        randomID()
     }
 
     /** @override */
@@ -178,25 +177,25 @@ export class Pl1eActor extends Actor {
         const actorAttributes = systemData.attributes;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
-        // Handle actorCharacteristics bases.
-        let characteristicsTemplatesValues = CONFIG.PL1E.characteristicsTemplatesValues[actorAttributes.characteristicsTemplate];
-        for (let [id, characteristic] of Object.entries(characteristicsTemplatesValues)) {
+        // Handle experience template
+        actorAttributes.experience = CONFIG.PL1E.experienceTemplatesValues[actorAttributes.experienceTemplate];
+        // Handle characteristics
+        let templateValues = CONFIG.PL1E.NPCTemplatesValues[actorAttributes.NPCTemplate];
+        for (let [id, characteristic] of Object.entries(templateValues.characteristics)) {
             actorCharacteristics[id].base = characteristic;
         }
-        // Handle actorSkills ranks.
-        let skillsTemplatesValues = CONFIG.PL1E.skillsTemplatesValues[actorAttributes.skillsTemplate];
+        // Handle skills
+        let maxRank = Math.min(1 + Math.floor(actorAttributes.experience / 10), 5);
         let keepLooping = true;
-        let experience = actorAttributes.experience;
-        let maxRank = Math.min(1 + Math.floor(actorAttributes.experience / 10), 5);;
         while (keepLooping) {
             keepLooping = false;
-            for (let [id, skill] of Object.entries(skillsTemplatesValues)) {
+            for (let [id, skill] of Object.entries(templateValues.skills)) {
                 let newRank = actorSkills[skill].rank + 1;
                 if (newRank > maxRank) continue;
                 let rankCost = (newRank * (newRank + 1) / 2) - 1;
-                if (experience + rankCost >= 0) {
+                if (actorAttributes.experience + rankCost >= 0) {
                     actorSkills[skill].rank = newRank;
-                    experience -= rankCost;
+                    actorAttributes.experience -= rankCost;
                     keepLooping = true;
                 }
             }
