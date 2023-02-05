@@ -196,6 +196,29 @@ export class HelpersPl1e {
         for (let [uuid, key] of Object.entries(game.documentIndex.uuids)) {
             for (let leaf of key.leaves) {
                 let document = leaf.entry;
+
+                // Resetting sub items
+                if (document.system.subItemsMap !== undefined) {
+                    for (let [key, subItem] of document.system.subItemsMap) {
+                        if (subItem.getFlag('core', 'sourceId') === undefined) continue;
+                        if (subItem.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
+                        let original = await fromUuid(subItem.getFlag('core', 'sourceId'));
+                        if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(subItem.type)) {
+                            subItem.name = original.name;
+                            subItem.img = original.img;
+                            subItem.system.description = original.system.description;
+                            subItem.system.attributes = original.system.attributes;
+                            await ChatMessage.create({
+                                rollMode: game.settings.get('core', 'rollMode'),
+                                flavor: '[admin] Clone reset',
+                                content: 'Document ' + subItem._id + ' has been reset using ' + original._id + ' data'
+                            });
+                        }
+                    }
+                    document.saveEmbedItems();
+                }
+
+                // Resetting item
                 if (document.getFlag('core', 'sourceId') === undefined) continue;
                 if (document.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
                 let original = await fromUuid(document.getFlag('core', 'sourceId'));
@@ -206,11 +229,42 @@ export class HelpersPl1e {
                         "system.description": original.system.description,
                         "system.attributes": original.system.attributes
                     })
-                }
-                else {
+                    await ChatMessage.create({
+                        rollMode: game.settings.get('core', 'rollMode'),
+                        flavor: '[admin] Clone reset',
+                        content: 'Document ' + document._id + ' has been reset using ' + original._id + ' data'
+                    });
+                } else {
                     console.warn("Unknown type : " + document.type);
                 }
             }
+        }
+    }
+
+    /**
+     * Reset this document (if sourceId is corresponding source)
+     * @param document
+     * @param sourceId
+     * @returns {Promise<void>}
+     */
+    static async resetClone(document, sourceId) {
+        if (document.getFlag('core', 'sourceId') === undefined) return;
+        if (document.getFlag('core', 'sourceId').split('.')[1] !== sourceId) return;
+        let original = await fromUuid(document.getFlag('core', 'sourceId'));
+        if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(document.type)) {
+            await ChatMessage.create({
+                rollMode: game.settings.get('core', 'rollMode'),
+                flavor: '[admin] Clone reset',
+                content: 'Document ' + document._id + ' has been reset using ' + original._id + ' data'
+            });
+            await document.update({
+                "name": original.name,
+                "img": original.img,
+                "system.description": original.system.description,
+                "system.attributes": original.system.attributes
+            })
+        } else {
+            console.warn("Unknown type : " + document.type);
         }
     }
 
