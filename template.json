@@ -5,180 +5,55 @@
       "base": {
         "resources": {
           "health": {
-            "value": 10,
-            "min": 0,
-            "max": 10,
-            "temp": 0,
-            "tempMax": 0,
-            "weights": {
-              "characteristics": [
-                "constitution",
-                "will"
-              ]
-            }
+            "value": 0
           },
           "stamina": {
-            "value": 10,
-            "min": 0,
-            "max": 10,
-            "temp": 0,
-            "tempMax": 0,
-            "weights": {
-              "characteristics": [
-                "strength",
-                "constitution"
-              ]
-            }
+            "value": 0
           },
           "mana": {
-            "value": 5,
-            "min": 0,
-            "max": 10,
-            "temp": 0,
-            "tempMax": 0,
-            "weights": {
-              "characteristics": [
-                "intellect",
-                "will"
-              ]
-            }
+            "value": 0
           }
         },
         "characteristics": {
           "strength": {
             "base": 2,
             "mods": [],
-            "mod": 0,
-            "tooltip": "PL1E.TooltipStr",
-            "weights": {
-              "resources": ["stamina"],
-              "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
-            }
+            "mod": 0
           },
           "agility": {
             "base": 2,
             "mods": [],
-            "mod": 0,
-            "tooltip": "PL1E.TooltipAgi",
-            "weights": {
-              "resources": [],
-              "skills": [
-                "dodge",
-                "reflex",
-                "handling",
-                "acrobatics",
-                "accuracy",
-                "discretion",
-                "craft"
-              ]
-            }
+            "mod": 0
           },
           "perception": {
             "base": 2,
             "mods": [],
-            "mod": 0,
-            "tooltip": "PL1E.TooltipPer",
-            "weights": {
-              "resources": [],
-              "skills": [
-                "dodge",
-                "reflex",
-                "throwing",
-                "acrobatics",
-                "accuracy",
-                "vigilance",
-                "discretion"
-              ]
-            }
+            "mod": 0
           },
           "constitution": {
             "base": 2,
             "mods": [],
-            "mod": 0,
-            "tooltip": "PL1E.TooltipCon",
-            "weights": {
-              "resources": [
-                "health",
-                "stamina"
-              ],
-              "skills": [
-                "parry",
-                "vigor",
-                "athletics"
-              ]
-            }
+            "mod": 0
           },
           "intellect": {
             "base": 2,
             "mods": [],
-            "mod": 0,
-            "tooltip": "PL1E.TooltipInt",
-            "weights": {
-              "resources": [
-                "mana"
-              ],
-              "skills": [
-                "resilience",
-                "diplomacy",
-                "bluff",
-                "erudition",
-                "secularMagic"
-              ]
-            }
+            "mod": 0
           },
           "cunning": {
             "base": 2,
             "mods": [],
-            "mod": 0,
-            "tooltip": "PL1E.TooltipCun",
-            "weights": {
-              "resources": [],
-              "skills": [
-                "intuition",
-                "search",
-                "intimidation",
-                "bluff",
-                "craft",
-                "erudition",
-                "secularMagic"
-              ]
-            }
+            "mod": 0
           },
           "wisdom": {
             "base": 2,
             "mods": [],
-            "mod": 0,
-            "tooltip": "PL1E.TooltipWis",
-            "weights": {
-              "resources": [],
-              "skills": [
-                "intuition",
-                "search",
-                "vigilance",
-                "performance",
-                "diplomacy",
-                "intimidation",
-                "divineMagic"
-              ]
-            }
+            "mod": 0
           },
           "will": {
             "base": 2,
             "mods": [],
-            "mod": 0,
-            "tooltip": "PL1E.TooltipWil",
-            "weights": {
-              "resources": [
-                "health",
-                "mana"
-              ],
-              "skills": [
-                "resilience",
-                "performance",
-                "handling",
-                "divineMagic"
-              ]
-            }
+            "mod": 0
           }
         },
         "skills": {
@@ -186,276 +61,67 @@
             "rank": 3
           },
           "dodge": {
-            "rank": 3,
-            "fixedRank": true,
-            "weights": {
-              "characteristics": [
-                "agility",
-                "perception"
-              ],
-              "attributes": [
-                "dodgeBonuses",
-                "movementPenalty"
-              ]
-            },
-            "divider": 2
+            "rank": 3
           },
           "vigor": {
-            "rank": 3,
-            "fixedRank": true,
-            "weights": {
-              "characteristics": [
-                "strength",
-                "constitution"
-              ]
-            },
-            "divider": 2,
-            "header": "PL1E.Resistances"
+            "rank": 3
           },
           "reflex": {
-            "rank": 3,
-            "fixedRank": true,
-            "weights": {
-              "characteristics": [
-                "agility",
-                "perception"
-              ],
-              "attributes": [
-                "movementPenalty"
-              ]
-            },
-            "divider": 2
+            "rank": 3
           },
           "resilience": {
-            "rank": 3,
-            "fixedRank": true,
-            "weights": {
-              "characteristics": [
-                "intellect",
-                "will"
-              ]
-            },
-            "divider": 2
+            "rank": 3
           },
           "intuition": {
-            "rank": 3,
-            "fixedRank": true,
-            "weights": {
-              "characteristics": [
-                "cunning",
-                "wisdom"
-              ]
-            },
-            "divider": 2
+            "rank": 3
           },
           "handling": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "strength",
-                "agility"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false,
-            "header": "PL1E.Skills"
+            "rank": 1
           },
           "throwing": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "strength",
-                "perception"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "athletics": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "strength",
-                "constitution"
-              ],
-              "attributes": [
-                "movementPenalty"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "acrobatics": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "agility",
-                "perception"
-              ],
-              "attributes": [
-                "movementPenalty"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "accuracy": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "agility",
-                "perception"
-              ],
-              "attributes": [
-                "movementPenalty"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "search": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "cunning",
-                "wisdom"]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "vigilance": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "perception",
-                "wisdom"]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "discretion": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "agility",
-                "perception"
-              ],
-              "attributes": [
-                "movementPenalty"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "performance": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "wisdom",
-                "will"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "diplomacy": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "intellect",
-                "wisdom"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "intimidation": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "cunning",
-                "wisdom"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "bluff": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "intellect",
-                "cunning"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "craft": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "agility",
-                "cunning"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "erudition": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "intellect",
-                "cunning"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": false
+            "rank": 1
           },
           "divineMagic": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "wisdom",
-                "will"
-              ],
-              "attributes": [
-                "movementPenalty"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": true
+            "rank": 1
           },
           "secularMagic": {
-            "rank": 1,
-            "fixedRank": false,
-            "weights": {
-              "characteristics": [
-                "intellect",
-                "cunning"
-              ],
-              "attributes": [
-                "movementPenalty"
-              ]
-            },
-            "divider": 2,
-            "magicPenalty": true
+            "rank": 1
           }
         },
         "attributes": {
@@ -465,7 +131,7 @@
           "bonuses": 0,
           "advantages": 0,
           "size": "medium",
-          "sizeMod": 0,
+          "sizeMultiplier": 0,
           "sizeToken": 1,
           "speed": 4.5,
           "initiative": 0,

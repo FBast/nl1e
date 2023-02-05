@@ -110,7 +110,7 @@ export class Pl1eActor extends Actor {
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
         // Handle actorAttributes scores.
-        actorAttributes.sizeMod = CONFIG.PL1E.sizeMods[actorAttributes.size];
+        actorAttributes.sizeMultiplier = CONFIG.PL1E.sizeMultiplier[actorAttributes.size];
         actorAttributes.sizeToken = CONFIG.PL1E.sizeTokens[actorAttributes.size];
         actorAttributes.movementPenalty = actorAttributes.movementPenalties.reduce((a, b) => a + b, 0);
         actorAttributes.slashingReduction = actorAttributes.slashingReductions.reduce((a, b) => a + b, 0);
@@ -140,7 +140,7 @@ export class Pl1eActor extends Actor {
             for(let characteristic of resource.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
             }
-            resource.max = resource.max * 5 + parseInt(actorAttributes.sizeMod);
+            resource.max *= resource.multiplier * actorAttributes.sizeMultiplier;
         }
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
@@ -185,8 +185,21 @@ export class Pl1eActor extends Actor {
         }
         // Handle actorSkills ranks.
         let skillsTemplatesValues = CONFIG.PL1E.skillsTemplatesValues[actorAttributes.skillsTemplate];
-        for (let [id, skill] of Object.entries(skillsTemplatesValues)) {
-            actorSkills[skill].rank++;
+        let keepLooping = true;
+        let experience = actorAttributes.experience;
+        let maxRank = Math.min(1 + Math.floor(actorAttributes.experience / 10), 5);;
+        while (keepLooping) {
+            keepLooping = false;
+            for (let [id, skill] of Object.entries(skillsTemplatesValues)) {
+                let newRank = actorSkills[skill].rank + 1;
+                if (newRank > maxRank) continue;
+                let rankCost = (newRank * (newRank + 1) / 2) - 1;
+                if (experience + rankCost >= 0) {
+                    actorSkills[skill].rank = newRank;
+                    experience -= rankCost;
+                    keepLooping = true;
+                }
+            }
         }
     }
 

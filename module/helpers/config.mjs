@@ -6,40 +6,113 @@ export const PL1E = {};
 
 PL1E.resources = {
     "health": {
-        "label": "PL1E.Health"
+        "label": "PL1E.Health",
+        "min": 0,
+        "max": 0,
+        "temp": 0,
+        "tempMax": 0,
+        "multiplier" : 10,
+        "weights": {
+            "characteristics": [
+                "constitution",
+                "will"
+            ]
+        }
     },
     "stamina": {
-        "label": "PL1E.Stamina"
+        "label": "PL1E.Stamina",
+        "min": 0,
+        "max": 0,
+        "temp": 0,
+        "tempMax": 0,
+        "multiplier" : 10,
+        "weights": {
+            "characteristics": [
+                "strength",
+                "constitution"
+            ]
+        }
     },
     "mana": {
-        "label": "PL1E.Mana"
+        "label": "PL1E.Mana",
+        "min": 0,
+        "max": 0,
+        "temp": 0,
+        "tempMax": 0,
+        "multiplier" : 10,
+        "weights": {
+            "characteristics": [
+                "intellect",
+                "will"
+            ]
+        }
     }
 };
 
 PL1E.characteristics = {
     "strength": {
-        "label": "PL1E.CharacteristicStr"
+        "label": "PL1E.CharacteristicStr",
+        "tooltip": "PL1E.TooltipStr",
+        "weights": {
+            "resources": ["stamina"],
+            "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
+        }
     },
     "agility": {
-        "label": "PL1E.CharacteristicAgi"
+        "label": "PL1E.CharacteristicAgi",
+        "tooltip": "PL1E.TooltipAgi",
+        "weights": {
+            "resources": [],
+            "skills": ["dodge", "reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
+        }
     },
     "perception": {
-        "label": "PL1E.CharacteristicPer"
+        "label": "PL1E.CharacteristicPer",
+        "tooltip": "PL1E.TooltipPer",
+        "weights": {
+            "resources": [],
+            "skills": ["dodge", "reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
+        }
     },
     "constitution": {
-        "label": "PL1E.CharacteristicCon"
+        "label": "PL1E.CharacteristicCon",
+        "tooltip": "PL1E.TooltipCon",
+        "weights": {
+            "resources": ["health", "stamina"],
+            "skills": ["parry", "vigor", "athletics"]
+        }
     },
     "intellect": {
-        "label": "PL1E.CharacteristicInt"
+        "label": "PL1E.CharacteristicInt",
+        "tooltip": "PL1E.TooltipInt",
+        "weights": {
+            "resources": ["mana"],
+            "skills": ["resilience", "diplomacy", "bluff", "erudition", "secularMagic"]
+        }
     },
     "cunning": {
-        "label": "PL1E.CharacteristicCun"
+        "label": "PL1E.CharacteristicCun",
+        "tooltip": "PL1E.TooltipCun",
+        "weights": {
+            "resources": [],
+            "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "secularMagic"]
+        }
     },
     "wisdom": {
-        "label": "PL1E.CharacteristicWis"
+        "label": "PL1E.CharacteristicWis",
+        "tooltip": "PL1E.TooltipWis",
+        "weights": {
+            "resources": [],
+            "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "divineMagic"]
+        }
     },
     "will": {
-        "label": "PL1E.CharacteristicWil"
+        "label": "PL1E.CharacteristicWil",
+        "tooltip": "PL1E.TooltipWil",
+        "weights": {
+            "resources": ["health", "mana"],
+            "skills": ["resilience", "performance", "handling", "divineMagic"]
+        }
     }
 };
 
@@ -49,13 +122,8 @@ PL1E.skills = {
         "fixedRank": true,
         "divider": 3,
         "weights": {
-            "characteristics": [
-                "strength",
-                "constitution"
-            ],
-            "attributes": [
-                "parryBonuses"
-            ]
+            "characteristics": ["strength", "constitution"],
+            "attributes": ["parryBonuses"]
         }
     },
     "dodge": {
@@ -63,14 +131,8 @@ PL1E.skills = {
         "fixedRank": true,
         "divider": 2,
         "weights": {
-            "characteristics": [
-                "agility",
-                "perception"
-            ],
-            "attributes": [
-                "dodgeBonuses",
-                "movementPenalty"
-            ]
+            "characteristics": ["agility", "perception"],
+            "attributes": ["dodgeBonuses", "movementPenalty"]
         }
     },
     "vigor": {
@@ -78,10 +140,7 @@ PL1E.skills = {
         "fixedRank": true,
         "divider": 2,
         "weights": {
-            "characteristics": [
-                "strength",
-                "constitution"
-            ]
+            "characteristics": ["strength", "constitution"]
         }
     },
     "reflex": {
@@ -89,13 +148,8 @@ PL1E.skills = {
         "fixedRank": true,
         "divider": 2,
         "weights": {
-            "characteristics": [
-                "agility",
-                "perception"
-            ],
-            "attributes": [
-                "movementPenalty"
-            ]
+            "characteristics": ["agility", "perception"],
+            "attributes": ["movementPenalty"]
         }
     },
     "resilience": {
@@ -104,10 +158,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "intellect",
-                "will"
-            ]
+            "characteristics": ["intellect", "will"]
         }
     },
     "intuition": {
@@ -116,10 +167,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "cunning",
-                "wisdom"
-            ]
+            "characteristics": ["cunning", "wisdom"]
         }
     },
     "handling": {
@@ -128,10 +176,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "strength",
-                "agility"
-            ]
+            "characteristics": ["strength", "agility"]
         }
     },
     "throwing": {
@@ -140,10 +185,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "strength",
-                "perception"
-            ]
+            "characteristics": ["strength", "perception"]
         }
     },
     "athletics": {
@@ -152,13 +194,8 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "strength",
-                "constitution"
-            ],
-            "attributes": [
-                "movementPenalty"
-            ]
+            "characteristics": ["strength", "constitution"],
+            "attributes": ["movementPenalty"]
         }
     },
     "acrobatics": {
@@ -167,13 +204,8 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "agility",
-                "perception"
-            ],
-            "attributes": [
-                "movementPenalty"
-            ]
+            "characteristics": ["agility", "perception"],
+            "attributes": ["movementPenalty"]
         }
     },
     "accuracy": {
@@ -182,13 +214,8 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "agility",
-                "perception"
-            ],
-            "attributes": [
-                "movementPenalty"
-            ]
+            "characteristics": ["agility", "perception"],
+            "attributes": ["movementPenalty"]
         }
     },
     "search": {
@@ -197,10 +224,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "cunning",
-                "wisdom"
-            ]
+            "characteristics": ["cunning", "wisdom"]
         }
     },
     "vigilance": {
@@ -209,10 +233,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "perception",
-                "wisdom"
-            ]
+            "characteristics": ["perception", "wisdom"]
         }
     },
     "discretion": {
@@ -221,13 +242,8 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "agility",
-                "perception"
-            ],
-            "attributes": [
-                "movementPenalty"
-            ]
+            "characteristics": ["agility", "perception"],
+            "attributes": ["movementPenalty"]
         }
     },
     "performance": {
@@ -236,10 +252,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "wisdom",
-                "will"
-            ]
+            "characteristics": ["wisdom", "will"]
         }
     },
     "diplomacy": {
@@ -248,10 +261,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "intellect",
-                "wisdom"
-            ]
+            "characteristics": ["intellect", "wisdom"]
         }
     },
     "intimidation": {
@@ -260,10 +270,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "cunning",
-                "wisdom"
-            ]
+            "characteristics": ["cunning", "wisdom"]
         }
     },
     "bluff": {
@@ -272,10 +279,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "intellect",
-                "cunning"
-            ]
+            "characteristics": ["intellect", "cunning"]
         }
     },
     "craft": {
@@ -284,10 +288,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "agility",
-                "cunning"
-            ]
+            "characteristics": ["agility", "cunning"]
         }
     },
     "erudition": {
@@ -296,10 +297,7 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": false,
         "weights": {
-            "characteristics": [
-                "intellect",
-                "cunning"
-            ]
+            "characteristics": ["intellect", "cunning"]
         }
     },
     "divineMagic": {
@@ -308,13 +306,8 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": true,
         "weights": {
-            "characteristics": [
-                "wisdom",
-                "will"
-            ],
-            "attributes": [
-                "movementPenalty"
-            ]
+            "characteristics": ["wisdom", "will"],
+            "attributes": ["movementPenalty"]
         }
     },
     "secularMagic": {
@@ -323,13 +316,8 @@ PL1E.skills = {
         "divider": 2,
         "magicPenalty": true,
         "weights": {
-            "characteristics": [
-                "intellect",
-                "cunning"
-            ],
-            "attributes": [
-                "movementPenalty"
-            ]
+            "characteristics": ["intellect", "cunning"],
+            "attributes": ["movementPenalty"]
         }
     }
 }
@@ -592,12 +580,12 @@ PL1E.sizes = {
     "gargantuan": "PL1E.SizeGargantuan"
 };
 
-PL1E.sizeMods = {
-    "small": "10",
-    "medium": "20",
-    "large": "40",
-    "huge": "80",
-    "gargantuan": "160"
+PL1E.sizeMultiplier = {
+    "small": "0.5",
+    "medium": "1",
+    "large": "2",
+    "huge": "3",
+    "gargantuan": "4"
 };
 
 PL1E.sizeTokens = {
@@ -657,8 +645,8 @@ PL1E.characteristicsTemplates = {
     "wise": "PL1E.Wise",
     "shadow": "PL1E.Shadow",
     "crusader": "PL1E.Crusader",
-    "hermit": "PL1E.Crusader",
-    "knight": "PL1E.Knight"
+    "hermit": "PL1E.Hermit",
+    "noble": "PL1E.Noble"
 }
 
 PL1E.characteristicsTemplatesValues = {
@@ -675,12 +663,12 @@ PL1E.characteristicsTemplatesValues = {
     "brute": {
         "strength": 5,
         "agility": 3,
-        "perception": 3,
+        "perception": 2,
         "constitution": 5,
         "intellect": 2,
         "cunning": 2,
         "wisdom": 2,
-        "will": 2
+        "will": 3
     },
     "soldier": {
         "strength": 5,
@@ -693,12 +681,12 @@ PL1E.characteristicsTemplatesValues = {
         "will": 2
     },
     "sentinel": {
-        "strength": 3,
+        "strength": 2,
         "agility": 5,
         "perception": 5,
         "constitution": 3,
         "intellect": 2,
-        "cunning": 2,
+        "cunning": 3,
         "wisdom": 2,
         "will": 2
     },
@@ -752,7 +740,7 @@ PL1E.characteristicsTemplatesValues = {
         "wisdom": 4,
         "will": 4
     },
-    "knight": {
+    "noble": {
         "strength": 4,
         "agility": 2,
         "perception": 2,
@@ -765,11 +753,17 @@ PL1E.characteristicsTemplatesValues = {
 }
 
 PL1E.skillsTemplates = {
-    "balanced": "PL1E.Balanced",
-    "test": "PL1E.Test"
+    "none": "PL1E.Balanced",
+    "closeCombatBruiser": "PL1E.CloseCombatBruiser",
+    "closeCombatAssassin": "PL1E.CloseCombatAssassin",
+    "rangedCombatSkirmisher": "PL1E.RangedCombatSkirmisher",
+    "rangedCombatSharpshooter": "PL1E.RangedCombatSharpshooter"
 }
 
 PL1E.skillsTemplatesValues = {
-    "balanced": ["handling", "handling", "handling"],
-    "test": ["athletics", "athletics", "athletics"]
+    "none": [],
+    "closeCombatBruiser": ["handling", "throwing", "athletics", "intimidation", "vigilance", "search"],
+    "closeCombatAssassin": ["accuracy", "acrobatics", "bluff", "discretion", "vigilance"],
+    "rangedCombatSkirmisher": ["throwing", "handling", "acrobatics", "search", "discretion", "vigilance"],
+    "rangedCombatSharpshooter": ["accuracy", "throwing", "acrobatics", "search", "vigilance"],
 }
