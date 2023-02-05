@@ -509,12 +509,14 @@
       }
     },
     "character": {
-      "templates": ["base"],
-      "level": 1
+      "templates": ["base"]
     },
     "npc": {
       "templates": ["base"],
-      "cr": 0
+      "attributes": {
+        "characteristicsTemplate": "balanced",
+        "skillsTemplate": "balanced"
+      }
     },
     "merchant": {
       "templates": ["base"]

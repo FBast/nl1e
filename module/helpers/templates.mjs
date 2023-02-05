@@ -7,10 +7,11 @@ export const preloadHandlebarsTemplates = async function () {
     return loadTemplates([
 
         // Actor partials.
-        "systems/pl1e/templates/actor/parts/actor-stats.hbs",
-        "systems/pl1e/templates/actor/parts/actor-features.hbs",
-        "systems/pl1e/templates/actor/parts/actor-items.hbs",
+        "systems/pl1e/templates/actor/parts/character-stats.hbs",
+        "systems/pl1e/templates/actor/parts/character-features.hbs",
+        "systems/pl1e/templates/actor/parts/character-items.hbs",
         "systems/pl1e/templates/actor/parts/actor-effects.hbs",
+        "systems/pl1e/templates/actor/parts/npc-stats.hbs",
 
         // Item partials.
         "systems/pl1e/templates/item/parts/item-attributes.hbs",

@@ -193,6 +193,8 @@ export class HelpersPl1e {
      * @returns {Promise<void>}
      */
     static async resetClones(sourceId) {
+        let updateCount = 0;
+        let content = '';
         for (let [uuid, key] of Object.entries(game.documentIndex.uuids)) {
             for (let leaf of key.leaves) {
                 let document = leaf.entry;
@@ -208,11 +210,8 @@ export class HelpersPl1e {
                             subItem.img = original.img;
                             subItem.system.description = original.system.description;
                             subItem.system.attributes = original.system.attributes;
-                            await ChatMessage.create({
-                                rollMode: game.settings.get('core', 'rollMode'),
-                                flavor: '[admin] Clone reset',
-                                content: 'Document ' + subItem._id + ' has been reset using ' + original._id + ' data'
-                            });
+                            updateCount++;
+                            content += subItem._id + '\n'
                         }
                     }
                     document.saveEmbedItems();
@@ -229,15 +228,20 @@ export class HelpersPl1e {
                         "system.description": original.system.description,
                         "system.attributes": original.system.attributes
                     })
-                    await ChatMessage.create({
-                        rollMode: game.settings.get('core', 'rollMode'),
-                        flavor: '[admin] Clone reset',
-                        content: 'Document ' + document._id + ' has been reset using ' + original._id + ' data'
-                    });
+                    updateCount++;
+                    content += document._id + '\n'
                 } else {
                     console.warn("Unknown type : " + document.type);
                 }
             }
+        }
+
+        if (updateCount > 0) {
+            await ChatMessage.create({
+                rollMode: game.settings.get('core', 'rollMode'),
+                flavor: '[admin] ' + updateCount + ' clones of ' + sourceId + ' reset' ,
+                content: content
+            });
         }
     }
 

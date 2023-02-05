@@ -80,10 +80,10 @@ export class Pl1eActor extends Actor {
 
         // Make separate methods for each Actor type (character, npc, etc.) to keep
         // things organized.
-        this._prepareCommonData(systemData);
         // this._prepareCharacterData(systemData);
-        // this._prepareNpcData(systemData);
+        this._prepareNpcData(systemData);
         // this._prepareMerchantData(systemData);
+        this._prepareCommonData(systemData);
     }
 
     /**
@@ -168,7 +168,6 @@ export class Pl1eActor extends Actor {
      */
     _prepareCharacterData(systemData) {
         if (this.type !== 'character') return;
-
     }
 
     /**
@@ -176,10 +175,19 @@ export class Pl1eActor extends Actor {
      */
     _prepareNpcData(systemData) {
         if (this.type !== 'npc') return;
-
-        // Make modifications to data here. For example:
-        // const systemData = actorData.system;
-        // systemData.xp = (systemData.cr * systemData.cr) * 100;
+        const actorAttributes = systemData.attributes;
+        const actorCharacteristics = systemData.characteristics;
+        const actorSkills = systemData.skills;
+        // Handle actorCharacteristics bases.
+        let characteristicsTemplatesValues = CONFIG.PL1E.characteristicsTemplatesValues[actorAttributes.characteristicsTemplate];
+        for (let [id, characteristic] of Object.entries(characteristicsTemplatesValues)) {
+            actorCharacteristics[id].base = characteristic;
+        }
+        // Handle actorSkills ranks.
+        let skillsTemplatesValues = CONFIG.PL1E.skillsTemplatesValues[actorAttributes.skillsTemplate];
+        for (let [id, skill] of Object.entries(skillsTemplatesValues)) {
+            actorSkills[skill].rank++;
+        }
     }
 
     /**
@@ -187,9 +195,6 @@ export class Pl1eActor extends Actor {
      */
     _prepareMerchantData(systemData) {
         if (this.type !== 'merchant') return;
-
-        // Make modifications to data here. For example:
-        // const systemData = actorData.system;
     }
 
     /**

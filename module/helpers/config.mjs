@@ -648,3 +648,128 @@ PL1E.activations = {
     "special": "PL1E.Special"
 }
 
+PL1E.characteristicsTemplates = {
+    "balanced": "PL1E.Balanced",
+    "brute": "PL1E.Brute",
+    "soldier": "PL1E.Soldier",
+    "sentinel": "PL1E.Sentinel",
+    "genius": "PL1E.Genius",
+    "wise": "PL1E.Wise",
+    "shadow": "PL1E.Shadow",
+    "crusader": "PL1E.Crusader",
+    "hermit": "PL1E.Crusader",
+    "knight": "PL1E.Knight"
+}
+
+PL1E.characteristicsTemplatesValues = {
+    "balanced": {
+        "strength": 3,
+        "agility": 3,
+        "perception": 3,
+        "constitution": 3,
+        "intellect": 3,
+        "cunning": 3,
+        "wisdom": 3,
+        "will": 3
+    },
+    "brute": {
+        "strength": 5,
+        "agility": 3,
+        "perception": 3,
+        "constitution": 5,
+        "intellect": 2,
+        "cunning": 2,
+        "wisdom": 2,
+        "will": 2
+    },
+    "soldier": {
+        "strength": 5,
+        "agility": 5,
+        "perception": 3,
+        "constitution": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "wisdom": 2,
+        "will": 2
+    },
+    "sentinel": {
+        "strength": 3,
+        "agility": 5,
+        "perception": 5,
+        "constitution": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "wisdom": 2,
+        "will": 2
+    },
+    "genius": {
+        "strength": 2,
+        "agility": 2,
+        "perception": 2,
+        "constitution": 2,
+        "intellect": 5,
+        "cunning": 5,
+        "wisdom": 3,
+        "will": 3
+    },
+    "wise": {
+        "strength": 2,
+        "agility": 2,
+        "perception": 2,
+        "constitution": 2,
+        "intellect": 3,
+        "cunning": 3,
+        "wisdom": 5,
+        "will": 5
+    },
+    "shadow": {
+        "strength": 2,
+        "agility": 4,
+        "perception": 4,
+        "constitution": 2,
+        "intellect": 4,
+        "cunning": 4,
+        "wisdom": 2,
+        "will": 2
+    },
+    "crusader": {
+        "strength": 4,
+        "agility": 2,
+        "perception": 2,
+        "constitution": 4,
+        "intellect": 2,
+        "cunning": 2,
+        "wisdom": 4,
+        "will": 4
+    },
+    "hermit": {
+        "strength": 2,
+        "agility": 4,
+        "perception": 4,
+        "constitution": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "wisdom": 4,
+        "will": 4
+    },
+    "knight": {
+        "strength": 4,
+        "agility": 2,
+        "perception": 2,
+        "constitution": 4,
+        "intellect": 4,
+        "cunning": 4,
+        "wisdom": 2,
+        "will": 2
+    }
+}
+
+PL1E.skillsTemplates = {
+    "balanced": "PL1E.Balanced",
+    "test": "PL1E.Test"
+}
+
+PL1E.skillsTemplatesValues = {
+    "balanced": ["handling", "handling", "handling"],
+    "test": ["athletics", "athletics", "athletics"]
+}
