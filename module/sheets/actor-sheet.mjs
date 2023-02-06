@@ -118,7 +118,7 @@ export class Pl1eActorSheet extends ActorSheet {
         if (this.actor.isOwner) {
             let handler = ev => this._onDragStart(ev);
             html.find('li.item').each((i, li) => {
-                if (li.classList.contains("inventory-header")) return;
+                if (li.classList.contains("items-header")) return;
                 li.setAttribute("draggable", true);
                 li.addEventListener("dragstart", handler, false);
             });
