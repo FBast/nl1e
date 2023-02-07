@@ -48,15 +48,7 @@ export class Pl1eActorSheet extends ActorSheet {
         context.flags = actorData.flags;
         context.items = actorData.items;
 
-        // Prepare character data and items.
-        if (actorData.type === 'character') {
-            this._prepareItems(context);
-        }
-
-        // Prepare NPC data and items.
-        if (actorData.type === 'npc') {
-            this._prepareItems(context);
-        }
+        this._prepareItems(context);
 
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
@@ -78,6 +70,8 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Render the item sheet for viewing/editing prior to the editable check.
         html.find('.item-edit').on("click", this._onItemEdit.bind(this));
+
+        html.find('.item-buy').on("click", this._onItemBuy.bind(this));
 
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
@@ -158,6 +152,22 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemId = $(event.currentTarget).data("item-id");
         const item = this.actor.items.get(itemId);
         item.sheet.render(true);
+    }
+
+    async _onItemBuy(event) {
+        const itemId = $(event.currentTarget).data("item-id");
+        const item = this.actor.items.get(itemId);
+        const characterCurrencies = game.user.character.system.currencies;
+        const priceMultiplicator = 1 + this.actor.system.buyMultiplicator / 100;
+        let gold = characterCurrencies.gold.value;
+        let silver = characterCurrencies.silver.value;
+        let copper = characterCurrencies.copper.value;
+        let price = Math.round(item.system.attributes.price.value * priceMultiplicator);
+        gold -= price;
+        await game.user.character.update({
+            ["system.currencies.gold.value"]: gold
+        })
+        await game.user.character.createEmbeddedDocuments("Item", [item]);
     }
 
     /**
@@ -440,10 +450,10 @@ export class Pl1eActorSheet extends ActorSheet {
         let value = element.data("value");
         if (!value || !currency) return;
 
-        let oldValue = this.actor.system.currencies[currency];
+        let oldValue = this.actor.system.currencies[currency].value;
 
         await this.actor.update({
-            ["system.currencies." + currency]: oldValue + value
+            ["system.currencies." + currency + ".value"]: oldValue + value
         });
 
         this.render(false);

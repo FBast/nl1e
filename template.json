@@ -162,13 +162,13 @@
           }
         },
         "currencies": {
-          "gp": {
+          "gold": {
             "value": 0
           },
-          "sp": {
+          "silver": {
             "value": 0
           },
-          "cp": {
+          "copper": {
             "value": 0
           }
         }
@@ -179,6 +179,8 @@
     },
     "npc": {
       "templates": ["base"],
+      "sellMultiplicator": -100,
+      "buyMultiplicator": 0,
       "attributes": {
         "NPCTemplate": "balanced",
         "experienceTemplate": "novice"
@@ -316,7 +318,7 @@
       }
     },
     "weapon": {
-      "templates": ["base", "fightMods", "characteristicsMods"],
+      "templates": ["base", "item" ,"fightMods", "characteristicsMods"],
       "isEquippedMain": false,
       "isEquippedSecondary": false,
       "attributes": {
@@ -359,7 +361,7 @@
       }
     },
     "wearable": {
-      "templates": ["base", "reductions", "fightMods", "characteristicsMods"],
+      "templates": ["base", "item", "reductions", "fightMods", "characteristicsMods"],
       "isEquipped": false,
       "attributes": {
         "slot": {
@@ -369,7 +371,7 @@
       }
     },
     "consumable": {
-      "templates": ["base"],
+      "templates": ["base", "item"],
       "removedUses": 0,
       "attributes": {
         "activation": {
@@ -399,7 +401,7 @@
       }
     },
     "common": {
-      "templates": ["base"],
+      "templates": ["base", "item"],
       "attributes": {
         "formula": "d20 + @str.mod + ceil(@lvl / 2)"
       }

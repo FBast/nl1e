@@ -5,7 +5,7 @@
             {{#each system.currencies as |currency key|}}
             <div class="input-spin currency">
                 <label>{{localize currency.label}}</label>
-                <input name="system.currency.{{key}}" type="number" value="{{currency.value}}" data-dtype="Number" min="0" placeholder="0" disabled/>
+                <input name="system.currencies.{{key}}.value" type="number" value="{{currency.value}}" data-dtype="Number" min="0" placeholder="0" disabled/>
                 <span>
                     <i class="currency-control pointer fa fa-plus-square" data-currency="{{key}}" data-value="1"></i>
                     <i class="currency-control pointer fa fa-minus-square" data-currency="{{key}}" data-value="-1"></i>
@@ -30,85 +30,85 @@
                 </div>
                 <div class="item-stats grid-span-2">
                     {{#if item.system.attributes.contactAttackRange.apply}}
-                        <i class="item-info fas fa-swords hover-green" data-hover-green="{{localize "PL1E.ContactAttackRange"}}">
+                        <i class="item-info fas fa-swords hover-green" data-tooltip="{{localize "PL1E.ContactAttackRange"}}">
                             <label>{{item.system.attributes.contactAttackRange.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.rangedAttackRange.apply}}
-                        <i class="item-info fas fa-bow-arrow hover-green" data-hover-green="{{localize "PL1E.RangedAttackRange"}}">
+                        <i class="item-info fas fa-bow-arrow hover-green" data-tooltip="{{localize "PL1E.RangedAttackRange"}}">
                             <label>{{item.system.attributes.rangedAttackRange.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.parryProjectiles.apply}}
                         {{#if item.system.attributes.parryProjectiles.value}}
-                            <i class="item-info fas fa-shield-halved hover-green" data-hover-green="{{localize "PL1E.ParryProjectiles"}}"></i>
+                            <i class="item-info fas fa-shield-halved hover-green" data-tooltip="{{localize "PL1E.ParryProjectiles"}}"></i>
                         {{/if}}
                     {{/if}}
                     {{#if item.system.attributes.slashing.apply}}
-                        <i class="item-info fas fa-axe-battle hover-green" data-hover-green="{{localize "PL1E.Slashing"}}">
+                        <i class="item-info fas fa-axe-battle hover-green" data-tooltip="{{localize "PL1E.Slashing"}}">
                             <label>{{item.system.attributes.slashing.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.crushing.apply}}
-                        <i class="item-info fas fa-hammer-war hover-green" data-hover-green='{{localize "PL1E.Crushing"}}'>
+                        <i class="item-info fas fa-hammer-war hover-green" data-tooltip='{{localize "PL1E.Crushing"}}'>
                             <label>{{item.system.attributes.crushing.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.piercing.apply}}
-                        <i class="item-info fas fa-dagger hover-green" data-hover-green='{{localize "PL1E.Piercing"}}'>
+                        <i class="item-info fas fa-dagger hover-green" data-tooltip='{{localize "PL1E.Piercing"}}'>
                             <label>{{item.system.attributes.piercing.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.parry.apply}}
-                        <i class="item-info fas fa-shield hover-green" data-hover-green='{{localize "PL1E.Parry"}}'>
+                        <i class="item-info fas fa-shield hover-green" data-tooltip='{{localize "PL1E.Parry"}}'>
                             <label>{{item.system.attributes.parry.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.hands.apply}}
-                        <i class="item-info fas fa-hand hover-green" data-hover-green='{{localize "PL1E.Hands"}}'>
+                        <i class="item-info fas fa-hand hover-green" data-tooltip='{{localize "PL1E.Hands"}}'>
                             <label>{{item.system.attributes.hands.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.ammo.apply}}
-                        <i class="item-info fas fa-tally hover-green" data-hover-green='{{localize "PL1E.Ammo"}}'>
+                        <i class="item-info fas fa-tally hover-green" data-tooltip='{{localize "PL1E.Ammo"}}'>
                             <label>{{item.system.attributes.ammo.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.movementPenalty.apply}}
-                        <i class="item-info fas fa-weight-hanging hover-green" data-hover-green='{{localize "PL1E.MovementPenalty"}}'>
+                        <i class="item-info fas fa-weight-hanging hover-green" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
                             <label>{{item.system.attributes.movementPenalty.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.slashingReduction.apply}}
-                        <i class="item-info far fa-axe-battle hover-green" data-hover-green='{{localize "PL1E.SlashingReduction"}}'>
+                        <i class="item-info far fa-axe-battle hover-green" data-tooltip='{{localize "PL1E.SlashingReduction"}}'>
                             <label>{{item.system.attributes.slashingReduction.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.crushingReduction.apply}}
-                        <i class="item-info far fa-hammer-war hover-green" data-hover-green='{{localize "PL1E.CrushingReduction"}}'>
+                        <i class="item-info far fa-hammer-war hover-green" data-tooltip='{{localize "PL1E.CrushingReduction"}}'>
                             <label>{{item.system.attributes.crushingReduction.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.piercingReduction.apply}}
-                        <i class="item-info far fa-dagger hover-green" data-hover-green='{{localize "PL1E.PiercingReduction"}}'>
+                        <i class="item-info far fa-dagger hover-green" data-tooltip='{{localize "PL1E.PiercingReduction"}}'>
                             <label>{{item.system.attributes.piercingReduction.value}}</label>
                         </i>
                     {{/if}}
                     {{#if item.system.attributes.movementPenalty.apply}}
-                        <i class="item-info fas fa-weight-hanging hover-green" data-hover-green='{{localize "PL1E.MovementPenalty"}}'>
+                        <i class="item-info fas fa-weight-hanging hover-green" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
                             <label>{{item.system.attributes.movementPenalty.value}}</label>
                         </i>
                     {{/if}}
                 </div>
                 <div class="item-controls">
-                    <a class="item-control item-toggle weapon-toggle" data-main='false' data-hover-green='{{localize "PL1E.EquipSecondary"}}'>
+                    <a class="item-control item-toggle weapon-toggle" data-main='false' data-tooltip='{{localize "PL1E.EquipSecondary"}}'>
                         <i class="fas fa-hand icon-flipped {{#unless item.system.isEquippedSecondary}}item-inactive{{/unless}}"></i>
                     </a>
-                    <a class="item-control item-toggle weapon-toggle" data-main='true' data-hover-green='{{localize "PL1E.EquipMain"}}'>
+                    <a class="item-control item-toggle weapon-toggle" data-main='true' data-tooltip='{{localize "PL1E.EquipMain"}}'>
                         <i class="fas fa-hand {{#unless item.system.isEquippedMain}}item-inactive{{/unless}}"></i>
                     </a>
-                    <a class="item-control item-edit" data-item-id='{{item._id}}' data-hover-green='{{localize "PL1E.Edit"}}'><i class="fas fa-eye"></i></a>
-                    <a class="item-control item-delete" data-item-id="{{item._id}}" data-hover-green='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                    <a class="item-control item-edit" data-item-id='{{item._id}}' data-tooltip='{{localize "PL1E.Edit"}}'><i class="fas fa-eye"></i></a>
+                    <a class="item-control item-delete" data-item-id="{{item._id}}" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                 </div>
             </li>
         {{/each}}

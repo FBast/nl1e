@@ -5,6 +5,8 @@
   "PL1E.Health": "Health",
   "PL1E.Stamina": "Stamina",
   "PL1E.Mana": "Mana",
+  "PL1E.SellMultiplicator": "Sell Modifier",
+  "PL1E.BuyMultiplicator": "Buy Modifier",
 
   "PL1E.CharacteristicStr": "Strength",
   "PL1E.CharacteristicAgi": "Agility",
@@ -133,6 +135,7 @@
   "PL1E.EquipMain": "Equip in main hand",
   "PL1E.EquipSecondary": "Equip in secondary hand",
   "PL1E.Memorize": "Memorize",
+  "PL1E.Buy": "Buy",
 
   "PL1E.NewCharacter": "New Character",
   "PL1E.NewNPC": "New NPC",

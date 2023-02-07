@@ -5,6 +5,8 @@
   "PL1E.Health": "Vie",
   "PL1E.Stamina": "Endurance",
   "PL1E.Mana": "Mana",
+  "PL1E.SellMultiplicator": "Multiplicateur de Vente",
+  "PL1E.BuyMultiplicator": "Multiplicateur d'Achat",
 
   "PL1E.CharacteristicStr": "Force",
   "PL1E.CharacteristicAgi": "Agilité",
@@ -133,6 +135,7 @@
   "PL1E.EquipMain": "Equiper en main principale",
   "PL1E.EquipSecondary": "Equiper en main secondaire",
   "PL1E.Memorize": "Mémoriser",
+  "PL1E.Buy": "Acheter",
 
   "PL1E.NewCharacter": "Nouveau Personnage",
   "PL1E.NewNPC": "Nouveau PNJ",

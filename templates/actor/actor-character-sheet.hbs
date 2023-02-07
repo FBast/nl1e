@@ -12,7 +12,7 @@
             <div class="resources grid grid-3col">
 
                 {{#each system.resources as |resource key|}}
-                    <div class="resource flex-group-center">
+                    <div class="resource box flex-group-center">
                         <label class="resource-label hover-green" data-id="{{key}}"
                                data-characteristics="{{resource.weights.characteristics}}">{{localize resource.label}}</label>
                         <div class="resource-content flexrow flex-center flex-between">

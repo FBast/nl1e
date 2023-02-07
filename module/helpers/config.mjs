@@ -533,13 +533,13 @@ PL1E.attributes = {
 }
 
 PL1E.currencies = {
-    "gp": {
+    "gold": {
         "label": "PL1E.Gold"
     },
-    "sp": {
+    "silver": {
         "label": "PL1E.Silver"
     },
-    "cp": {
+    "copper": {
         "label": "PL1E.Copper"
     }
 }
