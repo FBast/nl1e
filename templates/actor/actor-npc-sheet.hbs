@@ -27,25 +27,10 @@
         </div>
     </header>
 
-    {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-        {{!-- Default tab is specified in actor-sheet.mjs --}}
-        <a class="item" data-tab="stats">{{localize "PL1E.Stats"}}</a>
-        <a class="item" data-tab="effects">{{localize "PL1E.Effects"}}</a>
-    </nav>
-
     {{!-- Sheet Body --}}
     <section class="sheet-body">
 
-        {{!-- Stats Tab --}}
-        <div class="tab stats flexcol" data-group="primary" data-tab="stats">
-            {{> "systems/pl1e/templates/actor/parts/npc-stats.hbs"}}
-        </div>
-
-        {{!-- Active Effects Tab --}}
-        <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-            {{> "systems/pl1e/templates/actor/parts/actor-effects.hbs"}}
-        </div>
+        {{> "systems/pl1e/templates/actor/parts/npc-stats.hbs"}}
 
     </section>
 </form>
