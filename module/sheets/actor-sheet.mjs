@@ -157,15 +157,22 @@ export class Pl1eActorSheet extends ActorSheet {
     async _onItemBuy(event) {
         const itemId = $(event.currentTarget).data("item-id");
         const item = this.actor.items.get(itemId);
+        if (game.user.character === null) return;
         const characterCurrencies = game.user.character.system.currencies;
         const priceMultiplicator = 1 + this.actor.system.buyMultiplicator / 100;
-        let gold = characterCurrencies.gold.value;
-        let silver = characterCurrencies.silver.value;
-        let copper = characterCurrencies.copper.value;
         let price = Math.round(item.system.attributes.price.value * priceMultiplicator);
-        gold -= price;
+        let currency = characterCurrencies.gold.value * 100 + characterCurrencies.silver.value * 10 + characterCurrencies.copper.value;
+        if (currency < price) return;
+        currency -= price;
+        let remainingGold = Math.floor(currency / 100);
+        currency -= remainingGold * 100
+        let remainingSilver = Math.floor(currency / 10);
+        currency -= remainingSilver * 10;
+        let remainingCopper = currency;
         await game.user.character.update({
-            ["system.currencies.gold.value"]: gold
+            ["system.currencies.gold.value"]: remainingGold,
+            ["system.currencies.silver.value"]: remainingSilver,
+            ["system.currencies.copper.value"]: remainingCopper,
         })
         await game.user.character.createEmbeddedDocuments("Item", [item]);
     }
