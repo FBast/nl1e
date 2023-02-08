@@ -132,6 +132,10 @@ export class Pl1eActor extends Actor {
      */
     _prepareCharacterData(systemData) {
         if (this.type !== 'character') return;
+        const actorAttributes = systemData.attributes;
+        const actorCurrencies = systemData.currencies;
+        actorAttributes.totalCurrency = actorCurrencies.gold.value * 100 + actorCurrencies.silver.value * 10
+            + actorCurrencies.copper.value;
     }
 
     /**

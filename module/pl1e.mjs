@@ -8,6 +8,7 @@ import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
 import { HelpersPl1e } from "./helpers/helpers.js";
 import {PL1E} from "./helpers/config.mjs";
+import SocketPl1e from "./helpers/socket.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -44,6 +45,11 @@ Hooks.once('init', async function () {
     Actors.registerSheet("pl1e", Pl1eActorSheet, {makeDefault: true});
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
+
+    game.socket.on("system.pl1e", (data) => {
+        if (data.operation === 'sendItem') SocketPl1e.sendItem(data.actor, data.targetActor, data.item);
+        if (data.operation === 'sendContenant') SocketPl1e.sendContenant(data.actor, data.targetActor, data.item);
+    })
 
     // Preload Handlebars templates.
     return preloadHandlebarsTemplates();

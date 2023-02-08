@@ -127,20 +127,34 @@ export class Pl1eActorSheet extends ActorSheet {
      * @private
      */
     async _onDropItem(event, data) {
-        if ( !this.actor.isOwner ) return false;
         const item = await Item.implementation.fromDropData(data);
-        const itemData = item.toObject();
-        const newItem = await this._onDropItemCreate(item);
-        if (itemData.system.subItemsMap !== undefined && itemData.system.subItemsMap.length > 0) {
-            let linkedId = randomID();
-            await newItem[0].update({'system.parentId': linkedId});
-            for (let subItem of itemData.system.subItemsMap) {
-                const newSubItem = await this._onDropItemCreate(subItem);
-                await newSubItem[0].update({'system.childId': linkedId});
+        if (!this.actor.isOwner) {
+            // Player transfer item to a not owned actor
+            game.socket.emit('system.pl1e', {
+                operation: 'sendItem',
+                actor: game.user.character,
+                targetActor: this.actor,
+                item: item
+            })
+        }
+        else {
+            const itemData = item.toObject();
+            const newItem = await this._onDropItemCreate(item);
+            if (itemData.system.subItemsMap !== undefined && itemData.system.subItemsMap.length > 0) {
+                let linkedId = randomID();
+                await newItem[0].update({'system.parentId': linkedId});
+                for (let subItem of itemData.system.subItemsMap) {
+                    const newSubItem = await this._onDropItemCreate(subItem);
+                    await newSubItem[0].update({'system.childId': linkedId});
+                }
             }
         }
+        //TODO-fred Re-add the deletion
+
+        // Delete the source item if it is embedded
+        // if (item.isOwned) item.delete();
         // Create the owned item
-        return newItem;
+        // return newItem;
     }
 
     /**
@@ -158,23 +172,23 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemId = $(event.currentTarget).data("item-id");
         const item = this.actor.items.get(itemId);
         if (game.user.character === null) return;
-        const characterCurrencies = game.user.character.system.currencies;
         const priceMultiplicator = 1 + this.actor.system.buyMultiplicator / 100;
         let price = Math.round(item.system.attributes.price.value * priceMultiplicator);
-        let currency = characterCurrencies.gold.value * 100 + characterCurrencies.silver.value * 10 + characterCurrencies.copper.value;
-        if (currency < price) return;
-        currency -= price;
-        let remainingGold = Math.floor(currency / 100);
-        currency -= remainingGold * 100
-        let remainingSilver = Math.floor(currency / 10);
-        currency -= remainingSilver * 10;
-        let remainingCopper = currency;
+        let totalCurrency = game.user.character.system.attributes.totalCurrency;
+        if (totalCurrency < price) return;
+        totalCurrency -= price;
+        let remainingGold = Math.floor(totalCurrency / 100);
+        totalCurrency -= remainingGold * 100
+        let remainingSilver = Math.floor(totalCurrency / 10);
+        totalCurrency -= remainingSilver * 10;
+        let remainingCopper = totalCurrency;
         await game.user.character.update({
             ["system.currencies.gold.value"]: remainingGold,
             ["system.currencies.silver.value"]: remainingSilver,
             ["system.currencies.copper.value"]: remainingCopper,
         })
         await game.user.character.createEmbeddedDocuments("Item", [item]);
+        this.render(false);
     }
 
     /**
@@ -393,7 +407,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // The item have no more uses and is not reloadable
         if (item.system.removedUses >= item.system.attributes.uses.value && !item.system.attributes.reloadable.value) {
-            item.delete();
+            await item.delete();
         }
     }
 
@@ -462,8 +476,9 @@ export class Pl1eActorSheet extends ActorSheet {
         await this.actor.update({
             ["system.currencies." + currency + ".value"]: oldValue + value
         });
-
-        this.render(false);
+        for (let actor of game.actors.filter(actor =>  actor.type === 'merchant')) {
+            actor.render(false);
+        }
     }
 
     /**
