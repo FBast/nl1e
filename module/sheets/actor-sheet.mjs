@@ -130,12 +130,11 @@ export class Pl1eActorSheet extends ActorSheet {
         const item = await Item.implementation.fromDropData(data);
         if (!this.actor.isOwner) {
             // Player transfer item to a not owned actor
-            game.socket.emit('system.pl1e', {
-                operation: 'sendItem',
+            PL1E.socket.executeAsGM('sendItem', {
                 actor: game.user.character,
                 targetActor: this.actor,
                 item: item
-            })
+            });
         }
         else {
             const itemData = item.toObject();

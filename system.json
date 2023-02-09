@@ -27,6 +27,12 @@
       "path": "lang/fr.json"
     }
   ],
+  "dependencies": [
+    {
+      "name": "socketlib",
+      "manifest": "https://raw/githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module."
+    }
+  ],
   "socket": true,
   "gridDistance": 1.5,
   "gridUnits": "m",

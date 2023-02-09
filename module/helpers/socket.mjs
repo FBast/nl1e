@@ -24,25 +24,17 @@ export default class SocketPl1e {
     }
 
     /**
-     * Send item from actor to target actor
-     * @param actor {Pl1eActor} the source actor
+     * Send item from sourceActor to target targetActor
+     * @param sourceActor {Pl1eActor} the source actor
      * @param targetActor {Pl1eActor} the target actor
      * @param item {Pl1eItem} the send item
      * @returns {Promise<void>}
      */
-    static async sendItem(actor, targetActor, item) {
-        if (!game.user.isGM) return;
-
-        // if the logged in user is the active GM with the lowest user id
-        // const isResponsibleGM = game.users
-        //     .filter(user => user.isGM && user.isActive)
-        //     .some(other => other.data._id < game.user.data._id);
-        //
-        // if (!isResponsibleGM) return;
-
+    static async sendItem(sourceActor, targetActor, item) {
         targetActor = game.actors.get(targetActor._id);
         await targetActor.createEmbeddedDocuments("Item", [item]);
-        item = game.items.get(item._id);
+        sourceActor = game.actors.get(sourceActor._id);
+        item = sourceActor.items.find(element => element._id === item._id);
         await item.delete();
     }
 
