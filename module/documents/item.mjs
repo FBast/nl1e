@@ -43,6 +43,10 @@ export class Pl1eItem extends Item {
     /** @override */
     prepareBaseData() {
         const system = this.system;
+        const currency = HelpersPl1e.valueToCurrency(system.attributes.price.value);
+        system.goldPrice = currency.gold;
+        system.silverPrice = currency.silver;
+        system.copperPrice = currency.copper;
         // Merge config data
         system.attributes = HelpersPl1e.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
     }

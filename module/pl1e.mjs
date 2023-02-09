@@ -45,11 +45,6 @@ Hooks.once('init', async function () {
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
 
-    // game.socket.on("system.pl1e", (data, callback) => {
-    //     if (data.operation === 'sendItem') SocketPl1e.sendItem(data.actor, data.targetActor, data.item, callback);
-    //     if (data.operation === 'sendContenant') SocketPl1e.sendContenant(data.actor, data.targetActor, data.item);
-    // })
-
     // Preload Handlebars templates.
     return preloadHandlebarsTemplates();
 });

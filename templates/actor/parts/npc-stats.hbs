@@ -13,8 +13,7 @@
                                 {{#if (lt skill.numberMod 0)}}color-red{{/if}}
                                 {{#if (eq skill.numberMod 0)}}color-black{{/if}}">{{skill.number}}</label>
                         </i>
-                        <label class="skill-label hover-green grid-span-4 align-left" data-id="{{key}}"
-                               data-attributes="{{skill.weights.attributes}}" data-characteristics="{{skill.weights.characteristics}}">{{localize skill.label}}</label>
+                        <label class="skill-label grid-span-4 align-left">{{localize skill.label}}</label>
                     </li>
                 {{/each}}
             </ul>

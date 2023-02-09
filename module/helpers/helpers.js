@@ -272,4 +272,19 @@ export class HelpersPl1e {
         }
     }
 
+    /**
+     * Convert a value to a currency with gold, silver and copper
+     * @param value the currency sum
+     * @returns {gold, silver, copper}
+     */
+    static valueToCurrency(value) {
+        let currency = {};
+        currency['gold'] = Math.floor(value / 100);
+        value -= currency['gold'] * 100
+        currency['silver'] = Math.floor(value / 10);
+        value -= currency['silver'] * 10;
+        currency['copper'] = value;
+        return currency;
+    }
+
 }

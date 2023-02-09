@@ -88,7 +88,6 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Chat messages
         html.find('.rollable').on("click", this._onRoll.bind(this));
-        html.find('.message').on("click", this._onChatMessage.bind(this));
 
         // Custom objects
         html.find('.characteristic-control').on("click", this._onCharacteristicChange.bind(this));
@@ -147,13 +146,9 @@ export class Pl1eActorSheet extends ActorSheet {
                     await newSubItem[0].update({'system.childId': linkedId});
                 }
             }
+            // Delete the source item if it is embedded
+            if (item.isOwned) item.delete();
         }
-        //TODO-fred Re-add the deletion
-
-        // Delete the source item if it is embedded
-        // if (item.isOwned) item.delete();
-        // Create the owned item
-        // return newItem;
     }
 
     /**
@@ -176,16 +171,20 @@ export class Pl1eActorSheet extends ActorSheet {
         let totalCurrency = game.user.character.system.attributes.totalCurrency;
         if (totalCurrency < price) return;
         totalCurrency -= price;
-        let remainingGold = Math.floor(totalCurrency / 100);
-        totalCurrency -= remainingGold * 100
-        let remainingSilver = Math.floor(totalCurrency / 10);
-        totalCurrency -= remainingSilver * 10;
-        let remainingCopper = totalCurrency;
+        const currency = HelpersPl1e.valueToCurrency(totalCurrency);
         await game.user.character.update({
-            ["system.currencies.gold.value"]: remainingGold,
-            ["system.currencies.silver.value"]: remainingSilver,
-            ["system.currencies.copper.value"]: remainingCopper,
+            ["system.currencies.gold.value"]: currency.gold,
+            ["system.currencies.silver.value"]: currency.silver,
+            ["system.currencies.copper.value"]: currency.copper,
         })
+        // Send message for historic
+        await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({actor: game.user.character}),
+            rollMode: game.settings.get('core', 'rollMode'),
+            flavor: '[item] Item bought',
+            content: item.name + ' bought for ' + item.system.gold + ' gold, '
+                + item.system.silver + ' silver, ' + item.system.copper + ' copper'
+        });
         await game.user.character.createEmbeddedDocuments("Item", [item]);
         this.render(false);
     }
@@ -539,21 +538,6 @@ export class Pl1eActorSheet extends ActorSheet {
             });
             return roll;
         }
-    }
-
-    /***
-     * Handle quick chat message
-     * @param event
-     * @private
-     */
-    _onChatMessage(event) {
-        //TODO-improve
-        ChatMessage.create({
-            speaker: ChatMessage.getSpeaker({actor: this.actor}),
-            rollMode: game.settings.get('core', 'rollMode'),
-            flavor: '[permission] Creation Mod switched',
-            content: 'Creation mod cannot be switch with DM permission !'
-        });
     }
 
     /**

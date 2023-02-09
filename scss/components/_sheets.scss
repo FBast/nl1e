@@ -46,6 +46,9 @@
 
   .currency {
     align-items: center;
+    .currency-icon {
+      padding: 0 10px;
+    }
     label {
       margin: 5px;
     }
