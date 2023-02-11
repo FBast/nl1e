@@ -66,12 +66,20 @@ export class EventPL1E {
     /**
      * Open item sheet
      * @param event The originating click event
-     * @param {Actor} actor the actor of the item
+     * @param {Actor|Item} document the document of the item
      */
-    static onItemEdit(event, actor) {
+    static onItemEdit(event, document) {
         const itemId = $(event.currentTarget).data("item-id");
-        const item = actor.items.get(itemId);
-        item.sheet.render(true);
+        if (document instanceof Actor) {
+            const item = document.items.get(itemId);
+            item.sheet.render(true);
+        }
+        if (document instanceof Item) {
+            const item = document.getEmbedItem(itemId);
+            if (item) {
+                item.sheet.render(true);
+            }
+        }
     }
 
     /**
@@ -116,17 +124,30 @@ export class EventPL1E {
     /**
      * Handle deletion of item
      * @param {Event} event The originating click event
-     * @param {Actor} actor the actor where the item is deleted
+     * @param {Actor|Item} document the document where the item is deleted
      */
-    static async onItemDelete(event, actor) {
+    static async onItemDelete(event, document) {
         const itemId = $(event.currentTarget).data("item-id");
-        const parentItem = actor.items.get(itemId);
-        for (let item of actor.items) {
-            if (parentItem === item || item.system.childId === undefined) continue;
-            if (parentItem.system.parentId !== item.system.childId) continue;
-            item.delete();
+        if (document instanceof Actor) {
+            const parentItem = document.items.get(itemId);
+            for (let item of document.items) {
+                if (parentItem === item || item.system.childId === undefined) continue;
+                if (parentItem.system.parentId !== item.system.childId) continue;
+                item.delete();
+            }
+            await parentItem.delete();
         }
-        await parentItem.delete();
+        if (document instanceof Item) {
+            const item = document.getEmbedItem(itemId);
+            if (!item) return;
+            for (let [key, value] of document.system.subItemsMap) {
+                if (value === item) continue;
+                if (value.system.childId === undefined) continue;
+                if (value.system.childId !== item.system.parentId) continue;
+                await document.deleteEmbedItem(value._id);
+            }
+            await document.deleteEmbedItem(itemId);
+        }
     }
 
     /**
@@ -359,24 +380,26 @@ export class EventPL1E {
     /**
      * Handle currency changes
      * @param {Event} event The originating click event
-     * @param {Actor} actor the actor to modify
+     * @param {Actor|Item} document the document to modify
      */
-    static async onCurrencyChange(event, actor) {
+    static async onCurrencyChange(event, document) {
         event.preventDefault();
         event.stopPropagation();
-
         const element = $(event.currentTarget);
         const currency = element.data("currency");
         let value = element.data("value");
         if (!value || !currency) return;
-
-        let oldValue = actor.system.money[currency].value;
-
-        await actor.update({
-            ["system.money." + currency + ".value"]: oldValue + value
-        });
-        for (let actor of game.actors.filter(actor =>  actor.type === 'merchant')) {
-            actor.render(false);
+        if (document instanceof Actor) {
+            let oldValue = document.system.money[currency].value;
+            await document.update({
+                ["system.money." + currency + ".value"]: oldValue + value
+            });
+        }
+        if (document instanceof Item) {
+            let oldValue = document.system.price[currency].value;
+            await document.update({
+                ["system.price." + currency + ".value"]: oldValue + value
+            });
         }
     }
 

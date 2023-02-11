@@ -1,5 +1,6 @@
 import {PL1E} from "../helpers/config.mjs";
 import {HelpersPl1e} from "../helpers/helpers.js";
+import {EventPL1E} from "../helpers/events.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -90,9 +91,9 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         // Roll handlers, click handlers, etc. would go here.
-        html.find(`.item-edit`).on("click", this._editSubItem.bind(this));
-        html.find(`.item-delete`).on("click", this._deleteSubItem.bind(this));
-        html.find('.currency-control').on("click", this._onCurrencyChange.bind(this));
+        html.find(`.item-edit`).on("click", ev => EventPL1E.onItemEdit(ev, this.item));
+        html.find(`.item-delete`).on("click", ev => EventPL1E.onItemDelete(ev, this.item));
+        html.find('.currency-control').on("click", ev => EventPL1E.onCurrencyChange(ev, this.item));
     }
 
     /**
