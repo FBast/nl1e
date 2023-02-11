@@ -46,15 +46,6 @@ export class Pl1eItem extends Item {
         // Merge config data
         system.attributes = HelpersPl1e.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
         system.price = HelpersPl1e.mergeDeep(system.price, CONFIG.PL1E.currencies);
-        // Apply reductions in merchant
-        if (this.parent !== null && this.parent.type === 'merchant') {
-            let value = HelpersPl1e.currenciesToValue(system.price);
-            value += Math.round(value * (this.parent.system.buyMultiplicator / 100));
-            const currencies = HelpersPl1e.valueToCurrencies(value);
-            system.price.gold.value = currencies.gold;
-            system.price.silver.value = currencies.silver;
-            system.price.copper.value = currencies.copper;
-        }
     }
 
     /**

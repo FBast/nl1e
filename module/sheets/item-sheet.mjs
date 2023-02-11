@@ -20,13 +20,9 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @override */
     get template() {
-        const path = "systems/pl1e/templates/item";
-        // Return a single sheet for all item types.
-        // return `${path}/item-sheet.hbs`;
-
-        // Alternatively, you could use the following return statement to do a
-        // unique item sheet by type, like `weapon-sheet.hbs`.
-        return `${path}/item-${this.item.type}-sheet.hbs`;
+        if (['weapon', 'wearable', 'consumable', 'common'].includes(this.item.type))
+            return `systems/pl1e/templates/item/item-equipment-sheet.hbs`;
+        return `systems/pl1e/templates/item/item-${this.item.type}-sheet.hbs`;
     }
 
     /**
@@ -170,19 +166,19 @@ export class Pl1eItemSheet extends ItemSheet {
      * @param {Event} event
      * @private
      */
-    _deleteSubItem(event) {
+    async _deleteSubItem(event) {
         event.preventDefault();
         event.stopPropagation();
         const itemId = $(event.currentTarget).data("item-id");
-        const item = this.document.getEmbedItem(itemId);
+        const item = this.item.getEmbedItem(itemId);
         if (!item) return;
         for (let [key, value] of this.item.system.subItemsMap) {
             if (value === item) continue;
             if (value.system.childId === undefined) continue;
             if (value.system.childId !== item.system.parentId) continue;
-            this.document.deleteEmbedItem(value._id);
+            await this.item.deleteEmbedItem(value._id);
         }
-        this.document.deleteEmbedItem(itemId);
+        await this.item.deleteEmbedItem(itemId);
     }
 
     /**

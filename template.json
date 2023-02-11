@@ -161,7 +161,7 @@
             "custom": ""
           }
         },
-        "currencies": {
+        "money": {
           "gold": {
             "value": 0
           },
@@ -179,15 +179,15 @@
     },
     "npc": {
       "templates": ["base"],
-      "sellMultiplicator": -100,
-      "buyMultiplicator": 0,
       "attributes": {
         "NPCTemplate": "balanced",
         "experienceTemplate": "novice"
       }
     },
     "merchant": {
-      "templates": ["base"]
+      "templates": ["base"],
+      "sellMultiplicator": -100,
+      "buyMultiplicator": 0
     }
   },
   "Item": {

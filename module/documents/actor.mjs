@@ -37,7 +37,7 @@ export class Pl1eActor extends Actor {
         system.resources = HelpersPl1e.mergeDeep(system.resources, CONFIG.PL1E.resources);
         system.characteristics = HelpersPl1e.mergeDeep(system.characteristics, CONFIG.PL1E.characteristics);
         system.skills = HelpersPl1e.mergeDeep(system.skills, CONFIG.PL1E.skills);
-        system.currencies = HelpersPl1e.mergeDeep(system.currencies, CONFIG.PL1E.currencies);
+        system.money = HelpersPl1e.mergeDeep(system.money, CONFIG.PL1E.currencies);
     }
 
     /** @override */
@@ -132,10 +132,6 @@ export class Pl1eActor extends Actor {
      */
     _prepareCharacterData(systemData) {
         if (this.type !== 'character') return;
-        const actorAttributes = systemData.attributes;
-        const actorCurrencies = systemData.currencies;
-        actorAttributes.totalCurrency = actorCurrencies.gold.value * 100 + actorCurrencies.silver.value * 10
-            + actorCurrencies.copper.value;
     }
 
     /**
@@ -174,6 +170,13 @@ export class Pl1eActor extends Actor {
      */
     _prepareMerchantData(systemData) {
         if (this.type !== 'merchant') return;
+        // Add merchant prices
+        systemData.merchantPrices = {};
+        for (let item of this.items) {
+            let value = HelpersPl1e.currenciesToUnits(item.system.price);
+            value += Math.round(value * (systemData.buyMultiplicator / 100));
+            systemData.merchantPrices[item._id] = HelpersPl1e.unitsToCurrencies(value);
+        }
     }
 
     /**

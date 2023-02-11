@@ -8,6 +8,7 @@ import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
 import {PL1E} from "./helpers/config.mjs";
 import SocketPl1e from "./helpers/socket.mjs";
+import {HelpersPl1e} from "./helpers/helpers.js";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -78,6 +79,14 @@ Handlebars.registerHelper('configEntry', function (key, entry) {
 
 Handlebars.registerHelper('config', function (key) {
     return PL1E[key];
+})
+
+Handlebars.registerHelper('currenciesToValue', function (currencies) {
+    return HelpersPl1e.currenciesToUnits(currencies);
+})
+
+Handlebars.registerHelper('valueToCurrencies', function (value) {
+    return HelpersPl1e.unitsToCurrencies(value);
 })
 
 /* -------------------------------------------- */

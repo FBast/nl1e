@@ -5,8 +5,10 @@
   "PL1E.Health": "Vie",
   "PL1E.Stamina": "Endurance",
   "PL1E.Mana": "Mana",
+
   "PL1E.SellMultiplicator": "Multiplicateur de Vente",
   "PL1E.BuyMultiplicator": "Multiplicateur d'Achat",
+  "PL1E.NotEnoughMoney" : "Monnaie insuffisante",
 
   "PL1E.CharacteristicStr": "Force",
   "PL1E.CharacteristicAgi": "Agilité",
@@ -184,7 +186,7 @@
   "PL1E.StaminaRecovery": "Récupération d'endurance",
   "PL1E.ManaRecovery": "Récupération de mana",
 
-  "PL1E.Currency": "Monnaie",
+  "PL1E.Money": "Monnaie",
   "PL1E.Gold": "Or",
   "PL1E.Silver": "Argent",
   "PL1E.Copper": "Cuivre",

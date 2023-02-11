@@ -5,8 +5,10 @@
   "PL1E.Health": "Health",
   "PL1E.Stamina": "Stamina",
   "PL1E.Mana": "Mana",
+
   "PL1E.SellMultiplicator": "Sell Modifier",
   "PL1E.BuyMultiplicator": "Buy Modifier",
+  "PL1E.NotEnoughMoney" : "Not enough money",
 
   "PL1E.CharacteristicStr": "Strength",
   "PL1E.CharacteristicAgi": "Agility",
@@ -184,7 +186,7 @@
   "PL1E.StaminaRecovery": "Stamina recovery",
   "PL1E.ManaRecovery": "Mana recovery",
 
-  "PL1E.Currency": "Currency",
+  "PL1E.Money": "Money",
   "PL1E.Gold": "Gold",
   "PL1E.Silver": "Silver",
   "PL1E.Copper": "Copper",

@@ -324,10 +324,6 @@ PL1E.skills = {
 
 PL1E.attributes = {
     // General
-    "price": {
-        "type": "number",
-        "label": "PL1E.Price"
-    },
     "rarity": {
         "type": "number",
         "label": "PL1E.Rarity"

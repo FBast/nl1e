@@ -24,12 +24,12 @@ export class TradePL1E {
     }
 
     static async sellItem(item, sourceActor, targetActor) {
-        const overallPrice = item.system.attributes.price.value * (1 + targetActor.system.sellMultiplicator / 100);
-        const currencyPrice = HelpersPl1e.valueToCurrencies(overallPrice);
+        const priceUnits = item.system.attributes.price.value * (1 + targetActor.system.sellMultiplicator / 100);
+        const priceCurrencies = HelpersPl1e.unitsToCurrencies(priceUnits);
         await sourceActor.update({
-            ["system.currencies.gold.value"]: sourceActor.system.currencies.gold.value + currencyPrice.gold,
-            ["system.currencies.silver.value"]: sourceActor.system.currencies.silver.value + currencyPrice.silver,
-            ["system.currencies.copper.value"]: sourceActor.system.currencies.copper.value + currencyPrice.copper,
+            ["system.money.gold.value"]: sourceActor.system.money.gold.value + priceCurrencies.gold.value,
+            ["system.money.silver.value"]: sourceActor.system.money.silver.value + priceCurrencies.silver.value,
+            ["system.money.copper.value"]: sourceActor.system.money.copper.value + priceCurrencies.copper.value,
         });
         sourceActor.render(false);
         // Send message for historic
@@ -38,38 +38,35 @@ export class TradePL1E {
             rollMode: game.settings.get('core', 'rollMode'),
             flavor: game.i18n.localize("PL1E.ChatFlavorSelling"),
             content: item.name + game.i18n.localize("PL1E.SoldFor")
-                + currencyPrice.gold + game.i18n.localize("PL1E.Gold")
-                + currencyPrice.silver + game.i18n.localize("PL1E.Silver")
-                + currencyPrice.copper + game.i18n.localize("PL1E.Copper")
+                + priceCurrencies.gold.value + game.i18n.localize("PL1E.Gold")
+                + priceCurrencies.silver.value + game.i18n.localize("PL1E.Silver")
+                + priceCurrencies.copper.value + game.i18n.localize("PL1E.Copper")
         });
     }
 
-    static async buyItem(item, merchantActor) {
-        console.log(item);
-        const priceMultiplicator = 1 + merchantActor.system.buyMultiplicator / 100;
-        let price = Math.round(item.system.attributes.price.value * priceMultiplicator);
-        let totalCurrency = game.user.character.system.attributes.totalCurrency;
-        if (totalCurrency < price) return;
-        totalCurrency -= price;
-        const currency = HelpersPl1e.valueToCurrencies(totalCurrency);
-        await game.user.character.update({
-            ["system.currencies.gold.value"]: currency.gold,
-            ["system.currencies.silver.value"]: currency.silver,
-            ["system.currencies.copper.value"]: currency.copper,
+    static async buyItem(item, buyerActor, merchantActor) {
+        let priceCurrencies = merchantActor.system.merchantPrices[item._id];
+        let priceUnits = HelpersPl1e.currenciesToUnits(priceCurrencies);
+        let units = HelpersPl1e.currenciesToUnits(buyerActor.system.currencies);
+        if (units < priceUnits) return;
+        units -= priceUnits;
+        const currencies = HelpersPl1e.unitsToCurrencies(units);
+        await buyerActor.update({
+            ["system.money.gold.value"]: currencies.gold.value,
+            ["system.money.silver.value"]: currencies.silver.value,
+            ["system.money.copper.value"]: currencies.copper.value,
         })
         // Send message for historic
-        price = HelpersPl1e.valueToCurrencies(price);
         await ChatMessage.create({
-            speaker: ChatMessage.getSpeaker({actor: game.user.character}),
+            speaker: ChatMessage.getSpeaker({actor: buyerActor}),
             rollMode: game.settings.get('core', 'rollMode'),
             flavor: game.i18n.localize("PL1E.ChatFlavorPurchasing"),
             content: item.name + game.i18n.localize("PL1E.ChatBoughtFor")
-                + price.gold + game.i18n.localize("PL1E.ChatGold")
-                + price.silver + game.i18n.localize("PL1E.ChatSilver")
-                + price.copper + game.i18n.localize("PL1E.ChatCopper")
+                + priceCurrencies.gold.value + game.i18n.localize("PL1E.ChatGold")
+                + priceCurrencies.silver.value + game.i18n.localize("PL1E.ChatSilver")
+                + priceCurrencies.copper.value + game.i18n.localize("PL1E.ChatCopper")
         });
-        await game.user.character.createEmbeddedDocuments("Item", [item]);
-        merchantActor.sheet.render(false);
+        await buyerActor.createEmbeddedDocuments("Item", [item]);
     }
 
 }

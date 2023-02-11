@@ -166,6 +166,42 @@ export class HelpersPl1e {
     }
 
     /**
+     * Prepare the data structure for Active Effects which are currently applied to an Actor or Item.
+     * @param {ActiveEffect[]} effects    The array of Active Effect instances to prepare sheet data for
+     * @return {object}                   Data for rendering
+     */
+    static prepareActiveEffectCategories(effects) {
+
+        // Define effect header categories
+        const categories = {
+            temporary: {
+                type: "temporary",
+                label: "Temporary Effects",
+                effects: []
+            },
+            passive: {
+                type: "passive",
+                label: "Passive Effects",
+                effects: []
+            },
+            inactive: {
+                type: "inactive",
+                label: "Inactive Effects",
+                effects: []
+            }
+        };
+
+        // Iterate over active effects, classifying them into categories
+        for (let e of effects) {
+            e._getSourceName(); // Trigger a lookup for the source name
+            if (e.disabled) categories.inactive.effects.push(e);
+            else if (e.isTemporary) categories.temporary.effects.push(e);
+            else categories.passive.effects.push(e);
+        }
+        return categories;
+    }
+
+    /**
      * Deep merge two objects.
      * @param target
      * @param sources
@@ -275,24 +311,28 @@ export class HelpersPl1e {
     /**
      * Convert a value to currencies with gold, silver and copper
      * @param value the currencies sum
-     * @returns {gold, silver, copper}
+     * @returns {{gold: {value: number}, copper: {value: number}, silver: {value: number}}}
      */
-    static valueToCurrencies(value) {
-        let currencies = {};
-        currencies['gold'] = Math.floor(value / 100);
-        value -= currencies['gold'] * 100
-        currencies['silver'] = Math.floor(value / 10);
-        value -= currencies['silver'] * 10;
-        currencies['copper'] = value;
+    static unitsToCurrencies(value) {
+        let currencies = {
+            "gold": {"value": 0},
+            "silver": {"value": 0},
+            "copper": {"value": 0}
+        };
+        currencies['gold']['value'] = Math.floor(value / 100);
+        value -= currencies['gold']['value'] * 100
+        currencies['silver']['value'] = Math.floor(value / 10);
+        value -= currencies['silver']['value'] * 10;
+        currencies['copper']['value'] = value;
         return currencies;
     }
 
     /**
      * Convert currencies to value
      * @param currencies gold, silver and copper
-     * @returns integer
+     * @returns number
      */
-    static currenciesToValue(currencies) {
+    static currenciesToUnits(currencies) {
         return currencies.gold.value * 100 + currencies.silver.value * 10 + currencies.copper.value;
     }
 
