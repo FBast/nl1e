@@ -78,6 +78,9 @@ export class Pl1eItemSheet extends ItemSheet {
         // Add the config data
         context.config = PL1E;
 
+        // Add game access
+        context.game = game;
+
         return context;
     }
 
@@ -93,6 +96,7 @@ export class Pl1eItemSheet extends ItemSheet {
         // Roll handlers, click handlers, etc. would go here.
         html.find(`.item-edit`).on("click", this._editSubItem.bind(this));
         html.find(`.item-delete`).on("click", this._deleteSubItem.bind(this));
+        html.find('.currency-control').on("click", this._onCurrencyChange.bind(this));
     }
 
     /**
@@ -179,6 +183,27 @@ export class Pl1eItemSheet extends ItemSheet {
             this.document.deleteEmbedItem(value._id);
         }
         this.document.deleteEmbedItem(itemId);
+    }
+
+    /**
+     * Handle currency changes
+     * @param {Event} event
+     * @private
+     */
+    async _onCurrencyChange(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const element = $(event.currentTarget);
+        const currency = element.data("currency");
+        let value = element.data("value");
+        if (!value || !currency) return;
+
+        let oldValue = this.item.system.price[currency].value;
+
+        await this.item.update({
+            ["system.price." + currency + ".value"]: oldValue + value
+        });
     }
 
 }

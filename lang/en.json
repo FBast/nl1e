@@ -207,6 +207,17 @@
   "PL1E.Adept": "Adept",
   "PL1E.Expert": "Expert",
   "PL1E.Master": "Master",
-  "PL1E.GrandMaster": "Grand Master"
+  "PL1E.GrandMaster": "Grand Master",
 
+  "PL1E.ChatFlavorGift": "[item] Gift",
+  "PL1E.ChatFlavorSelling": "[item] Selling",
+  "PL1E.ChatFlavorPurchasing": "[item] Purchasing",
+  "PL1E.ChatFlavorCloneReset": "[admin] Clone reset",
+
+  "PL1E.ChatGivenTo": " given to ",
+  "PL1E.ChatSoldFor": " sold for ",
+  "PL1E.ChatBoughtFor": " bought for ",
+  "PL1E.ChatGold": " gold, ",
+  "PL1E.ChatSilver": " silver, ",
+  "PL1E.ChatCopper": " copper"
 }

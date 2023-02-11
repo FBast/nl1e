@@ -1,4 +1,4 @@
-import {HelpersPl1e} from "./helpers.js";
+import {TradePL1E} from "./trade.mjs";
 
 export default class SocketPl1e {
 
@@ -35,41 +35,10 @@ export default class SocketPl1e {
     static async sendItem(sourceActor, targetActor, item) {
         targetActor = game.actors.get(targetActor._id);
         sourceActor = game.actors.get(sourceActor._id);
-        // Add item
-        if (targetActor.type === 'character') {
-            await targetActor.createEmbeddedDocuments("Item", [item]);
-            // Send message for historic
-            await ChatMessage.create({
-                speaker: ChatMessage.getSpeaker({actor: sourceActor}),
-                rollMode: game.settings.get('core', 'rollMode'),
-                flavor: '[item] Item given',
-                content: item.name + ' given to ' + targetActor.name
-            });
-        }
-        // Or sell item
-        if (targetActor.type === 'merchant') {
-            const overallPrice = item.system.attributes.price.value * (1 + targetActor.system.sellMultiplicator / 100);
-            const currencyPrice = HelpersPl1e.valueToCurrency(overallPrice);
-            await sourceActor.update({
-                ["system.currencies.gold.value"]: sourceActor.system.currencies.gold.value + currencyPrice.gold,
-                ["system.currencies.silver.value"]: sourceActor.system.currencies.silver.value + currencyPrice.silver,
-                ["system.currencies.copper.value"]: sourceActor.system.currencies.copper.value + currencyPrice.copper,
-            });
-            sourceActor.render(false);
-            // Send message for historic
-            await ChatMessage.create({
-                speaker: ChatMessage.getSpeaker({actor: sourceActor}),
-                rollMode: game.settings.get('core', 'rollMode'),
-                flavor: '[item] Item sold',
-                content: item.name + ' sold for ' + currencyPrice.gold + ' gold, '
-                    + currencyPrice.silver + ' silver, ' + currencyPrice.copper + ' copper'
-            });
-        }
-        // Delete source item
-        sourceActor = game.actors.get(sourceActor._id);
-        item = sourceActor.items.find(element => element._id === item._id);
-        await item.delete();
+        await TradePL1E.giftItem(item, sourceActor, targetActor);
     }
+
+
 
     static async sendContenant(actor, targetActor, item) {
         // if (game.user.isGM) {

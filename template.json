@@ -199,13 +199,20 @@
       },
       "item": {
         "attributes": {
-          "price": {
-            "value": 0,
-            "apply": false
-          },
           "rarity": {
             "value": 0,
             "apply": false
+          }
+        },
+        "price": {
+          "gold": {
+            "value": 0
+          },
+          "silver": {
+            "value": 0
+          },
+          "copper": {
+            "value": 0
           }
         }
       },

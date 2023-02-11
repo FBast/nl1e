@@ -2,15 +2,10 @@
 
     {{!-- Sheet Header --}}
     <header class="sheet-header">
-
         <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-
         <div class="header-fields">
-
             <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-
             <div class="resources grid grid-3col">
-
                 {{#each system.resources as |resource key|}}
                     <div class="resource box flex-group-center">
                         <label class="resource-label hover-green" data-id="{{key}}"
@@ -22,7 +17,6 @@
                         </div>
                     </div>
                 {{/each}}
-
             </div>
         </div>
     </header>

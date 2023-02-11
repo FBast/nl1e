@@ -239,7 +239,7 @@ export class HelpersPl1e {
         if (updateCount > 0) {
             await ChatMessage.create({
                 rollMode: game.settings.get('core', 'rollMode'),
-                flavor: '[admin] ' + updateCount + ' clones of ' + sourceId + ' reset' ,
+                flavor: game.i18n.localize("PL1E.ChatFlavorCloneReset"),
                 content: content
             });
         }
@@ -273,18 +273,27 @@ export class HelpersPl1e {
     }
 
     /**
-     * Convert a value to a currency with gold, silver and copper
-     * @param value the currency sum
+     * Convert a value to currencies with gold, silver and copper
+     * @param value the currencies sum
      * @returns {gold, silver, copper}
      */
-    static valueToCurrency(value) {
-        let currency = {};
-        currency['gold'] = Math.floor(value / 100);
-        value -= currency['gold'] * 100
-        currency['silver'] = Math.floor(value / 10);
-        value -= currency['silver'] * 10;
-        currency['copper'] = value;
-        return currency;
+    static valueToCurrencies(value) {
+        let currencies = {};
+        currencies['gold'] = Math.floor(value / 100);
+        value -= currencies['gold'] * 100
+        currencies['silver'] = Math.floor(value / 10);
+        value -= currencies['silver'] * 10;
+        currencies['copper'] = value;
+        return currencies;
+    }
+
+    /**
+     * Convert currencies to value
+     * @param currencies gold, silver and copper
+     * @returns integer
+     */
+    static currenciesToValue(currencies) {
+        return currencies.gold.value * 100 + currencies.silver.value * 10 + currencies.copper.value;
     }
 
 }

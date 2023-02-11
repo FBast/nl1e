@@ -43,12 +43,18 @@ export class Pl1eItem extends Item {
     /** @override */
     prepareBaseData() {
         const system = this.system;
-        const currency = HelpersPl1e.valueToCurrency(system.attributes.price.value);
-        system.goldPrice = currency.gold;
-        system.silverPrice = currency.silver;
-        system.copperPrice = currency.copper;
         // Merge config data
         system.attributes = HelpersPl1e.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
+        system.price = HelpersPl1e.mergeDeep(system.price, CONFIG.PL1E.currencies);
+        // Apply reductions in merchant
+        if (this.parent !== null && this.parent.type === 'merchant') {
+            let value = HelpersPl1e.currenciesToValue(system.price);
+            value += Math.round(value * (this.parent.system.buyMultiplicator / 100));
+            const currencies = HelpersPl1e.valueToCurrencies(value);
+            system.price.gold.value = currencies.gold;
+            system.price.silver.value = currencies.silver;
+            system.price.copper.value = currencies.copper;
+        }
     }
 
     /**
@@ -61,7 +67,6 @@ export class Pl1eItem extends Item {
         const rollData = this.actor.getRollData();
         // Grab the item's system data as well.
         rollData.item = foundry.utils.deepClone(this.system);
-
         return rollData;
     }
 

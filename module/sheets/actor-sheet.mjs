@@ -1,6 +1,6 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
 import {PL1E} from "../helpers/config.mjs";
-import {HelpersPl1e} from "../helpers/helpers.js";
+import {TradePL1E} from "../helpers/trade.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -166,27 +166,7 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemId = $(event.currentTarget).data("item-id");
         const item = this.actor.items.get(itemId);
         if (game.user.character === null) return;
-        const priceMultiplicator = 1 + this.actor.system.buyMultiplicator / 100;
-        let price = Math.round(item.system.attributes.price.value * priceMultiplicator);
-        let totalCurrency = game.user.character.system.attributes.totalCurrency;
-        if (totalCurrency < price) return;
-        totalCurrency -= price;
-        const currency = HelpersPl1e.valueToCurrency(totalCurrency);
-        await game.user.character.update({
-            ["system.currencies.gold.value"]: currency.gold,
-            ["system.currencies.silver.value"]: currency.silver,
-            ["system.currencies.copper.value"]: currency.copper,
-        })
-        // Send message for historic
-        await ChatMessage.create({
-            speaker: ChatMessage.getSpeaker({actor: game.user.character}),
-            rollMode: game.settings.get('core', 'rollMode'),
-            flavor: '[item] Item bought',
-            content: item.name + ' bought for ' + item.system.gold + ' gold, '
-                + item.system.silver + ' silver, ' + item.system.copper + ' copper'
-        });
-        await game.user.character.createEmbeddedDocuments("Item", [item]);
-        this.render(false);
+        await TradePL1E.buyItem(item, this.actor);
     }
 
     /**

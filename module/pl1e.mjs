@@ -94,8 +94,6 @@ Hooks.once("ready", async function () {
     });
 });
 
-let socket;
-
 Hooks.once("socketlib.ready", () => {
     PL1E.socket = socketlib.registerSystem("pl1e");
     PL1E.socket.register("sendItem", function (data) {
