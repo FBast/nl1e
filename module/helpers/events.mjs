@@ -1,5 +1,6 @@
 import {TradePL1E} from "./trade.mjs";
 import {PL1E} from "./config.mjs";
+import {HelpersPl1e} from "./helpers.js";
 
 export class EventPL1E {
 
@@ -401,6 +402,20 @@ export class EventPL1E {
                 ["system.price." + currency + ".value"]: oldValue + value
             });
         }
+    }
+
+    /**
+     * Handle currency conversion
+     * @param {Event} event The originating click event
+     * @param {Actor} actor the actor to modify
+     */
+    static async onCurrencyConvert(event, actor) {
+        event.preventDefault();
+        event.stopPropagation();
+        let units = HelpersPl1e.currencyToUnits(actor.system.money);
+        await actor.update({
+            ["system.money"]: HelpersPl1e.unitsToCurrency(units)
+        });
     }
 
     /**

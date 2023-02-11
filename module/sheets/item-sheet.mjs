@@ -46,8 +46,6 @@ export class Pl1eItemSheet extends ItemSheet {
         return buttons;
     }
 
-    /* -------------------------------------------- */
-
     /** @override */
     getData() {
         // Retrieve base data structure.
@@ -80,8 +78,6 @@ export class Pl1eItemSheet extends ItemSheet {
 
         return context;
     }
-
-    /* -------------------------------------------- */
 
     /** @override */
     activateListeners(html) {
@@ -145,62 +141,6 @@ export class Pl1eItemSheet extends ItemSheet {
         // Assign and return
         context.features = features;
         context.abilities = abilities;
-    }
-
-    /**
-     * Add a embed item
-     * @param {Event} event
-     * @private
-     */
-    _editSubItem(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const itemId = $(event.currentTarget).data("item-id");
-        const item = this.document.getEmbedItem(itemId);
-        if (item) {
-            item.sheet.render(true);
-        }
-    }
-
-    /**
-     * Delete a embed item
-     * @param {Event} event
-     * @private
-     */
-    async _deleteSubItem(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const itemId = $(event.currentTarget).data("item-id");
-        const item = this.item.getEmbedItem(itemId);
-        if (!item) return;
-        for (let [key, value] of this.item.system.subItemsMap) {
-            if (value === item) continue;
-            if (value.system.childId === undefined) continue;
-            if (value.system.childId !== item.system.parentId) continue;
-            await this.item.deleteEmbedItem(value._id);
-        }
-        await this.item.deleteEmbedItem(itemId);
-    }
-
-    /**
-     * Handle currency changes
-     * @param {Event} event
-     * @private
-     */
-    async _onCurrencyChange(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const element = $(event.currentTarget);
-        const currency = element.data("currency");
-        let value = element.data("value");
-        if (!value || !currency) return;
-
-        let oldValue = this.item.system.price[currency].value;
-
-        await this.item.update({
-            ["system.price." + currency + ".value"]: oldValue + value
-        });
     }
 
 }

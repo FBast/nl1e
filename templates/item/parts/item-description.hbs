@@ -1,25 +1,27 @@
-{{#each system.attributes as |attribute id|}}
-    {{#if attribute.apply}}
-        <div class="form-group">
-            <label>{{localize attribute.label}}</label>
-            {{#if (eq attribute.type "number")}}
-                <label class="align-right">{{attribute.value}}</label>
-            {{else if (eq attribute.type "bool")}}
-            {{else if (eq attribute.type "select")}}
-                <label class="align-right">{{localize (configEntry attribute.select attribute.value)}}</label>
-            {{/if}}
-        </div>
-    {{/if}}
-{{/each}}
-<ul class="traits-list">
-    {{#each abilities as |abilities level|}}
-        {{#each abilities as |item id|}}
-            <li class="item-edit tag" data-item-id="{{item._id}}"><a>{{level }} {{item.name}}</a></li>
+<section class="scroll-auto">
+    {{#each system.attributes as |attribute id|}}
+        {{#if attribute.apply}}
+            <div class="form-group">
+                <label>{{localize attribute.label}}</label>
+                {{#if (eq attribute.type "number")}}
+                    <label class="align-right">{{attribute.value}}</label>
+                {{else if (eq attribute.type "bool")}}
+                {{else if (eq attribute.type "select")}}
+                    <label class="align-right">{{localize (configEntry attribute.select attribute.value)}}</label>
+                {{/if}}
+            </div>
+        {{/if}}
+    {{/each}}
+    <ul class="traits-list">
+        {{#each abilities as |abilities level|}}
+            {{#each abilities as |item id|}}
+                <li class="item-edit tag" data-item-id="{{item._id}}"><a>{{level }} {{item.name}}</a></li>
+            {{/each}}
         {{/each}}
-    {{/each}}
-    {{#each features as |item id|}}
-        <li class="item-edit tag" data-item-id="{{item._id}}"><a>{{item.name}}</a></li>
-    {{/each}}
-</ul>
-<hr>
-{{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
+        {{#each features as |item id|}}
+            <li class="item-edit tag" data-item-id="{{item._id}}"><a>{{item.name}}</a></li>
+        {{/each}}
+    </ul>
+    <hr>
+    {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable engine="prosemirror"}}
+</section>

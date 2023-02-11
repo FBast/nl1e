@@ -14,12 +14,11 @@ export class Pl1eActorSheet extends ActorSheet {
             classes: ["pl1e", "sheet", "actor"],
             template: "systems/pl1e/templates/actor/actor-sheet.hbs",
             width: 700,
-            height: 750,
+            height: 730,
             scrollY: [
                 ".stats",
                 ".features",
-                ".items",
-                ".effects"
+                ".items"
             ],
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats"}]
         });
@@ -89,6 +88,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Custom objects
         html.find('.characteristic-control').on("click", ev => EventPL1E.onCharacteristicChange(ev, this));
         html.find('.currency-control').on("click", ev => EventPL1E.onCurrencyChange(ev, this.actor));
+        html.find('.currency-convert').on("click", ev => EventPL1E.onCurrencyConvert(ev, this.actor));
         html.find('.rank-control').on("click", ev => EventPL1E.onRankChange(ev, this));
 
         // Items management
@@ -124,6 +124,11 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     async _onDropItem(event, data) {
         const item = await Item.implementation.fromDropData(data);
+        // Return if same actor
+        if (game.user.character === this.actor) return;
+        // filter item to actor possibilites
+        if (this.actor.type === 'merchant' && ['feature', 'ability'].includes(item.type)) return;
+        // Player to other actor transfer
         if (!this.actor.isOwner) {
             // Player transfer item to a not owned actor
             PL1E.socket.executeAsGM('sendItem', {
@@ -132,9 +137,8 @@ export class Pl1eActorSheet extends ActorSheet {
                 item: item
             });
         }
+        // Other cases
         else {
-            // Return if same actor
-            if (game.user.character === this.actor) return;
             const itemData = item.toObject();
             const newItem = await this._onDropItemCreate(item);
             if (itemData.system.subItemsMap !== undefined && itemData.system.subItemsMap.length > 0) {

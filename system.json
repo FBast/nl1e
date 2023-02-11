@@ -27,12 +27,13 @@
       "path": "lang/fr.json"
     }
   ],
-  "dependencies": [
-    {
-      "name": "socketlib",
+  "relationships": {
+    "requires": [{
+      "id": "socketlib",
+      "type": "module",
       "manifest": "https://raw/githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module."
-    }
-  ],
+    }]
+  },
   "socket": true,
   "gridDistance": 1.5,
   "gridUnits": "m",

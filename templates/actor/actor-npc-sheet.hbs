@@ -1,5 +1,4 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
-
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
     {{!-- Sheet Header --}}
     <header class="sheet-header">
         <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
@@ -19,12 +18,11 @@
             </div>
         </div>
     </header>
-
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-
-        {{> "systems/pl1e/templates/actor/parts/npc-stats.hbs"}}
-
+        <div class="tab flexcol">
+            {{> "systems/pl1e/templates/actor/parts/npc-stats.hbs"}}
+        </div>
     </section>
 </form>
 

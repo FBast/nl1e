@@ -1,7 +1,8 @@
 <section class="scroll-auto">
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Money"}}</legend>
-        <div class="currencies flexrow flex-between">
+        <div class="currency flexrow flex-between">
+            <i class="convert-icon currency-icon fas fa-money-bill-transfer currency-convert hover-red" data-tooltip='{{localize "PLE1.ConvertCurrency"}}'></i>
             {{#each system.money as |currency key|}}
             <div class="input-spin currency">
                 <i class="currency-icon fas fa-coins color-{{key}} hover-green" data-tooltip='{{localize currency.label}}'></i>
@@ -19,7 +20,7 @@
             <div class="item-name">{{localize "PL1E.Weapon"}}</div>
         </li>
         {{#each weapons as |item key|}}
-            <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
+            <li class="item grid grid-4col" data-item-id="{{item._id}}">
                 <div class="item-name">
                     <div class="item-image">
                         <a class="item-edit hover-red" data-item-id='{{item._id}}'>
@@ -117,7 +118,7 @@
             <div class="item-name">{{localize "PL1E.Wearable"}}</div>
         </li>
         {{#each wearables as |item key|}}
-            <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
+            <li class="item grid grid-4col" data-item-id="{{item._id}}">
                 <div class="item-name">
                     <div class="item-image">
                         <a class="item-edit hover-red" data-item-id='{{item._id}}'>
@@ -180,7 +181,7 @@
             <div class="item-name">{{localize "PL1E.Consumable"}}</div>
         </li>
         {{#each consumables as |item key|}}
-            <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
+            <li class="item grid grid-4col" data-item-id="{{item._id}}">
                 <div class="item-name">
                     <div class="item-image">
                         <a class="item-edit hover-red" data-item-id='{{item._id}}'>
@@ -254,7 +255,7 @@
             </div>
         </li>
         {{#each commons as |item key|}}
-            <li class="item flexrow grid grid-4col" data-item-id="{{item._id}}">
+            <li class="item grid grid-4col" data-item-id="{{item._id}}">
                 <div class="item-name grid-span-3">
                     <div class="item-image">
                         <a class="item-edit hover-red" data-item-id='{{item._id}}'>

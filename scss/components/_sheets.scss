@@ -1,6 +1,6 @@
 .sheet.actor {
   min-width: 700px;
-  min-height: 750px;
+  min-height: 730px;
 
   .resources {
     .resource{
@@ -13,7 +13,7 @@
   .characteristics {
     padding: 0 0.5em 0 0.5em;
     .characteristic {
-      margin: 0 0 10px 0;
+      margin: 0 0 5px 0;
     }
   }
 
@@ -23,7 +23,7 @@
     .skill {
       gap: 0;
       margin: 0;
-      padding: 3px;
+      padding: 2px;
       .skill-label {
         margin-left: 5px;
         font-size: small;
@@ -45,6 +45,10 @@
     align-items: center;
     .currency-icon {
       padding: 0 10px;
+    }
+    .convert-icon {
+      padding: 0 10px;
+      flex: 0 0 20px;
     }
     label {
       margin: 5px;

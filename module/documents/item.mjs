@@ -45,7 +45,7 @@ export class Pl1eItem extends Item {
         const system = this.system;
         // Merge config data
         system.attributes = HelpersPl1e.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
-        system.price = HelpersPl1e.mergeDeep(system.price, CONFIG.PL1E.currencies);
+        system.price = HelpersPl1e.mergeDeep(system.price, CONFIG.PL1E.currency);
     }
 
     /**

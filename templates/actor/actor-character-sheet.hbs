@@ -1,5 +1,4 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
-
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
     {{!-- Sheet Header --}}
     <header class="sheet-header">
         <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
@@ -20,42 +19,27 @@
             </div>
         </div>
     </header>
-
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         {{!-- Default tab is specified in actor-sheet.mjs --}}
         <a class="item" data-tab="stats">{{localize "PL1E.Stats"}}</a>
         <a class="item" data-tab="features">{{localize "PL1E.Features"}}</a>
         <a class="item" data-tab="items">{{localize "PL1E.Items"}}</a>
-        <a class="item" data-tab="effects">{{localize "PL1E.Effects"}}</a>
     </nav>
-
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-
         {{!-- Stats Tab --}}
         <div class="tab stats flexcol" data-group="primary" data-tab="stats">
             {{> "systems/pl1e/templates/actor/parts/character-stats.hbs"}}
         </div>
-
         {{!-- Features Tab --}}
         <div class="tab features flexcol" data-group="primary" data-tab="features">
             {{> "systems/pl1e/templates/actor/parts/character-features.hbs"}}
         </div>
-
         {{!-- Items Tab --}}
         <div class="tab items flexcol" data-group="primary" data-tab="items">
             {{> "systems/pl1e/templates/actor/parts/character-items.hbs"}}
         </div>
-
-        {{!-- Active Effects Tab --}}
-        <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-            {{> "systems/pl1e/templates/actor/parts/character-effects.hbs"}}
-        </div>
-
-        {{!-- If you want TinyMCE editors to output inline rolls when rendered, you need to pass the actor's roll data to the rollData property. --}}
-        {{!-- editor system.skills target="system.skills" rollData=rollData button=true owner=owner editable=editable --}}
-
     </section>
 </form>
 

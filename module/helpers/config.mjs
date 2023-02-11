@@ -528,7 +528,7 @@ PL1E.attributes = {
     }
 }
 
-PL1E.currencies = {
+PL1E.currency = {
     "gold": {
         "label": "PL1E.Gold"
     },

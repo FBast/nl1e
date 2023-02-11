@@ -81,12 +81,12 @@ Handlebars.registerHelper('config', function (key) {
     return PL1E[key];
 })
 
-Handlebars.registerHelper('currenciesToValue', function (currencies) {
-    return HelpersPl1e.currenciesToUnits(currencies);
+Handlebars.registerHelper('currencyToValue', function (currency) {
+    return HelpersPl1e.currencyToUnits(currency);
 })
 
-Handlebars.registerHelper('valueToCurrencies', function (value) {
-    return HelpersPl1e.unitsToCurrencies(value);
+Handlebars.registerHelper('valueToCurrency', function (value) {
+    return HelpersPl1e.unitsToCurrency(value);
 })
 
 /* -------------------------------------------- */
