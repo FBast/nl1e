@@ -2,17 +2,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 // Utils
+@import 'utils/colors';
 @import 'utils/mixins';
 @import 'utils/typography';
 @import 'utils/variables';
-
-// Components
-@import 'components/items';
-@import 'components/misc';
-@import 'components/sheets';
 
 // Layouts
 @import 'layout/flex';
 @import 'layout/forms';
 @import 'layout/grid';
-@import 'layout/window';
+@import 'layout/sheets';
+
+// Components
+@import 'components/attributes';
+@import 'components/characteristics';
+@import 'components/currency';
+@import 'components/items';
+@import 'components/misc';
+@import 'components/resources';
+@import 'components/skills';
+@import 'components/states';
+
+// Shame
+@import 'shame';

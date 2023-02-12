@@ -1,0 +1,22 @@
+.currency {
+  align-items: center;
+  .currency-icon {
+    padding: 0 10px;
+    .color-gold {
+      color: $colorGold;
+    }
+    .color-silver {
+      color: $colorSilver;
+    }
+    .color-copper {
+      color: $colorCopper;
+    }
+  }
+  .convert-icon {
+    padding: 0 10px;
+    flex: 0 0 20px;
+  }
+  label {
+    margin: 5px;
+  }
+}
