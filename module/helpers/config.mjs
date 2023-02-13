@@ -592,6 +592,12 @@ PL1E.sizeTokens = {
     "gargantuan": "4"
 };
 
+PL1E.featureTypes = {
+    "none": "PL1E.None",
+    "race": "PL1E.Race",
+    "class": "PL1E.Class"
+}
+
 PL1E.masteries = {
     "none": "PL1E.None",
     "crossbows": "PL1E.Crossbows",

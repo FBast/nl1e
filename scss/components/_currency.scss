@@ -2,15 +2,6 @@
   align-items: center;
   .currency-icon {
     padding: 0 10px;
-    .color-gold {
-      color: $colorGold;
-    }
-    .color-silver {
-      color: $colorSilver;
-    }
-    .color-copper {
-      color: $colorCopper;
-    }
   }
   .convert-icon {
     padding: 0 10px;
@@ -18,5 +9,13 @@
   }
   label {
     margin: 5px;
+  }  .color-gold {
+       color: $colorGold;
+     }
+  .color-silver {
+    color: $colorSilver;
+  }
+  .color-copper {
+    color: $colorCopper;
   }
 }

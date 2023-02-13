@@ -100,11 +100,13 @@
   "PL1E.Consumable": "Consommable",
   "PL1E.Common": "Commun",
   "PL1E.Price": "Prix",
+
   "PL1E.Rarity": "Rareté",
   "PL1E.Mastery": "Maitrise",
   "PL1E.Level": "Niveau",
   "PL1E.Slot": "Emplacement",
   "PL1E.Activation": "Activation",
+  "PL1E.Cost": "Cout",
   "PL1E.ContactAttackRange": "Attaque au contact (Portée)",
   "PL1E.RangedAttackRange": "Attaque à distance (Portée)",
   "PL1E.ParryProjectiles": "Pare les attaques à distance",
@@ -138,7 +140,10 @@
   "PL1E.EquipSecondary": "Equiper en main secondaire",
   "PL1E.Memorize": "Mémoriser",
   "PL1E.Buy": "Acheter",
-  "PLE1.ConvertCurrency": "Convertir la Monnaie",
+  "PL1E.ConvertCurrency": "Convertir la Monnaie",
+
+  "PL1E.Race": "Race",
+  "PL1E.Class": "Classe",
 
   "PL1E.NewCharacter": "Nouveau Personnage",
   "PL1E.NewNPC": "Nouveau PNJ",

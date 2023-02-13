@@ -7,23 +7,18 @@
       height: 100%;
 
       .sheet-header {
+        padding: 5px 5px 0 5px;
         flex: 0 auto;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: flex-start;
-        margin-bottom: 10px;
         position: sticky;
-
-        .profile {
-          width: 120px;
-          height: auto;
-        }
+        background-color: $colorBeige;
 
         h1.sheet-name {
           height: 50px;
           padding: 0;
-          margin: 5px 0;
           border-bottom: 0;
 
           input {
@@ -45,6 +40,20 @@
         }
 
       }
+      .sheet-tabs {
+        background-color: $colorFaint;
+        margin: 0;
+        flex: 0;
+        a {
+          text-transform: uppercase;
+          font-weight: bold;
+        }
+      }
+
+      .sheet-body {
+        overflow: hidden;
+        padding: 5px;
+      }
     }
   }
 
@@ -52,6 +61,7 @@
 
 .tab {
   overflow: hidden;
+  height: 100%;
 }
 
 .scroll-hidden {
@@ -62,13 +72,7 @@
   overflow-y: auto;
 }
 
-.sheet-tabs {
-  flex: 0;
-}
 
-.sheet-body {
-  overflow: hidden;
-}
 
 .sheet-body,
 .sheet-body .tab,

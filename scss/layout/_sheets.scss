@@ -4,10 +4,22 @@
 
 .sheet.actor {
   min-width: 700px;
-  min-height: 730px;
+  min-height: 720px;
+
+  .profile {
+    width: 120px;
+    height: auto;
+  }
+
 }
 
 .sheet.item {
   min-width: 500px;
   min-height: 500px;
+
+  .profile {
+    width: 100px;
+    height: auto;
+  }
+
 }

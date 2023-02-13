@@ -304,6 +304,14 @@
     "feature": {
       "templates": ["base", "reductions", "characteristicsMods"],
       "attributes": {
+        "featureType": {
+          "value": "none",
+          "apply": false
+        },
+        "cost": {
+          "value": 0,
+          "apply": false
+        },
         "size": {
           "value": "medium",
           "apply": false

@@ -99,12 +99,14 @@
   "PL1E.Wearable": "Wearable",
   "PL1E.Consumable": "Consumable",
   "PL1E.Common": "Common",
+
   "PL1E.Price": "Price",
   "PL1E.Rarity": "Rarity",
   "PL1E.Mastery": "Mastery",
   "PL1E.Level": "Level",
   "PL1E.Slot": "Slot",
   "PL1E.Activation": "Activation",
+  "PL1E.Cost": "Cost",
   "PL1E.ContactAttackRange": "Contact attack (Range)",
   "PL1E.RangedAttackRange": "Ranged attack (Range)",
   "PL1E.ParryProjectiles": "Parry ranged attacks",
@@ -138,7 +140,10 @@
   "PL1E.EquipSecondary": "Equip in secondary hand",
   "PL1E.Memorize": "Memorize",
   "PL1E.Buy": "Buy",
-  "PLE1.ConvertCurrency": "Convert Currency",
+  "PL1E.ConvertCurrency": "Convert Currency",
+
+  "PL1E.Race": "Race",
+  "PL1E.Class": "Class",
 
   "PL1E.NewCharacter": "New Character",
   "PL1E.NewNPC": "New NPC",
