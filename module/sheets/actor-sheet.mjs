@@ -29,7 +29,28 @@ export class Pl1eActorSheet extends ActorSheet {
         return `systems/pl1e/templates/actor/actor-${this.actor.type}-sheet.hbs`;
     }
 
-    /* -------------------------------------------- */
+    /**
+     * Custom header buttons
+     * @returns {Application.HeaderButton[]}
+     * @private
+     */
+    _getHeaderButtons() {
+        const buttons = super._getHeaderButtons();
+        if (game.user.isGM && this.actor.type === 'character') {
+            buttons.unshift({
+                label: 'PL1E.CreationMod',
+                class: 'reset-clones',
+                icon: this.actor.system.attributes.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
+                onclick: () => {
+                    this.actor.update({
+                        "system.attributes.creationMod": !this.actor.system.attributes.creationMod
+                    });
+                    this.render(false);
+                }
+            });
+        }
+        return buttons;
+    }
 
     /** @override */
     getData() {

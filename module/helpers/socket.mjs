@@ -38,8 +38,6 @@ export default class SocketPl1e {
         await TradePL1E.giftItem(item, sourceActor, targetActor);
     }
 
-
-
     static async sendContenant(actor, targetActor, item) {
         // if (game.user.isGM) {
         //     const actor = data.message.speaker.actor;

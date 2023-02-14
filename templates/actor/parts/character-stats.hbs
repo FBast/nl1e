@@ -78,15 +78,6 @@
     </div>
     <!-- Right column -->
     <div class="attributes scroll-auto grid-span-3">
-        {{#if game.user.isGM}}
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.Admin"}}</legend>
-            <div class="form-group grid grid-2col attribute">
-                <label>{{localize "PL1E.CreationMod"}}</label>
-                <input type="checkbox" name="system.attributes.creationMod" {{checked system.attributes.creationMod}}/>
-            </div>
-        </fieldset>
-        {{/if}}
         <fieldset>
             <legend class="section-header">{{localize "PL1E.General"}}</legend>
             <div class="form-group grid grid-2col attribute">
