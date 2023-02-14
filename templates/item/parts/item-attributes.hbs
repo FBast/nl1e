@@ -1,5 +1,6 @@
 <section class="scroll-auto">
     {{#each system.attributes as |attribute id|}}
+        {{#unless attribute.hide}}
         {{#unless (eq attribute.apply undefined)}}
             <div class="form-group">
                 <input type="checkbox" name="system.attributes.{{id}}.apply" {{checked attribute.apply}}/>
@@ -14,6 +15,7 @@
                     </select>
                 {{/if}}
             </div>
+        {{/unless}}
         {{/unless}}
     {{/each}}
 </section>

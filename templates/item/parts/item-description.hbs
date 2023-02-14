@@ -1,5 +1,6 @@
 <section class="scroll-auto">
     {{#each system.attributes as |attribute id|}}
+        {{#unless attribute.hide}}
         {{#if attribute.apply}}
             <div class="form-group">
                 <label>{{localize attribute.label}}</label>
@@ -11,6 +12,7 @@
                 {{/if}}
             </div>
         {{/if}}
+        {{/unless}}
     {{/each}}
     <ul class="traits-list">
         {{#each abilities as |abilities level|}}
