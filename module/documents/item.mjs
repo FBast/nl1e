@@ -1,4 +1,5 @@
 import {Pl1eHelpers} from "../helpers/helpers.js";
+import {PL1E} from "../helpers/config.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -213,6 +214,8 @@ export class Pl1eItem extends Item {
                 return await this.toggleWearable(this.parent);
             case 'weapon':
                 return await this.toggleWeapon(true, this.parent)
+            case 'ability':
+                return await this.useAbility(this.parent);
         }
     }
 
@@ -327,8 +330,80 @@ export class Pl1eItem extends Item {
         actor.sheet.render(false);
     }
 
-    async useConsumable() {
+    async useConsumable(actor) {
+        const attributes = PL1E.attributes;
+        // Removed one use
+        await this.update({
+            ["system.removedUses"]: foundry.utils.getProperty(this, "system.removedUses") + 1,
+        });
+        // Launch consumable effect
+        for (let [id, attribute] of Object.entries(this.system.attributes)) {
+            if (!attribute.apply || attributes[id]["path"] === undefined) continue;
+            if (attributes[id]["operator"] === 'set') {
+                foundry.utils.setProperty(actor.system, attributes[id]["path"], attribute.value);
+            } else if (attributes[id]["operator"] === 'push') {
+                let currentValue = foundry.utils.getProperty(actor.system, attributes[id]["path"]);
+                if (currentValue === undefined) currentValue = [];
+                currentValue.push(attribute.value);
+                foundry.utils.setProperty(actor.system, attributes[id]["path"], currentValue);
+            } else if (attributes[id]["operator"] === 'add') {
+                let currentValue = foundry.utils.getProperty(actor.system, attributes[id]["path"]);
+                if (currentValue === undefined) currentValue = 0;
+                await actor.update({
+                    ["system." + attributes[id]["path"]]: currentValue + attribute.value
+                });
+            }
+        }
+        // The item have no more uses and is not reloadable
+        if (this.system.removedUses >= this.system.attributes.uses.value && !this.system.attributes.reloadable.value) {
+            await this.delete();
+        }
+    }
 
+    async useAbility(actor) {
+        // Ability should be memorized
+        if (!this.system.isMemorized) return ui.notifications.info(game.i18n.localize("MACRO.NotMemorizedInfo"));
+        // Main roll
+        let mainRoll;
+        if (this.system.attributes.mainRoll.apply) {
+            const mainSkill = actor.system.skills[this.system.attributes.mainRoll.value];
+            let mainStr = mainSkill.number + "d" + mainSkill.dice + "xo" + mainSkill.dice + "cs>=4";
+            mainRoll = new Roll(mainStr, actor.getRollData());
+            await mainRoll.toMessage({
+                speaker: ChatMessage.getSpeaker({actor: actor}),
+                flavor: "rolling for " + mainSkill.label,
+                rollMode: game.settings.get('core', 'rollMode')
+            });
+        }
+        // Defense roll
+        if (this.system.attributes.defenseRoll.apply) {
+            let targets = game.user.targets;
+            if (targets < 1) return ui.notifications.info(game.i18n.localize("MACRO.NoTarget"));
+            if (this.system.attributes.multiTargets.apply) {
+                const multiTargets = this.system.attributes.multiTargets.value;
+                if (targets.size > multiTargets)
+                    return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (" + multiTargets + " MAX)");
+                targets = game.user.targets;
+            }
+            else if (targets.size > 1)
+                return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (1 MAX)" )
+            for (let target of targets) {
+                const defenseSkill = target.actor.system.skills[this.system.attributes.defenseRoll.value];
+                let defenseStr = defenseSkill.number + "d" + defenseSkill.dice + "xo" + defenseSkill.dice + "cs>=4";
+                let defenseRoll = new Roll(defenseStr, target.actor.getRollData());
+                await defenseRoll.toMessage({
+                    speaker: ChatMessage.getSpeaker({actor: target.actor}),
+                    flavor: "rolling for " + defenseRoll.label,
+                    rollMode: game.settings.get('core', 'rollMode')
+                });
+                await ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({actor: actor}),
+                    rollMode: game.settings.get('core', 'rollMode'),
+                    flavor: game.i18n.localize("CHAT.Result"),
+                    content: "result : " + (mainRoll.total - defenseRoll.total)
+                });
+            }
+        }
     }
 
 }

@@ -370,15 +370,15 @@
           "value": 1,
           "apply": true
         },
-        "rollSkill": {
+        "mainRoll": {
           "value": "none",
           "apply": false
         },
-        "defenseSkill": {
+        "defenseRoll": {
           "value": "none",
           "apply": false
         },
-        "targetNumber": {
+        "multiTargets": {
           "value": 1,
           "apply": false
         }

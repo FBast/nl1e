@@ -70,7 +70,7 @@ export class Pl1eMacro {
         const speaker = ChatMessage.getSpeaker();
         if ( speaker.token ) actor = game.actors.tokens[speaker.token];
         actor ??= game.actors.get(speaker.actor);
-        if ( !actor ) return ui.notifications.warn(game.i18n.localize("MACRO.NoActorSelected"));
+        if ( !actor ) return ui.notifications.warn(game.i18n.localize("MACRO.NoActorSelectedWarn"));
 
         const collection = (documentType === "Item") ? actor.items : actor.effects;
         const nameKeyPath = (documentType === "Item") ? "name" : "label";

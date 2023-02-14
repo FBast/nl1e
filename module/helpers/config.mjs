@@ -576,23 +576,23 @@ PL1E.attributes = {
         "hide": false
     },
     // Abilities
-    "rollSkill": {
+    "mainRoll": {
         "type": "select",
         "label": "PL1E.RollSkill",
-        "path": "attributes.rollSkill",
+        "path": "attributes.mainRoll",
         "operator": "set",
         "select": "abilitySkills",
         "hide": false
     },
-    "defenseSkill": {
+    "defenseRoll": {
         "type": "select",
         "label": "PL1E.DefenseSkill",
-        "path": "attributes.defenseSkill",
+        "path": "attributes.defenseRoll",
         "operator": "set",
         "select": "abilitySkills",
         "hide": false
     },
-    "targetNumber": {
+    "multiTargets": {
         "type": "number",
         "label": "PL1E.TargetNumber",
         "hide": false

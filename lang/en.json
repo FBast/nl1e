@@ -228,8 +228,11 @@
   "CHAT.Silver": " silver, ",
   "CHAT.Copper": " copper",
 
-  "MACRO.NoActorSelected": "You should select an actor",
-  "MACRO.UnownedWarn": "You don't own this actor",
+  "MACRO.NoActorSelectedWarn": "Vous devez selectionner un acteur",
+  "MACRO.UnownedWarn": "You don't own this item",
   "MACRO.MissingTargetWarn": "You should select a target",
-  "MACRO.MultipleTargetsWarn": "You cant target multiple targets"
+  "MACRO.MultipleTargetsWarn": "You cant target multiple targets",
+  "MACRO.NotMemorizedInfo": "This ability is not memorized",
+  "MACRO.TooMuchTarget": "You have selected too much target",
+  "MACRO.NoTarget": "You should select exactly one target"
 }
