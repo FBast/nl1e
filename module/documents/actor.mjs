@@ -1,4 +1,4 @@
-import {HelpersPl1e} from "../helpers/helpers.js";
+import {Pl1eHelpers} from "../helpers/helpers.js";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -34,10 +34,10 @@ export class Pl1eActor extends Actor {
     prepareBaseData() {
         const system = this.system;
         // Merge config data
-        system.resources = HelpersPl1e.mergeDeep(system.resources, CONFIG.PL1E.resources);
-        system.characteristics = HelpersPl1e.mergeDeep(system.characteristics, CONFIG.PL1E.characteristics);
-        system.skills = HelpersPl1e.mergeDeep(system.skills, CONFIG.PL1E.skills);
-        system.money = HelpersPl1e.mergeDeep(system.money, CONFIG.PL1E.currency);
+        system.resources = Pl1eHelpers.mergeDeep(system.resources, CONFIG.PL1E.resources);
+        system.characteristics = Pl1eHelpers.mergeDeep(system.characteristics, CONFIG.PL1E.characteristics);
+        system.skills = Pl1eHelpers.mergeDeep(system.skills, CONFIG.PL1E.skills);
+        system.money = Pl1eHelpers.mergeDeep(system.money, CONFIG.PL1E.currency);
     }
 
     /** @override */
@@ -173,9 +173,9 @@ export class Pl1eActor extends Actor {
         // Add merchant prices
         systemData.merchantPrices = {};
         for (let item of this.items) {
-            let value = HelpersPl1e.currencyToUnits(item.system.price);
+            let value = Pl1eHelpers.currencyToUnits(item.system.price);
             value += Math.round(value * (systemData.buyMultiplicator / 100));
-            systemData.merchantPrices[item._id] = HelpersPl1e.unitsToCurrency(value);
+            systemData.merchantPrices[item._id] = Pl1eHelpers.unitsToCurrency(value);
         }
     }
 

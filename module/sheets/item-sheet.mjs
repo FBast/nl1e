@@ -1,6 +1,6 @@
 import {PL1E} from "../helpers/config.mjs";
-import {HelpersPl1e} from "../helpers/helpers.js";
-import {EventPL1E} from "../helpers/events.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.js";
+import {Pl1eEvent} from "../helpers/events.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -39,7 +39,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     label: 'PL1E.ResetClones',
                     class: 'reset-clones',
                     icon: 'fas fa-clone',
-                    onclick: () => HelpersPl1e.resetClones(this.item._id)
+                    onclick: () => Pl1eHelpers.resetClones(this.item._id)
                 });
             }
         }
@@ -87,9 +87,9 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         // Roll handlers, click handlers, etc. would go here.
-        html.find(`.item-edit`).on("click", ev => EventPL1E.onItemEdit(ev, this.item));
-        html.find(`.item-delete`).on("click", ev => EventPL1E.onItemDelete(ev, this.item));
-        html.find('.currency-control').on("click", ev => EventPL1E.onCurrencyChange(ev, this.item));
+        html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));
+        html.find(`.item-delete`).on("click", ev => Pl1eEvent.onItemDelete(ev, this.item));
+        html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
     }
 
     /**
@@ -102,7 +102,7 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         // Check item type and subtype
-        let item = await HelpersPl1e.getDragNDropTargetObject(event);
+        let item = await Pl1eHelpers.getDragNDropTargetObject(event);
         if (!item || item.documentName !== "Item" || !["feature", "ability"].includes(item.type)) return;
 
         // Check if same item

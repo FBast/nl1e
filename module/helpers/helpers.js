@@ -3,7 +3,7 @@ import {Pl1eItem} from "../documents/item.mjs";
 /**
  * Extends the actor to process special things from PL1E.
  */
-export class HelpersPl1e {
+export class Pl1eHelpers {
 
     /**
      * Return the target object on a drag n drop event, or null if not found
@@ -17,7 +17,7 @@ export class HelpersPl1e {
         } catch (err) {
             return null;
         }
-        return await HelpersPl1e.getObjectGameOrPack(data);
+        return await Pl1eHelpers.getObjectGameOrPack(data);
     }
 
     /**
@@ -36,7 +36,7 @@ export class HelpersPl1e {
         try {
             // Direct Object
             if (data?._id) {
-                document = HelpersPl1e.createDocumentFromCompendium({ type, data });
+                document = Pl1eHelpers.createDocumentFromCompendium({ type, data });
             } else if (!uuid && (!id || !type)) {
                 return null;
             }
@@ -51,13 +51,13 @@ export class HelpersPl1e {
             if (!document) {
                 // If no pack passed, but it's a core item, we know the pack to get it
                 if (!pack && id.substring(0, 7) === "PLCore") {
-                    pack = HelpersPl1e.getPackNameForCoreItem(id);
+                    pack = Pl1eHelpers.getPackNameForCoreItem(id);
                 }
 
                 if (pack) {
                     const tmpData = await game.packs.get(pack).getDocument(id);
                     if (tmpData) {
-                        document = HelpersPl1e.createDocumentFromCompendium({ type, data: tmpData });
+                        document = Pl1eHelpers.createDocumentFromCompendium({ type, data: tmpData });
                     }
                 }
             }
@@ -72,7 +72,7 @@ export class HelpersPl1e {
                 for (const comp of game.packs) {
                     const tmpData = await comp.getDocument(id);
                     if (tmpData) {
-                        document = HelpersPl1e.createDocumentFromCompendium({ type, data: tmpData });
+                        document = Pl1eHelpers.createDocumentFromCompendium({ type, data: tmpData });
                     }
                 }
             }
@@ -86,7 +86,7 @@ export class HelpersPl1e {
 
                 // Care to infinite loop in properties
                 if (!parentId) {
-                    await HelpersPl1e.refreshItemProperties(document);
+                    await Pl1eHelpers.refreshItemProperties(document);
                 }
                 document.prepareData();
             }
@@ -139,7 +139,7 @@ export class HelpersPl1e {
         if (document.system?.properties && typeof Babele !== "undefined") {
             document.system.properties = await Promise.all(
                 document.system.properties.map(async (property) => {
-                    const gameProp = await HelpersPl1e.getObjectGameOrPack({
+                    const gameProp = await Pl1eHelpers.getObjectGameOrPack({
                         id: property.id,
                         type: "Item",
                         parentId: document._id || 1,
@@ -209,7 +209,6 @@ export class HelpersPl1e {
     static mergeDeep(target, ...sources) {
         if (!sources.length) return target;
         const source = sources.shift();
-
         if (this.isObject(target) && this.isObject(source)) {
             for (const key in source) {
                 if (this.isObject(source[key])) {
@@ -220,7 +219,6 @@ export class HelpersPl1e {
                 }
             }
         }
-
         return this.mergeDeep(target, ...sources);
     }
 
@@ -275,7 +273,7 @@ export class HelpersPl1e {
         if (updateCount > 0) {
             await ChatMessage.create({
                 rollMode: game.settings.get('core', 'rollMode'),
-                flavor: game.i18n.localize("PL1E.ChatFlavorCloneReset"),
+                flavor: game.i18n.localize("CHAT.FlavorCloneReset"),
                 content: content
             });
         }

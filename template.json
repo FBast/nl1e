@@ -216,6 +216,46 @@
           }
         }
       },
+      "damages": {
+        "attributes": {
+          "contactAttackRange": {
+            "value": 1,
+            "apply": false
+          },
+          "rangedAttackRange": {
+            "value": 0,
+            "apply": false
+          },
+          "slashing": {
+            "value": 0,
+            "apply": false
+          },
+          "crushing": {
+            "value": 0,
+            "apply": false
+          },
+          "piercing": {
+            "value": 0,
+            "apply": false
+          },
+          "fire": {
+            "value": 0,
+            "apply": false
+          },
+          "cold": {
+            "value": 0,
+            "apply": false
+          },
+          "shock": {
+            "value": 0,
+            "apply": false
+          },
+          "acid": {
+            "value": 0,
+            "apply": false
+          }
+        }
+      },
       "reductions": {
         "attributes": {
           "slashingReduction": {
@@ -323,17 +363,29 @@
       }
     },
     "ability": {
-      "templates": ["base"],
+      "templates": ["base", "damages", "recovery"],
       "isMemorized": false,
       "attributes": {
         "level": {
           "value": 1,
           "apply": true
+        },
+        "rollSkill": {
+          "value": "none",
+          "apply": false
+        },
+        "defenseSkill": {
+          "value": "none",
+          "apply": false
+        },
+        "targetNumber": {
+          "value": 1,
+          "apply": false
         }
       }
     },
     "weapon": {
-      "templates": ["base", "item" ,"fightMods", "characteristicsMods"],
+      "templates": ["base", "item", "damages" ,"fightMods", "characteristicsMods"],
       "isEquippedMain": false,
       "isEquippedSecondary": false,
       "attributes": {
@@ -341,28 +393,8 @@
           "value": "none",
           "apply": false
         },
-        "contactAttackRange": {
-          "value": 1,
-          "apply": false
-        },
-        "rangedAttackRange": {
-          "value": 0,
-          "apply": false
-        },
         "parryProjectiles": {
           "value": false,
-          "apply": false
-        },
-        "slashing": {
-          "value": 0,
-          "apply": false
-        },
-        "crushing": {
-          "value": 0,
-          "apply": false
-        },
-        "piercing": {
-          "value": 0,
           "apply": false
         },
         "hands": {

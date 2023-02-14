@@ -1,6 +1,6 @@
-import {TradePL1E} from "./trade.mjs";
+import {Pl1eTrade} from "./trade.mjs";
 
-export default class SocketPl1e {
+export default class Pl1eSocket {
 
     static async updateRollMessage(data) {
         if (game.user.isGM) {
@@ -35,7 +35,7 @@ export default class SocketPl1e {
     static async sendItem(sourceActor, targetActor, item) {
         targetActor = game.actors.get(targetActor._id);
         sourceActor = game.actors.get(sourceActor._id);
-        await TradePL1E.giftItem(item, sourceActor, targetActor);
+        await Pl1eTrade.giftItem(item, sourceActor, targetActor);
     }
 
     static async sendContenant(actor, targetActor, item) {

@@ -1,8 +1,8 @@
-import {TradePL1E} from "./trade.mjs";
+import {Pl1eTrade} from "./trade.mjs";
 import {PL1E} from "./config.mjs";
-import {HelpersPl1e} from "./helpers.js";
+import {Pl1eHelpers} from "./helpers.js";
 
-export class EventPL1E {
+export class Pl1eEvent {
 
     /**
      * Manage Active Effect instances through the Actor Sheet via effect control buttons.
@@ -92,7 +92,7 @@ export class EventPL1E {
         const itemId = $(event.currentTarget).data("item-id");
         const item = actor.items.get(itemId);
         if (game.user.character === null) return;
-        await TradePL1E.buyItem(item, game.user.character, actor);
+        await Pl1eTrade.buyItem(item, game.user.character, actor);
     }
 
     /**
@@ -179,66 +179,7 @@ export class EventPL1E {
         const main = $(event.currentTarget).data("main");
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = actor.items.get(itemId);
-        const hands = item.system.attributes.hands.value;
-
-        // Toggle item hands
-        if (hands === 2) {
-            await item.update({
-                ["system.isEquippedMain"]: !foundry.utils.getProperty(item, "system.isEquippedMain"),
-                ["system.isEquippedSecondary"]: !foundry.utils.getProperty(item, "system.isEquippedSecondary")
-            });
-        } else if (main) {
-            // Switch hand case
-            if (!item.system.isEquippedMain && item.system.isEquippedSecondary) {
-                await item.update({["system.isEquippedSecondary"]: false});
-            }
-            await item.update({["system.isEquippedMain"]: !foundry.utils.getProperty(item, "system.isEquippedMain")})
-        } else {
-            // Switch hand case
-            if (!item.system.isEquippedSecondary && item.system.isEquippedMain) {
-                await item.update({["system.isEquippedMain"]: false});
-            }
-            await item.update({["system.isEquippedSecondary"]: !foundry.utils.getProperty(item, "system.isEquippedSecondary")});
-        }
-        // Unequip other items
-        for (let otherItem of actor.items) {
-            // Ignore if otherItem is not a weapon
-            if (otherItem.type !== 'weapon') continue;
-            // Ignore if otherItem is item
-            if (otherItem === item) continue;
-            // If other item is equipped on main and this item is equipped on main
-            if (otherItem.system.isEquippedMain && item.system.isEquippedMain) {
-                // If other item is equipped on two hands
-                if (otherItem.system.attributes.hands.value === 2) {
-                    await otherItem.update({
-                        ["system.isEquippedMain"]: false,
-                        ["system.isEquippedSecondary"]: false
-                    });
-                }
-                // Else other item only equip main hand
-                else {
-                    await otherItem.update({
-                        ["system.isEquippedMain"]: false
-                    });
-                }
-            }
-            // If other item is equipped on secondary and this item is equipped on secondary
-            if (otherItem.system.isEquippedSecondary && item.system.isEquippedSecondary) {
-                // If other item is equipped on two hands
-                if (otherItem.system.attributes.hands.value === 2) {
-                    await otherItem.update({
-                        ["system.isEquippedMain"]: false,
-                        ["system.isEquippedSecondary"]: false
-                    });
-                }
-                // Else other item only equip secondary hand
-                else {
-                    await otherItem.update({
-                        ["system.isEquippedSecondary"]: false
-                    });
-                }
-            }
-        }
+        await item.toggleWeapon(main, actor);
     }
 
     /**
@@ -250,44 +191,10 @@ export class EventPL1E {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = actor.items.get(itemId);
-        const slot = item.system.attributes.slot.value;
-        // Ignore if not using a slot
-        if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
-        // Toggle item slot
-        await item.update({
-            ["system.isEquipped"]: !foundry.utils.getProperty(item, "system.isEquipped"),
-        });
-        // If unequipped then return
-        if (!item.system.isEquipped) return;
-        let ringCount = 1;
-        // Unequip other items
-        for (let otherItem of actor.items) {
-            // Ignore if otherItem is not a wearable
-            if (otherItem.type !== 'wearable') continue;
-            // Ignore if otherItem is item
-            if (otherItem === item) continue;
-            // Count same items slot
-            if (otherItem.system.isEquipped && otherItem.system.attributes.slot.value === slot) {
-                // Unequipped immediately if clothes, armor or amulet
-                if (['clothes', 'armor', 'amulet'].includes(slot)) {
-                    await otherItem.update({
-                        ["system.isEquipped"]: false
-                    });
-                }
-                // Count equipped rings if ring
-                else if (['ring'].includes(slot)) {
-                    if (ringCount >= 2) {
-                        await otherItem.update({
-                            ["system.isEquipped"]: false
-                        });
-                    }
-                    else {
-                        ringCount++;
-                    }
-                }
-            }
-        }
+        await item.toggleWearable(actor);
     }
+
+
 
     /**
      * Handle use of an Owned Consumable within the Actor.
@@ -412,9 +319,9 @@ export class EventPL1E {
     static async onCurrencyConvert(event, actor) {
         event.preventDefault();
         event.stopPropagation();
-        let units = HelpersPl1e.currencyToUnits(actor.system.money);
+        let units = Pl1eHelpers.currencyToUnits(actor.system.money);
         await actor.update({
-            ["system.money"]: HelpersPl1e.unitsToCurrency(units)
+            ["system.money"]: Pl1eHelpers.unitsToCurrency(units)
         });
     }
 

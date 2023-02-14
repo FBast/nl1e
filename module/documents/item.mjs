@@ -1,4 +1,4 @@
-import {HelpersPl1e} from "../helpers/helpers.js";
+import {Pl1eHelpers} from "../helpers/helpers.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -44,8 +44,8 @@ export class Pl1eItem extends Item {
     prepareBaseData() {
         const system = this.system;
         // Merge config data
-        system.attributes = HelpersPl1e.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
-        system.price = HelpersPl1e.mergeDeep(system.price, CONFIG.PL1E.currency);
+        system.attributes = Pl1eHelpers.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
+        system.price = Pl1eHelpers.mergeDeep(system.price, CONFIG.PL1E.currency);
     }
 
     /**
@@ -202,135 +202,133 @@ export class Pl1eItem extends Item {
 
     /**
      * Trigger an item usage, optionally creating a chat message with followup actions.
-     * @param {ItemUseConfiguration} [config]      Initial configuration data for the usage.
-     * @param {ItemUseOptions} [options]           Options used for configuring item usage.
      * @returns {Promise<ChatMessage|object|void>} Chat message if options.createMessage is true, message data if it is
      *                                             false, and nothing if the roll wasn't performed.
      */
-    async use(config={}, options={}) {
-        let item = this;
-        const is = item.system;
-        const as = item.actor.system;
+    async use() {
+        switch (this.type) {
+            case 'consumable':
+                return this.useConsumable();
+            case 'wearable':
+                return await this.toggleWearable(this.parent);
+            case 'weapon':
+                return await this.toggleWeapon(true, this.parent)
+        }
+    }
 
-        console.log("Macro Item is not implemented yet !");
+    /**
+     * Handle toggling the state of an Owned Weapon within the Actor.
+     * @param {boolean} main if the hand is the main hand
+     * @param {Actor} actor the actor where the weapon is toggle
+     * @constructor
+     */
+    async toggleWeapon(main, actor) {
+        const hands = this.system.attributes.hands.value;
+        // Toggle item hands
+        if (hands === 2) {
+            await this.update({
+                ["system.isEquippedMain"]: !foundry.utils.getProperty(this, "system.isEquippedMain"),
+                ["system.isEquippedSecondary"]: !foundry.utils.getProperty(this, "system.isEquippedSecondary")
+            });
+        }
+        else if (main) {
+            // Switch hand case
+            if (!this.system.isEquippedMain && this.system.isEquippedSecondary) {
+                await this.update({["system.isEquippedSecondary"]: false});
+            }
+            await this.update({["system.isEquippedMain"]: !foundry.utils.getProperty(this, "system.isEquippedMain")})
+        }
+        else {
+            // Switch hand case
+            if (!this.system.isEquippedSecondary && this.system.isEquippedMain) {
+                await this.update({["system.isEquippedMain"]: false});
+            }
+            await this.update({["system.isEquippedSecondary"]: !foundry.utils.getProperty(this, "system.isEquippedSecondary")});
+        }
+        // Unequip other items
+        for (let otherItem of actor.items) {
+            // Ignore if otherItem is not a weapon
+            if (otherItem.type !== 'weapon') continue;
+            // Ignore if otherItem is item
+            if (otherItem === this) continue;
+            // If other item is equipped on main and this item is equipped on main
+            if (otherItem.system.isEquippedMain && this.system.isEquippedMain) {
+                // If other item is equipped on two hands
+                if (otherItem.system.attributes.hands.value === 2) {
+                    await otherItem.update({
+                        ["system.isEquippedMain"]: false,
+                        ["system.isEquippedSecondary"]: false
+                    });
+                }
+                // Else other item only equip main hand
+                else {
+                    await otherItem.update({
+                        ["system.isEquippedMain"]: false
+                    });
+                }
+            }
+            // If other item is equipped on secondary and this item is equipped on secondary
+            if (otherItem.system.isEquippedSecondary && this.system.isEquippedSecondary) {
+                // If other item is equipped on two hands
+                if (otherItem.system.attributes.hands.value === 2) {
+                    await otherItem.update({
+                        ["system.isEquippedMain"]: false,
+                        ["system.isEquippedSecondary"]: false
+                    });
+                }
+                // Else other item only equip secondary hand
+                else {
+                    await otherItem.update({
+                        ["system.isEquippedSecondary"]: false
+                    });
+                }
+            }
+        }
+        actor.sheet.render(false);
+    }
 
-        // // Ensure the options object is ready
-        // options = foundry.utils.mergeObject({
-        //     configureDialog: true,
-        //     createMessage: true,
-        //     flags: {}
-        // }, options);
-        //
-        // // Reference aspects of the item data necessary for usage
-        // const resource = is.consume || {};        // Resource consumption
-        // const isSpell = item.type === "spell";    // Does the item require a spell slot?
-        // const requireSpellSlot = isSpell && (is.level > 0) && CONFIG.DND5E.spellUpcastModes.includes(is.preparation.mode);
-        //
-        // // Define follow-up actions resulting from the item usage
-        // config = foundry.utils.mergeObject({
-        //     createMeasuredTemplate: item.hasAreaTarget,
-        //     consumeQuantity: is.uses?.autoDestroy ?? false,
-        //     consumeRecharge: !!is.recharge?.value,
-        //     consumeResource: !!resource.target && (!item.hasAttack || (resource.type !== "ammo")),
-        //     consumeSpellLevel: requireSpellSlot ? is.preparation.mode === "pact" ? "pact" : is.level : null,
-        //     consumeSpellSlot: requireSpellSlot,
-        //     consumeUsage: !!is.uses?.per
-        // }, config);
-        //
-        // // Display a configuration dialog to customize the usage
-        // if ( config.needsConfiguration === undefined ) config.needsConfiguration = config.createMeasuredTemplate
-        //     || config.consumeRecharge || config.consumeResource || config.consumeSpellSlot || config.consumeUsage;
-        //
-        // /**
-        //  * A hook event that fires before an item usage is configured.
-        //  * @function dnd5e.preUseItem
-        //  * @memberof hookEvents
-        //  * @param {Item5e} item                  Item being used.
-        //  * @param {ItemUseConfiguration} config  Configuration data for the item usage being prepared.
-        //  * @param {ItemUseOptions} options       Additional options used for configuring item usage.
-        //  * @returns {boolean}                    Explicitly return `false` to prevent item from being used.
-        //  */
-        // if ( Hooks.call("dnd5e.preUseItem", item, config, options) === false ) return;
-        //
-        // // Display configuration dialog
-        // if ( (options.configureDialog !== false) && config.needsConfiguration ) {
-        //     const configuration = await AbilityUseDialog.create(item);
-        //     if ( !configuration ) return;
-        //     foundry.utils.mergeObject(config, configuration);
-        // }
-        //
-        // // Handle spell upcasting
-        // if ( isSpell && (config.consumeSpellSlot || config.consumeSpellLevel) ) {
-        //     const upcastLevel = config.consumeSpellLevel === "pact" ? as.spells.pact.level
-        //         : parseInt(config.consumeSpellLevel);
-        //     if ( upcastLevel && (upcastLevel !== is.level) ) {
-        //         item = item.clone({"system.level": upcastLevel}, {keepId: true});
-        //         item.prepareData();
-        //         item.prepareFinalAttributes();
-        //     }
-        // }
-        //
-        // /**
-        //  * A hook event that fires before an item's resource consumption has been calculated.
-        //  * @function dnd5e.preItemUsageConsumption
-        //  * @memberof hookEvents
-        //  * @param {Item5e} item                  Item being used.
-        //  * @param {ItemUseConfiguration} config  Configuration data for the item usage being prepared.
-        //  * @param {ItemUseOptions} options       Additional options used for configuring item usage.
-        //  * @returns {boolean}                    Explicitly return `false` to prevent item from being used.
-        //  */
-        // if ( Hooks.call("dnd5e.preItemUsageConsumption", item, config, options) === false ) return;
-        //
-        // // Determine whether the item can be used by testing for resource consumption
-        // const usage = item._getUsageUpdates(config);
-        // if ( !usage ) return;
-        //
-        // /**
-        //  * A hook event that fires after an item's resource consumption has been calculated but before any
-        //  * changes have been made.
-        //  * @function dnd5e.itemUsageConsumption
-        //  * @memberof hookEvents
-        //  * @param {Item5e} item                     Item being used.
-        //  * @param {ItemUseConfiguration} config     Configuration data for the item usage being prepared.
-        //  * @param {ItemUseOptions} options          Additional options used for configuring item usage.
-        //  * @param {object} usage
-        //  * @param {object} usage.actorUpdates       Updates that will be applied to the actor.
-        //  * @param {object} usage.itemUpdates        Updates that will be applied to the item being used.
-        //  * @param {object[]} usage.resourceUpdates  Updates that will be applied to other items on the actor.
-        //  * @returns {boolean}                       Explicitly return `false` to prevent item from being used.
-        //  */
-        // if ( Hooks.call("dnd5e.itemUsageConsumption", item, config, options, usage) === false ) return;
-        //
-        // // Commit pending data updates
-        // const { actorUpdates, itemUpdates, resourceUpdates } = usage;
-        // if ( !foundry.utils.isEmpty(itemUpdates) ) await item.update(itemUpdates);
-        // if ( config.consumeQuantity && (item.system.quantity === 0) ) await item.delete();
-        // if ( !foundry.utils.isEmpty(actorUpdates) ) await this.actor.update(actorUpdates);
-        // if ( resourceUpdates.length ) await this.actor.updateEmbeddedDocuments("Item", resourceUpdates);
-        //
-        // // Prepare card data & display it if options.createMessage is true
-        // const cardData = await item.displayCard(options);
-        //
-        // // Initiate measured template creation
-        // let templates;
-        // if ( config.createMeasuredTemplate ) {
-        //     try {
-        //         templates = await (dnd5e.canvas.AbilityTemplate.fromItem(item))?.drawPreview();
-        //     } catch(err) {}
-        // }
-        //
-        // /**
-        //  * A hook event that fires when an item is used, after the measured template has been created if one is needed.
-        //  * @function dnd5e.useItem
-        //  * @memberof hookEvents
-        //  * @param {Item5e} item                                Item being used.
-        //  * @param {ItemUseConfiguration} config                Configuration data for the roll.
-        //  * @param {ItemUseOptions} options                     Additional options for configuring item usage.
-        //  * @param {MeasuredTemplateDocument[]|null} templates  The measured templates if they were created.
-        //  */
-        // Hooks.callAll("dnd5e.useItem", item, config, options, templates ?? null);
-        //
-        // return cardData;
+    async toggleWearable(actor) {
+        const slot = this.system.attributes.slot.value;
+        // Ignore if not using a slot
+        if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
+        // Toggle item slot
+        await this.update({
+            ["system.isEquipped"]: !foundry.utils.getProperty(this, "system.isEquipped"),
+        });
+        // If unequipped then return
+        if (!this.system.isEquipped) return;
+        let ringCount = 1;
+        // Unequip other items
+        for (let otherItem of actor.items) {
+            // Ignore if otherItem is not a wearable
+            if (otherItem.type !== 'wearable') continue;
+            // Ignore if otherItem is item
+            if (otherItem === this) continue;
+            // Count same items slot
+            if (otherItem.system.isEquipped && otherItem.system.attributes.slot.value === slot) {
+                // Unequipped immediately if clothes, armor or amulet
+                if (['clothes', 'armor', 'amulet'].includes(slot)) {
+                    await otherItem.update({
+                        ["system.isEquipped"]: false
+                    });
+                }
+                // Count equipped rings if ring
+                else if (['ring'].includes(slot)) {
+                    if (ringCount >= 2) {
+                        await otherItem.update({
+                            ["system.isEquipped"]: false
+                        });
+                    } else {
+                        ringCount++;
+                    }
+                }
+            }
+        }
+        actor.sheet.render(false);
+    }
+
+    async useConsumable() {
+
     }
 
 }

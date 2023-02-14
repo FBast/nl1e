@@ -51,64 +51,64 @@ PL1E.resources = {
 
 PL1E.characteristics = {
     "strength": {
-        "label": "PL1E.CharacteristicStr",
-        "tooltip": "PL1E.TooltipStr",
+        "label": "CHARA.Str",
+        "tooltip": "TOOLTIP.Str",
         "weights": {
             "resources": ["stamina"],
             "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
         }
     },
     "agility": {
-        "label": "PL1E.CharacteristicAgi",
-        "tooltip": "PL1E.TooltipAgi",
+        "label": "CHARA.Agi",
+        "tooltip": "TOOLTIP.Agi",
         "weights": {
             "resources": [],
             "skills": ["dodge", "reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
         }
     },
     "perception": {
-        "label": "PL1E.CharacteristicPer",
-        "tooltip": "PL1E.TooltipPer",
+        "label": "CHARA.Per",
+        "tooltip": "TOOLTIP.Per",
         "weights": {
             "resources": [],
             "skills": ["dodge", "reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
         }
     },
     "constitution": {
-        "label": "PL1E.CharacteristicCon",
-        "tooltip": "PL1E.TooltipCon",
+        "label": "CHARA.Con",
+        "tooltip": "TOOLTIP.Con",
         "weights": {
             "resources": ["health", "stamina"],
             "skills": ["parry", "vigor", "athletics"]
         }
     },
     "intellect": {
-        "label": "PL1E.CharacteristicInt",
-        "tooltip": "PL1E.TooltipInt",
+        "label": "CHARA.Int",
+        "tooltip": "TOOLTIP.Int",
         "weights": {
             "resources": ["mana"],
             "skills": ["resilience", "diplomacy", "bluff", "erudition", "secularMagic"]
         }
     },
     "cunning": {
-        "label": "PL1E.CharacteristicCun",
-        "tooltip": "PL1E.TooltipCun",
+        "label": "CHARA.Cun",
+        "tooltip": "TOOLTIP.Cun",
         "weights": {
             "resources": [],
             "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "secularMagic"]
         }
     },
     "wisdom": {
-        "label": "PL1E.CharacteristicWis",
-        "tooltip": "PL1E.TooltipWis",
+        "label": "CHARA.Wis",
+        "tooltip": "TOOLTIP.Wis",
         "weights": {
             "resources": [],
             "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "divineMagic"]
         }
     },
     "will": {
-        "label": "PL1E.CharacteristicWil",
-        "tooltip": "PL1E.TooltipWil",
+        "label": "CHARA.Wil",
+        "tooltip": "TOOLTIP.Wil",
         "weights": {
             "resources": ["health", "mana"],
             "skills": ["resilience", "performance", "handling", "divineMagic"]
@@ -118,7 +118,7 @@ PL1E.characteristics = {
 
 PL1E.skills = {
     "parry": {
-        "label": "PL1E.DefensePar",
+        "label": "DEFENSE.Par",
         "fixedRank": true,
         "divider": 3,
         "weights": {
@@ -127,7 +127,7 @@ PL1E.skills = {
         }
     },
     "dodge": {
-        "label": "PL1E.DefenseDod",
+        "label": "DEFENSE.Dod",
         "fixedRank": true,
         "divider": 2,
         "weights": {
@@ -136,7 +136,7 @@ PL1E.skills = {
         }
     },
     "vigor": {
-        "label": "PL1E.ResistanceVig",
+        "label": "DEFENSE.Vig",
         "fixedRank": true,
         "divider": 2,
         "weights": {
@@ -144,7 +144,7 @@ PL1E.skills = {
         }
     },
     "reflex": {
-        "label": "PL1E.ResistanceRef",
+        "label": "DEFENSE.Ref",
         "fixedRank": true,
         "divider": 2,
         "weights": {
@@ -153,7 +153,7 @@ PL1E.skills = {
         }
     },
     "resilience": {
-        "label": "PL1E.ResistanceRes",
+        "label": "DEFENSE.Res",
         "fixedRank": true,
         "divider": 2,
         "magicPenalty": false,
@@ -162,7 +162,7 @@ PL1E.skills = {
         }
     },
     "intuition": {
-        "label": "PL1E.ResistanceInt",
+        "label": "DEFENSE.Int",
         "fixedRank": true,
         "divider": 2,
         "magicPenalty": false,
@@ -171,7 +171,7 @@ PL1E.skills = {
         }
     },
     "handling": {
-        "label": "PL1E.SkillHan",
+        "label": "SKILL.Han",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -180,7 +180,7 @@ PL1E.skills = {
         }
     },
     "throwing": {
-        "label": "PL1E.SkillThr",
+        "label": "SKILL.Thr",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -189,7 +189,7 @@ PL1E.skills = {
         }
     },
     "athletics": {
-        "label": "PL1E.SkillAth",
+        "label": "SKILL.Ath",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -199,7 +199,7 @@ PL1E.skills = {
         }
     },
     "acrobatics": {
-        "label": "PL1E.SkillAcr",
+        "label": "SKILL.Acr",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -209,7 +209,7 @@ PL1E.skills = {
         }
     },
     "accuracy": {
-        "label": "PL1E.SkillAcc",
+        "label": "SKILL.Acc",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -219,7 +219,7 @@ PL1E.skills = {
         }
     },
     "search": {
-        "label": "PL1E.SkillSea",
+        "label": "SKILL.Sea",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -228,7 +228,7 @@ PL1E.skills = {
         }
     },
     "vigilance": {
-        "label": "PL1E.SkillVig",
+        "label": "SKILL.Vig",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -237,7 +237,7 @@ PL1E.skills = {
         }
     },
     "discretion": {
-        "label": "PL1E.SkillDis",
+        "label": "SKILL.Dis",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -247,7 +247,7 @@ PL1E.skills = {
         }
     },
     "performance": {
-        "label": "PL1E.SkillPer",
+        "label": "SKILL.Per",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -256,7 +256,7 @@ PL1E.skills = {
         }
     },
     "diplomacy": {
-        "label": "PL1E.SkillDip",
+        "label": "SKILL.Dip",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -265,7 +265,7 @@ PL1E.skills = {
         }
     },
     "intimidation": {
-        "label": "PL1E.SkillInt",
+        "label": "SKILL.Int",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -274,7 +274,7 @@ PL1E.skills = {
         }
     },
     "bluff": {
-        "label": "PL1E.SkillBlu",
+        "label": "SKILL.Blu",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -283,7 +283,7 @@ PL1E.skills = {
         }
     },
     "craft": {
-        "label": "PL1E.SkillCra",
+        "label": "SKILL.Cra",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -292,7 +292,7 @@ PL1E.skills = {
         }
     },
     "erudition": {
-        "label": "PL1E.SkillEru",
+        "label": "SKILL.Eru",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": false,
@@ -301,7 +301,7 @@ PL1E.skills = {
         }
     },
     "divineMagic": {
-        "label": "PL1E.SkillDiv",
+        "label": "SKILL.Div",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": true,
@@ -311,7 +311,7 @@ PL1E.skills = {
         }
     },
     "secularMagic": {
-        "label": "PL1E.SkillSec",
+        "label": "SKILL.Sec",
         "fixedRank": false,
         "divider": 2,
         "magicPenalty": true,
@@ -389,6 +389,52 @@ PL1E.attributes = {
         "label": "PL1E.Reloadable",
         "hide": false
     },
+    // Damages
+    "contactAttackRange": {
+        "type": "number",
+        "label": "PL1E.ContactAttackRange",
+        "hide": false
+    },
+    "rangedAttackRange": {
+        "type": "number",
+        "label": "PL1E.RangedAttackRange",
+        "hide": false
+    },
+    "slashing": {
+        "type": "number",
+        "label": "PL1E.Slashing",
+        "hide": false
+    },
+    "crushing": {
+        "type": "number",
+        "label": "PL1E.Crushing",
+        "hide": false
+    },
+    "piercing": {
+        "type": "number",
+        "label": "PL1E.Piercing",
+        "hide": false
+    },
+    "fire": {
+        "type": "number",
+        "label": "PL1E.Fire",
+        "hide": false
+    },
+    "cold": {
+        "type": "number",
+        "label": "PL1E.Cold",
+        "hide": false
+    },
+    "shock": {
+        "type": "number",
+        "label": "PL1E.Shock",
+        "hide": false
+    },
+    "acid": {
+        "type": "number",
+        "label": "PL1E.Acid",
+        "hide": false
+    },
     // Modificators
     "movementPenalty": {
         "type": "number",
@@ -464,6 +510,11 @@ PL1E.attributes = {
         "label": "PL1E.Dodge",
         "hide": false
     },
+    "parryProjectiles": {
+        "type": "bool",
+        "label": "PL1E.ParryProjectiles",
+        "hide": false
+    },
     "slashingReduction": {
         "type": "number",
         "label": "PL1E.SlashingReduction",
@@ -513,37 +564,7 @@ PL1E.attributes = {
         "operator": "push",
         "hide": false
     },
-    // Attack
-    "contactAttackRange": {
-        "type": "number",
-        "label": "PL1E.ContactAttackRange",
-        "hide": false
-    },
-    "rangedAttackRange": {
-        "type": "number",
-        "label": "PL1E.RangedAttackRange",
-        "hide": false
-    },
-    "parryProjectiles": {
-        "type": "bool",
-        "label": "PL1E.ParryProjectiles",
-        "hide": false
-    },
-    "slashing": {
-        "type": "number",
-        "label": "PL1E.Slashing",
-        "hide": false
-    },
-    "crushing": {
-        "type": "number",
-        "label": "PL1E.Crushing",
-        "hide": false
-    },
-    "piercing": {
-        "type": "number",
-        "label": "PL1E.Piercing",
-        "hide": false
-    },
+    // Weapons
     "hands": {
         "type": "number",
         "label": "PL1E.Hands",
@@ -552,6 +573,28 @@ PL1E.attributes = {
     "ammo": {
         "type": "number",
         "label": "PL1E.Ammo",
+        "hide": false
+    },
+    // Abilities
+    "rollSkill": {
+        "type": "select",
+        "label": "PL1E.RollSkill",
+        "path": "attributes.rollSkill",
+        "operator": "set",
+        "select": "abilitySkills",
+        "hide": false
+    },
+    "defenseSkill": {
+        "type": "select",
+        "label": "PL1E.DefenseSkill",
+        "path": "attributes.defenseSkill",
+        "operator": "set",
+        "select": "abilitySkills",
+        "hide": false
+    },
+    "targetNumber": {
+        "type": "number",
+        "label": "PL1E.TargetNumber",
         "hide": false
     },
     // Recovery
@@ -607,23 +650,23 @@ PL1E.defaultIcons = {
 }
 
 PL1E.defaultNames = {
-    "character": "PL1E.NewCharacter",
-    "npc": "PL1E.NewNPC",
-    "merchant": "PL1E.NewMerchant",
-    "feature": "PL1E.NewFeature",
-    "ability": "PL1E.NewAbility",
-    "weapon": "PL1E.NewWeapon",
-    "wearable": "PL1E.NewWearable",
-    "consumable": "PL1E.NewConsumable",
-    "common": "PL1E.NewCommon",
+    "character": "SHEET.NewCharacter",
+    "npc": "SHEET.NewNPC",
+    "merchant": "SHEET.NewMerchant",
+    "feature": "SHEET.NewFeature",
+    "ability": "SHEET.NewAbility",
+    "weapon": "SHEET.NewWeapon",
+    "wearable": "SHEET.NewWearable",
+    "consumable": "SHEET.NewConsumable",
+    "common": "SHEET.NewCommon",
 }
 
 PL1E.sizes = {
-    "small": "PL1E.SizeSmall",
-    "medium": "PL1E.SizeMedium",
-    "large": "PL1E.SizeLarge",
-    "huge": "PL1E.SizeHuge",
-    "gargantuan": "PL1E.SizeGargantuan"
+    "small": "SIZE.Small",
+    "medium": "SIZE.Medium",
+    "large": "SIZE.Large",
+    "huge": "SIZE.Huge",
+    "gargantuan": "SIZE.Gargantuan"
 };
 
 PL1E.sizeMultiplier = {
@@ -673,10 +716,10 @@ PL1E.masteries = {
 
 PL1E.slots = {
     "none": "PL1E.None",
-    "clothes": "PL1E.Clothes",
-    "armor": "PL1E.Armor",
-    "ring": "PL1E.Ring",
-    "amulet": "PL1E.Amulet"
+    "clothes": "SLOT.Clothes",
+    "armor": "SLOT.Armor",
+    "ring": "SLOT.Ring",
+    "amulet": "SLOT.Amulet"
 }
 
 PL1E.activations = {
@@ -686,6 +729,30 @@ PL1E.activations = {
     "action": "PL1E.Action",
     "round": "PL1E.Round",
     "special": "PL1E.Special"
+}
+
+PL1E.abilitySkills = {
+    "parry": "DEFENSE.Par",
+    "dodge": "DEFENSE.Dod",
+    "vigor": "DEFENSE.Vig",
+    "reflex": "DEFENSE.Ref",
+    "resilience": "DEFENSE.Res",
+    "intuition": "DEFENSE.Int",
+    "handling": "SKILL.Han",
+    "throwing": "SKILL.Thr",
+    "athletics": "SKILL.Ath",
+    "acrobatics": "SKILL.Acr",
+    "accuracy": "SKILL.Acc",
+    "search": "SKILL.Sea",
+    "vigilance": "SKILL.Vig",
+    "discretion": "SKILL.Dis",
+    "performance": "SKILL.Per",
+    "diplomacy": "SKILL.Dip",
+    "intimidation": "SKILL.Int",
+    "bluff": "SKILL.Blu",
+    "craft": "SKILL.Cra",
+    "erudition": "SKILL.Eru",
+    "magic": "SKILL.Magic",
 }
 
 PL1E.NPCTemplates = {

@@ -1,6 +1,6 @@
 import {PL1E} from "../helpers/config.mjs";
-import {HelpersPl1e} from "../helpers/helpers.js";
-import {EventPL1E} from "../helpers/events.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.js";
+import {Pl1eEvent} from "../helpers/events.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -73,7 +73,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
         // Prepare active effects
-        context.effects = HelpersPl1e.prepareActiveEffectCategories(this.actor.effects);
+        context.effects = Pl1eHelpers.prepareActiveEffectCategories(this.actor.effects);
         // Add the config data
         context.config = PL1E;
         // Add game access
@@ -89,41 +89,41 @@ export class Pl1eActorSheet extends ActorSheet {
         super.activateListeners(html);
 
         // Render the item sheet for viewing/editing prior to the editable check.
-        html.find('.item-edit').on("click", ev => EventPL1E.onItemEdit(ev, this.actor));
-        html.find('.item-buy').on("click", ev => EventPL1E.onItemBuy(ev, this.actor));
+        html.find('.item-edit').on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
+        html.find('.item-buy').on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
 
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
         // Item management
-        html.find('.item-create').on("click", ev => EventPL1E.onItemCreate(ev, this.actor));
-        html.find('.item-delete').on("click", ev => EventPL1E.onItemDelete(ev, this.actor));
+        html.find('.item-create').on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
+        html.find('.item-delete').on("click", ev => Pl1eEvent.onItemDelete(ev, this.actor));
 
         // Active Effect management
-        html.find(".effect-control").on("click", ev => EventPL1E.onManageActiveEffect(ev, this.actor));
+        html.find(".effect-control").on("click", ev => Pl1eEvent.onManageActiveEffect(ev, this.actor));
 
         // Chat messages
-        html.find('.rollable').on("click", ev => EventPL1E.onRoll(ev, this.actor));
+        html.find('.rollable').on("click", ev => Pl1eEvent.onRoll(ev, this.actor));
 
         // Custom objects
-        html.find('.characteristic-control').on("click", ev => EventPL1E.onCharacteristicChange(ev, this));
-        html.find('.currency-control').on("click", ev => EventPL1E.onCurrencyChange(ev, this.actor));
-        html.find('.currency-convert').on("click", ev => EventPL1E.onCurrencyConvert(ev, this.actor));
-        html.find('.rank-control').on("click", ev => EventPL1E.onRankChange(ev, this));
+        html.find('.characteristic-control').on("click", ev => Pl1eEvent.onCharacteristicChange(ev, this));
+        html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.actor));
+        html.find('.currency-convert').on("click", ev => Pl1eEvent.onCurrencyConvert(ev, this.actor));
+        html.find('.rank-control').on("click", ev => Pl1eEvent.onRankChange(ev, this));
 
         // Items management
-        html.find(".weapon-toggle").on("click", ev => EventPL1E.onToggleWeapon(ev, this.actor));
-        html.find(".wearable-toggle").on("click", ev => EventPL1E.onToggleWearable(ev, this.actor));
-        html.find(".consumable-toggle").on("click", ev => EventPL1E.onUseConsumable(ev, this.actor));
-        html.find(".consumable-reload").on("click", ev => EventPL1E.onReloadConsumable(ev, this.actor));
-        html.find(".ability-toggle").on("click", ev => EventPL1E.onToggleAbility(ev, this.actor));
+        html.find(".weapon-toggle").on("click", ev => Pl1eEvent.onToggleWeapon(ev, this.actor));
+        html.find(".wearable-toggle").on("click", ev => Pl1eEvent.onToggleWearable(ev, this.actor));
+        html.find(".consumable-toggle").on("click", ev => Pl1eEvent.onUseConsumable(ev, this.actor));
+        html.find(".consumable-reload").on("click", ev => Pl1eEvent.onReloadConsumable(ev, this.actor));
+        html.find(".ability-toggle").on("click", ev => Pl1eEvent.onToggleAbility(ev, this.actor));
 
         // Highlights indications
         html.find('.resource-label,.characteristic-label,.skill-label')
-            .on("mouseenter", ev => EventPL1E.onCreateHighlights(ev));
+            .on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
         html.find('.resource-label,.characteristic-label,.skill-label')
-            .on("mouseleave", ev => EventPL1E.onRemoveHighlights(ev));
+            .on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
 
         // Drag events for macros.
         if (this.actor.isOwner) {
