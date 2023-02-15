@@ -232,7 +232,7 @@
   "MACRO.UnownedWarn": "You don't own this item",
   "MACRO.MissingTargetWarn": "You should select a target",
   "MACRO.MultipleTargetsWarn": "You cant target multiple targets",
-  "MACRO.NotMemorizedInfo": "This ability is not memorized",
+  "MACRO.NotMemorizedWarn": "This ability is not memorized",
   "MACRO.TooMuchTarget": "You have selected too much target",
   "MACRO.NoTarget": "You should select exactly one target"
 }

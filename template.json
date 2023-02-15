@@ -256,6 +256,22 @@
           }
         }
       },
+      "recoveries": {
+        "attributes": {
+          "healthRecovery": {
+            "value": 0,
+            "apply": false
+          },
+          "staminaRecovery": {
+            "value": 0,
+            "apply": false
+          },
+          "manaRecovery": {
+            "value": 0,
+            "apply": false
+          }
+        }
+      },
       "reductions": {
         "attributes": {
           "slashingReduction": {
@@ -363,7 +379,7 @@
       }
     },
     "ability": {
-      "templates": ["base", "damages", "recovery"],
+      "templates": ["base", "damages", "recoveries"],
       "isMemorized": false,
       "attributes": {
         "level": {
@@ -374,12 +390,32 @@
           "value": "none",
           "apply": false
         },
-        "defenseRoll": {
+        "oppositeRoll": {
           "value": "none",
+          "apply": false
+        },
+        "areaTargetType": {
+          "value": "single",
+          "apply": false
+        },
+        "areaWidth": {
+          "value": 1,
           "apply": false
         },
         "multiTargets": {
           "value": 1,
+          "apply": false
+        },
+        "healthCost": {
+          "value": 0,
+          "apply": false
+        },
+        "staminaCost": {
+          "value": 0,
+          "apply": false
+        },
+        "manaCost": {
+          "value": 0,
           "apply": false
         }
       }
@@ -418,7 +454,7 @@
       }
     },
     "consumable": {
-      "templates": ["base", "item"],
+      "templates": ["base", "item", "recoveries"],
       "removedUses": 0,
       "attributes": {
         "activation": {
@@ -432,18 +468,6 @@
         "uses": {
           "value": 1,
           "apply": true
-        },
-        "healthRecovery": {
-          "value": 0,
-          "apply": false
-        },
-        "staminaRecovery": {
-          "value": 0,
-          "apply": false
-        },
-        "manaRecovery": {
-          "value": 0,
-          "apply": false
         }
       }
     },

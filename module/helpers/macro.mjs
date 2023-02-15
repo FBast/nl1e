@@ -1,7 +1,7 @@
 export class Pl1eMacro {
 
     /**
-    * Trigger an item to roll when a macro.js is clicked.
+    * Trigger an item to roll when a macro.mjs is clicked.
     * @param {string} itemName                Name of the item on the selected actor to trigger.
     * @returns {Promise<ChatMessage|object>}  Roll result.
     */
@@ -10,7 +10,7 @@ export class Pl1eMacro {
     }
 
     /**
-    * Toggle an effect on and off when a macro.js is clicked.
+    * Toggle an effect on and off when a macro.mjs is clicked.
     * @param {string} effectLabel       Label for the effect to be toggled.
     * @returns {Promise<ActiveEffect>}  The effect after it has been toggled.
     */
@@ -20,7 +20,7 @@ export class Pl1eMacro {
     }
 
     /**
-    * Attempt to create a macro.js from the dropped data. Will use an existing macro.js if one exists.
+    * Attempt to create a macro.mjs from the dropped data. Will use an existing macro.mjs if one exists.
     * @param {object} dropData     The dropped data
     * @param {number} slot         The hotbar slot to use
     */
@@ -53,7 +53,7 @@ export class Pl1eMacro {
                 return;
         }
 
-        // Assign the macro.js to the hotbar
+        // Assign the macro.mjs to the hotbar
         const macro = game.macros.find(m => (m.name === macroData.name) && (m.command === macroData.command)
             && m.author.isSelf) || await Macro.create(macroData);
         await game.user.assignHotbarMacro(macro, slot);

@@ -8,8 +8,8 @@ import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
 import {PL1E} from "./helpers/config.mjs";
 import Pl1eSocket from "./helpers/socket.mjs";
-import {Pl1eHelpers} from "./helpers/helpers.js";
-import {Pl1eMacro} from "./helpers/macro.js";
+import {Pl1eHelpers} from "./helpers/helpers.mjs";
+import {Pl1eMacro} from "./helpers/macro.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -113,3 +113,6 @@ Hooks.once("socketlib.ready", () => {
         Pl1eSocket.sendContenant(data.actor, data.targetActor, data.item);
     })
 })
+
+Hooks.on("renderChatLog", (app, html, data) => Pl1eItem.chatListeners(html));
+Hooks.on("renderChatPopout", (app, html, data) => Pl1eItem.chatListeners(html));

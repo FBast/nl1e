@@ -1,6 +1,6 @@
 import {Pl1eTrade} from "./trade.mjs";
 import {PL1E} from "./config.mjs";
-import {Pl1eHelpers} from "./helpers.js";
+import {Pl1eHelpers} from "./helpers.mjs";
 
 export class Pl1eEvent {
 
@@ -167,6 +167,19 @@ export class Pl1eEvent {
         await item.update({
             ["system.isMemorized"]: !item.system.isMemorized
         });
+    }
+
+    /**
+     * Use an ability
+     * @param {Event} event The originating click event
+     * @param {Actor} actor the actor where the ability is used
+     */
+    static async onUseAbility(event, actor) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = actor.items.get(itemId);
+
+        item.useAbility(actor);
     }
 
     /**

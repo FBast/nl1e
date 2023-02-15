@@ -578,23 +578,44 @@ PL1E.attributes = {
     // Abilities
     "mainRoll": {
         "type": "select",
-        "label": "PL1E.RollSkill",
-        "path": "attributes.mainRoll",
-        "operator": "set",
+        "label": "PL1E.MainRoll",
         "select": "abilitySkills",
         "hide": false
     },
-    "defenseRoll": {
+    "oppositeRoll": {
         "type": "select",
-        "label": "PL1E.DefenseSkill",
-        "path": "attributes.defenseRoll",
-        "operator": "set",
+        "label": "PL1E.OppositeRoll",
         "select": "abilitySkills",
         "hide": false
+    },
+    "areaTargetType": {
+        "type": "select",
+        "label": "PL1E.AreaTargetType",
+        "select": "areaTargetTypes",
+        "hide": false
+    },
+    "areaWidth": {
+        "type": "number",
+        "label": "PL1E.AreaWidth",
     },
     "multiTargets": {
         "type": "number",
-        "label": "PL1E.TargetNumber",
+        "label": "PL1E.MultiTargets",
+        "hide": false
+    },
+    "healthCost": {
+        "type": "number",
+        "label": "PL1E.HealthCost",
+        "hide": false
+    },
+    "staminaCost": {
+        "type": "number",
+        "label": "PL1E.StaminaCost",
+        "hide": false
+    },
+    "manaCost": {
+        "type": "number",
+        "label": "PL1E.ManaCost",
         "hide": false
     },
     // Recovery
@@ -752,7 +773,8 @@ PL1E.abilitySkills = {
     "bluff": "SKILL.Blu",
     "craft": "SKILL.Cra",
     "erudition": "SKILL.Eru",
-    "magic": "SKILL.Magic",
+    "divineMagic": "SKILL.Div",
+    "secularMagic": "SKILL.Sec",
 }
 
 PL1E.NPCTemplates = {
@@ -946,3 +968,27 @@ PL1E.experienceTemplatesValues = {
     "master": 50,
     "grandMaster": 60
 }
+
+PL1E.areaTargetTypes = {
+    "single": "single",
+    "cone": "cone",
+    "cube": "rect",
+    "cylinder": "circle",
+    "line": "ray",
+    "radius": "circle",
+    "sphere": "circle",
+    "square": "rect",
+    "wall": "ray"
+};
+
+PL1E.areaTargetTypes = {
+    "single": "single",
+    "cone": "cone",
+    "cube": "rect",
+    "cylinder": "circle",
+    "line": "ray",
+    "radius": "circle",
+    "sphere": "circle",
+    "square": "rect",
+    "wall": "ray"
+};

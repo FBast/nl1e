@@ -1,4 +1,5 @@
-import {Pl1eHelpers} from "../helpers/helpers.js";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
 import {PL1E} from "../helpers/config.mjs";
 
 /**
@@ -6,6 +7,23 @@ import {PL1E} from "../helpers/config.mjs";
  * @extends {Item}
  */
 export class Pl1eItem extends Item {
+
+    //region Accessors
+
+    get hasRecovery() {
+        let itemAttributes = this.system.attributes;
+        return itemAttributes.healthRecovery.apply || itemAttributes.staminaRecovery.apply || itemAttributes.manaRecovery.apply;
+    }
+
+    get hasDamage() {
+        let itemAttributes = this.system.attributes;
+        return itemAttributes.slashing.apply || itemAttributes.crushing.apply || itemAttributes.piercing.apply
+        || itemAttributes.fire.apply || itemAttributes.cold.apply || itemAttributes.shock.apply || itemAttributes.acid.apply;
+    }
+
+    //endregion
+
+    //region Data management
 
     /** @override */
     async _preCreate(data, options, userId) {
@@ -45,8 +63,8 @@ export class Pl1eItem extends Item {
     prepareBaseData() {
         const system = this.system;
         // Merge config data
-        system.attributes = Pl1eHelpers.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
         system.price = Pl1eHelpers.mergeDeep(system.price, CONFIG.PL1E.currency);
+        system.attributes = Pl1eHelpers.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
     }
 
     /**
@@ -62,47 +80,9 @@ export class Pl1eItem extends Item {
         return rollData;
     }
 
-    /**
-     * Handle clickable rolls.
-     * @param {Event} event   The originating click event
-     * @private
-     */
-    async roll() {
-        const item = this;
+    //endregion
 
-        // Initialize chat data.
-        const speaker = ChatMessage.getSpeaker({actor: this.actor});
-        const rollMode = game.settings.get('core', 'rollMode');
-        const label = `[${item.type}] ${item.name}`;
-
-        // If there's no roll data, send a chat message.
-        if (!this.system.formula) {
-            ChatMessage.create({
-                speaker: speaker,
-                rollMode: rollMode,
-                flavor: label,
-                content: item.system.description ?? ''
-            });
-        }
-        // Otherwise, create a roll and send a chat message from it.
-        else {
-            // Retrieve roll data.
-            const rollData = this.getRollData();
-
-            // Invoke the roll and submit it to chat.
-            const roll = new Roll(rollData.item.formula, rollData);
-            // If you need to store the value first, uncomment the next line.
-            // let result = await roll.roll({async: true});
-            roll.toMessage({
-                speaker: speaker,
-                rollMode: rollMode,
-                flavor: label,
-            });
-            return roll;
-        }
-    }
-
-    // ***** Embedded items management *****
+    //region Embedded items
 
     /**
      * A reference to the Collection of embedded Item instances in the document, indexed by _id.
@@ -198,6 +178,50 @@ export class Pl1eItem extends Item {
 
         if (save) {
             await this.saveEmbedItems();
+        }
+    }
+
+    //endregion
+
+    //region Item interactions
+
+    /**
+     * Handle clickable rolls.
+     * @param {Event} event   The originating click event
+     * @private
+     */
+    async roll() {
+        const item = this;
+
+        // Initialize chat data.
+        const speaker = ChatMessage.getSpeaker({actor: this.actor});
+        const rollMode = game.settings.get('core', 'rollMode');
+        const label = `[${item.type}] ${item.name}`;
+
+        // If there's no roll data, send a chat message.
+        if (!this.system.formula) {
+            ChatMessage.create({
+                speaker: speaker,
+                rollMode: rollMode,
+                flavor: label,
+                content: item.system.description ?? ''
+            });
+        }
+        // Otherwise, create a roll and send a chat message from it.
+        else {
+            // Retrieve roll data.
+            const rollData = this.getRollData();
+
+            // Invoke the roll and submit it to chat.
+            const roll = new Roll(rollData.item.formula, rollData);
+            // If you need to store the value first, uncomment the next line.
+            // let result = await roll.roll({async: true});
+            roll.toMessage({
+                speaker: speaker,
+                rollMode: rollMode,
+                flavor: label,
+            });
+            return roll;
         }
     }
 
@@ -361,22 +385,30 @@ export class Pl1eItem extends Item {
     }
 
     async useAbility(actor) {
-        // Ability should be memorized
-        if (!this.system.isMemorized) return ui.notifications.info(game.i18n.localize("MACRO.NotMemorizedInfo"));
-        // Main roll
-        let mainRoll;
-        if (this.system.attributes.mainRoll.apply) {
-            const mainSkill = actor.system.skills[this.system.attributes.mainRoll.value];
-            let mainStr = mainSkill.number + "d" + mainSkill.dice + "xo" + mainSkill.dice + "cs>=4";
-            mainRoll = new Roll(mainStr, actor.getRollData());
-            await mainRoll.toMessage({
-                speaker: ChatMessage.getSpeaker({actor: actor}),
-                flavor: "rolling for " + mainSkill.label,
-                rollMode: game.settings.get('core', 'rollMode')
-            });
+        // If is not memorized
+        if (!this.system.isMemorized) return ui.notifications.warn(game.i18n.localize("MACRO.NotMemorizedWarn"));
+        // If cost is not affordable
+        if (this.system.attributes.healthCost.apply && this.system.attributes.healthCost.value > actor.system.resources.health.value)
+            return ui.notifications.info(game.i18n.localize("MACRO.NotEnoughHealthWarn"))
+        if (this.system.attributes.staminaCost.apply && this.system.attributes.staminaCost.value > actor.system.resources.stamina.value)
+            return ui.notifications.info(game.i18n.localize("MACRO.NotEnoughStaminaWarn"))
+        if (this.system.attributes.manaCost.apply && this.system.attributes.manaCost.value > actor.system.resources.mana.value)
+            return ui.notifications.info(game.i18n.localize("MACRO.NotEnoughManaWarn"))
+        // Launch main roll
+        const mainSkill = actor.system.skills[this.system.attributes.mainRoll.value];
+        let mainStr = mainSkill.number + "d" + mainSkill.dice + "xo" + mainSkill.dice + "cs>=4";
+        let mainRoll = new Roll(mainStr, actor.getRollData());
+        // Target selection template
+        if (this.system.attributes.areaTargetType.apply) {
+            await AbilityTemplate.fromItem(this)?.drawPreview();
         }
-        // Defense roll
-        if (this.system.attributes.defenseRoll.apply) {
+        mainRoll = await mainRoll.toMessage({
+            speaker: ChatMessage.getSpeaker({actor: actor}),
+            rollMode: game.settings.get('core', 'rollMode'),
+        });
+        let oppositeRolls = [];
+        // Launch opposite roll
+        if (this.system.attributes.oppositeRoll.apply) {
             let targets = game.user.targets;
             if (targets < 1) return ui.notifications.info(game.i18n.localize("MACRO.NoTarget"));
             if (this.system.attributes.multiTargets.apply) {
@@ -388,22 +420,45 @@ export class Pl1eItem extends Item {
             else if (targets.size > 1)
                 return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (1 MAX)" )
             for (let target of targets) {
-                const defenseSkill = target.actor.system.skills[this.system.attributes.defenseRoll.value];
+                const defenseSkill = target.actor.system.skills[this.system.attributes.oppositeRoll.value];
                 let defenseStr = defenseSkill.number + "d" + defenseSkill.dice + "xo" + defenseSkill.dice + "cs>=4";
-                let defenseRoll = new Roll(defenseStr, target.actor.getRollData());
-                await defenseRoll.toMessage({
-                    speaker: ChatMessage.getSpeaker({actor: target.actor}),
-                    flavor: "rolling for " + defenseRoll.label,
-                    rollMode: game.settings.get('core', 'rollMode')
-                });
-                await ChatMessage.create({
-                    speaker: ChatMessage.getSpeaker({actor: actor}),
-                    rollMode: game.settings.get('core', 'rollMode'),
-                    flavor: game.i18n.localize("CHAT.Result"),
-                    content: "result : " + (mainRoll.total - defenseRoll.total)
-                });
+                let oppositeRoll = new Roll(defenseStr, target.actor.getRollData());
+                oppositeRoll = await oppositeRoll.roll();
+                oppositeRolls.push(oppositeRoll);
             }
         }
+        // Render the chat card template
+        const token = this.actor.token;
+        const templateData = {
+            actor: this.actor.toObject(false),
+            tokenId: token?.uuid || null,
+            item: this.toObject(false),
+            data: this.toObject().system,
+            labels: this.labels,
+            hasMainRoll: this.system.attributes.mainRoll.apply,
+            mainRoll: mainRoll,
+            hasOppositeRolls: oppositeRolls.length > 0,
+            oppositeRolls: oppositeRolls,
+            hasRecovery: this.hasRecovery,
+            hasDamage: this.hasDamage
+        };
+        const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", templateData);
+        // Create the ChatMessage data object
+        const chatData = {
+            user: game.user.id,
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            content: html,
+            flavor: this.system.description || this.name,
+            speaker: ChatMessage.getSpeaker({actor: this.actor, token}),
+            flags: {"core.canPopout": true}
+        };
+        // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
+        if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
+            chatData.flags["pl1e.itemData"] = templateData.item;
+        }
+        await ChatMessage.create(chatData);
     }
+
+    //endregion
 
 }

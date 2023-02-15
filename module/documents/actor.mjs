@@ -1,4 +1,4 @@
-import {Pl1eHelpers} from "../helpers/helpers.js";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -129,6 +129,8 @@ export class Pl1eActor extends Actor {
 
     /**
      * Prepare Character type specific data
+     * @param systemData
+     * @private
      */
     _prepareCharacterData(systemData) {
         if (this.type !== 'character') return;
@@ -136,6 +138,8 @@ export class Pl1eActor extends Actor {
 
     /**
      * Prepare NPC type specific data.
+     * @param systemData
+     * @private
      */
     _prepareNpcData(systemData) {
         if (this.type !== 'npc') return;
@@ -167,6 +171,8 @@ export class Pl1eActor extends Actor {
 
     /**
      * Prepare NPC type specific data.
+     * @param systemData
+     * @private
      */
     _prepareMerchantData(systemData) {
         if (this.type !== 'merchant') return;
@@ -182,6 +188,7 @@ export class Pl1eActor extends Actor {
     /**
      * Prepare common actor data after specific process
      * @param systemData
+     * @private
      */
     _prepareCommonDataAfter(systemData) {
         const actorResources = systemData.resources;
@@ -226,6 +233,8 @@ export class Pl1eActor extends Actor {
 
     /**
      * Prepare character roll data.
+     * @param data
+     * @private
      */
     _getCharacterRollData(data) {
         if (this.type !== 'character') return;
@@ -246,6 +255,8 @@ export class Pl1eActor extends Actor {
 
     /**
      * Prepare NPC roll data.
+     * @param data
+     * @private
      */
     _getNpcRollData(data) {
         if (this.type !== 'npc') return;
@@ -255,6 +266,8 @@ export class Pl1eActor extends Actor {
 
     /**
      * Prepare Merchant roll data.
+     * @param data
+     * @private
      */
     _getMerchantRollData(data) {
         if (this.type !== 'npc') return;

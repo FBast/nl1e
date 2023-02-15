@@ -1,5 +1,5 @@
 import {PL1E} from "../helpers/config.mjs";
-import {Pl1eHelpers} from "../helpers/helpers.js";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 
 /**

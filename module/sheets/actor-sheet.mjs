@@ -1,5 +1,5 @@
 import {PL1E} from "../helpers/config.mjs";
-import {Pl1eHelpers} from "../helpers/helpers.js";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 
 /**
@@ -118,6 +118,7 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".consumable-toggle").on("click", ev => Pl1eEvent.onUseConsumable(ev, this.actor));
         html.find(".consumable-reload").on("click", ev => Pl1eEvent.onReloadConsumable(ev, this.actor));
         html.find(".ability-toggle").on("click", ev => Pl1eEvent.onToggleAbility(ev, this.actor));
+        html.find(".ability-use").on("click", ev => Pl1eEvent.onUseAbility(ev, this.actor))
 
         // Highlights indications
         html.find('.resource-label,.characteristic-label,.skill-label')

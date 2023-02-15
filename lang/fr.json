@@ -232,7 +232,7 @@
   "MACRO.UnownedWarn": "Cet objet ne vous appartient pas",
   "MACRO.MissingTargetWarn": "You should select a target",
   "MACRO.MultipleTargetsWarn": "You cant target multiple targets",
-  "MACRO.NotMemorizedInfo": "This ability is not memorized",
+  "MACRO.NotMemorizedWarn": "This ability is not memorized",
 
   "TOOLTIP.Str": "La force représente la puissance musculaire instantané, c'est-à-dire lors d'un effort bref et intense. Plus un personnage est fort plus sa masse musculaire est importante.",
   "TOOLTIP.Agi": "L'agilité représente la précision et la rapidité musculaire, plus un personnage en possédera plus il sera à même d'effectuer des mouvements délicats et ceci rapidement.",
