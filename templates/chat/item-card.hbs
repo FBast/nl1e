@@ -14,40 +14,22 @@
 
     <div class="card-buttons">
 
-        <div class="dice-tooltip" style="display: block;">
-            <section class="tooltip-part">
-                <div class="dice">
-                    <ol class="dice-rolls">
-                        {{log mainRoll.dice.[0].results}}
-                        {{#each mainRoll.dice.[0].results as |roll|}}
-                            <li class="roll die d8 {{#if roll.success}}success{{else}}failure{{/if}}">{{roll.result}}</li>
-                        {{/each}}
-                    </ol>
+        {{#if hasOppositeRolls}}
+            {{#each oppositeRolls as |oppositeRoll|}}
+                <div class="form-group">
+                    {{localize "CHAT.OppositeRolls"}}
+                    {{minus ../mainRoll.rolls.[0].result oppositeRoll.rolls.[0].result}}
                 </div>
-            </section>
-        </div>
-
-        {{#if hasRecovery}}
-            {{localize "DND5E.Healing"}}
-            {{#if item.system.attributes.healthRecovery.apply}}
-                <i class="item-info fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRecovery"}}'>
-                    <label>{{item.system.attributes.healthRecovery.value}}</label>
-                </i>
-            {{/if}}
-            {{#if item.system.attributes.staminaRecovery.apply}}
-                <i class="item-info fas fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRecovery"}}'>
-                    <label>{{item.system.attributes.staminaRecovery.value}}</label>
-                </i>
-            {{/if}}
-            {{#if item.system.attributes.manaRecovery.apply}}
-                <i class="item-info fas fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRecovery"}}'>
-                    <label>{{item.system.attributes.manaRecovery.value}}</label>
-                </i>
-            {{/if}}
+            {{/each}}
+        {{else if hasMainRoll}}
+            <div class="form-group">
+                {{localize "CHAT.MainRoll"}}
+                {{mainRoll.rolls.[0].result}}
+            </div>
         {{/if}}
 
         {{#if hasDamage}}
-            {{localize "DND5E.Damage"}}
+            {{localize "PL1E.Damage"}}
             {{#if item.system.attributes.slashing.apply}}
                 <i class="item-info fas fa-axe-battle hover-green" data-tooltip="{{localize "PL1E.Slashing"}}">
                     <label>{{item.system.attributes.slashing.value}}</label>
@@ -70,31 +52,25 @@
             {{/if}}
         {{/if}}
 
-        {{#if isVersatile}}
-        <button data-action="versatile">{{ localize "DND5E.Versatile" }}</button>
+        {{#if hasRecovery}}
+            {{localize "PL1E.Recovery"}}
+            {{#if item.system.attributes.healthRecovery.apply}}
+                <i class="item-info fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRecovery"}}'>
+                    <label>{{item.system.attributes.healthRecovery.value}}</label>
+                </i>
+            {{/if}}
+            {{#if item.system.attributes.staminaRecovery.apply}}
+                <i class="item-info fas fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRecovery"}}'>
+                    <label>{{item.system.attributes.staminaRecovery.value}}</label>
+                </i>
+            {{/if}}
+            {{#if item.system.attributes.manaRecovery.apply}}
+                <i class="item-info fas fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRecovery"}}'>
+                    <label>{{item.system.attributes.manaRecovery.value}}</label>
+                </i>
+            {{/if}}
         {{/if}}
 
-        {{#if hasSave}}
-        <button data-action="save" data-ability="{{data.save.ability}}">
-            {{ localize "DND5E.SavingThrow" }} {{labels.save}}
-        </button>
-        {{/if}}
-
-        {{#if data.formula}}
-        <button data-action="formula">{{ localize "DND5E.OtherFormula"}}</button>
-        {{/if}}
-
-        {{#if hasAreaTarget}}
-        <button data-action="placeTemplate">{{ localize "DND5E.PlaceTemplate" }}</button>
-        {{/if}}
-
-        {{#if isTool}}
-        <button data-action="toolCheck" data-ability="{{data.ability.value}}">{{ localize "DND5E.Use" }} {{item.name}}</button>
-        {{/if}}
-
-        {{#if hasAbilityCheck}}
-        <button data-action="abilityCheck" data-ability="{{data.ability}}">{{labels.abilityCheck}}</button>
-        {{/if}}
     </div>
 
     <footer class="card-footer">

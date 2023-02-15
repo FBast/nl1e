@@ -394,20 +394,22 @@ export class Pl1eItem extends Item {
             return ui.notifications.info(game.i18n.localize("MACRO.NotEnoughStaminaWarn"))
         if (this.system.attributes.manaCost.apply && this.system.attributes.manaCost.value > actor.system.resources.mana.value)
             return ui.notifications.info(game.i18n.localize("MACRO.NotEnoughManaWarn"))
-        // Launch main roll
-        const mainSkill = actor.system.skills[this.system.attributes.mainRoll.value];
-        let mainStr = mainSkill.number + "d" + mainSkill.dice + "xo" + mainSkill.dice + "cs>=4";
-        let mainRoll = new Roll(mainStr, actor.getRollData());
+
         // Target selection template
+        let template;
         if (this.system.attributes.areaTargetType.apply) {
-            await AbilityTemplate.fromItem(this)?.drawPreview();
+            template = await AbilityTemplate.fromItem(this)?.drawPreview();
         }
-        mainRoll = await mainRoll.toMessage({
-            speaker: ChatMessage.getSpeaker({actor: actor}),
-            rollMode: game.settings.get('core', 'rollMode'),
-        });
-        let oppositeRolls = [];
+
+        // Launch main roll
+        let mainRoll;
+        if (this.system.attributes.mainRoll.apply) {
+            const mainSkill = actor.system.skills[this.system.attributes.mainRoll.value];
+            mainRoll = await actor.rollSkill(mainSkill);
+        }
+
         // Launch opposite roll
+        let oppositeRolls = [];
         if (this.system.attributes.oppositeRoll.apply) {
             let targets = game.user.targets;
             if (targets < 1) return ui.notifications.info(game.i18n.localize("MACRO.NoTarget"));
@@ -421,12 +423,10 @@ export class Pl1eItem extends Item {
                 return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (1 MAX)" )
             for (let target of targets) {
                 const defenseSkill = target.actor.system.skills[this.system.attributes.oppositeRoll.value];
-                let defenseStr = defenseSkill.number + "d" + defenseSkill.dice + "xo" + defenseSkill.dice + "cs>=4";
-                let oppositeRoll = new Roll(defenseStr, target.actor.getRollData());
-                oppositeRoll = await oppositeRoll.roll();
-                oppositeRolls.push(oppositeRoll);
+                oppositeRolls.push(await target.actor.rollSkill(defenseSkill));
             }
         }
+
         // Render the chat card template
         const token = this.actor.token;
         const templateData = {
@@ -457,6 +457,9 @@ export class Pl1eItem extends Item {
             chatData.flags["pl1e.itemData"] = templateData.item;
         }
         await ChatMessage.create(chatData);
+
+        // Destroy the template after fetching target with df-template
+        await template[0].delete();
     }
 
     //endregion

@@ -6,6 +6,8 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
  */
 export class Pl1eActor extends Actor {
 
+    //region Data management
+
     /** @override */
     async _preCreate(data, options, userId) {
         await super._preCreate(data, options, userId);
@@ -273,6 +275,18 @@ export class Pl1eActor extends Actor {
         if (this.type !== 'npc') return;
 
         // Process additional NPC data here.
+    }
+
+    //endregion
+
+    async rollSkill(skill) {
+        let formula = skill.number + "d" + skill.dice + "xo" + skill.dice + "cs>=4";
+        let roll = new Roll(formula, this.getRollData());
+        return await roll.toMessage({
+            speaker: ChatMessage.getSpeaker({actor: this}),
+            flavor: '[' + game.i18n.localize("PL1E.Skill") + '] ' + game.i18n.localize(skill.label),
+            rollMode: game.settings.get('core', 'rollMode'),
+        });
     }
 
 }
