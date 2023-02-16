@@ -38,6 +38,16 @@
         "id": "df-templates",
         "type": "module",
         "manifest": "https://raw.githubusercontent.com/flamewave000/dragonflagon-fvtt/master/df-templates/module.json"
+      },
+      {
+        "id": "sequencer",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/fantasycalendar/FoundryVTT-Sequencer/master/module.json"
+      },
+      {
+        "id": "jb2a",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/Jules-Bens-Aa/JB2A_DnD5e/main/module.json"
       }
     ]
   },

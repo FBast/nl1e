@@ -224,36 +224,31 @@ export class Pl1eHelpers {
 
     /**
      * Reset all clones using their sourceId
+     * @param {Pl1eItem} item
      * @returns {Promise<void>}
      */
-    static async resetClones(sourceId) {
-        let updateCount = 0;
-        let content = '';
-        for (let [uuid, key] of Object.entries(game.documentIndex.uuids)) {
-            for (let leaf of key.leaves) {
+    static async resetClones(item) {
+        for (let [key, value] of Object.entries(game.documentIndex.uuids[item.uuid])) {
+            for (let leaf of value) {
                 let document = leaf.entry;
-
                 // Resetting sub items
                 if (document.system.subItemsMap !== undefined) {
                     for (let [key, subItem] of document.system.subItemsMap) {
                         if (subItem.getFlag('core', 'sourceId') === undefined) continue;
-                        if (subItem.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
+                        if (subItem.getFlag('core', 'sourceId').split('.')[1] !== item._id) continue;
                         let original = await fromUuid(subItem.getFlag('core', 'sourceId'));
                         if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(subItem.type)) {
                             subItem.name = original.name;
                             subItem.img = original.img;
                             subItem.system.description = original.system.description;
                             subItem.system.attributes = original.system.attributes;
-                            updateCount++;
-                            content += subItem._id + '\n'
                         }
                     }
                     document.saveEmbedItems();
                 }
-
                 // Resetting item
                 if (document.getFlag('core', 'sourceId') === undefined) continue;
-                if (document.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
+                if (document.getFlag('core', 'sourceId').split('.')[1] !== item._id) continue;
                 let original = await fromUuid(document.getFlag('core', 'sourceId'));
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(document.type)) {
                     await document.update({
@@ -262,20 +257,11 @@ export class Pl1eHelpers {
                         "system.description": original.system.description,
                         "system.attributes": original.system.attributes
                     })
-                    updateCount++;
-                    content += document._id + '\n'
+                    console.log("PL1E | Resetting the " + document.type + " : " + document._id);
                 } else {
                     console.warn("Unknown type : " + document.type);
                 }
             }
-        }
-
-        if (updateCount > 0) {
-            await ChatMessage.create({
-                rollMode: game.settings.get('core', 'rollMode'),
-                flavor: game.i18n.localize("CHAT.FlavorCloneReset"),
-                content: content
-            });
         }
     }
 
