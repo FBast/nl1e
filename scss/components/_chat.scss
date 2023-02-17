@@ -41,6 +41,11 @@
       -ms-user-select: text;
       user-select: text;
     }
+
+    .card-stats {
+      margin: 10px 5px 10px 5px;
+    }
+
   }
 
   .card-buttons {
@@ -80,19 +85,13 @@
 
 .dice-roll .dice-total {
   &.success {
-    color: inherit;
+    color: green;
     background: #c7d0c0;
     border: 1px solid #006c00;
   }
   &.failure {
-    color: inherit;
+    color: red;
     background: #ffdddd;
     border: 1px solid #6e0000;
-  }
-  &.critical {
-    color: green;
-  }
-  &.fumble {
-    color: red;
   }
 }

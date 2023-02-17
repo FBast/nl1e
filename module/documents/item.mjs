@@ -18,7 +18,7 @@ export class Pl1eItem extends Item {
     get hasDamage() {
         let itemAttributes = this.system.attributes;
         return itemAttributes.slashing.apply || itemAttributes.crushing.apply || itemAttributes.piercing.apply
-        || itemAttributes.fire.apply || itemAttributes.cold.apply || itemAttributes.shock.apply || itemAttributes.acid.apply;
+        || itemAttributes.burn.apply || itemAttributes.cold.apply || itemAttributes.shock.apply || itemAttributes.acid.apply;
     }
 
     //endregion
@@ -385,45 +385,50 @@ export class Pl1eItem extends Item {
     }
 
     async useAbility(actor) {
-        // If is not memorized
-        if (!this.system.isMemorized) return ui.notifications.warn(game.i18n.localize("MACRO.NotMemorizedWarn"));
-        // If cost is not affordable
-        if (this.system.attributes.healthCost.apply && this.system.attributes.healthCost.value > actor.system.resources.health.value)
-            return ui.notifications.info(game.i18n.localize("MACRO.NotEnoughHealthWarn"))
-        if (this.system.attributes.staminaCost.apply && this.system.attributes.staminaCost.value > actor.system.resources.stamina.value)
-            return ui.notifications.info(game.i18n.localize("MACRO.NotEnoughStaminaWarn"))
-        if (this.system.attributes.manaCost.apply && this.system.attributes.manaCost.value > actor.system.resources.mana.value)
-            return ui.notifications.info(game.i18n.localize("MACRO.NotEnoughManaWarn"))
+        if (!this._isContextValid(actor)) return;
+        const itemAttributes = this.system.attributes;
 
         // Target selection template
-        let template;
-        if (this.system.attributes.areaTargetType.apply) {
-            template = await AbilityTemplate.fromItem(this)?.drawPreview();
+        await actor.sheet?.minimize();
+        let templates = [];
+        for (let i = 0; i < itemAttributes.targetNumber.value; i++) {
+            templates.push(await AbilityTemplate.fromItem(this)?.drawPreview());
         }
+        await actor.sheet?.maximize();
+
+        // Destroy templates after fetching target with df-template
+        // for (const templates of templatesArray) {
+        //     for (const template of templates) {
+        //         await template.delete();
+        //     }
+        // }
 
         // Launch main roll
         let mainRoll;
-        if (this.system.attributes.mainRoll.apply) {
-            const mainSkill = actor.system.skills[this.system.attributes.mainRoll.value];
+        if (itemAttributes.mainRoll.apply) {
+            const mainSkill = actor.system.skills[itemAttributes.mainRoll.value];
             mainRoll = await actor.rollSkill(mainSkill);
+            mainRoll['stats'] = this._calculateStats(mainRoll.result);
         }
 
         // Launch opposite roll
         let oppositeRolls = [];
-        if (this.system.attributes.oppositeRoll.apply) {
+        if (itemAttributes.oppositeRoll.apply) {
             let targets = game.user.targets;
             if (targets < 1) return ui.notifications.info(game.i18n.localize("MACRO.NoTarget"));
-            if (this.system.attributes.multiTargets.apply) {
-                const multiTargets = this.system.attributes.multiTargets.value;
-                if (targets.size > multiTargets)
-                    return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (" + multiTargets + " MAX)");
+            if (itemAttributes.targetNumber.apply) {
+                const targetNumber = itemAttributes.targetNumber.value;
+                if (targets.size > targetNumber)
+                    return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (" + targetNumber + " MAX)");
                 targets = game.user.targets;
             }
             else if (targets.size > 1)
                 return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (1 MAX)" )
             for (let target of targets) {
-                const defenseSkill = target.actor.system.skills[this.system.attributes.oppositeRoll.value];
-                oppositeRolls.push(await target.actor.rollSkill(defenseSkill));
+                const defenseSkill = target.actor.system.skills[itemAttributes.oppositeRoll.value];
+                const defenseRoll = await target.actor.rollSkill(defenseSkill);
+                defenseRoll['stats'] = this._calculateStats(defenseRoll.result, target.actor);
+                oppositeRolls.push(defenseRoll);
             }
         }
 
@@ -433,11 +438,9 @@ export class Pl1eItem extends Item {
             actor: this.actor.toObject(false),
             tokenId: token?.uuid || null,
             item: this.toObject(false),
-            data: this.toObject().system,
             labels: this.labels,
-            hasMainRoll: this.system.attributes.mainRoll.apply,
+            simpleRoll: oppositeRolls.length <= 0,
             mainRoll: mainRoll,
-            hasOppositeRolls: oppositeRolls.length > 0,
             oppositeRolls: oppositeRolls,
             hasRecovery: this.hasRecovery,
             hasDamage: this.hasDamage
@@ -448,7 +451,7 @@ export class Pl1eItem extends Item {
             user: game.user.id,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             content: html,
-            flavor: this.system.description || this.name,
+            // flavor: this.system.description || this.name,
             speaker: ChatMessage.getSpeaker({actor: this.actor, token}),
             flags: {"core.canPopout": true}
         };
@@ -457,9 +460,139 @@ export class Pl1eItem extends Item {
             chatData.flags["pl1e.itemData"] = templateData.item;
         }
         await ChatMessage.create(chatData);
+    }
 
-        // Destroy the template after fetching target with df-template
-        await template[0].delete();
+    /**
+    * Check if the ability context is valid
+    * @private
+    */
+    _isContextValid(actor) {
+        let isValid = true;
+        const itemAttributes = this.system.attributes;
+        // If is not in battle
+        // if (!actor.token.inCombat) {
+        //     ui.notifications.warn(game.i18n.localize("MACRO.NotInBattle"));
+        //     isValid = false;
+        // }
+        // If is not memorized
+        if (!this.system.isMemorized) {
+            ui.notifications.warn(game.i18n.localize("MACRO.NotMemorizedWarn"));
+            isValid = false;
+        }
+        // If cost is not affordable
+        if (itemAttributes.healthCost.apply && itemAttributes.healthCost.value > actor.system.resources.health.value) {
+            ui.notifications.info(game.i18n.localize("MACRO.NotEnoughHealthWarn"));
+            isValid = false;
+        }
+        if (itemAttributes.staminaCost.apply && itemAttributes.staminaCost.value > actor.system.resources.stamina.value) {
+            ui.notifications.info(game.i18n.localize("MACRO.NotEnoughStaminaWarn"));
+            isValid = false;
+        }
+        if (itemAttributes.manaCost.apply && itemAttributes.manaCost.value > actor.system.resources.mana.value) {
+            ui.notifications.info(game.i18n.localize("MACRO.NotEnoughManaWarn"));
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    _calculateStats(rollResult, targetActor = undefined) {
+        const itemAttributes = this.system.attributes;
+        const actorAttributes = this.actor.system.attributes;
+        const targetActorAttributes = targetActor?.system.attributes;
+        let stats = {
+            slashing: 0,
+            crushing: 0,
+            piercing: 0,
+            burn: 0,
+            cold: 0,
+            shock: 0,
+            acid: 0,
+            healthRecovery: 0,
+            staminaRecovery: 0,
+            manaRecovery: 0,
+            healthVampirism: 0,
+            staminaVampirism: 0,
+            manaVampirism: 0,
+        };
+        // Only applied when target actor is set
+        if (targetActor !== undefined) {
+            // Damages
+            if (itemAttributes.slashing.apply)
+                stats.slashing += itemAttributes.slashing.value * rollResult - targetActorAttributes.slashingReduction;
+            if (itemAttributes.crushing.apply)
+                stats.crushing += itemAttributes.crushing.value * rollResult - targetActorAttributes.crushingReduction;
+            if (actorAttributes.piercing.apply)
+                stats.piercing += itemAttributes.piercing.value * rollResult - targetActorAttributes.piercingReduction;
+            if (itemAttributes.burn.apply)
+                stats.burn += itemAttributes.burn.value * rollResult - targetActorAttributes.burnReduction;
+            if (itemAttributes.cold.apply)
+                stats.cold += itemAttributes.cold.value * rollResult - targetActorAttributes.coldReduction;
+            if (actorAttributes.shock.apply)
+                stats.shock += itemAttributes.shock.value * rollResult - targetActorAttributes.shockReduction;
+            if (actorAttributes.acid.apply)
+                stats.acid += itemAttributes.acid.value * rollResult - targetActorAttributes.acidReduction;
+            // Weapon damages
+
+            // Vampirism
+            // if (itemAttributes.healthVampirism.apply)
+            //     stats.healthVampirism = itemAttributes.healthVampirism.value * rollResult;
+            // if (itemAttributes.staminaVampirism.apply)
+            //     stats.staminaVampirism = itemAttributes.staminaVampirism.value * rollResult;
+            // if (itemAttributes.manaVampirism.apply)
+            //     stats.manaVampirism = itemAttributes.manaVampirism.value * rollResult;
+        }
+        // Recovery
+        if (itemAttributes.healthRecovery.apply)
+            stats.healthRecovery = itemAttributes.healthRecovery.value * rollResult;
+        if (itemAttributes.staminaRecovery.apply)
+            stats.staminaRecovery = itemAttributes.staminaRecovery.value * rollResult;
+        if (itemAttributes.manaRecovery.apply)
+            stats.manaRecovery = itemAttributes.manaRecovery.value * rollResult;
+        // Filter stats
+        const asArray = Object.entries(stats);
+        const filtered = asArray.filter(([key, value]) => value > 0);
+        return Object.fromEntries(filtered);
+    }
+
+    //endregion
+
+    //region Chat messages
+
+    /**
+     * Handle execution of a chat card action via a click event on one of the card buttons
+     * @param {Event} event       The originating click event
+     * @returns {Promise}         A promise which resolves once the handler workflow is complete
+     * @private
+     */
+    static async _onChatCardAction(event) {
+        event.preventDefault();
+
+        // Extract card data
+        const button = event.currentTarget;
+        button.disabled = true;
+        const action = button.dataset.action;
+
+        // Handle different actions
+        switch (action) {
+            case "apply":
+                console.log("Applying...")
+                break;
+            case "cancel":
+                console.log("Canceling...")
+                break;
+        }
+
+        // Re-enable the button
+        button.disabled = false;
+    }
+
+    /**
+     * Apply listeners to chat messages.
+     * @param {html} html  Rendered chat message.
+     */
+    static chatListeners(html) {
+        html.on("click", ".card-buttons button", this._onChatCardAction.bind(this));
+        // html.on("click", ".item-name", this._onChatCardToggleContent.bind(this));
     }
 
     //endregion

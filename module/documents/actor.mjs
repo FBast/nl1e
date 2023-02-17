@@ -114,7 +114,7 @@ export class Pl1eActor extends Actor {
         actorAttributes.slashingReduction = actorAttributes.slashingReductions.reduce((a, b) => a + b, 0);
         actorAttributes.crushingReduction = actorAttributes.crushingReductions.reduce((a, b) => a + b, 0);
         actorAttributes.piercingReduction = actorAttributes.piercingReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.fireReduction = actorAttributes.fireReductions.reduce((a, b) => a + b, 0);
+        actorAttributes.burnReduction = actorAttributes.burnReductions.reduce((a, b) => a + b, 0);
         actorAttributes.coldReduction = actorAttributes.coldReductions.reduce((a, b) => a + b, 0);
         actorAttributes.acidReduction = actorAttributes.acidReductions.reduce((a, b) => a + b, 0);
         actorAttributes.shockReduction = actorAttributes.shockReductions.reduce((a, b) => a + b, 0);
@@ -282,11 +282,15 @@ export class Pl1eActor extends Actor {
     async rollSkill(skill) {
         let formula = skill.number + "d" + skill.dice + "xo" + skill.dice + "cs>=4";
         let roll = new Roll(formula, this.getRollData());
-        return await roll.toMessage({
+        roll = await roll.toMessage({
             speaker: ChatMessage.getSpeaker({actor: this}),
             flavor: '[' + game.i18n.localize("PL1E.Skill") + '] ' + game.i18n.localize(skill.label),
             rollMode: game.settings.get('core', 'rollMode'),
         });
+        return {
+            "result": roll.rolls[0].result,
+            "actor": this
+        };
     }
 
 }

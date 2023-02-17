@@ -35,11 +35,6 @@
         "manifest": "https://raw/githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
       },
       {
-        "id": "df-templates",
-        "type": "module",
-        "manifest": "https://raw.githubusercontent.com/flamewave000/dragonflagon-fvtt/master/df-templates/module.json"
-      },
-      {
         "id": "sequencer",
         "type": "module",
         "manifest": "https://raw.githubusercontent.com/fantasycalendar/FoundryVTT-Sequencer/master/module.json"

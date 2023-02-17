@@ -146,8 +146,8 @@
           "crushingReduction": 0,
           "piercingReductions": [],
           "piercingReduction": 0,
-          "fireReductions": [],
-          "fireReduction": 0,
+          "burnReductions": [],
+          "burnReduction": 0,
           "coldReductions": [],
           "coldReduction": 0,
           "acidReductions": [],
@@ -194,11 +194,14 @@
     "types": ["feature", "ability", "weapon", "wearable", "consumable", "common"],
     "templates": {
       "base": {
-        "description": "",
         "subItemsMap": []
       },
       "item": {
         "attributes": {
+          "description": {
+            "value": "",
+            "apply": true
+          },
           "rarity": {
             "value": 0,
             "apply": false
@@ -238,7 +241,7 @@
             "value": 0,
             "apply": false
           },
-          "fire": {
+          "burn": {
             "value": 0,
             "apply": false
           },
@@ -286,7 +289,7 @@
             "value": 0,
             "apply": false
           },
-          "fireReduction": {
+          "burnReduction": {
             "value": 0,
             "apply": false
           },
@@ -402,7 +405,7 @@
           "value": 1,
           "apply": false
         },
-        "multiTargets": {
+        "targetNumber": {
           "value": 1,
           "apply": false
         },

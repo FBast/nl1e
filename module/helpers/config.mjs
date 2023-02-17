@@ -323,7 +323,12 @@ PL1E.skills = {
 }
 
 PL1E.attributes = {
-    // Header
+    // Hide
+    "description": {
+        "type": "text",
+        "label": "PL1E.Description",
+        "hide": true
+    },
     "level": {
         "type": "number",
         "label": "PL1E.Level",
@@ -415,9 +420,9 @@ PL1E.attributes = {
         "label": "PL1E.Piercing",
         "hide": false
     },
-    "fire": {
+    "burn": {
         "type": "number",
-        "label": "PL1E.Fire",
+        "label": "PL1E.Burn",
         "hide": false
     },
     "cold": {
@@ -536,10 +541,10 @@ PL1E.attributes = {
         "operator": "push",
         "hide": false
     },
-    "fireReduction": {
+    "burnReduction": {
         "type": "number",
-        "label": "PL1E.FireReduction",
-        "path": "attributes.fireReductions",
+        "label": "PL1E.BurnReduction",
+        "path": "attributes.burnReductions",
         "operator": "push",
         "hide": false
     },
@@ -598,9 +603,9 @@ PL1E.attributes = {
         "type": "number",
         "label": "PL1E.AreaWidth",
     },
-    "multiTargets": {
+    "targetNumber": {
         "type": "number",
-        "label": "PL1E.MultiTargets",
+        "label": "PL1E.TargetNumber",
         "hide": false
     },
     "healthCost": {
@@ -970,25 +975,9 @@ PL1E.experienceTemplatesValues = {
 }
 
 PL1E.areaTargetTypes = {
-    "single": "single",
+    "single": "circle",
+    "circle": "circle",
     "cone": "cone",
-    "cube": "rect",
-    "cylinder": "circle",
-    "line": "ray",
-    "radius": "circle",
-    "sphere": "circle",
     "square": "rect",
-    "wall": "ray"
-};
-
-PL1E.areaTargetTypes = {
-    "single": "single",
-    "cone": "cone",
-    "cube": "rect",
-    "cylinder": "circle",
     "line": "ray",
-    "radius": "circle",
-    "sphere": "circle",
-    "square": "rect",
-    "wall": "ray"
 };

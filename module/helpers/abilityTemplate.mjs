@@ -38,14 +38,13 @@ export class AbilityTemplate extends MeasuredTemplate {
   */
   static fromItem(item) {
     let areaTargetType = item.system.attributes.areaTargetType.value || {};
-    if ( !areaTargetType ) return null;
+    if (!areaTargetType) return null;
 
     const areaWidth = item.system.attributes.areaWidth.value;
-    areaTargetType = PL1E.areaTargetTypes[areaTargetType];
 
     // Prepare template data
     const templateData = {
-      t: areaTargetType,
+      t: PL1E.areaTargetTypes[areaTargetType],
       user: game.user.id,
       distance: areaWidth,
       direction: 0,
@@ -93,9 +92,6 @@ export class AbilityTemplate extends MeasuredTemplate {
     this.layer.activate();
     this.layer.preview.addChild(this);
 
-    // Hide the sheet that originated the preview
-    this.actorSheet?.minimize();
-
     // Activate interactivity
     return this.activatePreviewListeners(initialLayer);
   }
@@ -140,7 +136,6 @@ export class AbilityTemplate extends MeasuredTemplate {
     canvas.app.view.oncontextmenu = null;
     canvas.app.view.onwheel = null;
     this.#initialLayer.activate();
-    await this.actorSheet?.maximize();
   }
 
   /* -------------------------------------------- */
@@ -186,6 +181,8 @@ export class AbilityTemplate extends MeasuredTemplate {
     await this._finishPlacement(event);
     const destination = canvas.grid.getSnappedPosition(this.document.x, this.document.y, 2);
     this.document.updateSource(destination);
+    const gridPositions = this._getGridHighlightPositions();
+    this._targetTokensInPositions(gridPositions);
     this.#events.resolve(canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]));
   }
 
@@ -198,6 +195,53 @@ export class AbilityTemplate extends MeasuredTemplate {
   async _onCancelPlacement(event) {
     await this._finishPlacement(event);
     this.#events.reject();
+  }
+
+  /**
+   * Target all tokens inside the template
+   * @param gridPositions
+   * @private
+   */
+  _targetTokensInPositions(gridPositions) {
+    for (let gridPosition of gridPositions) {
+      for (let token of canvas.tokens.placeables) {
+        if (token.x === gridPosition.x && token.y === gridPosition.y) {
+          token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
+          console.log(token.name + " is inside !")
+        }
+      }
+    }
+  }
+
+  _getGridHighlightPositions() {
+    const grid = canvas.grid.grid;
+    const d = canvas.dimensions;
+    const {x, y, distance} = this.document;
+
+    // Get number of rows and columns
+    const [maxRow, maxCol] = grid.getGridPositionFromPixels(d.width, d.height);
+    let nRows = Math.ceil(((distance * 1.5) / d.distance) / (d.size / grid.h));
+    let nCols = Math.ceil(((distance * 1.5) / d.distance) / (d.size / grid.w));
+    [nRows, nCols] = [Math.min(nRows, maxRow), Math.min(nCols, maxCol)];
+
+    // Get the offset of the template origin relative to the top-left grid space
+    const [tx, ty] = grid.getTopLeft(x, y);
+    const [row0, col0] = grid.getGridPositionFromPixels(tx, ty);
+    const [hx, hy] = [Math.ceil(grid.w / 2), Math.ceil(grid.h / 2)];
+    const isCenter = (x - tx === hx) && (y - ty === hy);
+
+    // Identify grid coordinates covered by the template Graphics
+    const positions = [];
+    for ( let r = -nRows; r < nRows; r++ ) {
+      for ( let c = -nCols; c < nCols; c++ ) {
+        const [gx, gy] = grid.getPixelsFromGridPosition(row0 + r, col0 + c);
+        const [testX, testY] = [(gx+hx) - x, (gy+hy) - y];
+        const contains = ((r === 0) && (c === 0) && isCenter ) || grid._testShape(testX, testY, this.shape);
+        if ( !contains ) continue;
+        positions.push({x: gx, y: gy});
+      }
+    }
+    return positions;
   }
 
 }

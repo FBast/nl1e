@@ -66,7 +66,7 @@
   "PL1E.SlashingReduction": "Slashing Reduction",
   "PL1E.CrushingReduction": "Crushing Reduction",
   "PL1E.PiercingReduction": "Piercing Reduction",
-  "PL1E.FireReduction": "Fire Reduction",
+  "PL1E.BurnReduction": "Burn Reduction",
   "PL1E.ColdReduction": "Cold Reduction",
   "PL1E.AcidReduction": "Acid Reduction",
   "PL1E.ShockReduction": "Shock Reduction",
@@ -228,7 +228,13 @@
   "CHAT.Silver": " silver, ",
   "CHAT.Copper": " copper",
 
-  "MACRO.NoActorSelectedWarn": "Vous devez selectionner un acteur",
+  "CHAT.Success": "Success",
+  "CHAT.Failure": "Failure",
+  "CHAT.Damage": "Damage",
+  "CHAT.Recovery": "Recovery",
+
+  "MACRO.NotInBattle": "You are not in battle",
+  "MACRO.NoActorSelectedWarn": "You should select an actor",
   "MACRO.UnownedWarn": "You don't own this item",
   "MACRO.MissingTargetWarn": "You should select a target",
   "MACRO.MultipleTargetsWarn": "You cant target multiple targets",

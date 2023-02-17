@@ -254,7 +254,6 @@ export class Pl1eHelpers {
                     await document.update({
                         "name": original.name,
                         "img": original.img,
-                        "system.description": original.system.description,
                         "system.attributes": original.system.attributes
                     })
                     console.log("PL1E | Resetting the " + document.type + " : " + document._id);
