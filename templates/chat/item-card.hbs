@@ -10,64 +10,26 @@
             <div class="dice-roll">
                 <div class="dice-result">
                     <h4 class="dice-total">
-                        {{#if (gt mainRoll.result 0)}}
-                            <div class="color-green">{{mainRoll.result}} ({{localize "CHAT.Success"}})</div>
-                        {{else if (eq mainRoll.result 0)}}
-                            {{mainRoll.result}} ({{localize "CHAT.PartialSuccess"}})
+                        {{#if (gt actorRoll.result 0)}}
+                            <div class="color-green">{{actorRoll.result}} ({{localize "CHAT.Success"}})</div>
+                        {{else if (eq actorRoll.result 0)}}
+                            {{actorRoll.result}} ({{localize "CHAT.PartialSuccess"}})
                         {{else}}
-                            <div class="color-red">{{mainRoll.result}} ({{localize "CHAT.Failure"}})</div>
+                            <div class="color-red">{{actorRoll.result}} ({{localize "CHAT.Failure"}})</div>
                         {{/if}}
                     </h4>
                 </div>
             </div>
             <div class="card-stats">
-            {{#if hasDamage}}
-                {{#unless (eq mainRoll.stats.slashing undefined)}}
-                    <i class="fas fa-axe-battle hover-green" data-tooltip="{{localize "PL1E.Slashing"}}">
-                        <label>{{mainRoll.stats.slashing}}</label>
+            {{#each actorRoll.attributes as |attribute id|}}
+                {{#if (ne attribute.fas undefined)}}
+                    <i class="fas {{attribute.fas}} hover-green" data-tooltip="{{localize attribute.label}}">
+                        <label>{{attribute.value}}</label>
                     </i>
-                {{/unless}}
-                {{#unless (eq mainRoll.stats.crushing undefined)}}
-                    <i class="fas fa-hammer-war hover-green" data-tooltip='{{localize "PL1E.Crushing"}}'>
-                        <label>{{mainRoll.stats.crushing}}</label>
-                    </i>
-                {{/unless}}
-                {{#unless (eq mainRoll.stats.piercing undefined)}}
-                    <i class="fas fa-dagger hover-green" data-tooltip='{{localize "PL1E.Piercing"}}'>
-                        <label>{{mainRoll.stats.piercing}}</label>
-                    </i>
-                {{/unless}}
-                {{#unless (eq mainRoll.stats.parry undefined)}}
-                    <i class="fas fa-shield hover-green" data-tooltip='{{localize "PL1E.Parry"}}'>
-                        <label>{{mainRoll.stats.parry}}</label>
-                    </i>
-                {{/unless}}
-            {{/if}}
-            {{#if hasRecovery}}
-                {{#unless (eq mainRoll.stats.healthRecovery undefined)}}
-                    <i class="fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRecovery"}}'>
-                        <label>{{mainRoll.stats.healthRecovery}}</label>
-                    </i>
-                {{/unless}}
-                {{#unless (eq mainRoll.stats.staminaRecovery undefined)}}
-                    <i class="fas fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRecovery"}}'>
-                        <label>{{mainRoll.stats.staminaRecovery}}</label>
-                    </i>
-                {{/unless}}
-                {{#unless (eq mainRoll.stats.manaRecovery undefined)}}
-                    <i class="fas fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRecovery"}}'>
-                        <label>{{mainRoll.stats.manaRecovery}}</label>
-                    </i>
-                {{/unless}}
-            </div>
-            {{/if}}
-        {{else}}
-            {{#each oppositeRolls as |oppositeRoll|}}
-                <div class="form-group">
-                    {{localize "CHAT.OppositeRolls"}}
-                    {{minus mainRoll.result oppositeRoll.result}}
-                </div>
+                {{/if}}
             {{/each}}
+        {{else}}
+
         {{/if}}
     </div>
     <div class="card-buttons">

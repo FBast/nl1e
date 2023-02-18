@@ -408,36 +408,64 @@ PL1E.attributes = {
     "slashing": {
         "type": "number",
         "label": "PL1E.Slashing",
+        "path": "resources.health.value",
+        "operator": "add",
+        "positive": false,
+        "reduction": "attributes.slashingReduction",
         "hide": false
     },
     "crushing": {
         "type": "number",
         "label": "PL1E.Crushing",
+        "path": "resources.health.value",
+        "operator": "add",
+        "positive": false,
+        "reduction": "attributes.crushingReduction",
         "hide": false
     },
     "piercing": {
         "type": "number",
         "label": "PL1E.Piercing",
+        "path": "resources.health.value",
+        "operator": "add",
+        "positive": false,
+        "reduction": "attributes.piercingReduction",
         "hide": false
     },
     "burn": {
         "type": "number",
         "label": "PL1E.Burn",
+        "path": "resources.health.value",
+        "operator": "add",
+        "positive": false,
+        "reduction": "attributes.burnReduction",
         "hide": false
     },
     "cold": {
         "type": "number",
         "label": "PL1E.Cold",
+        "path": "resources.health.value",
+        "operator": "add",
+        "positive": false,
+        "reduction": "attributes.coldReduction",
         "hide": false
     },
     "shock": {
         "type": "number",
         "label": "PL1E.Shock",
+        "path": "resources.health.value",
+        "operator": "add",
+        "positive": false,
+        "reduction": "attributes.shockReduction",
         "hide": false
     },
     "acid": {
         "type": "number",
         "label": "PL1E.Acid",
+        "path": "resources.health.value",
+        "operator": "add",
+        "positive": false,
+        "reduction": "attributes.acidReduction",
         "hide": false
     },
     // Modificators
@@ -611,38 +639,47 @@ PL1E.attributes = {
     "healthCost": {
         "type": "number",
         "label": "PL1E.HealthCost",
+        "positive" : false,
         "hide": false
     },
     "staminaCost": {
         "type": "number",
         "label": "PL1E.StaminaCost",
+        "positive" : false,
         "hide": false
     },
     "manaCost": {
         "type": "number",
         "label": "PL1E.ManaCost",
+        "positive" : false,
         "hide": false
     },
     // Recovery
     "healthRecovery": {
         "type": "number",
         "label": "PL1E.HealthRecovery",
+        "fas": "fas fa-heart",
         "path": "resources.health.value",
         "operator": "add",
+        "positive" : true,
         "hide": false
     },
     "staminaRecovery": {
         "type": "number",
         "label": "PL1E.StaminaRecovery",
+        "fas": "fas fa-wave-pulse",
         "path": "resources.stamina.value",
         "operator": "add",
+        "positive" : true,
         "hide": false
     },
     "manaRecovery": {
         "type": "number",
         "label": "PL1E.ManaRecovery",
+        "fas": "fas fa-sparkles",
         "path": "resources.mana.value",
         "operator": "add",
+        "positive" : true,
         "hide": false
     }
 }

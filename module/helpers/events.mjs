@@ -256,7 +256,7 @@ export class Pl1eEvent {
         event.stopPropagation();
 
         const characteristic = $(event.currentTarget).data("characteristic");
-        let value = element.data("value");
+        let value = $(event.currentTarget).data("value");
         if (!value || !characteristic) return;
 
         let remaining = actorSheet.actor.system.attributes.remainingCharacteristics;
@@ -408,25 +408,12 @@ export class Pl1eEvent {
         let itemId = $(event.currentTarget).data("item-id");
         const item = await fromUuid(itemId);
 
-        // Destroy templates after fetching target with df-template
-        for (const templates of item.templatesArray) {
-            for (const template of templates) {
-                await template.delete();
-            }
-        }
-
-        // Handle different actions
-        switch (action) {
-            case "apply":
-                console.log("Applying...")
-                break;
-            case "cancel":
-                console.log("Canceling...")
-                break;
-        }
+        await item.actionAbility(action);
 
         // Re-enable the button
         button.disabled = false;
     }
+
+    static async
 
 }

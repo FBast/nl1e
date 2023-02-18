@@ -8,8 +8,6 @@ import {PL1E} from "../helpers/config.mjs";
  */
 export class Pl1eItem extends Item {
 
-    templatesArray;
-
     //region Accessors
 
     get hasRecovery() {
@@ -386,69 +384,95 @@ export class Pl1eItem extends Item {
         }
     }
 
+    /**
+     * Internal type used to manage ability data
+     *
+     * @typedef {object} AbilityData
+     * @property {Pl1eActor} actor The actor using the ability
+     * @property {string} tokenId The token of the actor which originate the ability
+     * @property {Pl1eItem} item The ability itself
+     * @property {string} itemId The ability uuid
+     * @property {boolean} simpleRoll True if the roll is a simple roll (then no targetRolls)
+     * @property {any} actorRoll Roll of the actor
+     * @property {any[]} targetRolls Rolls of the targets
+     * @property {AbilityTemplate[]} templatesArray  An array of the measure templates
+     */
+
+    /**
+     * @type {AbilityData}
+     */
+    abilityData;
+
     async useAbility(actor) {
         if (!this._isContextValid(actor)) return;
         const itemAttributes = this.system.attributes;
 
         // Target selection template
-        this.templatesArray = [];
-        await actor.sheet?.minimize();
-        for (let i = 0; i < itemAttributes.targetNumber.value; i++) {
-            this.templatesArray.push(await AbilityTemplate.fromItem(this)?.drawPreview());
+        const templatesArray = [];
+        if (itemAttributes.targetNumber > 0) {
+            await actor.sheet?.minimize();
+            for (let i = 0; i < itemAttributes.targetNumber.value; i++) {
+                templatesArray.push(await AbilityTemplate.fromItem(this)?.drawPreview());
+            }
+            await actor.sheet?.maximize();
         }
-        await actor.sheet?.maximize();
 
-        // Destroy templates after fetching target with df-template
-        // for (const templates of templatesArray) {
-        //     for (const template of templates) {
-        //         await template.delete();
-        //     }
-        // }
+        let actorRoll;
+        let targetRolls = [];
 
-        // Launch main roll
-        let mainRoll;
+        // Simple Roll
         if (itemAttributes.mainRoll.apply) {
             const mainSkill = actor.system.skills[itemAttributes.mainRoll.value];
-            mainRoll = await actor.rollSkill(mainSkill);
-            mainRoll['stats'] = this._calculateStats(mainRoll.result);
-        }
-
-        // Launch opposite roll
-        let oppositeRolls = [];
-        if (itemAttributes.oppositeRoll.apply) {
-            let targets = game.user.targets;
-            if (targets < 1) return ui.notifications.info(game.i18n.localize("MACRO.NoTarget"));
-            if (itemAttributes.targetNumber.apply) {
-                const targetNumber = itemAttributes.targetNumber.value;
-                if (targets.size > targetNumber)
-                    return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (" + targetNumber + " MAX)");
-                targets = game.user.targets;
+            const result = await actor.rollSkill(mainSkill);
+            actorRoll = {
+                "result": result,
+                "actor": actor,
+                "attributes": this._calculateAttributes(result, actor)
             }
-            else if (targets.size > 1)
-                return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (1 MAX)" )
-            for (let target of targets) {
-                const defenseSkill = target.actor.system.skills[itemAttributes.oppositeRoll.value];
-                const defenseRoll = await target.actor.rollSkill(defenseSkill);
-                defenseRoll['stats'] = this._calculateStats(defenseRoll.result, target.actor);
-                oppositeRolls.push(defenseRoll);
+        }
+        // Target Rolls
+        else {
+            if (itemAttributes.oppositeRoll.apply) {
+                let targets = game.user.targets;
+                if (targets < 1) return ui.notifications.info(game.i18n.localize("MACRO.NoTarget"));
+                if (itemAttributes.targetNumber.apply) {
+                    const targetNumber = itemAttributes.targetNumber.value;
+                    if (targets.size > targetNumber)
+                        return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (" + targetNumber + " MAX)");
+                    targets = game.user.targets;
+                }
+                else if (targets.size > 1)
+                    return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (1 MAX)" )
+                for (let target of targets) {
+                    const defenseSkill = target.actor.system.skills[itemAttributes.oppositeRoll.value];
+                    const result = await target.actor.rollSkill(defenseSkill);
+                    let targetRoll = {
+                        "result": result,
+                        "actor": target.actor,
+                        "attributes": this._calculateAttributes(result, target.actor)
+                    };
+                    targetRolls.push(targetRoll);
+                }
             }
         }
 
         // Render the chat card template
         const token = this.actor.token;
-        const templateData = {
+        this.abilityData = {
             actor: this.actor.toObject(false),
             tokenId: token?.uuid || null,
             item: this.toObject(false),
             itemId: this.uuid,
             labels: this.labels,
-            simpleRoll: oppositeRolls.length <= 0,
-            mainRoll: mainRoll,
-            oppositeRolls: oppositeRolls,
+            simpleRoll: targetRolls.length <= 0,
+            actorRoll: actorRoll,
+            oppositeRolls: targetRolls,
             hasRecovery: this.hasRecovery,
-            hasDamage: this.hasDamage
+            hasDamage: this.hasDamage,
+            templatesArray: templatesArray
         };
-        const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", templateData);
+        const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", this.abilityData);
+
         // Create the ChatMessage data object
         const chatData = {
             user: game.user.id,
@@ -458,11 +482,56 @@ export class Pl1eItem extends Item {
             speaker: ChatMessage.getSpeaker({actor: this.actor, token}),
             flags: {"core.canPopout": true}
         };
-        // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
-        if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
-            chatData.flags["pl1e.itemData"] = templateData.item;
-        }
+
+        // // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
+        // if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
+        //     chatData.flags["pl1e.itemData"] = templateData.item;
+        // }
+
         await ChatMessage.create(chatData);
+    }
+
+    async actionAbility(action) {
+        const abilityData = this.abilityData;
+
+        // Handle different actions
+        switch (action) {
+            case "apply":
+                await this.applyAbility(abilityData);
+                break;
+            case "counter":
+                this.counterAbility(abilityData);
+                break;
+            case "cancel":
+                this.cancelAbility(abilityData);
+                break;
+        }
+
+        // Destroy templates after fetching target with df-template
+        for (const templates of abilityData.templatesArray) {
+            for (const template of templates) {
+                await template.delete();
+            }
+        }
+
+        // Reset abilityData
+        this.abilityData = [];
+    }
+
+    async applyAbility(abilityData) {
+        const actor = abilityData.actorRoll.actor;
+        for (const attribute of abilityData.actorRoll.attributes) {
+            await actor.applyAttribute(attribute, true);
+        }
+        actor.sheet.render(false);
+    }
+
+    counterAbility(templateData) {
+
+    }
+
+    cancelAbility(templateData) {
+
     }
 
     /**
@@ -498,63 +567,25 @@ export class Pl1eItem extends Item {
         return isValid;
     }
 
-    _calculateStats(rollResult, targetActor = undefined) {
+    _calculateAttributes(rollResult, targetActor) {
+        if (rollResult < 0) rollResult = 0;
         const itemAttributes = this.system.attributes;
-        const actorAttributes = this.actor.system.attributes;
-        const targetActorAttributes = targetActor?.system.attributes;
-        let stats = {
-            slashing: 0,
-            crushing: 0,
-            piercing: 0,
-            burn: 0,
-            cold: 0,
-            shock: 0,
-            acid: 0,
-            healthRecovery: 0,
-            staminaRecovery: 0,
-            manaRecovery: 0,
-            healthVampirism: 0,
-            staminaVampirism: 0,
-            manaVampirism: 0,
-        };
-        // Only applied when target actor is set
-        if (targetActor !== undefined) {
-            // Damages
-            if (itemAttributes.slashing.apply)
-                stats.slashing += itemAttributes.slashing.value * rollResult - targetActorAttributes.slashingReduction;
-            if (itemAttributes.crushing.apply)
-                stats.crushing += itemAttributes.crushing.value * rollResult - targetActorAttributes.crushingReduction;
-            if (actorAttributes.piercing.apply)
-                stats.piercing += itemAttributes.piercing.value * rollResult - targetActorAttributes.piercingReduction;
-            if (itemAttributes.burn.apply)
-                stats.burn += itemAttributes.burn.value * rollResult - targetActorAttributes.burnReduction;
-            if (itemAttributes.cold.apply)
-                stats.cold += itemAttributes.cold.value * rollResult - targetActorAttributes.coldReduction;
-            if (actorAttributes.shock.apply)
-                stats.shock += itemAttributes.shock.value * rollResult - targetActorAttributes.shockReduction;
-            if (actorAttributes.acid.apply)
-                stats.acid += itemAttributes.acid.value * rollResult - targetActorAttributes.acidReduction;
-            // Weapon damages
+        let calculatedAttributes = [];
 
-            // Vampirism
-            // if (itemAttributes.healthVampirism.apply)
-            //     stats.healthVampirism = itemAttributes.healthVampirism.value * rollResult;
-            // if (itemAttributes.staminaVampirism.apply)
-            //     stats.staminaVampirism = itemAttributes.staminaVampirism.value * rollResult;
-            // if (itemAttributes.manaVampirism.apply)
-            //     stats.manaVampirism = itemAttributes.manaVampirism.value * rollResult;
+        for (const [key, itemAttribute] of Object.entries(itemAttributes)) {
+            let calculatedAttribute = JSON.parse(JSON.stringify(itemAttribute));
+            if (calculatedAttribute.type === 'number') {
+                calculatedAttribute.value *= rollResult;
+                calculatedAttribute.value *= calculatedAttribute.positive ? 1 : -1;
+                if (calculatedAttribute.reduction !== undefined) {
+                    const reduction = targetActor.system[calculatedAttribute.reduction];
+                    calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
+                }
+                calculatedAttributes.push(calculatedAttribute);
+            }
         }
-        // Recovery
-        if (itemAttributes.healthRecovery.apply)
-            stats.healthRecovery = itemAttributes.healthRecovery.value * rollResult;
-        if (itemAttributes.staminaRecovery.apply)
-            stats.staminaRecovery = itemAttributes.staminaRecovery.value * rollResult;
-        if (itemAttributes.manaRecovery.apply)
-            stats.manaRecovery = itemAttributes.manaRecovery.value * rollResult;
-        // Filter stats
-        const asArray = Object.entries(stats);
-        const filtered = asArray.filter(([key, value]) => value > 0);
-        return Object.fromEntries(filtered);
+
+        return calculatedAttributes;
     }
 
     //endregion

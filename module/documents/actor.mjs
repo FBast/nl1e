@@ -43,24 +43,14 @@ export class Pl1eActor extends Actor {
     }
 
     /** @override */
-    prepareEmbeddedDocuments() {
-        const system = this.system;
+    async prepareEmbeddedDocuments() {
         // Iterate items to apply system on actor
         for (let item of this.items) {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
             for (let [id, attribute] of Object.entries(item.system.attributes)) {
-                if (!attribute.apply || attribute.path === undefined) continue;
-                if (attribute.operator === 'set') {
-                    foundry.utils.setProperty(system, attribute.path, attribute.value);
-                }
-                else if (attribute.operator === 'push') {
-                    let currentValue = foundry.utils.getProperty(system, attribute.path);
-                    if (currentValue === undefined) currentValue = [];
-                    currentValue.push(attribute.value);
-                    foundry.utils.setProperty(system, attribute.path, currentValue);
-                }
+                await this.applyAttribute(attribute);
             }
         }
         super.prepareEmbeddedDocuments();
@@ -287,10 +277,37 @@ export class Pl1eActor extends Actor {
             flavor: '[' + game.i18n.localize("PL1E.Skill") + '] ' + game.i18n.localize(skill.label),
             rollMode: game.settings.get('core', 'rollMode'),
         });
-        return {
-            "result": roll.rolls[0].result,
-            "actor": this
-        };
+        return roll.rolls[0].result;
+    }
+
+    async applyAttribute(attribute, persist = false) {
+        const system = this.system;
+        if (!attribute.apply || attribute.path === undefined) return;
+        let newValue;
+        switch (attribute.operator) {
+            case 'set':
+                newValue = attribute.value;
+                break;
+            case 'add':
+                newValue = foundry.utils.getProperty(system, attribute.path);
+                newValue += attribute.value;
+                break;
+            case 'push':
+                let currentValue = foundry.utils.getProperty(system, attribute.path);
+                if (currentValue === undefined) currentValue = [];
+                currentValue.push(attribute.value);
+                newValue = currentValue;
+                break;
+            default:
+                console.error("PL1E | Unknown attribute operator : " + attribute.operator)
+        }
+
+        if (persist) {
+            await this.update({["system." + attribute.path]: newValue})
+        }
+        else {
+            foundry.utils.setProperty(system, attribute.path, newValue);
+        }
     }
 
 }
