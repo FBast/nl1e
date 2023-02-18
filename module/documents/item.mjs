@@ -8,7 +8,7 @@ import {PL1E} from "../helpers/config.mjs";
  */
 export class Pl1eItem extends Item {
 
-    templatesArray = [];
+    templatesArray;
 
     //region Accessors
 
@@ -391,6 +391,7 @@ export class Pl1eItem extends Item {
         const itemAttributes = this.system.attributes;
 
         // Target selection template
+        this.templatesArray = [];
         await actor.sheet?.minimize();
         for (let i = 0; i < itemAttributes.targetNumber.value; i++) {
             this.templatesArray.push(await AbilityTemplate.fromItem(this)?.drawPreview());
