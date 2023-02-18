@@ -5,7 +5,7 @@
         <h3 class="item-name">{{item.name}}</h3>
     </header>
     <div class="card-content">
-        {{{item.system.attributes.description.value}}}
+        {{item.system.attributes.description.value}}
         {{#if simpleRoll}}
             <div class="dice-roll">
                 <div class="dice-result">
@@ -71,8 +71,8 @@
         {{/if}}
     </div>
     <div class="card-buttons">
-        <button data-action="apply">{{localize "CHAT.Apply"}}</button>
-        <button data-action="cancel">{{localize "CHAT.Cancel"}}</button>
+        <button data-action="apply" data-item-id={{itemId}}>{{localize "CHAT.Apply"}}</button>
+        <button data-action="cancel" data-item-id={{itemId}}>{{localize "CHAT.Cancel"}}</button>
     </div>
     <footer class="card-footer">
     </footer>

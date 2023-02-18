@@ -8,6 +8,8 @@ import {PL1E} from "../helpers/config.mjs";
  */
 export class Pl1eItem extends Item {
 
+    templatesArray = [];
+
     //region Accessors
 
     get hasRecovery() {
@@ -390,9 +392,8 @@ export class Pl1eItem extends Item {
 
         // Target selection template
         await actor.sheet?.minimize();
-        let templates = [];
         for (let i = 0; i < itemAttributes.targetNumber.value; i++) {
-            templates.push(await AbilityTemplate.fromItem(this)?.drawPreview());
+            this.templatesArray.push(await AbilityTemplate.fromItem(this)?.drawPreview());
         }
         await actor.sheet?.maximize();
 
@@ -438,6 +439,7 @@ export class Pl1eItem extends Item {
             actor: this.actor.toObject(false),
             tokenId: token?.uuid || null,
             item: this.toObject(false),
+            itemId: this.uuid,
             labels: this.labels,
             simpleRoll: oppositeRolls.length <= 0,
             mainRoll: mainRoll,
@@ -552,47 +554,6 @@ export class Pl1eItem extends Item {
         const asArray = Object.entries(stats);
         const filtered = asArray.filter(([key, value]) => value > 0);
         return Object.fromEntries(filtered);
-    }
-
-    //endregion
-
-    //region Chat messages
-
-    /**
-     * Handle execution of a chat card action via a click event on one of the card buttons
-     * @param {Event} event       The originating click event
-     * @returns {Promise}         A promise which resolves once the handler workflow is complete
-     * @private
-     */
-    static async _onChatCardAction(event) {
-        event.preventDefault();
-
-        // Extract card data
-        const button = event.currentTarget;
-        button.disabled = true;
-        const action = button.dataset.action;
-
-        // Handle different actions
-        switch (action) {
-            case "apply":
-                console.log("Applying...")
-                break;
-            case "cancel":
-                console.log("Canceling...")
-                break;
-        }
-
-        // Re-enable the button
-        button.disabled = false;
-    }
-
-    /**
-     * Apply listeners to chat messages.
-     * @param {html} html  Rendered chat message.
-     */
-    static chatListeners(html) {
-        html.on("click", ".card-buttons button", this._onChatCardAction.bind(this));
-        // html.on("click", ".item-name", this._onChatCardToggleContent.bind(this));
     }
 
     //endregion

@@ -5,6 +5,15 @@ import {Pl1eHelpers} from "./helpers.mjs";
 export class Pl1eEvent {
 
     /**
+     * Apply listeners to chat messages.
+     * @param {html} html  Rendered chat message.
+     */
+    static chatListeners(html) {
+        html.on("click", ".card-buttons button", this.onChatCardAction.bind(this));
+        // html.on("click", ".item-name", this._onChatCardToggleContent.bind(this));
+    }
+
+    /**
      * Manage Active Effect instances through the Actor Sheet via effect control buttons.
      * @param {MouseEvent} event      The left-click event on the effect control
      * @param {Actor|Item} owner      The owning document which manages this effect
@@ -246,8 +255,7 @@ export class Pl1eEvent {
         event.preventDefault();
         event.stopPropagation();
 
-        const element = $(event.currentTarget);
-        const characteristic = element.data("characteristic");
+        const characteristic = $(event.currentTarget).data("characteristic");
         let value = element.data("value");
         if (!value || !characteristic) return;
 
@@ -275,9 +283,8 @@ export class Pl1eEvent {
     static async onCurrencyChange(event, document) {
         event.preventDefault();
         event.stopPropagation();
-        const element = $(event.currentTarget);
-        const currency = element.data("currency");
-        let value = element.data("value");
+        const currency = $(event.currentTarget).data("currency");
+        let value = $(event.currentTarget).data("value");
         if (!value || !currency) return;
         if (document instanceof Actor) {
             let oldValue = document.system.money[currency].value;
@@ -310,13 +317,12 @@ export class Pl1eEvent {
     /**
      * Handle rank changes
      * @param {Event} event The originating click event
-     * @param {ActorSheet} actor the actor sheet to modify
+     * @param {ActorSheet} actorSheet the actor sheet to modify
      */
     static async onRankChange(event, actorSheet) {
         event.preventDefault();
         event.stopPropagation();
-        const element = $(event.currentTarget);
-        const skill = element.data("skill");
+        const skill = $(event.currentTarget).data("skill");
         if (!skill) return;
         let oldValue = actorSheet.actor.system.skills[skill].rank;
         let maxRank = actorSheet.actor.system.attributes.maxRank;
@@ -384,6 +390,43 @@ export class Pl1eEvent {
         for (let skill of document.getElementsByClassName('skill-label')) {
             skill.classList.remove('highlight-green')
         }
+    }
+
+    /**
+     * Handle execution of a chat card action via a click event on one of the card buttons
+     * @param {Event} event       The originating click event
+     * @returns {Promise}         A promise which resolves once the handler workflow is complete
+     * @private
+     */
+    static async onChatCardAction(event) {
+        event.preventDefault();
+
+        // Extract card data
+        const button = event.currentTarget;
+        button.disabled = true;
+        let action = $(event.currentTarget).data("action");
+        let itemId = $(event.currentTarget).data("item-id");
+        const item = await fromUuid(itemId);
+
+        // Destroy templates after fetching target with df-template
+        for (const templates of item.templatesArray) {
+            for (const template of templates) {
+                await template.delete();
+            }
+        }
+
+        // Handle different actions
+        switch (action) {
+            case "apply":
+                console.log("Applying...")
+                break;
+            case "cancel":
+                console.log("Canceling...")
+                break;
+        }
+
+        // Re-enable the button
+        button.disabled = false;
     }
 
 }

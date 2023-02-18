@@ -10,6 +10,7 @@ import {PL1E} from "./helpers/config.mjs";
 import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eHelpers} from "./helpers/helpers.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
+import {Pl1eEvent} from "./helpers/events.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -114,5 +115,5 @@ Hooks.once("socketlib.ready", () => {
     })
 })
 
-Hooks.on("renderChatLog", (app, html, data) => Pl1eItem.chatListeners(html));
-Hooks.on("renderChatPopout", (app, html, data) => Pl1eItem.chatListeners(html));
+Hooks.on("renderChatLog", (app, html, data) => Pl1eEvent.chatListeners(html));
+Hooks.on("renderChatPopout", (app, html, data) => Pl1eEvent.chatListeners(html));

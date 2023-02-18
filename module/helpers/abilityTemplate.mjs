@@ -207,7 +207,6 @@ export class AbilityTemplate extends MeasuredTemplate {
       for (let token of canvas.tokens.placeables) {
         if (token.x === gridPosition.x && token.y === gridPosition.y) {
           token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
-          console.log(token.name + " is inside !")
         }
       }
     }
