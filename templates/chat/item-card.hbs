@@ -10,18 +10,18 @@
             <div class="dice-roll">
                 <div class="dice-result">
                     <h4 class="dice-total">
-                        {{#if (gt actorRoll.result 0)}}
-                            <div class="color-green">{{actorRoll.result}} ({{localize "CHAT.Success"}})</div>
-                        {{else if (eq actorRoll.result 0)}}
-                            {{actorRoll.result}} ({{localize "CHAT.PartialSuccess"}})
+                        {{#if (gt skillRoll.result 0)}}
+                            <div class="color-green">{{skillRoll.result}} ({{localize "CHAT.Success"}})</div>
+                        {{else if (eq skillRoll.result 0)}}
+                            {{skillRoll.result}} ({{localize "CHAT.PartialSuccess"}})
                         {{else}}
-                            <div class="color-red">{{actorRoll.result}} ({{localize "CHAT.Failure"}})</div>
+                            <div class="color-red">{{skillRoll.result}} ({{localize "CHAT.Failure"}})</div>
                         {{/if}}
                     </h4>
                 </div>
             </div>
             <div class="card-stats">
-            {{#each actorRoll.attributes as |attribute id|}}
+            {{#each skillRoll.attributes as |attribute id|}}
                 {{#if (ne attribute.fas undefined)}}
                     <i class="fas {{attribute.fas}} hover-green" data-tooltip="{{localize attribute.label}}">
                         <label>{{attribute.value}}</label>

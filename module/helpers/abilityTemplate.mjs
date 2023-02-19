@@ -1,4 +1,4 @@
-import {PL1E} from "./config.mjs";
+import {Pl1eHelpers} from "./helpers.mjs";
 
 export class AbilityTemplate extends MeasuredTemplate {
 
@@ -8,15 +8,11 @@ export class AbilityTemplate extends MeasuredTemplate {
   */
   #moveTime = 0;
 
-  /* -------------------------------------------- */
-
   /**
   * The initially active CanvasLayer to re-activate after the workflow is complete.
   * @type {CanvasLayer}
   */
   #initialLayer;
-
-  /* -------------------------------------------- */
 
   /**
   * Track the bound event handlers so they can be properly canceled later.
@@ -24,10 +20,8 @@ export class AbilityTemplate extends MeasuredTemplate {
   */
   #events;
 
-  /**
-   *
-   */
-  #documents;
+  #targets = [];
+  #templates = [];
 
   /* -------------------------------------------- */
 
@@ -37,14 +31,14 @@ export class AbilityTemplate extends MeasuredTemplate {
   * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
   */
   static fromItem(item) {
-    let areaTargetType = item.system.attributes.areaTargetType.value || {};
-    if (!areaTargetType) return null;
+    let areaType = item.system.attributes.areaType.value || {};
+    if (!areaType) return null;
 
     const areaWidth = item.system.attributes.areaWidth.value;
 
     // Prepare template data
     const templateData = {
-      t: PL1E.areaTargetTypes[areaTargetType],
+      t: areaType,
       user: game.user.id,
       distance: areaWidth,
       direction: 0,
@@ -55,7 +49,9 @@ export class AbilityTemplate extends MeasuredTemplate {
     };
 
     // Additional type-specific data
-    switch ( areaTargetType ) {
+    switch ( areaType ) {
+      case "circle":
+        break;
       case "cone":
         templateData.angle = CONFIG.MeasuredTemplate.defaults.angle;
         break;
@@ -75,10 +71,9 @@ export class AbilityTemplate extends MeasuredTemplate {
     const object = new this(template);
     object.item = item;
     object.actorSheet = item.actor?.sheet || null;
+
     return object;
   }
-
-  /* -------------------------------------------- */
 
   /**
   * Creates a preview of the spell template.
@@ -94,6 +89,18 @@ export class AbilityTemplate extends MeasuredTemplate {
 
     // Activate interactivity
     return this.activatePreviewListeners(initialLayer);
+  }
+
+  /**
+   * Delete the templates after releasing targets
+   */
+  releaseTemplate() {
+    for (let token of this.#targets) {
+      token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
+    }
+    for (let document of this.#templates) {
+      document.delete();
+    }
   }
 
   /* -------------------------------------------- */
@@ -123,8 +130,6 @@ export class AbilityTemplate extends MeasuredTemplate {
     });
   }
 
-  /* -------------------------------------------- */
-
   /**
   * Shared code for when template placement ends by being confirmed or canceled.
   * @param {Event} event  Triggering event that ended the placement.
@@ -138,8 +143,6 @@ export class AbilityTemplate extends MeasuredTemplate {
     this.#initialLayer.activate();
   }
 
-  /* -------------------------------------------- */
-
   /**
   * Move the template preview when the mouse moves.
   * @param {Event} event  Triggering mouse event.
@@ -148,14 +151,32 @@ export class AbilityTemplate extends MeasuredTemplate {
     event.stopPropagation();
     let now = Date.now(); // Apply a 20ms throttle
     if ( now - this.#moveTime <= 20 ) return;
-    const center = event.data.getLocalPosition(this.layer);
-    const snapped = canvas.grid.getSnappedPosition(center.x, center.y, 2);
-    this.document.updateSource({x: snapped.x, y: snapped.y});
+    let templateCenter = event.data.getLocalPosition(this.layer);
+    const token = this.item.actor.token;
+    // Clamp with range
+    const range = this.item.system.attributes.range.value;
+    templateCenter = this._clampVectorRadius(templateCenter.x, templateCenter.y, token.x, token.y, range * 100);
+    // Snap position
+    templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 2);
+    // Move position
+    this.document.updateSource({x: templateCenter.x, y: templateCenter.y});
     this.refresh();
+    // Target tokens
+    const gridPositions = this._getGridHighlightPositions();
+    this._targetTokensInPositions(gridPositions);
     this.#moveTime = now;
   }
 
-  /* -------------------------------------------- */
+  _clampVectorRadius(x1, y1, x2, y2, max) {
+    let y = x1 - x2;
+    let x = y1 - y2;
+    let distance = Math.sqrt(x * x + y * y);
+    let clamp = Math.min(distance, max) / distance;
+    return {
+      x: clamp * y + x2,
+      y: clamp * x + y2
+    }
+  }
 
   /**
   * Rotate the template preview by 3˚ increments when the mouse wheel is rotated.
@@ -165,13 +186,11 @@ export class AbilityTemplate extends MeasuredTemplate {
     if ( event.ctrlKey ) event.preventDefault(); // Avoid zooming the browser window
     event.stopPropagation();
     let delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
-    let snap = event.shiftKey ? delta : 5;
+    let snap = (event.shiftKey ? delta : 5);
     const update = {direction: this.document.direction + (snap * Math.sign(event.deltaY))};
     this.document.updateSource(update);
     this.refresh();
   }
-
-  /* -------------------------------------------- */
 
   /**
   * Confirm placement when the left mouse button is clicked.
@@ -181,12 +200,9 @@ export class AbilityTemplate extends MeasuredTemplate {
     await this._finishPlacement(event);
     const destination = canvas.grid.getSnappedPosition(this.document.x, this.document.y, 2);
     this.document.updateSource(destination);
-    const gridPositions = this._getGridHighlightPositions();
-    this._targetTokensInPositions(gridPositions);
-    this.#events.resolve(canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]));
+    this.#templates = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]);
+    this.#events.resolve(this.#templates);
   }
-
-  /* -------------------------------------------- */
 
   /**
   * Cancel placement when the right mouse button is clicked.
@@ -203,10 +219,16 @@ export class AbilityTemplate extends MeasuredTemplate {
    * @private
    */
   _targetTokensInPositions(gridPositions) {
+    // Untarget previous targeted
+    for (let token of this.#targets) {
+      token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
+    }
+    // Target current position
     for (let gridPosition of gridPositions) {
       for (let token of canvas.tokens.placeables) {
         if (token.x === gridPosition.x && token.y === gridPosition.y) {
           token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
+          this.#targets.push(token);
         }
       }
     }

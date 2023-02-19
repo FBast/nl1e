@@ -6,7 +6,7 @@
         "resources": {
           "health": {
             "value": 0,
-            "label": "PL1E.Health",
+            "label": "CHARA.Health",
             "min": 0,
             "max": 0,
             "temp": 0,
@@ -21,7 +21,7 @@
           },
           "stamina": {
             "value": 0,
-            "label": "PL1E.Stamina",
+            "label": "CHARA.Stamina",
             "min": 0,
             "max": 0,
             "temp": 0,
@@ -36,7 +36,7 @@
           },
           "mana": {
             "value": 0,
-            "label": "PL1E.Mana",
+            "label": "CHARA.Mana",
             "min": 0,
             "max": 0,
             "temp": 0,
@@ -55,8 +55,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Str",
-            "tooltip": "TOOLTIP.Str",
+            "label": "CHARA.Strength",
+            "tooltip": "TOOLTIP.Strength",
             "weights": {
               "resources": ["stamina"],
               "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
@@ -66,8 +66,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Agi",
-            "tooltip": "TOOLTIP.Agi",
+            "label": "CHARA.Agility",
+            "tooltip": "TOOLTIP.Agility",
             "weights": {
               "resources": [],
               "skills": ["dodge", "reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
@@ -77,8 +77,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Per",
-            "tooltip": "TOOLTIP.Per",
+            "label": "CHARA.Perception",
+            "tooltip": "TOOLTIP.Perception",
             "weights": {
               "resources": [],
               "skills": ["dodge", "reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
@@ -88,8 +88,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Con",
-            "tooltip": "TOOLTIP.Con",
+            "label": "CHARA.Constitution",
+            "tooltip": "TOOLTIP.Constitution",
             "weights": {
               "resources": ["health", "stamina"],
               "skills": ["parry", "vigor", "athletics"]
@@ -99,8 +99,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Int",
-            "tooltip": "TOOLTIP.Int",
+            "label": "CHARA.Intellect",
+            "tooltip": "TOOLTIP.Intellect",
             "weights": {
               "resources": ["mana"],
               "skills": ["resilience", "diplomacy", "bluff", "erudition", "secularMagic"]
@@ -110,8 +110,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Cun",
-            "tooltip": "TOOLTIP.Cun",
+            "label": "CHARA.Cunning",
+            "tooltip": "TOOLTIP.Cunning",
             "weights": {
               "resources": [],
               "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "secularMagic"]
@@ -121,8 +121,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Wis",
-            "tooltip": "TOOLTIP.Wis",
+            "label": "CHARA.Wisdom",
+            "tooltip": "TOOLTIP.Wisdom",
             "weights": {
               "resources": [],
               "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "divineMagic"]
@@ -132,8 +132,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Wil",
-            "tooltip": "TOOLTIP.Wil",
+            "label": "CHARA.Will",
+            "tooltip": "TOOLTIP.Will",
             "weights": {
               "resources": ["health", "mana"],
               "skills": ["resilience", "performance", "handling", "divineMagic"]
@@ -143,7 +143,7 @@
         "skills": {
           "parry": {
             "rank": 3,
-            "label": "DEFENSE.Par",
+            "label": "CHARA.Parry",
             "fixedRank": true,
             "divider": 3,
             "weights": {
@@ -153,7 +153,7 @@
           },
           "dodge": {
             "rank": 3,
-            "label": "DEFENSE.Dod",
+            "label": "CHARA.Dodge",
             "fixedRank": true,
             "divider": 2,
             "weights": {
@@ -163,7 +163,7 @@
           },
           "vigor": {
             "rank": 3,
-            "label": "DEFENSE.Vig",
+            "label": "CHARA.Vigor",
             "fixedRank": true,
             "divider": 2,
             "weights": {
@@ -172,7 +172,7 @@
           },
           "reflex": {
             "rank": 3,
-            "label": "DEFENSE.Ref",
+            "label": "CHARA.Reflex",
             "fixedRank": true,
             "divider": 2,
             "weights": {
@@ -182,7 +182,7 @@
           },
           "resilience": {
             "rank": 3,
-            "label": "DEFENSE.Res",
+            "label": "CHARA.Resilience",
             "fixedRank": true,
             "divider": 2,
             "magicPenalty": false,
@@ -192,7 +192,7 @@
           },
           "intuition": {
             "rank": 3,
-            "label": "DEFENSE.Int",
+            "label": "CHARA.Intuition",
             "fixedRank": true,
             "divider": 2,
             "magicPenalty": false,
@@ -202,7 +202,7 @@
           },
           "handling": {
             "rank": 1,
-            "label": "SKILL.Han",
+            "label": "CHARA.Handling",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -212,7 +212,7 @@
           },
           "throwing": {
             "rank": 1,
-            "label": "SKILL.Thr",
+            "label": "CHARA.Throwing",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -222,7 +222,7 @@
           },
           "athletics": {
             "rank": 1,
-            "label": "SKILL.Ath",
+            "label": "CHARA.Athletics",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -233,7 +233,7 @@
           },
           "acrobatics": {
             "rank": 1,
-            "label": "SKILL.Acr",
+            "label": "CHARA.Acrobatics",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -244,7 +244,7 @@
           },
           "accuracy": {
             "rank": 1,
-            "label": "SKILL.Acc",
+            "label": "CHARA.Accuracy",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -255,7 +255,7 @@
           },
           "search": {
             "rank": 1,
-            "label": "SKILL.Sea",
+            "label": "CHARA.Search",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -265,7 +265,7 @@
           },
           "vigilance": {
             "rank": 1,
-            "label": "SKILL.Vig",
+            "label": "CHARA.Vigilance",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -275,7 +275,7 @@
           },
           "discretion": {
             "rank": 1,
-            "label": "SKILL.Dis",
+            "label": "CHARA.Discretion",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -286,7 +286,7 @@
           },
           "performance": {
             "rank": 1,
-            "label": "SKILL.Per",
+            "label": "CHARA.Performance",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -296,7 +296,7 @@
           },
           "diplomacy": {
             "rank": 1,
-            "label": "SKILL.Dip",
+            "label": "CHARA.Diplomacy",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -306,7 +306,7 @@
           },
           "intimidation": {
             "rank": 1,
-            "label": "SKILL.Int",
+            "label": "CHARA.Intimidation",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -316,7 +316,7 @@
           },
           "bluff": {
             "rank": 1,
-            "label": "SKILL.Blu",
+            "label": "CHARA.Bluff",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -326,7 +326,7 @@
           },
           "craft": {
             "rank": 1,
-            "label": "SKILL.Cra",
+            "label": "CHARA.Craft",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -336,7 +336,7 @@
           },
           "erudition": {
             "rank": 1,
-            "label": "SKILL.Eru",
+            "label": "CHARA.Erudition",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -346,7 +346,7 @@
           },
           "divineMagic": {
             "rank": 1,
-            "label": "SKILL.Div",
+            "label": "CHARA.DivineMagic",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": true,
@@ -357,7 +357,7 @@
           },
           "secularMagic": {
             "rank": 1,
-            "label": "SKILL.Sec",
+            "label": "CHARA.SecularMagic",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": true,
@@ -407,15 +407,15 @@
         "money": {
           "gold": {
             "value": 0,
-            "label": "PL1E.Gold"
+            "label": "CURRENCY.Gold"
           },
           "silver": {
             "value": 0,
-            "label": "PL1E.Silver"
+            "label": "CURRENCY.Silver"
           },
           "copper": {
             "value": 0,
-            "label": "PL1E.Copper"
+            "label": "CURRENCY.Copper"
           }
         }
       }
@@ -781,11 +781,11 @@
           "type": "number",
           "label": "PL1E.Level"
         },
-        "mainRoll": {
+        "skillRoll": {
           "value": "none",
           "category": "fixed",
           "type": "select",
-          "label": "PL1E.MainRoll",
+          "label": "PL1E.SkillRoll",
           "select": "abilitySkills"
         },
         "areaWidth": {
@@ -798,30 +798,37 @@
           "value": true,
           "category": "fixed",
           "type": "bool",
-          "label": "PL1E.TargetSelf"
+          "label": "PL1E.TargetOneself"
         },
-        "oppositeRoll": {
+        "oppositeRolls": {
           "value": "none",
           "category": "fixed",
           "conditions": "targetSelf!==true",
           "type": "select",
-          "label": "PL1E.OppositeRoll",
+          "label": "PL1E.OppositeRolls",
           "select": "abilitySkills"
         },
-        "targetNumber": {
+        "range": {
           "value": 1,
           "category": "fixed",
           "conditions": "targetSelf!==true",
           "type": "number",
-          "label": "PL1E.TargetNumber"
+          "label": "PL1E.Range"
         },
-        "areaTargetType": {
+        "areaNumber": {
+          "value": 1,
+          "category": "fixed",
+          "conditions": "targetSelf!==true",
+          "type": "number",
+          "label": "PL1E.AreaNumber"
+        },
+        "areaType": {
           "value": "single",
           "category": "fixed",
           "conditions": "targetSelf!==true",
           "type": "select",
-          "label": "PL1E.AreaTargetType",
-          "select": "areaTargetTypes"
+          "label": "PL1E.AreaType",
+          "select": "areaTypes"
         },
         "healthCost": {
           "value": 0,

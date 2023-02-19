@@ -49,36 +49,35 @@ PL1E.sizeTokens = {
 };
 
 PL1E.featureTypes = {
-    "none": "PL1E.None",
-    "race": "PL1E.Race",
-    "class": "PL1E.Class"
+    "race": "FEATURETYPE.Race",
+    "class": "FEATURETYPE.Class"
 }
 
 PL1E.masteries = {
-    "none": "PL1E.None",
-    "crossbows": "PL1E.Crossbows",
-    "bows": "PL1E.Bows",
-    "poleArms": "PL1E.PoleArms",
-    "shields": "PL1E.Shields",
-    "shortAxes": "PL1E.ShortAxes",
-    "longAxes": "PL1E.LongAxes",
-    "shortBlades": "PL1E.ShortBlades",
-    "mediumBlades": "PL1E.MediumBlades",
-    "longBlades": "PL1E.LongBlades",
-    "shortHammers": "PL1E.ShortHammers",
-    "longHammers": "PL1E.LongHammers",
-    "arcana": "PL1E.Arcana",
-    "aramancia": "PL1E.Aramancia",
-    "biomancia": "PL1E.Biomancia",
-    "diastamancia": "PL1E.Diastamancia",
-    "goetia": "PL1E.Goetia",
-    "myalomancia": "PL1E.Myalomancia",
-    "necromancia": "PL1E.Necromancia",
-    "theurgy": "PL1E.Theurgy"
+    "none": "MASTERY.None",
+    "crossbows": "MASTERY.Crossbows",
+    "bows": "MASTERY.Bows",
+    "poleArms": "MASTERY.PoleArms",
+    "shields": "MASTERY.Shields",
+    "shortAxes": "MASTERY.ShortAxes",
+    "longAxes": "MASTERY.LongAxes",
+    "shortBlades": "MASTERY.ShortBlades",
+    "mediumBlades": "MASTERY.MediumBlades",
+    "longBlades": "MASTERY.LongBlades",
+    "shortHammers": "MASTERY.ShortHammers",
+    "longHammers": "MASTERY.LongHammers",
+    "arcana": "MASTERY.Arcana",
+    "aramancia": "MASTERY.Aramancia",
+    "biomancia": "MASTERY.Biomancia",
+    "diastamancia": "MASTERY.Diastamancia",
+    "goetia": "MASTERY.Goetia",
+    "myalomancia": "MASTERY.Myalomancia",
+    "necromancia": "MASTERY.Necromancia",
+    "theurgy": "MASTERY.Theurgy"
 }
 
 PL1E.slots = {
-    "none": "PL1E.None",
+    "none": "SLOT.None",
     "clothes": "SLOT.Clothes",
     "armor": "SLOT.Armor",
     "ring": "SLOT.Ring",
@@ -86,53 +85,53 @@ PL1E.slots = {
 }
 
 PL1E.activations = {
-    "passive": "PL1E.Passive",
-    "reaction": "PL1E.Reaction",
-    "free": "PL1E.Free",
-    "action": "PL1E.Action",
-    "round": "PL1E.Round",
-    "special": "PL1E.Special"
+    "passive": "ACTIVATION.Passive",
+    "reaction": "ACTIVATION.Reaction",
+    "free": "ACTIVATION.Free",
+    "action": "ACTIVATION.Action",
+    "round": "ACTIVATION.Round",
+    "special": "ACTIVATION.Special"
 }
 
 PL1E.abilitySkills = {
-    "none": "PL1E.None",
-    "parry": "DEFENSE.Par",
-    "dodge": "DEFENSE.Dod",
-    "vigor": "DEFENSE.Vig",
-    "reflex": "DEFENSE.Ref",
-    "resilience": "DEFENSE.Res",
-    "intuition": "DEFENSE.Int",
-    "handling": "SKILL.Han",
-    "throwing": "SKILL.Thr",
-    "athletics": "SKILL.Ath",
-    "acrobatics": "SKILL.Acr",
-    "accuracy": "SKILL.Acc",
-    "search": "SKILL.Sea",
-    "vigilance": "SKILL.Vig",
-    "discretion": "SKILL.Dis",
-    "performance": "SKILL.Per",
-    "diplomacy": "SKILL.Dip",
-    "intimidation": "SKILL.Int",
-    "bluff": "SKILL.Blu",
-    "craft": "SKILL.Cra",
-    "erudition": "SKILL.Eru",
-    "divineMagic": "SKILL.Div",
-    "secularMagic": "SKILL.Sec",
+    "none": "CHARA.None",
+    "parry": "CHARA.Parry",
+    "dodge": "CHARA.Dodge",
+    "vigor": "CHARA.Vigor",
+    "reflex": "CHARA.Reflex",
+    "resilience": "CHARA.Resilience",
+    "intuition": "CHARA.Intuition",
+    "handling": "CHARA.Handling",
+    "throwing": "CHARA.Throwing",
+    "athletics": "CHARA.Athletics",
+    "acrobatics": "CHARA.Acrobatics",
+    "accuracy": "CHARA.Accuracy",
+    "search": "CHARA.Search",
+    "vigilance": "CHARA.Vigilance",
+    "discretion": "CHARA.Discretion",
+    "performance": "CHARA.Performance",
+    "diplomacy": "CHARA.Diplomacy",
+    "intimidation": "CHARA.Intimidation",
+    "bluff": "CHARA.Bluff",
+    "craft": "CHARA.Craft",
+    "erudition": "CHARA.Erudition",
+    "divineMagic": "CHARA.DivineMagic",
+    "secularMagic": "CHARA.SecularMagic",
 }
 
 PL1E.NPCTemplates = {
-    "balanced": "PL1E.Balanced",
-    "soldier": "PL1E.Soldier",
-    "brute": "PL1E.Brute",
-    "killer": "PL1E.Killer",
-    "hunter": "PL1E.Hunter",
-    "mystic": "PL1E.Mystic",
-    "wizard": "PL1E.Wizard",
-    "priest": "PL1E.Priest",
-    "battleMage": "PL1E.BattleMage",
-    "crusader": "PL1E.Crusader",
-    "assassin": "PL1E.Assassin",
-    "monk": "PL1E.Monk"
+    "balanced": "NPCTEMPLATE.Balanced",
+    "soldier": "NPCTEMPLATE.Soldier",
+    "brute": "NPCTEMPLATE.Brute",
+    "killer": "NPCTEMPLATE.Killer",
+    "hunter": "NPCTEMPLATE.Hunter",
+    "mystic": "NPCTEMPLATE.Mystic",
+    "wizard": "NPCTEMPLATE.Wizard",
+    "priest": "NPCTEMPLATE.Priest",
+    "battleMage": "NPCTEMPLATE.BattleMage",
+    "crusader": "NPCTEMPLATE.Crusader",
+    "assassin": "NPCTEMPLATE.Assassin",
+    "monk": "NPCTEMPLATE.Monk"
 }
 
 PL1E.NPCTemplatesValues = {
@@ -295,12 +294,12 @@ PL1E.NPCTemplatesValues = {
 }
 
 PL1E.experienceTemplates = {
-    "novice": "PL1E.Novice",
-    "apprentice": "PL1E.Apprentice",
-    "adept": "PL1E.Adept",
-    "expert": "PL1E.Expert",
-    "master": "PL1E.Master",
-    "grandMaster": "PL1E.GrandMaster"
+    "novice": "XPTEMPLATE.Novice",
+    "apprentice": "XPTEMPLATE.Apprentice",
+    "adept": "XPTEMPLATE.Adept",
+    "expert": "XPTEMPLATE.Expert",
+    "master": "XPTEMPLATE.Master",
+    "grandMaster": "XPTEMPLATE.GrandMaster"
 }
 
 PL1E.experienceTemplatesValues = {
@@ -312,10 +311,9 @@ PL1E.experienceTemplatesValues = {
     "grandMaster": 60
 }
 
-PL1E.areaTargetTypes = {
-    "single": "circle",
-    "circle": "circle",
-    "cone": "cone",
-    "square": "rect",
-    "line": "ray",
+PL1E.areaTypes = {
+    "circle": "AREATYPE.Circle",
+    "cone": "AREATYPE.Cone",
+    "rect": "AREATYPE.Rect",
+    "ray": "AREATYPE.Ray",
 };

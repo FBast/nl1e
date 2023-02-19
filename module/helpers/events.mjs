@@ -1,6 +1,7 @@
 import {Pl1eTrade} from "./trade.mjs";
 import {PL1E} from "./config.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
+import {Pl1eMacro} from "./macro.mjs";
 
 export class Pl1eEvent {
 
@@ -188,7 +189,7 @@ export class Pl1eEvent {
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = actor.items.get(itemId);
 
-        item.useAbility(actor);
+        await Pl1eHelpers.getTarget(item.name, "Item")?.use();
     }
 
     /**

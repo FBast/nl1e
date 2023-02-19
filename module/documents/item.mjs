@@ -263,7 +263,7 @@ export class Pl1eItem extends Item {
     async use() {
         switch (this.type) {
             case 'consumable':
-                return this.useConsumable();
+                return this.useConsumable(this.parent);
             case 'wearable':
                 return await this.toggleWearable(this.parent);
             case 'weapon':
@@ -423,9 +423,9 @@ export class Pl1eItem extends Item {
      * @property {Pl1eItem} item The ability itself
      * @property {string} itemId The ability uuid
      * @property {boolean} simpleRoll True if the roll is a simple roll (then no targetRolls)
-     * @property {any} actorRoll Roll of the actor
+     * @property {any} skillRoll Roll of the actor
      * @property {any[]} targetRolls Rolls of the targets
-     * @property {AbilityTemplate[]} templatesArray  An array of the measure templates
+     * @property {AbilityTemplate[]} templates  An array of the measure templates
      */
 
     /**
@@ -438,23 +438,25 @@ export class Pl1eItem extends Item {
         const itemAttributes = this.system.attributes;
 
         // Target selection template
-        const templatesArray = [];
-        if (itemAttributes.targetNumber.apply) {
+        const templates = [];
+        if (itemAttributes.areaNumber.apply) {
             await actor.sheet?.minimize();
-            for (let i = 0; i < itemAttributes.targetNumber.value; i++) {
-                templatesArray.push(await AbilityTemplate.fromItem(this)?.drawPreview());
+            for (let i = 0; i < itemAttributes.areaNumber.value; i++) {
+                const template = await AbilityTemplate.fromItem(this);
+                templates.push(template);
+                await template?.drawPreview();
             }
             await actor.sheet?.maximize();
         }
 
-        let actorRoll;
+        let skillRoll;
         let targetRolls = [];
 
         // Simple Roll
-        if (itemAttributes.mainRoll.apply) {
-            const mainSkill = actor.system.skills[itemAttributes.mainRoll.value];
+        if (itemAttributes.skillRoll.apply) {
+            const mainSkill = actor.system.skills[itemAttributes.skillRoll.value];
             const result = await actor.rollSkill(mainSkill);
-            actorRoll = {
+            skillRoll = {
                 "result": result,
                 "actor": actor,
                 "attributes": this._calculateAttributes(result, actor)
@@ -462,19 +464,19 @@ export class Pl1eItem extends Item {
         }
         // Target Rolls
         else {
-            if (itemAttributes.oppositeRoll.apply) {
+            if (itemAttributes.oppositeRolls.apply) {
                 let targets = game.user.targets;
-                if (targets < 1) return ui.notifications.info(game.i18n.localize("MACRO.NoTarget"));
-                if (itemAttributes.targetNumber.apply) {
-                    const targetNumber = itemAttributes.targetNumber.value;
-                    if (targets.size > targetNumber)
-                        return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (" + targetNumber + " MAX)");
+                if (targets < 1) return ui.notifications.info(game.i18n.localize("WARN.NoTarget"));
+                if (itemAttributes.areaNumber.apply) {
+                    const areaNumber = itemAttributes.areaNumber.value;
+                    if (targets.size > areaNumber)
+                        return ui.notifications.info(game.i18n.localize("WARN.TooMuchTarget") + " (" + areaNumber + " MAX)");
                     targets = game.user.targets;
                 }
                 else if (targets.size > 1)
-                    return ui.notifications.info(game.i18n.localize("MACRO.TooMuchTarget") + " (1 MAX)" )
+                    return ui.notifications.info(game.i18n.localize("WARN.TooMuchTarget") + " (1 MAX)" )
                 for (let target of targets) {
-                    const defenseSkill = target.actor.system.skills[itemAttributes.oppositeRoll.value];
+                    const defenseSkill = target.actor.system.skills[itemAttributes.oppositeRolls.value];
                     const result = await target.actor.rollSkill(defenseSkill);
                     let targetRoll = {
                         "result": result,
@@ -495,11 +497,11 @@ export class Pl1eItem extends Item {
             itemId: this.uuid,
             labels: this.labels,
             simpleRoll: targetRolls.length <= 0,
-            actorRoll: actorRoll,
+            skillRoll: skillRoll,
             oppositeRolls: targetRolls,
             hasRecovery: this.hasRecovery,
             hasDamage: this.hasDamage,
-            templatesArray: templatesArray
+            templates: templates
         };
         const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", this.abilityData);
 
@@ -521,6 +523,10 @@ export class Pl1eItem extends Item {
         await ChatMessage.create(chatData);
     }
 
+    /**
+     * Handle multiples ability resolutions
+     * @param action
+     */
     async actionAbility(action) {
         const abilityData = this.abilityData;
 
@@ -538,10 +544,8 @@ export class Pl1eItem extends Item {
         }
 
         // Destroy templates after fetching target with df-template
-        for (const templates of abilityData.templatesArray) {
-            for (const template of templates) {
-                await template.delete();
-            }
+        for (const template of abilityData.templates) {
+            await template.releaseTemplate();
         }
 
         // Reset abilityData
@@ -549,8 +553,8 @@ export class Pl1eItem extends Item {
     }
 
     async applyAbility(abilityData) {
-        const actor = abilityData.actorRoll.actor;
-        for (const attribute of abilityData.actorRoll.attributes) {
+        const actor = abilityData.skillRoll.actor;
+        for (const attribute of abilityData.skillRoll.attributes) {
             await actor.applyAttribute(attribute, true);
         }
         actor.sheet.render(false);
@@ -573,12 +577,12 @@ export class Pl1eItem extends Item {
         const itemAttributes = this.system.attributes;
         // If is not in battle
         // if (!actor.token.inCombat) {
-        //     ui.notifications.warn(game.i18n.localize("MACRO.NotInBattle"));
+        //     ui.notifications.warn(game.i18n.localize("WARN.NotInBattle"));
         //     isValid = false;
         // }
         // If is not memorized
         if (!this.system.isMemorized) {
-            ui.notifications.warn(game.i18n.localize("MACRO.NotMemorizedWarn"));
+            ui.notifications.warn(game.i18n.localize("WARN.NotMemorized"));
             isValid = false;
         }
         // If cost is not affordable

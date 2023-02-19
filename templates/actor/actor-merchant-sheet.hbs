@@ -6,13 +6,13 @@
             <h1 class="sheet-name"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
             <div class="resources grid grid-2col">
                 <div class="resource box flex-group-center">
-                    <label class="resource-label">{{localize "PL1E.SellMultiplicator"}}</label>
+                    <label class="resource-label">{{localize "TRADE.SellMultiplicator"}}</label>
                     <div class="form-group resource-content">
                         {{rangePicker name="system.sellMultiplicator" value=system.sellMultiplicator min=-100 max=0 step=10}}
                     </div>
                 </div>
                 <div class="resource box flex-group-center">
-                    <label class="resource-label">{{localize "PL1E.BuyMultiplicator"}}</label>
+                    <label class="resource-label">{{localize "TRADE.BuyMultiplicator"}}</label>
                     <div class="form-group resource-content">
                         {{rangePicker name="system.buyMultiplicator" value=system.buyMultiplicator min=-50 max=50 step=10}}
                     </div>

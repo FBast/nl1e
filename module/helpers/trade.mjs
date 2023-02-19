@@ -38,9 +38,9 @@ export class Pl1eTrade {
             rollMode: game.settings.get('core', 'rollMode'),
             flavor: game.i18n.localize("CHAT.FlavorSelling"),
             content: item.name + game.i18n.localize("PL1E.SoldFor")
-                + priceCurrency.gold.value + game.i18n.localize("PL1E.Gold")
-                + priceCurrency.silver.value + game.i18n.localize("PL1E.Silver")
-                + priceCurrency.copper.value + game.i18n.localize("PL1E.Copper")
+                + priceCurrency.gold.value + game.i18n.localize("CURRENCY.Gold")
+                + priceCurrency.silver.value + game.i18n.localize("CURRENCY.Silver")
+                + priceCurrency.copper.value + game.i18n.localize("CURRENCY.Copper")
         });
     }
 
