@@ -1,7 +1,6 @@
 <section class="scroll-auto">
     {{#each system.attributes as |attribute id|}}
-        {{#unless attribute.hide}}
-        {{#if attribute.apply}}
+        {{#if (and (eq attribute.category "fixed") attribute.apply)}}
             <div class="form-group">
                 <label>{{localize attribute.label}}</label>
                 {{#if (eq attribute.type "number")}}
@@ -12,7 +11,20 @@
                 {{/if}}
             </div>
         {{/if}}
-        {{/unless}}
+    {{/each}}
+    <hr>
+    {{#each system.attributes as |attribute id|}}
+        {{#if (and (eq attribute.category "optional") attribute.apply)}}
+            <div class="form-group">
+                <label>{{localize attribute.label}}</label>
+                {{#if (eq attribute.type "number")}}
+                    <label class="align-right">{{attribute.value}}</label>
+                {{else if (eq attribute.type "bool")}}
+                {{else if (eq attribute.type "select")}}
+                    <label class="align-right">{{localize (configEntry attribute.select attribute.value)}}</label>
+                {{/if}}
+            </div>
+        {{/if}}
     {{/each}}
     <ul class="traits-list">
         {{#each abilities as |abilities level|}}
@@ -28,6 +40,7 @@
             </li>
         {{/each}}
     </ul>
+    <hr>
     {{editor system.attributes.description.value target="system.attributes.description.value" rollData=rollData
              button=true owner=owner editable=editable engine="prosemirror"}}
 </section>

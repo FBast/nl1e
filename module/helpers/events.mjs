@@ -393,6 +393,43 @@ export class Pl1eEvent {
     }
 
     /**
+     * Enable an attribute with apply
+     * @param {Event} event The originating click event
+     * @param {Item} item the item where the attribute is added
+     */
+    static async onAttributeAdd(event, item) {
+        event.preventDefault();
+        event.stopPropagation();
+        let attribute = $(event.currentTarget).data("attribute");
+        await item.update({
+            ["system.attributes." + attribute + ".apply"]: true
+        })
+        for (let [key, attribute] of Object.entries(item.system.attributes)) {
+            if (attribute.category !== 'optional') continue;
+            if (attribute.conditions !== undefined) continue;
+            if (attribute.apply) continue;
+            await item.update({
+                ["system.selectedAttribute"]: key
+            })
+            break;
+        }
+    }
+
+    /**
+     * Disable an attribute with apply
+     * @param {Event} event The originating click event
+     * @param {Item} item the item where the attribute is removed
+     */
+    static async onAttributeRemove(event, item) {
+        event.preventDefault();
+        event.stopPropagation();
+        let attribute = $(event.currentTarget).data("attribute");
+        await item.update({
+            ["system.attributes." + attribute + ".apply"]: false
+        })
+    }
+
+    /**
      * Handle execution of a chat card action via a click event on one of the card buttons
      * @param {Event} event       The originating click event
      * @returns {Promise}         A promise which resolves once the handler workflow is complete

@@ -5,123 +5,366 @@
       "base": {
         "resources": {
           "health": {
-            "value": 0
+            "value": 0,
+            "label": "PL1E.Health",
+            "min": 0,
+            "max": 0,
+            "temp": 0,
+            "tempMax": 0,
+            "multiplier" : 10,
+            "weights": {
+              "characteristics": [
+                "constitution",
+                "will"
+              ]
+            }
           },
           "stamina": {
-            "value": 0
+            "value": 0,
+            "label": "PL1E.Stamina",
+            "min": 0,
+            "max": 0,
+            "temp": 0,
+            "tempMax": 0,
+            "multiplier" : 10,
+            "weights": {
+              "characteristics": [
+                "strength",
+                "constitution"
+              ]
+            }
           },
           "mana": {
-            "value": 0
+            "value": 0,
+            "label": "PL1E.Mana",
+            "min": 0,
+            "max": 0,
+            "temp": 0,
+            "tempMax": 0,
+            "multiplier" : 10,
+            "weights": {
+              "characteristics": [
+                "intellect",
+                "will"
+              ]
+            }
           }
         },
         "characteristics": {
           "strength": {
             "base": 2,
             "mods": [],
-            "mod": 0
+            "mod": 0,
+            "label": "CHARA.Str",
+            "tooltip": "TOOLTIP.Str",
+            "weights": {
+              "resources": ["stamina"],
+              "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
+            }
           },
           "agility": {
             "base": 2,
             "mods": [],
-            "mod": 0
+            "mod": 0,
+            "label": "CHARA.Agi",
+            "tooltip": "TOOLTIP.Agi",
+            "weights": {
+              "resources": [],
+              "skills": ["dodge", "reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
+            }
           },
           "perception": {
             "base": 2,
             "mods": [],
-            "mod": 0
+            "mod": 0,
+            "label": "CHARA.Per",
+            "tooltip": "TOOLTIP.Per",
+            "weights": {
+              "resources": [],
+              "skills": ["dodge", "reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
+            }
           },
           "constitution": {
             "base": 2,
             "mods": [],
-            "mod": 0
+            "mod": 0,
+            "label": "CHARA.Con",
+            "tooltip": "TOOLTIP.Con",
+            "weights": {
+              "resources": ["health", "stamina"],
+              "skills": ["parry", "vigor", "athletics"]
+            }
           },
           "intellect": {
             "base": 2,
             "mods": [],
-            "mod": 0
+            "mod": 0,
+            "label": "CHARA.Int",
+            "tooltip": "TOOLTIP.Int",
+            "weights": {
+              "resources": ["mana"],
+              "skills": ["resilience", "diplomacy", "bluff", "erudition", "secularMagic"]
+            }
           },
           "cunning": {
             "base": 2,
             "mods": [],
-            "mod": 0
+            "mod": 0,
+            "label": "CHARA.Cun",
+            "tooltip": "TOOLTIP.Cun",
+            "weights": {
+              "resources": [],
+              "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "secularMagic"]
+            }
           },
           "wisdom": {
             "base": 2,
             "mods": [],
-            "mod": 0
+            "mod": 0,
+            "label": "CHARA.Wis",
+            "tooltip": "TOOLTIP.Wis",
+            "weights": {
+              "resources": [],
+              "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "divineMagic"]
+            }
           },
           "will": {
             "base": 2,
             "mods": [],
-            "mod": 0
+            "mod": 0,
+            "label": "CHARA.Wil",
+            "tooltip": "TOOLTIP.Wil",
+            "weights": {
+              "resources": ["health", "mana"],
+              "skills": ["resilience", "performance", "handling", "divineMagic"]
+            }
           }
         },
         "skills": {
           "parry": {
-            "rank": 3
+            "rank": 3,
+            "label": "DEFENSE.Par",
+            "fixedRank": true,
+            "divider": 3,
+            "weights": {
+              "characteristics": ["strength", "constitution"],
+              "attributes": ["parryBonuses"]
+            }
           },
           "dodge": {
-            "rank": 3
+            "rank": 3,
+            "label": "DEFENSE.Dod",
+            "fixedRank": true,
+            "divider": 2,
+            "weights": {
+              "characteristics": ["agility", "perception"],
+              "attributes": ["dodgeBonuses", "movementPenalty"]
+            }
           },
           "vigor": {
-            "rank": 3
+            "rank": 3,
+            "label": "DEFENSE.Vig",
+            "fixedRank": true,
+            "divider": 2,
+            "weights": {
+              "characteristics": ["strength", "constitution"]
+            }
           },
           "reflex": {
-            "rank": 3
+            "rank": 3,
+            "label": "DEFENSE.Ref",
+            "fixedRank": true,
+            "divider": 2,
+            "weights": {
+              "characteristics": ["agility", "perception"],
+              "attributes": ["movementPenalty"]
+            }
           },
           "resilience": {
-            "rank": 3
+            "rank": 3,
+            "label": "DEFENSE.Res",
+            "fixedRank": true,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["intellect", "will"]
+            }
           },
           "intuition": {
-            "rank": 3
+            "rank": 3,
+            "label": "DEFENSE.Int",
+            "fixedRank": true,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["cunning", "wisdom"]
+            }
           },
           "handling": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Han",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["strength", "agility"]
+            }
           },
           "throwing": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Thr",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["strength", "perception"]
+            }
           },
           "athletics": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Ath",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["strength", "constitution"],
+              "attributes": ["movementPenalty"]
+            }
           },
           "acrobatics": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Acr",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["agility", "perception"],
+              "attributes": ["movementPenalty"]
+            }
           },
           "accuracy": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Acc",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["agility", "perception"],
+              "attributes": ["movementPenalty"]
+            }
           },
           "search": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Sea",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["cunning", "wisdom"]
+            }
           },
           "vigilance": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Vig",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["perception", "wisdom"]
+            }
           },
           "discretion": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Dis",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["agility", "perception"],
+              "attributes": ["movementPenalty"]
+            }
           },
           "performance": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Per",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["wisdom", "will"]
+            }
           },
           "diplomacy": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Dip",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["intellect", "wisdom"]
+            }
           },
           "intimidation": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Int",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["cunning", "wisdom"]
+            }
           },
           "bluff": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Blu",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["intellect", "cunning"]
+            }
           },
           "craft": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Cra",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["agility", "cunning"]
+            }
           },
           "erudition": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Eru",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": false,
+            "weights": {
+              "characteristics": ["intellect", "cunning"]
+            }
           },
           "divineMagic": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Div",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": true,
+            "weights": {
+              "characteristics": ["wisdom", "will"],
+              "attributes": ["movementPenalty"]
+            }
           },
           "secularMagic": {
-            "rank": 1
+            "rank": 1,
+            "label": "SKILL.Sec",
+            "fixedRank": false,
+            "divider": 2,
+            "magicPenalty": true,
+            "weights": {
+              "characteristics": ["intellect", "cunning"],
+              "attributes": ["movementPenalty"]
+            }
           }
         },
         "attributes": {
@@ -163,13 +406,16 @@
         },
         "money": {
           "gold": {
-            "value": 0
+            "value": 0,
+            "label": "PL1E.Gold"
           },
           "silver": {
-            "value": 0
+            "value": 0,
+            "label": "PL1E.Silver"
           },
           "copper": {
-            "value": 0
+            "value": 0,
+            "label": "PL1E.Copper"
           }
         }
       }
@@ -179,10 +425,8 @@
     },
     "npc": {
       "templates": ["base"],
-      "attributes": {
-        "NPCTemplate": "balanced",
-        "experienceTemplate": "novice"
-      }
+      "NPCTemplate": "balanced",
+      "experienceTemplate": "novice"
     },
     "merchant": {
       "templates": ["base"],
@@ -194,17 +438,16 @@
     "types": ["feature", "ability", "weapon", "wearable", "consumable", "common"],
     "templates": {
       "base": {
-        "subItemsMap": []
+        "subItemsMap": [],
+        "selectedAttribute": "none"
       },
       "item": {
         "attributes": {
           "description": {
             "value": "",
-            "apply": true
-          },
-          "rarity": {
-            "value": 0,
-            "apply": false
+            "category": "header",
+            "type": "text",
+            "label": "PL1E.Description"
           }
         },
         "price": {
@@ -221,41 +464,82 @@
       },
       "damages": {
         "attributes": {
-          "contactAttackRange": {
-            "value": 1,
-            "apply": false
-          },
-          "rangedAttackRange": {
-            "value": 0,
-            "apply": false
-          },
           "slashing": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.Slashing",
+            "path": "resources.health.value",
+            "operator": "add",
+            "isMultiplier": true,
+            "isPositive": false,
+            "reduction": "attributes.slashingReduction"
           },
           "crushing": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.Crushing",
+            "path": "resources.health.value",
+            "operator": "add",
+            "isMultiplier": true,
+            "isPositive": false,
+            "reduction": "attributes.crushingReduction"
           },
           "piercing": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.Piercing",
+            "path": "resources.health.value",
+            "operator": "add",
+            "isMultiplier": true,
+            "isPositive": false,
+            "reduction": "attributes.piercingReduction"
           },
           "burn": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.Burn",
+            "path": "resources.health.value",
+            "operator": "add",
+            "isMultiplier": true,
+            "isPositive": false,
+            "reduction": "attributes.burnReduction"
           },
           "cold": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.Cold",
+            "path": "resources.health.value",
+            "operator": "add",
+            "isMultiplier": true,
+            "isPositive": false,
+            "reduction": "attributes.coldReduction"
           },
           "shock": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.Shock",
+            "path": "resources.health.value",
+            "operator": "add",
+            "isMultiplier": true,
+            "isPositive": false,
+            "reduction": "attributes.shockReduction"
           },
           "acid": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.Acid",
+            "path": "resources.health.value",
+            "operator": "add",
+            "isMultiplier": true,
+            "isPositive": false,
+            "reduction": "attributes.acidReduction"
           }
         }
       },
@@ -263,15 +547,33 @@
         "attributes": {
           "healthRecovery": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.HealthRecovery",
+            "fas": "fas fa-heart",
+            "path": "resources.health.value",
+            "operator": "add",
+            "isPositive" : true
           },
           "staminaRecovery": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.StaminaRecovery",
+            "fas": "fas fa-wave-pulse",
+            "path": "resources.stamina.value",
+            "operator": "add",
+            "isPositive" : true
           },
           "manaRecovery": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.ManaRecovery",
+            "fas": "fas fa-sparkles",
+            "path": "resources.mana.value",
+            "operator": "add",
+            "isPositive" : true
           }
         }
       },
@@ -279,31 +581,59 @@
         "attributes": {
           "slashingReduction": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.SlashingReduction",
+            "path": "attributes.slashingReductions",
+            "operator": "push"
           },
           "crushingReduction": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.CrushingReduction",
+            "path": "attributes.crushingReductions",
+            "operator": "push"
           },
           "piercingReduction": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.PiercingReduction",
+            "path": "attributes.piercingReductions",
+            "operator": "push"
           },
           "burnReduction": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.BurnReduction",
+            "path": "attributes.burnReductions",
+            "operator": "push"
           },
           "coldReduction": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.ColdReduction",
+            "path": "attributes.coldReductions",
+            "operator": "push"
           },
           "acidReduction": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.AcidReduction",
+            "path": "attributes.acidReductions",
+            "operator": "push"
           },
           "shockReduction": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.ShockReduction",
+            "path": "attributes.shockReductions",
+            "operator": "push"
           }
         }
       },
@@ -311,15 +641,25 @@
         "attributes": {
           "movementPenalty": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.MovementPenalty",
+            "path": "attributes.movementPenalties",
+            "operator": "push",
+            "isMultiplier": true,
+            "isPositive": false
           },
           "parry": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.Parry"
           },
           "dodge": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.Dodge"
           }
         }
       },
@@ -327,35 +667,71 @@
         "attributes": {
           "strengthMod": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.StrengthMod",
+            "path": "characteristics.strength.mods",
+            "operator": "push",
+            "isMultiplier": true,
+            "isPositive": false
           },
           "agilityMod": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.AgilityMod",
+            "path": "characteristics.agility.mods",
+            "operator": "push",
+            "isMultiplier": true,
+            "isPositive": false
           },
           "perceptionMod": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.PerceptionMod",
+            "path": "characteristics.perception.mods",
+            "operator": "push"
           },
           "constitutionMod": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.ConstitutionMod",
+            "path": "characteristics.constitution.mods",
+            "operator": "push"
           },
           "intellectMod": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.IntellectMod",
+            "path": "characteristics.intellect.mods",
+            "operator": "push"
           },
           "cunningMod": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.CunningMod",
+            "path": "characteristics.cunning.mods",
+            "operator": "push"
           },
           "wisdomMod": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.WisdomMod",
+            "path": "characteristics.wisdom.mods",
+            "operator": "push"
           },
           "willMod": {
             "value": 0,
-            "apply": false
+            "category": "optional",
+            "type": "number",
+            "label": "PL1E.WillMod",
+            "path": "characteristics.will.mods",
+            "operator": "push"
           }
         }
       }
@@ -365,19 +741,33 @@
       "attributes": {
         "featureType": {
           "value": "none",
-          "apply": false
+          "category": "header",
+          "type": "number",
+          "label": "PL1E.FeatureType",
+          "select": "featureTypes"
         },
         "cost": {
           "value": 0,
-          "apply": false
+          "category": "header",
+          "type": "number",
+          "label": "PL1E.Cost"
         },
         "size": {
           "value": "medium",
-          "apply": false
+          "category": "optional",
+          "type": "select",
+          "label": "PL1E.Size",
+          "path": "attributes.size",
+          "operator": "set",
+          "select": "sizes"
         },
         "speed": {
           "value": 4.5,
-          "apply": false
+          "category": "optional",
+          "type": "number",
+          "label": "PL1E.Speed",
+          "path": "attributes.speed",
+          "operator": "set"
         }
       }
     },
@@ -387,39 +777,72 @@
       "attributes": {
         "level": {
           "value": 1,
-          "apply": true
+          "category": "header",
+          "type": "number",
+          "label": "PL1E.Level"
         },
         "mainRoll": {
           "value": "none",
-          "apply": false
-        },
-        "oppositeRoll": {
-          "value": "none",
-          "apply": false
-        },
-        "areaTargetType": {
-          "value": "single",
-          "apply": false
+          "category": "fixed",
+          "type": "select",
+          "label": "PL1E.MainRoll",
+          "select": "abilitySkills"
         },
         "areaWidth": {
           "value": 1,
-          "apply": false
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.AreaWidth"
+        },
+        "targetSelf": {
+          "value": true,
+          "category": "fixed",
+          "type": "bool",
+          "label": "PL1E.TargetSelf"
+        },
+        "oppositeRoll": {
+          "value": "none",
+          "category": "fixed",
+          "conditions": "targetSelf!==true",
+          "type": "select",
+          "label": "PL1E.OppositeRoll",
+          "select": "abilitySkills"
         },
         "targetNumber": {
           "value": 1,
-          "apply": false
+          "category": "fixed",
+          "conditions": "targetSelf!==true",
+          "type": "number",
+          "label": "PL1E.TargetNumber"
+        },
+        "areaTargetType": {
+          "value": "single",
+          "category": "fixed",
+          "conditions": "targetSelf!==true",
+          "type": "select",
+          "label": "PL1E.AreaTargetType",
+          "select": "areaTargetTypes"
         },
         "healthCost": {
           "value": 0,
-          "apply": false
+          "category": "optional",
+          "type": "number",
+          "label": "PL1E.HealthCost",
+          "isPositive" : false
         },
         "staminaCost": {
           "value": 0,
-          "apply": false
+          "category": "optional",
+          "type": "number",
+          "label": "PL1E.StaminaCost",
+          "isPositive" : false
         },
         "manaCost": {
           "value": 0,
-          "apply": false
+          "category": "optional",
+          "type": "number",
+          "label": "PL1E.ManaCost",
+          "isPositive" : false
         }
       }
     },
@@ -430,19 +853,40 @@
       "attributes": {
         "mastery": {
           "value": "none",
-          "apply": false
+          "category": "header",
+          "type": "select",
+          "label": "PL1E.Mastery",
+          "select": "masteries"
+        },
+        "contactAttackRange": {
+          "value": 1,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.ContactAttackRange"
+        },
+        "rangedAttackRange": {
+          "value": 0,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.RangedAttackRange"
         },
         "parryProjectiles": {
           "value": false,
-          "apply": false
+          "category": "fixed",
+          "type": "bool",
+          "label": "PL1E.ParryProjectiles"
         },
         "hands": {
           "value": 0,
-          "apply": false
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.Hands"
         },
         "ammo": {
           "value": 0,
-          "apply": false
+          "category": "optional",
+          "type": "number",
+          "label": "PL1E.Ammo"
         }
       }
     },
@@ -452,7 +896,10 @@
       "attributes": {
         "slot": {
           "value": "none",
-          "apply": false
+          "category": "header",
+          "type": "select",
+          "label": "PL1E.Slot",
+          "select": "slots"
         }
       }
     },
@@ -462,15 +909,22 @@
       "attributes": {
         "activation": {
           "value": "action",
-          "apply": true
+          "category": "header",
+          "type": "select",
+          "label": "PL1E.Activation",
+          "select": "activations"
         },
         "reloadable": {
           "value": false,
-          "apply": false
+          "category": "fixed",
+          "type": "bool",
+          "label": "PL1E.Reloadable"
         },
         "uses": {
           "value": 1,
-          "apply": true
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.Uses"
         }
       }
     },

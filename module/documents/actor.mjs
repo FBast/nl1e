@@ -34,12 +34,7 @@ export class Pl1eActor extends Actor {
 
     /** @override */
     prepareBaseData() {
-        const system = this.system;
-        // Merge config data
-        system.resources = Pl1eHelpers.mergeDeep(system.resources, CONFIG.PL1E.resources);
-        system.characteristics = Pl1eHelpers.mergeDeep(system.characteristics, CONFIG.PL1E.characteristics);
-        system.skills = Pl1eHelpers.mergeDeep(system.skills, CONFIG.PL1E.skills);
-        system.money = Pl1eHelpers.mergeDeep(system.money, CONFIG.PL1E.currency);
+
     }
 
     /** @override */
@@ -108,7 +103,7 @@ export class Pl1eActor extends Actor {
         actorAttributes.coldReduction = actorAttributes.coldReductions.reduce((a, b) => a + b, 0);
         actorAttributes.acidReduction = actorAttributes.acidReductions.reduce((a, b) => a + b, 0);
         actorAttributes.shockReduction = actorAttributes.shockReductions.reduce((a, b) => a + b, 0);
-        if (actorAttributes.experienceTemplate !== undefined)
+        if (systemData.experienceTemplate !== undefined)
             actorAttributes.experience = CONFIG.PL1E.experienceTemplatesValues[actorAttributes.experienceTemplate];
         actorAttributes.slots = Math.floor(actorAttributes.experience / 3);
         for (let otherItem of this.items) {
@@ -139,7 +134,7 @@ export class Pl1eActor extends Actor {
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
         // Handle characteristics
-        let templateValues = CONFIG.PL1E.NPCTemplatesValues[actorAttributes.NPCTemplate];
+        let templateValues = CONFIG.PL1E.NPCTemplatesValues[systemData.NPCTemplate];
         for (let [id, characteristic] of Object.entries(templateValues.characteristics)) {
             actorCharacteristics[id].base = characteristic;
         }

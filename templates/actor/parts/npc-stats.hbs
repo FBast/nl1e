@@ -173,7 +173,7 @@
 <!--        </ol>-->
 <!--        <ol class="items-list">-->
             {{#each effects as |section sid|}}
-                <li class="items-header flexrow" data-effect-type="{{section.type}}">
+                <li class="item items-header flexrow" data-effect-type="{{section.type}}">
                     <label class="item-name flexrow">{{localize section.label}}</label>
                     <label>Source</label>
                     <label>Duration</label>
@@ -209,13 +209,13 @@
         <fieldset>
             <legend class="section-header">{{localize "PL1E.General"}}</legend>
             <div class="form-group attribute">
-                <select name="system.attributes.NPCTemplate">
-                    {{selectOptions (config "NPCTemplates") selected=system.attributes.NPCTemplate localize=true}}
+                <select name="system.NPCTemplate">
+                    {{selectOptions (config "NPCTemplates") selected=system.NPCTemplate localize=true}}
                 </select>
             </div>
             <div class="form-group attribute">
-                <select name="system.attributes.experienceTemplate">
-                    {{selectOptions (config "experienceTemplates") selected=system.attributes.experienceTemplate localize=true}}
+                <select name="system.experienceTemplate">
+                    {{selectOptions (config "experienceTemplates") selected=system.experienceTemplate localize=true}}
                 </select>
             </div>
             <div class="form-group grid grid-2col attribute">

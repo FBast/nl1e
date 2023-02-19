@@ -62,9 +62,39 @@ export class Pl1eItem extends Item {
     /** @override */
     prepareBaseData() {
         const system = this.system;
-        // Merge config data
-        system.price = Pl1eHelpers.mergeDeep(system.price, CONFIG.PL1E.currency);
-        system.attributes = Pl1eHelpers.mergeDeep(system.attributes, CONFIG.PL1E.attributes);
+        // Activate conditionnal attributes
+        for (let [key, attribute] of Object.entries(system.attributes)) {
+            if (['header', 'fixed'].includes(attribute.category) && attribute.conditions === undefined)
+                attribute.apply = true;
+            if (attribute.conditions !== undefined) {
+                let isValid = true;
+                for (const condition of attribute.conditions.split(',')) {
+                    if (condition.includes('!==')) {
+                        const attributeCondition = condition.split('!==')[0];
+                        let attributeValue = condition.split('!==')[1];
+                        if (attributeValue === 'true') attributeValue = true;
+                        if (attributeValue === 'false') attributeValue = false;
+                        if (system.attributes[attributeCondition].value === attributeValue) isValid = false;
+                    }
+                    else if(condition.includes('===')) {
+                        const attributeCondition = condition.split('===')[0];
+                        let attributeValue = condition.split('===')[1];
+                        if (attributeValue === 'true') attributeValue = true;
+                        if (attributeValue === 'false') attributeValue = false;
+                        if (system.attributes[attributeCondition].value !== attributeValue) isValid = false;
+                    }
+                }
+                attribute.apply = isValid;
+            }
+        }
+        // List optional attributes
+        system.availableAttributes = {};
+        for (let [key, attribute] of Object.entries(system.attributes)) {
+            if (attribute.category !== 'optional') continue;
+            if (attribute.conditions !== undefined) continue;
+            if (attribute.apply) continue;
+            system.availableAttributes[key] = attribute.label;
+        }
     }
 
     /**
@@ -409,7 +439,7 @@ export class Pl1eItem extends Item {
 
         // Target selection template
         const templatesArray = [];
-        if (itemAttributes.targetNumber > 0) {
+        if (itemAttributes.targetNumber.apply) {
             await actor.sheet?.minimize();
             for (let i = 0; i < itemAttributes.targetNumber.value; i++) {
                 templatesArray.push(await AbilityTemplate.fromItem(this)?.drawPreview());
@@ -576,7 +606,7 @@ export class Pl1eItem extends Item {
             let calculatedAttribute = JSON.parse(JSON.stringify(itemAttribute));
             if (calculatedAttribute.type === 'number') {
                 calculatedAttribute.value *= rollResult;
-                calculatedAttribute.value *= calculatedAttribute.positive ? 1 : -1;
+                calculatedAttribute.value *= calculatedAttribute.isPositive ? 1 : -1;
                 if (calculatedAttribute.reduction !== undefined) {
                     const reduction = targetActor.system[calculatedAttribute.reduction];
                     calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
