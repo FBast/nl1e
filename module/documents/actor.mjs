@@ -6,6 +6,16 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
  */
 export class Pl1eActor extends Actor {
 
+    get bestToken() {
+        let token = this.token
+        token ??= this.sheet.token;
+        if (!token && this.getActiveTokens().length > 0) {
+            token = this.getActiveTokens()[0];
+        }
+        if (!token) ui.notifications.warn(game.i18n.localize("WARN.CannotFindAnyToken"));
+        return token;
+    }
+
     //region Data management
 
     /** @override */

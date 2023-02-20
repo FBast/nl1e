@@ -788,47 +788,94 @@
           "label": "PL1E.SkillRoll",
           "select": "abilitySkills"
         },
-        "areaWidth": {
-          "value": 1,
+        "targetingType": {
+          "value": "self",
           "category": "fixed",
-          "type": "number",
-          "label": "PL1E.AreaWidth"
-        },
-        "targetSelf": {
-          "value": true,
-          "category": "fixed",
-          "type": "bool",
-          "label": "PL1E.TargetOneself"
+          "type": "select",
+          "label": "PL1E.TargetingType",
+          "select": "targetingTypes"
         },
         "oppositeRolls": {
           "value": "none",
           "category": "fixed",
-          "conditions": "targetSelf!==true",
           "type": "select",
           "label": "PL1E.OppositeRolls",
-          "select": "abilitySkills"
+          "select": "abilitySkills",
+          "conditions": "targetingType===opponents||targetingType===all",
+          "fallback": "none"
         },
         "range": {
+          "value": 0,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.Range",
+          "conditions": "targetingType!==self",
+          "fallback": 0
+        },
+        "areaType": {
+          "value": "circle",
+          "category": "fixed",
+          "type": "select",
+          "label": "PL1E.AreaType",
+          "conditions": "targetingType!==self",
+          "select": "areaTypes",
+          "fallback": "circle"
+        },
+        "circleRadius": {
+          "value": 1.5,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.CircleRadius",
+          "conditions": "targetingType!==self&&areaType===circle",
+          "fallback": 1.5
+        },
+        "coneLength": {
+          "value": 1.5,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.ConeLength",
+          "conditions": "areaType===cone",
+          "fallback": 1.5
+        },
+        "coneAngle": {
+          "value": 50,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.ConeAngle",
+          "conditions": "areaType===cone",
+          "fallback": 50
+        },
+        "rectWidth": {
           "value": 1,
           "category": "fixed",
-          "conditions": "targetSelf!==true",
           "type": "number",
-          "label": "PL1E.Range"
+          "label": "PL1E.RectWidth",
+          "conditions": "areaType===rect",
+          "fallback": 1.5
+        },
+        "rectLength": {
+          "value": 1,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.RectLength",
+          "conditions": "areaType===rect",
+          "fallback": 1.5
+        },
+        "rayLength": {
+          "value": 1,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.RayLength",
+          "conditions": "areaType===ray",
+          "fallback": 1.5
         },
         "areaNumber": {
           "value": 1,
           "category": "fixed",
-          "conditions": "targetSelf!==true",
           "type": "number",
-          "label": "PL1E.AreaNumber"
-        },
-        "areaType": {
-          "value": "single",
-          "category": "fixed",
-          "conditions": "targetSelf!==true",
-          "type": "select",
-          "label": "PL1E.AreaType",
-          "select": "areaTypes"
+          "label": "PL1E.AreaNumber",
+          "conditions": "targetingType!==self&&range!==0",
+          "fallback": 1
         },
         "healthCost": {
           "value": 0,

@@ -317,3 +317,10 @@ PL1E.areaTypes = {
     "rect": "AREATYPE.Rect",
     "ray": "AREATYPE.Ray",
 };
+
+PL1E.targetingTypes = {
+    "self": "TARGETINGTYPE.Self",
+    "allies": "TARGETINGTYPE.Allies",
+    "opponents": "TARGETINGTYPE.Opponents",
+    "all": "TARGETINGTYPE.All"
+}

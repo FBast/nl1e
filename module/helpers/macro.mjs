@@ -35,7 +35,6 @@ export class Pl1eMacro {
                 foundry.utils.mergeObject(macroData, {
                     name: itemData.name,
                     img: itemData.img,
-                    // command: this.rollItem(itemData.name),
                     command: `game.pl1e.Pl1eMacro.rollItem("${itemData.name}")`,
                     flags: {"pl1e.itemMacro": true}
                 });

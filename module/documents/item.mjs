@@ -1,4 +1,3 @@
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
 import {PL1E} from "../helpers/config.mjs";
 
@@ -67,24 +66,30 @@ export class Pl1eItem extends Item {
             if (['header', 'fixed'].includes(attribute.category) && attribute.conditions === undefined)
                 attribute.apply = true;
             if (attribute.conditions !== undefined) {
-                let isValid = true;
-                for (const condition of attribute.conditions.split(',')) {
-                    if (condition.includes('!==')) {
-                        const attributeCondition = condition.split('!==')[0];
-                        let attributeValue = condition.split('!==')[1];
-                        if (attributeValue === 'true') attributeValue = true;
-                        if (attributeValue === 'false') attributeValue = false;
-                        if (system.attributes[attributeCondition].value === attributeValue) isValid = false;
+                for (const andCondition of attribute.conditions.split('||')) {
+                    let isValid = true;
+                    for (const condition of andCondition.split('&&')) {
+                        if (condition.includes('!==')) {
+                            const attributeCondition = condition.split('!==')[0];
+                            let attributeValue = condition.split('!==')[1];
+                            if (attributeValue === 'true') attributeValue = true;
+                            if (attributeValue === 'false') attributeValue = false;
+                            if (/^\d+$/.test(attributeValue)) attributeValue = +attributeValue;
+                            if (system.attributes[attributeCondition].value === attributeValue) isValid = false;
+                        }
+                        else if(condition.includes('===')) {
+                            const attributeCondition = condition.split('===')[0];
+                            let attributeValue = condition.split('===')[1];
+                            if (attributeValue === 'true') attributeValue = true;
+                            if (attributeValue === 'false') attributeValue = false;
+                            if (system.attributes[attributeCondition].value !== attributeValue) isValid = false;
+                        }
                     }
-                    else if(condition.includes('===')) {
-                        const attributeCondition = condition.split('===')[0];
-                        let attributeValue = condition.split('===')[1];
-                        if (attributeValue === 'true') attributeValue = true;
-                        if (attributeValue === 'false') attributeValue = false;
-                        if (system.attributes[attributeCondition].value !== attributeValue) isValid = false;
-                    }
+                    attribute.apply = isValid;
+                    if (attribute.apply) break;
                 }
-                attribute.apply = isValid;
+                if (!attribute.apply && attribute.fallback !== undefined)
+                    attribute.value = attribute.fallback;
             }
         }
         // List optional attributes
@@ -439,7 +444,7 @@ export class Pl1eItem extends Item {
 
         // Target selection template
         const templates = [];
-        if (itemAttributes.areaNumber.apply) {
+        if (itemAttributes.targetingType.value !== 'self') {
             await actor.sheet?.minimize();
             for (let i = 0; i < itemAttributes.areaNumber.value; i++) {
                 const template = await AbilityTemplate.fromItem(this);
@@ -453,7 +458,7 @@ export class Pl1eItem extends Item {
         let targetRolls = [];
 
         // Simple Roll
-        if (itemAttributes.skillRoll.apply) {
+        if (itemAttributes.skillRoll.value !== 'none') {
             const mainSkill = actor.system.skills[itemAttributes.skillRoll.value];
             const result = await actor.rollSkill(mainSkill);
             skillRoll = {
@@ -463,33 +468,31 @@ export class Pl1eItem extends Item {
             }
         }
         // Target Rolls
-        else {
-            if (itemAttributes.oppositeRolls.apply) {
-                let targets = game.user.targets;
-                if (targets < 1) return ui.notifications.info(game.i18n.localize("WARN.NoTarget"));
-                if (itemAttributes.areaNumber.apply) {
-                    const areaNumber = itemAttributes.areaNumber.value;
-                    if (targets.size > areaNumber)
-                        return ui.notifications.info(game.i18n.localize("WARN.TooMuchTarget") + " (" + areaNumber + " MAX)");
-                    targets = game.user.targets;
-                }
-                else if (targets.size > 1)
-                    return ui.notifications.info(game.i18n.localize("WARN.TooMuchTarget") + " (1 MAX)" )
-                for (let target of targets) {
-                    const defenseSkill = target.actor.system.skills[itemAttributes.oppositeRolls.value];
-                    const result = await target.actor.rollSkill(defenseSkill);
-                    let targetRoll = {
-                        "result": result,
-                        "actor": target.actor,
-                        "attributes": this._calculateAttributes(result, target.actor)
-                    };
-                    targetRolls.push(targetRoll);
-                }
+        else if (itemAttributes.oppositeRolls.apply) {
+            let targets = game.user.targets;
+            if (targets < 1) return ui.notifications.info(game.i18n.localize("WARN.NoTarget"));
+            if (itemAttributes.areaNumber.apply) {
+                const areaNumber = itemAttributes.areaNumber.value;
+                if (targets.size > areaNumber)
+                    return ui.notifications.info(game.i18n.localize("WARN.TooMuchTarget") + " (" + areaNumber + " MAX)");
+                targets = game.user.targets;
+            }
+            else if (targets.size > 1)
+                return ui.notifications.info(game.i18n.localize("WARN.TooMuchTarget") + " (1 MAX)" )
+            for (let target of targets) {
+                const defenseSkill = target.actor.system.skills[itemAttributes.oppositeRolls.value];
+                const result = await target.actor.rollSkill(defenseSkill);
+                let targetRoll = {
+                    "result": result,
+                    "actor": target.actor,
+                    "attributes": this._calculateAttributes(result, target.actor)
+                };
+                targetRolls.push(targetRoll);
             }
         }
 
         // Render the chat card template
-        const token = this.actor.token;
+        const token = this.actor.bestToken;
         this.abilityData = {
             actor: this.actor.toObject(false),
             tokenId: token?.uuid || null,

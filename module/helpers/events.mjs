@@ -1,7 +1,6 @@
 import {Pl1eTrade} from "./trade.mjs";
-import {PL1E} from "./config.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
-import {Pl1eMacro} from "./macro.mjs";
+import {Pl1eItem} from "../documents/item.mjs";
 
 export class Pl1eEvent {
 
@@ -189,7 +188,7 @@ export class Pl1eEvent {
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = actor.items.get(itemId);
 
-        await Pl1eHelpers.getTarget(item.name, "Item")?.use();
+        await item.use();
     }
 
     /**
@@ -444,8 +443,8 @@ export class Pl1eEvent {
         button.disabled = true;
         let action = $(event.currentTarget).data("action");
         let itemId = $(event.currentTarget).data("item-id");
-        const item = await fromUuid(itemId);
 
+        const item = await fromUuid<Pl1eItem>(itemId);
         await item.actionAbility(action);
 
         // Re-enable the button

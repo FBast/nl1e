@@ -31,16 +31,12 @@ export class AbilityTemplate extends MeasuredTemplate {
   * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
   */
   static fromItem(item) {
-    let areaType = item.system.attributes.areaType.value || {};
-    if (!areaType) return null;
-
-    const areaWidth = item.system.attributes.areaWidth.value;
-
+    const itemAttributes = item.system.attributes;
+    const areaType = itemAttributes.areaType.value;
     // Prepare template data
     const templateData = {
       t: areaType,
       user: game.user.id,
-      distance: areaWidth,
       direction: 0,
       x: 0,
       y: 0,
@@ -49,19 +45,22 @@ export class AbilityTemplate extends MeasuredTemplate {
     };
 
     // Additional type-specific data
-    switch ( areaType ) {
+    switch (areaType) {
       case "circle":
+        templateData.distance = itemAttributes.circleRadius.value;
         break;
       case "cone":
-        templateData.angle = CONFIG.MeasuredTemplate.defaults.angle;
+        templateData.distance = itemAttributes.coneLength.value;
+        templateData.angle = itemAttributes.coneAngle.value;
         break;
-      case "rect": // 5e rectangular AoEs are always cubes
-        templateData.distance = Math.hypot(areaWidth, areaWidth);
-        templateData.width = areaWidth;
+      case "rect":
+        templateData.distance = itemAttributes.rectLength.value;
+        templateData.width = itemAttributes.rectWidth.value;
         templateData.direction = 45;
         break;
       case "ray": // 5e rays are most commonly 1 square (5 ft) in width
-        templateData.width = areaWidth ?? canvas.dimensions.distance;
+        templateData.width = 1.5;
+        templateData.distance = itemAttributes.rayLength.value;
         break;
     }
 
@@ -150,16 +149,19 @@ export class AbilityTemplate extends MeasuredTemplate {
   _onMovePlacement(event) {
     event.stopPropagation();
     let now = Date.now(); // Apply a 20ms throttle
-    if ( now - this.#moveTime <= 20 ) return;
+    if (now - this.#moveTime <= 20) return;
     let templateCenter = event.data.getLocalPosition(this.layer);
-    const token = this.item.actor.token;
+    const offset = 50;
+    templateCenter.x -= offset;
+    templateCenter.y -= offset;
+    let token = this.item.actor.bestToken;
     // Clamp with range
     const range = this.item.system.attributes.range.value;
-    templateCenter = this._clampVectorRadius(templateCenter.x, templateCenter.y, token.x, token.y, range * 100);
+    templateCenter = this._clampVectorRadius(templateCenter, token, range * 100);
     // Snap position
-    templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 2);
+    templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 1);
     // Move position
-    this.document.updateSource({x: templateCenter.x, y: templateCenter.y});
+    this.document.updateSource({x: templateCenter.x + offset, y: templateCenter.y + offset});
     this.refresh();
     // Target tokens
     const gridPositions = this._getGridHighlightPositions();
@@ -167,14 +169,14 @@ export class AbilityTemplate extends MeasuredTemplate {
     this.#moveTime = now;
   }
 
-  _clampVectorRadius(x1, y1, x2, y2, max) {
-    let y = x1 - x2;
-    let x = y1 - y2;
+  _clampVectorRadius(source, destination, max) {
+    let x = source.x - destination.x;
+    let y = source.y - destination.y;
     let distance = Math.sqrt(x * x + y * y);
     let clamp = Math.min(distance, max) / distance;
     return {
-      x: clamp * y + x2,
-      y: clamp * x + y2
+      x: clamp * x + destination.x,
+      y: clamp * y + destination.y
     }
   }
 
@@ -190,6 +192,9 @@ export class AbilityTemplate extends MeasuredTemplate {
     const update = {direction: this.document.direction + (snap * Math.sign(event.deltaY))};
     this.document.updateSource(update);
     this.refresh();
+    // Target tokens
+    const gridPositions = this._getGridHighlightPositions();
+    this._targetTokensInPositions(gridPositions);
   }
 
   /**
