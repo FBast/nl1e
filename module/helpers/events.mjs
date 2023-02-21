@@ -1,6 +1,7 @@
 import {Pl1eTrade} from "./trade.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
+import {PL1E} from "./config.mjs";
 
 export class Pl1eEvent {
 
@@ -401,18 +402,12 @@ export class Pl1eEvent {
         event.preventDefault();
         event.stopPropagation();
         let attribute = $(event.currentTarget).data("attribute");
+        const dynamicAttribute = PL1E.optionalAttributesValues[attribute];
+        const optionalAttributes = item.system.optionalAttributes;
+        optionalAttributes.push(dynamicAttribute);
         await item.update({
-            ["system.attributes." + attribute + ".apply"]: true
+            ["system.optionalAttributes"]: optionalAttributes
         })
-        for (let [key, attribute] of Object.entries(item.system.attributes)) {
-            if (attribute.category !== 'optional') continue;
-            if (attribute.conditions !== undefined) continue;
-            if (attribute.apply) continue;
-            await item.update({
-                ["system.selectedAttribute"]: key
-            })
-            break;
-        }
     }
 
     /**
@@ -423,9 +418,11 @@ export class Pl1eEvent {
     static async onAttributeRemove(event, item) {
         event.preventDefault();
         event.stopPropagation();
-        let attribute = $(event.currentTarget).data("attribute");
+        let attributeId = $(event.currentTarget).data("attribute");
+        let optionalAttributes = item.system.optionalAttributes;
+        optionalAttributes = optionalAttributes.splice(attributeId, 1);
         await item.update({
-            ["system.attributes." + attribute + ".apply"]: false
+            ["system.optionalAttributes"]: optionalAttributes
         })
     }
 

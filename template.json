@@ -6,7 +6,7 @@
         "resources": {
           "health": {
             "value": 0,
-            "label": "CHARA.Health",
+            "label": "PL1E.Health",
             "min": 0,
             "max": 0,
             "temp": 0,
@@ -21,7 +21,7 @@
           },
           "stamina": {
             "value": 0,
-            "label": "CHARA.Stamina",
+            "label": "PL1E.Stamina",
             "min": 0,
             "max": 0,
             "temp": 0,
@@ -36,7 +36,7 @@
           },
           "mana": {
             "value": 0,
-            "label": "CHARA.Mana",
+            "label": "PL1E.Mana",
             "min": 0,
             "max": 0,
             "temp": 0,
@@ -55,8 +55,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Strength",
-            "tooltip": "TOOLTIP.Strength",
+            "label": "PL1E.Strength",
+            "tooltip": "PL1E.Strength",
             "weights": {
               "resources": ["stamina"],
               "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
@@ -66,8 +66,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Agility",
-            "tooltip": "TOOLTIP.Agility",
+            "label": "PL1E.Agility",
+            "tooltip": "PL1E.Agility",
             "weights": {
               "resources": [],
               "skills": ["dodge", "reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
@@ -77,8 +77,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Perception",
-            "tooltip": "TOOLTIP.Perception",
+            "label": "PL1E.Perception",
+            "tooltip": "PL1E.Perception",
             "weights": {
               "resources": [],
               "skills": ["dodge", "reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
@@ -88,8 +88,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Constitution",
-            "tooltip": "TOOLTIP.Constitution",
+            "label": "PL1E.Constitution",
+            "tooltip": "PL1E.Constitution",
             "weights": {
               "resources": ["health", "stamina"],
               "skills": ["parry", "vigor", "athletics"]
@@ -99,8 +99,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Intellect",
-            "tooltip": "TOOLTIP.Intellect",
+            "label": "PL1E.Intellect",
+            "tooltip": "PL1E.Intellect",
             "weights": {
               "resources": ["mana"],
               "skills": ["resilience", "diplomacy", "bluff", "erudition", "secularMagic"]
@@ -110,8 +110,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Cunning",
-            "tooltip": "TOOLTIP.Cunning",
+            "label": "PL1E.Cunning",
+            "tooltip": "PL1E.Cunning",
             "weights": {
               "resources": [],
               "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "secularMagic"]
@@ -121,8 +121,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Wisdom",
-            "tooltip": "TOOLTIP.Wisdom",
+            "label": "PL1E.Wisdom",
+            "tooltip": "PL1E.Wisdom",
             "weights": {
               "resources": [],
               "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "divineMagic"]
@@ -132,8 +132,8 @@
             "base": 2,
             "mods": [],
             "mod": 0,
-            "label": "CHARA.Will",
-            "tooltip": "TOOLTIP.Will",
+            "label": "PL1E.Will",
+            "tooltip": "PL1E.Will",
             "weights": {
               "resources": ["health", "mana"],
               "skills": ["resilience", "performance", "handling", "divineMagic"]
@@ -143,7 +143,7 @@
         "skills": {
           "parry": {
             "rank": 3,
-            "label": "CHARA.Parry",
+            "label": "PL1E.Parry",
             "fixedRank": true,
             "divider": 3,
             "weights": {
@@ -153,7 +153,7 @@
           },
           "dodge": {
             "rank": 3,
-            "label": "CHARA.Dodge",
+            "label": "PL1E.Dodge",
             "fixedRank": true,
             "divider": 2,
             "weights": {
@@ -163,7 +163,7 @@
           },
           "vigor": {
             "rank": 3,
-            "label": "CHARA.Vigor",
+            "label": "PL1E.Vigor",
             "fixedRank": true,
             "divider": 2,
             "weights": {
@@ -172,7 +172,7 @@
           },
           "reflex": {
             "rank": 3,
-            "label": "CHARA.Reflex",
+            "label": "PL1E.Reflex",
             "fixedRank": true,
             "divider": 2,
             "weights": {
@@ -182,7 +182,7 @@
           },
           "resilience": {
             "rank": 3,
-            "label": "CHARA.Resilience",
+            "label": "PL1E.Resilience",
             "fixedRank": true,
             "divider": 2,
             "magicPenalty": false,
@@ -192,7 +192,7 @@
           },
           "intuition": {
             "rank": 3,
-            "label": "CHARA.Intuition",
+            "label": "PL1E.Intuition",
             "fixedRank": true,
             "divider": 2,
             "magicPenalty": false,
@@ -202,7 +202,7 @@
           },
           "handling": {
             "rank": 1,
-            "label": "CHARA.Handling",
+            "label": "PL1E.Handling",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -212,7 +212,7 @@
           },
           "throwing": {
             "rank": 1,
-            "label": "CHARA.Throwing",
+            "label": "PL1E.Throwing",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -222,7 +222,7 @@
           },
           "athletics": {
             "rank": 1,
-            "label": "CHARA.Athletics",
+            "label": "PL1E.Athletics",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -233,7 +233,7 @@
           },
           "acrobatics": {
             "rank": 1,
-            "label": "CHARA.Acrobatics",
+            "label": "PL1E.Acrobatics",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -244,7 +244,7 @@
           },
           "accuracy": {
             "rank": 1,
-            "label": "CHARA.Accuracy",
+            "label": "PL1E.Accuracy",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -255,7 +255,7 @@
           },
           "search": {
             "rank": 1,
-            "label": "CHARA.Search",
+            "label": "PL1E.Search",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -265,7 +265,7 @@
           },
           "vigilance": {
             "rank": 1,
-            "label": "CHARA.Vigilance",
+            "label": "PL1E.Vigilance",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -275,7 +275,7 @@
           },
           "discretion": {
             "rank": 1,
-            "label": "CHARA.Discretion",
+            "label": "PL1E.Discretion",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -286,7 +286,7 @@
           },
           "performance": {
             "rank": 1,
-            "label": "CHARA.Performance",
+            "label": "PL1E.Performance",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -296,7 +296,7 @@
           },
           "diplomacy": {
             "rank": 1,
-            "label": "CHARA.Diplomacy",
+            "label": "PL1E.Diplomacy",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -306,7 +306,7 @@
           },
           "intimidation": {
             "rank": 1,
-            "label": "CHARA.Intimidation",
+            "label": "PL1E.Intimidation",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -316,7 +316,7 @@
           },
           "bluff": {
             "rank": 1,
-            "label": "CHARA.Bluff",
+            "label": "PL1E.Bluff",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -326,7 +326,7 @@
           },
           "craft": {
             "rank": 1,
-            "label": "CHARA.Craft",
+            "label": "PL1E.Craft",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -336,7 +336,7 @@
           },
           "erudition": {
             "rank": 1,
-            "label": "CHARA.Erudition",
+            "label": "PL1E.Erudition",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": false,
@@ -346,7 +346,7 @@
           },
           "divineMagic": {
             "rank": 1,
-            "label": "CHARA.DivineMagic",
+            "label": "PL1E.DivineMagic",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": true,
@@ -357,7 +357,7 @@
           },
           "secularMagic": {
             "rank": 1,
-            "label": "CHARA.SecularMagic",
+            "label": "PL1E.SecularMagic",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": true,
@@ -407,15 +407,15 @@
         "money": {
           "gold": {
             "value": 0,
-            "label": "CURRENCY.Gold"
+            "label": "PL1E.Gold"
           },
           "silver": {
             "value": 0,
-            "label": "CURRENCY.Silver"
+            "label": "PL1E.Silver"
           },
           "copper": {
             "value": 0,
-            "label": "CURRENCY.Copper"
+            "label": "PL1E.Copper"
           }
         }
       }
@@ -439,7 +439,8 @@
     "templates": {
       "base": {
         "subItemsMap": [],
-        "selectedAttribute": "none"
+        "optionalAttributes": [],
+        "selectedOptionalAttribute": "none"
       },
       "item": {
         "attributes": {
@@ -461,283 +462,10 @@
             "value": 0
           }
         }
-      },
-      "damages": {
-        "attributes": {
-          "slashing": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.Slashing",
-            "path": "resources.health.value",
-            "operator": "add",
-            "isMultiplier": true,
-            "isPositive": false,
-            "reduction": "attributes.slashingReduction"
-          },
-          "crushing": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.Crushing",
-            "path": "resources.health.value",
-            "operator": "add",
-            "isMultiplier": true,
-            "isPositive": false,
-            "reduction": "attributes.crushingReduction"
-          },
-          "piercing": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.Piercing",
-            "path": "resources.health.value",
-            "operator": "add",
-            "isMultiplier": true,
-            "isPositive": false,
-            "reduction": "attributes.piercingReduction"
-          },
-          "burn": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.Burn",
-            "path": "resources.health.value",
-            "operator": "add",
-            "isMultiplier": true,
-            "isPositive": false,
-            "reduction": "attributes.burnReduction"
-          },
-          "cold": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.Cold",
-            "path": "resources.health.value",
-            "operator": "add",
-            "isMultiplier": true,
-            "isPositive": false,
-            "reduction": "attributes.coldReduction"
-          },
-          "shock": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.Shock",
-            "path": "resources.health.value",
-            "operator": "add",
-            "isMultiplier": true,
-            "isPositive": false,
-            "reduction": "attributes.shockReduction"
-          },
-          "acid": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.Acid",
-            "path": "resources.health.value",
-            "operator": "add",
-            "isMultiplier": true,
-            "isPositive": false,
-            "reduction": "attributes.acidReduction"
-          }
-        }
-      },
-      "recoveries": {
-        "attributes": {
-          "healthRecovery": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.HealthRecovery",
-            "fas": "fas fa-heart",
-            "path": "resources.health.value",
-            "operator": "add",
-            "isPositive" : true
-          },
-          "staminaRecovery": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.StaminaRecovery",
-            "fas": "fas fa-wave-pulse",
-            "path": "resources.stamina.value",
-            "operator": "add",
-            "isPositive" : true
-          },
-          "manaRecovery": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.ManaRecovery",
-            "fas": "fas fa-sparkles",
-            "path": "resources.mana.value",
-            "operator": "add",
-            "isPositive" : true
-          }
-        }
-      },
-      "reductions": {
-        "attributes": {
-          "slashingReduction": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.SlashingReduction",
-            "path": "attributes.slashingReductions",
-            "operator": "push"
-          },
-          "crushingReduction": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.CrushingReduction",
-            "path": "attributes.crushingReductions",
-            "operator": "push"
-          },
-          "piercingReduction": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.PiercingReduction",
-            "path": "attributes.piercingReductions",
-            "operator": "push"
-          },
-          "burnReduction": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.BurnReduction",
-            "path": "attributes.burnReductions",
-            "operator": "push"
-          },
-          "coldReduction": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.ColdReduction",
-            "path": "attributes.coldReductions",
-            "operator": "push"
-          },
-          "acidReduction": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.AcidReduction",
-            "path": "attributes.acidReductions",
-            "operator": "push"
-          },
-          "shockReduction": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.ShockReduction",
-            "path": "attributes.shockReductions",
-            "operator": "push"
-          }
-        }
-      },
-      "fightMods": {
-        "attributes": {
-          "movementPenalty": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.MovementPenalty",
-            "path": "attributes.movementPenalties",
-            "operator": "push",
-            "isMultiplier": true,
-            "isPositive": false
-          },
-          "parry": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.Parry"
-          },
-          "dodge": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.Dodge"
-          }
-        }
-      },
-      "characteristicsMods": {
-        "attributes": {
-          "strengthMod": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.StrengthMod",
-            "path": "characteristics.strength.mods",
-            "operator": "push",
-            "isMultiplier": true,
-            "isPositive": false
-          },
-          "agilityMod": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.AgilityMod",
-            "path": "characteristics.agility.mods",
-            "operator": "push",
-            "isMultiplier": true,
-            "isPositive": false
-          },
-          "perceptionMod": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.PerceptionMod",
-            "path": "characteristics.perception.mods",
-            "operator": "push"
-          },
-          "constitutionMod": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.ConstitutionMod",
-            "path": "characteristics.constitution.mods",
-            "operator": "push"
-          },
-          "intellectMod": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.IntellectMod",
-            "path": "characteristics.intellect.mods",
-            "operator": "push"
-          },
-          "cunningMod": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.CunningMod",
-            "path": "characteristics.cunning.mods",
-            "operator": "push"
-          },
-          "wisdomMod": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.WisdomMod",
-            "path": "characteristics.wisdom.mods",
-            "operator": "push"
-          },
-          "willMod": {
-            "value": 0,
-            "category": "optional",
-            "type": "number",
-            "label": "PL1E.WillMod",
-            "path": "characteristics.will.mods",
-            "operator": "push"
-          }
-        }
       }
     },
     "feature": {
-      "templates": ["base", "reductions", "characteristicsMods"],
+      "templates": ["base"],
       "attributes": {
         "featureType": {
           "value": "none",
@@ -751,28 +479,11 @@
           "category": "header",
           "type": "number",
           "label": "PL1E.Cost"
-        },
-        "size": {
-          "value": "medium",
-          "category": "optional",
-          "type": "select",
-          "label": "PL1E.Size",
-          "path": "attributes.size",
-          "operator": "set",
-          "select": "sizes"
-        },
-        "speed": {
-          "value": 4.5,
-          "category": "optional",
-          "type": "number",
-          "label": "PL1E.Speed",
-          "path": "attributes.speed",
-          "operator": "set"
         }
       }
     },
     "ability": {
-      "templates": ["base", "damages", "recoveries"],
+      "templates": ["base"],
       "isMemorized": false,
       "attributes": {
         "level": {
@@ -788,36 +499,26 @@
           "label": "PL1E.SkillRoll",
           "select": "abilitySkills"
         },
-        "targetingType": {
-          "value": "self",
-          "category": "fixed",
-          "type": "select",
-          "label": "PL1E.TargetingType",
-          "select": "targetingTypes"
-        },
-        "oppositeRolls": {
-          "value": "none",
-          "category": "fixed",
-          "type": "select",
-          "label": "PL1E.OppositeRolls",
-          "select": "abilitySkills",
-          "conditions": "targetingType===opponents||targetingType===all",
-          "fallback": "none"
-        },
         "range": {
           "value": 0,
           "category": "fixed",
           "type": "number",
           "label": "PL1E.Range",
-          "conditions": "targetingType!==self",
           "fallback": 0
+        },
+        "areaNumber": {
+          "value": 1,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.AreaNumber",
+          "conditions": "range!==0",
+          "fallback": 1
         },
         "areaType": {
           "value": "circle",
           "category": "fixed",
           "type": "select",
           "label": "PL1E.AreaType",
-          "conditions": "targetingType!==self",
           "select": "areaTypes",
           "fallback": "circle"
         },
@@ -826,7 +527,7 @@
           "category": "fixed",
           "type": "number",
           "label": "PL1E.CircleRadius",
-          "conditions": "targetingType!==self&&areaType===circle",
+          "conditions": "areaType===circle",
           "fallback": 1.5
         },
         "coneLength": {
@@ -868,40 +569,11 @@
           "label": "PL1E.RayLength",
           "conditions": "areaType===ray",
           "fallback": 1.5
-        },
-        "areaNumber": {
-          "value": 1,
-          "category": "fixed",
-          "type": "number",
-          "label": "PL1E.AreaNumber",
-          "conditions": "targetingType!==self&&range!==0",
-          "fallback": 1
-        },
-        "healthCost": {
-          "value": 0,
-          "category": "optional",
-          "type": "number",
-          "label": "PL1E.HealthCost",
-          "isPositive" : false
-        },
-        "staminaCost": {
-          "value": 0,
-          "category": "optional",
-          "type": "number",
-          "label": "PL1E.StaminaCost",
-          "isPositive" : false
-        },
-        "manaCost": {
-          "value": 0,
-          "category": "optional",
-          "type": "number",
-          "label": "PL1E.ManaCost",
-          "isPositive" : false
         }
       }
     },
     "weapon": {
-      "templates": ["base", "item", "damages" ,"fightMods", "characteristicsMods"],
+      "templates": ["base", "item"],
       "isEquippedMain": false,
       "isEquippedSecondary": false,
       "attributes": {
@@ -938,14 +610,14 @@
         },
         "ammo": {
           "value": 0,
-          "category": "optional",
+          "category": "fixed",
           "type": "number",
           "label": "PL1E.Ammo"
         }
       }
     },
     "wearable": {
-      "templates": ["base", "item", "reductions", "fightMods", "characteristicsMods"],
+      "templates": ["base", "item"],
       "isEquipped": false,
       "attributes": {
         "slot": {
@@ -958,7 +630,7 @@
       }
     },
     "consumable": {
-      "templates": ["base", "item", "recoveries"],
+      "templates": ["base", "item"],
       "removedUses": 0,
       "attributes": {
         "activation": {

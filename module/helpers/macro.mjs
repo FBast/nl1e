@@ -31,7 +31,7 @@ export class Pl1eMacro {
         switch ( dropData.type ) {
             case "Item":
                 const itemData = await Item.implementation.fromDropData(dropData);
-                if ( !itemData ) return ui.notifications.warn(game.i18n.localize("WARN.Unowned"));
+                if ( !itemData ) return ui.notifications.warn(game.i18n.localize("PL1E.Unowned"));
                 foundry.utils.mergeObject(macroData, {
                     name: itemData.name,
                     img: itemData.img,
@@ -41,7 +41,7 @@ export class Pl1eMacro {
                 break;
             case "ActiveEffect":
                 const effectData = await ActiveEffect.implementation.fromDropData(dropData);
-                if ( !effectData ) return ui.notifications.warn(game.i18n.localize("WARN.Unowned"));
+                if ( !effectData ) return ui.notifications.warn(game.i18n.localize("PL1E.Unowned"));
                 foundry.utils.mergeObject(macroData, {
                     name: effectData.label,
                     img: effectData.icon,

@@ -18,10 +18,10 @@ export class Pl1eActor extends Actor {
         // The active tokens linked to this actor
         if (!token && this.prototypeToken.actorLink && this.getActiveTokens().length > 0) {
             if (this.getActiveTokens().length > 1)
-                ui.notifications.warn(game.i18n.localize("WARN.MultipleLinkedTokens"));
+                ui.notifications.warn(game.i18n.localize("PL1E.MultipleLinkedTokens"));
             token = this.getActiveTokens()[0];
         }
-        if (!token) ui.notifications.error(game.i18n.localize("WARN.CannotFindAnyToken"));
+        if (!token) ui.notifications.error(game.i18n.localize("PL1E.CannotFindAnyToken"));
         return token;
     }
 

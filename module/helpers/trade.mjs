@@ -9,8 +9,8 @@ export class Pl1eTrade {
             await ChatMessage.create({
                 speaker: ChatMessage.getSpeaker({actor: sourceActor}),
                 rollMode: game.settings.get('core', 'rollMode'),
-                flavor: game.i18n.localize("CHAT.FlavorGift"),
-                content: item.name + game.i18n.localize("CHAT.GivenTo") + targetActor.name
+                flavor: game.i18n.localize("PL1E.FlavorGift"),
+                content: item.name + game.i18n.localize("PL1E.GivenTo") + targetActor.name
             });
         }
         // Or sell item
@@ -36,11 +36,11 @@ export class Pl1eTrade {
         await ChatMessage.create({
             speaker: ChatMessage.getSpeaker({actor: sourceActor}),
             rollMode: game.settings.get('core', 'rollMode'),
-            flavor: game.i18n.localize("CHAT.FlavorSelling"),
+            flavor: game.i18n.localize("PL1E.FlavorSelling"),
             content: item.name + game.i18n.localize("PL1E.SoldFor")
-                + priceCurrency.gold.value + game.i18n.localize("CURRENCY.Gold")
-                + priceCurrency.silver.value + game.i18n.localize("CURRENCY.Silver")
-                + priceCurrency.copper.value + game.i18n.localize("CURRENCY.Copper")
+                + priceCurrency.gold.value + game.i18n.localize("PL1E.Gold")
+                + priceCurrency.silver.value + game.i18n.localize("PL1E.Silver")
+                + priceCurrency.copper.value + game.i18n.localize("PL1E.Copper")
         });
     }
 
@@ -60,11 +60,11 @@ export class Pl1eTrade {
         await ChatMessage.create({
             speaker: ChatMessage.getSpeaker({actor: buyerActor}),
             rollMode: game.settings.get('core', 'rollMode'),
-            flavor: game.i18n.localize("CHAT.FlavorPurchasing"),
-            content: item.name + game.i18n.localize("CHAT.BoughtFor")
-                + priceCurrency.gold.value + game.i18n.localize("CHAT.Gold")
-                + priceCurrency.silver.value + game.i18n.localize("CHAT.Silver")
-                + priceCurrency.copper.value + game.i18n.localize("CHAT.Copper")
+            flavor: game.i18n.localize("PL1E.FlavorPurchasing"),
+            content: item.name + game.i18n.localize("PL1E.BoughtFor")
+                + priceCurrency.gold.value + game.i18n.localize("PL1E.Gold")
+                + priceCurrency.silver.value + game.i18n.localize("PL1E.Silver")
+                + priceCurrency.copper.value + game.i18n.localize("PL1E.Copper")
         });
         await buyerActor.createEmbeddedDocuments("Item", [item]);
     }

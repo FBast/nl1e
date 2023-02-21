@@ -92,14 +92,6 @@ export class Pl1eItem extends Item {
                     attribute.value = attribute.fallback;
             }
         }
-        // List optional attributes
-        system.availableAttributes = {};
-        for (let [key, attribute] of Object.entries(system.attributes)) {
-            if (attribute.category !== 'optional') continue;
-            if (attribute.conditions !== undefined) continue;
-            if (attribute.apply) continue;
-            system.availableAttributes[key] = attribute.label;
-        }
     }
 
     /**
@@ -428,8 +420,8 @@ export class Pl1eItem extends Item {
      * @property {Pl1eItem} item The ability itself
      * @property {string} itemId The ability uuid
      * @property {boolean} simpleRoll True if the roll is a simple roll (then no targetRolls)
-     * @property {any} skillRoll Roll of the actor
-     * @property {any[]} targetRolls Rolls of the targets
+     * @property {any} launcherData Data of the actor
+     * @property {any[]} targetsData Data of the targets
      * @property {AbilityTemplate[]} templates  An array of the measure templates
      */
 
@@ -445,7 +437,7 @@ export class Pl1eItem extends Item {
 
         // Target selection template
         const templates = [];
-        if (itemAttributes.targetingType.value !== 'self') {
+        if (itemAttributes.areaNumber.value !== 0) {
             await actor.sheet?.minimize();
             for (let i = 0; i < itemAttributes.areaNumber.value; i++) {
                 const template = await AbilityTemplate.fromItem(this);
@@ -455,41 +447,24 @@ export class Pl1eItem extends Item {
             await actor.sheet?.maximize();
         }
 
-        let skillRoll;
-        let targetRolls = [];
-
-        // Simple Roll
+        // Launcher Data
+        let launcherData;
         if (itemAttributes.skillRoll.value !== 'none') {
             const mainSkill = actor.system.skills[itemAttributes.skillRoll.value];
             const result = await actor.rollSkill(mainSkill);
-            skillRoll = {
+            launcherData = {
                 "result": result,
                 "actor": actor,
-                "attributes": this._calculateAttributes(result, actor)
+                "attributes": itemAttributes
             }
         }
-        // Target Rolls
-        else if (itemAttributes.oppositeRolls.apply) {
-            let targets = game.user.targets;
-            if (targets < 1) return ui.notifications.info(game.i18n.localize("WARN.NoTarget"));
-            if (itemAttributes.areaNumber.apply) {
-                const areaNumber = itemAttributes.areaNumber.value;
-                if (targets.size > areaNumber)
-                    return ui.notifications.info(game.i18n.localize("WARN.TooMuchTarget") + " (" + areaNumber + " MAX)");
-                targets = game.user.targets;
-            }
-            else if (targets.size > 1)
-                return ui.notifications.info(game.i18n.localize("WARN.TooMuchTarget") + " (1 MAX)" )
-            for (let target of targets) {
-                const defenseSkill = target.actor.system.skills[itemAttributes.oppositeRolls.value];
-                const result = await target.actor.rollSkill(defenseSkill);
-                let targetRoll = {
-                    "result": result,
-                    "actor": target.actor,
-                    "attributes": this._calculateAttributes(result, target.actor)
-                };
-                targetRolls.push(targetRoll);
-            }
+
+        // Target Data
+        let targetsData = [];
+        let targets = game.user.targets;
+        for (let target of targets) {
+            let targetData = this._calculateAttributes(this.system.optionalAttributes, target, launcherData);
+            targetsData.push(targetData);
         }
 
         // Render the chat card template
@@ -500,9 +475,9 @@ export class Pl1eItem extends Item {
             item: this.toObject(false),
             itemId: this.uuid,
             labels: this.labels,
-            simpleRoll: targetRolls.length <= 0,
-            skillRoll: skillRoll,
-            oppositeRolls: targetRolls,
+            simpleRoll: targetsData.length <= 0,
+            launcherData: launcherData,
+            targetsData: targetsData,
             hasRecovery: this.hasRecovery,
             hasDamage: this.hasDamage,
             templates: templates
@@ -581,12 +556,12 @@ export class Pl1eItem extends Item {
         const itemAttributes = this.system.attributes;
         // If is not in battle
         // if (!actor.token.inCombat) {
-        //     ui.notifications.warn(game.i18n.localize("WARN.NotInBattle"));
+        //     ui.notifications.warn(game.i18n.localize("PL1E.NotInBattle"));
         //     isValid = false;
         // }
         // If is not memorized
         if (!this.system.isMemorized) {
-            ui.notifications.warn(game.i18n.localize("WARN.NotMemorized"));
+            ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             isValid = false;
         }
         // If cost is not affordable
@@ -605,25 +580,28 @@ export class Pl1eItem extends Item {
         return isValid;
     }
 
-    _calculateAttributes(rollResult, targetActor) {
-        if (rollResult < 0) rollResult = 0;
-        const itemAttributes = this.system.attributes;
-        let calculatedAttributes = [];
+    _calculateAttributes(attributes, target, launcherData) {
+        // if (rollResult < 0) rollResult = 0;
+        // const itemAttributes = this.system.attributes;
+        // let calculatedAttributes = [];
+        //
+        // for (const [key, itemAttribute] of Object.entries(itemAttributes)) {
+        //     let calculatedAttribute = JSON.parse(JSON.stringify(itemAttribute));
+        //     if (calculatedAttribute.type === 'number') {
+        //         calculatedAttribute.value *= rollResult;
+        //         if (calculatedAttribute.reduction !== undefined) {
+        //             const reduction = targetActor.system[calculatedAttribute.reduction];
+        //             calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
+        //         }
+        //         calculatedAttributes.push(calculatedAttribute);
+        //     }
+        // }
 
-        for (const [key, itemAttribute] of Object.entries(itemAttributes)) {
-            let calculatedAttribute = JSON.parse(JSON.stringify(itemAttribute));
-            if (calculatedAttribute.type === 'number') {
-                calculatedAttribute.value *= rollResult;
-                calculatedAttribute.value *= calculatedAttribute.isPositive ? 1 : -1;
-                if (calculatedAttribute.reduction !== undefined) {
-                    const reduction = targetActor.system[calculatedAttribute.reduction];
-                    calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
-                }
-                calculatedAttributes.push(calculatedAttribute);
-            }
-        }
-
-        return calculatedAttributes;
+        return {
+            "result": result,
+            "actor": actor,
+            "attributes": itemAttributes
+        };
     }
 
     //endregion

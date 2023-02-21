@@ -13,15 +13,15 @@ PL1E.defaultIcons = {
 }
 
 PL1E.defaultNames = {
-    "character": "SHEET.NewCharacter",
-    "npc": "SHEET.NewNPC",
-    "merchant": "SHEET.NewMerchant",
-    "feature": "SHEET.NewFeature",
-    "ability": "SHEET.NewAbility",
-    "weapon": "SHEET.NewWeapon",
-    "wearable": "SHEET.NewWearable",
-    "consumable": "SHEET.NewConsumable",
-    "common": "SHEET.NewCommon",
+    "character": "PL1E.NewCharacter",
+    "npc": "PL1E.NewNPC",
+    "merchant": "PL1E.NewMerchant",
+    "feature": "PL1E.NewFeature",
+    "ability": "PL1E.NewAbility",
+    "weapon": "PL1E.NewWeapon",
+    "wearable": "PL1E.NewWearable",
+    "consumable": "PL1E.NewConsumable",
+    "common": "PL1E.NewCommon",
 }
 
 PL1E.sizes = {
@@ -49,31 +49,31 @@ PL1E.sizeTokens = {
 };
 
 PL1E.featureTypes = {
-    "race": "FEATURETYPE.Race",
-    "class": "FEATURETYPE.Class"
+    "race": "PL1E.Race",
+    "class": "PL1E.Class"
 }
 
 PL1E.masteries = {
-    "none": "MASTERY.None",
-    "crossbows": "MASTERY.Crossbows",
-    "bows": "MASTERY.Bows",
-    "poleArms": "MASTERY.PoleArms",
-    "shields": "MASTERY.Shields",
-    "shortAxes": "MASTERY.ShortAxes",
-    "longAxes": "MASTERY.LongAxes",
-    "shortBlades": "MASTERY.ShortBlades",
-    "mediumBlades": "MASTERY.MediumBlades",
-    "longBlades": "MASTERY.LongBlades",
-    "shortHammers": "MASTERY.ShortHammers",
-    "longHammers": "MASTERY.LongHammers",
-    "arcana": "MASTERY.Arcana",
-    "aramancia": "MASTERY.Aramancia",
-    "biomancia": "MASTERY.Biomancia",
-    "diastamancia": "MASTERY.Diastamancia",
-    "goetia": "MASTERY.Goetia",
-    "myalomancia": "MASTERY.Myalomancia",
-    "necromancia": "MASTERY.Necromancia",
-    "theurgy": "MASTERY.Theurgy"
+    "none": "PL1E.None",
+    "crossbows": "PL1E.Crossbows",
+    "bows": "PL1E.Bows",
+    "poleArms": "PL1E.PoleArms",
+    "shields": "PL1E.Shields",
+    "shortAxes": "PL1E.ShortAxes",
+    "longAxes": "PL1E.LongAxes",
+    "shortBlades": "PL1E.ShortBlades",
+    "mediumBlades": "PL1E.MediumBlades",
+    "longBlades": "PL1E.LongBlades",
+    "shortHammers": "PL1E.ShortHammers",
+    "longHammers": "PL1E.LongHammers",
+    "arcana": "PL1E.Arcana",
+    "aramancia": "PL1E.Aramancia",
+    "biomancia": "PL1E.Biomancia",
+    "diastamancia": "PL1E.Diastamancia",
+    "goetia": "PL1E.Goetia",
+    "myalomancia": "PL1E.Myalomancia",
+    "necromancia": "PL1E.Necromancia",
+    "theurgy": "PL1E.Theurgy"
 }
 
 PL1E.slots = {
@@ -85,53 +85,53 @@ PL1E.slots = {
 }
 
 PL1E.activations = {
-    "passive": "ACTIVATION.Passive",
-    "reaction": "ACTIVATION.Reaction",
-    "free": "ACTIVATION.Free",
-    "action": "ACTIVATION.Action",
-    "round": "ACTIVATION.Round",
-    "special": "ACTIVATION.Special"
+    "passive": "PL1E.Passive",
+    "reaction": "PL1E.Reaction",
+    "free": "PL1E.Free",
+    "action": "PL1E.Action",
+    "round": "PL1E.Round",
+    "special": "PL1E.Special"
 }
 
 PL1E.abilitySkills = {
-    "none": "CHARA.None",
-    "parry": "CHARA.Parry",
-    "dodge": "CHARA.Dodge",
-    "vigor": "CHARA.Vigor",
-    "reflex": "CHARA.Reflex",
-    "resilience": "CHARA.Resilience",
-    "intuition": "CHARA.Intuition",
-    "handling": "CHARA.Handling",
-    "throwing": "CHARA.Throwing",
-    "athletics": "CHARA.Athletics",
-    "acrobatics": "CHARA.Acrobatics",
-    "accuracy": "CHARA.Accuracy",
-    "search": "CHARA.Search",
-    "vigilance": "CHARA.Vigilance",
-    "discretion": "CHARA.Discretion",
-    "performance": "CHARA.Performance",
-    "diplomacy": "CHARA.Diplomacy",
-    "intimidation": "CHARA.Intimidation",
-    "bluff": "CHARA.Bluff",
-    "craft": "CHARA.Craft",
-    "erudition": "CHARA.Erudition",
-    "divineMagic": "CHARA.DivineMagic",
-    "secularMagic": "CHARA.SecularMagic",
+    "none": "PL1E.None",
+    "parry": "PL1E.Parry",
+    "dodge": "PL1E.Dodge",
+    "vigor": "PL1E.Vigor",
+    "reflex": "PL1E.Reflex",
+    "resilience": "PL1E.Resilience",
+    "intuition": "PL1E.Intuition",
+    "handling": "PL1E.Handling",
+    "throwing": "PL1E.Throwing",
+    "athletics": "PL1E.Athletics",
+    "acrobatics": "PL1E.Acrobatics",
+    "accuracy": "PL1E.Accuracy",
+    "search": "PL1E.Search",
+    "vigilance": "PL1E.Vigilance",
+    "discretion": "PL1E.Discretion",
+    "performance": "PL1E.Performance",
+    "diplomacy": "PL1E.Diplomacy",
+    "intimidation": "PL1E.Intimidation",
+    "bluff": "PL1E.Bluff",
+    "craft": "PL1E.Craft",
+    "erudition": "PL1E.Erudition",
+    "divineMagic": "PL1E.DivineMagic",
+    "secularMagic": "PL1E.SecularMagic",
 }
 
 PL1E.NPCTemplates = {
-    "balanced": "NPCTEMPLATE.Balanced",
-    "soldier": "NPCTEMPLATE.Soldier",
-    "brute": "NPCTEMPLATE.Brute",
-    "killer": "NPCTEMPLATE.Killer",
-    "hunter": "NPCTEMPLATE.Hunter",
-    "mystic": "NPCTEMPLATE.Mystic",
-    "wizard": "NPCTEMPLATE.Wizard",
-    "priest": "NPCTEMPLATE.Priest",
-    "battleMage": "NPCTEMPLATE.BattleMage",
-    "crusader": "NPCTEMPLATE.Crusader",
-    "assassin": "NPCTEMPLATE.Assassin",
-    "monk": "NPCTEMPLATE.Monk"
+    "balanced": "PL1E.Balanced",
+    "soldier": "PL1E.Soldier",
+    "brute": "PL1E.Brute",
+    "killer": "PL1E.Killer",
+    "hunter": "PL1E.Hunter",
+    "mystic": "PL1E.Mystic",
+    "wizard": "PL1E.Wizard",
+    "priest": "PL1E.Priest",
+    "battleMage": "PL1E.BattleMage",
+    "crusader": "PL1E.Crusader",
+    "assassin": "PL1E.Assassin",
+    "monk": "PL1E.Monk"
 }
 
 PL1E.NPCTemplatesValues = {
@@ -294,12 +294,12 @@ PL1E.NPCTemplatesValues = {
 }
 
 PL1E.experienceTemplates = {
-    "novice": "XPTEMPLATE.Novice",
-    "apprentice": "XPTEMPLATE.Apprentice",
-    "adept": "XPTEMPLATE.Adept",
-    "expert": "XPTEMPLATE.Expert",
-    "master": "XPTEMPLATE.Master",
-    "grandMaster": "XPTEMPLATE.GrandMaster"
+    "novice": "PL1E.Novice",
+    "apprentice": "PL1E.Apprentice",
+    "adept": "PL1E.Adept",
+    "expert": "PL1E.Expert",
+    "master": "PL1E.Master",
+    "grandMaster": "PL1E.GrandMaster"
 }
 
 PL1E.experienceTemplatesValues = {
@@ -312,15 +312,338 @@ PL1E.experienceTemplatesValues = {
 }
 
 PL1E.areaTypes = {
-    "circle": "AREATYPE.Circle",
-    "cone": "AREATYPE.Cone",
-    "rect": "AREATYPE.Rect",
-    "ray": "AREATYPE.Ray",
-};
+    "circle": "PL1E.Circle",
+    "cone": "PL1E.Cone",
+    "rect": "PL1E.Rect",
+    "ray": "PL1E.Ray"
+}
 
-PL1E.targetingTypes = {
-    "self": "TARGETINGTYPE.Self",
-    "allies": "TARGETINGTYPE.Allies",
-    "opponents": "TARGETINGTYPE.Opponents",
-    "all": "TARGETINGTYPE.All"
+PL1E.targetGroups = {
+    "self": "PL1E.Self",
+    "allies": "PL1E.Allies",
+    "opponents": "PL1E.Opponents",
+    "all": "PL1E.All"
+}
+
+PL1E.resolutionTypes = {
+    "valueIfSuccess" : "PL1E.ValueIfSuccess",
+    "multiplyBySuccess": "PL1E.MultiplyBySuccess"
+}
+
+PL1E.optionalAttributes = {
+    "feature": {
+        "size": "PL1E.Size",
+        "speed": "PL1E.Speed",
+        "health": "PL1E.Health",
+        "stamina": "PL1E.Stamina",
+        "mana": "PL1E.Mana",
+        "strengthMod": "PL1E.StrengthMod",
+        "agilityMod": "PL1E.AgilityMod",
+        "perceptionMod": "PL1E.PerceptionMod",
+        "constitutionMod": "PL1E.ConstitutionMod",
+        "intellectMod": "PL1E.IntellectMod",
+        "cunningMod": "PL1E.CunningMod",
+        "wisdomMod": "PL1E.WisdomMod",
+        "willMod": "PL1E.WillMod"
+    },
+    "ability": {
+        "slashing": "PL1E.Slashing",
+        "crushing": "PL1E.Crushing",
+        "piercing": "PL1E.Piercing",
+        "burn": "PL1E.Burn",
+        "cold": "PL1E.Cold",
+        "shock": "PL1E.Shock",
+        "acid": "PL1E.Acid",
+        "health": "PL1E.Health",
+        "stamina": "PL1E.Stamina",
+        "mana": "PL1E.Mana",
+        "strengthMod": "PL1E.StrengthMod",
+        "agilityMod": "PL1E.AgilityMod",
+        "perceptionMod": "PL1E.PerceptionMod",
+        "constitutionMod": "PL1E.ConstitutionMod",
+        "intellectMod": "PL1E.IntellectMod",
+        "cunningMod": "PL1E.CunningMod",
+        "wisdomMod": "PL1E.WisdomMod",
+        "willMod": "PL1E.WillMod"
+    },
+    "weapon": {
+        "movementPenalty": "PL1E.MovementPenalty",
+        "parry": "PL1E.Parry",
+        "dodge": "PL1E.Dodge",
+        "slashing": "PL1E.Slashing",
+        "crushing": "PL1E.Crushing",
+        "piercing": "PL1E.Piercing",
+        "burn": "PL1E.Burn",
+        "cold": "PL1E.Cold",
+        "shock": "PL1E.Shock",
+        "acid": "PL1E.Acid",
+        "strengthMod": "PL1E.StrengthMod",
+        "agilityMod": "PL1E.AgilityMod",
+        "perceptionMod": "PL1E.PerceptionMod",
+        "constitutionMod": "PL1E.ConstitutionMod",
+        "intellectMod": "PL1E.IntellectMod",
+        "cunningMod": "PL1E.CunningMod",
+        "wisdomMod": "PL1E.WisdomMod",
+        "willMod": "PL1E.WillMod"
+    },
+    "wearable": {
+        "movementPenalty": "PL1E.MovementPenalty",
+        "parry": "PL1E.Parry",
+        "dodge": "PL1E.Dodge",
+        "slashingReduction": "PL1E.SlashingReduction",
+        "crushingReduction": "PL1E.CrushingReduction",
+        "piercingReduction": "PL1E.PiercingReduction",
+        "burnReduction": "PL1E.BurnReduction",
+        "coldReduction": "PL1E.ColdReduction",
+        "acidReduction": "PL1E.AcidReduction",
+        "shockReduction": "PL1E.ShockReduction",
+        "strengthMod": "PL1E.StrengthMod",
+        "agilityMod": "PL1E.AgilityMod",
+        "perceptionMod": "PL1E.PerceptionMod",
+        "constitutionMod": "PL1E.ConstitutionMod",
+        "intellectMod": "PL1E.IntellectMod",
+        "cunningMod": "PL1E.CunningMod",
+        "wisdomMod": "PL1E.WisdomMod",
+        "willMod": "PL1E.WillMod"
+    },
+    "consumable": {
+        "size": "PL1E.Size",
+        "speed": "PL1E.Speed",
+        "parry": "PL1E.Parry",
+        "dodge": "PL1E.Dodge",
+        "burnReduction": "PL1E.BurnReduction",
+        "coldReduction": "PL1E.ColdReduction",
+        "acidReduction": "PL1E.AcidReduction",
+        "shockReduction": "PL1E.ShockReduction",
+        "burn": "PL1E.Burn",
+        "cold": "PL1E.Cold",
+        "shock": "PL1E.Shock",
+        "acid": "PL1E.Acid",
+        "health": "PL1E.Health",
+        "stamina": "PL1E.Stamina",
+        "mana": "PL1E.Mana"
+    }
+}
+
+PL1E.optionalAttributesValues = {
+    "size": {
+        "value": "medium",
+        "category": "optional",
+        "type": "select",
+        "label": "PL1E.Size",
+        "path": "attributes.size",
+        "operator": "set",
+        "select": "sizes"
+    },
+    "speed": {
+        "value": 4.5,
+        "category": "optional",
+        "type": "number",
+        "label": "PL1E.Speed",
+        "path": "attributes.speed",
+        "operator": "set"
+    },
+    "movementPenalty": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.MovementPenalty",
+        "path": "attributes.movementPenalties",
+        "operator": "push",
+    },
+    "parry": {
+        "value": 0,
+        "category": "optional",
+        "type": "number",
+        "path": "attributes.parry",
+        "label": "PL1E.Parry"
+    },
+    "dodge": {
+        "value": 0,
+        "category": "optional",
+        "type": "number",
+        "path": "attributes.dodge",
+        "label": "PL1E.Dodge"
+    },
+    "slashing": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Slashing",
+        "path": "resources.health.value",
+        "operator": "add",
+        "reduction": "attributes.slashingReduction"
+    },
+    "crushing": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Crushing",
+        "path": "resources.health.value",
+        "operator": "add",
+        "reduction": "attributes.crushingReduction"
+    },
+    "piercing": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Piercing",
+        "path": "resources.health.value",
+        "operator": "add",
+        "reduction": "attributes.piercingReduction"
+    },
+    "burn": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Burn",
+        "path": "resources.health.value",
+        "operator": "add",
+        "reduction": "attributes.burnReduction"
+    },
+    "cold": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Cold",
+        "path": "resources.health.value",
+        "operator": "add",
+        "reduction": "attributes.coldReduction"
+    },
+    "shock": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Shock",
+        "path": "resources.health.value",
+        "operator": "add",
+        "reduction": "attributes.shockReduction"
+    },
+    "acid": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Acid",
+        "path": "resources.health.value",
+        "operator": "add",
+        "reduction": "attributes.acidReduction"
+    },
+    "health": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Health",
+        "path": "resources.health.value",
+        "operator": "add"
+    },
+    "stamina": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Stamina",
+        "path": "resources.stamina.value",
+        "operator": "add"
+    },
+    "mana": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.Mana",
+        "path": "resources.mana.value",
+        "operator": "add"
+    },
+    "slashingReduction": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.SlashingReduction",
+        "path": "attributes.slashingReductions",
+        "operator": "push"
+    },
+    "crushingReduction": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.CrushingReduction",
+        "path": "attributes.crushingReductions",
+        "operator": "push"
+    },
+    "piercingReduction": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.PiercingReduction",
+        "path": "attributes.piercingReductions",
+        "operator": "push"
+    },
+    "burnReduction": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.BurnReduction",
+        "path": "attributes.burnReductions",
+        "operator": "push"
+    },
+    "coldReduction": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.ColdReduction",
+        "path": "attributes.coldReductions",
+        "operator": "push"
+    },
+    "acidReduction": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.AcidReduction",
+        "path": "attributes.acidReductions",
+        "operator": "push"
+    },
+    "shockReduction": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.ShockReduction",
+        "path": "attributes.shockReductions",
+        "operator": "push"
+    },
+    "strengthMod": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.StrengthMod",
+        "path": "characteristics.strength.mods",
+        "operator": "push",
+    },
+    "agilityMod": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.AgilityMod",
+        "path": "characteristics.agility.mods",
+        "operator": "push",
+    },
+    "perceptionMod": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.PerceptionMod",
+        "path": "characteristics.perception.mods",
+        "operator": "push"
+    },
+    "constitutionMod": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.ConstitutionMod",
+        "path": "characteristics.constitution.mods",
+        "operator": "push"
+    },
+    "intellectMod": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.IntellectMod",
+        "path": "characteristics.intellect.mods",
+        "operator": "push"
+    },
+    "cunningMod": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.CunningMod",
+        "path": "characteristics.cunning.mods",
+        "operator": "push"
+    },
+    "wisdomMod": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.WisdomMod",
+        "path": "characteristics.wisdom.mods",
+        "operator": "push"
+    },
+    "willMod": {
+        "value": 0,
+        "type": "number",
+        "label": "PL1E.WillMod",
+        "path": "characteristics.will.mods",
+        "operator": "push"
+    }
 }

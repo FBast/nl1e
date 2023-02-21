@@ -13,18 +13,16 @@
         {{/if}}
     {{/each}}
     <hr>
-    {{#each system.attributes as |attribute id|}}
-        {{#if (and (eq attribute.category "optional") attribute.apply)}}
-            <div class="form-group">
-                <label>{{localize attribute.label}}</label>
-                {{#if (eq attribute.type "number")}}
-                    <label class="align-right">{{attribute.value}}</label>
-                {{else if (eq attribute.type "bool")}}
-                {{else if (eq attribute.type "select")}}
-                    <label class="align-right">{{localize (configEntry attribute.select attribute.value)}}</label>
-                {{/if}}
-            </div>
-        {{/if}}
+    {{#each system.optionalAttributes as |attribute id|}}
+        <div class="form-group">
+            <label>{{localize attribute.label}}</label>
+            {{#if (eq attribute.type "number")}}
+                <label class="align-right">{{attribute.value}}</label>
+            {{else if (eq attribute.type "bool")}}
+            {{else if (eq attribute.type "select")}}
+                <label class="align-right">{{localize (configEntry attribute.select attribute.value)}}</label>
+            {{/if}}
+        </div>
     {{/each}}
     <ul class="traits-list">
         {{#each abilities as |abilities level|}}

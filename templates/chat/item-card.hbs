@@ -11,11 +11,11 @@
                 <div class="dice-result">
                     <h4 class="dice-total">
                         {{#if (gt skillRoll.result 0)}}
-                            <div class="color-green">{{skillRoll.result}} ({{localize "CHAT.Success"}})</div>
+                            <div class="color-green">{{skillRoll.result}} ({{localize "PL1E.Success"}})</div>
                         {{else if (eq skillRoll.result 0)}}
-                            {{skillRoll.result}} ({{localize "CHAT.PartialSuccess"}})
+                            {{skillRoll.result}} ({{localize "PL1E.PartialSuccess"}})
                         {{else}}
-                            <div class="color-red">{{skillRoll.result}} ({{localize "CHAT.Failure"}})</div>
+                            <div class="color-red">{{skillRoll.result}} ({{localize "PL1E.Failure"}})</div>
                         {{/if}}
                     </h4>
                 </div>
@@ -33,8 +33,8 @@
         {{/if}}
     </div>
     <div class="card-buttons">
-        <button data-action="apply" data-item-id={{itemId}}>{{localize "CHAT.Apply"}}</button>
-        <button data-action="cancel" data-item-id={{itemId}}>{{localize "CHAT.Cancel"}}</button>
+        <button data-action="apply" data-item-id={{itemId}}>{{localize "PL1E.Apply"}}</button>
+        <button data-action="cancel" data-item-id={{itemId}}>{{localize "PL1E.Cancel"}}</button>
     </div>
     <footer class="card-footer">
     </footer>
