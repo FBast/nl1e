@@ -1,25 +1,27 @@
-.box {
-  border: $borderGroove;
-  padding: 5px;
-}
+.pl1e {
+  .box {
+    border: $borderGroove;
+    padding: 5px;
+  }
 
-.tag {
-  display: inline-block;
-  margin: 0 2px 0 0;
-  padding: 0 3px;
-  font-size: 12px;
-  font-weight: bolder;
-  line-height: 16px;
-  vertical-align: center;
-  border: 1px solid #999;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.05);
-}
+  .tag {
+    display: inline-block;
+    margin: 0 2px 0 0;
+    padding: 0 3px;
+    font-size: 12px;
+    font-weight: bolder;
+    line-height: 16px;
+    vertical-align: center;
+    border: 1px solid #999;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.05);
+  }
 
-.input-spin {
-  display: flex;
-  font-size: 0.8rem;
-  span {
-    line-height: 13px;
+  .input-spin {
+    display: flex;
+    font-size: 0.8rem;
+    span {
+      line-height: 13px;
+    }
   }
 }

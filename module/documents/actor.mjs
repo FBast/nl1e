@@ -6,13 +6,22 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
  */
 export class Pl1eActor extends Actor {
 
+    /**
+     * Seek for any token which represent this actor
+     * @returns {Token}
+     */
     get bestToken() {
+        // The token associated with the actor
         let token = this.token
+        // The token associated with the sheet
         token ??= this.sheet.token;
-        if (!token && this.getActiveTokens().length > 0) {
+        // The active tokens linked to this actor
+        if (!token && this.prototypeToken.actorLink && this.getActiveTokens().length > 0) {
+            if (this.getActiveTokens().length > 1)
+                ui.notifications.warn(game.i18n.localize("WARN.MultipleLinkedTokens"));
             token = this.getActiveTokens()[0];
         }
-        if (!token) ui.notifications.warn(game.i18n.localize("WARN.CannotFindAnyToken"));
+        if (!token) ui.notifications.error(game.i18n.localize("WARN.CannotFindAnyToken"));
         return token;
     }
 

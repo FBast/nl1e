@@ -439,6 +439,7 @@ export class Pl1eItem extends Item {
     abilityData;
 
     async useAbility(actor) {
+        if (!actor.bestToken === null) return;
         if (!this._isContextValid(actor)) return;
         const itemAttributes = this.system.attributes;
 

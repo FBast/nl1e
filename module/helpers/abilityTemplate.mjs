@@ -70,7 +70,7 @@ export class AbilityTemplate extends MeasuredTemplate {
     const object = new this(template);
     object.item = item;
     object.actorSheet = item.actor?.sheet || null;
-
+    object.token = item.actor?.bestToken;
     return object;
   }
 
@@ -154,10 +154,9 @@ export class AbilityTemplate extends MeasuredTemplate {
     const offset = 50;
     templateCenter.x -= offset;
     templateCenter.y -= offset;
-    let token = this.item.actor.bestToken;
     // Clamp with range
     const range = this.item.system.attributes.range.value;
-    templateCenter = this._clampVectorRadius(templateCenter, token, range * 100);
+    templateCenter = this._clampVectorRadius(templateCenter, this.token, range * 100);
     // Snap position
     templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 1);
     // Move position

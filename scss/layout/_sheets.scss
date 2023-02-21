@@ -1,25 +1,28 @@
-.window-app {
-  font-family: $font-primary;
-}
+.pl1e {
 
-.sheet.actor {
-  min-width: 700px;
-  min-height: 720px;
-
-  .profile {
-    width: 120px;
-    height: auto;
+  &.window-app {
+    font-family: $font-primary;
   }
 
-}
+  &.sheet.actor {
+    min-width: 700px;
+    min-height: 720px;
 
-.sheet.item {
-  min-width: 500px;
-  min-height: 500px;
+    .profile {
+      width: 120px;
+      height: auto;
+    }
 
-  .profile {
-    width: 100px;
-    height: auto;
   }
 
+  &.sheet.item {
+    min-width: 500px;
+    min-height: 500px;
+
+    .profile {
+      width: 100px;
+      height: auto;
+    }
+
+  }
 }
