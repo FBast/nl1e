@@ -403,11 +403,11 @@ export class Pl1eEvent {
         event.stopPropagation();
         let attribute = $(event.currentTarget).data("attribute");
         const dynamicAttribute = PL1E.optionalAttributesValues[attribute];
-        const optionalAttributes = item.system.optionalAttributes;
+        const optionalAttributes = Object.values(item.system.optionalAttributes);
         optionalAttributes.push(dynamicAttribute);
         await item.update({
             ["system.optionalAttributes"]: optionalAttributes
-        })
+        });
     }
 
     /**
@@ -420,10 +420,10 @@ export class Pl1eEvent {
         event.stopPropagation();
         let attributeId = $(event.currentTarget).data("attribute");
         let optionalAttributes = item.system.optionalAttributes;
-        optionalAttributes = optionalAttributes.splice(attributeId, 1);
+        optionalAttributes.splice(attributeId, 1);
         await item.update({
             ["system.optionalAttributes"]: optionalAttributes
-        })
+        });
     }
 
     /**
