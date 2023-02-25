@@ -492,6 +492,18 @@
           "type": "number",
           "label": "PL1E.Level"
         },
+        "staminaCost": {
+          "value": 0,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.StaminaCost"
+        },
+        "manaCost": {
+          "value": 0,
+          "category": "fixed",
+          "type": "number",
+          "label": "PL1E.ManaCost"
+        },
         "skillRoll": {
           "value": "none",
           "category": "fixed",
@@ -499,12 +511,18 @@
           "label": "PL1E.SkillRoll",
           "select": "abilitySkills"
         },
+        "oppositeRolls": {
+          "value": "none",
+          "category": "fixed",
+          "type": "select",
+          "label": "PL1E.OppositeRolls",
+          "select": "abilitySkills"
+        },
         "range": {
           "value": 0,
           "category": "fixed",
           "type": "number",
-          "label": "PL1E.Range",
-          "fallback": 0
+          "label": "PL1E.Range"
         },
         "areaNumber": {
           "value": 1,

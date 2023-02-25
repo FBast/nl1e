@@ -447,6 +447,8 @@ export class Pl1eItem extends Item {
             await actor.sheet?.maximize();
         }
 
+        if (itemAttributes.areaNumber.value > 0 && templates.length === 0) return;
+
         // Launcher Data
         let launcherData;
         if (itemAttributes.skillRoll.value !== 'none') {
@@ -461,9 +463,9 @@ export class Pl1eItem extends Item {
 
         // Target Data
         let targetsData = [];
-        let targets = game.user.targets;
-        for (let target of targets) {
-            let targetData = this._calculateAttributes(this.system.optionalAttributes, target, launcherData);
+        let targetTokens = game.user.targets;
+        for (let targetToken of targetTokens) {
+            let targetData = this._calculateAttributes(this.system.optionalAttributes, targetToken, launcherData);
             targetsData.push(targetData);
         }
 
@@ -565,10 +567,6 @@ export class Pl1eItem extends Item {
             isValid = false;
         }
         // If cost is not affordable
-        if (itemAttributes.healthCost.apply && itemAttributes.healthCost.value > actor.system.resources.health.value) {
-            ui.notifications.info(game.i18n.localize("MACRO.NotEnoughHealthWarn"));
-            isValid = false;
-        }
         if (itemAttributes.staminaCost.apply && itemAttributes.staminaCost.value > actor.system.resources.stamina.value) {
             ui.notifications.info(game.i18n.localize("MACRO.NotEnoughStaminaWarn"));
             isValid = false;
@@ -581,25 +579,32 @@ export class Pl1eItem extends Item {
     }
 
     _calculateAttributes(attributes, target, launcherData) {
-        // if (rollResult < 0) rollResult = 0;
-        // const itemAttributes = this.system.attributes;
-        // let calculatedAttributes = [];
-        //
-        // for (const [key, itemAttribute] of Object.entries(itemAttributes)) {
-        //     let calculatedAttribute = JSON.parse(JSON.stringify(itemAttribute));
-        //     if (calculatedAttribute.type === 'number') {
-        //         calculatedAttribute.value *= rollResult;
-        //         if (calculatedAttribute.reduction !== undefined) {
-        //             const reduction = targetActor.system[calculatedAttribute.reduction];
-        //             calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
-        //         }
-        //         calculatedAttributes.push(calculatedAttribute);
-        //     }
-        // }
+        const itemAttributes = this.system.attributes;
+        const launcherToken = launcherData.actor.bestToken;
+
+        for (let [id, attribute] of Object.entries(attributes)) {
+            if (attribute.targetGroup === 'self' && target.actor !== launcherData.actor) continue;
+            if (attribute.targetGroup === 'allies' && target.document.disposition !== launcherToken.document.disposition) continue;
+            if (attribute.targetGroup === 'opponents' && target.document.disposition === launcherToken.document.disposition) continue;
+
+            let calculatedAttributes = [];
+            for (const [key, itemAttribute] of Object.entries(itemAttributes)) {
+                let calculatedAttribute = JSON.parse(JSON.stringify(itemAttribute));
+                if (calculatedAttribute.type === 'number') {
+                    if (calculatedAttributes.resolutionType === 'multiplyBySuccess')
+                        calculatedAttribute.value *= launcherToken.result;
+                    if (calculatedAttribute.reduction !== undefined) {
+                        const reduction = targetActor.system[calculatedAttribute.reduction];
+                        calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
+                    }
+                    calculatedAttributes.push(calculatedAttribute);
+                }
+            }
+        }
 
         return {
             "result": result,
-            "actor": actor,
+            "actor": target,
             "attributes": itemAttributes
         };
     }

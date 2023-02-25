@@ -75,14 +75,14 @@ export class AbilityTemplate extends MeasuredTemplate {
   }
 
   /**
-  * Creates a preview of the spell template.
-  * @returns {Promise}  A promise that resolves with the final measured template if created.
-  */
-  drawPreview() {
+   * Creates a preview of the spell template.
+   * @returns {Promise}  A promise that resolves with the final measured template if created.
+   */
+  async drawPreview() {
     const initialLayer = canvas.activeLayer;
 
     // Draw the template and switch to the template layer
-    this.draw();
+    await this.draw();
     this.layer.activate();
     this.layer.preview.addChild(this);
 
