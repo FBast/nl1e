@@ -465,7 +465,39 @@ export class Pl1eItem extends Item {
         let targetsData = [];
         let targetTokens = game.user.targets;
         for (let targetToken of targetTokens) {
-            let targetData = this._calculateAttributes(this.system.optionalAttributes, targetToken, launcherData);
+            // Opposite roll if exist
+            let oppositeResult = 0;
+            if (itemAttributes.oppositeRolls !== 'none') {
+                const skill = targetToken.actor.system.skills[itemAttributes.oppositeRolls];
+                oppositeResult = await targetToken.actor.rollSkill(skill);
+            }
+            oppositeResult -= launcherData.result;
+            // Iterate over optional attributes
+            let calculatedAttributes = [];
+            for (let [id, optionalAttribute] of Object.entries(this.system.optionalAttributes)) {
+                if (optionalAttribute.targetGroup === 'self' && targetToken.actor !== launcherData.actor) continue;
+                if (optionalAttribute.targetGroup === 'allies' && targetToken.document.disposition !== launcherData.actor.token.document.disposition) continue;
+                if (optionalAttribute.targetGroup === 'opponents' && targetToken.document.disposition === launcherData.actor.token.document.disposition) continue;
+                // Copy attribute
+                let calculatedAttribute = JSON.parse(JSON.stringify(itemAttribute));
+                // Number type
+                if (calculatedAttribute.type === 'number') {
+                    if (calculatedAttributes.resolutionType === 'multiplyBySuccess')
+                        calculatedAttribute.value *= oppositeResult;
+                    if (calculatedAttributes.resolutionType === 'valueIfSuccess')
+                        calculatedAttribute.value = oppositeResult > 0 ? calculatedAttribute.value : 0;
+                    if (calculatedAttribute.reduction !== undefined) {
+                        const reduction = targetToken.actor.system[calculatedAttribute.reduction];
+                        calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
+                    }
+                    calculatedAttributes.push(calculatedAttribute);
+                }
+            }
+            const targetData = {
+                "result": oppositeResult,
+                "actor": actor,
+                "attributes": calculatedAttributes
+            }
             targetsData.push(targetData);
         }
 
@@ -576,37 +608,6 @@ export class Pl1eItem extends Item {
             isValid = false;
         }
         return isValid;
-    }
-
-    _calculateAttributes(attributes, target, launcherData) {
-        const itemAttributes = this.system.attributes;
-        const launcherToken = launcherData.actor.bestToken;
-
-        for (let [id, attribute] of Object.entries(attributes)) {
-            if (attribute.targetGroup === 'self' && target.actor !== launcherData.actor) continue;
-            if (attribute.targetGroup === 'allies' && target.document.disposition !== launcherToken.document.disposition) continue;
-            if (attribute.targetGroup === 'opponents' && target.document.disposition === launcherToken.document.disposition) continue;
-
-            let calculatedAttributes = [];
-            for (const [key, itemAttribute] of Object.entries(itemAttributes)) {
-                let calculatedAttribute = JSON.parse(JSON.stringify(itemAttribute));
-                if (calculatedAttribute.type === 'number') {
-                    if (calculatedAttributes.resolutionType === 'multiplyBySuccess')
-                        calculatedAttribute.value *= launcherToken.result;
-                    if (calculatedAttribute.reduction !== undefined) {
-                        const reduction = targetActor.system[calculatedAttribute.reduction];
-                        calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
-                    }
-                    calculatedAttributes.push(calculatedAttribute);
-                }
-            }
-        }
-
-        return {
-            "result": result,
-            "actor": target,
-            "attributes": itemAttributes
-        };
     }
 
     //endregion

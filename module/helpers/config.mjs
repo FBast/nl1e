@@ -25,11 +25,11 @@ PL1E.defaultNames = {
 }
 
 PL1E.sizes = {
-    "small": "SIZE.Small",
-    "medium": "SIZE.Medium",
-    "large": "SIZE.Large",
-    "huge": "SIZE.Huge",
-    "gargantuan": "SIZE.Gargantuan"
+    "small": "PL1E.Small",
+    "medium": "PL1E.Medium",
+    "large": "PL1E.Large",
+    "huge": "PL1E.Huge",
+    "gargantuan": "PL1E.Gargantuan"
 };
 
 PL1E.sizeMultiplier = {
@@ -77,11 +77,11 @@ PL1E.masteries = {
 }
 
 PL1E.slots = {
-    "none": "SLOT.None",
-    "clothes": "SLOT.Clothes",
-    "armor": "SLOT.Armor",
-    "ring": "SLOT.Ring",
-    "amulet": "SLOT.Amulet"
+    "none": "PL1E.None",
+    "clothes": "PL1E.Clothes",
+    "armor": "PL1E.Armor",
+    "ring": "PL1E.Ring",
+    "amulet": "PL1E.Amulet"
 }
 
 PL1E.activations = {
