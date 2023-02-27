@@ -428,221 +428,251 @@ PL1E.optionalAttributes = {
 PL1E.optionalAttributesValues = {
     "size": {
         "value": "medium",
+        "label": "PL1E.Size",
+        "icon": "fas fa-arrow-up-big-small",
         "category": "optional",
         "type": "select",
-        "label": "PL1E.Size",
         "path": "attributes.size",
         "operator": "set",
         "select": "sizes"
     },
     "speed": {
         "value": 4.5,
+        "label": "PL1E.Speed",
+        "icon": "fas fa-person-running",
         "category": "optional",
         "type": "number",
-        "label": "PL1E.Speed",
         "path": "attributes.speed",
         "operator": "set"
     },
     "movementPenalty": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.MovementPenalty",
+        "icon": "fas fa-weight-hanging",
+        "type": "number",
         "path": "attributes.movementPenalties",
-        "operator": "push",
+        "operator": "push"
     },
     "parry": {
         "value": 0,
+        "label": "PL1E.Parry",
+        "icon": "fas fa-shield",
         "category": "optional",
         "type": "number",
         "path": "attributes.parry",
-        "label": "PL1E.Parry"
     },
     "dodge": {
         "value": 0,
+        "label": "PL1E.Dodge",
+        "icon": "fas fa-eye",
         "category": "optional",
         "type": "number",
         "path": "attributes.dodge",
-        "label": "PL1E.Dodge"
     },
     "slashing": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Slashing",
+        "icon": "fas fa-axe-battle",
+        "type": "number",
         "path": "resources.health.value",
         "operator": "add",
         "reduction": "attributes.slashingReduction"
     },
     "crushing": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Crushing",
+        "icon": "fas fa-hammer-war",
+        "type": "number",
         "path": "resources.health.value",
         "operator": "add",
         "reduction": "attributes.crushingReduction"
     },
     "piercing": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Piercing",
+        "icon": "fas fa-dagger",
+        "type": "number",
         "path": "resources.health.value",
         "operator": "add",
         "reduction": "attributes.piercingReduction"
     },
     "burn": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Burn",
+        "icon": "fas fa-fire",
+        "type": "number",
         "path": "resources.health.value",
         "operator": "add",
         "reduction": "attributes.burnReduction"
     },
     "cold": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Cold",
+        "icon": "fas fa-snowflake",
+        "type": "number",
         "path": "resources.health.value",
         "operator": "add",
         "reduction": "attributes.coldReduction"
     },
     "shock": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Shock",
+        "icon": "fas fa-bolt",
+        "type": "number",
         "path": "resources.health.value",
         "operator": "add",
         "reduction": "attributes.shockReduction"
     },
     "acid": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Acid",
+        "icon": "fas fa-droplet",
+        "type": "number",
         "path": "resources.health.value",
         "operator": "add",
         "reduction": "attributes.acidReduction"
     },
     "health": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Health",
+        "icon": "fas fa-heart",
+        "type": "number",
         "path": "resources.health.value",
         "operator": "add"
     },
     "stamina": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Stamina",
+        "icon": "fas fa-wave-pulse",
+        "type": "number",
         "path": "resources.stamina.value",
         "operator": "add"
     },
     "mana": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.Mana",
+        "icon": "fas fa-sparkles",
+        "type": "number",
         "path": "resources.mana.value",
         "operator": "add"
     },
     "slashingReduction": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.SlashingReduction",
+        "icon": "far fa-axe-battle",
+        "type": "number",
         "path": "attributes.slashingReductions",
         "operator": "push"
     },
     "crushingReduction": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.CrushingReduction",
+        "icon": "far fa-hammer-war",
+        "type": "number",
         "path": "attributes.crushingReductions",
         "operator": "push"
     },
     "piercingReduction": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.PiercingReduction",
+        "icon": "far fa-dagger",
+        "type": "number",
         "path": "attributes.piercingReductions",
         "operator": "push"
     },
     "burnReduction": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.BurnReduction",
+        "icon": "far fa-fire",
+        "type": "number",
         "path": "attributes.burnReductions",
         "operator": "push"
     },
     "coldReduction": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.ColdReduction",
-        "path": "attributes.coldReductions",
-        "operator": "push"
-    },
-    "acidReduction": {
-        "value": 0,
+        "icon": "far fa-snowflake",
         "type": "number",
-        "label": "PL1E.AcidReduction",
-        "path": "attributes.acidReductions",
+        "path": "attributes.coldReductions",
         "operator": "push"
     },
     "shockReduction": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.ShockReduction",
+        "icon": "far fa-bolt",
+        "type": "number",
         "path": "attributes.shockReductions",
+        "operator": "push"
+    },
+    "acidReduction": {
+        "value": 0,
+        "label": "PL1E.AcidReduction",
+        "icon": "far fa-droplet",
+        "type": "number",
+        "path": "attributes.acidReductions",
         "operator": "push"
     },
     "strengthMod": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.StrengthMod",
+        "icon": "fas fa-dumbbell",
+        "type": "number",
         "path": "characteristics.strength.mods",
         "operator": "push",
     },
     "agilityMod": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.AgilityMod",
+        "icon": "fas fa-dumbbell",
+        "type": "number",
         "path": "characteristics.agility.mods",
         "operator": "push",
     },
     "perceptionMod": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.PerceptionMod",
+        "icon": "fas fa-dumbbell",
+        "type": "number",
         "path": "characteristics.perception.mods",
         "operator": "push"
     },
     "constitutionMod": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.ConstitutionMod",
+        "icon": "fas fa-dumbbell",
+        "type": "number",
         "path": "characteristics.constitution.mods",
         "operator": "push"
     },
     "intellectMod": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.IntellectMod",
+        "icon": "fas fa-dumbbell",
+        "type": "number",
         "path": "characteristics.intellect.mods",
         "operator": "push"
     },
     "cunningMod": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.CunningMod",
+        "icon": "fas fa-dumbbell",
+        "type": "number",
         "path": "characteristics.cunning.mods",
         "operator": "push"
     },
     "wisdomMod": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.WisdomMod",
+        "icon": "fas fa-dumbbell",
+        "type": "number",
         "path": "characteristics.wisdom.mods",
         "operator": "push"
     },
     "willMod": {
         "value": 0,
-        "type": "number",
         "label": "PL1E.WillMod",
+        "icon": "fas fa-dumbbell",
+        "type": "number",
         "path": "characteristics.will.mods",
         "operator": "push"
     }
