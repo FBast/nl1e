@@ -33,6 +33,14 @@ export class AbilityTemplate extends MeasuredTemplate {
   static fromItem(item) {
     const itemAttributes = item.system.attributes;
     const areaType = itemAttributes.areaType.value;
+
+    // Save targetGroups for token selection
+    let targetGroups = [];
+    for (const [id, optionalAttribute] of Object.entries(item.system.optionalAttributes)) {
+      if (targetGroups.includes(optionalAttribute.targetGroup)) continue;
+      targetGroups.push(optionalAttribute.targetGroup);
+    }
+
     // Prepare template data
     const templateData = {
       t: areaType,
@@ -71,6 +79,7 @@ export class AbilityTemplate extends MeasuredTemplate {
     object.item = item;
     object.actorSheet = item.actor?.sheet || null;
     object.token = item.actor?.bestToken;
+    object.targetGroups = targetGroups;
     return object;
   }
 
@@ -230,7 +239,14 @@ export class AbilityTemplate extends MeasuredTemplate {
     // Target current position
     for (let gridPosition of gridPositions) {
       for (let token of canvas.tokens.placeables) {
+        // Check if target position in template
         if (token.x === gridPosition.x && token.y === gridPosition.y) {
+          // Filter non valid targets
+          if (!this.targetGroups.includes('all')) {
+            if (!this.targetGroups.includes('self') && token.document === this.token) continue;
+            if (!this.targetGroups.includes('allies') && token.document.disposition === this.token.disposition) continue;
+            if (!this.targetGroups.includes('opponents') && token.document.disposition !== this.token.disposition) continue;
+          }
           token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
           this.#targets.push(token);
         }

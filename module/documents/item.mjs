@@ -7,21 +7,6 @@ import {PL1E} from "../helpers/config.mjs";
  */
 export class Pl1eItem extends Item {
 
-    //region Accessors
-
-    get hasRecovery() {
-        let itemAttributes = this.system.attributes;
-        return itemAttributes.healthRecovery.apply || itemAttributes.staminaRecovery.apply || itemAttributes.manaRecovery.apply;
-    }
-
-    get hasDamage() {
-        let itemAttributes = this.system.attributes;
-        return itemAttributes.slashing.apply || itemAttributes.crushing.apply || itemAttributes.piercing.apply
-        || itemAttributes.burn.apply || itemAttributes.cold.apply || itemAttributes.shock.apply || itemAttributes.acid.apply;
-    }
-
-    //endregion
-
     //region Data management
 
     /** @override */
@@ -419,7 +404,6 @@ export class Pl1eItem extends Item {
      * @property {string} tokenId The token of the actor which originate the ability
      * @property {Pl1eItem} item The ability itself
      * @property {string} itemId The ability uuid
-     * @property {boolean} simpleRoll True if the roll is a simple roll (then no targetRolls)
      * @property {any} launcherData Data of the actor
      * @property {any[]} targetsData Data of the targets
      * @property {AbilityTemplate[]} templates  An array of the measure templates
@@ -467,24 +451,27 @@ export class Pl1eItem extends Item {
         for (let targetToken of targetTokens) {
             // Opposite roll if exist
             let oppositeResult = 0;
-            if (itemAttributes.oppositeRolls !== 'none') {
+            if (itemAttributes.oppositeRolls.value !== 'none') {
                 const skill = targetToken.actor.system.skills[itemAttributes.oppositeRolls];
                 oppositeResult = await targetToken.actor.rollSkill(skill);
+                oppositeResult -= launcherData.result;
             }
-            oppositeResult -= launcherData.result;
+            else {
+                oppositeResult = launcherData.result;
+            }
             // Iterate over optional attributes
             let calculatedAttributes = [];
             for (let [id, optionalAttribute] of Object.entries(this.system.optionalAttributes)) {
                 if (optionalAttribute.targetGroup === 'self' && targetToken.actor !== launcherData.actor) continue;
-                if (optionalAttribute.targetGroup === 'allies' && targetToken.document.disposition !== launcherData.actor.token.document.disposition) continue;
-                if (optionalAttribute.targetGroup === 'opponents' && targetToken.document.disposition === launcherData.actor.token.document.disposition) continue;
+                if (optionalAttribute.targetGroup === 'allies' && targetToken.document.disposition !== launcherData.actor.bestToken.disposition) continue;
+                if (optionalAttribute.targetGroup === 'opponents' && targetToken.document.disposition === launcherData.actor.bestToken.disposition) continue;
                 // Copy attribute
-                let calculatedAttribute = JSON.parse(JSON.stringify(itemAttribute));
+                let calculatedAttribute = JSON.parse(JSON.stringify(optionalAttribute));
                 // Number type
                 if (calculatedAttribute.type === 'number') {
-                    if (calculatedAttributes.resolutionType === 'multiplyBySuccess')
+                    if (calculatedAttribute.resolutionType === 'multiplyBySuccess')
                         calculatedAttribute.value *= oppositeResult;
-                    if (calculatedAttributes.resolutionType === 'valueIfSuccess')
+                    if (calculatedAttribute.resolutionType === 'valueIfSuccess')
                         calculatedAttribute.value = oppositeResult > 0 ? calculatedAttribute.value : 0;
                     if (calculatedAttribute.reduction !== undefined) {
                         const reduction = targetToken.actor.system[calculatedAttribute.reduction];
@@ -495,7 +482,7 @@ export class Pl1eItem extends Item {
             }
             const targetData = {
                 "result": oppositeResult,
-                "actor": actor,
+                "actor": targetToken.actor,
                 "attributes": calculatedAttributes
             }
             targetsData.push(targetData);
@@ -509,11 +496,8 @@ export class Pl1eItem extends Item {
             item: this.toObject(false),
             itemId: this.uuid,
             labels: this.labels,
-            simpleRoll: targetsData.length <= 0,
             launcherData: launcherData,
             targetsData: targetsData,
-            hasRecovery: this.hasRecovery,
-            hasDamage: this.hasDamage,
             templates: templates
         };
         const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", this.abilityData);

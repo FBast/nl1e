@@ -6,31 +6,41 @@
     </header>
     <div class="card-content">
         {{item.system.attributes.description.value}}
-        {{#if simpleRoll}}
+        <div class="dice-roll">
+            <div class="dice-result">
+                <h4 class="dice-total">
+                    {{#if (gt launcherData.result 0)}}
+                        <div class="color-green">{{launcherData.result}} ({{localize "PL1E.Success"}})</div>
+                    {{else if (eq launcherData.result 0)}}
+                        {{launcherData.result}} ({{localize "PL1E.PartialSuccess"}})
+                    {{else}}
+                        <div class="color-red">{{launcherData.result}} ({{localize "PL1E.Failure"}})</div>
+                    {{/if}}
+                </h4>
+            </div>
+        </div>
+        {{log targetsData}}
+        {{#each targetsData as |targetData id|}}
             <div class="dice-roll">
                 <div class="dice-result">
+                    <img src="{{targetData.actor.img}}" title="{{targetData.actor.name}}" width="36" height="36"/>
                     <h4 class="dice-total">
-                        {{#if (gt skillRoll.result 0)}}
-                            <div class="color-green">{{skillRoll.result}} ({{localize "PL1E.Success"}})</div>
-                        {{else if (eq skillRoll.result 0)}}
-                            {{skillRoll.result}} ({{localize "PL1E.PartialSuccess"}})
+                        {{#if (gt targetData.result 0)}}
+                            <div class="color-green">{{targetData.result}} ({{localize "PL1E.Success"}})</div>
+                        {{else if (eq targetData.result 0)}}
+                            {{targetData.result}} ({{localize "PL1E.PartialSuccess"}})
                         {{else}}
-                            <div class="color-red">{{skillRoll.result}} ({{localize "PL1E.Failure"}})</div>
+                            <div class="color-red">{{targetData.result}} ({{localize "PL1E.Failure"}})</div>
                         {{/if}}
                     </h4>
                 </div>
             </div>
-            <div class="card-stats">
-            {{#each skillRoll.attributes as |attribute id|}}
-                {{#if (ne attribute.fas undefined)}}
-                    <i class="fas {{attribute.fas}} hover-green" data-tooltip="{{localize attribute.label}}">
-                        <label>{{attribute.value}}</label>
-                    </i>
-                {{/if}}
+            {{#each targetData.attributes as |attribute id|}}
+                <i class="fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
+                    <label>{{attribute.value}}</label>
+                </i>
             {{/each}}
-        {{else}}
-
-        {{/if}}
+        {{/each}}
     </div>
     <div class="card-buttons">
         <button data-action="apply" data-item-id={{itemId}}>{{localize "PL1E.Apply"}}</button>

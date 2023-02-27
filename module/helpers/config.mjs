@@ -319,10 +319,10 @@ PL1E.areaTypes = {
 }
 
 PL1E.targetGroups = {
+    "all": "PL1E.All",
     "self": "PL1E.Self",
     "allies": "PL1E.Allies",
-    "opponents": "PL1E.Opponents",
-    "all": "PL1E.All"
+    "opponents": "PL1E.Opponents"
 }
 
 PL1E.resolutionTypes = {
