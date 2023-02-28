@@ -437,7 +437,7 @@ export class Pl1eEvent {
         let action = $(event.currentTarget).data("action");
         let itemId = $(event.currentTarget).data("item-id");
 
-        const item = await fromUuid<Pl1eItem>(itemId);
+        const item = await fromUuid(itemId);
         await item.actionAbility(action);
 
         // Re-enable the button

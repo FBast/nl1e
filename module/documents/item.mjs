@@ -477,8 +477,8 @@ export class Pl1eItem extends Item {
                         const reduction = targetToken.actor.system[calculatedAttribute.reduction];
                         calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
                     }
-                    calculatedAttributes.push(calculatedAttribute);
                 }
+                calculatedAttributes.push(calculatedAttribute);
             }
             const targetData = {
                 "result": oppositeResult,
@@ -550,11 +550,12 @@ export class Pl1eItem extends Item {
     }
 
     async applyAbility(abilityData) {
-        const actor = abilityData.skillRoll.actor;
-        for (const attribute of abilityData.skillRoll.attributes) {
-            await actor.applyAttribute(attribute, true);
+        for (const targetData of abilityData.targetsData) {
+            for (const attribute of targetData.attributes) {
+                await targetData.actor.applyAttribute(attribute, true);
+            }
+            targetData.actor.sheet.render(false);
         }
-        actor.sheet.render(false);
     }
 
     counterAbility(templateData) {

@@ -296,7 +296,12 @@ export class Pl1eActor extends Actor {
 
     async applyAttribute(attribute, persist = false) {
         const system = this.system;
-        if (!attribute.apply || attribute.path === undefined) return;
+        if (attribute.path === undefined) return;
+        // Add reduction to value
+        if (attribute.reduction !== undefined) {
+            const reduction = this.system[attribute.reduction];
+            attribute.value = Math.min(attribute.value + reduction, 0);
+        }
         let newValue;
         switch (attribute.operator) {
             case 'set':

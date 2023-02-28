@@ -19,11 +19,14 @@
                 </h4>
             </div>
         </div>
-        {{log targetsData}}
         {{#each targetsData as |targetData id|}}
+            <div class="target-stats">
+                <img src="{{targetData.actor.img}}" title="{{targetData.actor.name}}" width="36" height="36"/>
+                <h3>{{targetData.actor.name}}</h3>
+            </div>
             <div class="dice-roll">
                 <div class="dice-result">
-                    <img src="{{targetData.actor.img}}" title="{{targetData.actor.name}}" width="36" height="36"/>
+                    {{#if (ne ../item.system.attributes.oppositeRolls.value "none")}}
                     <h4 class="dice-total">
                         {{#if (gt targetData.result 0)}}
                             <div class="color-green">{{targetData.result}} ({{localize "PL1E.Success"}})</div>
@@ -33,6 +36,7 @@
                             <div class="color-red">{{targetData.result}} ({{localize "PL1E.Failure"}})</div>
                         {{/if}}
                     </h4>
+                    {{/if}}
                 </div>
             </div>
             {{#each targetData.attributes as |attribute id|}}
@@ -44,6 +48,7 @@
     </div>
     <div class="card-buttons">
         <button data-action="apply" data-item-id={{itemId}}>{{localize "PL1E.Apply"}}</button>
+        <button data-action="counter" data-item-id={{itemId}}>{{localize "PL1E.Counter"}}</button>
         <button data-action="cancel" data-item-id={{itemId}}>{{localize "PL1E.Cancel"}}</button>
     </div>
     <footer class="card-footer">
