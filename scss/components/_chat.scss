@@ -39,13 +39,9 @@
         user-select: text;
       }
 
-      .card-stats {
-        margin: 10px 5px 10px 5px;
-      }
+    }
 
-      .target-stats {
-        flex: 1;
-      }
+    .card-targets {
 
     }
 
@@ -83,7 +79,18 @@
       }
     }
 
-    .dice-roll .dice-total {
+    .dice-total {
+
+      margin: 5px 0;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--color-border-light-2);
+      border-radius: 3px;
+      box-shadow: 0 0 2px #FFF inset;
+      word-break: break-all;
+      font-size: var(--font-size-20);
+      font-weight: bold;
+
       &.success {
         color: green;
         background: #c7d0c0;

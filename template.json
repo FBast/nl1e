@@ -469,16 +469,16 @@
       "attributes": {
         "featureType": {
           "value": "none",
+          "label": "PL1E.FeatureType",
           "category": "header",
           "type": "number",
-          "label": "PL1E.FeatureType",
           "select": "featureTypes"
         },
         "cost": {
           "value": 0,
+          "label": "PL1E.Cost",
           "category": "header",
-          "type": "number",
-          "label": "PL1E.Cost"
+          "type": "number"
         }
       }
     },
@@ -488,103 +488,105 @@
       "attributes": {
         "level": {
           "value": 1,
+          "label": "PL1E.Level",
           "category": "header",
-          "type": "number",
-          "label": "PL1E.Level"
+          "type": "number"
         },
         "staminaCost": {
           "value": 0,
+          "label": "PL1E.StaminaCost",
+          "icon": "far fa-wave-pulse",
           "category": "fixed",
-          "type": "number",
-          "label": "PL1E.StaminaCost"
+          "type": "number"
         },
         "manaCost": {
           "value": 0,
+          "label": "PL1E.ManaCost",
+          "icon": "far fa-sparkles",
           "category": "fixed",
-          "type": "number",
-          "label": "PL1E.ManaCost"
+          "type": "number"
         },
         "skillRoll": {
           "value": "none",
+          "label": "PL1E.SkillRoll",
           "category": "fixed",
           "type": "select",
-          "label": "PL1E.SkillRoll",
           "select": "abilitySkills"
         },
         "oppositeRolls": {
           "value": "none",
+          "label": "PL1E.OppositeRolls",
           "category": "fixed",
           "type": "select",
-          "label": "PL1E.OppositeRolls",
           "select": "abilitySkills"
         },
         "range": {
           "value": 0,
+          "label": "PL1E.Range",
           "category": "fixed",
-          "type": "number",
-          "label": "PL1E.Range"
+          "type": "number"
         },
         "areaNumber": {
           "value": 1,
+          "label": "PL1E.AreaNumber",
           "category": "fixed",
           "type": "number",
-          "label": "PL1E.AreaNumber",
           "conditions": "range!==0",
           "fallback": 1
         },
         "areaType": {
           "value": "circle",
+          "label": "PL1E.AreaType",
           "category": "fixed",
           "type": "select",
-          "label": "PL1E.AreaType",
           "select": "areaTypes",
           "fallback": "circle"
         },
         "circleRadius": {
           "value": 1.5,
+          "label": "PL1E.CircleRadius",
           "category": "fixed",
           "type": "number",
-          "label": "PL1E.CircleRadius",
           "conditions": "areaType===circle",
           "fallback": 1.5
         },
         "coneLength": {
           "value": 1.5,
+          "label": "PL1E.ConeLength",
           "category": "fixed",
           "type": "number",
-          "label": "PL1E.ConeLength",
           "conditions": "areaType===cone",
           "fallback": 1.5
         },
         "coneAngle": {
           "value": 50,
+          "label": "PL1E.ConeAngle",
           "category": "fixed",
           "type": "number",
-          "label": "PL1E.ConeAngle",
           "conditions": "areaType===cone",
           "fallback": 50
         },
         "rectWidth": {
           "value": 1,
+          "label": "PL1E.RectWidth",
           "category": "fixed",
           "type": "number",
-          "label": "PL1E.RectWidth",
           "conditions": "areaType===rect",
           "fallback": 1.5
         },
         "rectLength": {
           "value": 1,
+          "label": "PL1E.RectLength",
           "category": "fixed",
           "type": "number",
-          "label": "PL1E.RectLength",
           "conditions": "areaType===rect",
           "fallback": 1.5
         },
         "rayLength": {
           "value": 1,
+          "label": "PL1E.RayLength",
           "category": "fixed",
           "type": "number",
-          "label": "PL1E.RayLength",
           "conditions": "areaType===ray",
           "fallback": 1.5
         }
@@ -597,40 +599,40 @@
       "attributes": {
         "mastery": {
           "value": "none",
+          "label": "PL1E.Mastery",
           "category": "header",
           "type": "select",
-          "label": "PL1E.Mastery",
           "select": "masteries"
         },
         "contactAttackRange": {
           "value": 1,
+          "label": "PL1E.ContactAttackRange",
           "category": "fixed",
-          "type": "number",
-          "label": "PL1E.ContactAttackRange"
+          "type": "number"
         },
         "rangedAttackRange": {
           "value": 0,
-          "category": "fixed",
           "type": "number",
-          "label": "PL1E.RangedAttackRange"
+          "label": "PL1E.RangedAttackRange",
+          "category": "fixed"
         },
         "parryProjectiles": {
           "value": false,
+          "label": "PL1E.ParryProjectiles",
           "category": "fixed",
-          "type": "bool",
-          "label": "PL1E.ParryProjectiles"
+          "type": "bool"
         },
         "hands": {
           "value": 0,
+          "label": "PL1E.Hands",
           "category": "fixed",
-          "type": "number",
-          "label": "PL1E.Hands"
+          "type": "number"
         },
         "ammo": {
           "value": 0,
+          "label": "PL1E.Ammo",
           "category": "fixed",
-          "type": "number",
-          "label": "PL1E.Ammo"
+          "type": "number"
         }
       }
     },
@@ -640,9 +642,9 @@
       "attributes": {
         "slot": {
           "value": "none",
+          "label": "PL1E.Slot",
           "category": "header",
           "type": "select",
-          "label": "PL1E.Slot",
           "select": "slots"
         }
       }
@@ -653,22 +655,22 @@
       "attributes": {
         "activation": {
           "value": "action",
+          "label": "PL1E.Activation",
           "category": "header",
           "type": "select",
-          "label": "PL1E.Activation",
           "select": "activations"
         },
         "reloadable": {
           "value": false,
+          "label": "PL1E.Reloadable",
           "category": "fixed",
-          "type": "bool",
-          "label": "PL1E.Reloadable"
+          "type": "bool"
         },
         "uses": {
           "value": 1,
+          "label": "PL1E.Uses",
           "category": "fixed",
-          "type": "number",
-          "label": "PL1E.Uses"
+          "type": "number"
         }
       }
     },

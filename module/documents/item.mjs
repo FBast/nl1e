@@ -452,9 +452,9 @@ export class Pl1eItem extends Item {
             // Opposite roll if exist
             let oppositeResult = 0;
             if (itemAttributes.oppositeRolls.value !== 'none') {
-                const skill = targetToken.actor.system.skills[itemAttributes.oppositeRolls];
+                const skill = targetToken.actor.system.skills[itemAttributes.oppositeRolls.value];
                 oppositeResult = await targetToken.actor.rollSkill(skill);
-                oppositeResult -= launcherData.result;
+                oppositeResult = launcherData.result - oppositeResult;
             }
             else {
                 oppositeResult = launcherData.result;
@@ -469,13 +469,15 @@ export class Pl1eItem extends Item {
                 let calculatedAttribute = JSON.parse(JSON.stringify(optionalAttribute));
                 // Number type
                 if (calculatedAttribute.type === 'number') {
-                    if (calculatedAttribute.resolutionType === 'multiplyBySuccess')
-                        calculatedAttribute.value *= oppositeResult;
-                    if (calculatedAttribute.resolutionType === 'valueIfSuccess')
+                    if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
+                        calculatedAttribute.value *= oppositeResult > 0 ? oppositeResult : 0;
+                    }
+                    if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
                         calculatedAttribute.value = oppositeResult > 0 ? calculatedAttribute.value : 0;
+                    }
                     if (calculatedAttribute.reduction !== undefined) {
-                        const reduction = targetToken.actor.system[calculatedAttribute.reduction];
-                        calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
+                        const reduction = foundry.utils.getProperty(targetToken.actor.system, calculatedAttribute.reduction);
+                        calculatedAttribute.value = Math.max(calculatedAttribute.value - reduction, 0);
                     }
                 }
                 calculatedAttributes.push(calculatedAttribute);
@@ -489,7 +491,7 @@ export class Pl1eItem extends Item {
         }
 
         // Render the chat card template
-        const token = this.actor.bestToken;
+       const token = this.actor.bestToken;
         this.abilityData = {
             actor: this.actor.toObject(false),
             tokenId: token?.uuid || null,
@@ -530,7 +532,12 @@ export class Pl1eItem extends Item {
         // Handle different actions
         switch (action) {
             case "apply":
-                await this.applyAbility(abilityData);
+                for (const targetData of abilityData.targetsData) {
+                    for (const attribute of targetData.attributes) {
+                        await targetData.actor.applyAttribute(attribute, true);
+                    }
+                    targetData.actor.sheet.render(false);
+                }
                 break;
             case "counter":
                 this.counterAbility(abilityData);
@@ -550,12 +557,7 @@ export class Pl1eItem extends Item {
     }
 
     async applyAbility(abilityData) {
-        for (const targetData of abilityData.targetsData) {
-            for (const attribute of targetData.attributes) {
-                await targetData.actor.applyAttribute(attribute, true);
-            }
-            targetData.actor.sheet.render(false);
-        }
+
     }
 
     counterAbility(templateData) {
@@ -574,10 +576,10 @@ export class Pl1eItem extends Item {
         let isValid = true;
         const itemAttributes = this.system.attributes;
         // If is not in battle
-        // if (!actor.token.inCombat) {
-        //     ui.notifications.warn(game.i18n.localize("PL1E.NotInBattle"));
-        //     isValid = false;
-        // }
+        if (!actor.bestToken.inCombat) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotInBattle"));
+            isValid = false;
+        }
         // If is not memorized
         if (!this.system.isMemorized) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));

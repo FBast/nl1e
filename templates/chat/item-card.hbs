@@ -5,47 +5,45 @@
         <h3 class="item-name">{{item.name}}</h3>
     </header>
     <div class="card-content">
+        <!-- Description of the ability -->
         {{item.system.attributes.description.value}}
-        <div class="dice-roll">
-            <div class="dice-result">
-                <h4 class="dice-total">
-                    {{#if (gt launcherData.result 0)}}
-                        <div class="color-green">{{launcherData.result}} ({{localize "PL1E.Success"}})</div>
-                    {{else if (eq launcherData.result 0)}}
-                        {{launcherData.result}} ({{localize "PL1E.PartialSuccess"}})
-                    {{else}}
-                        <div class="color-red">{{launcherData.result}} ({{localize "PL1E.Failure"}})</div>
-                    {{/if}}
-                </h4>
-            </div>
+        <!-- Result of the roll -->
+        <h4 class="dice-total {{#if (gt launcherData.result 0)}}success{{/if}} {{#if (lt launcherData.result 0)}}failure{{/if}}">
+            {{launcherData.result}}
+            {{#if (gt launcherData.result 0)}}
+                ({{localize "PL1E.Success"}})
+            {{else if (eq launcherData.result 0)}}
+                ({{localize "PL1E.PartialSuccess"}})
+            {{else}}
+                ({{localize "PL1E.Failure"}})
+            {{/if}}
+        </h4>
+    </div>
+    {{#each targetsData as |targetData id|}}
+        <div class="card-header flexrow">
+            <img src="{{targetData.actor.img}}" title="{{targetData.actor.name}}" width="36" height="36"/>
+            <h3 class="item-name">{{targetData.actor.name}}</h3>
         </div>
-        {{#each targetsData as |targetData id|}}
-            <div class="target-stats">
-                <img src="{{targetData.actor.img}}" title="{{targetData.actor.name}}" width="36" height="36"/>
-                <h3>{{targetData.actor.name}}</h3>
-            </div>
-            <div class="dice-roll">
-                <div class="dice-result">
-                    {{#if (ne ../item.system.attributes.oppositeRolls.value "none")}}
-                    <h4 class="dice-total">
-                        {{#if (gt targetData.result 0)}}
-                            <div class="color-green">{{targetData.result}} ({{localize "PL1E.Success"}})</div>
-                        {{else if (eq targetData.result 0)}}
-                            {{targetData.result}} ({{localize "PL1E.PartialSuccess"}})
-                        {{else}}
-                            <div class="color-red">{{targetData.result}} ({{localize "PL1E.Failure"}})</div>
-                        {{/if}}
-                    </h4>
-                    {{/if}}
-                </div>
-            </div>
+        <div class="card-content">
             {{#each targetData.attributes as |attribute id|}}
                 <i class="fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
                     <label>{{attribute.value}}</label>
                 </i>
             {{/each}}
-        {{/each}}
-    </div>
+            {{#if (ne ../item.system.attributes.oppositeRolls.value "none")}}
+                <h4 class="dice-total {{#if (gt targetData.result 0)}}success{{/if}} {{#if (lt targetData.result 0)}}failure{{/if}}">
+                    {{targetData.result}}
+                    {{#if (gt targetData.result 0)}}
+                        ({{localize "PL1E.Success"}})
+                    {{else if (eq targetData.result 0)}}
+                        ({{localize "PL1E.PartialSuccess"}})
+                    {{else}}
+                        ({{localize "PL1E.Failure"}})
+                    {{/if}}
+                </h4>
+            {{/if}}
+        </div>
+    {{/each}}
     <div class="card-buttons">
         <button data-action="apply" data-item-id={{itemId}}>{{localize "PL1E.Apply"}}</button>
         <button data-action="counter" data-item-id={{itemId}}>{{localize "PL1E.Counter"}}</button>
