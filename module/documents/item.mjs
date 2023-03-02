@@ -519,6 +519,11 @@ export class Pl1eItem extends Item {
         //     chatData.flags["pl1e.itemData"] = templateData.item;
         // }
 
+        // Destroy templates after fetching target with df-template
+        for (const template of templates) {
+            await template.releaseTemplate();
+        }
+
         await ChatMessage.create(chatData);
     }
 
@@ -546,9 +551,9 @@ export class Pl1eItem extends Item {
         }
 
         // Destroy templates after fetching target with df-template
-        // for (const template of abilityData.templates) {
-        //     await template.releaseTemplate();
-        // }
+        for (const template of abilityData.templates) {
+            await template.releaseTemplate();
+        }
 
         // Reset abilityData
         this.abilityData = [];
