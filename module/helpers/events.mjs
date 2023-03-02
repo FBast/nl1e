@@ -11,6 +11,7 @@ export class Pl1eEvent {
      */
     static chatListeners(html) {
         html.on("click", ".card-buttons button", this.onChatCardAction.bind(this));
+        html.on("click", ".actor-edit", this.onActorEdit.bind(this));
         // html.on("click", ".item-name", this._onChatCardToggleContent.bind(this));
     }
 
@@ -72,6 +73,18 @@ export class Pl1eEvent {
             });
             return roll;
         }
+    }
+
+    /**
+     * Open actor sheet
+     * @param event The originating click event
+     * @param {Actor|Item} document the document of the item
+     */
+    static async onActorEdit(event, document) {
+        const tokenId = $(event.currentTarget).data("token-id");
+        const tokenDocument = await fromUuid(tokenId);
+
+        if (tokenDocument) tokenDocument.actor.sheet.render(true);
     }
 
     /**

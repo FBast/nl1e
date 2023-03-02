@@ -21,7 +21,7 @@
     </div>
     {{#each targetsData as |targetData id|}}
         <div class="card-header flexrow">
-            <img src="{{targetData.actor.img}}" title="{{targetData.actor.name}}" width="36" height="36"/>
+            <img class="actor-edit" src="{{targetData.actor.img}}" data-token-id={{targetData.actor.uuid}} title="{{targetData.actor.name}}" width="36" height="36"/>
             <h3 class="item-name">{{targetData.actor.name}}</h3>
         </div>
         <div class="card-content">

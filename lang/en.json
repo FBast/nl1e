@@ -157,6 +157,8 @@
   "PL1E.NoActorSelected": "You should select an actor",
   "PL1E.NoTarget": "You should select exactly one target",
   "PL1E.None": "None",
+  "PL1E.NotEnoughStamina": "Not enough stamina",
+  "PL1E.NotEnoughMana": "Not enough mana",
   "PL1E.NotEnoughMoney": "Not enough money",
   "PL1E.NotInBattle": "You are not in battle",
   "PL1E.NotMemorized": "This ability is not memorized",

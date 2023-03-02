@@ -540,32 +540,18 @@ export class Pl1eItem extends Item {
                 }
                 break;
             case "counter":
-                this.counterAbility(abilityData);
                 break;
             case "cancel":
-                this.cancelAbility(abilityData);
                 break;
         }
 
         // Destroy templates after fetching target with df-template
-        for (const template of abilityData.templates) {
-            await template.releaseTemplate();
-        }
+        // for (const template of abilityData.templates) {
+        //     await template.releaseTemplate();
+        // }
 
         // Reset abilityData
         this.abilityData = [];
-    }
-
-    async applyAbility(abilityData) {
-
-    }
-
-    counterAbility(templateData) {
-
-    }
-
-    cancelAbility(templateData) {
-
     }
 
     /**
@@ -587,11 +573,11 @@ export class Pl1eItem extends Item {
         }
         // If cost is not affordable
         if (itemAttributes.staminaCost.apply && itemAttributes.staminaCost.value > actor.system.resources.stamina.value) {
-            ui.notifications.info(game.i18n.localize("MACRO.NotEnoughStaminaWarn"));
+            ui.notifications.info(game.i18n.localize("PL1E.NotEnoughStamina"));
             isValid = false;
         }
         if (itemAttributes.manaCost.apply && itemAttributes.manaCost.value > actor.system.resources.mana.value) {
-            ui.notifications.info(game.i18n.localize("MACRO.NotEnoughManaWarn"));
+            ui.notifications.info(game.i18n.localize("PL1E.NotEnoughMana"));
             isValid = false;
         }
         return isValid;
