@@ -241,5 +241,6 @@
   "PL1E.WillMod": "Volonté Mod.",
   "PL1E.Wisdom": "Sagesse",
   "PL1E.WisdomMod": "Sagesse Mod.",
-  "PL1E.Wizard": "Magicien"
+  "PL1E.Wizard": "Magicien",
+  "PL1E.MasteryStats": "Stats de la maitrise"
 }

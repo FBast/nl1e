@@ -50,7 +50,8 @@ PL1E.sizeTokens = {
 
 PL1E.featureTypes = {
     "race": "PL1E.Race",
-    "class": "PL1E.Class"
+    "class": "PL1E.Class",
+    "mastery": "PL1E.Mastery"
 }
 
 PL1E.masteries = {

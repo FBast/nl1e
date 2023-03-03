@@ -228,9 +228,10 @@ export class Pl1eHelpers {
      * @returns {Promise<void>}
      */
     static async resetClones(item) {
-        for (let [key, value] of Object.entries(game.documentIndex.uuids[item.uuid])) {
-            for (let leaf of value) {
+        for (let [key, value] of Object.entries(game.documentIndex.uuids)) {
+            for (let leaf of value.leaves) {
                 let document = leaf.entry;
+                if (document === undefined || document.system === undefined) continue;
                 // Resetting sub items
                 if (document.system.subItemsMap !== undefined) {
                     for (let [key, subItem] of document.system.subItemsMap) {
@@ -247,8 +248,8 @@ export class Pl1eHelpers {
                     document.saveEmbedItems();
                 }
                 // Resetting item
-                if (document.getFlag('core', 'sourceId') === undefined) continue;
-                if (document.getFlag('core', 'sourceId').split('.')[1] !== item._id) continue;
+                if (document?.getFlag('core', 'sourceId') === undefined) continue;
+                if (document?.getFlag('core', 'sourceId').split('.')[1] !== item._id) continue;
                 let original = await fromUuid(document.getFlag('core', 'sourceId'));
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(document.type)) {
                     await document.update({

@@ -36,6 +36,12 @@
                     {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
                 </select>
             {{/if}}
+            <select name="system.optionalAttributes.{{id}}.targetGroup">
+                {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
+            </select>
+            <select name="system.optionalAttributes.{{id}}.resolutionType">
+                {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}
+            </select>
             <a class="attribute-remove flexshrink" data-attribute={{id}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
                 <i class="fas fa-trash"></i>
             </a>

@@ -39,7 +39,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     label: 'PL1E.ResetClones',
                     class: 'reset-clones',
                     icon: 'fas fa-clone',
-                    onclick: () => Pl1eHelpers.resetClones(this.item._id)
+                    onclick: () => Pl1eHelpers.resetClones(this.item)
                 });
             }
         }

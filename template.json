@@ -506,6 +506,12 @@
           "category": "fixed",
           "type": "number"
         },
+        "masteryStats": {
+          "value": false,
+          "label": "PL1E.MasteryStats",
+          "category": "fixed",
+          "type": "bool"
+        },
         "skillRoll": {
           "value": "none",
           "label": "PL1E.SkillRoll",
@@ -603,18 +609,6 @@
           "category": "header",
           "type": "select",
           "select": "masteries"
-        },
-        "contactAttackRange": {
-          "value": 1,
-          "label": "PL1E.ContactAttackRange",
-          "category": "fixed",
-          "type": "number"
-        },
-        "rangedAttackRange": {
-          "value": 0,
-          "type": "number",
-          "label": "PL1E.RangedAttackRange",
-          "category": "fixed"
         },
         "parryProjectiles": {
           "value": false,
