@@ -1,5 +1,6 @@
 import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
 import {PL1E} from "../helpers/config.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -418,6 +419,7 @@ export class Pl1eItem extends Item {
         if (!actor.bestToken === null) return;
         if (!this._isContextValid(actor)) return;
         const itemAttributes = this.system.attributes;
+        const optionalAttributes = this.system.optionalAttributes;
 
         // Target selection template
         const templates = [];
@@ -431,7 +433,21 @@ export class Pl1eItem extends Item {
             await actor.sheet?.maximize();
         }
 
+        // Return if no area defined
         if (itemAttributes.areaNumber.value > 0 && templates.length === 0) return;
+
+        //TODO-fred Fetch mastery related data
+        if (itemAttributes.masteryStats.value) {
+            const relatedMastery = itemAttributes.mastery.value;
+            const relatedItems = actor.items.filter(value => value.type === 'weapon'
+                && value.system.attributes.mastery.value === relatedMastery);
+            if (relatedItems.length > 1)
+                ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
+            if (relatedItems.length === 0)
+                ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
+            Pl1eHelpers.mergeDeep(itemAttributes, relatedItems[0].system.attributes);
+            Pl1eHelpers.mergeDeep(optionalAttributes, relatedItems[0].system.optionalAttributes);
+        }
 
         // Launcher Data
         let launcherData;
