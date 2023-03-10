@@ -418,8 +418,10 @@ export class Pl1eItem extends Item {
     async useAbility(actor) {
         if (!actor.bestToken === null) return;
         if (!this._isContextValid(actor)) return;
-        const itemAttributes = this.system.attributes;
-        const optionalAttributes = this.system.optionalAttributes;
+
+        // Copy attributes
+        const itemAttributes = JSON.parse(JSON.stringify(this.system.attributes));
+        const optionalAttributes = JSON.parse(JSON.stringify(this.system.optionalAttributes));
 
         // Target selection template
         const templates = [];
@@ -436,7 +438,7 @@ export class Pl1eItem extends Item {
         // Return if no area defined
         if (itemAttributes.areaNumber.value > 0 && templates.length === 0) return;
 
-        //TODO-fred Fetch mastery related data
+        // Get linked attributes
         if (itemAttributes.abilityLink.value === 'mastery') {
             const relatedMastery = itemAttributes.mastery.value;
             const relatedItems = actor.items.filter(value => value.type === 'weapon'
@@ -453,10 +455,13 @@ export class Pl1eItem extends Item {
             for (const item of actor.items) {
                 if (item.system.subItemsMap === undefined) continue;
                 for (let [key, subItem] of item.system.subItemsMap) {
-                    //TODO-fred vérifier si subItem est basé sur le même id que this
+                    const subItemFlag = subItem.getFlag("core", "sourceId");
+                    const itemFlag = this.getFlag("core", "sourceId");
+                    if (subItemFlag !== itemFlag) continue;
+                    Pl1eHelpers.mergeDeep(itemAttributes, item.system.attributes);
+                    Pl1eHelpers.mergeDeep(optionalAttributes, item.system.optionalAttributes);
                 }
             }
-            actor.items.filter(value => value.system.subItemsMap.find(subItem => subItem.))
         }
 
         // Launcher Data
@@ -485,9 +490,10 @@ export class Pl1eItem extends Item {
             else {
                 oppositeResult = launcherData.result;
             }
+
             // Iterate over optional attributes
             let calculatedAttributes = [];
-            for (let [id, optionalAttribute] of Object.entries(this.system.optionalAttributes)) {
+            for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
                 if (optionalAttribute.targetGroup === 'self' && targetToken.actor !== launcherData.actor) continue;
                 if (optionalAttribute.targetGroup === 'allies' && targetToken.document.disposition !== launcherData.actor.bestToken.disposition) continue;
                 if (optionalAttribute.targetGroup === 'opponents' && targetToken.document.disposition === launcherData.actor.bestToken.disposition) continue;

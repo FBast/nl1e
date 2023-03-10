@@ -55,20 +55,20 @@ export class AbilityTemplate extends MeasuredTemplate {
     // Additional type-specific data
     switch (areaType) {
       case "circle":
-        templateData.distance = itemAttributes.circleRadius.value;
+        templateData.distance = itemAttributes.circleRadius.value * game.system.gridDistance;
         break;
       case "cone":
-        templateData.distance = itemAttributes.coneLength.value;
+        templateData.distance = itemAttributes.coneLength.value * game.system.gridDistance;
         templateData.angle = itemAttributes.coneAngle.value;
         break;
       case "rect":
-        templateData.distance = itemAttributes.rectLength.value;
-        templateData.width = itemAttributes.rectWidth.value;
+        templateData.distance = itemAttributes.rectLength.value * game.system.gridDistance;
+        templateData.width = itemAttributes.rectWidth.value * game.system.gridDistance;
         templateData.direction = 45;
         break;
       case "ray": // 5e rays are most commonly 1 square (5 ft) in width
         templateData.width = 1.5;
-        templateData.distance = itemAttributes.rayLength.value;
+        templateData.distance = itemAttributes.rayLength.value * game.system.gridDistance;
         break;
     }
 
@@ -164,7 +164,7 @@ export class AbilityTemplate extends MeasuredTemplate {
     templateCenter.x -= offset;
     templateCenter.y -= offset;
     // Clamp with range
-    const range = this.item.system.attributes.range.value;
+    const range = this.item.system.attributes.range.value * game.system.gridDistance;
     templateCenter = this._clampVectorRadius(templateCenter, this.token, range * 100);
     // Snap position
     templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 1);

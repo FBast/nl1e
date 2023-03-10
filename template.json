@@ -556,20 +556,20 @@
           "fallback": "circle"
         },
         "circleRadius": {
-          "value": 1.5,
+          "value": 1,
           "label": "PL1E.CircleRadius",
           "category": "fixed",
           "type": "number",
           "conditions": "areaType===circle",
-          "fallback": 1.5
+          "fallback": 1
         },
         "coneLength": {
-          "value": 1.5,
+          "value": 1,
           "label": "PL1E.ConeLength",
           "category": "fixed",
           "type": "number",
           "conditions": "areaType===cone",
-          "fallback": 1.5
+          "fallback": 1
         },
         "coneAngle": {
           "value": 50,
@@ -585,7 +585,7 @@
           "category": "fixed",
           "type": "number",
           "conditions": "areaType===rect",
-          "fallback": 1.5
+          "fallback": 1
         },
         "rectLength": {
           "value": 1,
@@ -593,7 +593,7 @@
           "category": "fixed",
           "type": "number",
           "conditions": "areaType===rect",
-          "fallback": 1.5
+          "fallback": 1
         },
         "rayLength": {
           "value": 1,
@@ -601,7 +601,7 @@
           "category": "fixed",
           "type": "number",
           "conditions": "areaType===ray",
-          "fallback": 1.5
+          "fallback": 1
         }
       }
     },
