@@ -437,7 +437,7 @@ export class Pl1eItem extends Item {
         if (itemAttributes.areaNumber.value > 0 && templates.length === 0) return;
 
         //TODO-fred Fetch mastery related data
-        if (itemAttributes.masteryStats.value) {
+        if (itemAttributes.abilityLink.value === 'mastery') {
             const relatedMastery = itemAttributes.mastery.value;
             const relatedItems = actor.items.filter(value => value.type === 'weapon'
                 && value.system.attributes.mastery.value === relatedMastery);
@@ -447,6 +447,16 @@ export class Pl1eItem extends Item {
                 ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
             Pl1eHelpers.mergeDeep(itemAttributes, relatedItems[0].system.attributes);
             Pl1eHelpers.mergeDeep(optionalAttributes, relatedItems[0].system.optionalAttributes);
+        }
+
+        if (itemAttributes.abilityLink.value === 'parent') {
+            for (const item of actor.items) {
+                if (item.system.subItemsMap === undefined) continue;
+                for (let [key, subItem] of item.system.subItemsMap) {
+                    //TODO-fred vérifier si subItem est basé sur le même id que this
+                }
+            }
+            actor.items.filter(value => value.system.subItemsMap.find(subItem => subItem.))
         }
 
         // Launcher Data

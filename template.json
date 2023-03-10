@@ -506,6 +506,13 @@
           "category": "fixed",
           "type": "number"
         },
+        "abilityLink": {
+          "value": "none",
+          "label": "PL1E.AbilityLink",
+          "category": "fixed",
+          "type": "select",
+          "select": "abilityLinks"
+        },
         "masteryStats": {
           "value": false,
           "label": "PL1E.MasteryStats",

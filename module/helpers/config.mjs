@@ -323,12 +323,20 @@ PL1E.targetGroups = {
     "all": "PL1E.All",
     "self": "PL1E.Self",
     "allies": "PL1E.Allies",
-    "opponents": "PL1E.Opponents"
+    "opponents": "PL1E.Opponents",
+    "allExceptSelf": "PL1E.AllExceptSelf"
 }
 
 PL1E.resolutionTypes = {
+    "value" : "PL1E.Value",
     "valueIfSuccess" : "PL1E.ValueIfSuccess",
     "multiplyBySuccess": "PL1E.MultiplyBySuccess"
+}
+
+PL1E.abilityLinks = {
+    "none" : "PL1E.None",
+    "parent": "PL1E.Parent",
+    "mastery": "PL1E.Mastery"
 }
 
 PL1E.optionalAttributes = {

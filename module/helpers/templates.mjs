@@ -14,7 +14,6 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/parts/npc-stats.hbs",
 
         // Item partials.
-        "systems/pl1e/templates/item/parts/ability-attributes.hbs",
         "systems/pl1e/templates/item/parts/item-attributes.hbs",
         "systems/pl1e/templates/item/parts/item-description.hbs",
         "systems/pl1e/templates/item/parts/item-linked.hbs"

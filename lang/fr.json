@@ -162,6 +162,7 @@
   "PL1E.NotMemorized": "Cette aptitude doit être mémorisé",
   "PL1E.Novice": "Novice",
   "PL1E.Opponents": "Adversaires",
+  "PL1E.AllExceptSelf": "Tous sauf soi même",
   "PL1E.OppositeRolls": "Tests opposés",
   "PL1E.Parry": "Parade",
   "PL1E.ParryBonuses": "Bonus de Parade",
@@ -232,6 +233,7 @@
   "PL1E.Unowned": "Cet objet ne vous appartient pas",
   "PL1E.Use": "Utiliser",
   "PL1E.Uses": "Utilisations",
+  "PL1E.Value": "Valeur",
   "PL1E.ValueIfSuccess": "Valeur si succès",
   "PL1E.Vigilance": "Vigilance",
   "PL1E.Vigor": "Vigueur",
@@ -242,5 +244,7 @@
   "PL1E.Wisdom": "Sagesse",
   "PL1E.WisdomMod": "Sagesse Mod.",
   "PL1E.Wizard": "Magicien",
-  "PL1E.MasteryStats": "Stats de la maitrise"
+  "PL1E.MasteryStats": "Stats de la maitrise",
+  "PL1E.Parent": "Parent",
+  "PL1E.AbilityLink": "Lien d'aptitude"
 }
