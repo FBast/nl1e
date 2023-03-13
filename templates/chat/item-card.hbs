@@ -1,8 +1,14 @@
 <div class="chat-card item-card" data-actor-id="{{actor._id}}" data-item-id="{{item._id}}"
      {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.item.system.level}}"{{/if}}>
     <header class="card-header flexrow">
-        <img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
+        <img class="item-image item-edit" src="{{item.img}}" data-item-id="{{item._id}}" data-token-id="{{tokenId}}"
+             title="{{item.name}}" width="36" height="36"/>
         <h3 class="item-name">{{item.name}}</h3>
+        {{log actor}}
+        {{#if (ne launcherData.linkedItem undefined)}}
+            <img class="linkedItem-image item-edit" src="{{launcherData.linkedItem.img}}" data-item-id="{{launcherData.linkedItem._id}}"
+                 data-token-id="{{tokenId}}" title="{{launcherData.linkedItem.name}}" width="36" height="36"/>
+        {{/if}}
     </header>
     <div class="card-content">
         <!-- Description of the ability -->
@@ -21,7 +27,7 @@
     </div>
     {{#each targetsData as |targetData id|}}
         <div class="card-header flexrow">
-            <img class="actor-edit" src="{{targetData.actor.img}}" data-token-id={{targetData.actor.uuid}} title="{{targetData.actor.name}}" width="36" height="36"/>
+            <img class="item-image actor-edit" src="{{targetData.actor.img}}" data-token-id={{targetData.actor.uuid}} title="{{targetData.actor.name}}" width="36" height="36"/>
             <h3 class="item-name">{{targetData.actor.name}}</h3>
         </div>
         <div class="card-content">

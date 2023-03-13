@@ -162,7 +162,6 @@
   "PL1E.NotMemorized": "Cette aptitude doit être mémorisé",
   "PL1E.Novice": "Novice",
   "PL1E.Opponents": "Adversaires",
-  "PL1E.AllExceptSelf": "Tous sauf soi même",
   "PL1E.OppositeRolls": "Tests opposés",
   "PL1E.Parry": "Parade",
   "PL1E.ParryBonuses": "Bonus de Parade",
@@ -182,6 +181,7 @@
   "PL1E.RangedAttackRange": "Attaque à distance (Portée)",
   "PL1E.Ranks": "Rangs",
   "PL1E.Rarity": "Rareté",
+  "PL1E.NoEquippedParent": "Aucun parent n'est équippé",
   "PL1E.Ray": "Rayon",
   "PL1E.RayLength": "Longueur du rayon",
   "PL1E.Reaction": "Réaction",
@@ -244,7 +244,6 @@
   "PL1E.Wisdom": "Sagesse",
   "PL1E.WisdomMod": "Sagesse Mod.",
   "PL1E.Wizard": "Magicien",
-  "PL1E.MasteryStats": "Stats de la maitrise",
   "PL1E.Parent": "Parent",
   "PL1E.AbilityLink": "Lien d'aptitude"
 }

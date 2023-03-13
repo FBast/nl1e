@@ -26,17 +26,18 @@ export class AbilityTemplate extends MeasuredTemplate {
   /* -------------------------------------------- */
 
   /**
-  * A factory method to create an AbilityTemplate instance using provided data from an Pl1eItem instance
-  * @param {Pl1eItem} item               The Item object for which to construct the template
-  * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
-  */
-  static fromItem(item) {
-    const itemAttributes = item.system.attributes;
+   * A factory method to create an AbilityTemplate instance using provided data from an Pl1eItem instance
+   * @param {Pl1eItem} item               The Item object for which to construct the template
+   * @param itemAttributes
+   * @param optionalAttributes
+   * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
+   */
+  static fromItem(item, itemAttributes, optionalAttributes) {
     const areaType = itemAttributes.areaType.value;
 
     // Save targetGroups for token selection
     let targetGroups = [];
-    for (const [id, optionalAttribute] of Object.entries(item.system.optionalAttributes)) {
+    for (const [id, optionalAttribute] of Object.entries(optionalAttributes)) {
       if (targetGroups.includes(optionalAttribute.targetGroup)) continue;
       targetGroups.push(optionalAttribute.targetGroup);
     }

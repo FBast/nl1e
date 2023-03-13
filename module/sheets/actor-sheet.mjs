@@ -206,18 +206,18 @@ export class Pl1eActorSheet extends ActorSheet {
             // Append to item categories
             if (item.type === 'weapon') {
                 weapons.push(item);
+                gear.push(item);
             }
             else if (item.type === 'wearable') {
                 wearables.push(item);
+                gear.push(item);
             }
             else if (item.type === 'consumable') {
                 consumables.push(item);
+                gear.push(item);
             }
             else if (item.type === 'common') {
                 commons.push(item);
-            }
-            // Append to gear.
-            if (['weapon','wearable','consumable','common'].includes(item.type)) {
                 gear.push(item);
             }
             // Append to features.
@@ -228,6 +228,7 @@ export class Pl1eActorSheet extends ActorSheet {
             else if (item.type === 'ability') {
                 abilities[item.system.attributes.level.value].push(item);
             }
+            console.log(abilities);
         }
 
         // Assign and return

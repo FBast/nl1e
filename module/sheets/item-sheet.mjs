@@ -54,6 +54,9 @@ export class Pl1eItemSheet extends ItemSheet {
         // Use a safe clone of the item data for further operations.
         const itemData = context.item;
 
+        // If the sheet is not an original then disable edition
+        this.options.editable = this.item.getFlag('core', 'sourceId') === undefined;
+
         // Retrieve the roll data for TinyMCE editors.
         context.rollData = {};
         let actor = this.object?.parent ?? null;
@@ -105,7 +108,6 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Check item type and subtype
         let item = await Pl1eHelpers.getDragNDropTargetObject(event);
-        if (!item || item.documentName !== "Item" || !["feature", "ability"].includes(item.type)) return;
 
         // Check if same item
         if (this.object._id === item._id) return;

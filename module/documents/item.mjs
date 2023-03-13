@@ -423,12 +423,51 @@ export class Pl1eItem extends Item {
         const itemAttributes = JSON.parse(JSON.stringify(this.system.attributes));
         const optionalAttributes = JSON.parse(JSON.stringify(this.system.optionalAttributes));
 
+        // Get linked attributes
+        let linkedItem;
+        if (itemAttributes.abilityLink.value === 'mastery') {
+            const relatedMastery = itemAttributes.mastery.value;
+            const relatedItems = actor.items.filter(value => value.type === 'weapon'
+                && value.system.attributes.mastery.value === relatedMastery);
+            if (relatedItems.length > 1) {
+                ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
+                return;
+            }
+            if (relatedItems.length === 0) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
+                return;
+            }
+            linkedItem = relatedItems[0];
+            Pl1eHelpers.mergeDeep(itemAttributes, linkedItem.system.attributes);
+            Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes);
+        }
+        if (itemAttributes.abilityLink.value === 'parent') {
+            let relatedItems = [];
+            for (const item of actor.items) {
+                if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
+                if (item.system.subItemsMap === undefined) continue;
+                for (let [key, subItem] of item.system.subItemsMap) {
+                    const subItemFlag = subItem.getFlag('core', 'sourceId');
+                    const itemFlag = this.getFlag('core', 'sourceId');
+                    if (subItemFlag !== itemFlag) continue;
+                    relatedItems.push(item);
+                }
+            }
+            if (relatedItems.length === 0) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoEquippedParent"));
+                return;
+            }
+            linkedItem = relatedItems[0];
+            Pl1eHelpers.mergeDeep(itemAttributes, linkedItem.system.attributes);
+            Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes);
+        }
+
         // Target selection template
         const templates = [];
         if (itemAttributes.areaNumber.value !== 0) {
             await actor.sheet?.minimize();
             for (let i = 0; i < itemAttributes.areaNumber.value; i++) {
-                const template = await AbilityTemplate.fromItem(this);
+                const template = await AbilityTemplate.fromItem(this, itemAttributes, optionalAttributes);
                 templates.push(template);
                 await template?.drawPreview();
             }
@@ -438,32 +477,6 @@ export class Pl1eItem extends Item {
         // Return if no area defined
         if (itemAttributes.areaNumber.value > 0 && templates.length === 0) return;
 
-        // Get linked attributes
-        if (itemAttributes.abilityLink.value === 'mastery') {
-            const relatedMastery = itemAttributes.mastery.value;
-            const relatedItems = actor.items.filter(value => value.type === 'weapon'
-                && value.system.attributes.mastery.value === relatedMastery);
-            if (relatedItems.length > 1)
-                ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
-            if (relatedItems.length === 0)
-                ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
-            Pl1eHelpers.mergeDeep(itemAttributes, relatedItems[0].system.attributes);
-            Pl1eHelpers.mergeDeep(optionalAttributes, relatedItems[0].system.optionalAttributes);
-        }
-
-        if (itemAttributes.abilityLink.value === 'parent') {
-            for (const item of actor.items) {
-                if (item.system.subItemsMap === undefined) continue;
-                for (let [key, subItem] of item.system.subItemsMap) {
-                    const subItemFlag = subItem.getFlag("core", "sourceId");
-                    const itemFlag = this.getFlag("core", "sourceId");
-                    if (subItemFlag !== itemFlag) continue;
-                    Pl1eHelpers.mergeDeep(itemAttributes, item.system.attributes);
-                    Pl1eHelpers.mergeDeep(optionalAttributes, item.system.optionalAttributes);
-                }
-            }
-        }
-
         // Launcher Data
         let launcherData;
         if (itemAttributes.skillRoll.value !== 'none') {
@@ -472,7 +485,8 @@ export class Pl1eItem extends Item {
             launcherData = {
                 "result": result,
                 "actor": actor,
-                "attributes": itemAttributes
+                "attributes": itemAttributes,
+                "linkedItem": linkedItem
             }
         }
 

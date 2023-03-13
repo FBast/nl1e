@@ -513,12 +513,6 @@
           "type": "select",
           "select": "abilityLinks"
         },
-        "masteryStats": {
-          "value": false,
-          "label": "PL1E.MasteryStats",
-          "category": "fixed",
-          "type": "bool"
-        },
         "skillRoll": {
           "value": "none",
           "label": "PL1E.SkillRoll",

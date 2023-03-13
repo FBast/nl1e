@@ -80,7 +80,7 @@ export class Pl1eHelpers {
             // Final
             if (document) {
                 // Flag the source GUID
-                if (document.uuid && !document.pack && !document.getFlag("core", "sourceId")) {
+                if (document.uuid && !document.pack && !document.getFlag('core', 'sourceId')) {
                     document.updateSource({ "flags.core.sourceId": document.uuid });
                 }
 

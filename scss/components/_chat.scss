@@ -8,7 +8,7 @@
 
       img {
         flex: 0 0 36px;
-        margin-right: 5px;
+
         transition: .3s ease;
 
         &:hover{
@@ -29,6 +29,15 @@
           text-shadow: 0 0 10px red;
         }
       }
+
+      .item-image {
+        margin-right: 5px;
+      }
+
+      .linkedItem-image {
+        margin-left: 5px;
+      }
+
     }
 
     .card-content {

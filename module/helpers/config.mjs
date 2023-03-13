@@ -324,7 +324,6 @@ PL1E.targetGroups = {
     "self": "PL1E.Self",
     "allies": "PL1E.Allies",
     "opponents": "PL1E.Opponents",
-    "allExceptSelf": "PL1E.AllExceptSelf"
 }
 
 PL1E.resolutionTypes = {
