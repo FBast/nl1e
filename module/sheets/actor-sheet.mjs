@@ -201,7 +201,9 @@ export class Pl1eActorSheet extends ActorSheet {
         };
 
         // Iterate through items, allocating to containers
+        const sourceIdFlags = [];
         for (let item of context.items) {
+            const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;
             item.img = item.img || DEFAULT_TOKEN;
             // Append to item categories
             if (item.type === 'weapon') {
@@ -225,10 +227,11 @@ export class Pl1eActorSheet extends ActorSheet {
                 features.push(item);
             }
             // Append to abilities.
-            else if (item.type === 'ability') {
+            else if (item.type === 'ability' && !sourceIdFlags.includes(sourceIdFlag)) {
                 abilities[item.system.attributes.level.value].push(item);
             }
-            console.log(abilities);
+            // Push sourceId flag to handle duplicates
+            if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
         }
 
         // Assign and return
