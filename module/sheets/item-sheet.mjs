@@ -34,7 +34,7 @@ export class Pl1eItemSheet extends ItemSheet {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            if (this.item.getFlag('core','sourceId') === undefined) {
+            if (this.item.isOriginal) {
                 buttons.unshift({
                     label: 'PL1E.ResetClones',
                     class: 'reset-clones',
@@ -42,6 +42,25 @@ export class Pl1eItemSheet extends ItemSheet {
                     onclick: () => Pl1eHelpers.resetClones(this.item)
                 });
             }
+            else {
+                buttons.unshift({
+                    label: 'PL1E.OpenOriginal',
+                    class: 'open-original',
+                    icon: 'fas fa-copy',
+                    onclick: async () => {
+                        const sourceId = this.item.getFlag('core', 'sourceId');
+                        const item = await fromUuid(sourceId);
+                        await this.close();
+                        item.sheet.render(true);
+                    }
+                });
+            }
+            buttons.unshift({
+                label: 'PL1E.Debug',
+                class: 'debug',
+                icon: 'fas fa-ban-bug',
+                onclick: () => console.log(this)
+            });
         }
         return buttons;
     }
@@ -55,7 +74,7 @@ export class Pl1eItemSheet extends ItemSheet {
         const itemData = context.item;
 
         // If the sheet is not an original then disable edition
-        this.options.editable = this.item.getFlag('core', 'sourceId') === undefined;
+        this.options.editable = this.item.isOriginal;
 
         // Retrieve the roll data for TinyMCE editors.
         context.rollData = {};

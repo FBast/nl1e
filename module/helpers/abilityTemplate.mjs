@@ -55,6 +55,14 @@ export class AbilityTemplate extends MeasuredTemplate {
 
     // Additional type-specific data
     switch (areaType) {
+      case "target":
+        const gridSize = game.system.gridDistance;
+        templateData.t = "rect";
+        templateData.direction = 0;
+        templateData.distance = gridSize;
+        templateData.width = gridSize;
+        templateData.height = gridSize;
+        break;
       case "circle":
         templateData.distance = itemAttributes.circleRadius.value * game.system.gridDistance;
         break;
@@ -65,10 +73,11 @@ export class AbilityTemplate extends MeasuredTemplate {
       case "rect":
         templateData.distance = itemAttributes.rectLength.value * game.system.gridDistance;
         templateData.width = itemAttributes.rectWidth.value * game.system.gridDistance;
+        templateData.height = itemAttributes.rectLength.value * game.system.gridDistance;
         templateData.direction = 45;
         break;
-      case "ray": // 5e rays are most commonly 1 square (5 ft) in width
-        templateData.width = 1.5;
+      case "ray":
+        templateData.width = game.system.gridDistance;
         templateData.distance = itemAttributes.rayLength.value * game.system.gridDistance;
         break;
     }
@@ -81,6 +90,19 @@ export class AbilityTemplate extends MeasuredTemplate {
     object.actorSheet = item.actor?.sheet || null;
     object.token = item.actor?.bestToken;
     object.targetGroups = targetGroups;
+
+    //TODO-fred change the controlIcon sprite
+
+    // object.controlIcon = new ControlIcon({
+    //   texture: item.img,
+    //   size: 50,
+    //   icon: item.img,
+    //   title: item.name,
+    //   onClick: () => {
+    //     //Handle click event here
+    //   },
+    //   layer: "myLayer" // replace myLayer with the name of your desired layer
+    // });
     return object;
   }
 
@@ -104,9 +126,9 @@ export class AbilityTemplate extends MeasuredTemplate {
    * Delete the templates after releasing targets
    */
   releaseTemplate() {
-    for (let token of this.#targets) {
-      token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
-    }
+    // for (let token of this.#targets) {
+    //   token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
+    // }
     for (let document of this.#templates) {
       document.delete();
     }
@@ -195,6 +217,7 @@ export class AbilityTemplate extends MeasuredTemplate {
   */
   _onRotatePlacement(event) {
     if ( event.ctrlKey ) event.preventDefault(); // Avoid zooming the browser window
+    if (["rect", "circle"].includes(this.document.t)) return;
     event.stopPropagation();
     let delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
     let snap = (event.shiftKey ? delta : 5);

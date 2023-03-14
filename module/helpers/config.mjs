@@ -313,6 +313,7 @@ PL1E.experienceTemplatesValues = {
 }
 
 PL1E.areaTypes = {
+    "target": "PL1E.Target",
     "circle": "PL1E.Circle",
     "cone": "PL1E.Cone",
     "rect": "PL1E.Rect",

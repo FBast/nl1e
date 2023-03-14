@@ -47,7 +47,7 @@
     ]
   },
   "socket": true,
-  "gridDistance": 1.5,
+  "gridDistance": 1,
   "gridUnits": "m",
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stamina",

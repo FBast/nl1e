@@ -8,6 +8,11 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
  */
 export class Pl1eItem extends Item {
 
+    get isOriginal() {
+        const sourceId = this.getFlag('core', 'sourceId');
+        return !sourceId || sourceId === this.uuid;
+    }
+
     //region Data management
 
     /** @override */
@@ -493,6 +498,7 @@ export class Pl1eItem extends Item {
         // Target Data
         let targetsData = [];
         let targetTokens = game.user.targets;
+        //TODO-fred multiple area is not working (only last area targets persist)
         for (let targetToken of targetTokens) {
             // Opposite roll if exist
             let oppositeResult = 0;
