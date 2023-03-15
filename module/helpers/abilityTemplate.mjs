@@ -1,5 +1,3 @@
-import {Pl1eHelpers} from "./helpers.mjs";
-
 export class AbilityTemplate extends MeasuredTemplate {
 
   /**
@@ -21,7 +19,7 @@ export class AbilityTemplate extends MeasuredTemplate {
   #events;
 
   #targets = [];
-  #templates = [];
+  #template = [];
 
   /* -------------------------------------------- */
 
@@ -32,7 +30,7 @@ export class AbilityTemplate extends MeasuredTemplate {
    * @param optionalAttributes
    * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
    */
-  static fromItem(item, itemAttributes, optionalAttributes) {
+  static async fromItem(item, itemAttributes, optionalAttributes) {
     const areaType = itemAttributes.areaType.value;
 
     // Save targetGroups for token selection
@@ -50,7 +48,7 @@ export class AbilityTemplate extends MeasuredTemplate {
       x: 0,
       y: 0,
       fillColor: game.user.color,
-      flags: { pl1e: { origin: item.uuid } }
+      flags: {pl1e: {origin: item.uuid}}
     };
 
     // Additional type-specific data
@@ -126,12 +124,10 @@ export class AbilityTemplate extends MeasuredTemplate {
    * Delete the templates after releasing targets
    */
   releaseTemplate() {
-    // for (let token of this.#targets) {
-    //   token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
-    // }
-    for (let document of this.#templates) {
-      document.delete();
+    for (let token of this.#targets) {
+      token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
     }
+    this.#template.delete();
   }
 
   /* -------------------------------------------- */
@@ -237,8 +233,8 @@ export class AbilityTemplate extends MeasuredTemplate {
     await this._finishPlacement(event);
     const destination = canvas.grid.getSnappedPosition(this.document.x, this.document.y, 2);
     this.document.updateSource(destination);
-    this.#templates = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]);
-    this.#events.resolve(this.#templates);
+    this.#template = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()])[0];
+    this.#events.resolve(this.#template);
   }
 
   /**
@@ -271,6 +267,9 @@ export class AbilityTemplate extends MeasuredTemplate {
             if (!this.targetGroups.includes('allies') && token.document.disposition === this.token.disposition) continue;
             if (!this.targetGroups.includes('opponents') && token.document.disposition !== this.token.disposition) continue;
           }
+          // Dont target a token which is already targeted
+          if (token.targeted.has(game.user)) continue;
+          // Set target and add to target list
           token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
           this.#targets.push(token);
         }

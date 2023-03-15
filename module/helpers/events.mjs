@@ -449,6 +449,9 @@ export class Pl1eEvent {
         let action = $(event.currentTarget).data("action");
         let itemId = $(event.currentTarget).data("item-id");
 
+        /**
+         * @type {Pl1eItem}
+         */
         const item = await fromUuid(itemId);
         await item.actionAbility(action);
 

@@ -425,13 +425,13 @@ export class Pl1eItem extends Item {
         if (!this._isContextValid(actor)) return;
 
         // Copy attributes
-        const itemAttributes = JSON.parse(JSON.stringify(this.system.attributes));
+        const attributes = JSON.parse(JSON.stringify(this.system.attributes));
         const optionalAttributes = JSON.parse(JSON.stringify(this.system.optionalAttributes));
 
         // Get linked attributes
         let linkedItem;
-        if (itemAttributes.abilityLink.value === 'mastery') {
-            const relatedMastery = itemAttributes.mastery.value;
+        if (attributes.abilityLink.value === 'mastery') {
+            const relatedMastery = attributes.mastery.value;
             const relatedItems = actor.items.filter(value => value.type === 'weapon'
                 && value.system.attributes.mastery.value === relatedMastery);
             if (relatedItems.length > 1) {
@@ -443,10 +443,10 @@ export class Pl1eItem extends Item {
                 return;
             }
             linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(itemAttributes, linkedItem.system.attributes);
+            Pl1eHelpers.mergeDeep(attributes, linkedItem.system.attributes);
             Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes);
         }
-        if (itemAttributes.abilityLink.value === 'parent') {
+        if (attributes.abilityLink.value === 'parent') {
             let relatedItems = [];
             for (const item of actor.items) {
                 if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
@@ -463,16 +463,16 @@ export class Pl1eItem extends Item {
                 return;
             }
             linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(itemAttributes, linkedItem.system.attributes);
+            Pl1eHelpers.mergeDeep(attributes, linkedItem.system.attributes);
             Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes);
         }
 
         // Target selection template
         const templates = [];
-        if (itemAttributes.areaNumber.value !== 0) {
+        if (attributes.areaNumber.value !== 0) {
             await actor.sheet?.minimize();
-            for (let i = 0; i < itemAttributes.areaNumber.value; i++) {
-                const template = await AbilityTemplate.fromItem(this, itemAttributes, optionalAttributes);
+            for (let i = 0; i < attributes.areaNumber.value; i++) {
+                const template = await AbilityTemplate.fromItem(this, attributes, optionalAttributes);
                 templates.push(template);
                 await template?.drawPreview();
             }
@@ -480,30 +480,100 @@ export class Pl1eItem extends Item {
         }
 
         // Return if no area defined
-        if (itemAttributes.areaNumber.value > 0 && templates.length === 0) return;
+        if (attributes.areaNumber.value > 0 && templates.length === 0) return;
 
         // Launcher Data
         let launcherData;
-        if (itemAttributes.skillRoll.value !== 'none') {
-            const mainSkill = actor.system.skills[itemAttributes.skillRoll.value];
+        if (attributes.skillRoll.value !== 'none') {
+            const mainSkill = actor.system.skills[attributes.skillRoll.value];
             const result = await actor.rollSkill(mainSkill);
             launcherData = {
                 "result": result,
                 "actor": actor,
-                "attributes": itemAttributes,
+                "attributes": attributes,
+                "optionalAttributes": optionalAttributes,
                 "linkedItem": linkedItem
             }
         }
 
+        // Render the chat card template
+        const token = this.actor.bestToken;
+        this.abilityData = {
+            actor: this.actor.toObject(false),
+            tokenId: token?.uuid || null,
+            item: this.toObject(false),
+            itemId: this.uuid,
+            labels: this.labels,
+            launcherData: launcherData,
+            templates: templates
+        };
+        const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", this.abilityData);
+
+        // Create the ChatMessage data object
+        const chatData = {
+            user: game.user.id,
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            content: html,
+            // flavor: this.system.description || this.name,
+            speaker: ChatMessage.getSpeaker({actor: this.actor, token}),
+            flags: {"core.canPopout": true}
+        };
+
+        // // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
+        // if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
+        //     chatData.flags["pl1e.itemData"] = templateData.item;
+        // }
+
+        await ChatMessage.create(chatData);
+    }
+
+    /**
+     * Handle multiples ability resolutions
+     * @param action
+     */
+    async actionAbility(action) {
+        const abilityData = this.abilityData;
+
+        // Handle different actions
+        switch (action) {
+            case "apply":
+                await this._applyAbility();
+                break;
+            case "counter":
+                await this._counterAbility();
+                break;
+            case "cancel":
+                await this._cancelAbility();
+                break;
+        }
+
+        // Destroy templates after fetching target with df-template
+        for (const template of abilityData.templates) {
+            await template.releaseTemplate();
+        }
+
+        // Reset abilityData
+        this.abilityData = [];
+    }
+
+    async _applyAbility() {
         // Target Data
-        let targetsData = [];
         let targetTokens = game.user.targets;
+
         //TODO-fred multiple area is not working (only last area targets persist)
         for (let targetToken of targetTokens) {
+            // Make a copy of the ability data for this target
+            let abilityData = JSON.parse(JSON.stringify(this.abilityData));
+
+            // Copy attributes
+            const launcherData = abilityData.launcherData;
+            const attributes = abilityData.launcherData.attributes;
+            const optionalAttributes = abilityData.launcherData.optionalAttributes;
+
             // Opposite roll if exist
             let oppositeResult = 0;
-            if (itemAttributes.oppositeRolls.value !== 'none') {
-                const skill = targetToken.actor.system.skills[itemAttributes.oppositeRolls.value];
+            if (attributes.oppositeRolls.value !== 'none') {
+                const skill = targetToken.actor.system.skills[attributes.oppositeRolls.value];
                 oppositeResult = await targetToken.actor.rollSkill(skill);
                 oppositeResult = launcherData.result - oppositeResult;
             }
@@ -534,81 +604,45 @@ export class Pl1eItem extends Item {
                 }
                 calculatedAttributes.push(calculatedAttribute);
             }
-            const targetData = {
-                "result": oppositeResult,
-                "actor": targetToken.actor,
-                "attributes": calculatedAttributes
-            }
-            targetsData.push(targetData);
+
+            this.abilityData = {
+                actor: targetToken.actor.toObject(false),
+                tokenId: targetToken?.uuid || null,
+                targetData: {
+                    result: oppositeResult,
+                    actor: targetToken.actor,
+                    attributes: calculatedAttributes
+                }
+            };
+            const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", abilityData);
+
+            // Create the ChatMessage data object
+            const chatData = {
+                user: game.user.id,
+                type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+                content: html,
+                // flavor: this.system.description || this.name,
+                speaker: ChatMessage.getSpeaker({actor: targetToken.actor, targetToken}),
+                flags: {"core.canPopout": true}
+            };
+
+            await ChatMessage.create(chatData);
+
+            // for (const targetData of abilityData.targetsData) {
+            //     for (const attribute of targetData.attributes) {
+            //         await targetData.actor.applyAttribute(attribute, true);
+            //     }
+            //     targetData.actor.sheet.render(false);
+            // }
         }
-
-        // Render the chat card template
-       const token = this.actor.bestToken;
-        this.abilityData = {
-            actor: this.actor.toObject(false),
-            tokenId: token?.uuid || null,
-            item: this.toObject(false),
-            itemId: this.uuid,
-            labels: this.labels,
-            launcherData: launcherData,
-            targetsData: targetsData,
-            templates: templates
-        };
-        const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", this.abilityData);
-
-        // Create the ChatMessage data object
-        const chatData = {
-            user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            content: html,
-            // flavor: this.system.description || this.name,
-            speaker: ChatMessage.getSpeaker({actor: this.actor, token}),
-            flags: {"core.canPopout": true}
-        };
-
-        // // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
-        // if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
-        //     chatData.flags["pl1e.itemData"] = templateData.item;
-        // }
-
-        // Destroy templates after fetching target with df-template
-        for (const template of templates) {
-            await template.releaseTemplate();
-        }
-
-        await ChatMessage.create(chatData);
     }
 
-    /**
-     * Handle multiples ability resolutions
-     * @param action
-     */
-    async actionAbility(action) {
-        const abilityData = this.abilityData;
+    async _counterAbility() {
 
-        // Handle different actions
-        switch (action) {
-            case "apply":
-                for (const targetData of abilityData.targetsData) {
-                    for (const attribute of targetData.attributes) {
-                        await targetData.actor.applyAttribute(attribute, true);
-                    }
-                    targetData.actor.sheet.render(false);
-                }
-                break;
-            case "counter":
-                break;
-            case "cancel":
-                break;
-        }
+    }
 
-        // Destroy templates after fetching target with df-template
-        for (const template of abilityData.templates) {
-            await template.releaseTemplate();
-        }
+    async _cancelAbility() {
 
-        // Reset abilityData
-        this.abilityData = [];
     }
 
     /**

@@ -4,7 +4,6 @@
         <img class="item-image item-edit" src="{{item.img}}" data-item-id="{{item._id}}" data-token-id="{{tokenId}}"
              title="{{item.name}}" width="36" height="36"/>
         <h3 class="item-name">{{item.name}}</h3>
-        {{log actor}}
         {{#if (ne launcherData.linkedItem undefined)}}
             <img class="linkedItem-image item-edit" src="{{launcherData.linkedItem.img}}" data-item-id="{{launcherData.linkedItem._id}}"
                  data-token-id="{{tokenId}}" title="{{launcherData.linkedItem.name}}" width="36" height="36"/>
