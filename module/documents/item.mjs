@@ -444,7 +444,7 @@ export class Pl1eItem extends Item {
             }
             linkedItem = relatedItems[0];
             Pl1eHelpers.mergeDeep(attributes, linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes.filter(attribute => attribute.targetGroup !== 'self'));
+            Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes);
         }
         if (attributes.abilityLink.value === 'parent') {
             let relatedItems = [];
