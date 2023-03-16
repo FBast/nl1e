@@ -14,6 +14,8 @@
                  {{launcherData.result}} - {{targetData.result}} = {{targetData.totalResult}} {{localize "PL1E.Success"}}
             </h4>
         {{/if}}
+    </div>
+    <footer class="card-footer">
         {{#if (ne targetData.attributes.length 0)}}
             <label>{{localize "PL1E.Effects"}} :</label>
             {{#each targetData.attributes as |attribute id|}}
@@ -24,7 +26,5 @@
         {{else}}
             <label>{{localize "PL1E.NoEffects"}}</label>
         {{/if}}
-    </div>
-    <footer class="card-footer">
     </footer>
 </div>

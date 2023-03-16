@@ -251,13 +251,17 @@ export class Pl1eItem extends Item {
     async use() {
         switch (this.type) {
             case 'consumable':
-                return this.useConsumable(this.parent);
+                await this.useConsumable(this.parent);
+                break;
             case 'wearable':
-                return await this.toggleWearable(this.parent);
+                await this.toggleWearable(this.parent);
+                break;
             case 'weapon':
-                return await this.toggleWeapon(true, this.parent)
+                await this.toggleWeapon(true, this.parent)
+                break;
             case 'ability':
-                return await this.useAbility(this.parent);
+                await this.useAbility(this.parent);
+                break;
         }
     }
 
@@ -528,8 +532,8 @@ export class Pl1eItem extends Item {
 
         // Handle different actions
         switch (action) {
-            case "apply":
-                await this._applyAbility();
+            case "resolve":
+                await this._resolveAbility();
                 break;
             case "counter":
                 await this._counterAbility();
@@ -548,7 +552,7 @@ export class Pl1eItem extends Item {
         this.abilityData = {};
     }
 
-    async _applyAbility() {
+    async _resolveAbility() {
         // Target Data
         let targetTokens = game.user.targets;
 

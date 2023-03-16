@@ -235,10 +235,7 @@ export class Pl1eHelpers {
                 if (document === undefined || document.system === undefined) continue;
                 // Resetting sub items
                 if (document.system.subItemsMap !== undefined) {
-                    for (let [key, subItem] of document.system.subItemsMap) {
-                        await this.resetCloneSubItem(subItem, item._id);
-                    }
-                    document.saveEmbedItems();
+                    await this.resetCloneSubItems(document, item._id);
                 }
                 // Resetting item
                 await this.resetClone(document, item._id);
@@ -257,14 +254,16 @@ export class Pl1eHelpers {
         if (document.getFlag('core', 'sourceId').split('.')[1] !== sourceId) return;
         let original = await fromUuid(document.getFlag('core', 'sourceId'));
         if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(document.type)) {
+            //TODO-fred actor embedded items are not correctly reset
             await document.update({
                 "name": original.name,
                 "img": original.img,
                 "system.attributes": original.system.attributes,
                 "system.optionalAttributes": original.system.optionalAttributes
             })
-            console.log("PL1E | Resetting the " + document.type + " : " + document._id);
-        } else {
+            console.log("PL1E | Resetting the item " + document.type + " : " + document._id);
+        }
+        else {
             console.warn("Unknown type : " + document.type);
         }
     }
@@ -275,19 +274,25 @@ export class Pl1eHelpers {
      * @param sourceId
      * @returns {Promise<void>}
      */
-    static async resetCloneSubItem(document, sourceId) {
-        if (document.getFlag('core', 'sourceId') === undefined) return;
-        if (document.getFlag('core', 'sourceId').split('.')[1] !== sourceId) return;
-        let original = await fromUuid(document.getFlag('core', 'sourceId'));
-        if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(document.type)) {
-            document.name = original.name;
-            document.img = original.img;
-            document.system.attributes = original.system.attributes;
-            document.system.optionalAttributes = original.system.optionalAttributes;
-            console.log("PL1E | Resetting the " + document.type + " : " + document._id);
-        } else {
-            console.warn("Unknown type : " + document.type);
+    static async resetCloneSubItems(document, sourceId) {
+        let updateDocument = false;
+        for (let [key, subItem] of document.system.subItemsMap) {
+            if (subItem.getFlag('core', 'sourceId') === undefined) continue;
+            if (subItem.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
+            let original = await fromUuid(subItem.getFlag('core', 'sourceId'));
+            if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(subItem.type)) {
+                subItem.name = original.name;
+                subItem.img = original.img;
+                subItem.system.attributes = original.system.attributes;
+                subItem.system.optionalAttributes = original.system.optionalAttributes;
+                updateDocument = true;
+                console.log("PL1E | Resetting the subItem " + subItem.type + " : " + subItem._id);
+            }
+            else {
+                console.warn("Unknown type : " + subItem.type);
+            }
         }
+        if (updateDocument) document.saveEmbedItems();
     }
 
     /**

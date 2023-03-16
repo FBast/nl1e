@@ -30,7 +30,7 @@
         </div>
         {{#each system.optionalAttributes as |attribute id|}}
             <div class="item-attribute flexrow">
-                <label>{{localize attribute.label}}</label>
+                <label class="attribute-name">{{localize attribute.label}}</label>
                 {{#if (eq attribute.type "number")}}
                     <input type="text" name="system.optionalAttributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
                 {{else if (eq attribute.type "bool")}}

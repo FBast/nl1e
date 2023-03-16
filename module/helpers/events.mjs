@@ -453,11 +453,23 @@ export class Pl1eEvent {
         const item = await fromUuid(itemId);
         await item.actionAbility(action);
 
-        // Remove all buttons
-        const buttonDiv = document.querySelector(".card-buttons");
-        buttonDiv.remove();
-    }
+        // Add notification label
+        const cardFooter = $(event.currentTarget).closest(".chat-card").find(".card-footer");
+        switch (action) {
+            case 'resolve':
+                cardFooter.text(game.i18n.localize("PL1E.Resolved"));
+                break;
+            case 'counter':
+                cardFooter.text(game.i18n.localize("PL1E.Countered"));
+                break;
+            case 'cancel':
+                cardFooter.text(game.i18n.localize("PL1E.Canceled"));
+                break;
+        }
 
-    static async
+        // Remove all buttons
+        const cardButtons = $(event.currentTarget).closest(".card-buttons");
+        cardButtons.remove();
+    }
 
 }

@@ -56,10 +56,6 @@
         font-weight: bold;
       }
 
-      .attribute-icon {
-        padding-left: 5px;
-      }
-
       > * {
         -webkit-user-select: text;
         -moz-user-select: text;
@@ -92,15 +88,8 @@
       padding: 3px 0 0;
       border-top: 2px groove #FFF;
 
-      span {
-        border-right: 2px groove #FFF;
-        padding: 0 3px 0 0;
-        font-size: 10px;
-
-        &:last-child {
-          border-right: none;
-          padding-right: 0;
-        }
+      .attribute-icon {
+        padding-left: 5px;
       }
     }
 
