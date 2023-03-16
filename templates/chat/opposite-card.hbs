@@ -2,22 +2,27 @@
     <header class="card-header flexrow">
         <img class="left-image actor-edit" src="{{targetData.actor.img}}" data-token-id="{{targetData.tokenId}}"
              title="{{targetData.actor.name}}" width="36" height="36"/>
-        <h3 class="item-label">{{localize "PL1E.Opposes"}}</h3>
+        <label class="item-label">{{localize "PL1E.Opposes"}}</label>
         <img class="right-image actor-edit" src="{{launcherData.actor.img}}" data-token-id="{{launcherData.tokenId}}"
              title="{{launcherData.actor.name}}" width="36" height="36"/>
         <img class="right-image item-edit" src="{{launcherData.item.img}}" data-item-id="{{launcherData.item._id}}"
              data-token-id="{{launcherData.tokenId}}" title="{{launcherData.item.name}}" width="36" height="36"/>
     </header>
     <div class="card-content">
-        {{#each targetData.attributes as |attribute id|}}
-            <i class="fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
-                <label>{{attribute.value}}</label>
-            </i>
-        {{/each}}
         {{#if (ne ../item.system.attributes.oppositeRolls.value "none")}}
             <h4 class="dice-total {{#if (gt targetData.totalResult 0)}}success{{else}}failure{{/if}}">
-                {{targetData.result}} - {{launcherData.result}} = {{targetData.totalResult}} {{localize "PL1E.Success"}}
+                 {{launcherData.result}} - {{targetData.result}} = {{targetData.totalResult}} {{localize "PL1E.Success"}}
             </h4>
+        {{/if}}
+        {{#if (ne targetData.attributes.length 0)}}
+            <label>{{localize "PL1E.Effects"}} :</label>
+            {{#each targetData.attributes as |attribute id|}}
+                <i class="fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
+                    <label>{{attribute.value}}</label>
+                </i>
+            {{/each}}
+        {{else}}
+            <label>{{localize "PL1E.NoEffects"}}</label>
         {{/if}}
     </div>
     <footer class="card-footer">

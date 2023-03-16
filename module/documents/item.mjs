@@ -487,9 +487,9 @@ export class Pl1eItem extends Item {
         this.abilityData = {
             templates: templates,
             launcherData: {
-                actor: this.actor.toObject(false),
+                actor: this.actor,
                 tokenId: token?.uuid || null,
-                item: this.toObject(false),
+                item: this,
                 itemId: this.uuid,
                 attributes: attributes,
                 optionalAttributes: optionalAttributes,
@@ -567,7 +567,7 @@ export class Pl1eItem extends Item {
                 const skill = targetToken.actor.system.skills[attributes.oppositeRolls.value];
                 result = await targetToken.actor.rollSkill(skill);
             }
-            let totalResult = result - abilityData.launcherData.result;
+            let totalResult = abilityData.launcherData.result - result;
 
             // Iterate over optional attributes
             let calculatedAttributes = [];
@@ -580,21 +580,21 @@ export class Pl1eItem extends Item {
                 // Number type
                 if (calculatedAttribute.type === 'number') {
                     if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
-                        calculatedAttribute.value *= totalResult < 0 ? -totalResult : 0;
+                        calculatedAttribute.value *= totalResult > 0 ? totalResult : 0;
                     }
                     if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
-                        calculatedAttribute.value = totalResult < 0 ? calculatedAttribute.value : 0;
+                        calculatedAttribute.value = totalResult > 0 ? calculatedAttribute.value : 0;
                     }
-                    if (calculatedAttribute.reduction !== undefined) {
-                        const reduction = foundry.utils.getProperty(targetToken.actor.system, calculatedAttribute.reduction);
-                        calculatedAttribute.value = Math.max(calculatedAttribute.value - reduction, 0);
+                    if (calculatedAttribute.reduction !== 'none') {
+                        let reduction = foundry.utils.getProperty(targetToken.actor.system, CONFIG.PL1E.reductionsPath[calculatedAttribute.reduction]);
+                        calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
                     }
                 }
                 calculatedAttributes.push(calculatedAttribute);
             }
 
             abilityData.targetData = {
-                actor: targetToken.actor.toObject(false),
+                actor: targetToken.actor,
                 tokenId: targetToken?.uuid || null,
                 result: result,
                 totalResult: totalResult,

@@ -320,6 +320,27 @@ PL1E.areaTypes = {
     "ray": "PL1E.Ray"
 }
 
+PL1E.reductions = {
+    "none": "PL1E.None",
+    "slashingReduction": "PL1E.SlashingReduction",
+    "crushingReduction": "PL1E.CrushingReduction",
+    "piercingReduction": "PL1E.PiercingReduction",
+    "burnReduction": "PL1E.BurnReduction",
+    "coldReduction": "PL1E.ColdReduction",
+    "acidReduction": "PL1E.AcidReduction",
+    "shockReduction": "PL1E.ShockReduction",
+}
+
+PL1E.reductionsPath = {
+    "slashingReduction": "attributes.slashingReduction",
+    "crushingReduction": "attributes.crushingReduction",
+    "piercingReduction": "attributes.piercingReduction",
+    "burnReduction": "attributes.burnReduction",
+    "coldReduction": "attributes.coldReduction",
+    "acidReduction": "attributes.acidReduction",
+    "shockReduction": "attributes.shockReduction",
+}
+
 PL1E.targetGroups = {
     "all": "PL1E.All",
     "self": "PL1E.Self",
@@ -356,13 +377,6 @@ PL1E.optionalAttributes = {
         "willMod": "PL1E.WillMod"
     },
     "ability": {
-        "slashing": "PL1E.Slashing",
-        "crushing": "PL1E.Crushing",
-        "piercing": "PL1E.Piercing",
-        "burn": "PL1E.Burn",
-        "cold": "PL1E.Cold",
-        "shock": "PL1E.Shock",
-        "acid": "PL1E.Acid",
         "health": "PL1E.Health",
         "stamina": "PL1E.Stamina",
         "mana": "PL1E.Mana",
@@ -379,13 +393,9 @@ PL1E.optionalAttributes = {
         "movementPenalty": "PL1E.MovementPenalty",
         "parry": "PL1E.Parry",
         "dodge": "PL1E.Dodge",
-        "slashing": "PL1E.Slashing",
-        "crushing": "PL1E.Crushing",
-        "piercing": "PL1E.Piercing",
-        "burn": "PL1E.Burn",
-        "cold": "PL1E.Cold",
-        "shock": "PL1E.Shock",
-        "acid": "PL1E.Acid",
+        "health": "PL1E.Health",
+        "stamina": "PL1E.Stamina",
+        "mana": "PL1E.Mana",
         "strengthMod": "PL1E.StrengthMod",
         "agilityMod": "PL1E.AgilityMod",
         "perceptionMod": "PL1E.PerceptionMod",
@@ -477,69 +487,6 @@ PL1E.optionalAttributesValues = {
         "category": "optional",
         "type": "number",
         "path": "attributes.dodge",
-    },
-    "slashing": {
-        "value": 0,
-        "label": "PL1E.Slashing",
-        "icon": "fas fa-axe-battle",
-        "type": "number",
-        "path": "resources.health.value",
-        "operator": "add",
-        "reduction": "attributes.slashingReduction"
-    },
-    "crushing": {
-        "value": 0,
-        "label": "PL1E.Crushing",
-        "icon": "fas fa-hammer-war",
-        "type": "number",
-        "path": "resources.health.value",
-        "operator": "add",
-        "reduction": "attributes.crushingReduction"
-    },
-    "piercing": {
-        "value": 0,
-        "label": "PL1E.Piercing",
-        "icon": "fas fa-dagger",
-        "type": "number",
-        "path": "resources.health.value",
-        "operator": "add",
-        "reduction": "attributes.piercingReduction"
-    },
-    "burn": {
-        "value": 0,
-        "label": "PL1E.Burn",
-        "icon": "fas fa-fire",
-        "type": "number",
-        "path": "resources.health.value",
-        "operator": "add",
-        "reduction": "attributes.burnReduction"
-    },
-    "cold": {
-        "value": 0,
-        "label": "PL1E.Cold",
-        "icon": "fas fa-snowflake",
-        "type": "number",
-        "path": "resources.health.value",
-        "operator": "add",
-        "reduction": "attributes.coldReduction"
-    },
-    "shock": {
-        "value": 0,
-        "label": "PL1E.Shock",
-        "icon": "fas fa-bolt",
-        "type": "number",
-        "path": "resources.health.value",
-        "operator": "add",
-        "reduction": "attributes.shockReduction"
-    },
-    "acid": {
-        "value": 0,
-        "label": "PL1E.Acid",
-        "icon": "fas fa-droplet",
-        "type": "number",
-        "path": "resources.health.value",
-        "operator": "add",
-        "reduction": "attributes.acidReduction"
     },
     "health": {
         "value": 0,

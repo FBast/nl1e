@@ -36,6 +36,9 @@
                     {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
                 </select>
             {{/if}}
+            <select name="system.optionalAttributes.{{id}}.reduction">
+                {{selectOptions (config "reductions") selected=attribute.reduction localize=true}}
+            </select>
             <select name="system.optionalAttributes.{{id}}.targetGroup">
                 {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
             </select>

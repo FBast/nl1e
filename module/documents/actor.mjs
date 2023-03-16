@@ -1,4 +1,5 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {PL1E} from "../helpers/config.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -63,7 +64,8 @@ export class Pl1eActor extends Actor {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
-            for (let [id, attribute] of Object.entries(item.system.attributes)) {
+            for (let [id, attribute] of Object.entries(item.system.optionalAttributes)) {
+                if (attribute.targetGroup !== 'self') continue;
                 await this.applyAttribute(attribute);
             }
         }
@@ -299,8 +301,8 @@ export class Pl1eActor extends Actor {
         const system = this.system;
         if (attribute.path === undefined) return;
         // Add reduction to value
-        if (attribute.reduction !== undefined) {
-            const reduction = this.system[attribute.reduction];
+        if (attribute.reduction !== 'none') {
+            const reduction = foundry.utils.getProperty(system, PL1E.reductionsPath[attribute.reduction]);
             attribute.value = Math.min(attribute.value + reduction, 0);
         }
         let newValue;
