@@ -66,7 +66,7 @@ export class Pl1eActor extends Actor {
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
             for (let [id, attribute] of Object.entries(item.system.optionalAttributes)) {
                 if (attribute.targetGroup !== 'self') continue;
-                await this.applyAttribute(attribute);
+                await this.applyAttribute(attribute, true, false);
             }
         }
         super.prepareEmbeddedDocuments();
@@ -297,11 +297,11 @@ export class Pl1eActor extends Actor {
         return roll.rolls[0].result;
     }
 
-    async applyAttribute(attribute, persist = false) {
-        const system = this.system;
+    async applyAttribute(attribute, reduction, persist) {
         if (attribute.path === undefined) return;
+        const system = this.system;
         // Add reduction to value
-        if (attribute.reduction !== 'none') {
+        if (reduction && attribute.reduction !== 'none') {
             const reduction = foundry.utils.getProperty(system, PL1E.reductionsPath[attribute.reduction]);
             attribute.value = Math.min(attribute.value + reduction, 0);
         }

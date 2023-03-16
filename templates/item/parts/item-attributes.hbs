@@ -1,53 +1,62 @@
 <section class="scroll-auto">
-    {{#each system.attributes as |attribute id|}}
-        {{#if (and (eq attribute.category "fixed") attribute.apply)}}
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.MainAttributes"}}</legend>
+        {{#each system.attributes as |attribute id|}}
+            {{#if (and (eq attribute.category "fixed") attribute.apply)}}
+                <div class="item-attribute flexrow">
+                    <label>{{localize attribute.label}}</label>
+                    {{#if (eq attribute.type "number")}}
+                        <input type="text" name="system.attributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
+                    {{else if (eq attribute.type "bool")}}
+                        <input type="checkbox" name="system.attributes.{{id}}.value" {{checked attribute.value}} data-dtype="Boolean"/>
+                    {{else if (eq attribute.type "select")}}
+                        <select name="system.attributes.{{id}}.value">
+                            {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
+                        </select>
+                    {{/if}}
+                </div>
+            {{/if}}
+        {{/each}}
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.SecondaryAttributes"}}</legend>
+        <div class="item-attribute-select flexrow">
+            <select name="system.selectedOptionalAttribute">
+                {{selectOptions (configEntry "optionalAttributes" document.type) selected=system.selectedOptionalAttribute localize=true}}
+            </select>
+            <a class="attribute-add flexshrink" data-attribute={{system.selectedOptionalAttribute}} data-tooltip='{{localize "PL1E.AddAttribute"}}'>
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+        {{#each system.optionalAttributes as |attribute id|}}
             <div class="item-attribute flexrow">
                 <label>{{localize attribute.label}}</label>
                 {{#if (eq attribute.type "number")}}
-                    <input type="text" name="system.attributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
+                    <input type="text" name="system.optionalAttributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
                 {{else if (eq attribute.type "bool")}}
-                    <input type="checkbox" name="system.attributes.{{id}}.value" {{checked attribute.value}} data-dtype="Boolean"/>
+                    <input type="checkbox" name="system.optionalAttributes.{{id}}.value" {{checked attribute.value}} data-dtype="Boolean"/>
                 {{else if (eq attribute.type "select")}}
-                    <select name="system.attributes.{{id}}.value">
+                    <select name="system.optionalAttributes.{{id}}.value">
                         {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
                     </select>
+                {{/if }}
+                {{#if (and (ne attribute.reduction undefined) (lt attribute.value 0))}}
+                    <select name="system.optionalAttributes.{{id}}.reduction">
+                        {{selectOptions (config "damageType") selected=attribute.reduction localize=true}}
+                    </select>
                 {{/if}}
-            </div>
-        {{/if}}
-    {{/each}}
-    <hr>
-    <div class="item-attribute-select flexrow">
-        <select name="system.selectedOptionalAttribute">
-            {{selectOptions (configEntry "optionalAttributes" document.type) selected=system.selectedOptionalAttribute localize=true}}
-        </select>
-        <a class="attribute-add flexshrink" data-attribute={{system.selectedOptionalAttribute}} data-tooltip='{{localize "PL1E.AddAttribute"}}'>
-            <i class="fas fa-plus"></i>
-        </a>
-    </div>
-    {{#each system.optionalAttributes as |attribute id|}}
-        <div class="item-attribute flexrow">
-            <label>{{localize attribute.label}}</label>
-            {{#if (eq attribute.type "number")}}
-                <input type="text" name="system.optionalAttributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
-            {{else if (eq attribute.type "bool")}}
-                <input type="checkbox" name="system.optionalAttributes.{{id}}.value" {{checked attribute.value}} data-dtype="Boolean"/>
-            {{else if (eq attribute.type "select")}}
-                <select name="system.optionalAttributes.{{id}}.value">
-                    {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
+                <select name="system.optionalAttributes.{{id}}.targetGroup">
+                    {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
                 </select>
-            {{/if}}
-            <select name="system.optionalAttributes.{{id}}.reduction">
-                {{selectOptions (config "reductions") selected=attribute.reduction localize=true}}
-            </select>
-            <select name="system.optionalAttributes.{{id}}.targetGroup">
-                {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
-            </select>
-            <select name="system.optionalAttributes.{{id}}.resolutionType">
-                {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}
-            </select>
-            <a class="attribute-remove flexshrink" data-attribute={{id}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
-                <i class="fas fa-trash"></i>
-            </a>
-        </div>
-    {{/each}}
+                {{#if (ne attribute.targetGroup "self")}}
+                    <select name="system.optionalAttributes.{{id}}.resolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}
+                    </select>
+                {{/if}}
+                <a class="attribute-remove flexshrink" data-attribute={{id}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        {{/each}}
+    </fieldset>
 </section>

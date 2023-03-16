@@ -320,25 +320,25 @@ PL1E.areaTypes = {
     "ray": "PL1E.Ray"
 }
 
-PL1E.reductions = {
-    "none": "PL1E.None",
-    "slashingReduction": "PL1E.SlashingReduction",
-    "crushingReduction": "PL1E.CrushingReduction",
-    "piercingReduction": "PL1E.PiercingReduction",
-    "burnReduction": "PL1E.BurnReduction",
-    "coldReduction": "PL1E.ColdReduction",
-    "acidReduction": "PL1E.AcidReduction",
-    "shockReduction": "PL1E.ShockReduction",
+PL1E.damageType = {
+    "raw": "PL1E.Raw",
+    "slashing": "PL1E.Slashing",
+    "crushing": "PL1E.Crushing",
+    "piercing": "PL1E.Piercing",
+    "burn": "PL1E.Burn",
+    "cold": "PL1E.Cold",
+    "acid": "PL1E.Acid",
+    "shock": "PL1E.Shock",
 }
 
 PL1E.reductionsPath = {
-    "slashingReduction": "attributes.slashingReduction",
-    "crushingReduction": "attributes.crushingReduction",
-    "piercingReduction": "attributes.piercingReduction",
-    "burnReduction": "attributes.burnReduction",
-    "coldReduction": "attributes.coldReduction",
-    "acidReduction": "attributes.acidReduction",
-    "shockReduction": "attributes.shockReduction",
+    "slashing": "attributes.slashingReduction",
+    "crushing": "attributes.crushingReduction",
+    "piercing": "attributes.piercingReduction",
+    "burn": "attributes.burnReduction",
+    "cold": "attributes.coldReduction",
+    "acid": "attributes.acidReduction",
+    "shock": "attributes.shockReduction",
 }
 
 PL1E.targetGroups = {
@@ -494,6 +494,7 @@ PL1E.optionalAttributesValues = {
         "icon": "fas fa-heart",
         "type": "number",
         "path": "resources.health.value",
+        "reduction": "none",
         "operator": "add"
     },
     "stamina": {
@@ -502,6 +503,7 @@ PL1E.optionalAttributesValues = {
         "icon": "fas fa-wave-pulse",
         "type": "number",
         "path": "resources.stamina.value",
+        "reduction": "none",
         "operator": "add"
     },
     "mana": {
@@ -510,6 +512,7 @@ PL1E.optionalAttributesValues = {
         "icon": "fas fa-sparkles",
         "type": "number",
         "path": "resources.mana.value",
+        "reduction": "none",
         "operator": "add"
     },
     "slashingReduction": {

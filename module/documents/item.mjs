@@ -444,7 +444,7 @@ export class Pl1eItem extends Item {
             }
             linkedItem = relatedItems[0];
             Pl1eHelpers.mergeDeep(attributes, linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes);
+            Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes.filter(attribute => attribute.targetGroup !== 'self'));
         }
         if (attributes.abilityLink.value === 'parent') {
             let relatedItems = [];
@@ -585,7 +585,7 @@ export class Pl1eItem extends Item {
                     if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
                         calculatedAttribute.value = totalResult > 0 ? calculatedAttribute.value : 0;
                     }
-                    if (calculatedAttribute.reduction !== 'none') {
+                    if (calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
                         let reduction = foundry.utils.getProperty(targetToken.actor.system, CONFIG.PL1E.reductionsPath[calculatedAttribute.reduction]);
                         calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
                     }
@@ -615,10 +615,11 @@ export class Pl1eItem extends Item {
 
             await ChatMessage.create(chatData);
 
-            // for (const attribute of abilityData.targetData.attributes) {
-            //     await abilityData.targetData.actor.applyAttribute(attribute, true);
-            // }
-            // abilityData.targetData.actor.sheet.render(false);
+            // Apply effects
+            for (const attribute of abilityData.targetData.attributes) {
+                await abilityData.targetData.actor.applyAttribute(attribute, false, true);
+            }
+            abilityData.targetData.actor.sheet.render(false);
         }
     }
 
