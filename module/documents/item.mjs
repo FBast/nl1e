@@ -483,46 +483,38 @@ export class Pl1eItem extends Item {
         if (attributes.areaNumber.value > 0 && templates.length === 0) return;
 
         // Launcher Data
-        let launcherData;
+        const token = this.actor.bestToken;
+        this.abilityData = {
+            templates: templates,
+            launcherData: {
+                actor: this.actor.toObject(false),
+                tokenId: token?.uuid || null,
+                item: this.toObject(false),
+                itemId: this.uuid,
+                attributes: attributes,
+                optionalAttributes: optionalAttributes,
+                linkedItem: linkedItem
+            }
+        };
+
+        // Roll Data
         if (attributes.skillRoll.value !== 'none') {
             const mainSkill = actor.system.skills[attributes.skillRoll.value];
-            const result = await actor.rollSkill(mainSkill);
-            launcherData = {
-                "result": result,
-                "actor": actor,
-                "attributes": attributes,
-                "optionalAttributes": optionalAttributes,
-                "linkedItem": linkedItem
-            }
+            this.abilityData.launcherData.result = await actor.rollSkill(mainSkill);
         }
 
         // Render the chat card template
-        const token = this.actor.bestToken;
-        this.abilityData = {
-            actor: this.actor.toObject(false),
-            tokenId: token?.uuid || null,
-            item: this.toObject(false),
-            itemId: this.uuid,
-            labels: this.labels,
-            launcherData: launcherData,
-            templates: templates
-        };
         const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", this.abilityData);
 
         // Create the ChatMessage data object
         const chatData = {
             user: game.user.id,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + this.name,
             content: html,
-            // flavor: this.system.description || this.name,
-            speaker: ChatMessage.getSpeaker({actor: this.actor, token}),
+            speaker: ChatMessage.getSpeaker({actor: this.actor}),
             flags: {"core.canPopout": true}
         };
-
-        // // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
-        // if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
-        //     chatData.flags["pl1e.itemData"] = templateData.item;
-        // }
 
         await ChatMessage.create(chatData);
     }
@@ -553,17 +545,16 @@ export class Pl1eItem extends Item {
         }
 
         // Reset abilityData
-        this.abilityData = [];
+        this.abilityData = {};
     }
 
     async _applyAbility() {
         // Target Data
         let targetTokens = game.user.targets;
 
-        //TODO-fred multiple area is not working (only last area targets persist)
         for (let targetToken of targetTokens) {
-            // Make a copy of the ability data for this target
-            let abilityData = JSON.parse(JSON.stringify(this.abilityData));
+            // Make a shallow copy of the ability data for this target
+            let abilityData = {...this.abilityData};
 
             // Copy attributes
             const launcherData = abilityData.launcherData;
@@ -571,15 +562,12 @@ export class Pl1eItem extends Item {
             const optionalAttributes = abilityData.launcherData.optionalAttributes;
 
             // Opposite roll if exist
-            let oppositeResult = 0;
+            let result = 0;
             if (attributes.oppositeRolls.value !== 'none') {
                 const skill = targetToken.actor.system.skills[attributes.oppositeRolls.value];
-                oppositeResult = await targetToken.actor.rollSkill(skill);
-                oppositeResult = launcherData.result - oppositeResult;
+                result = await targetToken.actor.rollSkill(skill);
             }
-            else {
-                oppositeResult = launcherData.result;
-            }
+            let totalResult = result - abilityData.launcherData.result;
 
             // Iterate over optional attributes
             let calculatedAttributes = [];
@@ -592,10 +580,10 @@ export class Pl1eItem extends Item {
                 // Number type
                 if (calculatedAttribute.type === 'number') {
                     if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
-                        calculatedAttribute.value *= oppositeResult > 0 ? oppositeResult : 0;
+                        calculatedAttribute.value *= totalResult < 0 ? -totalResult : 0;
                     }
                     if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
-                        calculatedAttribute.value = oppositeResult > 0 ? calculatedAttribute.value : 0;
+                        calculatedAttribute.value = totalResult < 0 ? calculatedAttribute.value : 0;
                     }
                     if (calculatedAttribute.reduction !== undefined) {
                         const reduction = foundry.utils.getProperty(targetToken.actor.system, calculatedAttribute.reduction);
@@ -605,16 +593,15 @@ export class Pl1eItem extends Item {
                 calculatedAttributes.push(calculatedAttribute);
             }
 
-            this.abilityData = {
+            abilityData.targetData = {
                 actor: targetToken.actor.toObject(false),
                 tokenId: targetToken?.uuid || null,
-                targetData: {
-                    result: oppositeResult,
-                    actor: targetToken.actor,
-                    attributes: calculatedAttributes
-                }
+                result: result,
+                totalResult: totalResult,
+                attributes: calculatedAttributes
             };
-            const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", abilityData);
+
+            const html = await renderTemplate("systems/pl1e/templates/chat/opposite-card.hbs", abilityData);
 
             // Create the ChatMessage data object
             const chatData = {
@@ -628,12 +615,10 @@ export class Pl1eItem extends Item {
 
             await ChatMessage.create(chatData);
 
-            // for (const targetData of abilityData.targetsData) {
-            //     for (const attribute of targetData.attributes) {
-            //         await targetData.actor.applyAttribute(attribute, true);
-            //     }
-            //     targetData.actor.sheet.render(false);
+            // for (const attribute of abilityData.targetData.attributes) {
+            //     await abilityData.targetData.actor.applyAttribute(attribute, true);
             // }
+            // abilityData.targetData.actor.sheet.render(false);
         }
     }
 

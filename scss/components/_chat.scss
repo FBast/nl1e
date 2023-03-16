@@ -5,10 +5,11 @@
     .card-header {
       padding: 3px 0;
       border-top: 2px groove #FFF;
+      justify-content: center;
+      align-items: center;
 
       img {
         flex: 0 0 36px;
-
         transition: .3s ease;
 
         &:hover{
@@ -30,11 +31,16 @@
         }
       }
 
-      .item-image {
+      .left-image {
         margin-right: 5px;
       }
 
-      .linkedItem-image {
+      .item-label {
+        font-size: x-large;
+        text-align: center;
+      }
+
+      .right-image {
         margin-left: 5px;
       }
 

@@ -444,8 +444,6 @@ export class Pl1eEvent {
         event.preventDefault();
 
         // Extract card data
-        const button = event.currentTarget;
-        button.disabled = true;
         let action = $(event.currentTarget).data("action");
         let itemId = $(event.currentTarget).data("item-id");
 
@@ -455,8 +453,9 @@ export class Pl1eEvent {
         const item = await fromUuid(itemId);
         await item.actionAbility(action);
 
-        // Re-enable the button
-        button.disabled = false;
+        // Remove all buttons
+        const buttonDiv = document.querySelector(".card-buttons");
+        buttonDiv.remove();
     }
 
     static async

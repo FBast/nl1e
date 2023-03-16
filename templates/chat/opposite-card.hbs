@@ -1,18 +1,13 @@
-<div class="chat-card item-card" data-actor-id="{{actor._id}}" data-item-id="{{item._id}}"
-     {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.item.system.level}}"{{/if}}>
+<div class="chat-card item-card">
     <header class="card-header flexrow">
-        <img class="item-image item-edit" src="{{item.img}}" data-item-id="{{item._id}}" data-token-id="{{tokenId}}"
-             title="{{item.name}}" width="36" height="36"/>
-        <h3 class="item-name">{{item.name}}</h3>
-        {{#if (ne launcherData.linkedItem undefined)}}
-            <img class="linkedItem-image item-edit" src="{{launcherData.linkedItem.img}}" data-item-id="{{launcherData.linkedItem._id}}"
-                 data-token-id="{{tokenId}}" title="{{launcherData.linkedItem.name}}" width="36" height="36"/>
-        {{/if}}
+        <img class="left-image actor-edit" src="{{targetData.actor.img}}" data-token-id="{{targetData.tokenId}}"
+             title="{{targetData.actor.name}}" width="36" height="36"/>
+        <h3 class="item-label">{{localize "PL1E.Opposes"}}</h3>
+        <img class="right-image actor-edit" src="{{launcherData.actor.img}}" data-token-id="{{launcherData.tokenId}}"
+             title="{{launcherData.actor.name}}" width="36" height="36"/>
+        <img class="right-image item-edit" src="{{launcherData.item.img}}" data-item-id="{{launcherData.item._id}}"
+             data-token-id="{{launcherData.tokenId}}" title="{{launcherData.item.name}}" width="36" height="36"/>
     </header>
-    <div class="card-header flexrow">
-        <img class="item-image actor-edit" src="{{targetData.actor.img}}" data-token-id={{targetData.actor.uuid}} title="{{targetData.actor.name}}" width="36" height="36"/>
-        <h3 class="item-name">{{targetData.actor.name}}</h3>
-    </div>
     <div class="card-content">
         {{#each targetData.attributes as |attribute id|}}
             <i class="fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
@@ -20,15 +15,8 @@
             </i>
         {{/each}}
         {{#if (ne ../item.system.attributes.oppositeRolls.value "none")}}
-            <h4 class="dice-total {{#if (gt targetData.result 0)}}success{{/if}} {{#if (lt targetData.result 0)}}failure{{/if}}">
-                {{targetData.result}}
-                {{#if (gt targetData.result 0)}}
-                    ({{localize "PL1E.Success"}})
-                {{else if (eq targetData.result 0)}}
-                    ({{localize "PL1E.PartialSuccess"}})
-                {{else}}
-                    ({{localize "PL1E.Failure"}})
-                {{/if}}
+            <h4 class="dice-total {{#if (gt targetData.totalResult 0)}}success{{else}}failure{{/if}}">
+                {{targetData.result}} - {{launcherData.result}} = {{targetData.totalResult}} {{localize "PL1E.Success"}}
             </h4>
         {{/if}}
     </div>

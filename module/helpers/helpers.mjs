@@ -260,7 +260,8 @@ export class Pl1eHelpers {
             await document.update({
                 "name": original.name,
                 "img": original.img,
-                "system.attributes": original.system.attributes
+                "system.attributes": original.system.attributes,
+                "system.optionalAttributes": original.system.optionalAttributes
             })
             console.log("PL1E | Resetting the " + document.type + " : " + document._id);
         } else {
@@ -282,6 +283,7 @@ export class Pl1eHelpers {
             document.name = original.name;
             document.img = original.img;
             document.system.attributes = original.system.attributes;
+            document.system.optionalAttributes = original.system.optionalAttributes;
             console.log("PL1E | Resetting the " + document.type + " : " + document._id);
         } else {
             console.warn("Unknown type : " + document.type);

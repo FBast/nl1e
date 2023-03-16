@@ -19,7 +19,7 @@ export class AbilityTemplate extends MeasuredTemplate {
   #events;
 
   #targets = [];
-  #template = [];
+  #templates = [];
 
   /* -------------------------------------------- */
 
@@ -127,7 +127,9 @@ export class AbilityTemplate extends MeasuredTemplate {
     for (let token of this.#targets) {
       token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
     }
-    this.#template.delete();
+    for (let document of this.#templates) {
+      document.delete();
+    }
   }
 
   /* -------------------------------------------- */
@@ -233,8 +235,8 @@ export class AbilityTemplate extends MeasuredTemplate {
     await this._finishPlacement(event);
     const destination = canvas.grid.getSnappedPosition(this.document.x, this.document.y, 2);
     this.document.updateSource(destination);
-    this.#template = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()])[0];
-    this.#events.resolve(this.#template);
+    this.#templates = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]);
+    this.#events.resolve(this.#templates);
   }
 
   /**

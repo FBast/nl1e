@@ -288,6 +288,7 @@ export class Pl1eActor extends Actor {
         let roll = new Roll(formula, this.getRollData());
         roll = await roll.toMessage({
             speaker: ChatMessage.getSpeaker({actor: this}),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             flavor: '[' + game.i18n.localize("PL1E.Skill") + '] ' + game.i18n.localize(skill.label),
             rollMode: game.settings.get('core', 'rollMode'),
         });
