@@ -485,6 +485,21 @@ export class Pl1eItem extends Item {
         // Return if no area defined
         if (attributes.areaNumber.value > 0 && templates.length === 0) return;
 
+        // Roll Data
+        let rollResult = 0;
+        if (attributes.skillRoll.value !== 'none') {
+            const mainSkill = actor.system.skills[attributes.skillRoll.value];
+            rollResult = await actor.rollSkill(mainSkill);
+        }
+
+        // Calculate launcher attributes
+        let calculatedAttributes = [];
+        for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
+            if (optionalAttribute.targetGroup !== 'self') continue;
+            let calculatedAttribute = this._calculateAttribute(optionalAttribute, rollResult, actor);
+            calculatedAttributes.push(calculatedAttribute);
+        }
+
         // Launcher Data
         const token = this.actor.bestToken;
         this.abilityData = {
@@ -494,17 +509,13 @@ export class Pl1eItem extends Item {
                 tokenId: token?.uuid || null,
                 item: this,
                 itemId: this.uuid,
+                result: rollResult,
                 attributes: attributes,
                 optionalAttributes: optionalAttributes,
+                calculatedAttributes: calculatedAttributes,
                 linkedItem: linkedItem
             }
         };
-
-        // Roll Data
-        if (attributes.skillRoll.value !== 'none') {
-            const mainSkill = actor.system.skills[attributes.skillRoll.value];
-            this.abilityData.launcherData.result = await actor.rollSkill(mainSkill);
-        }
 
         // Render the chat card template
         const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", this.abilityData);
@@ -520,6 +531,12 @@ export class Pl1eItem extends Item {
         };
 
         await ChatMessage.create(chatData);
+
+        // Apply effects
+        for (const attribute of this.abilityData.launcherData.attributes) {
+            await this.abilityData.launcherData.actor.applyAttribute(attribute, false, true);
+        }
+        this.abilityData.launcherData.actor.sheet.render(false);
     }
 
     /**
@@ -565,43 +582,29 @@ export class Pl1eItem extends Item {
             const optionalAttributes = abilityData.launcherData.optionalAttributes;
 
             // Opposite roll if exist
-            let result = 0;
+            let rollResult = 0;
             if (attributes.oppositeRolls.value !== 'none') {
                 const skill = targetToken.actor.system.skills[attributes.oppositeRolls.value];
-                result = await targetToken.actor.rollSkill(skill);
+                rollResult = await targetToken.actor.rollSkill(skill);
             }
-            let totalResult = abilityData.launcherData.result - result;
+            let totalResult = abilityData.launcherData.result - rollResult;
 
-            // Iterate over optional attributes
+            // Calculate target attributes
             let calculatedAttributes = [];
             for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
                 if (optionalAttribute.targetGroup === 'self' && targetToken.actor !== launcherData.actor) continue;
                 if (optionalAttribute.targetGroup === 'allies' && targetToken.document.disposition !== launcherData.actor.bestToken.disposition) continue;
                 if (optionalAttribute.targetGroup === 'opponents' && targetToken.document.disposition === launcherData.actor.bestToken.disposition) continue;
-                // Copy attribute
-                let calculatedAttribute = JSON.parse(JSON.stringify(optionalAttribute));
-                // Number type
-                if (calculatedAttribute.type === 'number') {
-                    if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
-                        calculatedAttribute.value *= totalResult > 0 ? totalResult : 0;
-                    }
-                    if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
-                        calculatedAttribute.value = totalResult > 0 ? calculatedAttribute.value : 0;
-                    }
-                    if (calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
-                        let reduction = foundry.utils.getProperty(targetToken.actor.system, CONFIG.PL1E.reductionsPath[calculatedAttribute.reduction]);
-                        calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
-                    }
-                }
+                let calculatedAttribute = this._calculateAttribute(optionalAttribute, totalResult, targetToken.actor);
                 calculatedAttributes.push(calculatedAttribute);
             }
 
             abilityData.targetData = {
                 actor: targetToken.actor,
                 tokenId: targetToken?.uuid || null,
-                result: result,
+                result: rollResult,
                 totalResult: totalResult,
-                attributes: calculatedAttributes
+                calculatedAttributes: calculatedAttributes
             };
 
             const html = await renderTemplate("systems/pl1e/templates/chat/opposite-card.hbs", abilityData);
@@ -632,6 +635,33 @@ export class Pl1eItem extends Item {
 
     async _cancelAbility() {
 
+    }
+
+    /**
+     * Calculate the stats of an attribute based on the roll value
+     * @param attribute
+     * @param rollResult
+     * @param actor
+     * @returns {any}
+     * @private
+     */
+    _calculateAttribute(attribute, rollResult, actor) {
+        // Copy attribute
+        let calculatedAttribute = JSON.parse(JSON.stringify(attribute));
+        // Number type
+        if (calculatedAttribute.type === 'number') {
+            if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
+                calculatedAttribute.value *= rollResult > 0 ? rollResult : 0;
+            }
+            if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
+                calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
+            }
+            if (calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
+                let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductionsPath[calculatedAttribute.reduction]);
+                calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
+            }
+        }
+        return calculatedAttribute;
     }
 
     /**

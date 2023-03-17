@@ -24,5 +24,15 @@
         <button data-action="cancel" data-item-id={{launcherData.itemId}}>{{localize "PL1E.Cancel"}}</button>
     </div>
     <footer class="card-footer">
+        {{#if (ne launcherData.calculatedAttributes.length 0)}}
+            <label>{{localize "PL1E.Effects"}} :</label>
+            {{#each launcherData.calculatedAttributes as |attribute id|}}
+                <i class="attribute-icon fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
+                    <label>{{attribute.value}}</label>
+                </i>
+            {{/each}}
+        {{else}}
+            <label>{{localize "PL1E.NoEffects"}}</label>
+        {{/if}}
     </footer>
 </div>

@@ -2,6 +2,7 @@ import {Pl1eTrade} from "./trade.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 import {PL1E} from "./config.mjs";
+import {Pl1eActor} from "../documents/actor.mjs";
 
 export class Pl1eEvent {
 
@@ -100,8 +101,8 @@ export class Pl1eEvent {
         }
         let item;
         if (document instanceof TokenDocument) item = document.actor.items.get(itemId);
-        if (document instanceof Actor) item = document.items.get(itemId);
-        if (document instanceof Item) item = document.getEmbedItem(itemId);
+        if (document instanceof Pl1eActor) item = document.items.get(itemId);
+        if (document instanceof Pl1eItem) item = document.getEmbedItem(itemId);
         if (item) item.sheet.render(true);
     }
 
@@ -160,7 +161,7 @@ export class Pl1eEvent {
             }
             await parentItem.delete();
         }
-        if (document instanceof Item) {
+        if (document instanceof Pl1eItem) {
             const item = document.getEmbedItem(itemId);
             if (!item) return;
             for (let [key, value] of document.system.subItemsMap) {
