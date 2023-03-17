@@ -34,15 +34,7 @@ export class Pl1eItemSheet extends ItemSheet {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            if (this.item.isOriginal) {
-                buttons.unshift({
-                    label: 'PL1E.ResetClones',
-                    class: 'reset-clones',
-                    icon: 'fas fa-clone',
-                    onclick: () => Pl1eHelpers.resetClones(this.item)
-                });
-            }
-            else {
+            if (!this.item.isOriginal) {
                 buttons.unshift({
                     label: 'PL1E.OpenOriginal',
                     class: 'open-original',
@@ -63,6 +55,11 @@ export class Pl1eItemSheet extends ItemSheet {
             });
         }
         return buttons;
+    }
+
+    async _updateObject(event, formData) {
+        await super._updateObject(event, formData);
+        await Pl1eHelpers.resetClones(this.item);
     }
 
     /** @override */

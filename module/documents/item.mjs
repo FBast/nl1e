@@ -163,9 +163,8 @@ export class Pl1eItem extends Item {
         // Object
         this.system.subItemsMap.set(item._id, item);
 
-        if (save) {
-            await this.saveEmbedItems();
-        }
+        if (save) await this.saveEmbedItems();
+
         return item._id;
     }
 

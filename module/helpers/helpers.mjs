@@ -225,20 +225,19 @@ export class Pl1eHelpers {
 
     /**
      * Reset all clones using their sourceId
-     * @param {Pl1eItem} item
+     * @param {Item} item
      * @returns {Promise<void>}
      */
     static async resetClones(item) {
-        for (let [key, value] of Object.entries(game.documentIndex.uuids)) {
-            for (let leaf of value.leaves) {
-                let document = leaf.entry;
-                if (document === undefined || document.system === undefined) continue;
-                // Resetting sub items
-                if (document.system.subItemsMap !== undefined) {
-                    await this.resetCloneSubItems(document, item._id);
-                }
-                // Resetting item
-                await this.resetClone(document, item._id);
+        // Reset items subItems
+        for (const subItem of game.items) {
+            if (subItem.system.subItemsMap === undefined) continue;
+            await this.resetCloneSubItems(subItem, item._id);
+        }
+        // Reset actors items
+        for (const actor of game.actors) {
+            for (const actorItem of actor.items) {
+                await this.resetClone(actorItem, item._id);
             }
         }
     }
@@ -261,11 +260,11 @@ export class Pl1eHelpers {
                 "system.attributes": original.system.attributes,
                 "system.optionalAttributes": original.system.optionalAttributes
             })
-            console.log("PL1E | Resetting the item " + document.type + " : " + document._id);
         }
         else {
             console.warn("Unknown type : " + document.type);
         }
+        document.sheet.render(document.sheet.rendered);
     }
 
     /**
@@ -286,13 +285,12 @@ export class Pl1eHelpers {
                 subItem.system.attributes = original.system.attributes;
                 subItem.system.optionalAttributes = original.system.optionalAttributes;
                 updateDocument = true;
-                console.log("PL1E | Resetting the subItem " + subItem.type + " : " + subItem._id);
             }
             else {
                 console.warn("Unknown type : " + subItem.type);
             }
         }
-        if (updateDocument) document.saveEmbedItems();
+        if (updateDocument) await document.saveEmbedItems();
     }
 
     /**
