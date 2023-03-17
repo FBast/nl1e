@@ -456,15 +456,13 @@ export class Pl1eEvent {
 
         // Add notification label
         const cardFooter = $(event.currentTarget).closest(".chat-card").find(".card-footer");
+        const chatMessage = $(event.currentTarget).closest(".chat-message");
         switch (action) {
             case 'resolve':
-                cardFooter.text(game.i18n.localize("PL1E.Resolved"));
-                break;
-            case 'counter':
-                cardFooter.text(game.i18n.localize("PL1E.Countered"));
+                cardFooter.append('<label>' + game.i18n.localize("PL1E.Resolved") + '</label>');
                 break;
             case 'cancel':
-                cardFooter.text(game.i18n.localize("PL1E.Canceled"));
+                chatMessage.remove();
                 break;
         }
 

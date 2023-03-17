@@ -494,6 +494,7 @@ export class Pl1eItem extends Item {
 
         // Calculate launcher attributes
         let calculatedAttributes = [];
+        calculatedAttributes.push()
         for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
             if (optionalAttribute.targetGroup !== 'self') continue;
             let calculatedAttribute = this._calculateAttribute(optionalAttribute, rollResult, actor);
@@ -531,12 +532,6 @@ export class Pl1eItem extends Item {
         };
 
         await ChatMessage.create(chatData);
-
-        // Apply effects
-        for (const attribute of this.abilityData.launcherData.attributes) {
-            await this.abilityData.launcherData.actor.applyAttribute(attribute, false, true);
-        }
-        this.abilityData.launcherData.actor.sheet.render(false);
     }
 
     /**
@@ -547,17 +542,7 @@ export class Pl1eItem extends Item {
         const abilityData = this.abilityData;
 
         // Handle different actions
-        switch (action) {
-            case "resolve":
-                await this._resolveAbility();
-                break;
-            case "counter":
-                await this._counterAbility();
-                break;
-            case "cancel":
-                await this._cancelAbility();
-                break;
-        }
+        if (action === 'resolve') await this._resolveAbility();
 
         // Destroy templates after fetching target with df-template
         for (const template of abilityData.templates) {
@@ -621,20 +606,18 @@ export class Pl1eItem extends Item {
 
             await ChatMessage.create(chatData);
 
-            // Apply effects
-            for (const attribute of abilityData.targetData.attributes) {
+            // Apply target effects
+            for (const attribute of abilityData.targetData.calculatedAttributes) {
                 await abilityData.targetData.actor.applyAttribute(attribute, false, true);
             }
             abilityData.targetData.actor.sheet.render(false);
         }
-    }
 
-    async _counterAbility() {
-
-    }
-
-    async _cancelAbility() {
-
+        // Apply launcher effects
+        for (const calculatedAttribute of this.abilityData.launcherData.calculatedAttributes) {
+            await this.abilityData.launcherData.actor.applyAttribute(calculatedAttribute, false, true);
+        }
+        this.abilityData.launcherData.actor.sheet.render(false);
     }
 
     /**
