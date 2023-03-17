@@ -1,121 +1,121 @@
-  .chat-card {
-    font-style: normal;
-    font-size: 12px;
+.chat-card {
+  font-style: normal;
+  font-size: 12px;
 
-    .card-header {
-      padding: 3px 0;
-      border-top: 2px groove #FFF;
-      justify-content: center;
-      align-items: center;
+  .card-header {
+    padding: 3px 0;
+    border-top: 2px groove #FFF;
+    justify-content: center;
+    align-items: center;
 
-      img {
-        flex: 0 0 36px;
+    img {
+      flex: 0 0 36px;
+      transition: .3s ease;
+
+      &:hover{
+        box-shadow: 0 0 0 1px #000000;
         transition: .3s ease;
-
-        &:hover{
-          box-shadow: 0 0 0 1px #000000;
-          transition: .3s ease;
-          cursor: pointer;
-        }
-
-      }
-
-      h3 {
-        flex: 1;
-        margin: 0;
-        line-height: 36px;
-
-        &:hover {
-          color: #111;
-          text-shadow: 0 0 10px red;
-        }
-      }
-
-      .left-image {
-        margin-right: 5px;
-      }
-
-      .item-label {
-        font-size: large;
-        text-align: center;
-        text-transform: uppercase;
-      }
-
-      .right-image {
-        margin-left: 5px;
+        cursor: pointer;
       }
 
     }
 
-    .card-content {
-      margin: 5px 0;
+    h3 {
+      flex: 1;
+      margin: 0;
+      line-height: 36px;
 
-      h3 {
-        font-size: 12px;
-        margin: 0;
-        font-weight: bold;
-      }
-
-      > * {
-        -webkit-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
-        user-select: text;
-      }
-
-    }
-
-    .card-buttons {
-      margin: 5px 0;
-      border-top: 2px groove #FFF;
-
-      span {
-        display: block;
-        line-height: 28px;
-        text-align: center;
-        border: 1px solid;
-      }
-
-      button {
-        font-size: 12px;
-        height: 24px;
-        line-height: 20px;
-        margin: 2px 0;
+      &:hover {
+        color: #111;
+        text-shadow: 0 0 10px red;
       }
     }
 
-    .card-footer {
-      padding: 3px 0 0;
-      border-top: 2px groove #FFF;
-
-      .attribute-icon {
-        padding-left: 5px;
-      }
+    .left-image {
+      margin-right: 5px;
     }
 
-    .dice-total {
-
-      margin: 5px 0;
+    .item-label {
+      font-size: large;
       text-align: center;
-      background: rgba(0, 0, 0, 0.1);
-      border: 1px solid var(--color-border-light-2);
-      border-radius: 3px;
-      box-shadow: 0 0 2px #FFF inset;
-      word-break: break-all;
-      font-size: var(--font-size-20);
+      text-transform: uppercase;
+    }
+
+    .right-image {
+      margin-left: 5px;
+    }
+
+  }
+
+  .card-content {
+    margin: 5px 0;
+
+    h3 {
+      font-size: 12px;
+      margin: 0;
       font-weight: bold;
+    }
 
-      &.success {
-        color: green;
-        background: #c7d0c0;
-        border: 1px solid #006c00;
-      }
+    > * {
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+    }
 
-      &.failure {
-        color: red;
-        background: #ffdddd;
-        border: 1px solid #6e0000;
-      }
+  }
 
+  .card-buttons {
+    margin: 5px 0;
+    border-top: 2px groove #FFF;
+
+    span {
+      display: block;
+      line-height: 28px;
+      text-align: center;
+      border: 1px solid;
+    }
+
+    button {
+      font-size: 12px;
+      height: 24px;
+      line-height: 20px;
+      margin: 2px 0;
     }
   }
+
+  .card-footer {
+    padding: 3px 0 0;
+    border-top: 2px groove #FFF;
+
+    .attribute-icon {
+      padding-left: 5px;
+    }
+  }
+
+  .dice-total {
+
+    margin: 5px 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--color-border-light-2);
+    border-radius: 3px;
+    box-shadow: 0 0 2px #FFF inset;
+    word-break: break-all;
+    font-size: var(--font-size-20);
+    font-weight: bold;
+
+    &.success {
+      color: green;
+      background: #c7d0c0;
+      border: 1px solid #006c00;
+    }
+
+    &.failure {
+      color: red;
+      background: #ffdddd;
+      border: 1px solid #6e0000;
+    }
+
+  }
+}
