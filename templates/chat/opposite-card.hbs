@@ -20,7 +20,7 @@
             <label>{{localize "PL1E.Effects"}} :</label>
             {{#each targetData.calculatedAttributes as |attribute id|}}
                 <i class="attribute-icon fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
-                    <label>{{attribute.value}}</label>
+                    <label>{{formatNumber attribute.value signe=true}}</label>
                 </i>
             {{/each}}
         {{else}}

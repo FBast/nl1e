@@ -360,6 +360,12 @@ PL1E.abilityLinks = {
     "mastery": "PL1E.Mastery"
 }
 
+PL1E.attributeLinks = {
+    "passive": "PL1E.Passive",
+    "active": "PL1E.Active",
+    "child": "PL1E.Child"
+}
+
 PL1E.optionalAttributes = {
     "feature": {
         "size": "PL1E.Size",

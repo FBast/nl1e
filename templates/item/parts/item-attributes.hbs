@@ -39,16 +39,19 @@
                     <select name="system.optionalAttributes.{{id}}.value">
                         {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
                     </select>
-                {{/if }}
+                {{/if}}
+                <select name="system.optionalAttributes.{{id}}.attributeLink">
+                    {{selectOptions (config "attributeLinks") selected=attribute.attributeLink localize=true}}
+                </select>
                 {{#if (and (ne attribute.reduction undefined) (lt attribute.value 0))}}
                     <select name="system.optionalAttributes.{{id}}.reduction">
                         {{selectOptions (config "damageType") selected=attribute.reduction localize=true}}
                     </select>
                 {{/if}}
-                <select name="system.optionalAttributes.{{id}}.targetGroup">
-                    {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
-                </select>
-                {{#if (ne attribute.targetGroup "self")}}
+                {{#if (ne attribute.attributeLink "passive")}}
+                    <select name="system.optionalAttributes.{{id}}.targetGroup">
+                        {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
+                    </select>
                     <select name="system.optionalAttributes.{{id}}.resolutionType">
                         {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}
                     </select>

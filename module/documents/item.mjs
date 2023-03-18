@@ -467,7 +467,10 @@ export class Pl1eItem extends Item {
             }
             linkedItem = relatedItems[0];
             Pl1eHelpers.mergeDeep(attributes, linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes);
+            for (let [id, optionalAttribute] of Object.entries(linkedItem.system.optionalAttributes)) {
+                if (optionalAttribute.attributeLink !== "child") continue;
+                optionalAttributes[id] = optionalAttribute;
+            }
         }
 
         // Target selection template
@@ -639,7 +642,7 @@ export class Pl1eItem extends Item {
             if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
                 calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
             }
-            if (calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
+            if (calculatedAttribute.value < 0 && calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
                 let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductionsPath[calculatedAttribute.reduction]);
                 calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
             }

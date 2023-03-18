@@ -454,18 +454,6 @@ export class Pl1eEvent {
         const item = await fromUuid(itemId);
         await item.actionAbility(action);
 
-        // Add notification label
-        const cardFooter = $(event.currentTarget).closest(".chat-card").find(".card-footer");
-        const chatMessage = $(event.currentTarget).closest(".chat-message");
-        switch (action) {
-            case 'resolve':
-                cardFooter.append('<label>' + game.i18n.localize("PL1E.Resolved") + '</label>');
-                break;
-            case 'cancel':
-                chatMessage.remove();
-                break;
-        }
-
         // Remove all buttons
         const cardButtons = $(event.currentTarget).closest(".card-buttons");
         cardButtons.remove();
