@@ -1,6 +1,7 @@
-import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
-import {PL1E} from "../helpers/config.mjs";
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eWeapon} from "./items/weapon.mjs";
+import {Pl1eAbility} from "./items/ability.mjs";
+import {Pl1eConsumable} from "./items/consumable.mjs";
+import {Pl1eWearable} from "./items/wearable.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -8,9 +9,32 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
  */
 export class Pl1eItem extends Item {
 
+    /**
+     * @type Pl1eSubItem
+     */
+    subItem;
+
     get isOriginal() {
         const sourceId = this.getFlag('core', 'sourceId');
         return !sourceId || sourceId === this.uuid;
+    }
+
+    constructor(data, context) {
+        super(data, context);
+        switch (this.type) {
+            case 'ability':
+                this.subItem = new Pl1eAbility(this, this.parent);
+                break;
+            case 'weapon':
+                this.subItem = new Pl1eWeapon(this, this.parent);
+                break;
+            case 'wearable':
+                this.subItem = new Pl1eWearable(this, this.parent);
+                break;
+            case 'consumable':
+                this.subItem = new Pl1eConsumable(this, this.parent);
+                break;
+        }
     }
 
     //region Data management
@@ -203,9 +227,7 @@ export class Pl1eItem extends Item {
     //region Item interactions
 
     /**
-     * Handle clickable rolls.
-     * @param {Event} event   The originating click event
-     * @private
+     * Roll the item
      */
     async roll() {
         const item = this;
@@ -243,440 +265,38 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Trigger an item usage, optionally creating a chat message with followup actions.
-     * @returns {Promise<ChatMessage|object|void>} Chat message if options.createMessage is true, message data if it is
-     *                                             false, and nothing if the roll wasn't performed.
+     * Toggle the state of the item (could be necessary to be used)
+     * @param options
+     * @returns {Promise<void>}
      */
-    async use() {
-        switch (this.type) {
-            case 'consumable':
-                await this.useConsumable(this.parent);
-                break;
-            case 'wearable':
-                await this.toggleWearable(this.parent);
-                break;
-            case 'weapon':
-                await this.toggleWeapon(true, this.parent)
-                break;
-            case 'ability':
-                await this.useAbility(this.parent);
-                break;
-        }
+    async toggle(options = {}) {
+        await this.subItem.toggle(options);
     }
 
     /**
-     * Handle toggling the state of an Owned Weapon within the Actor.
-     * @param {boolean} main if the hand is the main hand
-     * @param {Actor} actor the actor where the weapon is toggle
-     * @constructor
+     * Use the item
+     * @param options
+     * @returns {Promise<void>}
      */
-    async toggleWeapon(main, actor) {
-        const hands = this.system.attributes.hands.value;
-        // Toggle item hands
-        if (hands === 2) {
-            await this.update({
-                ["system.isEquippedMain"]: !foundry.utils.getProperty(this, "system.isEquippedMain"),
-                ["system.isEquippedSecondary"]: !foundry.utils.getProperty(this, "system.isEquippedSecondary")
-            });
-        }
-        else if (main) {
-            // Switch hand case
-            if (!this.system.isEquippedMain && this.system.isEquippedSecondary) {
-                await this.update({["system.isEquippedSecondary"]: false});
-            }
-            await this.update({["system.isEquippedMain"]: !foundry.utils.getProperty(this, "system.isEquippedMain")})
-        }
-        else {
-            // Switch hand case
-            if (!this.system.isEquippedSecondary && this.system.isEquippedMain) {
-                await this.update({["system.isEquippedMain"]: false});
-            }
-            await this.update({["system.isEquippedSecondary"]: !foundry.utils.getProperty(this, "system.isEquippedSecondary")});
-        }
-        // Unequip other items
-        for (let otherItem of actor.items) {
-            // Ignore if otherItem is not a weapon
-            if (otherItem.type !== 'weapon') continue;
-            // Ignore if otherItem is item
-            if (otherItem === this) continue;
-            // If other item is equipped on main and this item is equipped on main
-            if (otherItem.system.isEquippedMain && this.system.isEquippedMain) {
-                // If other item is equipped on two hands
-                if (otherItem.system.attributes.hands.value === 2) {
-                    await otherItem.update({
-                        ["system.isEquippedMain"]: false,
-                        ["system.isEquippedSecondary"]: false
-                    });
-                }
-                // Else other item only equip main hand
-                else {
-                    await otherItem.update({
-                        ["system.isEquippedMain"]: false
-                    });
-                }
-            }
-            // If other item is equipped on secondary and this item is equipped on secondary
-            if (otherItem.system.isEquippedSecondary && this.system.isEquippedSecondary) {
-                // If other item is equipped on two hands
-                if (otherItem.system.attributes.hands.value === 2) {
-                    await otherItem.update({
-                        ["system.isEquippedMain"]: false,
-                        ["system.isEquippedSecondary"]: false
-                    });
-                }
-                // Else other item only equip secondary hand
-                else {
-                    await otherItem.update({
-                        ["system.isEquippedSecondary"]: false
-                    });
-                }
-            }
-        }
-        actor.sheet.render(false);
-    }
-
-    async toggleWearable(actor) {
-        const slot = this.system.attributes.slot.value;
-        // Ignore if not using a slot
-        if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
-        // Toggle item slot
-        await this.update({
-            ["system.isEquipped"]: !foundry.utils.getProperty(this, "system.isEquipped"),
-        });
-        // If unequipped then return
-        if (!this.system.isEquipped) return;
-        let ringCount = 1;
-        // Unequip other items
-        for (let otherItem of actor.items) {
-            // Ignore if otherItem is not a wearable
-            if (otherItem.type !== 'wearable') continue;
-            // Ignore if otherItem is item
-            if (otherItem === this) continue;
-            // Count same items slot
-            if (otherItem.system.isEquipped && otherItem.system.attributes.slot.value === slot) {
-                // Unequipped immediately if clothes, armor or amulet
-                if (['clothes', 'armor', 'amulet'].includes(slot)) {
-                    await otherItem.update({
-                        ["system.isEquipped"]: false
-                    });
-                }
-                // Count equipped rings if ring
-                else if (['ring'].includes(slot)) {
-                    if (ringCount >= 2) {
-                        await otherItem.update({
-                            ["system.isEquipped"]: false
-                        });
-                    } else {
-                        ringCount++;
-                    }
-                }
-            }
-        }
-        actor.sheet.render(false);
-    }
-
-    async useConsumable(actor) {
-        const attributes = PL1E.attributes;
-        // Removed one use
-        await this.update({
-            ["system.removedUses"]: foundry.utils.getProperty(this, "system.removedUses") + 1,
-        });
-        // Launch consumable effect
-        for (let [id, attribute] of Object.entries(this.system.attributes)) {
-            if (!attribute.apply || attributes[id]["path"] === undefined) continue;
-            if (attributes[id]["operator"] === 'set') {
-                foundry.utils.setProperty(actor.system, attributes[id]["path"], attribute.value);
-            } else if (attributes[id]["operator"] === 'push') {
-                let currentValue = foundry.utils.getProperty(actor.system, attributes[id]["path"]);
-                if (currentValue === undefined) currentValue = [];
-                currentValue.push(attribute.value);
-                foundry.utils.setProperty(actor.system, attributes[id]["path"], currentValue);
-            } else if (attributes[id]["operator"] === 'add') {
-                let currentValue = foundry.utils.getProperty(actor.system, attributes[id]["path"]);
-                if (currentValue === undefined) currentValue = 0;
-                await actor.update({
-                    ["system." + attributes[id]["path"]]: currentValue + attribute.value
-                });
-            }
-        }
-        // The item have no more uses and is not reloadable
-        if (this.system.removedUses >= this.system.attributes.uses.value && !this.system.attributes.reloadable.value) {
-            await this.delete();
-        }
+    async use(options = {}) {
+        await this.subItem.use(options);
     }
 
     /**
-     * Internal type used to manage ability data
-     *
-     * @typedef {object} AbilityData
-     * @property {Pl1eActor} actor The actor using the ability
-     * @property {string} tokenId The token of the actor which originate the ability
-     * @property {Pl1eItem} item The ability itself
-     * @property {string} itemId The ability uuid
-     * @property {any} launcherData Data of the actor
-     * @property {any[]} targetsData Data of the targets
-     * @property {AbilityTemplate[]} templates  An array of the measure templates
+     * Apply the item effect after usage
+     * @param options
+     * @returns {Promise<void>}
      */
-
-    /**
-     * @type {AbilityData}
-     */
-    abilityData;
-
-    async useAbility(actor) {
-        if (!actor.bestToken === null) return;
-        if (!this._isContextValid(actor)) return;
-
-        // Copy attributes
-        const attributes = JSON.parse(JSON.stringify(this.system.attributes));
-        const optionalAttributes = JSON.parse(JSON.stringify(this.system.optionalAttributes));
-
-        // Get linked attributes
-        let linkedItem;
-        if (attributes.abilityLink.value === 'mastery') {
-            const relatedMastery = attributes.mastery.value;
-            const relatedItems = actor.items.filter(value => value.type === 'weapon'
-                && value.system.attributes.mastery.value === relatedMastery);
-            if (relatedItems.length > 1) {
-                ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
-                return;
-            }
-            if (relatedItems.length === 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
-                return;
-            }
-            linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(attributes, linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes);
-        }
-        if (attributes.abilityLink.value === 'parent') {
-            let relatedItems = [];
-            for (const item of actor.items) {
-                if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
-                if (item.system.subItemsMap === undefined) continue;
-                for (let [key, subItem] of item.system.subItemsMap) {
-                    const subItemFlag = subItem.getFlag('core', 'sourceId');
-                    const itemFlag = this.getFlag('core', 'sourceId');
-                    if (subItemFlag !== itemFlag) continue;
-                    relatedItems.push(item);
-                }
-            }
-            if (relatedItems.length === 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoEquippedParent"));
-                return;
-            }
-            linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(attributes, linkedItem.system.attributes);
-            for (let [id, optionalAttribute] of Object.entries(linkedItem.system.optionalAttributes)) {
-                if (optionalAttribute.attributeLink !== "child") continue;
-                optionalAttributes[id] = optionalAttribute;
-            }
-        }
-
-        // Target selection template
-        const templates = [];
-        if (attributes.areaNumber.value !== 0) {
-            await actor.sheet?.minimize();
-            for (let i = 0; i < attributes.areaNumber.value; i++) {
-                const template = await AbilityTemplate.fromItem(this, attributes, optionalAttributes);
-                templates.push(template);
-                await template?.drawPreview();
-            }
-            await actor.sheet?.maximize();
-        }
-
-        // Return if no area defined
-        if (attributes.areaNumber.value > 0 && templates.length === 0) return;
-
-        // Roll Data
-        let rollResult = 0;
-        if (attributes.skillRoll.value !== 'none') {
-            const mainSkill = actor.system.skills[attributes.skillRoll.value];
-            rollResult = await actor.rollSkill(mainSkill);
-        }
-
-        // Calculate launcher attributes
-        let calculatedAttributes = [];
-        calculatedAttributes.push()
-        for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
-            if (optionalAttribute.targetGroup !== 'self') continue;
-            let calculatedAttribute = this._calculateAttribute(optionalAttribute, rollResult, actor);
-            calculatedAttributes.push(calculatedAttribute);
-        }
-
-        // Launcher Data
-        const token = this.actor.bestToken;
-        this.abilityData = {
-            templates: templates,
-            launcherData: {
-                actor: this.actor,
-                tokenId: token?.uuid || null,
-                item: this,
-                itemId: this.uuid,
-                result: rollResult,
-                attributes: attributes,
-                optionalAttributes: optionalAttributes,
-                calculatedAttributes: calculatedAttributes,
-                linkedItem: linkedItem
-            }
-        };
-
-        // Render the chat card template
-        const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", this.abilityData);
-
-        // Create the ChatMessage data object
-        const chatData = {
-            user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + this.name,
-            content: html,
-            speaker: ChatMessage.getSpeaker({actor: this.actor}),
-            flags: {"core.canPopout": true}
-        };
-
-        await ChatMessage.create(chatData);
+    async apply(options = {}) {
+        await this.subItem.apply(options);
     }
 
-    /**
-     * Handle multiples ability resolutions
-     * @param action
+    /**+
+     * Reload the item
+     * @returns {Promise<void>}
      */
-    async actionAbility(action) {
-        const abilityData = this.abilityData;
-
-        // Handle different actions
-        if (action === 'resolve') await this._resolveAbility();
-
-        // Destroy templates after fetching target with df-template
-        for (const template of abilityData.templates) {
-            await template.releaseTemplate();
-        }
-
-        // Reset abilityData
-        this.abilityData = {};
-    }
-
-    async _resolveAbility() {
-        // Target Data
-        let targetTokens = game.user.targets;
-
-        for (let targetToken of targetTokens) {
-            // Make a shallow copy of the ability data for this target
-            let abilityData = {...this.abilityData};
-
-            // Copy attributes
-            const launcherData = abilityData.launcherData;
-            const attributes = abilityData.launcherData.attributes;
-            const optionalAttributes = abilityData.launcherData.optionalAttributes;
-
-            // Opposite roll if exist
-            let rollResult = 0;
-            if (attributes.oppositeRolls.value !== 'none') {
-                const skill = targetToken.actor.system.skills[attributes.oppositeRolls.value];
-                rollResult = await targetToken.actor.rollSkill(skill);
-            }
-            let totalResult = abilityData.launcherData.result - rollResult;
-
-            // Calculate target attributes
-            let calculatedAttributes = [];
-            for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
-                if (optionalAttribute.targetGroup === 'self' && targetToken.actor !== launcherData.actor) continue;
-                if (optionalAttribute.targetGroup === 'allies' && targetToken.document.disposition !== launcherData.actor.bestToken.disposition) continue;
-                if (optionalAttribute.targetGroup === 'opponents' && targetToken.document.disposition === launcherData.actor.bestToken.disposition) continue;
-                let calculatedAttribute = this._calculateAttribute(optionalAttribute, totalResult, targetToken.actor);
-                calculatedAttributes.push(calculatedAttribute);
-            }
-
-            abilityData.targetData = {
-                actor: targetToken.actor,
-                tokenId: targetToken?.uuid || null,
-                result: rollResult,
-                totalResult: totalResult,
-                calculatedAttributes: calculatedAttributes
-            };
-
-            const html = await renderTemplate("systems/pl1e/templates/chat/opposite-card.hbs", abilityData);
-
-            // Create the ChatMessage data object
-            const chatData = {
-                user: game.user.id,
-                type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-                content: html,
-                // flavor: this.system.description || this.name,
-                speaker: ChatMessage.getSpeaker({actor: targetToken.actor, targetToken}),
-                flags: {"core.canPopout": true}
-            };
-
-            await ChatMessage.create(chatData);
-
-            // Apply target effects
-            for (const attribute of abilityData.targetData.calculatedAttributes) {
-                await abilityData.targetData.actor.applyAttribute(attribute, false, true);
-            }
-            abilityData.targetData.actor.sheet.render(false);
-        }
-
-        // Apply launcher effects
-        for (const calculatedAttribute of this.abilityData.launcherData.calculatedAttributes) {
-            await this.abilityData.launcherData.actor.applyAttribute(calculatedAttribute, false, true);
-        }
-        this.abilityData.launcherData.actor.sheet.render(false);
-    }
-
-    /**
-     * Calculate the stats of an attribute based on the roll value
-     * @param attribute
-     * @param rollResult
-     * @param actor
-     * @returns {any}
-     * @private
-     */
-    _calculateAttribute(attribute, rollResult, actor) {
-        // Copy attribute
-        let calculatedAttribute = JSON.parse(JSON.stringify(attribute));
-        // Number type
-        if (calculatedAttribute.type === 'number') {
-            if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
-                calculatedAttribute.value *= rollResult > 0 ? rollResult : 0;
-            }
-            if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
-                calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
-            }
-            if (calculatedAttribute.value < 0 && calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
-                let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductionsPath[calculatedAttribute.reduction]);
-                calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
-            }
-        }
-        return calculatedAttribute;
-    }
-
-    /**
-    * Check if the ability context is valid
-    * @private
-    */
-    _isContextValid(actor) {
-        let isValid = true;
-        const itemAttributes = this.system.attributes;
-        // If is not in battle
-        if (!actor.bestToken.inCombat) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotInBattle"));
-            isValid = false;
-        }
-        // If is not memorized
-        if (!this.system.isMemorized) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
-            isValid = false;
-        }
-        // If cost is not affordable
-        if (itemAttributes.staminaCost.apply && itemAttributes.staminaCost.value > actor.system.resources.stamina.value) {
-            ui.notifications.info(game.i18n.localize("PL1E.NotEnoughStamina"));
-            isValid = false;
-        }
-        if (itemAttributes.manaCost.apply && itemAttributes.manaCost.value > actor.system.resources.mana.value) {
-            ui.notifications.info(game.i18n.localize("PL1E.NotEnoughMana"));
-            isValid = false;
-        }
-        return isValid;
+    async reload(options = {}) {
+        await this.subItem.reload(options);
     }
 
     //endregion

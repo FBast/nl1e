@@ -7,17 +7,6 @@ import {Pl1eActor} from "../documents/actor.mjs";
 export class Pl1eEvent {
 
     /**
-     * Apply listeners to chat messages.
-     * @param {html} html  Rendered chat message.
-     */
-    static chatListeners(html) {
-        html.on("click", ".card-buttons button", this.onChatCardAction.bind(this));
-        html.on("click", ".actor-edit", this.onActorEdit.bind(this));
-        html.on("click", ".item-edit", this.onItemEdit.bind(this));
-        // html.on("click", ".item-name", this._onChatCardToggleContent.bind(this));
-    }
-
-    /**
      * Manage Active Effect instances through the Actor Sheet via effect control buttons.
      * @param {MouseEvent} event      The left-click event on the effect control
      * @param {Actor|Item} owner      The owning document which manages this effect
@@ -175,121 +164,6 @@ export class Pl1eEvent {
     }
 
     /**
-     * Toggle an ability
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the actor where the ability is toggle
-     */
-    static async onToggleAbility(event, actor) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = actor.items.get(itemId);
-
-        if (!item.system.isMemorized && actor.system.attributes.slots - item.system.attributes.level.value < 0) return;
-
-        // Toggle ability
-        await item.update({
-            ["system.isMemorized"]: !item.system.isMemorized
-        });
-    }
-
-    /**
-     * Use an ability
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the actor where the ability is used
-     */
-    static async onUseAbility(event, actor) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = actor.items.get(itemId);
-
-        await item.use();
-    }
-
-    /**
-     * Handle toggling the state of an Owned Weapon within the Actor.
-     * @param {Event} event The triggering click event.
-     * @param {Actor} actor the actor where the weapon is toggle
-     */
-    static async onToggleWeapon(event, actor) {
-        event.preventDefault();
-        const main = $(event.currentTarget).data("main");
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = actor.items.get(itemId);
-        await item.toggleWeapon(main, actor);
-    }
-
-    /**
-     * Handle toggling the state of an Owned Wearable within the Actor.
-     * @param {Event} event The triggering click event.
-     * @param {Actor} actor the actor where the wearable is toggle
-     */
-    static async onToggleWearable(event, actor) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = actor.items.get(itemId);
-        await item.toggleWearable(actor);
-    }
-
-
-
-    /**
-     * Handle use of an Owned Consumable within the Actor.
-     * @param {Event} event The triggering click event.
-     * @param {Actor} actor the actor where the consumable is used
-     */
-    static async onUseConsumable(event, actor) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = actor.items.get(itemId);
-        await item.useConsumable(actor);
-    }
-
-    /**
-     * Handle reload of an Owned Consumable within the Actor.
-     * @param {Event} event The triggering click event.
-     * @param {Actor} actor the actor where the consumable is reloaded
-     */
-    static async onReloadConsumable(event, actor) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = actor.items.get(itemId);
-
-        // Reset removed uses
-        await item.update({
-            ["system.removedUses"]: 0
-        });
-    }
-
-    /**
-     * Handle characteristics changes
-     * @param {Event} event The originating click event
-     * @param {ActorSheet} actorSheet the actor sheet to modify
-     */
-    static async onCharacteristicChange(event, actorSheet) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const characteristic = $(event.currentTarget).data("characteristic");
-        let value = $(event.currentTarget).data("value");
-        if (!value || !characteristic) return;
-
-        let remaining = actorSheet.actor.system.attributes.remainingCharacteristics;
-        if (remaining === 0 && value > 0) return;
-
-        let oldValue = actorSheet.actor.system.characteristics[characteristic].base;
-        let newValue = oldValue + value;
-
-        if (newValue < 2 || newValue > 5) return;
-
-        await actorSheet.actor.update({
-            ["system.characteristics." + characteristic + ".base"]: newValue,
-            ["system.attributes.remainingCharacteristics"]: remaining - value
-        });
-
-        actorSheet.render(false);
-    }
-
-    /**
      * Handle currency changes
      * @param {Event} event The originating click event
      * @param {Actor|Item} document the document to modify
@@ -326,29 +200,6 @@ export class Pl1eEvent {
         await actor.update({
             ["system.money"]: Pl1eHelpers.unitsToCurrency(units)
         });
-    }
-
-    /**
-     * Handle rank changes
-     * @param {Event} event The originating click event
-     * @param {ActorSheet} actorSheet the actor sheet to modify
-     */
-    static async onRankChange(event, actorSheet) {
-        event.preventDefault();
-        event.stopPropagation();
-        const skill = $(event.currentTarget).data("skill");
-        if (!skill) return;
-        let oldValue = actorSheet.actor.system.skills[skill].rank;
-        let maxRank = actorSheet.actor.system.attributes.maxRank;
-        let newValue = oldValue + 1;
-        if (newValue > maxRank || actorSheet.actor.system.attributes.ranks - newValue < 0) {
-            if (actorSheet.actor.system.attributes.creationMod) newValue = 1;
-            else return;
-        }
-        await actorSheet.actor.update({
-            ["system.skills." + skill + ".rank"]: newValue
-        });
-        actorSheet.render(false);
     }
 
     /**
@@ -439,7 +290,6 @@ export class Pl1eEvent {
      * Handle execution of a chat card action via a click event on one of the card buttons
      * @param {Event} event       The originating click event
      * @returns {Promise}         A promise which resolves once the handler workflow is complete
-     * @private
      */
     static async onChatCardAction(event) {
         event.preventDefault();
@@ -452,7 +302,11 @@ export class Pl1eEvent {
          * @type {Pl1eItem}
          */
         const item = await fromUuid(itemId);
-        await item.actionAbility(action);
+
+        const options = {
+            action: action
+        }
+        await item.apply(options);
 
         // Remove all buttons
         const cardButtons = $(event.currentTarget).closest(".card-buttons");

@@ -101,11 +101,12 @@
                         </i>
                     {{/if}}
                 </div>
+                {{log item}}
                 <div class="item-controls">
-                    <a class="item-control item-toggle weapon-toggle" data-main='false' data-tooltip='{{localize "PL1E.EquipSecondary"}}'>
+                    <a class="item-control item-toggle" data-main='false' data-tooltip='{{localize "PL1E.EquipSecondary"}}'>
                         <i class="fas fa-hand icon-flipped {{#unless item.system.isEquippedSecondary}}item-inactive{{/unless}}"></i>
                     </a>
-                    <a class="item-control item-toggle weapon-toggle" data-main='true' data-tooltip='{{localize "PL1E.EquipMain"}}'>
+                    <a class="item-control item-toggle" data-main='true' data-tooltip='{{localize "PL1E.EquipMain"}}'>
                         <i class="fas fa-hand {{#unless item.system.isEquippedMain}}item-inactive{{/unless}}"></i>
                     </a>
                     <a class="item-control item-delete" data-item-id="{{item._id}}" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
@@ -151,23 +152,23 @@
                 </div>
                 <div class="item-controls">
                     {{#if (eq item.system.attributes.slot.value "clothes")}}
-                        <a class="item-control item-toggle wearable-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                        <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                             <i class="fas fa-shirt-long-sleeve {{#unless item.system.isEquipped}}item-inactive{{/unless}}"></i>
                         </a>
                     {{else if (eq item.system.attributes.slot.value "armor")}}
-                        <a class="item-control item-toggle wearable-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                        <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                             <i class="fas fa-helmet-battle {{#unless item.system.isEquipped}}item-inactive{{/unless}}"></i>
                         </a>
                     {{else if (eq item.system.attributes.slot.value "ring")}}
-                        <a class="item-control item-toggle wearable-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                        <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                             <i class="fas fa-ring {{#unless item.system.isEquipped}}item-inactive{{/unless}}"></i>
                         </a>
                     {{else if (eq item.system.attributes.slot.value "amulet")}}
-                        <a class="item-control item-toggle wearable-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                        <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                             <i class="fas fa-gem {{#unless item.system.isEquipped}}item-inactive{{/unless}}"></i>
                         </a>
                     {{else}}
-                        <a class="item-control item-toggle wearable-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                        <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                             <i class="fas fa-clothes-hanger {{#unless item.system.isEquipped}}item-inactive{{/unless}}"></i>
                         </a>
                     {{/if}}
@@ -232,13 +233,13 @@
                 <div class="item-controls">
                     {{#if (eq item.system.attributes.uses.value item.system.removedUses)}}
                         {{#if item.system.attributes.reloadable.value}}
-                            <a class="item-control item-toggle consumable-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
+                            <a class="item-control consumable-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
                                 <i class="fas fa-repeat"></i>
                             </a>
                         {{/if}}
                     {{/if}}
                     {{#if (ne item.system.attributes.uses.value item.system.removedUses)}}
-                        <a class="item-control item-toggle consumable-toggle" data-tooltip='{{localize "PL1E.Use"}}'>
+                        <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'>
                             <i class="fas fa-dice-d20"></i>
                         </a>
                     {{/if}}

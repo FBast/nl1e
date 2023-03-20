@@ -106,25 +106,22 @@ export class Pl1eActorSheet extends ActorSheet {
         // Chat messages
         html.find('.rollable').on("click", ev => Pl1eEvent.onRoll(ev, this.actor));
 
-        // Custom objects
-        html.find('.characteristic-control').on("click", ev => Pl1eEvent.onCharacteristicChange(ev, this));
+        // Currency
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.actor));
         html.find('.currency-convert').on("click", ev => Pl1eEvent.onCurrencyConvert(ev, this.actor));
-        html.find('.rank-control').on("click", ev => Pl1eEvent.onRankChange(ev, this));
-
-        // Items management
-        html.find(".weapon-toggle").on("click", ev => Pl1eEvent.onToggleWeapon(ev, this.actor));
-        html.find(".wearable-toggle").on("click", ev => Pl1eEvent.onToggleWearable(ev, this.actor));
-        html.find(".consumable-toggle").on("click", ev => Pl1eEvent.onUseConsumable(ev, this.actor));
-        html.find(".consumable-reload").on("click", ev => Pl1eEvent.onReloadConsumable(ev, this.actor));
-        html.find(".ability-toggle").on("click", ev => Pl1eEvent.onToggleAbility(ev, this.actor));
-        html.find(".ability-use").on("click", ev => Pl1eEvent.onUseAbility(ev, this.actor))
 
         // Highlights indications
         html.find('.resource-label,.characteristic-label,.skill-label')
             .on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
         html.find('.resource-label,.characteristic-label,.skill-label')
             .on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
+
+        // Custom controls
+        html.find('.characteristic-control').on("click", ev => this.onCharacteristicChange(ev));
+        html.find('.rank-control').on("click", ev => this.onRankChange(ev));
+        html.find(".item-toggle").on("click", ev => this.onItemToggle(ev));
+        html.find(".item-use").on("click", ev => this.onItemUse(ev));
+        html.find(".consumable-reload").on("click", ev => this.onReloadConsumable(ev));
 
         // Drag events for macros.
         if (this.actor.isOwner) {
@@ -242,6 +239,102 @@ export class Pl1eActorSheet extends ActorSheet {
         context.gear = gear;
         context.features = features;
         context.abilities = abilities;
+    }
+
+    /**
+     * Toggle an ability
+     * @param {Event} event The originating click event
+     */
+    async onItemToggle(event) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+
+        const options = {
+            actor: this.actor
+        };
+        const main = $(event.currentTarget).data("main");
+        if (main) options["main"] = main;
+
+        await item.toggle(options);
+    }
+
+    /**
+     * Use an ability
+     * @param {Event} event The originating click event
+     */
+    async onItemUse(event) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+
+        const options = {
+            actor: this.actor
+        };
+
+        await item.use(options);
+    }
+
+    /**
+     * Handle reload of an Owned Consumable within the Actor.
+     * @param {Event} event The triggering click event.
+     */
+    async onReloadConsumable(event) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+
+        await item.reload();
+    }
+
+    /**
+     * Handle characteristics changes
+     * @param {Event} event The originating click event
+     */
+    async onCharacteristicChange(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const characteristic = $(event.currentTarget).data("characteristic");
+        let value = $(event.currentTarget).data("value");
+        if (!value || !characteristic) return;
+
+        let remaining = this.actor.system.attributes.remainingCharacteristics;
+        if (remaining === 0 && value > 0) return;
+
+        let oldValue = this.actor.system.characteristics[characteristic].base;
+        let newValue = oldValue + value;
+
+        if (newValue < 2 || newValue > 5) return;
+
+        await this.actor.update({
+            ["system.characteristics." + characteristic + ".base"]: newValue,
+            ["system.attributes.remainingCharacteristics"]: remaining - value
+        });
+
+        this.render(false);
+    }
+
+    /**
+     * Handle rank changes
+     * @param {Event} event The originating click event
+     */
+    async onRankChange(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const skill = $(event.currentTarget).data("skill");
+        if (!skill) return;
+        let oldValue = this.actor.system.skills[skill].rank;
+        let maxRank = this.actor.system.attributes.maxRank;
+        let newValue = oldValue + 1;
+        if (newValue > maxRank || this.actor.system.attributes.ranks - newValue < 0) {
+            if (this.actor.system.attributes.creationMod) newValue = 1;
+            else return;
+        }
+        await this.actor.update({
+            ["system.skills." + skill + ".rank"]: newValue
+        });
+        this.render(false);
     }
 
 }

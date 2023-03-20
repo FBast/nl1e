@@ -13,7 +13,7 @@ import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
 
 /* -------------------------------------------- */
-/*  Init Hook                                   */
+/*  Hooks                                       */
 /* -------------------------------------------- */
 
 Hooks.once('init', async function () {
@@ -50,6 +50,38 @@ Hooks.once('init', async function () {
 
     // Preload Handlebars templates.
     return preloadHandlebarsTemplates();
+});
+
+Hooks.once("ready", async function () {
+    // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
+    Hooks.on("hotbarDrop", (bar, data, slot) => {
+        if (["Item", "ActiveEffect"].includes(data.type) ) {
+            Pl1eMacro.createMacro(data, slot);
+            return false;
+        }
+    });
+});
+
+Hooks.once("socketlib.ready", () => {
+    PL1E.socket = socketlib.registerSystem("pl1e");
+    PL1E.socket.register("sendItem", function (data) {
+        Pl1eSocket.sendItem(data.actor, data.targetActor, data.item)
+    })
+    PL1E.socket.register("sendContenant", function (data) {
+        Pl1eSocket.sendContenant(data.actor, data.targetActor, data.item);
+    })
+})
+
+Hooks.on("renderChatLog", (app, html, data) => {
+    html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
+    html.on("click", ".actor-edit", Pl1eEvent.onActorEdit.bind(this));
+    html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
+});
+
+Hooks.on("renderChatPopout", (app, html, data) => {
+    html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
+    html.on("click", ".actor-edit", Pl1eEvent.onActorEdit.bind(this));
+    html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
 });
 
 /* -------------------------------------------- */
@@ -90,30 +122,3 @@ Handlebars.registerHelper('currencyToValue', function (currency) {
 Handlebars.registerHelper('valueToCurrency', function (value) {
     return Pl1eHelpers.unitsToCurrency(value);
 })
-
-/* -------------------------------------------- */
-/*  Ready Hook                                  */
-/* -------------------------------------------- */
-
-Hooks.once("ready", async function () {
-    // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-    Hooks.on("hotbarDrop", (bar, data, slot) => {
-        if (["Item", "ActiveEffect"].includes(data.type) ) {
-            Pl1eMacro.createMacro(data, slot);
-            return false;
-        }
-    });
-});
-
-Hooks.once("socketlib.ready", () => {
-    PL1E.socket = socketlib.registerSystem("pl1e");
-    PL1E.socket.register("sendItem", function (data) {
-        Pl1eSocket.sendItem(data.actor, data.targetActor, data.item)
-    })
-    PL1E.socket.register("sendContenant", function (data) {
-        Pl1eSocket.sendContenant(data.actor, data.targetActor, data.item);
-    })
-})
-
-Hooks.on("renderChatLog", (app, html, data) => Pl1eEvent.chatListeners(html));
-Hooks.on("renderChatPopout", (app, html, data) => Pl1eEvent.chatListeners(html));

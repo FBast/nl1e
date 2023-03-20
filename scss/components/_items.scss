@@ -77,6 +77,7 @@
       display: flex;
       flex: 0 0 100px;
       justify-content: flex-end;
+      color: black;
       a {
         font-size: 12px;
         text-align: center;
@@ -103,10 +104,6 @@
       .item-stats {
         flex-flow: wrap;
       }
-    }
-
-    .item-toggle {
-      color: #4b4a44;
     }
 
     .item-inactive {
