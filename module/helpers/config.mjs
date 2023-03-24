@@ -466,16 +466,16 @@ PL1E.optionalAttributes = {
 }
 
 PL1E.optionalAttributesValues = {
-    "setSize": {
+    "size": {
         "value": "medium",
         "label": "PL1E.Size",
         "icon": "fas fa-arrow-up-big-small",
         "type": "select",
-        "operator": "set",
+        "operator": "",
         "path": "attributes.size",
         "select": "sizes"
     },
-    "setSpeed": {
+    "speed": {
         "value": 4.5,
         "label": "PL1E.Speed",
         "icon": "fas fa-person-running",
@@ -483,7 +483,7 @@ PL1E.optionalAttributesValues = {
         "operator": "set",
         "path": "attributes.speed"
     },
-    "addMovementPenalty": {
+    "movementPenalty": {
         "value": 0,
         "label": "PL1E.MovementPenalty",
         "icon": "fas fa-weight-hanging",
@@ -491,7 +491,7 @@ PL1E.optionalAttributesValues = {
         "operator": "add",
         "path": "attributes.movementPenalty"
     },
-    "addParry": {
+    "parry": {
         "value": 0,
         "label": "PL1E.Parry",
         "icon": "fas fa-shield",
@@ -499,7 +499,7 @@ PL1E.optionalAttributesValues = {
         "operator": "add",
         "path": "attributes.parry"
     },
-    "addDodge": {
+    "dodge": {
         "value": 0,
         "label": "PL1E.Dodge",
         "icon": "fas fa-eye",
@@ -507,7 +507,7 @@ PL1E.optionalAttributesValues = {
         "operator": "add",
         "path": "attributes.dodge"
     },
-    "addHealth": {
+    "health": {
         "value": 0,
         "label": "PL1E.Health",
         "icon": "fas fa-heart",
@@ -516,7 +516,7 @@ PL1E.optionalAttributesValues = {
         "path": "resources.health.value",
         "reduction": "none"
     },
-    "addStamina": {
+    "stamina": {
         "value": 0,
         "label": "PL1E.Stamina",
         "icon": "fas fa-wave-pulse",
@@ -525,7 +525,7 @@ PL1E.optionalAttributesValues = {
         "path": "resources.stamina.value",
         "reduction": "none"
     },
-    "addMana": {
+    "mana": {
         "value": 0,
         "label": "PL1E.Mana",
         "icon": "fas fa-sparkles",

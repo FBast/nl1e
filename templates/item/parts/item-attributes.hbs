@@ -40,14 +40,14 @@
                         {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
                     </select>
                 {{/if}}
-                <select name="system.optionalAttributes.{{id}}.attributeLink">
-                    {{selectOptions (configEntry "attributeLinks" ../item.type) selected=attribute.attributeLink localize=true}}
-                </select>
                 {{#if (and (ne attribute.reduction undefined) (lt attribute.value 0))}}
                     <select name="system.optionalAttributes.{{id}}.reduction">
                         {{selectOptions (config "damageType") selected=attribute.reduction localize=true}}
                     </select>
                 {{/if}}
+                <select name="system.optionalAttributes.{{id}}.attributeLink">
+                    {{selectOptions (configEntry "attributeLinks" ../item.type) selected=attribute.attributeLink localize=true}}
+                </select>
                 {{#if (and (ne attribute.attributeLink undefined) (ne attribute.attributeLink "passive"))}}
                     {{#if (and (ne ../system.attributes.range.value undefined) (gt ../system.attributes.range.value 0))}}
                         <select name="system.optionalAttributes.{{id}}.targetGroup">

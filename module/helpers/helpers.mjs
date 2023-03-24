@@ -79,12 +79,6 @@ export class Pl1eHelpers {
 
             // Final
             if (document) {
-                // Flag the source GUID
-                if (document.uuid && !document.pack && !document.getFlag('core', 'sourceId')) {
-                    await document.setFlag('core', 'sourceId', document.uuid);
-                    // document.updateSource({ "flags.core.sourceId": document.uuid });
-                }
-
                 // Care to infinite loop in properties
                 if (!parentId) {
                     await Pl1eHelpers.refreshItemProperties(document);

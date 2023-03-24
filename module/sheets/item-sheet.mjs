@@ -1,6 +1,7 @@
 import {PL1E} from "../helpers/config.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
+import {Pl1eItem} from "../documents/item.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -128,8 +129,16 @@ export class Pl1eItemSheet extends ItemSheet {
         // Check item type and subtype
         let item = await Pl1eHelpers.getDragNDropTargetObject(event);
 
-        // Check if same item
+        // Return if item cannot embed
+        if (!this.item.system.embeddable.includes(item.type)) return
+
+        // Return if same item
         if (this.object._id === item._id) return;
+
+        // Flag the source GUID
+        if (item.uuid && !item.pack && !item.getFlag('core', 'sourceId')) {
+            await item.setFlag('core', 'sourceId', item.uuid);
+        }
 
         const data = item.toObject(false);
 
