@@ -14,6 +14,9 @@ export class Pl1eItemSheet extends ItemSheet {
             classes: ["pl1e", "sheet", "item"],
             width: 520,
             height: 480,
+            scrollY: [
+                ".scroll-auto"
+            ],
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}],
             dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}]
         });

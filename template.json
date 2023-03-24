@@ -378,24 +378,16 @@
           "sizeToken": 1,
           "speed": 4.5,
           "initiative": 0,
-          "movementPenalties": [],
           "movementPenalty": 0,
           "dodgeBonuses": 0,
           "parryBonuses": 0,
           "nightVision": 9,
-          "slashingReductions": [],
           "slashingReduction": 0,
-          "crushingReductions": [],
           "crushingReduction": 0,
-          "piercingReductions": [],
           "piercingReduction": 0,
-          "burnReductions": [],
           "burnReduction": 0,
-          "coldReductions": [],
           "coldReduction": 0,
-          "acidReductions": [],
           "acidReduction": 0,
-          "shockReductions": [],
           "shockReduction": 0
         },
         "traits": {
@@ -620,6 +612,12 @@
         "hands": {
           "value": 0,
           "label": "PL1E.Hands",
+          "category": "fixed",
+          "type": "number"
+        },
+        "range": {
+          "value": 0,
+          "label": "PL1E.Range",
           "category": "fixed",
           "type": "number"
         },

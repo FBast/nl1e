@@ -116,14 +116,6 @@ export class Pl1eActor extends Actor {
         // Handle actorAttributes scores.
         actorAttributes.sizeMultiplier = CONFIG.PL1E.sizeMultiplier[actorAttributes.size];
         actorAttributes.sizeToken = CONFIG.PL1E.sizeTokens[actorAttributes.size];
-        actorAttributes.movementPenalty = actorAttributes.movementPenalties.reduce((a, b) => a + b, 0);
-        actorAttributes.slashingReduction = actorAttributes.slashingReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.crushingReduction = actorAttributes.crushingReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.piercingReduction = actorAttributes.piercingReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.burnReduction = actorAttributes.burnReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.coldReduction = actorAttributes.coldReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.acidReduction = actorAttributes.acidReductions.reduce((a, b) => a + b, 0);
-        actorAttributes.shockReduction = actorAttributes.shockReductions.reduce((a, b) => a + b, 0);
         if (systemData.experienceTemplate !== undefined)
             actorAttributes.experience = CONFIG.PL1E.experienceTemplatesValues[actorAttributes.experienceTemplate];
         actorAttributes.slots = Math.floor(actorAttributes.experience / 3);

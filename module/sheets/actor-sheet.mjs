@@ -16,9 +16,7 @@ export class Pl1eActorSheet extends ActorSheet {
             width: 700,
             height: 730,
             scrollY: [
-                ".stats",
-                ".features",
-                ".items"
+                ".scroll-auto"
             ],
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats"}]
         });
@@ -80,6 +78,21 @@ export class Pl1eActorSheet extends ActorSheet {
         context.game = game;
 
         return context;
+    }
+
+    /** @override */
+    async updateData() {
+        // Call the parent method to update the sheet data
+        await super.updateData(data);
+
+        // Get the current scroll position of the sheet
+        const scrollPosition = this.element.querySelector('.sheet-body').scrollTop;
+
+        // Set the field value and preserve the scroll position
+        await this.document.update({}, {render: false, preserveScrollPosition: true});
+
+        // Set the sheet scroll position back to what it was
+        this.element.querySelector('.sheet-body').scrollTop = scrollPosition;
     }
 
     /* -------------------------------------------- */

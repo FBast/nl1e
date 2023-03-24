@@ -361,9 +361,24 @@ PL1E.abilityLinks = {
 }
 
 PL1E.attributeLinks = {
-    "passive": "PL1E.Passive",
-    "active": "PL1E.Active",
-    "child": "PL1E.Child"
+    "feature": {
+        "passive": "PL1E.Passive"
+    },
+    "ability": {
+        "passive": "PL1E.Passive",
+        "active": "PL1E.Active"
+    },
+    "weapon": {
+        "passive": "PL1E.Passive",
+        "child": "PL1E.Child"
+    },
+    "wearable": {
+        "passive": "PL1E.Passive",
+        "child": "PL1E.Child"
+    },
+    "consumable": {
+        "active": "PL1E.Active",
+    }
 }
 
 PL1E.optionalAttributes = {
@@ -451,114 +466,112 @@ PL1E.optionalAttributes = {
 }
 
 PL1E.optionalAttributesValues = {
-    "size": {
+    "setSize": {
         "value": "medium",
         "label": "PL1E.Size",
         "icon": "fas fa-arrow-up-big-small",
-        "category": "optional",
         "type": "select",
-        "path": "attributes.size",
         "operator": "set",
+        "path": "attributes.size",
         "select": "sizes"
     },
-    "speed": {
+    "setSpeed": {
         "value": 4.5,
         "label": "PL1E.Speed",
         "icon": "fas fa-person-running",
-        "category": "optional",
         "type": "number",
-        "path": "attributes.speed",
-        "operator": "set"
+        "operator": "set",
+        "path": "attributes.speed"
     },
-    "movementPenalty": {
+    "addMovementPenalty": {
         "value": 0,
         "label": "PL1E.MovementPenalty",
         "icon": "fas fa-weight-hanging",
         "type": "number",
-        "path": "attributes.movementPenalties",
-        "operator": "push"
+        "operator": "add",
+        "path": "attributes.movementPenalty"
     },
-    "parry": {
+    "addParry": {
         "value": 0,
         "label": "PL1E.Parry",
         "icon": "fas fa-shield",
-        "category": "optional",
         "type": "number",
-        "path": "attributes.parry",
+        "operator": "add",
+        "path": "attributes.parry"
     },
-    "dodge": {
+    "addDodge": {
         "value": 0,
         "label": "PL1E.Dodge",
         "icon": "fas fa-eye",
-        "category": "optional",
         "type": "number",
-        "path": "attributes.dodge",
+        "operator": "add",
+        "path": "attributes.dodge"
     },
-    "health": {
+    "addHealth": {
         "value": 0,
         "label": "PL1E.Health",
         "icon": "fas fa-heart",
         "type": "number",
+        "operator": "add",
         "path": "resources.health.value",
-        "reduction": "none",
-        "operator": "add"
+        "reduction": "none"
     },
-    "stamina": {
+    "addStamina": {
         "value": 0,
         "label": "PL1E.Stamina",
         "icon": "fas fa-wave-pulse",
         "type": "number",
+        "operator": "add",
         "path": "resources.stamina.value",
-        "reduction": "none",
-        "operator": "add"
+        "reduction": "none"
     },
-    "mana": {
+    "addMana": {
         "value": 0,
         "label": "PL1E.Mana",
         "icon": "fas fa-sparkles",
         "type": "number",
+        "operator": "add",
         "path": "resources.mana.value",
-        "reduction": "none",
-        "operator": "add"
+        "reduction": "none"
     },
     "slashingReduction": {
         "value": 0,
         "label": "PL1E.SlashingReduction",
         "icon": "far fa-axe-battle",
         "type": "number",
-        "path": "attributes.slashingReductions",
-        "operator": "push"
+        "operator": "add",
+        "path": "attributes.slashingReduction"
     },
     "crushingReduction": {
         "value": 0,
         "label": "PL1E.CrushingReduction",
         "icon": "far fa-hammer-war",
         "type": "number",
-        "path": "attributes.crushingReductions",
-        "operator": "push"
+        "operator": "add",
+        "path": "attributes.crushingReduction"
     },
     "piercingReduction": {
         "value": 0,
         "label": "PL1E.PiercingReduction",
         "icon": "far fa-dagger",
         "type": "number",
-        "path": "attributes.piercingReductions",
-        "operator": "push"
+        "operator": "add",
+        "path": "attributes.piercingReduction"
     },
     "burnReduction": {
         "value": 0,
         "label": "PL1E.BurnReduction",
         "icon": "far fa-fire",
         "type": "number",
-        "path": "attributes.burnReductions",
-        "operator": "push"
+        "operator": "add",
+        "path": "attributes.burnReduction"
     },
     "coldReduction": {
         "value": 0,
         "label": "PL1E.ColdReduction",
         "icon": "far fa-snowflake",
         "type": "number",
-        "path": "attributes.coldReductions",
+        "path": "attributes.coldReduction",
         "operator": "push"
     },
     "shockReduction": {
@@ -566,7 +579,7 @@ PL1E.optionalAttributesValues = {
         "label": "PL1E.ShockReduction",
         "icon": "far fa-bolt",
         "type": "number",
-        "path": "attributes.shockReductions",
+        "path": "attributes.shockReduction",
         "operator": "push"
     },
     "acidReduction": {
@@ -574,7 +587,7 @@ PL1E.optionalAttributesValues = {
         "label": "PL1E.AcidReduction",
         "icon": "far fa-droplet",
         "type": "number",
-        "path": "attributes.acidReductions",
+        "path": "attributes.acidReduction",
         "operator": "push"
     },
     "strengthMod": {

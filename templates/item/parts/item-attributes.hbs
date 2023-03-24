@@ -41,20 +41,25 @@
                     </select>
                 {{/if}}
                 <select name="system.optionalAttributes.{{id}}.attributeLink">
-                    {{selectOptions (config "attributeLinks") selected=attribute.attributeLink localize=true}}
+                    {{selectOptions (configEntry "attributeLinks" ../item.type) selected=attribute.attributeLink localize=true}}
                 </select>
                 {{#if (and (ne attribute.reduction undefined) (lt attribute.value 0))}}
                     <select name="system.optionalAttributes.{{id}}.reduction">
                         {{selectOptions (config "damageType") selected=attribute.reduction localize=true}}
                     </select>
                 {{/if}}
-                {{#if (ne attribute.attributeLink "passive")}}
-                    <select name="system.optionalAttributes.{{id}}.targetGroup">
-                        {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
-                    </select>
-                    <select name="system.optionalAttributes.{{id}}.resolutionType">
-                        {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}
-                    </select>
+                {{#if (and (ne attribute.attributeLink undefined) (ne attribute.attributeLink "passive"))}}
+                    {{#if (and (ne ../system.attributes.range.value undefined) (gt ../system.attributes.range.value 0))}}
+                        <select name="system.optionalAttributes.{{id}}.targetGroup">
+                            {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
+                        </select>
+                    {{/if}}
+                    {{#if (or (and (ne ../system.attributes.skillRoll undefined) (ne ../system.attributes.skillRoll.value "none"))
+                                  (and (ne ../system.abilityLink undefined) (ne ../system.attributes.abilityLink.value "none")))}}
+                        <select name="system.optionalAttributes.{{id}}.resolutionType">
+                            {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}
+                        </select>
+                    {{/if}}
                 {{/if}}
                 <a class="attribute-remove flexshrink" data-attribute={{id}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
                     <i class="fas fa-trash"></i>
