@@ -112,19 +112,19 @@ export class Pl1eActor extends Actor {
      * @private
      */
     _prepareCommonDataBefore(systemData) {
-        const actorAttributes = systemData.attributes;
+        const actorMisc = systemData.misc ;
         // Handle actorAttributes scores.
-        actorAttributes.sizeMultiplier = CONFIG.PL1E.sizeMultiplier[actorAttributes.size];
-        actorAttributes.sizeToken = CONFIG.PL1E.sizeTokens[actorAttributes.size];
+        actorMisc.sizeMultiplier = CONFIG.PL1E.sizeMultiplier[actorMisc.size];
+        actorMisc.sizeToken = CONFIG.PL1E.sizeTokens[actorMisc.size];
         if (systemData.experienceTemplate !== undefined)
-            actorAttributes.experience = CONFIG.PL1E.experienceTemplatesValues[actorAttributes.experienceTemplate];
-        actorAttributes.slots = Math.floor(actorAttributes.experience / 3);
+            actorMisc.experience = CONFIG.PL1E.experienceTemplatesValues[actorMisc.experienceTemplate];
+        actorMisc.slots = Math.floor(actorMisc.experience / 3);
         for (let otherItem of this.items) {
             if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
-            actorAttributes.slots -= otherItem.system.attributes.level.value;
+            actorMisc.slots -= otherItem.system.attributes.level.value;
         }
-        actorAttributes.ranks = actorAttributes.experience;
-        actorAttributes.maxRank = Math.min(1 + Math.floor(actorAttributes.experience / 10), 5);
+        actorMisc.ranks = actorMisc.experience;
+        actorMisc.maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
     }
 
     /**
@@ -143,7 +143,7 @@ export class Pl1eActor extends Actor {
      */
     _prepareNpcData(systemData) {
         if (this.type !== 'npc') return;
-        const actorAttributes = systemData.attributes;
+        const actorMisc = systemData.misc;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
         // Handle characteristics
@@ -153,14 +153,14 @@ export class Pl1eActor extends Actor {
         }
         // Handle skills
         let ranks = 0;
-        let maxRank = Math.min(1 + Math.floor(actorAttributes.experience / 10), 5);
+        let maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
         let keepLooping = true;
         while (keepLooping) {
             keepLooping = false;
             for (let [id, skill] of Object.entries(templateValues.skills)) {
                 let newRank = actorSkills[skill].rank + 1;
                 if (newRank > maxRank) continue;
-                if (ranks + newRank <= actorAttributes.ranks) {
+                if (ranks + newRank <= actorMisc.ranks) {
                     actorSkills[skill].rank = newRank;
                     ranks += newRank;
                     keepLooping = true;
@@ -192,7 +192,7 @@ export class Pl1eActor extends Actor {
      */
     _prepareCommonDataAfter(systemData) {
         const actorResources = systemData.resources;
-        const actorAttributes = systemData.attributes;
+        const actorMisc = systemData.misc;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
         // Handle actorCharacteristics scores.
@@ -201,14 +201,14 @@ export class Pl1eActor extends Actor {
                 + Math.max(...characteristic.mods.filter(value => value > 0), 0);
             characteristic.value = characteristic.base + characteristic.mod;
         }
-        actorAttributes.initiative = actorAttributes.speed + actorCharacteristics.agility.value +
+        actorMisc.initiative = actorMisc.speed + actorCharacteristics.agility.value +
             actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
         // Handle actorResources scores.
         for (let [id, resource] of Object.entries(actorResources)) {
             for(let characteristic of resource.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
             }
-            resource.max *= resource.multiplier * actorAttributes.sizeMultiplier;
+            resource.max *= resource.multiplier * actorMisc.sizeMultiplier;
         }
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
@@ -217,17 +217,17 @@ export class Pl1eActor extends Actor {
                 characteristicsSum += actorCharacteristics[characteristic].value;
             }
             let attributesSum = 0;
-            if (skill.weights.attributes !== undefined) {
-                for (let attribute of skill.weights.attributes) {
-                    attributesSum += actorAttributes[attribute];
+            if (skill.weights.actorMisc !== undefined) {
+                for (let misc of skill.weights.actorMisc) {
+                    attributesSum += actorMisc[misc];
                 }
             }
-            skill.numberMod = attributesSum + actorAttributes.bonuses;
+            skill.numberMod = attributesSum + actorMisc.bonuses;
             skill.number = Math.floor(characteristicsSum / skill.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
-            skill.diceMod = actorAttributes.advantages;
+            skill.diceMod = actorMisc.advantages;
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
-            if (!skill.fixedRank) actorAttributes.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
+            if (!skill.fixedRank) actorMisc.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
     }
 

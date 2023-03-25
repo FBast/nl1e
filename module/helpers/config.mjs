@@ -332,13 +332,13 @@ PL1E.damageType = {
 }
 
 PL1E.reductionsPath = {
-    "slashing": "attributes.slashingReduction",
-    "crushing": "attributes.crushingReduction",
-    "piercing": "attributes.piercingReduction",
-    "burn": "attributes.burnReduction",
-    "cold": "attributes.coldReduction",
-    "acid": "attributes.acidReduction",
-    "shock": "attributes.shockReduction",
+    "slashing": "misc.slashingReduction",
+    "crushing": "misc.crushingReduction",
+    "piercing": "misc.piercingReduction",
+    "burn": "misc.burnReduction",
+    "cold": "misc.coldReduction",
+    "acid": "misc.acidReduction",
+    "shock": "misc.shockReduction",
 }
 
 PL1E.targetGroups = {
@@ -377,281 +377,544 @@ PL1E.attributeLinks = {
         "child": "PL1E.Child"
     },
     "consumable": {
-        "active": "PL1E.Active",
+        "active": "PL1E.Active"
     }
 }
 
-PL1E.optionalAttributes = {
-    "feature": {
-        "size": "PL1E.Size",
-        "speed": "PL1E.Speed",
-        "health": "PL1E.Health",
-        "stamina": "PL1E.Stamina",
-        "mana": "PL1E.Mana",
-        "strengthMod": "PL1E.StrengthMod",
-        "agilityMod": "PL1E.AgilityMod",
-        "perceptionMod": "PL1E.PerceptionMod",
-        "constitutionMod": "PL1E.ConstitutionMod",
-        "intellectMod": "PL1E.IntellectMod",
-        "cunningMod": "PL1E.CunningMod",
-        "wisdomMod": "PL1E.WisdomMod",
-        "willMod": "PL1E.WillMod"
-    },
-    "ability": {
-        "health": "PL1E.Health",
-        "stamina": "PL1E.Stamina",
-        "mana": "PL1E.Mana",
-        "strengthMod": "PL1E.StrengthMod",
-        "agilityMod": "PL1E.AgilityMod",
-        "perceptionMod": "PL1E.PerceptionMod",
-        "constitutionMod": "PL1E.ConstitutionMod",
-        "intellectMod": "PL1E.IntellectMod",
-        "cunningMod": "PL1E.CunningMod",
-        "wisdomMod": "PL1E.WisdomMod",
-        "willMod": "PL1E.WillMod"
-    },
-    "weapon": {
-        "movementPenalty": "PL1E.MovementPenalty",
-        "parry": "PL1E.Parry",
-        "dodge": "PL1E.Dodge",
-        "health": "PL1E.Health",
-        "stamina": "PL1E.Stamina",
-        "mana": "PL1E.Mana",
-        "strengthMod": "PL1E.StrengthMod",
-        "agilityMod": "PL1E.AgilityMod",
-        "perceptionMod": "PL1E.PerceptionMod",
-        "constitutionMod": "PL1E.ConstitutionMod",
-        "intellectMod": "PL1E.IntellectMod",
-        "cunningMod": "PL1E.CunningMod",
-        "wisdomMod": "PL1E.WisdomMod",
-        "willMod": "PL1E.WillMod"
-    },
-    "wearable": {
-        "movementPenalty": "PL1E.MovementPenalty",
-        "parry": "PL1E.Parry",
-        "dodge": "PL1E.Dodge",
-        "slashingReduction": "PL1E.SlashingReduction",
-        "crushingReduction": "PL1E.CrushingReduction",
-        "piercingReduction": "PL1E.PiercingReduction",
-        "burnReduction": "PL1E.BurnReduction",
-        "coldReduction": "PL1E.ColdReduction",
-        "acidReduction": "PL1E.AcidReduction",
-        "shockReduction": "PL1E.ShockReduction",
-        "strengthMod": "PL1E.StrengthMod",
-        "agilityMod": "PL1E.AgilityMod",
-        "perceptionMod": "PL1E.PerceptionMod",
-        "constitutionMod": "PL1E.ConstitutionMod",
-        "intellectMod": "PL1E.IntellectMod",
-        "cunningMod": "PL1E.CunningMod",
-        "wisdomMod": "PL1E.WisdomMod",
-        "willMod": "PL1E.WillMod"
-    },
-    "consumable": {
-        "size": "PL1E.Size",
-        "speed": "PL1E.Speed",
-        "parry": "PL1E.Parry",
-        "dodge": "PL1E.Dodge",
-        "burnReduction": "PL1E.BurnReduction",
-        "coldReduction": "PL1E.ColdReduction",
-        "acidReduction": "PL1E.AcidReduction",
-        "shockReduction": "PL1E.ShockReduction",
-        "burn": "PL1E.Burn",
-        "cold": "PL1E.Cold",
-        "shock": "PL1E.Shock",
-        "acid": "PL1E.Acid",
-        "health": "PL1E.Health",
-        "stamina": "PL1E.Stamina",
-        "mana": "PL1E.Mana"
-    }
-}
-
-PL1E.optionalAttributesValues = {
-    "size": {
-        "value": "medium",
-        "label": "PL1E.Size",
-        "icon": "fas fa-arrow-up-big-small",
-        "type": "select",
-        "operator": "",
-        "path": "attributes.size",
-        "select": "sizes"
-    },
-    "speed": {
-        "value": 4.5,
-        "label": "PL1E.Speed",
-        "icon": "fas fa-person-running",
-        "type": "number",
-        "operator": "set",
-        "path": "attributes.speed"
-    },
-    "movementPenalty": {
-        "value": 0,
-        "label": "PL1E.MovementPenalty",
-        "icon": "fas fa-weight-hanging",
-        "type": "number",
-        "operator": "add",
-        "path": "attributes.movementPenalty"
-    },
-    "parry": {
-        "value": 0,
-        "label": "PL1E.Parry",
-        "icon": "fas fa-shield",
-        "type": "number",
-        "operator": "add",
-        "path": "attributes.parry"
-    },
-    "dodge": {
-        "value": 0,
-        "label": "PL1E.Dodge",
-        "icon": "fas fa-eye",
-        "type": "number",
-        "operator": "add",
-        "path": "attributes.dodge"
-    },
+PL1E.resources = {
     "health": {
-        "value": 0,
         "label": "PL1E.Health",
         "icon": "fas fa-heart",
         "type": "number",
-        "operator": "add",
         "path": "resources.health.value",
-        "reduction": "none"
+        "operator": "add"
     },
     "stamina": {
-        "value": 0,
         "label": "PL1E.Stamina",
         "icon": "fas fa-wave-pulse",
         "type": "number",
-        "operator": "add",
         "path": "resources.stamina.value",
-        "reduction": "none"
+        "operator": "add"
     },
     "mana": {
-        "value": 0,
         "label": "PL1E.Mana",
         "icon": "fas fa-sparkles",
         "type": "number",
-        "operator": "add",
         "path": "resources.mana.value",
-        "reduction": "none"
-    },
-    "slashingReduction": {
-        "value": 0,
-        "label": "PL1E.SlashingReduction",
-        "icon": "far fa-axe-battle",
+        "operator": "add"
+    }
+}
+
+PL1E.characteristics = {
+    "health": {
+        "label": "PL1E.Health",
+        "icon": "fas fa-heart",
         "type": "number",
+        "path": "resources.health.value",
+        "operator": "add"
+    },
+    "stamina": {
+        "label": "PL1E.Stamina",
+        "icon": "fas fa-wave-pulse",
+        "type": "number",
+        "path": "resources.stamina.value",
         "operator": "add",
-        "path": "attributes.slashingReduction"
     },
-    "crushingReduction": {
-        "value": 0,
-        "label": "PL1E.CrushingReduction",
-        "icon": "far fa-hammer-war",
+    "mana": {
+        "label": "PL1E.Mana",
+        "icon": "fas fa-sparkles",
         "type": "number",
+        "path": "resources.mana.value",
         "operator": "add",
-        "path": "attributes.crushingReduction"
-    },
-    "piercingReduction": {
-        "value": 0,
-        "label": "PL1E.PiercingReduction",
-        "icon": "far fa-dagger",
-        "type": "number",
-        "operator": "add",
-        "path": "attributes.piercingReduction"
-    },
-    "burnReduction": {
-        "value": 0,
-        "label": "PL1E.BurnReduction",
-        "icon": "far fa-fire",
-        "type": "number",
-        "operator": "add",
-        "path": "attributes.burnReduction"
-    },
-    "coldReduction": {
-        "value": 0,
-        "label": "PL1E.ColdReduction",
-        "icon": "far fa-snowflake",
-        "type": "number",
-        "path": "attributes.coldReduction",
-        "operator": "push"
-    },
-    "shockReduction": {
-        "value": 0,
-        "label": "PL1E.ShockReduction",
-        "icon": "far fa-bolt",
-        "type": "number",
-        "path": "attributes.shockReduction",
-        "operator": "push"
-    },
-    "acidReduction": {
-        "value": 0,
-        "label": "PL1E.AcidReduction",
-        "icon": "far fa-droplet",
-        "type": "number",
-        "path": "attributes.acidReduction",
-        "operator": "push"
-    },
-    "strengthMod": {
-        "value": 0,
-        "label": "PL1E.StrengthMod",
+    }
+}
+
+PL1E.skills = {
+    "strength": {
+        "label": "PL1E.Strength",
         "icon": "fas fa-dumbbell",
         "type": "number",
         "path": "characteristics.strength.mods",
         "operator": "push",
     },
-    "agilityMod": {
-        "value": 0,
-        "label": "PL1E.AgilityMod",
+    "agility": {
+        "label": "PL1E.Agility",
         "icon": "fas fa-dumbbell",
         "type": "number",
         "path": "characteristics.agility.mods",
         "operator": "push",
     },
-    "perceptionMod": {
-        "value": 0,
-        "label": "PL1E.PerceptionMod",
+    "perception": {
+        "label": "PL1E.Perception",
         "icon": "fas fa-dumbbell",
         "type": "number",
         "path": "characteristics.perception.mods",
         "operator": "push"
     },
-    "constitutionMod": {
-        "value": 0,
-        "label": "PL1E.ConstitutionMod",
+    "constitution": {
+        "label": "PL1E.Constitution",
         "icon": "fas fa-dumbbell",
         "type": "number",
         "path": "characteristics.constitution.mods",
         "operator": "push"
     },
-    "intellectMod": {
-        "value": 0,
-        "label": "PL1E.IntellectMod",
+    "intellect": {
+        "label": "PL1E.Intellect",
         "icon": "fas fa-dumbbell",
         "type": "number",
         "path": "characteristics.intellect.mods",
         "operator": "push"
     },
-    "cunningMod": {
-        "value": 0,
-        "label": "PL1E.CunningMod",
+    "cunning": {
+        "label": "PL1E.Cunning",
         "icon": "fas fa-dumbbell",
         "type": "number",
         "path": "characteristics.cunning.mods",
         "operator": "push"
     },
-    "wisdomMod": {
-        "value": 0,
-        "label": "PL1E.WisdomMod",
+    "wisdom": {
+        "label": "PL1E.Wisdom",
         "icon": "fas fa-dumbbell",
         "type": "number",
         "path": "characteristics.wisdom.mods",
         "operator": "push"
     },
-    "willMod": {
-        "value": 0,
-        "label": "PL1E.WillMod",
+    "will": {
+        "label": "PL1E.Will",
         "icon": "fas fa-dumbbell",
         "type": "number",
         "path": "characteristics.will.mods",
         "operator": "push"
     }
+}
+
+PL1E.misc = {
+    "size": {
+        "label": "PL1E.Size",
+        "icon": "fas fa-arrow-up-big-small",
+        "type": "select",
+        "path": "misc.size",
+        "select": "sizes",
+        "operator": "set"
+    },
+    "speed": {
+        "label": "PL1E.Speed",
+        "icon": "fas fa-person-running",
+        "type": "number",
+        "path": "misc.speed",
+        "operator": "set"
+    },
+    "movementPenalty": {
+        "label": "PL1E.MovementPenalty",
+        "icon": "fas fa-weight-hanging",
+        "type": "number",
+        "path": "misc.movementPenalty",
+        "operator": "add"
+    },
+    "parry": {
+        "label": "PL1E.Parry",
+        "icon": "fas fa-shield",
+        "type": "number",
+        "path": "misc.parry",
+        "operator": "add"
+    },
+    "dodge": {
+        "label": "PL1E.Dodge",
+        "icon": "fas fa-eye",
+        "type": "number",
+        "path": "misc.dodge",
+        "operator": "add"
+    },
+    "slashingReduction": {
+        "label": "PL1E.SlashingReduction",
+        "icon": "far fa-axe-battle",
+        "type": "number",
+        "path": "misc.slashingReduction",
+        "operator": "add"
+    },
+    "crushingReduction": {
+        "label": "PL1E.CrushingReduction",
+        "icon": "far fa-hammer-war",
+        "type": "number",
+        "path": "misc.crushingReduction",
+        "operator": "add"
+    },
+    "piercingReduction": {
+        "label": "PL1E.PiercingReduction",
+        "icon": "far fa-dagger",
+        "type": "number",
+        "path": "misc.piercingReduction",
+        "operator": "add"
+    },
+    "burnReduction": {
+        "label": "PL1E.BurnReduction",
+        "icon": "far fa-fire",
+        "type": "number",
+        "path": "misc.burnReduction",
+        "operator": "add"
+    },
+    "coldReduction": {
+        "label": "PL1E.ColdReduction",
+        "icon": "far fa-snowflake",
+        "type": "number",
+        "path": "misc.coldReduction",
+        "operator": "push"
+    },
+    "shockReduction": {
+        "label": "PL1E.ShockReduction",
+        "icon": "far fa-bolt",
+        "type": "number",
+        "path": "misc.shockReduction",
+        "operator": "push"
+    },
+    "acidReduction": {
+        "label": "PL1E.AcidReduction",
+        "icon": "far fa-droplet",
+        "type": "number",
+        "path": "misc.acidReduction",
+        "operator": "push"
+    }
+}
+
+PL1E.optionalAttributes = {
+    "feature": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "set": "PL1E.Set"
+    },
+    "ability": {
+        "damage": "PL1E.Damage",
+        "heal": "PL1E.Heal",
+        "transfer": "PL1E.Transfer",
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "set": "PL1E.Set"
+    },
+    "weapon": {
+        "damage": "PL1E.Damage",
+        "heal": "PL1E.Heal",
+        "transfer": "PL1E.Transfer",
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "set": "PL1E.Set"
+    },
+    "wearable": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "set": "PL1E.Set"
+    },
+    "consumable": {
+        "damage": "PL1E.Damage",
+        "heal": "PL1E.Heal",
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "set": "PL1E.Set"
+    }
+    // "feature": {
+    //     "size": "PL1E.Size",
+    //     "speed": "PL1E.Speed",
+    //     "health": "PL1E.Health",
+    //     "stamina": "PL1E.Stamina",
+    //     "mana": "PL1E.Mana",
+    //     "strengthMod": "PL1E.StrengthMod",
+    //     "agilityMod": "PL1E.AgilityMod",
+    //     "perceptionMod": "PL1E.PerceptionMod",
+    //     "constitutionMod": "PL1E.ConstitutionMod",
+    //     "intellectMod": "PL1E.IntellectMod",
+    //     "cunningMod": "PL1E.CunningMod",
+    //     "wisdomMod": "PL1E.WisdomMod",
+    //     "willMod": "PL1E.WillMod"
+    // },
+    // "ability": {
+    //     "health": "PL1E.Health",
+    //     "stamina": "PL1E.Stamina",
+    //     "mana": "PL1E.Mana",
+    //     "strengthMod": "PL1E.StrengthMod",
+    //     "agilityMod": "PL1E.AgilityMod",
+    //     "perceptionMod": "PL1E.PerceptionMod",
+    //     "constitutionMod": "PL1E.ConstitutionMod",
+    //     "intellectMod": "PL1E.IntellectMod",
+    //     "cunningMod": "PL1E.CunningMod",
+    //     "wisdomMod": "PL1E.WisdomMod",
+    //     "willMod": "PL1E.WillMod"
+    // },
+    // "weapon": {
+    //     "movementPenalty": "PL1E.MovementPenalty",
+    //     "parry": "PL1E.Parry",
+    //     "dodge": "PL1E.Dodge",
+    //     "health": "PL1E.Health",
+    //     "stamina": "PL1E.Stamina",
+    //     "mana": "PL1E.Mana",
+    //     "strengthMod": "PL1E.StrengthMod",
+    //     "agilityMod": "PL1E.AgilityMod",
+    //     "perceptionMod": "PL1E.PerceptionMod",
+    //     "constitutionMod": "PL1E.ConstitutionMod",
+    //     "intellectMod": "PL1E.IntellectMod",
+    //     "cunningMod": "PL1E.CunningMod",
+    //     "wisdomMod": "PL1E.WisdomMod",
+    //     "willMod": "PL1E.WillMod"
+    // },
+    // "wearable": {
+    //     "movementPenalty": "PL1E.MovementPenalty",
+    //     "parry": "PL1E.Parry",
+    //     "dodge": "PL1E.Dodge",
+    //     "slashingReduction": "PL1E.SlashingReduction",
+    //     "crushingReduction": "PL1E.CrushingReduction",
+    //     "piercingReduction": "PL1E.PiercingReduction",
+    //     "burnReduction": "PL1E.BurnReduction",
+    //     "coldReduction": "PL1E.ColdReduction",
+    //     "acidReduction": "PL1E.AcidReduction",
+    //     "shockReduction": "PL1E.ShockReduction",
+    //     "strengthMod": "PL1E.StrengthMod",
+    //     "agilityMod": "PL1E.AgilityMod",
+    //     "perceptionMod": "PL1E.PerceptionMod",
+    //     "constitutionMod": "PL1E.ConstitutionMod",
+    //     "intellectMod": "PL1E.IntellectMod",
+    //     "cunningMod": "PL1E.CunningMod",
+    //     "wisdomMod": "PL1E.WisdomMod",
+    //     "willMod": "PL1E.WillMod"
+    // },
+    // "consumable": {
+    //     "size": "PL1E.Size",
+    //     "speed": "PL1E.Speed",
+    //     "parry": "PL1E.Parry",
+    //     "dodge": "PL1E.Dodge",
+    //     "burnReduction": "PL1E.BurnReduction",
+    //     "coldReduction": "PL1E.ColdReduction",
+    //     "acidReduction": "PL1E.AcidReduction",
+    //     "shockReduction": "PL1E.ShockReduction",
+    //     "burn": "PL1E.Burn",
+    //     "cold": "PL1E.Cold",
+    //     "shock": "PL1E.Shock",
+    //     "acid": "PL1E.Acid",
+    //     "health": "PL1E.Health",
+    //     "stamina": "PL1E.Stamina",
+    //     "mana": "PL1E.Mana"
+    // }
+}
+
+PL1E.optionalAttributesValues = {
+    "damage": {
+        "value": 0,
+        "targets": ["resources"],
+        "target": "health",
+        "reduction": "none"
+    },
+    "heal": {
+        "value": 0,
+        "targets": ["resources"],
+        "target": "health"
+    },
+    "transfer": {
+        "value": 0,
+        "reduction": "none",
+        "targets": ["resources"],
+        "target": "health"
+    },
+    "increase": {
+        "value": 0,
+        "reduction": "none",
+        "targets": ["characteristics", "misc"],
+        "target": "health"
+    },
+    "decrease": {
+        "value": 0,
+        "reduction": "none",
+        "targets": ["characteristics", "misc"],
+        "target": "health"
+    },
+    "set": {
+        "value": 0,
+        "reduction": "none",
+        "targets": ["characteristics", "misc"],
+        "target": "health"
+    }
+    // "size": {
+    //     "value": "medium",
+    //     "label": "PL1E.Size",
+    //     "icon": "fas fa-arrow-up-big-small",
+    //     "type": "select",
+    //     "operator": "",
+    //     "path": "misc.size",
+    //     "select": "sizes"
+    // },
+    // "speed": {
+    //     "value": 4.5,
+    //     "label": "PL1E.Speed",
+    //     "icon": "fas fa-person-running",
+    //     "type": "number",
+    //     "operator": "set",
+    //     "path": "misc.speed"
+    // },
+    // "movementPenalty": {
+    //     "value": 0,
+    //     "label": "PL1E.MovementPenalty",
+    //     "icon": "fas fa-weight-hanging",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "misc.movementPenalty"
+    // },
+    // "parry": {
+    //     "value": 0,
+    //     "label": "PL1E.Parry",
+    //     "icon": "fas fa-shield",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "misc.parry"
+    // },
+    // "dodge": {
+    //     "value": 0,
+    //     "label": "PL1E.Dodge",
+    //     "icon": "fas fa-eye",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "misc.dodge"
+    // },
+    // "health": {
+    //     "value": 0,
+    //     "label": "PL1E.Health",
+    //     "icon": "fas fa-heart",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "resources.health.value",
+    //     "reduction": "none"
+    // },
+    // "stamina": {
+    //     "value": 0,
+    //     "label": "PL1E.Stamina",
+    //     "icon": "fas fa-wave-pulse",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "resources.stamina.value",
+    //     "reduction": "none"
+    // },
+    // "mana": {
+    //     "value": 0,
+    //     "label": "PL1E.Mana",
+    //     "icon": "fas fa-sparkles",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "resources.mana.value",
+    //     "reduction": "none"
+    // },
+    // "slashingReduction": {
+    //     "value": 0,
+    //     "label": "PL1E.SlashingReduction",
+    //     "icon": "far fa-axe-battle",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "misc.slashingReduction"
+    // },
+    // "crushingReduction": {
+    //     "value": 0,
+    //     "label": "PL1E.CrushingReduction",
+    //     "icon": "far fa-hammer-war",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "misc.crushingReduction"
+    // },
+    // "piercingReduction": {
+    //     "value": 0,
+    //     "label": "PL1E.PiercingReduction",
+    //     "icon": "far fa-dagger",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "misc.piercingReduction"
+    // },
+    // "burnReduction": {
+    //     "value": 0,
+    //     "label": "PL1E.BurnReduction",
+    //     "icon": "far fa-fire",
+    //     "type": "number",
+    //     "operator": "add",
+    //     "path": "misc.burnReduction"
+    // },
+    // "coldReduction": {
+    //     "value": 0,
+    //     "label": "PL1E.ColdReduction",
+    //     "icon": "far fa-snowflake",
+    //     "type": "number",
+    //     "path": "misc.coldReduction",
+    //     "operator": "push"
+    // },
+    // "shockReduction": {
+    //     "value": 0,
+    //     "label": "PL1E.ShockReduction",
+    //     "icon": "far fa-bolt",
+    //     "type": "number",
+    //     "path": "misc.shockReduction",
+    //     "operator": "push"
+    // },
+    // "acidReduction": {
+    //     "value": 0,
+    //     "label": "PL1E.AcidReduction",
+    //     "icon": "far fa-droplet",
+    //     "type": "number",
+    //     "path": "misc.acidReduction",
+    //     "operator": "push"
+    // },
+    // "strengthMod": {
+    //     "value": 0,
+    //     "label": "PL1E.StrengthMod",
+    //     "icon": "fas fa-dumbbell",
+    //     "type": "number",
+    //     "path": "characteristics.strength.mods",
+    //     "operator": "push",
+    // },
+    // "agilityMod": {
+    //     "value": 0,
+    //     "label": "PL1E.AgilityMod",
+    //     "icon": "fas fa-dumbbell",
+    //     "type": "number",
+    //     "path": "characteristics.agility.mods",
+    //     "operator": "push",
+    // },
+    // "perceptionMod": {
+    //     "value": 0,
+    //     "label": "PL1E.PerceptionMod",
+    //     "icon": "fas fa-dumbbell",
+    //     "type": "number",
+    //     "path": "characteristics.perception.mods",
+    //     "operator": "push"
+    // },
+    // "constitutionMod": {
+    //     "value": 0,
+    //     "label": "PL1E.ConstitutionMod",
+    //     "icon": "fas fa-dumbbell",
+    //     "type": "number",
+    //     "path": "characteristics.constitution.mods",
+    //     "operator": "push"
+    // },
+    // "intellectMod": {
+    //     "value": 0,
+    //     "label": "PL1E.IntellectMod",
+    //     "icon": "fas fa-dumbbell",
+    //     "type": "number",
+    //     "path": "characteristics.intellect.mods",
+    //     "operator": "push"
+    // },
+    // "cunningMod": {
+    //     "value": 0,
+    //     "label": "PL1E.CunningMod",
+    //     "icon": "fas fa-dumbbell",
+    //     "type": "number",
+    //     "path": "characteristics.cunning.mods",
+    //     "operator": "push"
+    // },
+    // "wisdomMod": {
+    //     "value": 0,
+    //     "label": "PL1E.WisdomMod",
+    //     "icon": "fas fa-dumbbell",
+    //     "type": "number",
+    //     "path": "characteristics.wisdom.mods",
+    //     "operator": "push"
+    // },
+    // "willMod": {
+    //     "value": 0,
+    //     "label": "PL1E.WillMod",
+    //     "icon": "fas fa-dumbbell",
+    //     "type": "number",
+    //     "path": "characteristics.will.mods",
+    //     "operator": "push"
+    // }
 }

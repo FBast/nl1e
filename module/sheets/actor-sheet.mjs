@@ -297,7 +297,7 @@ export class Pl1eActorSheet extends ActorSheet {
         let value = $(event.currentTarget).data("value");
         if (!value || !characteristic) return;
 
-        let remaining = this.actor.system.attributes.remainingCharacteristics;
+        let remaining = this.actor.system.misc.remainingCharacteristics;
         if (remaining === 0 && value > 0) return;
 
         let oldValue = this.actor.system.characteristics[characteristic].base;
@@ -307,7 +307,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         await this.actor.update({
             ["system.characteristics." + characteristic + ".base"]: newValue,
-            ["system.attributes.remainingCharacteristics"]: remaining - value
+            ["system.misc.remainingCharacteristics"]: remaining - value
         });
 
         this.render(false);
@@ -323,10 +323,10 @@ export class Pl1eActorSheet extends ActorSheet {
         const skill = $(event.currentTarget).data("skill");
         if (!skill) return;
         let oldValue = this.actor.system.skills[skill].rank;
-        let maxRank = this.actor.system.attributes.maxRank;
+        let maxRank = this.actor.system.misc.maxRank;
         let newValue = oldValue + 1;
-        if (newValue > maxRank || this.actor.system.attributes.ranks - newValue < 0) {
-            if (this.actor.system.attributes.creationMod) newValue = 1;
+        if (newValue > maxRank || this.actor.system.misc.ranks - newValue < 0) {
+            if (this.actor.system.misc.creationMod) newValue = 1;
             else return;
         }
         await this.actor.update({

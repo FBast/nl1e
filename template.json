@@ -148,7 +148,7 @@
             "divider": 3,
             "weights": {
               "characteristics": ["strength", "constitution"],
-              "attributes": ["parryBonuses"]
+              "misc": ["parryBonuses"]
             }
           },
           "dodge": {
@@ -158,7 +158,7 @@
             "divider": 2,
             "weights": {
               "characteristics": ["agility", "perception"],
-              "attributes": ["dodgeBonuses", "movementPenalty"]
+              "misc": ["dodgeBonuses", "movementPenalty"]
             }
           },
           "vigor": {
@@ -177,7 +177,7 @@
             "divider": 2,
             "weights": {
               "characteristics": ["agility", "perception"],
-              "attributes": ["movementPenalty"]
+              "misc": ["movementPenalty"]
             }
           },
           "resilience": {
@@ -228,7 +228,7 @@
             "magicPenalty": false,
             "weights": {
               "characteristics": ["strength", "constitution"],
-              "attributes": ["movementPenalty"]
+              "misc": ["movementPenalty"]
             }
           },
           "acrobatics": {
@@ -239,7 +239,7 @@
             "magicPenalty": false,
             "weights": {
               "characteristics": ["agility", "perception"],
-              "attributes": ["movementPenalty"]
+              "misc": ["movementPenalty"]
             }
           },
           "accuracy": {
@@ -250,7 +250,7 @@
             "magicPenalty": false,
             "weights": {
               "characteristics": ["agility", "perception"],
-              "attributes": ["movementPenalty"]
+              "misc": ["movementPenalty"]
             }
           },
           "search": {
@@ -281,7 +281,7 @@
             "magicPenalty": false,
             "weights": {
               "characteristics": ["agility", "perception"],
-              "attributes": ["movementPenalty"]
+              "misc": ["movementPenalty"]
             }
           },
           "performance": {
@@ -352,7 +352,7 @@
             "magicPenalty": true,
             "weights": {
               "characteristics": ["wisdom", "will"],
-              "attributes": ["movementPenalty"]
+              "misc": ["movementPenalty"]
             }
           },
           "secularMagic": {
@@ -363,11 +363,11 @@
             "magicPenalty": true,
             "weights": {
               "characteristics": ["intellect", "cunning"],
-              "attributes": ["movementPenalty"]
+              "misc": ["movementPenalty"]
             }
           }
         },
-        "attributes": {
+        "misc": {
           "creationMod": true,
           "experience": 10,
           "remainingCharacteristics": 8,
