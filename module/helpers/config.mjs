@@ -41,6 +41,16 @@ PL1E.characteristics = {
     "will": "PL1E.Will"
 }
 
+PL1E.reductions = {
+    "slashing": "PL1E.Slashing",
+    "crushing": "PL1E.Crushing",
+    "piercing": "PL1E.Piercing",
+    "burn": "PL1E.Burn",
+    "cold": "PL1E.Cold",
+    "acid": "PL1E.Acid",
+    "shock": "PL1E.Shock",
+}
+
 PL1E.misc = {
     "size": "PL1E.Size",
     "speed": "PL1E.Speed",
