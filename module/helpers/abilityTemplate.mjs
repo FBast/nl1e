@@ -31,7 +31,7 @@ export class AbilityTemplate extends MeasuredTemplate {
    * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
    */
   static async fromItem(item, itemAttributes, optionalAttributes) {
-    const areaType = itemAttributes.areaType.value;
+    const areaShape = itemAttributes.areaShape.value;
 
     // Save targetGroups for token selection
     let targetGroups = [];
@@ -42,7 +42,7 @@ export class AbilityTemplate extends MeasuredTemplate {
 
     // Prepare template data
     const templateData = {
-      t: areaType,
+      t: areaShape,
       user: game.user.id,
       direction: 0,
       x: 0,
@@ -52,7 +52,7 @@ export class AbilityTemplate extends MeasuredTemplate {
     };
 
     // Additional type-specific data
-    switch (areaType) {
+    switch (areaShape) {
       case "target":
         const gridSize = game.system.gridDistance;
         templateData.t = "rect";
@@ -68,10 +68,11 @@ export class AbilityTemplate extends MeasuredTemplate {
         templateData.distance = itemAttributes.coneLength.value * game.system.gridDistance;
         templateData.angle = itemAttributes.coneAngle.value;
         break;
-      case "rect":
-        templateData.distance = itemAttributes.rectLength.value * game.system.gridDistance;
-        templateData.width = itemAttributes.rectWidth.value * game.system.gridDistance;
-        templateData.height = itemAttributes.rectLength.value * game.system.gridDistance;
+      case "square":
+        templateData.t = "rect";
+        templateData.distance = itemAttributes.squareLength.value * game.system.gridDistance;
+        templateData.width = itemAttributes.squareLength.value * game.system.gridDistance;
+        templateData.height = itemAttributes.squareLength.value * game.system.gridDistance;
         templateData.direction = 45;
         break;
       case "ray":
@@ -215,7 +216,7 @@ export class AbilityTemplate extends MeasuredTemplate {
   */
   _onRotatePlacement(event) {
     if ( event.ctrlKey ) event.preventDefault(); // Avoid zooming the browser window
-    if (["rect", "circle"].includes(this.document.t)) return;
+    if (["square", "circle"].includes(this.document.t)) return;
     event.stopPropagation();
     let delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
     let snap = (event.shiftKey ? delta : 5);

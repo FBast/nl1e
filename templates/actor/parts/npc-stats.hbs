@@ -114,19 +114,19 @@
                         <label>{{item.name}}</label>
                     </div>
                     <div class="item-controls">
-                        {{#if (eq item.system.attributes.slot.value "clothes")}}
+                        {{#if (eq item.system.misc.slot.value "clothes")}}
                             <a class="item-control item-toggle" data-tooltip='Reloadable'>
                                 <i class="fas fa-shirt-long-sleeve {{#unless item.system.isEquipped}}item-inactive{{/unless}}"></i>
                             </a>
-                        {{else if (eq item.system.attributes.slot.value "armor")}}
+                        {{else if (eq item.system.misc.slot.value "armor")}}
                             <a class="item-control item-toggle" data-tooltip='Reloadable'>
                                 <i class="fas fa-helmet-battle {{#unless item.system.isEquipped}}item-inactive{{/unless}}"></i>
                             </a>
-                        {{else if (eq item.system.attributes.slot.value "ring")}}
+                        {{else if (eq item.system.misc.slot.value "ring")}}
                             <a class="item-control item-toggle" data-tooltip='Reloadable'>
                                 <i class="fas fa-ring {{#unless item.system.isEquipped}}item-inactive{{/unless}}"></i>
                             </a>
-                        {{else if (eq item.system.attributes.slot.value "amulet")}}
+                        {{else if (eq item.system.misc.slot.value "amulet")}}
                             <a class="item-control item-toggle" data-tooltip='Reloadable'>
                                 <i class="fas fa-gem {{#unless item.system.isEquipped}}item-inactive{{/unless}}"></i>
                             </a>
@@ -221,73 +221,73 @@
             </div>
             <div class="form-group grid grid-2col attribute">
                 <label>{{localize "PL1E.Slots"}}</label>
-                <label class="align-right">{{system.attributes.slots}}</label>
+                <label class="align-right">{{system.misc.slots}}</label>
             </div>
             <div class="form-group grid grid-2col attribute">
                 <label>{{localize "PL1E.Ranks"}}</label>
-                <label class="align-right">{{system.attributes.ranks}}</label>
+                <label class="align-right">{{system.misc.ranks}}</label>
             </div>
         </fieldset>
         <fieldset>
             <legend class="section-header">{{localize "PL1E.Base"}}</legend>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.Size"}}</label>
-                <label class="align-right">{{localize (configEntry "sizes" system.attributes.size)}}</label>
+                <label class="align-right">{{localize (configEntry "sizes" system.misc.size)}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.Speed"}}</label>
-                <label class="align-right">{{system.attributes.speed}}</label>
+                <label class="align-right">{{system.misc.speed}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.Initiative"}}</label>
-                <label class="align-right">{{system.attributes.initiative}}</label>
+                <label class="align-right">{{system.misc.initiative}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.DodgeBonuses"}}</label>
-                <label class="align-right">{{system.attributes.dodgeBonuses}}</label>
+                <label class="align-right">{{system.misc.dodgeBonuses}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.ParryBonuses"}}</label>
-                <label class="align-right">{{system.attributes.parryBonuses}}</label>
+                <label class="align-right">{{system.misc.parryBonuses}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.MovementPenalty"}}</label>
-                <label class="align-right">{{system.attributes.movementPenalty}}</label>
+                <label class="align-right">{{system.misc.movementPenalty}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.NightVision"}}</label>
-                <label class="align-right">{{system.attributes.nightVision}}</label>
+                <label class="align-right">{{system.misc.nightVision}}</label>
             </div>
         </fieldset>
         <fieldset>
             <legend class="section-header">{{localize "PL1E.Reduction"}}</legend>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.SlashingReduction"}}</label>
-                <label class="align-right">{{system.attributes.slashingReduction}}</label>
+                <label class="align-right">{{system.misc.slashingReduction}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.CrushingReduction"}}</label>
-                <label class="align-right">{{system.attributes.crushingReduction}}</label>
+                <label class="align-right">{{system.misc.crushingReduction}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.PiercingReduction"}}</label>
-                <label class="align-right">{{system.attributes.piercingReduction}}</label>
+                <label class="align-right">{{system.misc.piercingReduction}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.BurnReduction"}}</label>
-                <label class="align-right">{{system.attributes.burnReduction}}</label>
+                <label class="align-right">{{system.misc.burnReduction}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.ColdReduction"}}</label>
-                <label class="align-right">{{system.attributes.coldReduction}}</label>
+                <label class="align-right">{{system.misc.coldReduction}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.AcidReduction"}}</label>
-                <label class="align-right">{{system.attributes.acidReduction}}</label>
+                <label class="align-right">{{system.misc.acidReduction}}</label>
             </div>
             <div class="form-group attribute">
                 <label>{{localize "PL1E.ShockReduction"}}</label>
-                <label class="align-right">{{system.attributes.shockReduction}}</label>
+                <label class="align-right">{{system.misc.shockReduction}}</label>
             </div>
         </fieldset>
     </div>

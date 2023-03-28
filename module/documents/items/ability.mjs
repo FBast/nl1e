@@ -24,7 +24,7 @@ export class Pl1eAbility extends Pl1eSubItem {
 
     /** @override */
     async toggle(options) {
-        if (!this.item.system.isMemorized && this.actor.system.attributes.slots - this.item.system.attributes.level.value < 0) return;
+        if (!this.item.system.isMemorized && this.actor.system.misc.slots - this.item.system.attributes.level.value < 0) return;
 
         await this.item.update({
             ["system.isMemorized"]: !this.item.system.isMemorized
@@ -82,6 +82,19 @@ export class Pl1eAbility extends Pl1eSubItem {
             }
         }
 
+        // Roll Data
+        let rollResult = 0;
+        if (attributes.skillRoll.value !== 'none') {
+            const mainSkill = this.actor.system.skills[attributes.skillRoll.value];
+            rollResult = await this.actor.rollSkill(mainSkill);
+        }
+
+        // Calculate launcher attributes
+        for (let [id, attribute] of Object.entries(attributes)) {
+            attribute = this._calculateAttribute(attribute, rollResult, this.actor)
+            //TODO-fred does not persist
+        }
+
         // Target selection template
         const templates = [];
         if (attributes.areaNumber.value !== 0) {
@@ -97,14 +110,7 @@ export class Pl1eAbility extends Pl1eSubItem {
         // Return if no area defined
         if (attributes.areaNumber.value > 0 && templates.length === 0) return;
 
-        // Roll Data
-        let rollResult = 0;
-        if (attributes.skillRoll.value !== 'none') {
-            const mainSkill = this.actor.system.skills[attributes.skillRoll.value];
-            rollResult = await this.actor.rollSkill(mainSkill);
-        }
-
-        // Calculate launcher attributes
+        // Calculate launcher optionalAttributes
         let calculatedAttributes = [];
         calculatedAttributes.push()
         for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {

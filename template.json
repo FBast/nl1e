@@ -514,33 +514,28 @@
           "type": "select",
           "select": "abilitySkills"
         },
-        "oppositeRolls": {
-          "value": "none",
-          "label": "PL1E.OppositeRolls",
-          "category": "fixed",
-          "type": "select",
-          "select": "abilitySkills"
-        },
         "range": {
           "value": 0,
           "label": "PL1E.Range",
           "category": "fixed",
-          "type": "number"
+          "type": "number",
+          "resolutionType": "value"
         },
         "areaNumber": {
           "value": 1,
           "label": "PL1E.AreaNumber",
           "category": "fixed",
           "type": "number",
+          "resolutionType": "value",
           "conditions": "range!==0",
           "fallback": 1
         },
-        "areaType": {
+        "areaShape": {
           "value": "circle",
-          "label": "PL1E.AreaType",
+          "label": "PL1E.areaShape",
           "category": "fixed",
           "type": "select",
-          "select": "areaTypes",
+          "select": "areaShapes",
           "fallback": "circle"
         },
         "circleRadius": {
@@ -548,7 +543,8 @@
           "label": "PL1E.CircleRadius",
           "category": "fixed",
           "type": "number",
-          "conditions": "areaType===circle",
+          "resolutionType": "value",
+          "conditions": "areaShape===circle",
           "fallback": 1
         },
         "coneLength": {
@@ -556,7 +552,8 @@
           "label": "PL1E.ConeLength",
           "category": "fixed",
           "type": "number",
-          "conditions": "areaType===cone",
+          "resolutionType": "value",
+          "conditions": "areaShape===cone",
           "fallback": 1
         },
         "coneAngle": {
@@ -564,23 +561,16 @@
           "label": "PL1E.ConeAngle",
           "category": "fixed",
           "type": "number",
-          "conditions": "areaType===cone",
+          "conditions": "areaShape===cone",
           "fallback": 50
         },
-        "rectWidth": {
+        "squareLength": {
           "value": 1,
-          "label": "PL1E.RectWidth",
+          "label": "PL1E.SquareLength",
           "category": "fixed",
           "type": "number",
-          "conditions": "areaType===rect",
-          "fallback": 1
-        },
-        "rectLength": {
-          "value": 1,
-          "label": "PL1E.RectLength",
-          "category": "fixed",
-          "type": "number",
-          "conditions": "areaType===rect",
+          "resolutionType": "value",
+          "conditions": "areaShape===square",
           "fallback": 1
         },
         "rayLength": {
@@ -588,8 +578,16 @@
           "label": "PL1E.RayLength",
           "category": "fixed",
           "type": "number",
-          "conditions": "areaType===ray",
+          "resolutionType": "value",
+          "conditions": "areaShape===ray",
           "fallback": 1
+        },
+        "oppositeRolls": {
+          "value": "none",
+          "label": "PL1E.OppositeRolls",
+          "category": "fixed",
+          "type": "select",
+          "select": "abilitySkills"
         }
       }
     },

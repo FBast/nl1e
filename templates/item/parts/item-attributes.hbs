@@ -14,6 +14,11 @@
                             {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
                         </select>
                     {{/if}}
+                    {{#if (ne attribute.resolutionType undefined)}}
+                        <select name="system.attributes.{{id}}.resolutionType">
+                            {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}
+                        </select>
+                    {{/if}}
                 </div>
             {{/if}}
         {{/each}}

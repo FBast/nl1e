@@ -38,10 +38,10 @@ export class Pl1eActorSheet extends ActorSheet {
             buttons.unshift({
                 label: 'PL1E.CreationMod',
                 class: 'reset-clones',
-                icon: this.actor.system.attributes.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
+                icon: this.actor.system.misc.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
                 onclick: () => {
                     this.actor.update({
-                        "system.attributes.creationMod": !this.actor.system.attributes.creationMod
+                        "system.misc.creationMod": !this.actor.system.misc.creationMod
                     });
                     this.render(false);
                 }

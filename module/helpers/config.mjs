@@ -354,11 +354,11 @@ PL1E.experienceTemplatesValues = {
     "grandMaster": 60
 }
 
-PL1E.areaTypes = {
+PL1E.areaShapes = {
     "target": "PL1E.Target",
     "circle": "PL1E.Circle",
     "cone": "PL1E.Cone",
-    "rect": "PL1E.Rect",
+    "square": "PL1E.Square",
     "ray": "PL1E.Ray"
 }
 
