@@ -266,7 +266,7 @@ export class Pl1eEvent {
         event.preventDefault();
         event.stopPropagation();
         let attribute = $(event.currentTarget).data("attribute");
-        const dynamicAttribute = PL1E.optionalAttributesValues[attribute];
+        const dynamicAttribute = PL1E.attributeTargetsValues[attribute];
         await item.update({
             ["system.optionalAttributes." + randomID()]: dynamicAttribute
         });

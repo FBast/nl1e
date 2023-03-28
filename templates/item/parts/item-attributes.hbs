@@ -22,7 +22,7 @@
         <legend class="section-header">{{localize "PL1E.SecondaryAttributes"}}</legend>
         <div class="item-attribute-select flexrow">
             <select name="system.selectedOptionalAttribute">
-                {{selectOptions (configEntry "optionalAttributes" document.type) selected=system.selectedOptionalAttribute localize=true}}
+                {{selectOptions (configEntry "attributeTargets" document.type) selected=system.selectedOptionalAttribute localize=true}}
             </select>
             <a class="attribute-add flexshrink" data-attribute={{system.selectedOptionalAttribute}} data-tooltip='{{localize "PL1E.AddAttribute"}}'>
                 <i class="fas fa-plus"></i>
@@ -30,23 +30,14 @@
         </div>
         {{#each system.optionalAttributes as |attribute id|}}
             <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize attribute.label}}</label>
-                {{#if (eq attribute.type "number")}}
-                    <input type="text" name="system.optionalAttributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
-                {{else if (eq attribute.type "bool")}}
-                    <input type="checkbox" name="system.optionalAttributes.{{id}}.value" {{checked attribute.value}} data-dtype="Boolean"/>
-                {{else if (eq attribute.type "select")}}
-                    <select name="system.optionalAttributes.{{id}}.value">
-                        {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
-                    </select>
-                {{/if}}
-                {{#if (and (ne attribute.reduction undefined) (lt attribute.value 0))}}
-                    <select name="system.optionalAttributes.{{id}}.reduction">
-                        {{selectOptions (config "damageType") selected=attribute.reduction localize=true}}
-                    </select>
-                {{/if}}
                 <select name="system.optionalAttributes.{{id}}.attributeLink">
                     {{selectOptions (configEntry "attributeLinks" ../item.type) selected=attribute.attributeLink localize=true}}
+                </select>
+                <select name="system.optionalAttributes.{{id}}.target">
+                    {{selectOptions attribute.targets selected=attribute.target localize=true}}
+                </select>
+                <select name="system.optionalAttributes.{{id}}.subTarget">
+                    {{selectOptions (config attribute.target) selected=attribute.subTarget localize=true}}
                 </select>
                 {{#if (and (ne attribute.attributeLink undefined) (ne attribute.attributeLink "passive"))}}
                     {{#if (and (ne ../system.attributes.range.value undefined) (gt ../system.attributes.range.value 0))}}
@@ -61,6 +52,20 @@
                         </select>
                     {{/if}}
                 {{/if}}
+            </div>
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize attribute.label}}</label>
+                {{#with (configEntry "attributeSubTargets" attribute.subTarget) as |subTargetData|}}
+                    {{#if (eq subTargetData.type "number")}}
+                        <input type="text" name="system.optionalAttributes.{{id}}.value" value="{{../attribute.value}}" data-dtype="Number"/>
+                    {{else if (eq subTargetData.type "bool")}}
+                        <input type="checkbox" name="system.optionalAttributes.{{id}}.value" {{checked ../attribute.value}} data-dtype="Boolean"/>
+                    {{else if (eq subTargetData.type "select")}}
+                        <select name="system.optionalAttributes.{{id}}.value">
+                            {{selectOptions (config subTargetData.select) selected=../attribute.value localize=true}}
+                        </select>
+                    {{/if}}
+                {{/with}}
                 <a class="attribute-remove flexshrink" data-attribute={{id}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
                     <i class="fas fa-trash"></i>
                 </a>
