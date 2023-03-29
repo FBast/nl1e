@@ -163,22 +163,8 @@ PL1E.abilitySkills = {
 }
 
 PL1E.NPCTemplates = {
-    "balanced": "PL1E.Balanced",
-    "soldier": "PL1E.Soldier",
-    "brute": "PL1E.Brute",
-    "killer": "PL1E.Killer",
-    "hunter": "PL1E.Hunter",
-    "mystic": "PL1E.Mystic",
-    "wizard": "PL1E.Wizard",
-    "priest": "PL1E.Priest",
-    "battleMage": "PL1E.BattleMage",
-    "crusader": "PL1E.Crusader",
-    "assassin": "PL1E.Assassin",
-    "monk": "PL1E.Monk"
-}
-
-PL1E.NPCTemplatesValues = {
     "balanced": {
+        "label": "PL1E.Balanced",
         "characteristics": {
             "strength": 3,
             "agility": 3,
@@ -192,6 +178,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["handling", "throwing", "accuracy", "divineMagic", "secularMagic", "athletics", "acrobatics", "vigilance"]
     },
     "soldier": {
+        "label": "PL1E.Soldier",
         "characteristics": {
             "strength": 4,
             "agility": 4,
@@ -205,6 +192,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["handling", "throwing", "accuracy", "athletics", "vigilance"]
     },
     "brute": {
+        "label": "PL1E.Brute",
         "characteristics": {
             "strength": 5,
             "agility": 3,
@@ -218,6 +206,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["handling", "athletics", "intimidation", "vigilance", "search"]
     },
     "killer": {
+        "label": "PL1E.Killer",
         "characteristics": {
             "strength": 2,
             "agility": 5,
@@ -231,6 +220,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["accuracy", "acrobatics", "discretion", "bluff", "vigilance"]
     },
     "hunter": {
+        "label": "PL1E.Hunter",
         "characteristics": {
             "strength": 5,
             "agility": 3,
@@ -244,6 +234,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["throwing", "acrobatics", "vigilance", "search", "craft"]
     },
     "mystic": {
+        "label": "PL1E.Mystic",
         "characteristics": {
             "strength": 2,
             "agility": 2,
@@ -257,6 +248,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["secularMagic", "divineMagic", "erudition", "craft", "diplomacy", "performance"]
     },
     "wizard": {
+        "label": "PL1E.Wizard",
         "characteristics": {
             "strength": 2,
             "agility": 2,
@@ -270,6 +262,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["secularMagic", "erudition", "diplomacy", "craft", "search"]
     },
     "priest": {
+        "label":  "PL1E.Priest",
         "characteristics": {
             "strength": 2,
             "agility": 2,
@@ -283,6 +276,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["divineMagic", "performance", "diplomacy", "search", "vigilance"]
     },
     "battleMage": {
+        "label": "PL1E.BattleMage",
         "characteristics": {
             "strength": 4,
             "agility": 4,
@@ -296,6 +290,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["handling", "secularMagic", "diplomacy", "vigilance", "search"]
     },
     "crusader": {
+        "label": "PL1E.Crusader",
         "characteristics": {
             "strength": 4,
             "agility": 4,
@@ -309,6 +304,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["handling", "divineMagic", "intimidation", "search", "performance"]
     },
     "assassin": {
+        "label": "PL1E.Assassin",
         "characteristics": {
             "strength": 2,
             "agility": 4,
@@ -322,6 +318,7 @@ PL1E.NPCTemplatesValues = {
         "skills": ["accuracy", "secularMagic", "discretion", "bluff", "vigilance"]
     },
     "monk": {
+        "label": "PL1E.Monk",
         "characteristics": {
             "strength": 2,
             "agility": 4,
@@ -424,7 +421,7 @@ PL1E.attributeLinks = {
     }
 }
 
-PL1E.attributeTargets = {
+PL1E.attributeGroups = {
     "feature": {
         "increase": "PL1E.Increase",
         "decrease": "PL1E.Decrease",
@@ -460,7 +457,7 @@ PL1E.attributeTargets = {
     }
 }
 
-PL1E.attributeTargetsValues = {
+PL1E.attributeGroupsValues = {
     "damage": {
         "value": 0,
         "label": "PL1E.Damage",
@@ -469,7 +466,8 @@ PL1E.attributeTargetsValues = {
         },
         "target": "resources",
         "subTarget": "health",
-        "reduction": "none"
+        "reduction": "none",
+        "function": "add"
     },
     "heal": {
         "value": 0,
@@ -478,7 +476,8 @@ PL1E.attributeTargetsValues = {
             "resources": "PL1E.Resources"
         },
         "target": "resources",
-        "subTarget": "health"
+        "subTarget": "health",
+        "function": "add"
     },
     "transfer": {
         "value": 0,
@@ -488,7 +487,8 @@ PL1E.attributeTargetsValues = {
             "resources": "PL1E.Resources"
         },
         "target": "resources",
-        "subTarget": "health"
+        "subTarget": "health",
+        "function": "transfer"
     },
     "increase": {
         "value": 0,
@@ -499,7 +499,8 @@ PL1E.attributeTargetsValues = {
             "misc": "PL1E.Misc",
         },
         "target": "characteristics",
-        "subTarget": "strength"
+        "subTarget": "strength",
+        "function": "add"
     },
     "decrease": {
         "value": 0,
@@ -510,7 +511,8 @@ PL1E.attributeTargetsValues = {
             "misc": "PL1E.Misc",
         },
         "target": "characteristics",
-        "subTarget": "strength"
+        "subTarget": "strength",
+        "function": "remove"
     },
     "set": {
         "value": 0,
@@ -521,7 +523,8 @@ PL1E.attributeTargetsValues = {
             "misc": "PL1E.Misc",
         },
         "target": "characteristics",
-        "subTarget": "strength"
+        "subTarget": "strength",
+        "function": "set"
     }
 }
 
@@ -530,162 +533,139 @@ PL1E.attributeSubTargets = {
         "label": "PL1E.Health",
         "icon": "fas fa-heart",
         "type": "number",
-        "path": "resources.health.value",
-        "operator": "add"
+        "path": "resources.health.value"
     },
     "stamina": {
         "label": "PL1E.Stamina",
         "icon": "fas fa-wave-pulse",
         "type": "number",
-        "path": "resources.stamina.value",
-        "operator": "add",
+        "path": "resources.stamina.value"
     },
     "mana": {
         "label": "PL1E.Mana",
         "icon": "fas fa-sparkles",
         "type": "number",
-        "path": "resources.mana.value",
-        "operator": "add",
+        "path": "resources.mana.value"
     },
     "strength": {
         "label": "PL1E.Strength",
         "icon": "fas fa-dumbbell",
         "type": "number",
-        "path": "characteristics.strength.mods",
-        "operator": "push",
+        "path": "characteristics.strength.mods"
     },
     "agility": {
         "label": "PL1E.Agility",
         "icon": "fas fa-dumbbell",
         "type": "number",
-        "path": "characteristics.agility.mods",
-        "operator": "push",
+        "path": "characteristics.agility.mods"
     },
     "perception": {
         "label": "PL1E.Perception",
         "icon": "fas fa-dumbbell",
         "type": "number",
-        "path": "characteristics.perception.mods",
-        "operator": "push"
+        "path": "characteristics.perception.mods"
     },
     "constitution": {
         "label": "PL1E.Constitution",
         "icon": "fas fa-dumbbell",
         "type": "number",
-        "path": "characteristics.constitution.mods",
-        "operator": "push"
+        "path": "characteristics.constitution.mods"
     },
     "intellect": {
         "label": "PL1E.Intellect",
         "icon": "fas fa-dumbbell",
         "type": "number",
-        "path": "characteristics.intellect.mods",
-        "operator": "push"
+        "path": "characteristics.intellect.mods"
     },
     "cunning": {
         "label": "PL1E.Cunning",
         "icon": "fas fa-dumbbell",
         "type": "number",
-        "path": "characteristics.cunning.mods",
-        "operator": "push"
+        "path": "characteristics.cunning.mods"
     },
     "wisdom": {
         "label": "PL1E.Wisdom",
         "icon": "fas fa-dumbbell",
         "type": "number",
-        "path": "characteristics.wisdom.mods",
-        "operator": "push"
+        "path": "characteristics.wisdom.mods"
     },
     "will": {
         "label": "PL1E.Will",
         "icon": "fas fa-dumbbell",
         "type": "number",
-        "path": "characteristics.will.mods",
-        "operator": "push"
+        "path": "characteristics.will.mods"
     },
     "size": {
         "label": "PL1E.Size",
         "icon": "fas fa-arrow-up-big-small",
         "type": "select",
         "path": "misc.size",
-        "select": "sizes",
-        "operator": "set"
+        "select": "sizes"
     },
     "speed": {
         "label": "PL1E.Speed",
         "icon": "fas fa-person-running",
         "type": "number",
-        "path": "misc.speed",
-        "operator": "set"
+        "path": "misc.speed"
     },
     "movementPenalty": {
         "label": "PL1E.MovementPenalty",
         "icon": "fas fa-weight-hanging",
         "type": "number",
-        "path": "misc.movementPenalty",
-        "operator": "add"
+        "path": "misc.movementPenalty"
     },
     "parry": {
         "label": "PL1E.Parry",
         "icon": "fas fa-shield",
         "type": "number",
-        "path": "misc.parry",
-        "operator": "add"
+        "path": "misc.parry"
     },
     "dodge": {
         "label": "PL1E.Dodge",
         "icon": "fas fa-eye",
         "type": "number",
-        "path": "misc.dodge",
-        "operator": "add"
+        "path": "misc.dodge"
     },
     "slashingReduction": {
         "label": "PL1E.SlashingReduction",
         "icon": "far fa-axe-battle",
         "type": "number",
-        "path": "misc.slashingReduction",
-        "operator": "add"
+        "path": "misc.slashingReduction"
     },
     "crushingReduction": {
         "label": "PL1E.CrushingReduction",
         "icon": "far fa-hammer-war",
         "type": "number",
-        "path": "misc.crushingReduction",
-        "operator": "add"
+        "path": "misc.crushingReduction"
     },
     "piercingReduction": {
         "label": "PL1E.PiercingReduction",
         "icon": "far fa-dagger",
         "type": "number",
-        "path": "misc.piercingReduction",
-        "operator": "add"
+        "path": "misc.piercingReduction"
     },
     "burnReduction": {
         "label": "PL1E.BurnReduction",
         "icon": "far fa-fire",
         "type": "number",
-        "path": "misc.burnReduction",
-        "operator": "add"
+        "path": "misc.burnReduction"
     },
     "coldReduction": {
         "label": "PL1E.ColdReduction",
         "icon": "far fa-snowflake",
         "type": "number",
-        "path": "misc.coldReduction",
-        "operator": "push"
+        "path": "misc.coldReduction"
     },
     "shockReduction": {
         "label": "PL1E.ShockReduction",
         "icon": "far fa-bolt",
         "type": "number",
-        "path": "misc.shockReduction",
-        "operator": "push"
+        "path": "misc.shockReduction"
     },
     "acidReduction": {
         "label": "PL1E.AcidReduction",
         "icon": "far fa-droplet",
         "type": "number",
-        "path": "misc.acidReduction",
-        "operator": "push"
+        "path": "misc.acidReduction"
     }
 }

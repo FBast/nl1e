@@ -122,3 +122,12 @@ Handlebars.registerHelper('currencyToValue', function (currency) {
 Handlebars.registerHelper('valueToCurrency', function (value) {
     return Pl1eHelpers.unitsToCurrency(value);
 })
+
+Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {
+    const optionsData = {};
+    for (const key in choices) {
+        const value = choices[key];
+        optionsData[key] = value.label;
+    }
+    return Handlebars.helpers.selectOptions(optionsData, options);
+});

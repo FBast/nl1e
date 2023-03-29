@@ -1,3 +1,5 @@
+import {PL1E} from "../../helpers/config.mjs";
+
 export class Pl1eSubItem {
 
     /**
@@ -36,6 +38,7 @@ export class Pl1eSubItem {
     _calculateAttribute(attribute, rollResult, actor) {
         // Copy attribute
         let calculatedAttribute = JSON.parse(JSON.stringify(attribute));
+
         // Number type
         if (calculatedAttribute.type === 'number') {
             if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
@@ -50,6 +53,35 @@ export class Pl1eSubItem {
             }
         }
         return calculatedAttribute;
+    }
+
+    /**
+     * Calculate the stats of an optionalAttribute based on the roll value
+     * @param optionalAttribute
+     * @param rollResult
+     * @param actor
+     * @returns {any}
+     * @protected
+     */
+    _calculateOptionalAttribute(optionalAttribute, rollResult, actor) {
+        // Copy optionalAttribute
+        let calculatedOptionalAttribute = JSON.parse(JSON.stringify(optionalAttribute));
+        let subTarget = PL1E.attributeSubTargets[calculatedOptionalAttribute.subTarget];
+
+        // Number type
+        if (subTarget.type === 'number') {
+            if (calculatedOptionalAttribute.resolutionType === 'multiplyBySuccess') {
+                calculatedOptionalAttribute.value *= rollResult > 0 ? rollResult : 0;
+            }
+            if (calculatedOptionalAttribute.resolutionType === 'valueIfSuccess') {
+                calculatedOptionalAttribute.value = rollResult > 0 ? calculatedOptionalAttribute.value : 0;
+            }
+            if (calculatedOptionalAttribute.value < 0 && calculatedOptionalAttribute.reduction !== undefined && calculatedOptionalAttribute.reduction !== 'raw') {
+                let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductionsPath[calculatedOptionalAttribute.reduction]);
+                calculatedOptionalAttribute.value = Math.min(calculatedOptionalAttribute.value + reduction, 0);
+            }
+        }
+        return calculatedOptionalAttribute;
     }
 
 }

@@ -99,7 +99,7 @@ export class Pl1eAbility extends Pl1eSubItem {
 
         // Target selection template
         const templates = [];
-        if (calculatedAttributes.areaNumber.value !== 0) {
+        if (calculatedAttributes.areaNumber.value !== 0 && calculatedAttributes.areaShape.value !== "self") {
             await this.actor.sheet?.minimize();
             for (let i = 0; i < calculatedAttributes.areaNumber.value; i++) {
                 const template = await AbilityTemplate.fromItem(this.item, calculatedAttributes, optionalAttributes);
@@ -109,14 +109,11 @@ export class Pl1eAbility extends Pl1eSubItem {
             await this.actor.sheet?.maximize();
         }
 
-        // Return if no area defined
-        if (attributes.areaNumber.value > 0 && templates.length === 0) return;
-
         // Calculate launcher optionalAttributes
         let calculatedOptionalAttributes = [];
         for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
             if (optionalAttribute.targetGroup !== 'self') continue;
-            let calculatedAttribute = this._calculateAttribute(optionalAttribute, rollResult, this.actor);
+            let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, rollResult, this.actor);
             calculatedOptionalAttributes.push(calculatedAttribute);
         }
 
@@ -126,8 +123,8 @@ export class Pl1eAbility extends Pl1eSubItem {
             launcherData: {
                 actor: this.actor,
                 tokenId: token?.uuid || null,
-                item: this,
-                itemId: this.uuid,
+                item: this.item,
+                itemId: this.item.uuid,
                 result: rollResult,
                 attributes: attributes,
                 optionalAttributes: optionalAttributes,
@@ -144,7 +141,7 @@ export class Pl1eAbility extends Pl1eSubItem {
         const chatData = {
             user: game.user.id,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + this.name,
+            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + this.item.name,
             content: html,
             speaker: ChatMessage.getSpeaker({actor: this.actor}),
             flags: {"core.canPopout": true}
@@ -176,18 +173,25 @@ export class Pl1eAbility extends Pl1eSubItem {
         // Target Data
         let targetTokens = game.user.targets;
 
+        // Add launcher as target if areaShape is self
+        let launcherData = this.abilityData.launcherData;
+        if (launcherData.attributes.areaShape.value === "self") {
+            const token = await fromUuid(launcherData.tokenId);
+            targetTokens.add(token);
+        }
+
         for (let targetToken of targetTokens) {
             // Make a shallow copy of the ability data for this target
             let abilityData = {...this.abilityData};
 
             // Copy attributes
-            const launcherData = abilityData.launcherData;
+            launcherData = abilityData.launcherData;
             const attributes = abilityData.launcherData.attributes;
             const optionalAttributes = abilityData.launcherData.optionalAttributes;
 
             // Opposite roll if exist
             let rollResult = 0;
-            if (attributes.oppositeRolls.value !== 'none') {
+            if (attributes.oppositeRolls.value !== "none") {
                 const skill = targetToken.actor.system.skills[attributes.oppositeRolls.value];
                 rollResult = await targetToken.actor.rollSkill(skill);
             }
@@ -196,10 +200,10 @@ export class Pl1eAbility extends Pl1eSubItem {
             // Calculate target attributes
             let calculatedOptionalAttributes = [];
             for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
-                if (optionalAttribute.targetGroup === 'self' && targetToken.actor !== launcherData.actor) continue;
-                if (optionalAttribute.targetGroup === 'allies' && targetToken.document.disposition !== launcherData.actor.bestToken.disposition) continue;
-                if (optionalAttribute.targetGroup === 'opponents' && targetToken.document.disposition === launcherData.actor.bestToken.disposition) continue;
-                let calculatedAttribute = this._calculateAttribute(optionalAttribute, totalResult, targetToken.actor);
+                if ((attributes.areaShape.value === "self" || optionalAttribute.targetGroup === "self") && targetToken.actor !== launcherData.actor) continue;
+                if (optionalAttribute.targetGroup === "allies" && targetToken.document.disposition !== launcherData.actor.bestToken.disposition) continue;
+                if (optionalAttribute.targetGroup === "opponents" && targetToken.document.disposition === launcherData.actor.bestToken.disposition) continue;
+                let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, totalResult, targetToken.actor);
                 calculatedOptionalAttributes.push(calculatedAttribute);
             }
 
@@ -211,32 +215,28 @@ export class Pl1eAbility extends Pl1eSubItem {
                 calculatedOptionalAttributes: calculatedOptionalAttributes
             };
 
-            const html = await renderTemplate("systems/pl1e/templates/chat/opposite-card.hbs", abilityData);
+            const html = await renderTemplate("systems/pl1e/templates/chat/resolution-card.hbs", abilityData);
 
             // Create the ChatMessage data object
             const chatData = {
                 user: game.user.id,
                 type: CONST.CHAT_MESSAGE_TYPES.OTHER,
                 content: html,
-                // flavor: this.system.description || this.name,
+                flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + this.item.name,
                 speaker: ChatMessage.getSpeaker({actor: targetToken.actor, targetToken}),
                 flags: {"core.canPopout": true}
             };
 
             await ChatMessage.create(chatData);
 
+            //TODO-fred Apply launcher effects such as resources cost
+
             // Apply target effects
-            for (const attribute of abilityData.targetData.calculatedOptionalAttributes) {
-                await abilityData.targetData.actor.applyAttribute(attribute, false, true);
+            for (const calculatedOptionalAttribute of abilityData.targetData.calculatedOptionalAttributes) {
+                await abilityData.targetData.actor.applyOptionalAttribute(calculatedOptionalAttribute, false, true);
             }
             abilityData.targetData.actor.sheet.render(false);
         }
-
-        // Apply launcher effects
-        for (const calculatedAttribute of this.abilityData.launcherData.calculatedOptionalAttributes) {
-            await this.abilityData.launcherData.actor.applyAttribute(calculatedAttribute, false, true);
-        }
-        this.abilityData.launcherData.actor.sheet.render(false);
     }
 
     /**

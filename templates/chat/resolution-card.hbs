@@ -2,7 +2,7 @@
     <header class="card-header flexrow">
         <img class="left-image actor-edit" src="{{targetData.actor.img}}" data-token-id="{{targetData.tokenId}}"
              title="{{targetData.actor.name}}" width="36" height="36"/>
-        <label class="item-label">{{localize "PL1E.Opposes"}}</label>
+        <label class="item-label"></label>
         <img class="right-image actor-edit" src="{{launcherData.actor.img}}" data-token-id="{{launcherData.tokenId}}"
              title="{{launcherData.actor.name}}" width="36" height="36"/>
         <img class="right-image item-edit" src="{{launcherData.item.img}}" data-item-id="{{launcherData.item._id}}"
@@ -19,9 +19,11 @@
         {{#if (ne targetData.calculatedOptionalAttributes.length 0)}}
             <label>{{localize "PL1E.Effects"}} :</label>
             {{#each targetData.calculatedOptionalAttributes as |attribute id|}}
-                <i class="attribute-icon fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
-                    <label>{{formatNumber attribute.value signe=true}}</label>
-                </i>
+                {{#with (configEntry "attributeSubTargets" attribute.subTarget) as |subTarget|}}
+                    <i class="attribute-icon fas {{subTarget.icon}} hover-green" data-tooltip="{{localize subTarget.label}}">
+                        <label>{{formatNumber attribute.value signe=true}}</label>
+                    </i>
+                {{/with}}
             {{/each}}
         {{else}}
             <label>{{localize "PL1E.NoEffects"}}</label>

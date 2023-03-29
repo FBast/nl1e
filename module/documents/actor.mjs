@@ -64,9 +64,9 @@ export class Pl1eActor extends Actor {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
-            for (let [id, attribute] of Object.entries(item.system.optionalAttributes)) {
-                if (attribute.targetGroup !== 'self') continue;
-                await this.applyAttribute(attribute, true, false);
+            for (let [id, optionalAttribute] of Object.entries(item.system.optionalAttributes)) {
+                if (optionalAttribute.targetGroup !== 'self') continue;
+                await this.applyOptionalAttribute(optionalAttribute, true, false);
             }
         }
         super.prepareEmbeddedDocuments();
@@ -147,7 +147,7 @@ export class Pl1eActor extends Actor {
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
         // Handle characteristics
-        let templateValues = CONFIG.PL1E.NPCTemplatesValues[systemData.NPCTemplate];
+        let templateValues = CONFIG.PL1E.NPCTemplates[systemData.NPCTemplate];
         for (let [id, characteristic] of Object.entries(templateValues.characteristics)) {
             actorCharacteristics[id].base = characteristic;
         }
@@ -289,38 +289,45 @@ export class Pl1eActor extends Actor {
         return roll.rolls[0].result;
     }
 
-    async applyAttribute(attribute, reduction, persist) {
-        if (attribute.path === undefined) return;
+    async applyOptionalAttribute(optionalAttribute, reduction, persist) {
         const system = this.system;
+        const subTarget = PL1E.attributeSubTargets[optionalAttribute.subTarget];
+
+        if (subTarget.path === undefined) return;
+
         // Add reduction to value
-        if (reduction && attribute.reduction !== 'none') {
-            const reduction = foundry.utils.getProperty(system, PL1E.reductionsPath[attribute.reduction]);
-            attribute.value = Math.min(attribute.value + reduction, 0);
+        if (reduction && optionalAttribute.reduction !== 'none') {
+            const reduction = foundry.utils.getProperty(system, PL1E.reductionsPath[optionalAttribute.reduction]);
+            optionalAttribute.value = Math.min(optionalAttribute.value + reduction, 0);
         }
         let newValue;
-        switch (attribute.operator) {
+        switch (optionalAttribute.function) {
             case 'set':
-                newValue = attribute.value;
+                newValue = optionalAttribute.value;
                 break;
             case 'add':
-                newValue = foundry.utils.getProperty(system, attribute.path);
-                newValue += attribute.value;
+                newValue = foundry.utils.getProperty(system, subTarget.path);
+                newValue += optionalAttribute.value;
+                break;
+            case 'remove':
+                newValue = foundry.utils.getProperty(system, subTarget.path);
+                newValue -= optionalAttribute.value;
                 break;
             case 'push':
-                let currentValue = foundry.utils.getProperty(system, attribute.path);
+                let currentValue = foundry.utils.getProperty(system, subTarget.path);
                 if (currentValue === undefined) currentValue = [];
-                currentValue.push(attribute.value);
+                currentValue.push(optionalAttribute.value);
                 newValue = currentValue;
                 break;
             default:
-                console.error("PL1E | Unknown attribute operator : " + attribute.operator)
+                console.error("PL1E | Unknown optionalAttribute function : " + optionalAttribute.function)
         }
 
         if (persist) {
-            await this.update({["system." + attribute.path]: newValue})
+            await this.update({["system." + subTarget.path]: newValue})
         }
         else {
-            foundry.utils.setProperty(system, attribute.path, newValue);
+            foundry.utils.setProperty(system, subTarget.path, newValue);
         }
     }
 
