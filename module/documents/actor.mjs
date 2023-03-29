@@ -114,7 +114,7 @@ export class Pl1eActor extends Actor {
     _prepareCommonDataBefore(systemData) {
         const actorMisc = systemData.misc ;
         // Handle actorAttributes scores.
-        actorMisc.sizeMultiplier = CONFIG.PL1E.sizeMultiplier[actorMisc.size];
+        actorMisc.sizeMultiplier = CONFIG.PL1E.sizeMultipliers[actorMisc.size];
         actorMisc.sizeToken = CONFIG.PL1E.sizeTokens[actorMisc.size];
         if (systemData.experienceTemplate !== undefined)
             actorMisc.experience = CONFIG.PL1E.experienceTemplatesValues[actorMisc.experienceTemplate];

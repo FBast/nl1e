@@ -16,9 +16,9 @@
         {{/if}}
     </div>
     <footer class="card-footer">
-        {{#if (ne targetData.calculatedAttributes.length 0)}}
+        {{#if (ne targetData.calculatedOptionalAttributes.length 0)}}
             <label>{{localize "PL1E.Effects"}} :</label>
-            {{#each targetData.calculatedAttributes as |attribute id|}}
+            {{#each targetData.calculatedOptionalAttributes as |attribute id|}}
                 <i class="attribute-icon fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
                     <label>{{formatNumber attribute.value signe=true}}</label>
                 </i>

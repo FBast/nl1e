@@ -514,12 +514,22 @@
           "type": "select",
           "select": "abilitySkills"
         },
+        "areaShape": {
+          "value": "circle",
+          "label": "PL1E.AreaShape",
+          "category": "fixed",
+          "type": "select",
+          "select": "areaShapes",
+          "fallback": "circle"
+        },
         "range": {
           "value": 0,
           "label": "PL1E.Range",
           "category": "fixed",
           "type": "number",
-          "resolutionType": "value"
+          "resolutionType": "value",
+          "conditions": "areaShape!==self",
+          "fallback": 0
         },
         "areaNumber": {
           "value": 1,
@@ -529,14 +539,6 @@
           "resolutionType": "value",
           "conditions": "range!==0",
           "fallback": 1
-        },
-        "areaShape": {
-          "value": "circle",
-          "label": "PL1E.areaShape",
-          "category": "fixed",
-          "type": "select",
-          "select": "areaShapes",
-          "fallback": "circle"
         },
         "circleRadius": {
           "value": 1,
@@ -587,7 +589,9 @@
           "label": "PL1E.OppositeRolls",
           "category": "fixed",
           "type": "select",
-          "select": "abilitySkills"
+          "select": "abilitySkills",
+          "conditions": "areaShape!==self",
+          "fallback": "none"
         }
       }
     },

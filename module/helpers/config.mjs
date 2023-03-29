@@ -74,7 +74,7 @@ PL1E.sizes = {
     "gargantuan": "PL1E.Gargantuan"
 };
 
-PL1E.sizeMultiplier = {
+PL1E.sizeMultipliers = {
     "small": "0.5",
     "medium": "1",
     "large": "2",
@@ -355,6 +355,7 @@ PL1E.experienceTemplatesValues = {
 }
 
 PL1E.areaShapes = {
+    "self": "PL1E.Self",
     "target": "PL1E.Target",
     "circle": "PL1E.Circle",
     "cone": "PL1E.Cone",

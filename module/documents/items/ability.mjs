@@ -33,8 +33,10 @@ export class Pl1eAbility extends Pl1eSubItem {
 
     /** @override */
     async use(options) {
-        if (!this.actor.bestToken === null) return;
+        if (this.actor.bestToken === null) return;
         if (!this._isContextValid(this.actor)) return;
+
+        const token = this.actor.bestToken;
 
         // Copy attributes
         const attributes = JSON.parse(JSON.stringify(this.item.system.attributes));
@@ -90,17 +92,17 @@ export class Pl1eAbility extends Pl1eSubItem {
         }
 
         // Calculate launcher attributes
+        let calculatedAttributes = {};
         for (let [id, attribute] of Object.entries(attributes)) {
-            attribute = this._calculateAttribute(attribute, rollResult, this.actor)
-            //TODO-fred does not persist
+            calculatedAttributes[id] = this._calculateAttribute(attribute, rollResult, this.actor);
         }
 
         // Target selection template
         const templates = [];
-        if (attributes.areaNumber.value !== 0) {
+        if (calculatedAttributes.areaNumber.value !== 0) {
             await this.actor.sheet?.minimize();
-            for (let i = 0; i < attributes.areaNumber.value; i++) {
-                const template = await AbilityTemplate.fromItem(this.item, attributes, optionalAttributes);
+            for (let i = 0; i < calculatedAttributes.areaNumber.value; i++) {
+                const template = await AbilityTemplate.fromItem(this.item, calculatedAttributes, optionalAttributes);
                 templates.push(template);
                 await template?.drawPreview();
             }
@@ -111,16 +113,14 @@ export class Pl1eAbility extends Pl1eSubItem {
         if (attributes.areaNumber.value > 0 && templates.length === 0) return;
 
         // Calculate launcher optionalAttributes
-        let calculatedAttributes = [];
-        calculatedAttributes.push()
+        let calculatedOptionalAttributes = [];
         for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
             if (optionalAttribute.targetGroup !== 'self') continue;
             let calculatedAttribute = this._calculateAttribute(optionalAttribute, rollResult, this.actor);
-            calculatedAttributes.push(calculatedAttribute);
+            calculatedOptionalAttributes.push(calculatedAttribute);
         }
 
         // Launcher Data
-        const token = this.actor.bestToken;
         this.abilityData = {
             templates: templates,
             launcherData: {
@@ -132,6 +132,7 @@ export class Pl1eAbility extends Pl1eSubItem {
                 attributes: attributes,
                 optionalAttributes: optionalAttributes,
                 calculatedAttributes: calculatedAttributes,
+                calculatedOptionalAttributes: calculatedOptionalAttributes,
                 linkedItem: linkedItem
             }
         };
@@ -193,13 +194,13 @@ export class Pl1eAbility extends Pl1eSubItem {
             let totalResult = abilityData.launcherData.result - rollResult;
 
             // Calculate target attributes
-            let calculatedAttributes = [];
+            let calculatedOptionalAttributes = [];
             for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
                 if (optionalAttribute.targetGroup === 'self' && targetToken.actor !== launcherData.actor) continue;
                 if (optionalAttribute.targetGroup === 'allies' && targetToken.document.disposition !== launcherData.actor.bestToken.disposition) continue;
                 if (optionalAttribute.targetGroup === 'opponents' && targetToken.document.disposition === launcherData.actor.bestToken.disposition) continue;
                 let calculatedAttribute = this._calculateAttribute(optionalAttribute, totalResult, targetToken.actor);
-                calculatedAttributes.push(calculatedAttribute);
+                calculatedOptionalAttributes.push(calculatedAttribute);
             }
 
             abilityData.targetData = {
@@ -207,7 +208,7 @@ export class Pl1eAbility extends Pl1eSubItem {
                 tokenId: targetToken?.uuid || null,
                 result: rollResult,
                 totalResult: totalResult,
-                calculatedAttributes: calculatedAttributes
+                calculatedOptionalAttributes: calculatedOptionalAttributes
             };
 
             const html = await renderTemplate("systems/pl1e/templates/chat/opposite-card.hbs", abilityData);
@@ -225,14 +226,14 @@ export class Pl1eAbility extends Pl1eSubItem {
             await ChatMessage.create(chatData);
 
             // Apply target effects
-            for (const attribute of abilityData.targetData.calculatedAttributes) {
+            for (const attribute of abilityData.targetData.calculatedOptionalAttributes) {
                 await abilityData.targetData.actor.applyAttribute(attribute, false, true);
             }
             abilityData.targetData.actor.sheet.render(false);
         }
 
         // Apply launcher effects
-        for (const calculatedAttribute of this.abilityData.launcherData.calculatedAttributes) {
+        for (const calculatedAttribute of this.abilityData.launcherData.calculatedOptionalAttributes) {
             await this.abilityData.launcherData.actor.applyAttribute(calculatedAttribute, false, true);
         }
         this.abilityData.launcherData.actor.sheet.render(false);
