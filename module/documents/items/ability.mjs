@@ -97,6 +97,11 @@ export class Pl1eAbility extends Pl1eSubItem {
             calculatedAttributes[id] = this._calculateAttribute(attribute, rollResult, this.actor);
         }
 
+        // Target launcher if areaShape is self
+        if (attributes.areaShape.value === "self") {
+            token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
+        }
+
         // Target selection template
         const templates = [];
         if (calculatedAttributes.areaNumber.value !== 0 && calculatedAttributes.areaShape.value !== "self") {
@@ -127,10 +132,8 @@ export class Pl1eAbility extends Pl1eSubItem {
                 item: this.item,
                 itemId: this.item.uuid,
                 result: rollResult,
-                attributes: attributes,
-                optionalAttributes: optionalAttributes,
-                calculatedAttributes: calculatedAttributes,
-                calculatedOptionalAttributes: calculatedOptionalAttributes,
+                attributes: calculatedAttributes,
+                optionalAttributes: calculatedOptionalAttributes,
                 linkedItem: linkedItem
             }
         };
@@ -161,6 +164,11 @@ export class Pl1eAbility extends Pl1eSubItem {
             await template.releaseTemplate();
         }
 
+        // Release all targets
+        for (let token of game.user.targets) {
+            token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
+        }
+
         // Reset abilityData
         this.abilityData = {};
     }
@@ -174,19 +182,12 @@ export class Pl1eAbility extends Pl1eSubItem {
         // Target Data
         let targetTokens = game.user.targets;
 
-        // Add launcher as target if areaShape is self
-        let launcherData = this.abilityData.launcherData;
-        if (launcherData.attributes.areaShape.value === "self") {
-            const token = await fromUuid(launcherData.tokenId);
-            targetTokens.add(token);
-        }
-
         for (let targetToken of targetTokens) {
             // Make a shallow copy of the ability data for this target
             let abilityData = {...this.abilityData};
 
             // Copy attributes
-            launcherData = abilityData.launcherData;
+            const launcherData = abilityData.launcherData;
             const attributes = abilityData.launcherData.attributes;
             const optionalAttributes = abilityData.launcherData.optionalAttributes;
 
@@ -213,7 +214,7 @@ export class Pl1eAbility extends Pl1eSubItem {
                 tokenId: targetToken?.uuid || null,
                 result: rollResult,
                 totalResult: totalResult,
-                calculatedOptionalAttributes: calculatedOptionalAttributes
+                optionalAttributes: calculatedOptionalAttributes
             };
 
             const html = await renderTemplate("systems/pl1e/templates/chat/resolution-card.hbs", abilityData);
@@ -233,7 +234,7 @@ export class Pl1eAbility extends Pl1eSubItem {
             //TODO-fred Apply launcher effects such as resources cost
 
             // Apply target effects
-            for (const calculatedOptionalAttribute of abilityData.targetData.calculatedOptionalAttributes) {
+            for (const calculatedOptionalAttribute of abilityData.targetData.optionalAttributes) {
                 await abilityData.targetData.actor.applyOptionalAttribute(calculatedOptionalAttribute, false, true);
             }
             abilityData.targetData.actor.sheet.render(false);

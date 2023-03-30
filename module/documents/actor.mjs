@@ -12,19 +12,35 @@ export class Pl1eActor extends Actor {
      * @returns {Token}
      */
     get bestToken() {
-        // The token associated with the actor
-        let token = this.token
-        // The token associated with the sheet
-        token ??= this.sheet.token;
-        // The active tokens linked to this actor
+        // Try to get the token associated with the sheet
+        let token = this.sheet.token;
+
+        // If there is no sheet token, try to get the token associated with the actor
+        if (!token) token = this.token;
+
+        // If there is still no token, and actor link is enabled, try to get the first linked token
         if (!token && this.prototypeToken.actorLink && this.getActiveTokens().length > 0) {
-            if (this.getActiveTokens().length > 1)
+            if (this.getActiveTokens().length > 1) {
                 ui.notifications.warn(game.i18n.localize("PL1E.MultipleLinkedTokens"));
+            }
             token = this.getActiveTokens()[0];
         }
-        if (!token) ui.notifications.error(game.i18n.localize("PL1E.CannotFindAnyToken"));
-        return token;
+
+        // If we have a token, try to find it in the canvas tokens
+        if (token) {
+            const canvasToken = canvas.tokens.placeables.find(t => t.document.uuid === token.uuid);
+            if (!canvasToken) {
+                ui.notifications.error(game.i18n.localize("PL1E.CannotFindTokenOnCanvas"));
+            } else {
+                return canvasToken;
+            }
+        }
+
+        // If we still don't have a token, show an error message and return null
+        ui.notifications.error(game.i18n.localize("PL1E.CannotFindAnyToken"));
+        return null;
     }
+
 
     //region Data management
 
@@ -314,7 +330,7 @@ export class Pl1eActor extends Actor {
                     newValue += optionalAttribute.value;
                 break;
             case "effect":
-                const effect = await ActiveEffect.create({
+                await ActiveEffect.create({
                     label: "My Effect",
                     icon: "icons/svg/fire.svg",
                     changes: [
@@ -333,7 +349,7 @@ export class Pl1eActor extends Actor {
                             customFlag: true
                         }
                     }
-                }, {parent: this});
+                }, {parent: this, temporary: true});
                 break;
             // case 'push':
             //     let currentValue = foundry.utils.getProperty(system, subTarget.path);

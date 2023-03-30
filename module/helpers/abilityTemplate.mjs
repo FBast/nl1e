@@ -125,9 +125,6 @@ export class AbilityTemplate extends MeasuredTemplate {
    * Delete the templates after releasing targets
    */
   releaseTemplate() {
-    for (let token of this.#targets) {
-      token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
-    }
     for (let document of this.#templates) {
       document.delete();
     }
