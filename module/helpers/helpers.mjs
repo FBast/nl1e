@@ -230,46 +230,53 @@ export class Pl1eHelpers {
         }
         // Reset actors items
         for (const actor of game.actors) {
-            for (const actorItem of actor.items) {
-                await this.resetClone(actorItem, item._id);
+            await this.resetCloneActorItems(actor, item._id);
+        }
+    }
+
+    /**
+     * Reset this actor items (if sourceId is corresponding source)
+     * @param actor
+     * @param sourceId
+     * @returns {Promise<void>}
+     */
+    static async resetCloneActorItems(actor, sourceId) {
+        let updateDocument = false;
+        const itemsData = [];
+        for (let item of actor.items.values()) {
+            if (item.getFlag('core', 'sourceId') === undefined) return;
+            if (item.getFlag('core', 'sourceId').split('.')[1] !== sourceId) return;
+            let original = await fromUuid(item.getFlag('core', 'sourceId'));
+            if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
+                itemsData.push({
+                    "_id": item._id,
+                    "name": original.name,
+                    "img": original.img,
+                    "system.attributes": original.system.attributes,
+                    "system.optionalAttributes": original.system.optionalAttributes
+                });
+                item.sheet.render(item.sheet.rendered);
+                updateDocument = true;
+            }
+            else {
+                console.warn("Unknown type : " + item.type);
             }
         }
+        if (updateDocument) {
+            await actor.updateEmbeddedDocuments("Item", itemsData);
+            actor.sheet.render(actor.sheet.rendered);
+        }
     }
 
     /**
-     * Reset this document (if sourceId is corresponding source)
-     * @param document
+     * Reset this item subItem (if sourceId is corresponding source)
+     * @param item
      * @param sourceId
      * @returns {Promise<void>}
      */
-    static async resetClone(document, sourceId) {
-        if (document.getFlag('core', 'sourceId') === undefined) return;
-        if (document.getFlag('core', 'sourceId').split('.')[1] !== sourceId) return;
-        let original = await fromUuid(document.getFlag('core', 'sourceId'));
-        if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(document.type)) {
-            //TODO-fred actor embedded items are not correctly reset
-            await document.update({
-                "name": original.name,
-                "img": original.img,
-                "system.attributes": original.system.attributes,
-                "system.optionalAttributes": original.system.optionalAttributes
-            })
-        }
-        else {
-            console.warn("Unknown type : " + document.type);
-        }
-        document.sheet.render(document.sheet.rendered);
-    }
-
-    /**
-     * Reset this subItem document (if sourceId is corresponding source)
-     * @param document
-     * @param sourceId
-     * @returns {Promise<void>}
-     */
-    static async resetCloneSubItems(document, sourceId) {
+    static async resetCloneSubItems(item, sourceId) {
         let updateDocument = false;
-        for (let [key, subItem] of document.system.subItemsMap) {
+        for (let [key, subItem] of item.system.subItemsMap) {
             if (subItem.getFlag('core', 'sourceId') === undefined) continue;
             if (subItem.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
             let original = await fromUuid(subItem.getFlag('core', 'sourceId'));
@@ -278,13 +285,14 @@ export class Pl1eHelpers {
                 subItem.img = original.img;
                 subItem.system.attributes = original.system.attributes;
                 subItem.system.optionalAttributes = original.system.optionalAttributes;
+                subItem.sheet.render(subItem.sheet.rendered);
                 updateDocument = true;
             }
             else {
                 console.warn("Unknown type : " + subItem.type);
             }
         }
-        if (updateDocument) await document.saveEmbedItems();
+        if (updateDocument) await item.saveEmbedItems();
     }
 
     /**

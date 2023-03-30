@@ -35,17 +35,25 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
-        if (game.user.isGM && this.actor.type === 'character') {
+        if (game.user.isGM) {
+            if (this.actor.type === 'character') {
+                buttons.unshift({
+                    label: 'PL1E.CreationMod',
+                    class: 'reset-clones',
+                    icon: this.actor.system.misc.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
+                    onclick: () => {
+                        this.actor.update({
+                            "system.misc.creationMod": !this.actor.system.misc.creationMod
+                        });
+                        this.render(false);
+                    }
+                });
+            }
             buttons.unshift({
-                label: 'PL1E.CreationMod',
-                class: 'reset-clones',
-                icon: this.actor.system.misc.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
-                onclick: () => {
-                    this.actor.update({
-                        "system.misc.creationMod": !this.actor.system.misc.creationMod
-                    });
-                    this.render(false);
-                }
+                label: 'PL1E.Debug',
+                class: 'debug',
+                icon: 'fas fa-ban-bug',
+                onclick: () => console.log(this)
             });
         }
         return buttons;
