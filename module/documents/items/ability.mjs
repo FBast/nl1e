@@ -112,7 +112,8 @@ export class Pl1eAbility extends Pl1eSubItem {
         // Calculate launcher optionalAttributes
         let calculatedOptionalAttributes = [];
         for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
-            if (optionalAttribute.targetGroup !== 'self') continue;
+            if (optionalAttribute.targetGroup !== "self") continue;
+            if (optionalAttribute.attributeLink === "passive") continue;
             let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, rollResult, this.actor);
             calculatedOptionalAttributes.push(calculatedAttribute);
         }

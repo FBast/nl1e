@@ -11,6 +11,7 @@ import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eHelpers} from "./helpers/helpers.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
+import {Pl1eFormValidation} from "./helpers/formValidation.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */

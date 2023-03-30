@@ -1,6 +1,7 @@
 import {PL1E} from "../helpers/config.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
+import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -107,6 +108,9 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
+
+        // Form validation
+        Pl1eFormValidation.positiveDecimal();
 
         // Roll handlers, click handlers, etc. would go here.
         html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));

@@ -300,35 +300,56 @@ export class Pl1eActor extends Actor {
             const reduction = foundry.utils.getProperty(system, PL1E.reductionsPath[optionalAttribute.reduction]);
             optionalAttribute.value = Math.min(optionalAttribute.value + reduction, 0);
         }
-        let newValue;
+        let newValue = foundry.utils.getProperty(system, subTarget.path);
         switch (optionalAttribute.function) {
-            case 'set':
+            case "set":
                 newValue = optionalAttribute.value;
                 break;
-            case 'add':
-                newValue = foundry.utils.getProperty(system, subTarget.path);
-                newValue += optionalAttribute.value;
+            case "add":
+            case "sub":
+            case "transfer":
+                if (newValue instanceof Array)
+                    newValue.push(optionalAttribute.value);
+                else
+                    newValue += optionalAttribute.value;
                 break;
-            case 'remove':
-                newValue = foundry.utils.getProperty(system, subTarget.path);
-                newValue -= optionalAttribute.value;
+            case "effect":
+                const effect = await ActiveEffect.create({
+                    label: "My Effect",
+                    icon: "icons/svg/fire.svg",
+                    changes: [
+                        {
+                            key: "system." + subTarget.path,
+                            mode: 2, // ADD | SUBTRACT | MULTIPLY | DIVIDE | SET
+                            value: optionalAttribute.value
+                        }
+                    ],
+                    duration: {
+                        rounds: 1,
+                        seconds: 6
+                    },
+                    flags: {
+                        "pl1e": {
+                            customFlag: true
+                        }
+                    }
+                }, {parent: this});
                 break;
-            case 'push':
-                let currentValue = foundry.utils.getProperty(system, subTarget.path);
-                if (currentValue === undefined) currentValue = [];
-                currentValue.push(optionalAttribute.value);
-                newValue = currentValue;
-                break;
+            // case 'push':
+            //     let currentValue = foundry.utils.getProperty(system, subTarget.path);
+            //     if (currentValue === undefined) currentValue = [];
+            //     currentValue.push(optionalAttribute.value);
+            //     newValue = currentValue;
+            //     break;
             default:
                 console.error("PL1E | Unknown optionalAttribute function : " + optionalAttribute.function)
         }
 
-        if (persist) {
+        // Make changes
+        if (persist)
             await this.update({["system." + subTarget.path]: newValue})
-        }
-        else {
+        else
             foundry.utils.setProperty(system, subTarget.path, newValue);
-        }
     }
 
 }

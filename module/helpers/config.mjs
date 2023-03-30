@@ -433,7 +433,8 @@ PL1E.attributeGroups = {
         "transfer": "PL1E.Transfer",
         "increase": "PL1E.Increase",
         "decrease": "PL1E.Decrease",
-        "set": "PL1E.Set"
+        "set": "PL1E.Set",
+        "effect": "PL1E.Effect"
     },
     "weapon": {
         "damage": "PL1E.Damage",
@@ -477,7 +478,7 @@ PL1E.attributeGroupsValues = {
         },
         "target": "resources",
         "subTarget": "health",
-        "function": "add"
+        "function": "sub"
     },
     "transfer": {
         "value": 0,
@@ -512,7 +513,7 @@ PL1E.attributeGroupsValues = {
         },
         "target": "characteristics",
         "subTarget": "strength",
-        "function": "remove"
+        "function": "sub"
     },
     "set": {
         "value": 0,
@@ -525,146 +526,157 @@ PL1E.attributeGroupsValues = {
         "target": "characteristics",
         "subTarget": "strength",
         "function": "set"
+    },
+    "effect": {
+        "value": 0,
+        "label": "PL1E.Effect",
+        "targets": {
+            "characteristics": "PL1E.Characteristics",
+            "misc": "PL1E.Misc",
+        },
+        "target": "characteristics",
+        "subTarget": "strength",
+        "function": "effect"
     }
 }
 
 PL1E.attributeSubTargets = {
     "health": {
         "label": "PL1E.Health",
-        "icon": "fas fa-heart",
+        "icon": "fa-heart",
         "type": "number",
         "path": "resources.health.value"
     },
     "stamina": {
         "label": "PL1E.Stamina",
-        "icon": "fas fa-wave-pulse",
+        "icon": "fa-wave-pulse",
         "type": "number",
         "path": "resources.stamina.value"
     },
     "mana": {
         "label": "PL1E.Mana",
-        "icon": "fas fa-sparkles",
+        "icon": "fa-sparkles",
         "type": "number",
         "path": "resources.mana.value"
     },
     "strength": {
         "label": "PL1E.Strength",
-        "icon": "fas fa-dumbbell",
+        "icon": "fa-dumbbell",
         "type": "number",
         "path": "characteristics.strength.mods"
     },
     "agility": {
         "label": "PL1E.Agility",
-        "icon": "fas fa-dumbbell",
+        "icon": "fa-dumbbell",
         "type": "number",
         "path": "characteristics.agility.mods"
     },
     "perception": {
         "label": "PL1E.Perception",
-        "icon": "fas fa-dumbbell",
+        "icon": "fa-dumbbell",
         "type": "number",
         "path": "characteristics.perception.mods"
     },
     "constitution": {
         "label": "PL1E.Constitution",
-        "icon": "fas fa-dumbbell",
+        "icon": "fa-dumbbell",
         "type": "number",
         "path": "characteristics.constitution.mods"
     },
     "intellect": {
         "label": "PL1E.Intellect",
-        "icon": "fas fa-dumbbell",
+        "icon": "fa-dumbbell",
         "type": "number",
         "path": "characteristics.intellect.mods"
     },
     "cunning": {
         "label": "PL1E.Cunning",
-        "icon": "fas fa-dumbbell",
+        "icon": "fa-dumbbell",
         "type": "number",
         "path": "characteristics.cunning.mods"
     },
     "wisdom": {
         "label": "PL1E.Wisdom",
-        "icon": "fas fa-dumbbell",
+        "icon": "fa-dumbbell",
         "type": "number",
         "path": "characteristics.wisdom.mods"
     },
     "will": {
         "label": "PL1E.Will",
-        "icon": "fas fa-dumbbell",
+        "icon": "fa-dumbbell",
         "type": "number",
         "path": "characteristics.will.mods"
     },
     "size": {
         "label": "PL1E.Size",
-        "icon": "fas fa-arrow-up-big-small",
+        "icon": "fa-arrow-up-big-small",
         "type": "select",
         "path": "misc.size",
         "select": "sizes"
     },
     "speed": {
         "label": "PL1E.Speed",
-        "icon": "fas fa-person-running",
+        "icon": "fa-person-running",
         "type": "number",
         "path": "misc.speed"
     },
     "movementPenalty": {
         "label": "PL1E.MovementPenalty",
-        "icon": "fas fa-weight-hanging",
+        "icon": "fa-weight-hanging",
         "type": "number",
         "path": "misc.movementPenalty"
     },
     "parry": {
         "label": "PL1E.Parry",
-        "icon": "fas fa-shield",
+        "icon": "fa-shield",
         "type": "number",
         "path": "misc.parry"
     },
     "dodge": {
         "label": "PL1E.Dodge",
-        "icon": "fas fa-eye",
+        "icon": "fa-eye",
         "type": "number",
         "path": "misc.dodge"
     },
     "slashingReduction": {
         "label": "PL1E.SlashingReduction",
-        "icon": "far fa-axe-battle",
+        "icon": "fa-axe-battle",
         "type": "number",
         "path": "misc.slashingReduction"
     },
     "crushingReduction": {
         "label": "PL1E.CrushingReduction",
-        "icon": "far fa-hammer-war",
+        "icon": "fa-hammer-war",
         "type": "number",
         "path": "misc.crushingReduction"
     },
     "piercingReduction": {
         "label": "PL1E.PiercingReduction",
-        "icon": "far fa-dagger",
+        "icon": "fa-dagger",
         "type": "number",
         "path": "misc.piercingReduction"
     },
     "burnReduction": {
         "label": "PL1E.BurnReduction",
-        "icon": "far fa-fire",
+        "icon": "fa-fire",
         "type": "number",
         "path": "misc.burnReduction"
     },
     "coldReduction": {
         "label": "PL1E.ColdReduction",
-        "icon": "far fa-snowflake",
+        "icon": "fa-snowflake",
         "type": "number",
         "path": "misc.coldReduction"
     },
     "shockReduction": {
         "label": "PL1E.ShockReduction",
-        "icon": "far fa-bolt",
+        "icon": "fa-bolt",
         "type": "number",
         "path": "misc.shockReduction"
     },
     "acidReduction": {
         "label": "PL1E.AcidReduction",
-        "icon": "far fa-droplet",
+        "icon": "fa-droplet",
         "type": "number",
         "path": "misc.acidReduction"
     }

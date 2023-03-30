@@ -1,6 +1,7 @@
 import {PL1E} from "../helpers/config.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
+import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications

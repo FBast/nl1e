@@ -20,7 +20,7 @@
             <label>{{localize "PL1E.Effects"}} :</label>
             {{#each targetData.calculatedOptionalAttributes as |attribute id|}}
                 {{#with (configEntry "attributeSubTargets" attribute.subTarget) as |subTarget|}}
-                    <i class="attribute-icon fas {{subTarget.icon}} hover-green" data-tooltip="{{localize subTarget.label}}">
+                    <i class="attribute-icon {{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{subTarget.icon}} hover-green" data-tooltip="{{localize subTarget.label}}">
                         <label>{{formatNumber attribute.value signe=true}}</label>
                     </i>
                 {{/with}}

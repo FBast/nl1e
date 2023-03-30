@@ -38,7 +38,7 @@
                 <label class="attribute-name">{{localize attribute.label}}</label>
                 {{#with (configEntry "attributeSubTargets" attribute.subTarget) as |subTargetData|}}
                     {{#if (eq subTargetData.type "number")}}
-                        <input type="text" name="system.optionalAttributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
+                        <input class="input-positive-decimal" type="number" name="system.optionalAttributes.{{id}}.value" min="0" step="1" value="{{attribute.value}}" data-dtype="Number"/>
                     {{else if (eq subTargetData.type "bool")}}
                         <input type="checkbox" name="system.optionalAttributes.{{id}}.value" {{checked attribute.value}} data-dtype="Boolean"/>
                     {{else if (eq subTargetData.type "select")}}

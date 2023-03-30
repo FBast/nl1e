@@ -81,6 +81,10 @@ export class Pl1eSubItem {
                 calculatedOptionalAttribute.value = Math.min(calculatedOptionalAttribute.value + reduction, 0);
             }
         }
+
+        // Apply sign
+        calculatedOptionalAttribute.value *= calculatedOptionalAttribute.function === "sub" ? -1 : 1;
+
         return calculatedOptionalAttribute;
     }
 
