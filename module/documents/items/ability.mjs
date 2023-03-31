@@ -8,7 +8,7 @@ export class Pl1eAbility extends Pl1eSubItem {
      * Internal type used to manage ability data
      *
      * @typedef {object} AbilityData
-     * @property {LauncherData} launcherData The launcher data
+     * @property {CharacterData} characterData The character data
      * @property {AbilityTemplate[]} templates  An array of the measure templates
      */
 
@@ -34,9 +34,9 @@ export class Pl1eAbility extends Pl1eSubItem {
         if (token === null) return;
 
         /**
-         * Internal type used to manage ability data
+         * Internal type used to manage character data
          *
-         * @typedef {object} LauncherData
+         * @typedef {object} CharacterData
          * @property {Pl1eActor} actor The actor using the ability
          * @property {string} tokenId The token of the actor which originate the ability
          * @property {Pl1eItem} item The ability itself
@@ -48,9 +48,9 @@ export class Pl1eAbility extends Pl1eSubItem {
          */
 
         /**
-         * @type {LauncherData}
+         * @type {CharacterData}
          */
-        const launcherData = {
+        const characterData = {
             actor: this.actor,
             tokenId: token?.uuid || null,
             item: this.item,
@@ -62,9 +62,9 @@ export class Pl1eAbility extends Pl1eSubItem {
         }
 
         // Get linked attributes
-        if (launcherData.attributes.abilityLink.value === 'mastery') {
+        if (characterData.attributes.abilityLink.value === 'mastery') {
             const relatedMastery = attributes.mastery.value;
-            const relatedItems = launcherData.actor.items.filter(value => value.type === 'weapon'
+            const relatedItems = characterData.actor.items.filter(value => value.type === 'weapon'
                 && value.system.attributes.mastery.value === relatedMastery);
             if (relatedItems.length > 1) {
                 ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
@@ -74,18 +74,18 @@ export class Pl1eAbility extends Pl1eSubItem {
                 ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
                 return;
             }
-            launcherData.linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(launcherData.attributes, launcherData.linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(launcherData.attributes, launcherData.linkedItem.system.optionalAttributes);
+            characterData.linkedItem = relatedItems[0];
+            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
+            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.optionalAttributes);
         }
-        if (launcherData.attributes.abilityLink.value === 'parent') {
+        if (characterData.attributes.abilityLink.value === 'parent') {
             let relatedItems = [];
-            for (const item of launcherData.actor.items) {
+            for (const item of characterData.actor.items) {
                 if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
                 if (item.system.subItemsMap === undefined) continue;
                 for (let [key, subItem] of item.system.subItemsMap) {
                     const subItemFlag = subItem.getFlag('core', 'sourceId');
-                    const itemFlag = launcherData.item.getFlag('core', 'sourceId');
+                    const itemFlag = characterData.item.getFlag('core', 'sourceId');
                     if (subItemFlag !== itemFlag) continue;
                     relatedItems.push(item);
                 }
@@ -94,56 +94,56 @@ export class Pl1eAbility extends Pl1eSubItem {
                 ui.notifications.warn(game.i18n.localize("PL1E.NoEquippedParent"));
                 return;
             }
-            launcherData.linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(launcherData.attributes, launcherData.linkedItem.system.attributes);
-            for (let [id, optionalAttribute] of Object.entries(launcherData.linkedItem.system.optionalAttributes)) {
+            characterData.linkedItem = relatedItems[0];
+            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
+            for (let [id, optionalAttribute] of Object.entries(characterData.linkedItem.system.optionalAttributes)) {
                 if (optionalAttribute.attributeLink !== "child") continue;
-                launcherData.optionalAttributes[id] = optionalAttribute;
+                characterData.optionalAttributes[id] = optionalAttribute;
             }
         }
 
         // Roll Data
-        if (launcherData.attributes.skillRoll.value !== 'none') {
-            launcherData.result = await launcherData.actor.rollAbilityLauncher(launcherData);
+        if (characterData.attributes.characterRoll.value !== 'none') {
+            //TODO-fred calculateAttributes and calculateOptionalAttributes should be down before roll (maybe in rollAbilityCharacter)
+            characterData.result = await characterData.actor.rollAbilityCharacter(characterData);
         }
 
-        // Calculate launcher attributes
+        // Calculate character attributes
         let calculatedAttributes = {};
-        for (let [id, attribute] of Object.entries(launcherData.attributes)) {
-            calculatedAttributes[id] = this._calculateAttribute(attribute, launcherData.result, launcherData.actor);
+        for (let [id, attribute] of Object.entries(characterData.attributes)) {
+            calculatedAttributes[id] = this._calculateAttribute(attribute, characterData.result, characterData.actor);
         }
-        launcherData.attributes = calculatedAttributes;
+        characterData.attributes = calculatedAttributes;
 
-        // Calculate launcher optionalAttributes
+        // Calculate character optionalAttributes
         let calculatedOptionalAttributes = [];
-        for (let [id, optionalAttribute] of Object.entries(launcherData.optionalAttributes)) {
-            if (optionalAttribute.targetGroup !== "self") continue;
+        for (let [id, optionalAttribute] of Object.entries(characterData.optionalAttributes)) {
             if (optionalAttribute.attributeLink === "passive") continue;
-            let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, launcherData.result, launcherData.actor);
+            let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, characterData.result, characterData.actor);
             calculatedOptionalAttributes.push(calculatedAttribute);
         }
-        launcherData.optionalAttributes = calculatedOptionalAttributes;
+        characterData.optionalAttributes = calculatedOptionalAttributes;
 
         // Ability Data
         const abilityData = {
-            launcherData: launcherData,
+            characterData: characterData,
             templates: []
         };
 
-        // Target launcher if areaShape is self
-        if (launcherData.attributes.areaShape.value === "self") {
+        // Target character if areaShape is self
+        if (characterData.attributes.areaShape.value === "self") {
             token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
         }
         // Else create target selection templates
         else {
-            if (launcherData.attributes.areaNumber.value !== 0 && calculatedAttributes.areaShape.value !== "self") {
-                await launcherData.actor.sheet?.minimize();
+            if (characterData.attributes.areaNumber.value !== 0 && calculatedAttributes.areaShape.value !== "self") {
+                await characterData.actor.sheet?.minimize();
                 for (let i = 0; i < calculatedAttributes.areaNumber.value; i++) {
-                    const template = await AbilityTemplate.fromItem(launcherData.item, launcherData.attributes, launcherData.optionalAttributes);
+                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.optionalAttributes);
                     abilityData.templates.push(template);
                     await template?.drawPreview();
                 }
-                await launcherData.actor.sheet?.maximize();
+                await characterData.actor.sheet?.maximize();
             }
         }
 
@@ -178,63 +178,63 @@ export class Pl1eAbility extends Pl1eSubItem {
         // Target Data
         let targetTokens = game.user.targets;
 
+        //TODO-fred Apply character effects such as resources cost
+
         for (let targetToken of targetTokens) {
             // Make a shallow copy of the ability data for this target
             let abilityData = {...this.abilityData};
+            const characterData = abilityData.characterData;
 
-            // Copy attributes
-            const launcherData = abilityData.launcherData;
-            const attributes = abilityData.launcherData.attributes;
-            const optionalAttributes = abilityData.launcherData.optionalAttributes;
+            /**
+             * Internal type used to manage target data
+             *
+             * @typedef {object} TargetData
+             * @property {Pl1eActor} actor The actor using the ability
+             * @property {string} tokenId The token of the actor which originate the ability
+             * @property {number} result The result of the roll
+             * @property {number} totalResult The character result minus the result
+             * @property {object} attributes The attributes of the item
+             * @property {object} optionalAttributes The optionalAttributes of the item
+             */
+
+            /**
+             * @type {TargetData}
+             */
+            const targetData = {
+                actor: targetToken.actor,
+                tokenId: targetToken?.uuid || null,
+                result: 0,
+                totalResult: abilityData.characterData.result,
+                attributes: JSON.parse(JSON.stringify(abilityData.characterData.attributes)),
+                optionalAttributes: JSON.parse(JSON.stringify(abilityData.characterData.optionalAttributes)),
+            }
 
             // Opposite roll if exist
-            let rollResult = 0;
-            if (attributes.oppositeRolls.value !== "none") {
-                const skill = targetToken.actor.system.skills[attributes.oppositeRolls.value];
-                rollResult = await targetToken.actor.rollSkill(skill);
+            if (targetData.attributes.targetRoll.value !== "none") {
+                //TODO-fred calculateAttributes and calculateOptionalAttributes should be inside rollAbilityTarget
+                targetData.result = await characterData.actor.rollAbilityTarget(characterData, targetData);
+                targetData.totalResult = abilityData.characterData.result - targetData.result;
             }
-            let totalResult = abilityData.launcherData.result - rollResult;
 
             // Calculate target attributes
             let calculatedOptionalAttributes = [];
-            for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
-                if ((attributes.areaShape.value === "self" || optionalAttribute.targetGroup === "self") && targetToken.actor !== launcherData.actor) continue;
-                if (optionalAttribute.targetGroup === "allies" && targetToken.document.disposition !== launcherData.actor.bestToken.disposition) continue;
-                if (optionalAttribute.targetGroup === "opponents" && targetToken.document.disposition === launcherData.actor.bestToken.disposition) continue;
-                let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, totalResult, targetToken.actor);
+            for (let [id, optionalAttribute] of Object.entries(targetData.optionalAttributes)) {
+                if ((targetData.attributes.areaShape.value === "self" || optionalAttribute.targetGroup === "self") && targetToken.actor !== characterData.actor) continue;
+                if (optionalAttribute.targetGroup === "allies" && targetToken.document.disposition !== characterData.actor.bestToken.disposition) continue;
+                if (optionalAttribute.targetGroup === "opponents" && targetToken.document.disposition === characterData.actor.bestToken.disposition) continue;
+                let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, targetData.totalResult, targetToken.actor);
                 calculatedOptionalAttributes.push(calculatedAttribute);
             }
-
-            abilityData.targetData = {
-                actor: targetToken.actor,
-                tokenId: targetToken?.uuid || null,
-                result: rollResult,
-                totalResult: totalResult,
-                optionalAttributes: calculatedOptionalAttributes
-            };
-
-            const html = await renderTemplate("systems/pl1e/templates/chat/resolution-card.hbs", abilityData);
-
-            // Create the ChatMessage data object
-            const chatData = {
-                user: game.user.id,
-                type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-                content: html,
-                flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + this.item.name,
-                speaker: ChatMessage.getSpeaker({actor: targetToken.actor, targetToken}),
-                flags: {"core.canPopout": true}
-            };
-
-            await ChatMessage.create(chatData);
-
-            //TODO-fred Apply launcher effects such as resources cost
+            targetData.optionalAttributes = calculatedOptionalAttributes;
 
             // Apply target effects
-            for (const calculatedOptionalAttribute of abilityData.targetData.optionalAttributes) {
-                await abilityData.targetData.actor.applyOptionalAttribute(calculatedOptionalAttribute, false, true);
+            for (const optionalAttribute of targetData.optionalAttributes) {
+                await targetData.actor.applyOptionalAttribute(optionalAttribute, false, true);
             }
-            abilityData.targetData.actor.sheet.render(false);
+            targetData.actor.sheet.render(false);
         }
+
+        //TODO-fred Apply character effects here to be able to process particular effect such as transfer
     }
 
     /**

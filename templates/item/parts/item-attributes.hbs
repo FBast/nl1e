@@ -58,7 +58,7 @@
                             {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
                         </select>
                     {{/if}}
-                    {{#if (or (and (ne ../system.attributes.skillRoll undefined) (ne ../system.attributes.skillRoll.value "none"))
+                    {{#if (or (and (ne ../system.attributes.characterRoll undefined) (ne ../system.attributes.characterRoll.value "none"))
                                   (and (ne ../system.abilityLink undefined) (ne ../system.attributes.abilityLink.value "none")))}}
                         <select name="system.optionalAttributes.{{id}}.resolutionType">
                             {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}

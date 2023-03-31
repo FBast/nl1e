@@ -1,0 +1,56 @@
+<div class="chat-card item-card">
+    <header class="card-header flexrow">
+        <img class="left-image actor-edit" src="{{targetData.actor.img}}" data-token-id="{{targetData.tokenId}}"
+             title="{{targetData.actor.name}}" width="36" height="36"/>
+        <label class="item-label"></label>
+        <img class="right-image actor-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
+             title="{{characterData.actor.name}}" width="36" height="36"/>
+        <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
+             data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
+    </header>
+    <div class="card-content">
+        {{#if (ne ../item.system.attributes.targetRoll.value "none")}}
+            <!-- Result of the roll -->
+            <div class="dice-roll">
+                <div class="dice-result">
+                    <div class="dice-formula">{{roll.formula}}</div>
+                    <div class="dice-tooltip">
+                        {{#each roll.dice as |die|}}
+                            <section class="tooltip-part">
+                                <div class="dice">
+                                    <header class="part-header flexrow">
+                                        <span class="part-formula">{{die.number}}d{{die.faces}}{{join die.modifiers ""}}</span>
+                                        <span class="part-total">{{die.total}}</span>
+                                    </header>
+                                    <ol class="dice-rolls">
+                                        {{#each die.results as |result|}}
+                                            <li class="roll die d{{die.faces}} {{#if result.success}}success{{/if}}
+                                                {{#if (eq result.result die.faces)}}exploded{{/if}}">{{result.result}}</li>
+                                        {{/each}}
+                                    </ol>
+                                </div>
+                            </section>
+                        {{/each}}
+                    </div>
+                    <h4 class="dice-total {{#if (gt (minus characterData.result roll.total) 0)}}success{{else}}failure{{/if}}">
+                        {{characterData.result}} - {{roll.total}} = {{minus characterData.result roll.total}} {{localize "PL1E.Success"}}
+                    </h4>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+    <footer class="card-footer">
+        {{#if (ne targetData.optionalAttributes.length 0)}}
+            <label>{{localize "PL1E.Effects"}} :</label>
+            {{#each targetData.optionalAttributes as |attribute id|}}
+                {{#with (configEntry "attributeSubTargets" attribute.subTarget) as |subTarget|}}
+                    <i class="attribute-icon {{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{subTarget.icon}} hover-green" data-tooltip="{{localize subTarget.label}}">
+                        <label>{{formatNumber attribute.value signe=true}}</label>
+                    </i>
+                {{/with}}
+            {{/each}}
+        {{else}}
+            <label>{{localize "PL1E.NoEffects"}}</label>
+        {{/if}}
+    </footer>
+</div>

@@ -507,9 +507,9 @@
           "type": "select",
           "select": "abilityLinks"
         },
-        "skillRoll": {
+        "characterRoll": {
           "value": "none",
-          "label": "PL1E.SkillRoll",
+          "label": "PL1E.CharacterRoll",
           "category": "fixed",
           "type": "select",
           "select": "abilitySkills"
@@ -584,9 +584,9 @@
           "conditions": "areaShape===ray",
           "fallback": 1
         },
-        "oppositeRolls": {
+        "targetRoll": {
           "value": "none",
-          "label": "PL1E.OppositeRolls",
+          "label": "PL1E.TargetRoll",
           "category": "fixed",
           "type": "select",
           "select": "abilitySkills",

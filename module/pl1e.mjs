@@ -132,3 +132,8 @@ Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {
     }
     return Handlebars.helpers.selectOptions(optionsData, options);
 });
+
+Handlebars.registerHelper('join', function(arr, separator) {
+    return arr.join(separator);
+});
+

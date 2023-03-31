@@ -305,8 +305,8 @@ export class Pl1eActor extends Actor {
         return roll.rolls[0].result;
     }
 
-    async rollAbilityLauncher(launcherData) {
-        const skill = this.system.skills[launcherData.attributes.skillRoll.value]
+    async rollAbilityCharacter(characterData) {
+        const skill = this.system.skills[characterData.attributes.characterRoll.value]
         let formula = skill.number + "d" + skill.dice + "xo" + skill.dice + "cs>=4";
         let roll = new Roll(formula, this.getRollData());
         await roll.evaluate({async: true});
@@ -315,20 +315,45 @@ export class Pl1eActor extends Actor {
             formula: roll.formula,
             total: roll.total,
             dice: roll.dice,
-            hasCritical: roll.hasCritical,
-            critical: roll.critical,
-            hasFailure: roll.hasFailure,
-            failure: roll.failure
         };
 
         // Render the chat card template
-        const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", {...launcherData, roll: rollData});
+        const html = await renderTemplate("systems/pl1e/templates/chat/ability-character.hbs",
+            {characterData: characterData, roll: rollData});
 
         roll = await roll.toMessage({
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: this}),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + launcherData.item.name,
+            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + characterData.item.name,
+            rollMode: game.settings.get('core', 'rollMode'),
+            flags: {"core.canPopout": true},
+            content: html
+        });
+        return roll.rolls[0].result;
+    }
+
+    async rollAbilityTarget(characterData, targetData) {
+        const skill = this.system.skills[targetData.attributes.targetRoll.value]
+        let formula = skill.number + "d" + skill.dice + "xo" + skill.dice + "cs>=4";
+        let roll = new Roll(formula, this.getRollData());
+        await roll.evaluate({async: true});
+
+        const rollData = {
+            formula: roll.formula,
+            total: roll.total,
+            dice: roll.dice,
+        };
+
+        // Render the chat card template
+        const html = await renderTemplate("systems/pl1e/templates/chat/ability-target.hbs",
+            {characterData: characterData, targetData: targetData, roll: rollData});
+
+        roll = await roll.toMessage({
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({actor: this}),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + characterData.item.name,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {"core.canPopout": true},
             content: html

@@ -1,0 +1,48 @@
+<div class="chat-card item-card">
+    <header class="card-header flexrow">
+        <img class="left-image actor-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
+             title="{{characterData.actor.name}}" width="36" height="36"/>
+        <label class="item-label"></label>
+        <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
+             data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
+        {{#if (ne characterData.linkedItem null)}}
+            <img class="right-image item-edit" src="{{characterData.linkedItem.img}}" data-item-id="{{characterData.linkedItem._id}}"
+                 data-token-id="{{characterData.tokenId}}" title="{{characterData.linkedItem.name}}" width="36" height="36"/>
+        {{/if}}
+    </header>
+    <div class="card-content">
+        <!-- Description of the ability -->
+        {{characterData.item.system.attributes.description.value}}
+        <!-- Result of the roll -->
+        <div class="dice-roll">
+            <div class="dice-result">
+                <div class="dice-formula">{{roll.formula}}</div>
+                <div class="dice-tooltip">
+                    {{#each roll.dice as |die|}}
+                        <section class="tooltip-part">
+                            <div class="dice">
+                                <header class="part-header flexrow">
+                                    <span class="part-formula">{{die.number}}d{{die.faces}}{{join die.modifiers ""}}</span>
+                                    <span class="part-total">{{die.total}}</span>
+                                </header>
+                                <ol class="dice-rolls">
+                                    {{#each die.results as |result|}}
+                                        <li class="roll die d{{die.faces}} {{#if result.success}}success{{/if}}
+                                            {{#if (eq result.result die.faces)}}exploded{{/if}}">{{result.result}}</li>
+                                    {{/each}}
+                                </ol>
+                            </div>
+                        </section>
+                    {{/each}}
+                </div>
+                <h4 class="dice-total {{#if (gt roll.total 0)}}success{{else}}failure{{/if}}">
+                    {{roll.total}} {{localize "PL1E.Success"}}
+                </h4>
+            </div>
+        </div>
+    </div>
+    <div class="card-buttons">
+        <button data-action="resolve" data-item-id={{characterData.itemId}}>{{localize "PL1E.Resolve"}}</button>
+        <button data-action="cancel" data-item-id={{characterData.itemId}}>{{localize "PL1E.Cancel"}}</button>
+    </div>
+</div>

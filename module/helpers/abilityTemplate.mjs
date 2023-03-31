@@ -26,12 +26,12 @@ export class AbilityTemplate extends MeasuredTemplate {
   /**
    * A factory method to create an AbilityTemplate instance using provided data from an Pl1eItem instance
    * @param {Pl1eItem} item               The Item object for which to construct the template
-   * @param {object} itemAttributes
+   * @param {object} attributes
    * @param {object} optionalAttributes
    * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
    */
-  static async fromItem(item, itemAttributes, optionalAttributes) {
-    const areaShape = itemAttributes.areaShape.value;
+  static async fromItem(item, attributes, optionalAttributes) {
+    const areaShape = attributes.areaShape.value;
 
     // Save targetGroups for token selection
     let targetGroups = [];
@@ -62,22 +62,22 @@ export class AbilityTemplate extends MeasuredTemplate {
         templateData.height = gridSize;
         break;
       case "circle":
-        templateData.distance = itemAttributes.circleRadius.value * game.system.gridDistance;
+        templateData.distance = attributes.circleRadius.value * game.system.gridDistance;
         break;
       case "cone":
-        templateData.distance = itemAttributes.coneLength.value * game.system.gridDistance;
-        templateData.angle = itemAttributes.coneAngle.value;
+        templateData.distance = attributes.coneLength.value * game.system.gridDistance;
+        templateData.angle = attributes.coneAngle.value;
         break;
       case "square":
         templateData.t = "rect";
-        templateData.distance = itemAttributes.squareLength.value * game.system.gridDistance;
-        templateData.width = itemAttributes.squareLength.value * game.system.gridDistance;
-        templateData.height = itemAttributes.squareLength.value * game.system.gridDistance;
+        templateData.distance = attributes.squareLength.value * game.system.gridDistance;
+        templateData.width = attributes.squareLength.value * game.system.gridDistance;
+        templateData.height = attributes.squareLength.value * game.system.gridDistance;
         templateData.direction = 45;
         break;
       case "ray":
         templateData.width = game.system.gridDistance;
-        templateData.distance = itemAttributes.rayLength.value * game.system.gridDistance;
+        templateData.distance = attributes.rayLength.value * game.system.gridDistance;
         break;
     }
 
