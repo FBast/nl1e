@@ -26,8 +26,8 @@ export class AbilityTemplate extends MeasuredTemplate {
   /**
    * A factory method to create an AbilityTemplate instance using provided data from an Pl1eItem instance
    * @param {Pl1eItem} item               The Item object for which to construct the template
-   * @param itemAttributes
-   * @param optionalAttributes
+   * @param {object} itemAttributes
+   * @param {object} optionalAttributes
    * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
    */
   static async fromItem(item, itemAttributes, optionalAttributes) {

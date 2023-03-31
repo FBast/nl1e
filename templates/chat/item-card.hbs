@@ -1,31 +1,31 @@
 <div class="chat-card item-card">
     <header class="card-header flexrow">
-        <img class="left-image actor-edit" src="{{launcherData.actor.img}}" data-token-id="{{launcherData.tokenId}}"
-             title="{{launcherData.actor.name}}" width="36" height="36"/>
+        <img class="left-image actor-edit" src="{{actor.img}}" data-token-id="{{tokenId}}"
+             title="{{actor.name}}" width="36" height="36"/>
         <label class="item-label"></label>
-        <img class="right-image item-edit" src="{{launcherData.item.img}}" data-item-id="{{launcherData.item._id}}"
-             data-token-id="{{launcherData.tokenId}}" title="{{launcherData.item.name}}" width="36" height="36"/>
-        {{#if (ne launcherData.linkedItem undefined)}}
-            <img class="right-image item-edit" src="{{launcherData.linkedItem.img}}" data-item-id="{{launcherData.linkedItem._id}}"
-                 data-token-id="{{launcherData.tokenId}}" title="{{launcherData.linkedItem.name}}" width="36" height="36"/>
+        <img class="right-image item-edit" src="{{item.img}}" data-item-id="{{item._id}}"
+             data-token-id="{{tokenId}}" title="{{item.name}}" width="36" height="36"/>
+        {{#if (ne linkedItem null)}}
+            <img class="right-image item-edit" src="{{linkedItem.img}}" data-item-id="{{linkedItem._id}}"
+                 data-token-id="{{tokenId}}" title="{{linkedItem.name}}" width="36" height="36"/>
         {{/if}}
     </header>
     <div class="card-content">
         <!-- Description of the ability -->
-        {{launcherData.item.system.attributes.description.value}}
+        {{item.system.attributes.description.value}}
         <!-- Result of the roll -->
-        <h4 class="dice-total {{#if (gt launcherData.result 0)}}success{{else}}failure{{/if}}">
-            {{launcherData.result}} {{localize "PL1E.Success"}}
+        <h4 class="dice-total {{#if (gt roll.total 0)}}success{{else}}failure{{/if}}">
+            {{roll.total}} {{localize "PL1E.Success"}}
         </h4>
     </div>
     <div class="card-buttons">
-        <button data-action="resolve" data-item-id={{launcherData.itemId}}>{{localize "PL1E.Resolve"}}</button>
-        <button data-action="cancel" data-item-id={{launcherData.itemId}}>{{localize "PL1E.Cancel"}}</button>
+        <button data-action="resolve" data-item-id={{itemId}}>{{localize "PL1E.Resolve"}}</button>
+        <button data-action="cancel" data-item-id={{itemId}}>{{localize "PL1E.Cancel"}}</button>
     </div>
     <footer class="card-footer">
-        {{#if (ne launcherData.optionalAttributes.length 0)}}
+        {{#if (ne optionalAttributes.length 0)}}
             <label>{{localize "PL1E.Effects"}} :</label>
-            {{#each launcherData.optionalAttributes as |attribute id|}}
+            {{#each optionalAttributes as |attribute id|}}
                 <i class="attribute-icon fas {{attribute.icon}} hover-green" data-tooltip="{{localize attribute.label}}">
                     <label>{{formatNumber attribute.value signe=true}}</label>
                 </i>

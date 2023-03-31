@@ -8,12 +8,7 @@ export class Pl1eAbility extends Pl1eSubItem {
      * Internal type used to manage ability data
      *
      * @typedef {object} AbilityData
-     * @property {Pl1eActor} actor The actor using the ability
-     * @property {string} tokenId The token of the actor which originate the ability
-     * @property {Pl1eItem} item The ability itself
-     * @property {string} itemId The ability uuid
-     * @property {any} launcherData Data of the actor
-     * @property {any[]} targetsData Data of the targets
+     * @property {LauncherData} launcherData The launcher data
      * @property {AbilityTemplate[]} templates  An array of the measure templates
      */
 
@@ -33,20 +28,43 @@ export class Pl1eAbility extends Pl1eSubItem {
 
     /** @override */
     async use(options) {
-        if (this.actor.bestToken === null) return;
         if (!this._isContextValid(this.actor)) return;
 
         const token = this.actor.bestToken;
+        if (token === null) return;
 
-        // Copy attributes
-        const attributes = JSON.parse(JSON.stringify(this.item.system.attributes));
-        const optionalAttributes = JSON.parse(JSON.stringify(this.item.system.optionalAttributes));
+        /**
+         * Internal type used to manage ability data
+         *
+         * @typedef {object} LauncherData
+         * @property {Pl1eActor} actor The actor using the ability
+         * @property {string} tokenId The token of the actor which originate the ability
+         * @property {Pl1eItem} item The ability itself
+         * @property {string} itemId The ability uuid
+         * @property {number} result The result of the roll
+         * @property {object} attributes The attributes of the item
+         * @property {object} optionalAttributes The optionalAttributes of the item
+         * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
+         */
+
+        /**
+         * @type {LauncherData}
+         */
+        const launcherData = {
+            actor: this.actor,
+            tokenId: token?.uuid || null,
+            item: this.item,
+            itemId: this.item.uuid,
+            result: 0,
+            attributes: JSON.parse(JSON.stringify(this.item.system.attributes)),
+            optionalAttributes: JSON.parse(JSON.stringify(this.item.system.optionalAttributes)),
+            linkedItem: null
+        }
 
         // Get linked attributes
-        let linkedItem;
-        if (attributes.abilityLink.value === 'mastery') {
+        if (launcherData.attributes.abilityLink.value === 'mastery') {
             const relatedMastery = attributes.mastery.value;
-            const relatedItems = this.actor.items.filter(value => value.type === 'weapon'
+            const relatedItems = launcherData.actor.items.filter(value => value.type === 'weapon'
                 && value.system.attributes.mastery.value === relatedMastery);
             if (relatedItems.length > 1) {
                 ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
@@ -56,18 +74,18 @@ export class Pl1eAbility extends Pl1eSubItem {
                 ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
                 return;
             }
-            linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(attributes, linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(optionalAttributes, linkedItem.system.optionalAttributes);
+            launcherData.linkedItem = relatedItems[0];
+            Pl1eHelpers.mergeDeep(launcherData.attributes, launcherData.linkedItem.system.attributes);
+            Pl1eHelpers.mergeDeep(launcherData.attributes, launcherData.linkedItem.system.optionalAttributes);
         }
-        if (attributes.abilityLink.value === 'parent') {
+        if (launcherData.attributes.abilityLink.value === 'parent') {
             let relatedItems = [];
-            for (const item of this.actor.items) {
+            for (const item of launcherData.actor.items) {
                 if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
                 if (item.system.subItemsMap === undefined) continue;
                 for (let [key, subItem] of item.system.subItemsMap) {
                     const subItemFlag = subItem.getFlag('core', 'sourceId');
-                    const itemFlag = this.item.getFlag('core', 'sourceId');
+                    const itemFlag = launcherData.item.getFlag('core', 'sourceId');
                     if (subItemFlag !== itemFlag) continue;
                     relatedItems.push(item);
                 }
@@ -76,82 +94,60 @@ export class Pl1eAbility extends Pl1eSubItem {
                 ui.notifications.warn(game.i18n.localize("PL1E.NoEquippedParent"));
                 return;
             }
-            linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(attributes, linkedItem.system.attributes);
-            for (let [id, optionalAttribute] of Object.entries(linkedItem.system.optionalAttributes)) {
+            launcherData.linkedItem = relatedItems[0];
+            Pl1eHelpers.mergeDeep(launcherData.attributes, launcherData.linkedItem.system.attributes);
+            for (let [id, optionalAttribute] of Object.entries(launcherData.linkedItem.system.optionalAttributes)) {
                 if (optionalAttribute.attributeLink !== "child") continue;
-                optionalAttributes[id] = optionalAttribute;
+                launcherData.optionalAttributes[id] = optionalAttribute;
             }
         }
 
         // Roll Data
-        let rollResult = 0;
-        if (attributes.skillRoll.value !== 'none') {
-            const mainSkill = this.actor.system.skills[attributes.skillRoll.value];
-            rollResult = await this.actor.rollSkill(mainSkill);
+        if (launcherData.attributes.skillRoll.value !== 'none') {
+            launcherData.result = await launcherData.actor.rollAbilityLauncher(launcherData);
         }
 
         // Calculate launcher attributes
         let calculatedAttributes = {};
-        for (let [id, attribute] of Object.entries(attributes)) {
-            calculatedAttributes[id] = this._calculateAttribute(attribute, rollResult, this.actor);
+        for (let [id, attribute] of Object.entries(launcherData.attributes)) {
+            calculatedAttributes[id] = this._calculateAttribute(attribute, launcherData.result, launcherData.actor);
         }
-
-        // Target launcher if areaShape is self
-        if (attributes.areaShape.value === "self") {
-            token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
-        }
-
-        // Target selection template
-        const templates = [];
-        if (calculatedAttributes.areaNumber.value !== 0 && calculatedAttributes.areaShape.value !== "self") {
-            await this.actor.sheet?.minimize();
-            for (let i = 0; i < calculatedAttributes.areaNumber.value; i++) {
-                const template = await AbilityTemplate.fromItem(this.item, calculatedAttributes, optionalAttributes);
-                templates.push(template);
-                await template?.drawPreview();
-            }
-            await this.actor.sheet?.maximize();
-        }
+        launcherData.attributes = calculatedAttributes;
 
         // Calculate launcher optionalAttributes
         let calculatedOptionalAttributes = [];
-        for (let [id, optionalAttribute] of Object.entries(optionalAttributes)) {
+        for (let [id, optionalAttribute] of Object.entries(launcherData.optionalAttributes)) {
             if (optionalAttribute.targetGroup !== "self") continue;
             if (optionalAttribute.attributeLink === "passive") continue;
-            let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, rollResult, this.actor);
+            let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, launcherData.result, launcherData.actor);
             calculatedOptionalAttributes.push(calculatedAttribute);
         }
+        launcherData.optionalAttributes = calculatedOptionalAttributes;
 
-        // Launcher Data
-        this.abilityData = {
-            templates: templates,
-            launcherData: {
-                actor: this.actor,
-                tokenId: token?.uuid || null,
-                item: this.item,
-                itemId: this.item.uuid,
-                result: rollResult,
-                attributes: calculatedAttributes,
-                optionalAttributes: calculatedOptionalAttributes,
-                linkedItem: linkedItem
+        // Ability Data
+        const abilityData = {
+            launcherData: launcherData,
+            templates: []
+        };
+
+        // Target launcher if areaShape is self
+        if (launcherData.attributes.areaShape.value === "self") {
+            token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
+        }
+        // Else create target selection templates
+        else {
+            if (launcherData.attributes.areaNumber.value !== 0 && calculatedAttributes.areaShape.value !== "self") {
+                await launcherData.actor.sheet?.minimize();
+                for (let i = 0; i < calculatedAttributes.areaNumber.value; i++) {
+                    const template = await AbilityTemplate.fromItem(launcherData.item, launcherData.attributes, launcherData.optionalAttributes);
+                    abilityData.templates.push(template);
+                    await template?.drawPreview();
+                }
+                await launcherData.actor.sheet?.maximize();
             }
-        };
+        }
 
-        // Render the chat card template
-        const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", this.abilityData);
-
-        // Create the ChatMessage data object
-        const chatData = {
-            user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + this.item.name,
-            content: html,
-            speaker: ChatMessage.getSpeaker({actor: this.actor}),
-            flags: {"core.canPopout": true}
-        };
-
-        await ChatMessage.create(chatData);
+        this.abilityData = abilityData;
     }
 
     /** @override */

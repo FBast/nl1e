@@ -305,6 +305,37 @@ export class Pl1eActor extends Actor {
         return roll.rolls[0].result;
     }
 
+    async rollAbilityLauncher(launcherData) {
+        const skill = this.system.skills[launcherData.attributes.skillRoll.value]
+        let formula = skill.number + "d" + skill.dice + "xo" + skill.dice + "cs>=4";
+        let roll = new Roll(formula, this.getRollData());
+        await roll.evaluate({async: true});
+
+        const rollData = {
+            formula: roll.formula,
+            total: roll.total,
+            dice: roll.dice,
+            hasCritical: roll.hasCritical,
+            critical: roll.critical,
+            hasFailure: roll.hasFailure,
+            failure: roll.failure
+        };
+
+        // Render the chat card template
+        const html = await renderTemplate("systems/pl1e/templates/chat/item-card.hbs", {...launcherData, roll: rollData});
+
+        roll = await roll.toMessage({
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({actor: this}),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + launcherData.item.name,
+            rollMode: game.settings.get('core', 'rollMode'),
+            flags: {"core.canPopout": true},
+            content: html
+        });
+        return roll.rolls[0].result;
+    }
+
     async applyOptionalAttribute(optionalAttribute, reduction, persist) {
         const system = this.system;
         const subTarget = PL1E.attributeSubTargets[optionalAttribute.subTarget];
