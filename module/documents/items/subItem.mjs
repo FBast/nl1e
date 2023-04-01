@@ -47,10 +47,6 @@ export class Pl1eSubItem {
             if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
                 calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
             }
-            if (calculatedAttribute.value < 0 && calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
-                let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductionsPath[calculatedAttribute.reduction]);
-                calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
-            }
         }
         return calculatedAttribute;
     }
@@ -80,10 +76,10 @@ export class Pl1eSubItem {
                 let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductionsPath[calculatedOptionalAttribute.reduction]);
                 calculatedOptionalAttribute.value = Math.min(calculatedOptionalAttribute.value + reduction, 0);
             }
-        }
 
-        // Apply sign
-        calculatedOptionalAttribute.value *= calculatedOptionalAttribute.function === "sub" ? -1 : 1;
+            // Apply sign
+            calculatedOptionalAttribute.value *= calculatedOptionalAttribute.function === "sub" ? -1 : 1;
+        }
 
         return calculatedOptionalAttribute;
     }

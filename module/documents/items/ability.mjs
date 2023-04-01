@@ -41,7 +41,7 @@ export class Pl1eAbility extends Pl1eSubItem {
          * @property {string} tokenId The token of the actor which originate the ability
          * @property {Pl1eItem} item The ability itself
          * @property {string} itemId The ability uuid
-         * @property {number} result The result of the roll
+         * @property {number} result The result of the rollData
          * @property {object} attributes The attributes of the item
          * @property {object} optionalAttributes The optionalAttributes of the item
          * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
@@ -102,10 +102,12 @@ export class Pl1eAbility extends Pl1eSubItem {
             }
         }
 
-        // Roll Data
+        // Character rollData if exist
+        let rollData = null;
         if (characterData.attributes.characterRoll.value !== 'none') {
-            //TODO-fred calculateAttributes and calculateOptionalAttributes should be down before roll (maybe in rollAbilityCharacter)
-            characterData.result = await characterData.actor.rollAbilityCharacter(characterData);
+            const skill = characterData.actor.system.skills[characterData.attributes.characterRoll.value];
+            rollData = await characterData.actor.rollSkill(skill);
+            characterData.result = rollData.total;
         }
 
         // Calculate character attributes
@@ -114,15 +116,6 @@ export class Pl1eAbility extends Pl1eSubItem {
             calculatedAttributes[id] = this._calculateAttribute(attribute, characterData.result, characterData.actor);
         }
         characterData.attributes = calculatedAttributes;
-
-        // Calculate character optionalAttributes
-        let calculatedOptionalAttributes = [];
-        for (let [id, optionalAttribute] of Object.entries(characterData.optionalAttributes)) {
-            if (optionalAttribute.attributeLink === "passive") continue;
-            let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, characterData.result, characterData.actor);
-            calculatedOptionalAttributes.push(calculatedAttribute);
-        }
-        characterData.optionalAttributes = calculatedOptionalAttributes;
 
         // Ability Data
         const abilityData = {
@@ -147,6 +140,10 @@ export class Pl1eAbility extends Pl1eSubItem {
             }
         }
 
+        // Display message
+        await this._displayMessage(rollData, characterData);
+
+        // Update data
         this.abilityData = abilityData;
     }
 
@@ -209,10 +206,12 @@ export class Pl1eAbility extends Pl1eSubItem {
                 optionalAttributes: JSON.parse(JSON.stringify(abilityData.characterData.optionalAttributes)),
             }
 
-            // Opposite roll if exist
+            // Target roll if exist
+            let rollData = null;
             if (targetData.attributes.targetRoll.value !== "none") {
-                //TODO-fred calculateAttributes and calculateOptionalAttributes should be inside rollAbilityTarget
-                targetData.result = await characterData.actor.rollAbilityTarget(characterData, targetData);
+                const skill = targetData.actor.system.skills[targetData.attributes.targetRoll.value];
+                rollData = await targetData.actor.rollSkill(skill);
+                targetData.result = rollData.total;
                 targetData.totalResult = abilityData.characterData.result - targetData.result;
             }
 
@@ -220,21 +219,45 @@ export class Pl1eAbility extends Pl1eSubItem {
             let calculatedOptionalAttributes = [];
             for (let [id, optionalAttribute] of Object.entries(targetData.optionalAttributes)) {
                 if ((targetData.attributes.areaShape.value === "self" || optionalAttribute.targetGroup === "self") && targetToken.actor !== characterData.actor) continue;
-                if (optionalAttribute.targetGroup === "allies" && targetToken.document.disposition !== characterData.actor.bestToken.disposition) continue;
-                if (optionalAttribute.targetGroup === "opponents" && targetToken.document.disposition === characterData.actor.bestToken.disposition) continue;
+                if (optionalAttribute.targetGroup === "allies" && targetToken.document.disposition !== characterData.actor.bestToken.document.disposition) continue;
+                if (optionalAttribute.targetGroup === "opponents" && targetToken.document.disposition === characterData.actor.bestToken.document.disposition) continue;
                 let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, targetData.totalResult, targetToken.actor);
                 calculatedOptionalAttributes.push(calculatedAttribute);
             }
             targetData.optionalAttributes = calculatedOptionalAttributes;
 
+            // Display message
+            await this._displayMessage(rollData, characterData, targetData);
+
             // Apply target effects
             for (const optionalAttribute of targetData.optionalAttributes) {
-                await targetData.actor.applyOptionalAttribute(optionalAttribute, false, true);
+                await targetData.actor.applyOptionalAttribute(optionalAttribute, true);
             }
             targetData.actor.sheet.render(false);
         }
 
         //TODO-fred Apply character effects here to be able to process particular effect such as transfer
+    }
+
+    async _displayMessage(rollData, characterData, targetData = null) {
+        const template = targetData === null ? "character" : "target";
+        // Render the chat card template
+        const html = await renderTemplate(`systems/pl1e/templates/chat/ability-${template}.hbs`,
+            {rollData: rollData, characterData: characterData, targetData: targetData});
+
+        // Create the ChatMessage data object
+        const chatData = {
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({actor: this}),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + characterData.item.name,
+            rollMode: game.settings.get('core', 'rollMode'),
+            flags: {"core.canPopout": true},
+            content: html
+        };
+
+        // Render message
+        await ChatMessage.create(chatData);
     }
 
     /**

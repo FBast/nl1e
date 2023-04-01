@@ -16,9 +16,9 @@
         <!-- Result of the roll -->
         <div class="dice-roll">
             <div class="dice-result">
-                <div class="dice-formula">{{roll.formula}}</div>
+                <div class="dice-formula">{{rollData.formula}}</div>
                 <div class="dice-tooltip">
-                    {{#each roll.dice as |die|}}
+                    {{#each rollData.dice as |die|}}
                         <section class="tooltip-part">
                             <div class="dice">
                                 <header class="part-header flexrow">
@@ -35,8 +35,8 @@
                         </section>
                     {{/each}}
                 </div>
-                <h4 class="dice-total {{#if (gt roll.total 0)}}success{{else}}failure{{/if}}">
-                    {{roll.total}} {{localize "PL1E.Success"}}
+                <h4 class="dice-total {{#if (gt rollData.total 0)}}success{{else}}failure{{/if}}">
+                    {{rollData.total}} {{localize "PL1E.Success"}}
                 </h4>
             </div>
         </div>

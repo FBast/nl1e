@@ -82,7 +82,7 @@ export class Pl1eActor extends Actor {
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
             for (let [id, optionalAttribute] of Object.entries(item.system.optionalAttributes)) {
                 if (optionalAttribute.targetGroup !== 'self') continue;
-                await this.applyOptionalAttribute(optionalAttribute, true, false);
+                await this.applyOptionalAttribute(optionalAttribute, false);
             }
         }
         super.prepareEmbeddedDocuments();
@@ -294,84 +294,24 @@ export class Pl1eActor extends Actor {
     //endregion
 
     async rollSkill(skill) {
-        let formula = skill.number + "d" + skill.dice + "xo" + skill.dice + "cs>=4";
-        let roll = new Roll(formula, this.getRollData());
-        roll = await roll.toMessage({
-            speaker: ChatMessage.getSpeaker({actor: this}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            flavor: '[' + game.i18n.localize("PL1E.Skill") + '] ' + game.i18n.localize(skill.label),
-            rollMode: game.settings.get('core', 'rollMode'),
-        });
-        return roll.rolls[0].result;
-    }
-
-    async rollAbilityCharacter(characterData) {
-        const skill = this.system.skills[characterData.attributes.characterRoll.value]
-        let formula = skill.number + "d" + skill.dice + "xo" + skill.dice + "cs>=4";
+        let formula = skill.number + "d" + skill.dice;
+        formula += this.type === "character" ? "xo" + skill.dice : "";
+        formula += "cs>=4";
         let roll = new Roll(formula, this.getRollData());
         await roll.evaluate({async: true});
-
-        const rollData = {
+        return {
             formula: roll.formula,
             total: roll.total,
             dice: roll.dice,
         };
-
-        // Render the chat card template
-        const html = await renderTemplate("systems/pl1e/templates/chat/ability-character.hbs",
-            {characterData: characterData, roll: rollData});
-
-        roll = await roll.toMessage({
-            user: game.user.id,
-            speaker: ChatMessage.getSpeaker({actor: this}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + characterData.item.name,
-            rollMode: game.settings.get('core', 'rollMode'),
-            flags: {"core.canPopout": true},
-            content: html
-        });
-        return roll.rolls[0].result;
     }
 
-    async rollAbilityTarget(characterData, targetData) {
-        const skill = this.system.skills[targetData.attributes.targetRoll.value]
-        let formula = skill.number + "d" + skill.dice + "xo" + skill.dice + "cs>=4";
-        let roll = new Roll(formula, this.getRollData());
-        await roll.evaluate({async: true});
-
-        const rollData = {
-            formula: roll.formula,
-            total: roll.total,
-            dice: roll.dice,
-        };
-
-        // Render the chat card template
-        const html = await renderTemplate("systems/pl1e/templates/chat/ability-target.hbs",
-            {characterData: characterData, targetData: targetData, roll: rollData});
-
-        roll = await roll.toMessage({
-            user: game.user.id,
-            speaker: ChatMessage.getSpeaker({actor: this}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + characterData.item.name,
-            rollMode: game.settings.get('core', 'rollMode'),
-            flags: {"core.canPopout": true},
-            content: html
-        });
-        return roll.rolls[0].result;
-    }
-
-    async applyOptionalAttribute(optionalAttribute, reduction, persist) {
+    async applyOptionalAttribute(optionalAttribute, persist) {
         const system = this.system;
         const subTarget = PL1E.attributeSubTargets[optionalAttribute.subTarget];
 
         if (subTarget.path === undefined) return;
 
-        // Add reduction to value
-        if (reduction && optionalAttribute.reduction !== 'none') {
-            const reduction = foundry.utils.getProperty(system, PL1E.reductionsPath[optionalAttribute.reduction]);
-            optionalAttribute.value = Math.min(optionalAttribute.value + reduction, 0);
-        }
         let newValue = foundry.utils.getProperty(system, subTarget.path);
         switch (optionalAttribute.function) {
             case "set":

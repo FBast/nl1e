@@ -468,7 +468,7 @@ PL1E.attributeGroupsValues = {
         "target": "resources",
         "subTarget": "health",
         "reduction": "none",
-        "function": "add"
+        "function": "sub"
     },
     "heal": {
         "value": 0,
@@ -478,7 +478,7 @@ PL1E.attributeGroupsValues = {
         },
         "target": "resources",
         "subTarget": "health",
-        "function": "sub"
+        "function": "add"
     },
     "transfer": {
         "value": 0,
