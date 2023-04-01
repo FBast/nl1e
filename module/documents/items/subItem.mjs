@@ -28,10 +28,10 @@ export class Pl1eSubItem {
     }
 
     /**
-     * Calculate the stats of an attribute based on the roll value
-     * @param attribute
-     * @param rollResult
-     * @param actor
+     * Calculate the stats of an attribute based on the roll result
+     * @param {object} attribute
+     * @param {number} rollResult
+     * @param {Pl1eActor} actor
      * @returns {any}
      * @protected
      */
@@ -39,49 +39,30 @@ export class Pl1eSubItem {
         // Copy attribute
         let calculatedAttribute = JSON.parse(JSON.stringify(attribute));
 
-        // Number type
-        if (calculatedAttribute.type === 'number') {
-            if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
-                calculatedAttribute.value *= rollResult > 0 ? rollResult : 0;
-            }
-            if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
-                calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
+        // Calculate only if function is defined
+        if (calculatedAttribute.function !== undefined) {
+            let subTarget = PL1E.attributeSubTargets[calculatedAttribute.subTarget];
+
+            // Number type
+            if (subTarget.type === 'number') {
+                if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
+                    calculatedAttribute.value *= rollResult > 0 ? rollResult : 0;
+                }
+                if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
+                    calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
+                }
+                if (calculatedAttribute.value < 0 && calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
+                    let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductionsPath[calculatedAttribute.reduction]);
+                    calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
+                }
+                // If resulting value equal to zero then ignore the attribute
+                if (calculatedAttribute.value === 0) return;
+                // Apply sign
+                calculatedAttribute.value *= calculatedAttribute.function === "decrease" ? -1 : 1;
             }
         }
+
         return calculatedAttribute;
-    }
-
-    /**
-     * Calculate the stats of an optionalAttribute based on the roll value
-     * @param optionalAttribute
-     * @param rollResult
-     * @param actor
-     * @returns {any}
-     * @protected
-     */
-    _calculateOptionalAttribute(optionalAttribute, rollResult, actor) {
-        // Copy optionalAttribute
-        let calculatedOptionalAttribute = JSON.parse(JSON.stringify(optionalAttribute));
-        let subTarget = PL1E.attributeSubTargets[calculatedOptionalAttribute.subTarget];
-
-        // Number type
-        if (subTarget.type === 'number') {
-            if (calculatedOptionalAttribute.resolutionType === 'multiplyBySuccess') {
-                calculatedOptionalAttribute.value *= rollResult > 0 ? rollResult : 0;
-            }
-            if (calculatedOptionalAttribute.resolutionType === 'valueIfSuccess') {
-                calculatedOptionalAttribute.value = rollResult > 0 ? calculatedOptionalAttribute.value : 0;
-            }
-            if (calculatedOptionalAttribute.value < 0 && calculatedOptionalAttribute.reduction !== undefined && calculatedOptionalAttribute.reduction !== 'raw') {
-                let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductionsPath[calculatedOptionalAttribute.reduction]);
-                calculatedOptionalAttribute.value = Math.min(calculatedOptionalAttribute.value + reduction, 0);
-            }
-
-            // Apply sign
-            calculatedOptionalAttribute.value *= calculatedOptionalAttribute.function === "sub" ? -1 : 1;
-        }
-
-        return calculatedOptionalAttribute;
     }
 
 }

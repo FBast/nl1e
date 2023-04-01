@@ -82,7 +82,7 @@ export class Pl1eActor extends Actor {
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
             for (let [id, optionalAttribute] of Object.entries(item.system.optionalAttributes)) {
                 if (optionalAttribute.targetGroup !== 'self') continue;
-                await this.applyOptionalAttribute(optionalAttribute, false);
+                await this.applyAttribute(optionalAttribute, false);
             }
         }
         super.prepareEmbeddedDocuments();
@@ -306,24 +306,23 @@ export class Pl1eActor extends Actor {
         };
     }
 
-    async applyOptionalAttribute(optionalAttribute, persist) {
+    async applyAttribute(attribute, persist) {
         const system = this.system;
-        const subTarget = PL1E.attributeSubTargets[optionalAttribute.subTarget];
-
-        if (subTarget.path === undefined) return;
+        if (attribute.function === undefined) return;
+        const subTarget = PL1E.attributeSubTargets[attribute.subTarget];
 
         let newValue = foundry.utils.getProperty(system, subTarget.path);
-        switch (optionalAttribute.function) {
-            case "set":
-                newValue = optionalAttribute.value;
+        switch (attribute.function) {
+            case "override":
+                newValue = attribute.value;
                 break;
-            case "add":
-            case "sub":
+            case "increase":
+            case "decrease":
             case "transfer":
                 if (newValue instanceof Array)
-                    newValue.push(optionalAttribute.value);
+                    newValue.push(attribute.value);
                 else
-                    newValue += optionalAttribute.value;
+                    newValue += attribute.value;
                 break;
             case "effect":
                 await ActiveEffect.create({
@@ -333,7 +332,7 @@ export class Pl1eActor extends Actor {
                         {
                             key: "system." + subTarget.path,
                             mode: 2, // ADD | SUBTRACT | MULTIPLY | DIVIDE | SET
-                            value: optionalAttribute.value
+                            value: attribute.value
                         }
                     ],
                     duration: {
@@ -350,11 +349,11 @@ export class Pl1eActor extends Actor {
             // case 'push':
             //     let currentValue = foundry.utils.getProperty(system, subTarget.path);
             //     if (currentValue === undefined) currentValue = [];
-            //     currentValue.push(optionalAttribute.value);
+            //     currentValue.push(attribute.value);
             //     newValue = currentValue;
             //     break;
             default:
-                console.error("PL1E | Unknown optionalAttribute function : " + optionalAttribute.function)
+                console.error("PL1E | Unknown attribute function : " + attribute.function)
         }
 
         // Make changes

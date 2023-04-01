@@ -45,4 +45,21 @@
         <button data-action="resolve" data-item-id={{characterData.itemId}}>{{localize "PL1E.Resolve"}}</button>
         <button data-action="cancel" data-item-id={{characterData.itemId}}>{{localize "PL1E.Cancel"}}</button>
     </div>
+    <footer class="card-footer">
+        {{#if (ne characterData.attributes.length 0)}}
+            <label>{{localize "PL1E.Effects"}} :</label>
+            {{log characterData}}
+            {{#each characterData.attributes as |attribute id|}}
+                {{#if (ne attribute.subTarget undefined)}}
+                    {{#with (configEntry "attributeSubTargets" attribute.subTarget) as |subTarget|}}
+                        <i class="attribute-icon {{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{subTarget.icon}} hover-green" data-tooltip="{{localize subTarget.label}}">
+                            <label>{{formatNumber attribute.value signe=true}}</label>
+                        </i>
+                    {{/with}}
+                {{/if}}
+            {{/each}}
+        {{else}}
+            <label>{{localize "PL1E.NoEffects"}}</label>
+        {{/if}}
+    </footer>
 </div>

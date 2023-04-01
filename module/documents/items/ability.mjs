@@ -175,8 +175,6 @@ export class Pl1eAbility extends Pl1eSubItem {
         // Target Data
         let targetTokens = game.user.targets;
 
-        //TODO-fred Apply character effects such as resources cost
-
         for (let targetToken of targetTokens) {
             // Make a shallow copy of the ability data for this target
             let abilityData = {...this.abilityData};
@@ -201,9 +199,9 @@ export class Pl1eAbility extends Pl1eSubItem {
                 actor: targetToken.actor,
                 tokenId: targetToken?.uuid || null,
                 result: 0,
-                totalResult: abilityData.characterData.result,
-                attributes: JSON.parse(JSON.stringify(abilityData.characterData.attributes)),
-                optionalAttributes: JSON.parse(JSON.stringify(abilityData.characterData.optionalAttributes)),
+                totalResult: characterData.result,
+                attributes: JSON.parse(JSON.stringify(characterData.attributes)),
+                optionalAttributes: JSON.parse(JSON.stringify(characterData.optionalAttributes)),
             }
 
             // Target roll if exist
@@ -212,7 +210,7 @@ export class Pl1eAbility extends Pl1eSubItem {
                 const skill = targetData.actor.system.skills[targetData.attributes.targetRoll.value];
                 rollData = await targetData.actor.rollSkill(skill);
                 targetData.result = rollData.total;
-                targetData.totalResult = abilityData.characterData.result - targetData.result;
+                targetData.totalResult = characterData.result - targetData.result;
             }
 
             // Calculate target attributes
@@ -221,7 +219,7 @@ export class Pl1eAbility extends Pl1eSubItem {
                 if ((targetData.attributes.areaShape.value === "self" || optionalAttribute.targetGroup === "self") && targetToken.actor !== characterData.actor) continue;
                 if (optionalAttribute.targetGroup === "allies" && targetToken.document.disposition !== characterData.actor.bestToken.document.disposition) continue;
                 if (optionalAttribute.targetGroup === "opponents" && targetToken.document.disposition === characterData.actor.bestToken.document.disposition) continue;
-                let calculatedAttribute = this._calculateOptionalAttribute(optionalAttribute, targetData.totalResult, targetToken.actor);
+                let calculatedAttribute = this._calculateAttribute(optionalAttribute, targetData.totalResult, targetToken.actor);
                 calculatedOptionalAttributes.push(calculatedAttribute);
             }
             targetData.optionalAttributes = calculatedOptionalAttributes;
@@ -229,14 +227,19 @@ export class Pl1eAbility extends Pl1eSubItem {
             // Display message
             await this._displayMessage(rollData, characterData, targetData);
 
-            // Apply target effects
+            // Apply target optional attributes
             for (const optionalAttribute of targetData.optionalAttributes) {
-                await targetData.actor.applyOptionalAttribute(optionalAttribute, true);
+                await targetData.actor.applyAttribute(optionalAttribute, true);
             }
-            targetData.actor.sheet.render(false);
+            targetData.actor.sheet.render(targetData.actor.sheet.rendered);
         }
 
-        //TODO-fred Apply character effects here to be able to process particular effect such as transfer
+        // Apply character attributes
+        const characterData = this.abilityData.characterData;
+        for (let [id, attribute] of Object.entries(characterData.attributes)) {
+            await characterData.actor.applyAttribute(attribute, true);
+        }
+        characterData.actor.sheet.render(characterData.actor.sheet.rendered);
     }
 
     async _displayMessage(rollData, characterData, targetData = null) {

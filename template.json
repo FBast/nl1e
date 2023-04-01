@@ -486,19 +486,35 @@
           "category": "header",
           "type": "number"
         },
+        "healthCost": {
+          "value": 0,
+          "label": "PL1E.HealthCost",
+          "icon": "far fa-wave-pulse",
+          "category": "fixed",
+          "type": "number",
+          "target": "resources",
+          "subTarget": "health",
+          "function": "decrease"
+        },
         "staminaCost": {
           "value": 0,
           "label": "PL1E.StaminaCost",
           "icon": "far fa-wave-pulse",
           "category": "fixed",
-          "type": "number"
+          "type": "number",
+          "target": "resources",
+          "subTarget": "stamina",
+          "function": "decrease"
         },
         "manaCost": {
           "value": 0,
           "label": "PL1E.ManaCost",
           "icon": "far fa-sparkles",
           "category": "fixed",
-          "type": "number"
+          "type": "number",
+          "target": "resources",
+          "subTarget": "mana",
+          "function": "decrease"
         },
         "abilityLink": {
           "value": "none",

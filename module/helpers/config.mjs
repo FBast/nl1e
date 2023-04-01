@@ -428,21 +428,17 @@ PL1E.attributeGroups = {
         "set": "PL1E.Set"
     },
     "ability": {
-        "damage": "PL1E.Damage",
-        "heal": "PL1E.Heal",
-        "transfer": "PL1E.Transfer",
         "increase": "PL1E.Increase",
         "decrease": "PL1E.Decrease",
         "set": "PL1E.Set",
+        "transfer": "PL1E.Transfer",
         "effect": "PL1E.Effect"
     },
     "weapon": {
-        "damage": "PL1E.Damage",
-        "heal": "PL1E.Heal",
-        "transfer": "PL1E.Transfer",
         "increase": "PL1E.Increase",
         "decrease": "PL1E.Decrease",
-        "set": "PL1E.Set"
+        "set": "PL1E.Set",
+        "transfer": "PL1E.Transfer"
     },
     "wearable": {
         "increase": "PL1E.Increase",
@@ -450,8 +446,6 @@ PL1E.attributeGroups = {
         "set": "PL1E.Set"
     },
     "consumable": {
-        "damage": "PL1E.Damage",
-        "heal": "PL1E.Heal",
         "increase": "PL1E.Increase",
         "decrease": "PL1E.Decrease",
         "set": "PL1E.Set"
@@ -459,73 +453,55 @@ PL1E.attributeGroups = {
 }
 
 PL1E.attributeGroupsValues = {
-    "damage": {
-        "value": 0,
-        "label": "PL1E.Damage",
-        "targets": {
-            "resources": "PL1E.Resources"
-        },
-        "target": "resources",
-        "subTarget": "health",
-        "reduction": "none",
-        "function": "sub"
-    },
-    "heal": {
-        "value": 0,
-        "label": "PL1E.Heal",
-        "targets": {
-            "resources": "PL1E.Resources"
-        },
-        "target": "resources",
-        "subTarget": "health",
-        "function": "add"
-    },
-    "transfer": {
-        "value": 0,
-        "label": "PL1E.Transfer",
-        "reduction": "none",
-        "targets": {
-            "resources": "PL1E.Resources"
-        },
-        "target": "resources",
-        "subTarget": "health",
-        "function": "transfer"
-    },
     "increase": {
         "value": 0,
         "label": "PL1E.Increase",
-        "reduction": "none",
         "targets": {
+            "resources": "PL1E.Resources",
             "characteristics": "PL1E.Characteristics",
             "misc": "PL1E.Misc",
         },
         "target": "characteristics",
         "subTarget": "strength",
-        "function": "add"
+        "function": "increase"
     },
     "decrease": {
         "value": 0,
         "label": "PL1E.Decrease",
         "reduction": "none",
         "targets": {
+            "resources": "PL1E.Resources",
             "characteristics": "PL1E.Characteristics",
             "misc": "PL1E.Misc",
         },
         "target": "characteristics",
         "subTarget": "strength",
-        "function": "sub"
+        "function": "decrease"
     },
-    "set": {
+    "override": {
         "value": 0,
-        "label": "PL1E.Set",
+        "label": "PL1E.Override",
+        "targets": {
+            "resources": "PL1E.Resources",
+            "characteristics": "PL1E.Characteristics",
+            "misc": "PL1E.Misc",
+        },
+        "target": "characteristics",
+        "subTarget": "strength",
+        "function": "override"
+    },
+    "transfer": {
+        "value": 0,
+        "label": "PL1E.Transfer",
         "reduction": "none",
         "targets": {
+            "resources": "PL1E.Resources",
             "characteristics": "PL1E.Characteristics",
             "misc": "PL1E.Misc",
         },
-        "target": "characteristics",
-        "subTarget": "strength",
-        "function": "set"
+        "target": "resources",
+        "subTarget": "health",
+        "function": "transfer"
     },
     "effect": {
         "value": 0,
