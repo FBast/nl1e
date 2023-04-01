@@ -137,3 +137,7 @@ Handlebars.registerHelper('join', function(arr, separator) {
     return arr.join(separator);
 });
 
+Handlebars.registerHelper('let', function(context, options) {
+    return options.fn(this);
+});
+

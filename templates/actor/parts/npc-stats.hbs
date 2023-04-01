@@ -5,16 +5,18 @@
             <legend class="section-header">{{localize "PL1E.Skills"}}</legend>
             <ul class="skills">
                 <!-- Listing defenses, resistances and skills -->
-                {{#each system.skills as |skill key|}}
-                    <li class="skill grid grid-6col">
-                        <i class="skill-roll grid-span-2 fas fa-dice-d{{skill.dice}} hover-red rollable {{#if (gt skill.diceMod 0)}}color-green{{/if}} {{#if (lt skill.diceMod 0)}}color-red{{/if}}"
-                           data-roll="{{skill.number}}d{{skill.dice}}xo{{skill.dice}}cs>=4" data-label="{{skill.label}}">
-                            <label class="{{#if (gt skill.numberMod 0)}}color-green{{/if}}
-                                {{#if (lt skill.numberMod 0)}}color-red{{/if}}
-                                {{#if (eq skill.numberMod 0)}}color-black{{/if}}">{{skill.number}}</label>
-                        </i>
-                        <label class="skill-label grid-span-4 align-left">{{localize skill.label}}</label>
-                    </li>
+                {{#each system.skills}}
+                    {{#with (configEntry "skills" @key)}}
+                        <li class="skill grid grid-6col">
+                            <i class="skill-roll grid-span-2 fas fa-dice-d{{../dice}} hover-red rollable{{#if (gt ../diceMod 0)}}color-green{{/if}} {{#if (lt ../diceMod 0)}}color-red{{/if}}"
+                               data-roll="{{../number}}d{{../dice}}xo{{../dice}}cs>=4" data-label="{{label}}">
+                                <label class="{{#if (gt ../numberMod 0)}}color-green{{/if}}
+                                    {{#if (lt ../numberMod 0)}}color-red{{/if}}
+                                    {{#if (eq ../numberMod 0)}}color-black{{/if}}">{{../number}}</label>
+                            </i>
+                            <label class="skill-label grid-span-4 align-left">{{localize label}}</label>
+                        </li>
+                    {{/with}}
                 {{/each}}
             </ul>
         </fieldset>
@@ -42,8 +44,6 @@
                     </div>
                 </li>
             {{/each}}
-<!--        </ol>-->
-<!--        <ol class="items-list">-->
             {{#each abilities as |abilities level|}}
                 <li class="item items-header flexrow">
                     <div class="item-name">{{localize "PL1E.AbilitiesLevel"}} {{level}}</div>
@@ -72,8 +72,6 @@
                     </li>
                 {{/each}}
             {{/each}}
-<!--        </ol>-->
-<!--        <ol class="items-list">-->
             <li class="item flexrow items-header">
                 <div class="item-name">{{localize "PL1E.Weapon"}}</div>
             </li>
@@ -98,8 +96,6 @@
                     </div>
                 </li>
             {{/each}}
-<!--        </ol>-->
-<!--        <ol class="items-list">-->
             <li class="item flexrow items-header">
                 <div class="item-name">{{localize "PL1E.Wearable"}}</div>
             </li>
@@ -139,8 +135,6 @@
                     </div>
                 </li>
             {{/each}}
-<!--        </ol>-->
-<!--        <ol class="items-list">-->
             <li class="item flexrow items-header">
                 <div class="item-name">{{localize "PL1E.Consumable"}}</div>
             </li>
@@ -171,8 +165,6 @@
                     </div>
                 </li>
             {{/each}}
-<!--        </ol>-->
-<!--        <ol class="items-list">-->
             {{#each effects as |section sid|}}
                 <li class="item items-header flexrow" data-effect-type="{{section.type}}">
                     <label class="item-name flexrow">{{localize section.label}}</label>

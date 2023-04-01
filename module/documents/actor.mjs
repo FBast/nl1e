@@ -183,6 +183,7 @@ export class Pl1eActor extends Actor {
                 }
             }
         }
+        //TODO-fred bug with update of dice and rank (maybe?)
     }
 
     /**
@@ -196,7 +197,7 @@ export class Pl1eActor extends Actor {
         systemData.merchantPrices = {};
         for (let item of this.items) {
             let value = Pl1eHelpers.currencyToUnits(item.system.price);
-            value += Math.round(value * (systemData.buyMultiplicator / 100));
+            value += Math.round(value * (systemData.misc.buyMultiplicator / 100));
             systemData.merchantPrices[item._id] = Pl1eHelpers.unitsToCurrency(value);
         }
     }
@@ -221,29 +222,31 @@ export class Pl1eActor extends Actor {
             actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
         // Handle actorResources scores.
         for (let [id, resource] of Object.entries(actorResources)) {
-            for(let characteristic of resource.weights.characteristics) {
+            const resourceConfig = PL1E.resources[id];
+            for(let characteristic of resourceConfig.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
             }
-            resource.max *= resource.multiplier * actorMisc.sizeMultiplier;
+            resource.max *= resourceConfig.multiplier * actorMisc.sizeMultiplier;
         }
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
+            const skillConfig = PL1E.skills[id];
             let characteristicsSum = 0;
-            for (let characteristic of skill.weights.characteristics) {
+            for (let characteristic of skillConfig.weights.characteristics) {
                 characteristicsSum += actorCharacteristics[characteristic].value;
             }
             let attributesSum = 0;
-            if (skill.weights.actorMisc !== undefined) {
-                for (let misc of skill.weights.actorMisc) {
+            if (skillConfig.weights.actorMisc !== undefined) {
+                for (let misc of skillConfig.weights.actorMisc) {
                     attributesSum += actorMisc[misc];
                 }
             }
             skill.numberMod = attributesSum + actorMisc.bonuses;
-            skill.number = Math.floor(characteristicsSum / skill.divider);
+            skill.number = Math.floor(characteristicsSum / skillConfig.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
             skill.diceMod = actorMisc.advantages;
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
-            if (!skill.fixedRank) actorMisc.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
+            if (!skillConfig.fixedRank) actorMisc.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
     }
 
