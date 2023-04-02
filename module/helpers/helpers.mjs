@@ -298,19 +298,19 @@ export class Pl1eHelpers {
     /**
      * Convert a value to money with gold, silver and copper
      * @param value the units sum
-     * @returns {{gold: {value: number}, copper: {value: number}, silver: {value: number}}}
+     * @returns {{gold: number, copper: number, silver: number}}
      */
     static unitsToMoney(value) {
         let money = {
-            "gold": {"value": 0},
-            "silver": {"value": 0},
-            "copper": {"value": 0}
+            "gold": 0,
+            "silver": 0,
+            "copper": 0
         };
-        money['gold']['value'] = Math.floor(value / 100);
-        value -= money['gold']['value'] * 100
-        money['silver']['value'] = Math.floor(value / 10);
-        value -= money['silver']['value'] * 10;
-        money['copper']['value'] = value;
+        money['gold'] = Math.floor(value / 100);
+        value -= money['gold'] * 100
+        money['silver'] = Math.floor(value / 10);
+        value -= money['silver'] * 10;
+        money['copper'] = value;
         return money;
     }
 
@@ -320,7 +320,7 @@ export class Pl1eHelpers {
      * @returns number
      */
     static moneyToUnits(money) {
-        return money.gold.value * 100 + money.silver.value * 10 + money.copper.value;
+        return money.gold * 100 + money.silver * 10 + money.copper;
     }
 
     /**

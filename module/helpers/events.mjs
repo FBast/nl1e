@@ -175,15 +175,15 @@ export class Pl1eEvent {
         let value = $(event.currentTarget).data("value");
         if (!value || !currency) return;
         if (document instanceof Actor) {
-            let oldValue = document.system.money[currency].value;
+            let oldValue = document.system.money[currency];
             await document.update({
-                ["system.money." + currency + ".value"]: oldValue + value
+                ["system.money." + currency]: oldValue + value
             });
         }
         if (document instanceof Item) {
-            let oldValue = document.system.price[currency].value;
+            let oldValue = document.system.price[currency];
             await document.update({
-                ["system.price." + currency + ".value"]: oldValue + value
+                ["system.price." + currency]: oldValue + value
             });
         }
     }

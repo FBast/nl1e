@@ -120,14 +120,6 @@ Handlebars.registerHelper('configEntryLabel', function (key, entry) {
     return PL1E[key][entry].label;
 })
 
-// Handlebars.registerHelper('currencyToValue', function (currency) {
-//     return Pl1eHelpers.moneyToUnits(currency);
-// })
-//
-// Handlebars.registerHelper('valueToCurrency', function (value) {
-//     return Pl1eHelpers.unitsToMoney(value);
-// })
-
 Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {
     const optionsData = {};
     for (const key in choices) {

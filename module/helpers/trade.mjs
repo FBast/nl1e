@@ -27,9 +27,9 @@ export class Pl1eTrade {
         const priceUnits = Pl1eHelpers.moneyToUnits(item.system.price) * (1 + targetActor.system.misc.sellMultiplicator / 100);
         const priceMoney = Pl1eHelpers.unitsToMoney(priceUnits);
         await sourceActor.update({
-            ["system.money.gold.value"]: sourceActor.system.money.gold.value + priceMoney.gold.value,
-            ["system.money.silver.value"]: sourceActor.system.money.silver.value + priceMoney.silver.value,
-            ["system.money.copper.value"]: sourceActor.system.money.copper.value + priceMoney.copper.value,
+            ["system.money.gold"]: sourceActor.system.money.gold + priceMoney.gold,
+            ["system.money.silver"]: sourceActor.system.money.silver + priceMoney.silver,
+            ["system.money.copper"]: sourceActor.system.money.copper + priceMoney.copper,
         });
         sourceActor.render(sourceActor.rendered);
         // Send message for historic
@@ -37,10 +37,10 @@ export class Pl1eTrade {
             speaker: ChatMessage.getSpeaker({actor: sourceActor}),
             rollMode: game.settings.get('core', 'rollMode'),
             flavor: game.i18n.localize("PL1E.FlavorSelling"),
-            content: item.name + game.i18n.localize("PL1E.SoldFor")
-                + priceMoney.gold.value + game.i18n.localize("PL1E.Gold")
-                + priceMoney.silver.value + game.i18n.localize("PL1E.Silver")
-                + priceMoney.copper.value + game.i18n.localize("PL1E.Copper")
+            content: item.name + " " + game.i18n.localize("PL1E.SoldFor")
+                + " " + priceMoney.gold + " " + game.i18n.localize("PL1E.Gold")
+                + " " + priceMoney.silver + " " + game.i18n.localize("PL1E.Silver")
+                + " " + priceMoney.copper + " " + game.i18n.localize("PL1E.Copper")
         });
     }
 
@@ -52,9 +52,9 @@ export class Pl1eTrade {
         units -= priceUnits;
         const money = Pl1eHelpers.unitsToMoney(units);
         await buyerActor.update({
-            ["system.money.gold.value"]: money.gold.value,
-            ["system.money.silver.value"]: money.silver.value,
-            ["system.money.copper.value"]: money.copper.value,
+            ["system.money.gold"]: money.gold,
+            ["system.money.silver"]: money.silver,
+            ["system.money.copper"]: money.copper,
         })
         buyerActor.render(buyerActor.rendered);
         // Send message for historic
@@ -62,10 +62,10 @@ export class Pl1eTrade {
             speaker: ChatMessage.getSpeaker({actor: buyerActor}),
             rollMode: game.settings.get('core', 'rollMode'),
             flavor: game.i18n.localize("PL1E.FlavorPurchasing"),
-            content: item.name + game.i18n.localize("PL1E.BoughtFor")
-                + priceMoney.gold.value + game.i18n.localize("PL1E.Gold")
-                + priceMoney.silver.value + game.i18n.localize("PL1E.Silver")
-                + priceMoney.copper.value + game.i18n.localize("PL1E.Copper")
+            content: item.name + " " + game.i18n.localize("PL1E.BoughtFor")
+                + " " + priceMoney.gold + " " + game.i18n.localize("PL1E.Gold")
+                + " " + priceMoney.silver + " " + game.i18n.localize("PL1E.Silver")
+                + " " + priceMoney.copper + " " + game.i18n.localize("PL1E.Copper")
         });
         await buyerActor.createEmbeddedDocuments("Item", [item]);
     }

@@ -253,18 +253,9 @@
           "shockReduction": 0
         },
         "money": {
-          "gold": {
-            "value": 0,
-            "label": "PL1E.Gold"
-          },
-          "silver": {
-            "value": 0,
-            "label": "PL1E.Silver"
-          },
-          "copper": {
-            "value": 0,
-            "label": "PL1E.Copper"
-          }
+          "gold": 0,
+          "silver": 0,
+          "copper": 0
         }
       }
     },
@@ -304,15 +295,9 @@
           }
         },
         "price": {
-          "gold": {
-            "value": 0
-          },
-          "silver": {
-            "value": 0
-          },
-          "copper": {
-            "value": 0
-          }
+          "gold": 0,
+          "silver": 0,
+          "copper": 0
         }
       }
     },
