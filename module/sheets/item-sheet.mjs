@@ -161,7 +161,7 @@ export class Pl1eItemSheet extends ItemSheet {
         };
 
         // Iterate through items, allocating to containers
-        for (let [key, value] of context.item.system.subItemsMap) {
+        for (let [key, value] of context.item.system.subItems) {
             value.img = value.img || DEFAULT_TOKEN;
             // Append to features.
             if (value.type === 'feature') {

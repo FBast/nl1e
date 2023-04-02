@@ -153,7 +153,7 @@ export class Pl1eEvent {
         if (document instanceof Pl1eItem) {
             const item = document.getEmbedItem(itemId);
             if (!item) return;
-            for (let [key, value] of document.system.subItemsMap) {
+            for (let [key, value] of document.system.subItems) {
                 if (value === item) continue;
                 if (value.system.childId === undefined) continue;
                 if (value.system.childId !== item.system.parentId) continue;
@@ -265,8 +265,9 @@ export class Pl1eEvent {
     static async onAttributeAdd(event, item) {
         event.preventDefault();
         event.stopPropagation();
-        let attribute = $(event.currentTarget).data("attribute");
-        const dynamicAttribute = CONFIG.PL1E.attributeGroupsValues[attribute];
+        let attributeId = $(event.currentTarget).data("attribute");
+        const dynamicAttribute = CONFIG.PL1E.dynamicAttributes[attributeId];
+        dynamicAttribute.name = attributeId;
         await item.update({
             ["system.optionalAttributes." + randomID()]: dynamicAttribute
         });

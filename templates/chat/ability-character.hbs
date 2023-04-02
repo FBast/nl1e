@@ -48,11 +48,10 @@
     <footer class="card-footer">
         {{#if (ne characterData.attributes.length 0)}}
             <label>{{localize "PL1E.Effects"}} :</label>
-            {{log characterData}}
             {{#each characterData.attributes as |attribute id|}}
-                {{#if (ne attribute.subTarget undefined)}}
-                    {{#with (configEntry "attributeSubTargets" attribute.subTarget) as |subTarget|}}
-                        <i class="attribute-icon {{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{subTarget.icon}} hover-green" data-tooltip="{{localize subTarget.label}}">
+                {{#if (ne attribute.data undefined)}}
+                    {{#with (configEntry "attributeTargets" attribute.data) as |data|}}
+                        <i class="attribute-icon {{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{data.icon}} hover-green" data-tooltip="{{localize data.label}}">
                             <label>{{formatNumber attribute.value signe=true}}</label>
                         </i>
                     {{/with}}

@@ -43,8 +43,8 @@
         {{#if (ne targetData.optionalAttributes.length 0)}}
             <label>{{localize "PL1E.Effects"}} :</label>
             {{#each targetData.optionalAttributes as |attribute id|}}
-                {{#with (configEntry "attributeSubTargets" attribute.subTarget) as |subTarget|}}
-                    <i class="attribute-icon {{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{subTarget.icon}} hover-green" data-tooltip="{{localize subTarget.label}}">
+                {{#with (configEntry attribute.dataGroup attribute.data) as |data|}}
+                    <i class="attribute-icon {{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{data.icon}} hover-green" data-tooltip="{{localize data.label}}">
                         <label>{{formatNumber attribute.value signe=true}}</label>
                     </i>
                 {{/with}}

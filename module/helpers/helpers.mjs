@@ -225,7 +225,7 @@ export class Pl1eHelpers {
     static async resetClones(item) {
         // Reset items subItems
         for (const subItem of game.items) {
-            if (subItem.system.subItemsMap === undefined) continue;
+            if (subItem.system.subItems === undefined) continue;
             await this.resetCloneSubItems(subItem, item._id);
         }
         // Reset actors items
@@ -276,7 +276,7 @@ export class Pl1eHelpers {
      */
     static async resetCloneSubItems(item, sourceId) {
         let updateDocument = false;
-        for (let [key, subItem] of item.system.subItemsMap) {
+        for (let [key, subItem] of item.system.subItems) {
             if (subItem.getFlag('core', 'sourceId') === undefined) continue;
             if (subItem.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
             let original = await fromUuid(subItem.getFlag('core', 'sourceId'));

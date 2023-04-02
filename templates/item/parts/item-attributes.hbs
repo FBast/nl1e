@@ -1,85 +1,89 @@
 <section class="scroll-auto">
     <fieldset>
         <legend class="section-header">{{localize "PL1E.MainAttributes"}}</legend>
-        {{#each system.attributes as |attribute id|}}
-            {{#if (and (eq attribute.category "fixed") attribute.apply)}}
-                <div class="item-attribute flexrow">
-                    <label>{{localize attribute.label}}</label>
-                    {{#if (eq attribute.type "number")}}
-                        <input type="text" name="system.attributes.{{id}}.value" value="{{attribute.value}}" data-dtype="Number"/>
-                    {{else if (eq attribute.type "bool")}}
-                        <input type="checkbox" name="system.attributes.{{id}}.value" {{checked attribute.value}} data-dtype="Boolean"/>
-                    {{else if (eq attribute.type "select")}}
-                        <select name="system.attributes.{{id}}.value">
-                            {{selectOptions (config attribute.select) selected=attribute.value localize=true}}
-                        </select>
-                    {{/if}}
-                    {{#if (ne attribute.resolutionType undefined)}}
-                        <select name="system.attributes.{{id}}.resolutionType">
-                            {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}
-                        </select>
-                    {{/if}}
-                </div>
-            {{/if}}
+        {{#each system.attributes}}
+            {{#with (configEntry "attributes" @key)}}
+                {{#if (and (eq category "fixed") ../show)}}
+                    <div class="item-attribute flexrow">
+                        <label>{{localize label}}</label>
+                        {{#if (eq type "number")}}
+                            <input type="text" name="system.attributes.{{@key}}.value" value="{{../value}}" data-dtype="Number"/>
+                        {{else if (eq type "bool")}}
+                            <input type="checkbox" name="system.attributes.{{@key}}.value" {{checked ../value}} data-dtype="Boolean"/>
+                        {{else if (eq type "select")}}
+                            <select name="system.attributes.{{@key}}.value">
+                                {{selectOptions (config select) selected=../value localize=true}}
+                            </select>
+                        {{/if}}
+                        {{#if (ne resolutionType undefined)}}
+                            <select name="system.attributes.{{@key}}.resolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=resolutionType localize=true}}
+                            </select>
+                        {{/if}}
+                    </div>
+                {{/if}}
+            {{/with}}
         {{/each}}
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.SecondaryAttributes"}}</legend>
         <div class="item-attribute-select flexrow">
             <select name="system.selectedOptionalAttribute">
-                {{selectOptions (configEntry "attributeGroups" document.type) selected=system.selectedOptionalAttribute localize=true}}
+                {{selectOptions (configEntry "attributeDataGroups" document.type) selected=system.selectedOptionalAttribute localize=true}}
             </select>
             <a class="attribute-add flexshrink" data-attribute={{system.selectedOptionalAttribute}} data-tooltip='{{localize "PL1E.AddAttribute"}}'>
                 <i class="fas fa-plus"></i>
             </a>
         </div>
-        {{#each system.optionalAttributes as |attribute id|}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize attribute.label}}</label>
-                {{#with (configEntry "attributeSubTargets" attribute.subTarget) as |subTargetData|}}
-                    {{#if (eq subTargetData.type "number")}}
-                        <input class="input-positive-decimal" type="number" name="system.optionalAttributes.{{id}}.value" min="0" step="1" value="{{attribute.value}}" data-dtype="Number"/>
-                    {{else if (eq subTargetData.type "bool")}}
-                        <input type="checkbox" name="system.optionalAttributes.{{id}}.value" {{checked attribute.value}} data-dtype="Boolean"/>
-                    {{else if (eq subTargetData.type "select")}}
-                        <select name="system.optionalAttributes.{{id}}.value">
-                            {{selectOptions (config subTargetData.select) selected=attribute.value localize=true}}
+        {{#each system.optionalAttributes}}
+            {{#with (configEntry "attributes" name)}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize label}}</label>
+                    {{#with (configEntry ../dataGroup ../data)}}
+                        {{#if (eq type "number")}}
+                            <input class="input-positive-decimal" type="number" name="system.optionalAttributes.{{@key}}.value" min="0" step="1" value="{{../../value}}" data-dtype="Number"/>
+                        {{else if (eq type "bool")}}
+                            <input type="checkbox" name="system.optionalAttributes.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
+                        {{else if (eq type "select")}}
+                            <select name="system.optionalAttributes.{{@key}}.value">
+                                {{selectOptions (config select) selected=../../value localize=true}}
+                            </select>
+                        {{/if}}
+                    {{/with}}
+                    {{#if (ne reduction undefined)}}
+                        <select name="system.optionalAttributes.{{@key}}.reduction">
+                            {{selectOptions (config "reductions") selected=reduction localize=true}}
                         </select>
                     {{/if}}
-                {{/with}}
-                {{#if (ne attribute.reduction undefined)}}
-                    <select name="system.optionalAttributes.{{id}}.reduction">
-                        {{selectOptions (config "reductions") selected=attribute.reduction localize=true}}
+                    {{#if (and (ne ../attributeLink undefined) (ne ../attributeLink "passive"))}}
+                        {{#if (and (ne @system.attributes.range.value undefined) (gt @system.attributes.range.value 0))}}
+                            <select name="system.optionalAttributes.{{@key}}.targetGroup">
+                                {{selectOptions (config "targetGroups") selected=targetGroup localize=true}}
+                            </select>
+                        {{/if}}
+                        {{#if (or (and (ne @system.attributes.characterRoll undefined) (ne @system.attributes.characterRoll.value "none"))
+                                      (and (ne @system.abilityLink undefined) (ne @system.attributes.abilityLink.value "none")))}}
+                            <select name="system.optionalAttributes.{{@key}}.resolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=resolutionType localize=true}}
+                            </select>
+                        {{/if}}
+                    {{/if}}
+                    <a class="attribute-remove flexshrink" data-attribute={{@key}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+                <div class="item-attribute flexrow">
+                    <select name="system.optionalAttributes.{{@key}}.attributeLink">
+                        {{selectOptions (configEntry "attributeLinks" @root.item.type) selected=../attributeLink localize=true}}
                     </select>
-                {{/if}}
-                {{#if (and (ne attribute.attributeLink undefined) (ne attribute.attributeLink "passive"))}}
-                    {{#if (and (ne ../system.attributes.range.value undefined) (gt ../system.attributes.range.value 0))}}
-                        <select name="system.optionalAttributes.{{id}}.targetGroup">
-                            {{selectOptions (config "targetGroups") selected=attribute.targetGroup localize=true}}
-                        </select>
-                    {{/if}}
-                    {{#if (or (and (ne ../system.attributes.characterRoll undefined) (ne ../system.attributes.characterRoll.value "none"))
-                                  (and (ne ../system.abilityLink undefined) (ne ../system.attributes.abilityLink.value "none")))}}
-                        <select name="system.optionalAttributes.{{id}}.resolutionType">
-                            {{selectOptions (config "resolutionTypes") selected=attribute.resolutionType localize=true}}
-                        </select>
-                    {{/if}}
-                {{/if}}
-                <a class="attribute-remove flexshrink" data-attribute={{id}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
-                    <i class="fas fa-trash"></i>
-                </a>
-            </div>
-            <div class="item-attribute flexrow">
-                <select name="system.optionalAttributes.{{id}}.attributeLink">
-                    {{selectOptions (configEntry "attributeLinks" ../item.type) selected=attribute.attributeLink localize=true}}
-                </select>
-                <select name="system.optionalAttributes.{{id}}.target">
-                    {{selectOptions attribute.targets selected=attribute.target localize=true}}
-                </select>
-                <select name="system.optionalAttributes.{{id}}.subTarget">
-                    {{selectOptions (config attribute.target) selected=attribute.subTarget localize=true}}
-                </select>
-            </div>
+                    <select name="system.optionalAttributes.{{@key}}.dataGroup">
+                        {{selectOptions dataGroups selected=../dataGroup localize=true}}
+                    </select>
+                    <select name="system.optionalAttributes.{{@key}}.data">
+                        {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
+                    </select>
+                </div>
+            {{/with}}
         {{/each}}
     </fieldset>
 </section>

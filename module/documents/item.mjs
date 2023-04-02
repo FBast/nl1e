@@ -63,9 +63,9 @@ export class Pl1eItem extends Item {
         super.prepareData();
 
         // Prepare Embed items
-        if (!(this.system.subItemsMap instanceof Map)) {
-            const itemsData = Array.isArray(this.system.subItemsMap) ? this.system.subItemsMap : [];
-            this.system.subItemsMap = new Map();
+        if (!(this.system.subItems instanceof Map)) {
+            const itemsData = Array.isArray(this.system.subItems) ? this.system.subItems : [];
+            this.system.subItems = new Map();
 
             itemsData.forEach((item) => {
                 this.addEmbedItem(item, { save: false, newId: false });
@@ -78,10 +78,11 @@ export class Pl1eItem extends Item {
         const system = this.system;
         // Activate conditionnal attributes
         for (let [key, attribute] of Object.entries(system.attributes)) {
-            if (['header', 'fixed'].includes(attribute.category) && attribute.conditions === undefined)
-                attribute.apply = true;
-            if (attribute.conditions !== undefined) {
-                for (const andCondition of attribute.conditions.split('||')) {
+            const attributeConfig = CONFIG.PL1E.attributes[key];
+            if (['header', 'fixed'].includes(attributeConfig.category) && attributeConfig.conditions === undefined)
+                attribute.show = true;
+            if (attributeConfig.conditions !== undefined) {
+                for (const andCondition of attributeConfig.conditions.split('||')) {
                     let isValid = true;
                     for (const condition of andCondition.split('&&')) {
                         if (condition.includes('!==')) {
@@ -100,11 +101,11 @@ export class Pl1eItem extends Item {
                             if (system.attributes[attributeCondition].value !== attributeValue) isValid = false;
                         }
                     }
-                    attribute.apply = isValid;
-                    if (attribute.apply) break;
+                    attribute.show = isValid;
+                    if (isValid) break;
                 }
-                if (!attribute.apply && attribute.fallback !== undefined)
-                    attribute.value = attribute.fallback;
+                if (!attribute.show && attributeConfig.fallback !== undefined)
+                    attribute.value = attributeConfig.fallback;
             }
         }
     }
@@ -130,8 +131,8 @@ export class Pl1eItem extends Item {
      * A reference to the Collection of embedded Item instances in the document, indexed by _id.
      * @returns {Collection<BaseItem>}
      */
-    get subItemsMap() {
-        return this.system.subItemsMap || new Map();
+    get subItems() {
+        return this.system.subItems || new Map();
     }
 
     /**
@@ -140,7 +141,7 @@ export class Pl1eItem extends Item {
      * @return {Pl1eItem|null}
      */
     getEmbedItem(id) {
-        return this.subItemsMap?.get(id) || null;
+        return this.subItems?.get(id) || null;
     }
 
     /**
@@ -176,16 +177,16 @@ export class Pl1eItem extends Item {
         if (childId !== undefined) item.system.childId = childId;
 
         // If this item has sub items
-        if (item.system.subItemsMap !== undefined && item.system.subItemsMap.size > 0 && childId === undefined) {
+        if (item.system.subItems !== undefined && item.system.subItems.size > 0 && childId === undefined) {
             let linkId = randomID();
             item.system.parentId = linkId;
-            for (let [key, subItem] of item.system.subItemsMap) {
+            for (let [key, subItem] of item.system.subItems) {
                 await this.addEmbedItem(subItem, { childId : linkId });
             }
         }
 
         // Object
-        this.system.subItemsMap.set(item._id, item);
+        this.system.subItems.set(item._id, item);
 
         if (save) await this.saveEmbedItems();
 
@@ -198,7 +199,7 @@ export class Pl1eItem extends Item {
      */
     async saveEmbedItems() {
         await this.update({
-            "system.subItemsMap": Array.from(this.system.subItemsMap).map(([id, item]) => item.toObject(false)),
+            "system.subItems": Array.from(this.system.subItems).map(([id, item]) => item.toObject(false)),
         });
         this.sheet.render(false);
     }
@@ -210,12 +211,12 @@ export class Pl1eItem extends Item {
      * @return {Promise<void>}
      */
     async deleteEmbedItem(id, { save = true} = {}) {
-        if (!this.system.subItemsMap.has(id)) {
+        if (!this.system.subItems.has(id)) {
             return;
         }
 
         // Remove the embed item
-        this.system.subItemsMap.delete(id);
+        this.system.subItems.delete(id);
 
         if (save) {
             await this.saveEmbedItems();

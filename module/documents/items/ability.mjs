@@ -19,7 +19,7 @@ export class Pl1eAbility extends Pl1eSubItem {
 
     /** @override */
     async toggle(options) {
-        if (!this.item.system.isMemorized && this.actor.system.misc.slots - this.item.system.attributes.level.value < 0) return;
+        if (!this.item.system.isMemorized && this.actor.system.general.slots - this.item.system.attributes.level.value < 0) return;
 
         await this.item.update({
             ["system.isMemorized"]: !this.item.system.isMemorized
@@ -82,8 +82,8 @@ export class Pl1eAbility extends Pl1eSubItem {
             let relatedItems = [];
             for (const item of characterData.actor.items) {
                 if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
-                if (item.system.subItemsMap === undefined) continue;
-                for (let [key, subItem] of item.system.subItemsMap) {
+                if (item.system.subItems === undefined) continue;
+                for (let [key, subItem] of item.system.subItems) {
                     const subItemFlag = subItem.getFlag('core', 'sourceId');
                     const itemFlag = characterData.item.getFlag('core', 'sourceId');
                     if (subItemFlag !== itemFlag) continue;

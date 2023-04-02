@@ -229,28 +229,35 @@
             "diceMod": 0
           }
         },
-        "misc": {
+        "general": {
           "creationMod": true,
           "experience": 10,
           "remainingCharacteristics": 8,
+          "slots": 0,
+          "ranks": 0,
+          "maxRank": 0,
           "bonuses": 0,
           "advantages": 0,
-          "size": "medium",
           "sizeMultiplier": 0,
-          "sizeToken": 1,
+          "sizeToken": 1
+        },
+        "misc": {
+          "size": "medium",
           "speed": 4.5,
           "initiative": 0,
           "movementPenalty": 0,
-          "dodgeBonuses": 0,
           "parryBonuses": 0,
-          "nightVision": 9,
-          "slashingReduction": 0,
-          "crushingReduction": 0,
-          "piercingReduction": 0,
-          "burnReduction": 0,
-          "coldReduction": 0,
-          "acidReduction": 0,
-          "shockReduction": 0
+          "dodgeBonuses": 0,
+          "nightVision": 9
+        },
+        "reductions": {
+          "slashing": 0,
+          "crushing": 0,
+          "piercing": 0,
+          "burn": 0,
+          "cold": 0,
+          "acid": 0,
+          "shock": 0
         },
         "money": {
           "gold": 0,
@@ -264,16 +271,16 @@
     },
     "npc": {
       "templates": ["base"],
-      "misc": {
+      "general": {
         "NPCTemplate": "balanced",
         "experienceTemplate": "novice"
       }
     },
     "merchant": {
       "templates": ["base"],
-      "misc": {
-        "sellMultiplicator": -100,
-        "buyMultiplicator": 0
+      "general": {
+        "sellModifier": -100,
+        "buyModifier": 0
       }
     }
   },
@@ -281,23 +288,21 @@
     "types": ["feature", "ability", "weapon", "wearable", "consumable", "common"],
     "templates": {
       "base": {
-        "subItemsMap": [],
+        "subItems": [],
         "optionalAttributes": {},
-        "selectedOptionalAttribute": "slashing"
+        "selectedOptionalAttribute": "increase"
       },
       "item": {
-        "attributes": {
-          "description": {
-            "value": "",
-            "category": "header",
-            "type": "text",
-            "label": "PL1E.Description"
-          }
-        },
         "price": {
           "gold": 0,
           "silver": 0,
           "copper": 0
+        },
+        "attributes": {
+          "description": {
+            "value": "",
+            "show": true
+          }
         }
       }
     },
@@ -307,16 +312,11 @@
       "attributes": {
         "featureType": {
           "value": "none",
-          "label": "PL1E.FeatureType",
-          "category": "header",
-          "type": "number",
-          "select": "featureTypes"
+          "show": true
         },
         "cost": {
           "value": 0,
-          "label": "PL1E.Cost",
-          "category": "header",
-          "type": "number"
+          "show": true
         }
       }
     },
@@ -327,132 +327,69 @@
       "attributes": {
         "level": {
           "value": 1,
-          "label": "PL1E.Level",
-          "category": "header",
-          "type": "number"
+          "show": true
         },
         "healthCost": {
           "value": 0,
-          "label": "PL1E.HealthCost",
-          "icon": "far fa-wave-pulse",
-          "category": "fixed",
-          "type": "number",
-          "target": "resources",
-          "subTarget": "health",
-          "function": "decrease"
+          "show": true
         },
         "staminaCost": {
           "value": 0,
-          "label": "PL1E.StaminaCost",
-          "icon": "far fa-wave-pulse",
-          "category": "fixed",
-          "type": "number",
-          "target": "resources",
-          "subTarget": "stamina",
-          "function": "decrease"
+          "show": true
         },
         "manaCost": {
           "value": 0,
-          "label": "PL1E.ManaCost",
-          "icon": "far fa-sparkles",
-          "category": "fixed",
-          "type": "number",
-          "target": "resources",
-          "subTarget": "mana",
-          "function": "decrease"
+          "show": true
         },
         "abilityLink": {
           "value": "none",
-          "label": "PL1E.AbilityLink",
-          "category": "fixed",
-          "type": "select",
-          "select": "abilityLinks"
+          "show": true
         },
         "characterRoll": {
           "value": "none",
-          "label": "PL1E.CharacterRoll",
-          "category": "fixed",
-          "type": "select",
-          "select": "abilitySkills"
+          "show": true
         },
         "areaShape": {
           "value": "circle",
-          "label": "PL1E.AreaShape",
-          "category": "fixed",
-          "type": "select",
-          "select": "areaShapes",
-          "fallback": "circle"
+          "show": true
         },
         "range": {
           "value": 0,
-          "label": "PL1E.Range",
-          "category": "fixed",
-          "type": "number",
           "resolutionType": "value",
-          "conditions": "areaShape!==self",
-          "fallback": 0
+          "show": true
         },
         "areaNumber": {
           "value": 1,
-          "label": "PL1E.AreaNumber",
-          "category": "fixed",
-          "type": "number",
           "resolutionType": "value",
-          "conditions": "range!==0",
-          "fallback": 1
+          "show": true
         },
         "circleRadius": {
           "value": 1,
-          "label": "PL1E.CircleRadius",
-          "category": "fixed",
-          "type": "number",
           "resolutionType": "value",
-          "conditions": "areaShape===circle",
-          "fallback": 1
+          "show": true
         },
         "coneLength": {
           "value": 1,
-          "label": "PL1E.ConeLength",
-          "category": "fixed",
-          "type": "number",
           "resolutionType": "value",
-          "conditions": "areaShape===cone",
-          "fallback": 1
+          "show": true
         },
         "coneAngle": {
           "value": 50,
-          "label": "PL1E.ConeAngle",
-          "category": "fixed",
-          "type": "number",
-          "conditions": "areaShape===cone",
-          "fallback": 50
+          "show": true
         },
         "squareLength": {
           "value": 1,
-          "label": "PL1E.SquareLength",
-          "category": "fixed",
-          "type": "number",
           "resolutionType": "value",
-          "conditions": "areaShape===square",
-          "fallback": 1
+          "show": true
         },
         "rayLength": {
           "value": 1,
-          "label": "PL1E.RayLength",
-          "category": "fixed",
-          "type": "number",
           "resolutionType": "value",
-          "conditions": "areaShape===ray",
-          "fallback": 1
+          "show": true
         },
         "targetRoll": {
           "value": "none",
-          "label": "PL1E.TargetRoll",
-          "category": "fixed",
-          "type": "select",
-          "select": "abilitySkills",
-          "conditions": "areaShape!==self",
-          "fallback": "none"
+          "show": true
         }
       }
     },
@@ -464,34 +401,23 @@
       "attributes": {
         "mastery": {
           "value": "none",
-          "label": "PL1E.Mastery",
-          "category": "header",
-          "type": "select",
-          "select": "masteries"
+          "show": true
         },
         "parryProjectiles": {
           "value": false,
-          "label": "PL1E.ParryProjectiles",
-          "category": "fixed",
-          "type": "bool"
+          "show": true
         },
         "hands": {
           "value": 0,
-          "label": "PL1E.Hands",
-          "category": "fixed",
-          "type": "number"
+          "show": true
         },
         "range": {
           "value": 0,
-          "label": "PL1E.Range",
-          "category": "fixed",
-          "type": "number"
+          "show": true
         },
         "ammo": {
           "value": 0,
-          "label": "PL1E.Ammo",
-          "category": "fixed",
-          "type": "number"
+          "show": true
         }
       }
     },
@@ -502,10 +428,7 @@
       "attributes": {
         "slot": {
           "value": "none",
-          "label": "PL1E.Slot",
-          "category": "header",
-          "type": "select",
-          "select": "slots"
+          "show": true
         }
       }
     },
@@ -516,22 +439,15 @@
       "attributes": {
         "activation": {
           "value": "action",
-          "label": "PL1E.Activation",
-          "category": "header",
-          "type": "select",
-          "select": "activations"
+          "show": true
         },
         "reloadable": {
           "value": false,
-          "label": "PL1E.Reloadable",
-          "category": "fixed",
-          "type": "bool"
+          "show": true
         },
         "uses": {
           "value": 1,
-          "label": "PL1E.Uses",
-          "category": "fixed",
-          "type": "number"
+          "show": true
         }
       }
     },

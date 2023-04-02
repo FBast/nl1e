@@ -24,7 +24,7 @@ export class Pl1eTrade {
     }
 
     static async sellItem(item, sourceActor, targetActor) {
-        const priceUnits = Pl1eHelpers.moneyToUnits(item.system.price) * (1 + targetActor.system.misc.sellMultiplicator / 100);
+        const priceUnits = Pl1eHelpers.moneyToUnits(item.system.price) * (1 + targetActor.system.general.sellModifier / 100);
         const priceMoney = Pl1eHelpers.unitsToMoney(priceUnits);
         await sourceActor.update({
             ["system.money.gold"]: sourceActor.system.money.gold + priceMoney.gold,

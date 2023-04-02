@@ -40,10 +40,10 @@ export class Pl1eActorSheet extends ActorSheet {
                 buttons.unshift({
                     label: 'PL1E.CreationMod',
                     class: 'reset-clones',
-                    icon: this.actor.system.misc.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
+                    icon: this.actor.system.general.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
                     onclick: () => {
                         this.actor.update({
-                            "system.misc.creationMod": !this.actor.system.misc.creationMod
+                            "system.general.creationMod": !this.actor.system.general.creationMod
                         });
                         this.render(false);
                     }
@@ -167,10 +167,10 @@ export class Pl1eActorSheet extends ActorSheet {
         else {
             const itemData = item.toObject();
             const newItem = await this._onDropItemCreate(item);
-            if (itemData.system.subItemsMap !== undefined && itemData.system.subItemsMap.length > 0) {
+            if (itemData.system.subItems !== undefined && itemData.system.subItems.length > 0) {
                 let linkedId = randomID();
                 await newItem[0].update({'system.parentId': linkedId});
-                for (let subItem of itemData.system.subItemsMap) {
+                for (let subItem of itemData.system.subItems) {
                     const newSubItem = await this._onDropItemCreate(subItem);
                     await newSubItem[0].update({'system.childId': linkedId});
                 }
@@ -306,7 +306,7 @@ export class Pl1eActorSheet extends ActorSheet {
         let value = $(event.currentTarget).data("value");
         if (!value || !characteristic) return;
 
-        let remaining = this.actor.system.misc.remainingCharacteristics;
+        let remaining = this.actor.system.general.remainingCharacteristics;
         if (remaining === 0 && value > 0) return;
 
         let oldValue = this.actor.system.characteristics[characteristic].base;
@@ -316,7 +316,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         await this.actor.update({
             ["system.characteristics." + characteristic + ".base"]: newValue,
-            ["system.misc.remainingCharacteristics"]: remaining - value
+            ["system.general.remainingCharacteristics"]: remaining - value
         });
 
         this.render(false);
@@ -332,10 +332,10 @@ export class Pl1eActorSheet extends ActorSheet {
         const skill = $(event.currentTarget).data("skill");
         if (!skill) return;
         let oldValue = this.actor.system.skills[skill].rank;
-        let maxRank = this.actor.system.misc.maxRank;
+        let maxRank = this.actor.system.general.maxRank;
         let newValue = oldValue + 1;
-        if (newValue > maxRank || this.actor.system.misc.ranks - newValue < 0) {
-            if (this.actor.system.misc.creationMod) newValue = 1;
+        if (newValue > maxRank || this.actor.system.general.ranks - newValue < 0) {
+            if (this.actor.system.general.creationMod) newValue = 1;
             else return;
         }
         await this.actor.update({

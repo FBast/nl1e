@@ -128,10 +128,11 @@ export class Pl1eActor extends Actor {
      * @private
      */
     _prepareCommonDataBefore(systemData) {
-        const actorMisc = systemData.misc ;
+        const actorGeneral = systemData.general ;
+        const actorMisc = systemData.misc;
         // Handle actorAttributes scores.
-        actorMisc.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
-        actorMisc.sizeToken = CONFIG.PL1E.sizes[actorMisc.size].token;
+        actorGeneral.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
+        actorGeneral.sizeToken = CONFIG.PL1E.sizes[actorMisc.size].token;
     }
 
     /**
@@ -141,16 +142,16 @@ export class Pl1eActor extends Actor {
      */
     _prepareCharacterData(systemData) {
         if (this.type !== 'character') return;
-        const actorMisc = systemData.misc ;
+        const actorGeneral = systemData.general ;
 
         // Handle experience
-        actorMisc.slots = Math.floor(actorMisc.experience / 3);
+        actorGeneral.slots = Math.floor(actorGeneral.experience / 3);
         for (let otherItem of this.items) {
             if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
-            actorMisc.slots -= otherItem.system.attributes.level.value;
+            actorGeneral.slots -= otherItem.system.attributes.level.value;
         }
-        actorMisc.ranks = actorMisc.experience;
-        actorMisc.maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
+        actorGeneral.ranks = actorGeneral.experience;
+        actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
     }
 
     /**
@@ -160,36 +161,36 @@ export class Pl1eActor extends Actor {
      */
     _prepareNpcData(systemData) {
         if (this.type !== 'npc') return;
-        const actorMisc = systemData.misc;
+        const actorGeneral = systemData.general;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
 
         // Handle experience
-        actorMisc.experience = CONFIG.PL1E.experienceTemplates[actorMisc.experienceTemplate].value;
-        actorMisc.slots = Math.floor(actorMisc.experience / 3);
+        actorGeneral.experience = CONFIG.PL1E.experienceTemplates[actorGeneral.experienceTemplate].value;
+        actorGeneral.slots = Math.floor(actorGeneral.experience / 3);
         for (let otherItem of this.items) {
             if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
-            actorMisc.slots -= otherItem.system.attributes.level.value;
+            actorGeneral.slots -= otherItem.system.attributes.level.value;
         }
-        actorMisc.ranks = actorMisc.experience;
-        actorMisc.maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
+        actorGeneral.ranks = actorGeneral.experience;
+        actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
 
         // Handle characteristics repartition
-        let npcTemplateConfig = CONFIG.PL1E.NPCTemplates[actorMisc.NPCTemplate];
+        let npcTemplateConfig = CONFIG.PL1E.NPCTemplates[actorGeneral.NPCTemplate];
         for (let [id, characteristic] of Object.entries(npcTemplateConfig.characteristics)) {
             actorCharacteristics[id].base = characteristic;
         }
 
         // Handle skills repartition
         let ranks = 0;
-        let maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
+        let maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
         let keepLooping = true;
         while (keepLooping) {
             keepLooping = false;
             for (let [id, skill] of Object.entries(npcTemplateConfig.skills)) {
                 let newRank = actorSkills[skill].rank + 1;
                 if (newRank > maxRank) continue;
-                if (ranks + newRank <= actorMisc.ranks) {
+                if (ranks + newRank <= actorGeneral.ranks) {
                     actorSkills[skill].rank = newRank;
                     ranks += newRank;
                     keepLooping = true;
@@ -209,7 +210,7 @@ export class Pl1eActor extends Actor {
         systemData.merchantPrices = {};
         for (let item of this.items) {
             let value = Pl1eHelpers.moneyToUnits(item.system.price);
-            value += Math.round(value * (systemData.misc.buyMultiplicator / 100));
+            value += Math.round(value * (systemData.general.buyModifier / 100));
             systemData.merchantPrices[item._id] = Pl1eHelpers.unitsToMoney(value);
         }
     }
@@ -222,6 +223,7 @@ export class Pl1eActor extends Actor {
     _prepareCommonDataAfter(systemData) {
         const actorResources = systemData.resources;
         const actorMisc = systemData.misc;
+        const actorGeneral = systemData.general;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
         // Handle actorCharacteristics scores.
@@ -238,7 +240,7 @@ export class Pl1eActor extends Actor {
             for(let characteristic of resourceConfig.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
             }
-            resource.max *= resourceConfig.multiplier * actorMisc.sizeMultiplier;
+            resource.max *= resourceConfig.multiplier * actorGeneral.sizeMultiplier;
         }
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
@@ -253,12 +255,12 @@ export class Pl1eActor extends Actor {
                     attributesSum += actorMisc[misc];
                 }
             }
-            skill.numberMod = attributesSum + actorMisc.bonuses;
+            skill.numberMod = attributesSum + actorGeneral.bonuses;
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
-            skill.diceMod = actorMisc.advantages;
+            skill.diceMod = actorGeneral.advantages;
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
-            if (!skillConfig.fixedRank) actorMisc.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
+            if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
     }
 
@@ -322,12 +324,11 @@ export class Pl1eActor extends Actor {
     }
 
     async applyAttribute(attribute, persist) {
-        const system = this.system;
-        if (attribute.function === undefined) return;
-        const subTarget = CONFIG.PL1E.attributeSubTargets[attribute.subTarget];
+        if (attribute.name === undefined) return;
+        const data = CONFIG.PL1E.attributeDataGroups[attribute.data];
 
-        let newValue = foundry.utils.getProperty(system, subTarget.path);
-        switch (attribute.function) {
+        let newValue = foundry.utils.getProperty(this, data.path);
+        switch (attribute.name) {
             case "override":
                 newValue = attribute.value;
                 break;
@@ -345,7 +346,7 @@ export class Pl1eActor extends Actor {
                     icon: "icons/svg/fire.svg",
                     changes: [
                         {
-                            key: "system." + subTarget.path,
+                            key: data.path,
                             mode: 2, // ADD | SUBTRACT | MULTIPLY | DIVIDE | SET
                             value: attribute.value
                         }
@@ -362,20 +363,20 @@ export class Pl1eActor extends Actor {
                 }, {parent: this, temporary: true});
                 break;
             // case 'push':
-            //     let currentValue = foundry.utils.getProperty(system, subTarget.path);
+            //     let currentValue = foundry.utils.getProperty(this, data.path);
             //     if (currentValue === undefined) currentValue = [];
             //     currentValue.push(attribute.value);
             //     newValue = currentValue;
             //     break;
             default:
-                console.error("PL1E | Unknown attribute function : " + attribute.function)
+                console.error("PL1E | Unknown attribute name : " + attribute.name)
         }
 
         // Make changes
         if (persist)
-            await this.update({["system." + subTarget.path]: newValue})
+            await this.update({[data.path]: newValue})
         else
-            foundry.utils.setProperty(system, subTarget.path, newValue);
+            foundry.utils.setProperty(this, data.path, newValue);
     }
 
 }

@@ -39,12 +39,12 @@ export class Pl1eSubItem {
         // Copy attribute
         let calculatedAttribute = JSON.parse(JSON.stringify(attribute));
 
-        // Calculate only if function is defined
-        if (calculatedAttribute.function !== undefined) {
-            let subTarget = PL1E.attributeSubTargets[calculatedAttribute.subTarget];
+        // Calculate only if name is defined
+        if (calculatedAttribute.name !== undefined) {
+            let data = PL1E.attributeDataGroups[calculatedAttribute.data];
 
             // Number type
-            if (subTarget.type === 'number') {
+            if (data.type === 'number') {
                 if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
                     calculatedAttribute.value *= rollResult > 0 ? rollResult : 0;
                 }
@@ -52,13 +52,13 @@ export class Pl1eSubItem {
                     calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
                 }
                 if (calculatedAttribute.value < 0 && calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
-                    let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductions[calculatedAttribute.reduction].path);
+                    let reduction = foundry.utils.getProperty(actor, CONFIG.PL1E.reductions[calculatedAttribute.reduction].path);
                     calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
                 }
                 // If resulting value equal to zero then ignore the attribute
                 if (calculatedAttribute.value === 0) return;
                 // Apply sign
-                calculatedAttribute.value *= calculatedAttribute.function === "decrease" ? -1 : 1;
+                calculatedAttribute.value *= calculatedAttribute.name === "decrease" ? -1 : 1;
             }
         }
 

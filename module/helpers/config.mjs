@@ -1,7 +1,7 @@
 export const PL1E = {};
 
 /**
- * Objects
+ * Stats
  */
 
 PL1E.resources = {
@@ -13,7 +13,10 @@ PL1E.resources = {
                 "constitution",
                 "will"
             ]
-        }
+        },
+        "icon": "fa-heart",
+        "type": "number",
+        "path": "system.resources.health.value"
     },
     "stamina": {
         "label": "PL1E.Stamina",
@@ -23,7 +26,10 @@ PL1E.resources = {
                 "strength",
                 "constitution"
             ]
-        }
+        },
+        "icon": "fa-wave-pulse",
+        "type": "number",
+        "path": "system.resources.stamina.value"
     },
     "mana": {
         "label": "PL1E.Mana",
@@ -33,7 +39,10 @@ PL1E.resources = {
                 "intellect",
                 "will"
             ]
-        }
+        },
+        "icon": "fa-sparkles",
+        "type": "number",
+        "path": "system.resources.mana.value"
     }
 }
 
@@ -43,56 +52,80 @@ PL1E.characteristics = {
         "weights": {
             "resources": ["stamina"],
             "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
-        }
+        },
+        "icon": "fa-dumbbell",
+        "type": "number",
+        "path": "system.characteristics.strength.mods"
     },
     "agility": {
         "label": "PL1E.Agility",
         "weights": {
             "resources": [],
             "skills": ["dodge", "reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
-        }
+        },
+        "icon": "fa-dumbbell",
+        "type": "number",
+        "path": "system.characteristics.agility.mods"
     },
     "perception": {
         "label": "PL1E.Perception",
         "weights": {
             "resources": [],
             "skills": ["dodge", "reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
-        }
+        },
+        "icon": "fa-dumbbell",
+        "type": "number",
+        "path": "system.characteristics.perception.mods"
     },
     "constitution": {
         "label": "PL1E.Constitution",
         "weights": {
             "resources": ["health", "stamina"],
             "skills": ["parry", "vigor", "athletics"]
-        }
+        },
+        "icon": "fa-dumbbell",
+        "type": "number",
+        "path": "system.characteristics.constitution.mods"
     },
     "intellect": {
         "label": "PL1E.Intellect",
         "weights": {
             "resources": ["mana"],
             "skills": ["resilience", "diplomacy", "bluff", "erudition", "secularMagic"]
-        }
+        },
+        "icon": "fa-dumbbell",
+        "type": "number",
+        "path": "system.characteristics.intellect.mods"
     },
     "cunning": {
         "label": "PL1E.Cunning",
         "weights": {
             "resources": [],
             "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "secularMagic"]
-        }
+        },
+        "icon": "fa-dumbbell",
+        "type": "number",
+        "path": "system.characteristics.cunning.mods"
     },
     "wisdom": {
         "label": "PL1E.Wisdom",
         "weights": {
             "resources": [],
             "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "divineMagic"]
-        }
+        },
+        "icon": "fa-dumbbell",
+        "type": "number",
+        "path": "system.characteristics.wisdom.mods"
     },
     "will": {
         "label": "PL1E.Will",
         "weights": {
             "resources": ["health", "mana"],
             "skills": ["resilience", "performance", "handling", "divineMagic"]
-        }
+        },
+        "icon": "fa-dumbbell",
+        "type": "number",
+        "path": "system.characteristics.will.mods"
     }
 }
 
@@ -302,64 +335,100 @@ PL1E.skills = {
     }
 }
 
-PL1E.sizes = {
-    "small": {
-        "label": "PL1E.Small",
-        "multiplier": "0.5",
-        "token": "1"
+PL1E.misc = {
+    "size": {
+        "label": "PL1E.Size",
+        "icon": "fa-arrow-up-big-small",
+        "type": "select",
+        "path": "system.misc.size",
+        "select": "sizes"
     },
-    "medium": {
-        "label": "PL1E.Medium",
-        "multiplier": "1",
-        "token": "1"
+    "speed": {
+        "label": "PL1E.Speed",
+        "icon": "fa-person-running",
+        "type": "number",
+        "path": "system.misc.speed"
     },
-    "large": {
-        "label": "PL1E.Large",
-        "multiplier": "2",
-        "token": "2",
+    "initiative": {
+        "label": "PL1E.Initiative",
+        "icon": "fa-person-running",
+        "type": "number",
+        "path": "system.misc.initiative"
     },
-    "huge": {
-        "label": "PL1E.Huge",
-        "multiplier": "3",
-        "token": "3"
+    "movementPenalty": {
+        "label": "PL1E.MovementPenalty",
+        "icon": "fa-weight-hanging",
+        "type": "number",
+        "path": "system.misc.movementPenalty"
     },
-    "gargantuan": {
-        "label": "PL1E.Gargantuan",
-        "multiplier": "4",
-        "token": "4"
+    "parryBonuses": {
+        "label": "PL1E.ParryBonuses",
+        "icon": "fa-shield",
+        "type": "number",
+        "path": "system.misc.parryBonuses"
+    },
+    "dodgeBonuses": {
+        "label": "PL1E.DodgeBonuses",
+        "icon": "fa-eye",
+        "type": "number",
+        "path": "system.misc.dodgeBonuses"
+    },
+    "nightVision": {
+        "label": "PL1E.NightVision",
+        "icon": "fa-eye",
+        "type": "number",
+        "path": "system.misc.nightVision"
     }
-};
+}
 
 PL1E.reductions = {
     "slashing": {
         "label": "PL1E.Slashing",
-        "path": "misc.slashingReduction"
+        "icon": "fa-axe-battle",
+        "type": "number",
+        "path": "system.reductions.slashing"
     },
     "crushing": {
         "label": "PL1E.Crushing",
-        "path": "misc.crushingReduction"
+        "icon": "fa-hammer-war",
+        "type": "number",
+        "path": "system.reductions.crushing"
     },
     "piercing": {
         "label": "PL1E.Piercing",
-        "path": "misc.piercingReduction"
+        "icon": "fa-dagger",
+        "type": "number",
+        "path": "system.s.piercing"
     },
     "burn": {
         "label": "PL1E.Burn",
-        "path": "misc.burnReduction"
+        "icon": "fa-fire",
+        "type": "number",
+        "path": "system.reductions.burn"
     },
     "cold": {
         "label": "PL1E.Cold",
-        "path": "misc.coldReduction"
+        "icon": "fa-snowflake",
+        "type": "number",
+        "path": "system.reductions.cold"
     },
     "acid": {
         "label": "PL1E.Acid",
-        "path": "misc.acidReduction"
+        "icon": "fa-droplet",
+        "type": "number",
+        "path": "system.reductions.acid"
     },
     "shock": {
         "label": "PL1E.Shock",
-        "path": "misc.shockReduction"
+        "icon": "fa-bolt",
+        "type": "number",
+        "path": "system.reductions.shock"
     },
 }
+
+/**
+ * Templates
+ */
 
 PL1E.NPCTemplates = {
     "balanced": {
@@ -559,6 +628,287 @@ PL1E.experienceTemplates = {
     }
 }
 
+/**
+ * Attributes Related
+ */
+
+PL1E.attributeDataGroups = {
+    "feature": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override"
+    },
+    "ability": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override",
+        "transfer": "PL1E.Transfer",
+        "effect": "PL1E.Effect"
+    },
+    "weapon": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override",
+        "transfer": "PL1E.Transfer"
+    },
+    "wearable": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override"
+    },
+    "consumable": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override"
+    }
+}
+
+PL1E.attributes = {
+    // Common
+    "description": {
+        "label": "PL1E.Description",
+        "category": "header",
+        "type": "text"
+    },
+    "mastery": {
+        "label": "PL1E.Mastery",
+        "category": "header",
+        "type": "select",
+        "select": "masteries"
+    },
+    "range": {
+        "label": "PL1E.Range",
+        "category": "fixed",
+        "type": "number",
+        "conditions": "areaShape!==self",
+        "fallback": 0
+    },
+    // Features
+    "featureType": {
+        "label": "PL1E.FeatureType",
+        "category": "header",
+        "type": "number",
+        "select": "featureTypes"
+    },
+    "cost": {
+        "label": "PL1E.Cost",
+        "category": "header",
+        "type": "number"
+    },
+    // Abilities
+    "level": {
+        "label": "PL1E.Level",
+        "category": "header",
+        "type": "number"
+    },
+    "healthCost": {
+        "label": "PL1E.HealthCost",
+        "icon": "far fa-wave-pulse",
+        "category": "fixed",
+        "type": "number",
+        "dataGroup": "resources",
+        "data": "health",
+        "name": "decrease"
+    },
+    "staminaCost": {
+        "label": "PL1E.StaminaCost",
+        "icon": "far fa-wave-pulse",
+        "category": "fixed",
+        "type": "number",
+        "dataGroup": "resources",
+        "data": "stamina",
+        "name": "decrease"
+    },
+    "manaCost": {
+        "label": "PL1E.ManaCost",
+        "icon": "far fa-sparkles",
+        "category": "fixed",
+        "type": "number",
+        "dataGroup": "resources",
+        "data": "mana",
+        "name": "decrease"
+    },
+    "abilityLink": {
+        "label": "PL1E.AbilityLink",
+        "category": "fixed",
+        "type": "select",
+        "select": "abilityLinks"
+    },
+    "characterRoll": {
+        "label": "PL1E.CharacterRoll",
+        "category": "fixed",
+        "type": "select",
+        "select": "abilitySkills"
+    },
+    "areaShape": {
+        "label": "PL1E.AreaShape",
+        "category": "fixed",
+        "type": "select",
+        "select": "areaShapes",
+        "fallback": "circle"
+    },
+    "areaNumber": {
+        "label": "PL1E.AreaNumber",
+        "category": "fixed",
+        "type": "number",
+        "conditions": "range!==0",
+        "fallback": 1
+    },
+    "circleRadius": {
+        "label": "PL1E.CircleRadius",
+        "category": "fixed",
+        "type": "number",
+        "conditions": "areaShape===circle",
+        "fallback": 1
+    },
+    "coneLength": {
+        "label": "PL1E.ConeLength",
+        "category": "fixed",
+        "type": "number",
+        "conditions": "areaShape===cone",
+        "fallback": 1
+    },
+    "coneAngle": {
+        "label": "PL1E.ConeAngle",
+        "category": "fixed",
+        "type": "number",
+        "conditions": "areaShape===cone",
+        "fallback": 50
+    },
+    "squareLength": {
+        "label": "PL1E.SquareLength",
+        "category": "fixed",
+        "type": "number",
+        "conditions": "areaShape===square",
+        "fallback": 1
+    },
+    "rayLength": {
+        "label": "PL1E.RayLength",
+        "category": "fixed",
+        "type": "number",
+        "conditions": "areaShape===ray",
+        "fallback": 1
+    },
+    "targetRoll": {
+        "label": "PL1E.TargetRoll",
+        "category": "fixed",
+        "type": "select",
+        "select": "abilitySkills",
+        "conditions": "areaShape!==self",
+        "fallback": "none"
+    },
+    // Weapons
+    "parryProjectiles": {
+        "label": "PL1E.ParryProjectiles",
+        "category": "fixed",
+        "type": "bool"
+    },
+    "hands": {
+        "label": "PL1E.Hands",
+        "category": "fixed",
+        "type": "number"
+    },
+    "ammo": {
+        "label": "PL1E.Ammo",
+        "category": "fixed",
+        "type": "number"
+    },
+    // Wearables
+    "slot": {
+        "label": "PL1E.Slot",
+        "category": "header",
+        "type": "select",
+        "select": "slots"
+    },
+    // Consumables
+    "activation": {
+        "label": "PL1E.Activation",
+        "category": "header",
+        "type": "select",
+        "select": "activations"
+    },
+    "reloadable": {
+        "label": "PL1E.Reloadable",
+        "category": "fixed",
+        "type": "bool"
+    },
+    "uses": {
+        "label": "PL1E.Uses",
+        "category": "fixed",
+        "type": "number"
+    },
+    // Optionals
+    "increase": {
+        "label": "PL1E.Increase",
+        "dataGroups": {
+            "resources": "PL1E.Resources",
+            "characteristics": "PL1E.Characteristics",
+            "misc": "PL1E.Misc",
+        }
+    },
+    "decrease": {
+        "label": "PL1E.Decrease",
+        "dataGroups": {
+            "resources": "PL1E.Resources",
+            "characteristics": "PL1E.Characteristics",
+            "misc": "PL1E.Misc",
+        }
+    },
+    "override": {
+        "label": "PL1E.Override",
+        "dataGroups": {
+            "resources": "PL1E.Resources",
+            "characteristics": "PL1E.Characteristics",
+            "misc": "PL1E.Misc",
+        }
+    },
+    "transfer": {
+        "label": "PL1E.Transfer",
+        "dataGroups": {
+            "resources": "PL1E.Resources",
+            "characteristics": "PL1E.Characteristics",
+            "misc": "PL1E.Misc",
+        }
+    },
+    "effect": {
+        "label": "PL1E.Effect",
+        "dataGroups": {
+            "characteristics": "PL1E.Characteristics",
+            "misc": "PL1E.Misc",
+        }
+    }
+}
+
+PL1E.dynamicAttributes = {
+    "increase": {
+        "value": 0,
+        "dataGroup": "characteristics",
+        "data": "strength",
+    },
+    "decrease": {
+        "value": 0,
+        "label": "PL1E.Decrease",
+        "reduction": "none",
+        "data": "strength",
+    },
+    "override": {
+        "value": 0,
+        "dataGroup": "characteristics",
+        "data": "strength",
+    },
+    "transfer": {
+        "value": 0,
+        "reduction": "none",
+        "dataGroup": "resources",
+        "data": "health",
+    },
+    "effect": {
+        "value": 0,
+        "dataGroup": "characteristics",
+        "data": "strength",
+    }
+}
+
 PL1E.attributeLinks = {
     "feature": {
         "passive": "PL1E.Passive"
@@ -578,338 +928,6 @@ PL1E.attributeLinks = {
     "consumable": {
         "active": "PL1E.Active"
     }
-}
-
-PL1E.attributeGroups = {
-    "feature": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "set": "PL1E.Set"
-    },
-    "ability": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "set": "PL1E.Set",
-        "transfer": "PL1E.Transfer",
-        "effect": "PL1E.Effect"
-    },
-    "weapon": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "set": "PL1E.Set",
-        "transfer": "PL1E.Transfer"
-    },
-    "wearable": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "set": "PL1E.Set"
-    },
-    "consumable": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "set": "PL1E.Set"
-    }
-}
-
-PL1E.attributeGroupsValues = {
-    "increase": {
-        "value": 0,
-        "label": "PL1E.Increase",
-        "targets": {
-            "resources": "PL1E.Resources",
-            "characteristics": "PL1E.Characteristics",
-            "misc": "PL1E.Misc",
-        },
-        "target": "characteristics",
-        "subTarget": "strength",
-        "function": "increase"
-    },
-    "decrease": {
-        "value": 0,
-        "label": "PL1E.Decrease",
-        "reduction": "none",
-        "targets": {
-            "resources": "PL1E.Resources",
-            "characteristics": "PL1E.Characteristics",
-            "misc": "PL1E.Misc",
-        },
-        "target": "characteristics",
-        "subTarget": "strength",
-        "function": "decrease"
-    },
-    "override": {
-        "value": 0,
-        "label": "PL1E.Override",
-        "targets": {
-            "resources": "PL1E.Resources",
-            "characteristics": "PL1E.Characteristics",
-            "misc": "PL1E.Misc",
-        },
-        "target": "characteristics",
-        "subTarget": "strength",
-        "function": "override"
-    },
-    "transfer": {
-        "value": 0,
-        "label": "PL1E.Transfer",
-        "reduction": "none",
-        "targets": {
-            "resources": "PL1E.Resources",
-            "characteristics": "PL1E.Characteristics",
-            "misc": "PL1E.Misc",
-        },
-        "target": "resources",
-        "subTarget": "health",
-        "function": "transfer"
-    },
-    "effect": {
-        "value": 0,
-        "label": "PL1E.Effect",
-        "targets": {
-            "characteristics": "PL1E.Characteristics",
-            "misc": "PL1E.Misc",
-        },
-        "target": "characteristics",
-        "subTarget": "strength",
-        "function": "effect"
-    }
-}
-
-PL1E.attributeSubTargets = {
-    "health": {
-        "label": "PL1E.Health",
-        "icon": "fa-heart",
-        "type": "number",
-        "path": "resources.health.value"
-    },
-    "stamina": {
-        "label": "PL1E.Stamina",
-        "icon": "fa-wave-pulse",
-        "type": "number",
-        "path": "resources.stamina.value"
-    },
-    "mana": {
-        "label": "PL1E.Mana",
-        "icon": "fa-sparkles",
-        "type": "number",
-        "path": "resources.mana.value"
-    },
-    "strength": {
-        "label": "PL1E.Strength",
-        "icon": "fa-dumbbell",
-        "type": "number",
-        "path": "characteristics.strength.mods"
-    },
-    "agility": {
-        "label": "PL1E.Agility",
-        "icon": "fa-dumbbell",
-        "type": "number",
-        "path": "characteristics.agility.mods"
-    },
-    "perception": {
-        "label": "PL1E.Perception",
-        "icon": "fa-dumbbell",
-        "type": "number",
-        "path": "characteristics.perception.mods"
-    },
-    "constitution": {
-        "label": "PL1E.Constitution",
-        "icon": "fa-dumbbell",
-        "type": "number",
-        "path": "characteristics.constitution.mods"
-    },
-    "intellect": {
-        "label": "PL1E.Intellect",
-        "icon": "fa-dumbbell",
-        "type": "number",
-        "path": "characteristics.intellect.mods"
-    },
-    "cunning": {
-        "label": "PL1E.Cunning",
-        "icon": "fa-dumbbell",
-        "type": "number",
-        "path": "characteristics.cunning.mods"
-    },
-    "wisdom": {
-        "label": "PL1E.Wisdom",
-        "icon": "fa-dumbbell",
-        "type": "number",
-        "path": "characteristics.wisdom.mods"
-    },
-    "will": {
-        "label": "PL1E.Will",
-        "icon": "fa-dumbbell",
-        "type": "number",
-        "path": "characteristics.will.mods"
-    },
-    "size": {
-        "label": "PL1E.Size",
-        "icon": "fa-arrow-up-big-small",
-        "type": "select",
-        "path": "misc.size",
-        "select": "sizes"
-    },
-    "speed": {
-        "label": "PL1E.Speed",
-        "icon": "fa-person-running",
-        "type": "number",
-        "path": "misc.speed"
-    },
-    "movementPenalty": {
-        "label": "PL1E.MovementPenalty",
-        "icon": "fa-weight-hanging",
-        "type": "number",
-        "path": "misc.movementPenalty"
-    },
-    "parry": {
-        "label": "PL1E.Parry",
-        "icon": "fa-shield",
-        "type": "number",
-        "path": "misc.parry"
-    },
-    "dodge": {
-        "label": "PL1E.Dodge",
-        "icon": "fa-eye",
-        "type": "number",
-        "path": "misc.dodge"
-    },
-    "slashingReduction": {
-        "label": "PL1E.SlashingReduction",
-        "icon": "fa-axe-battle",
-        "type": "number",
-        "path": "misc.slashingReduction"
-    },
-    "crushingReduction": {
-        "label": "PL1E.CrushingReduction",
-        "icon": "fa-hammer-war",
-        "type": "number",
-        "path": "misc.crushingReduction"
-    },
-    "piercingReduction": {
-        "label": "PL1E.PiercingReduction",
-        "icon": "fa-dagger",
-        "type": "number",
-        "path": "misc.piercingReduction"
-    },
-    "burnReduction": {
-        "label": "PL1E.BurnReduction",
-        "icon": "fa-fire",
-        "type": "number",
-        "path": "misc.burnReduction"
-    },
-    "coldReduction": {
-        "label": "PL1E.ColdReduction",
-        "icon": "fa-snowflake",
-        "type": "number",
-        "path": "misc.coldReduction"
-    },
-    "shockReduction": {
-        "label": "PL1E.ShockReduction",
-        "icon": "fa-bolt",
-        "type": "number",
-        "path": "misc.shockReduction"
-    },
-    "acidReduction": {
-        "label": "PL1E.AcidReduction",
-        "icon": "fa-droplet",
-        "type": "number",
-        "path": "misc.acidReduction"
-    }
-}
-
-/**
- * String Dictionaries
- */
-
-PL1E.defaultIcons = {
-    "character": "systems/pl1e/assets/icons/elf-helmet.svg",
-    "npc": "systems/pl1e/assets/icons/goblin-head.svg",
-    "merchant": "systems/pl1e/assets/icons/shop.svg",
-    "feature": "systems/pl1e/assets/icons/skills.svg",
-    "ability": "systems/pl1e/assets/icons/power-lightning.svg",
-    "weapon": "systems/pl1e/assets/icons/combat.svg",
-    "wearable": "systems/pl1e/assets/icons/armor-vest.svg",
-    "consumable": "systems/pl1e/assets/icons/round-potion.svg",
-    "common": "systems/pl1e/assets/icons/key.svg",
-}
-
-PL1E.defaultNames = {
-    "character": "PL1E.NewCharacter",
-    "npc": "PL1E.NewNPC",
-    "merchant": "PL1E.NewMerchant",
-    "feature": "PL1E.NewFeature",
-    "ability": "PL1E.NewAbility",
-    "weapon": "PL1E.NewWeapon",
-    "wearable": "PL1E.NewWearable",
-    "consumable": "PL1E.NewConsumable",
-    "common": "PL1E.NewCommon",
-}
-
-PL1E.misc = {
-    "size": "PL1E.Size",
-    "speed": "PL1E.Speed",
-    "movementPenalty": "PL1E.MovementPenalty",
-    "parry": "PL1E.Parry",
-    "dodge": "PL1E.Dodge",
-    "slashingReduction": "PL1E.SlashingReduction",
-    "crushingReduction": "PL1E.CrushingReduction",
-    "piercingReduction": "PL1E.PiercingReduction",
-    "burnReduction": "PL1E.BurnReduction",
-    "coldReduction": "PL1E.ColdReduction",
-    "shockReduction": "PL1E.ShockReduction",
-    "acidReduction": "PL1E.AcidReduction"
-}
-
-PL1E.featureTypes = {
-    "race": "PL1E.Race",
-    "class": "PL1E.Class",
-    "mastery": "PL1E.Mastery"
-}
-
-PL1E.money = {
-    "gold": "PL1E.Gold",
-    "silver": "PL1E.Silver",
-    "copper": "PL1E.Copper"
-}
-
-PL1E.masteries = {
-    "none": "PL1E.None",
-    "crossbows": "PL1E.Crossbows",
-    "bows": "PL1E.Bows",
-    "poleArms": "PL1E.PoleArms",
-    "shields": "PL1E.Shields",
-    "shortAxes": "PL1E.ShortAxes",
-    "longAxes": "PL1E.LongAxes",
-    "shortBlades": "PL1E.ShortBlades",
-    "mediumBlades": "PL1E.MediumBlades",
-    "longBlades": "PL1E.LongBlades",
-    "shortHammers": "PL1E.ShortHammers",
-    "longHammers": "PL1E.LongHammers",
-    "arcana": "PL1E.Arcana",
-    "aramancia": "PL1E.Aramancia",
-    "biomancia": "PL1E.Biomancia",
-    "diastamancia": "PL1E.Diastamancia",
-    "goetia": "PL1E.Goetia",
-    "myalomancia": "PL1E.Myalomancia",
-    "necromancia": "PL1E.Necromancia",
-    "theurgy": "PL1E.Theurgy"
-}
-
-PL1E.slots = {
-    "none": "PL1E.None",
-    "clothes": "PL1E.Clothes",
-    "armor": "PL1E.Armor",
-    "ring": "PL1E.Ring",
-    "amulet": "PL1E.Amulet"
-}
-
-PL1E.activations = {
-    "passive": "PL1E.Passive",
-    "reaction": "PL1E.Reaction",
-    "free": "PL1E.Free",
-    "action": "PL1E.Action",
-    "round": "PL1E.Round",
-    "special": "PL1E.Special"
 }
 
 PL1E.abilitySkills = {
@@ -975,4 +993,112 @@ PL1E.abilityLinks = {
     "none" : "PL1E.None",
     "parent": "PL1E.Parent",
     "mastery": "PL1E.Mastery"
+}
+
+/**
+ * Others
+ */
+
+PL1E.defaultIcons = {
+    "character": "systems/pl1e/assets/icons/elf-helmet.svg",
+    "npc": "systems/pl1e/assets/icons/goblin-head.svg",
+    "merchant": "systems/pl1e/assets/icons/shop.svg",
+    "feature": "systems/pl1e/assets/icons/skills.svg",
+    "ability": "systems/pl1e/assets/icons/power-lightning.svg",
+    "weapon": "systems/pl1e/assets/icons/combat.svg",
+    "wearable": "systems/pl1e/assets/icons/armor-vest.svg",
+    "consumable": "systems/pl1e/assets/icons/round-potion.svg",
+    "common": "systems/pl1e/assets/icons/key.svg",
+}
+
+PL1E.defaultNames = {
+    "character": "PL1E.NewCharacter",
+    "npc": "PL1E.NewNPC",
+    "merchant": "PL1E.NewMerchant",
+    "feature": "PL1E.NewFeature",
+    "ability": "PL1E.NewAbility",
+    "weapon": "PL1E.NewWeapon",
+    "wearable": "PL1E.NewWearable",
+    "consumable": "PL1E.NewConsumable",
+    "common": "PL1E.NewCommon",
+}
+
+PL1E.featureTypes = {
+    "race": "PL1E.Race",
+    "class": "PL1E.Class",
+    "mastery": "PL1E.Mastery"
+}
+
+PL1E.sizes = {
+    "small": {
+        "label": "PL1E.Small",
+        "multiplier": "0.5",
+        "token": "1"
+    },
+    "medium": {
+        "label": "PL1E.Medium",
+        "multiplier": "1",
+        "token": "1"
+    },
+    "large": {
+        "label": "PL1E.Large",
+        "multiplier": "2",
+        "token": "2",
+    },
+    "huge": {
+        "label": "PL1E.Huge",
+        "multiplier": "3",
+        "token": "3"
+    },
+    "gargantuan": {
+        "label": "PL1E.Gargantuan",
+        "multiplier": "4",
+        "token": "4"
+    }
+}
+
+PL1E.money = {
+    "gold": "PL1E.Gold",
+    "silver": "PL1E.Silver",
+    "copper": "PL1E.Copper"
+}
+
+PL1E.masteries = {
+    "none": "PL1E.None",
+    "crossbows": "PL1E.Crossbows",
+    "bows": "PL1E.Bows",
+    "poleArms": "PL1E.PoleArms",
+    "shields": "PL1E.Shields",
+    "shortAxes": "PL1E.ShortAxes",
+    "longAxes": "PL1E.LongAxes",
+    "shortBlades": "PL1E.ShortBlades",
+    "mediumBlades": "PL1E.MediumBlades",
+    "longBlades": "PL1E.LongBlades",
+    "shortHammers": "PL1E.ShortHammers",
+    "longHammers": "PL1E.LongHammers",
+    "arcana": "PL1E.Arcana",
+    "aramancia": "PL1E.Aramancia",
+    "biomancia": "PL1E.Biomancia",
+    "diastamancia": "PL1E.Diastamancia",
+    "goetia": "PL1E.Goetia",
+    "myalomancia": "PL1E.Myalomancia",
+    "necromancia": "PL1E.Necromancia",
+    "theurgy": "PL1E.Theurgy"
+}
+
+PL1E.slots = {
+    "none": "PL1E.None",
+    "clothes": "PL1E.Clothes",
+    "armor": "PL1E.Armor",
+    "ring": "PL1E.Ring",
+    "amulet": "PL1E.Amulet"
+}
+
+PL1E.activations = {
+    "passive": "PL1E.Passive",
+    "reaction": "PL1E.Reaction",
+    "free": "PL1E.Free",
+    "action": "PL1E.Action",
+    "round": "PL1E.Round",
+    "special": "PL1E.Special"
 }
