@@ -115,7 +115,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Currency
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.actor));
-        html.find('.currency-convert').on("click", ev => Pl1eEvent.onCurrencyConvert(ev, this.actor));
+        html.find('.currency-convert').on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
 
         // Highlights indications
         html.find('.resource-label,.characteristic-label,.skill-label')

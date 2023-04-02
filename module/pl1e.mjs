@@ -108,21 +108,25 @@ Handlebars.registerHelper('minus', function(a, b) {
     return a - b;
 })
 
-Handlebars.registerHelper('configEntry', function (key, entry) {
-    return PL1E[key][entry];
-})
-
 Handlebars.registerHelper('config', function (key) {
     return PL1E[key];
 })
 
-Handlebars.registerHelper('currencyToValue', function (currency) {
-    return Pl1eHelpers.currencyToUnits(currency);
+Handlebars.registerHelper('configEntry', function (key, entry) {
+    return PL1E[key][entry];
 })
 
-Handlebars.registerHelper('valueToCurrency', function (value) {
-    return Pl1eHelpers.unitsToCurrency(value);
+Handlebars.registerHelper('configEntryLabel', function (key, entry) {
+    return PL1E[key][entry].label;
 })
+
+// Handlebars.registerHelper('currencyToValue', function (currency) {
+//     return Pl1eHelpers.moneyToUnits(currency);
+// })
+//
+// Handlebars.registerHelper('valueToCurrency', function (value) {
+//     return Pl1eHelpers.unitsToMoney(value);
+// })
 
 Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {
     const optionsData = {};

@@ -24,47 +24,48 @@ export class Pl1eTrade {
     }
 
     static async sellItem(item, sourceActor, targetActor) {
-        const priceUnits = item.system.attributes.price.value * (1 + targetActor.system.misc.sellMultiplicator / 100);
-        const priceCurrency = Pl1eHelpers.unitsToCurrency(priceUnits);
+        const priceUnits = Pl1eHelpers.moneyToUnits(item.system.price) * (1 + targetActor.system.misc.sellMultiplicator / 100);
+        const priceMoney = Pl1eHelpers.unitsToMoney(priceUnits);
         await sourceActor.update({
-            ["system.money.gold.value"]: sourceActor.system.money.gold.value + priceCurrency.gold.value,
-            ["system.money.silver.value"]: sourceActor.system.money.silver.value + priceCurrency.silver.value,
-            ["system.money.copper.value"]: sourceActor.system.money.copper.value + priceCurrency.copper.value,
+            ["system.money.gold.value"]: sourceActor.system.money.gold.value + priceMoney.gold.value,
+            ["system.money.silver.value"]: sourceActor.system.money.silver.value + priceMoney.silver.value,
+            ["system.money.copper.value"]: sourceActor.system.money.copper.value + priceMoney.copper.value,
         });
-        sourceActor.render(false);
+        sourceActor.render(sourceActor.rendered);
         // Send message for historic
         await ChatMessage.create({
             speaker: ChatMessage.getSpeaker({actor: sourceActor}),
             rollMode: game.settings.get('core', 'rollMode'),
             flavor: game.i18n.localize("PL1E.FlavorSelling"),
             content: item.name + game.i18n.localize("PL1E.SoldFor")
-                + priceCurrency.gold.value + game.i18n.localize("PL1E.Gold")
-                + priceCurrency.silver.value + game.i18n.localize("PL1E.Silver")
-                + priceCurrency.copper.value + game.i18n.localize("PL1E.Copper")
+                + priceMoney.gold.value + game.i18n.localize("PL1E.Gold")
+                + priceMoney.silver.value + game.i18n.localize("PL1E.Silver")
+                + priceMoney.copper.value + game.i18n.localize("PL1E.Copper")
         });
     }
 
     static async buyItem(item, buyerActor, merchantActor) {
-        let priceCurrency = merchantActor.system.merchantPrices[item._id];
-        let priceUnits = Pl1eHelpers.currencyToUnits(priceCurrency);
-        let units = Pl1eHelpers.currencyToUnits(buyerActor.system.currency);
+        let priceMoney = merchantActor.system.merchantPrices[item._id];
+        let priceUnits = Pl1eHelpers.moneyToUnits(priceMoney);
+        let units = Pl1eHelpers.moneyToUnits(buyerActor.system.money);
         if (units < priceUnits) return;
         units -= priceUnits;
-        const currency = Pl1eHelpers.unitsToCurrency(units);
+        const money = Pl1eHelpers.unitsToMoney(units);
         await buyerActor.update({
-            ["system.money.gold.value"]: currency.gold.value,
-            ["system.money.silver.value"]: currency.silver.value,
-            ["system.money.copper.value"]: currency.copper.value,
+            ["system.money.gold.value"]: money.gold.value,
+            ["system.money.silver.value"]: money.silver.value,
+            ["system.money.copper.value"]: money.copper.value,
         })
+        buyerActor.render(buyerActor.rendered);
         // Send message for historic
         await ChatMessage.create({
             speaker: ChatMessage.getSpeaker({actor: buyerActor}),
             rollMode: game.settings.get('core', 'rollMode'),
             flavor: game.i18n.localize("PL1E.FlavorPurchasing"),
             content: item.name + game.i18n.localize("PL1E.BoughtFor")
-                + priceCurrency.gold.value + game.i18n.localize("PL1E.Gold")
-                + priceCurrency.silver.value + game.i18n.localize("PL1E.Silver")
-                + priceCurrency.copper.value + game.i18n.localize("PL1E.Copper")
+                + priceMoney.gold.value + game.i18n.localize("PL1E.Gold")
+                + priceMoney.silver.value + game.i18n.localize("PL1E.Silver")
+                + priceMoney.copper.value + game.i18n.localize("PL1E.Copper")
         });
         await buyerActor.createEmbeddedDocuments("Item", [item]);
     }

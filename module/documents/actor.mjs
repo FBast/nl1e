@@ -130,16 +130,8 @@ export class Pl1eActor extends Actor {
     _prepareCommonDataBefore(systemData) {
         const actorMisc = systemData.misc ;
         // Handle actorAttributes scores.
-        actorMisc.sizeMultiplier = CONFIG.PL1E.sizeMultipliers[actorMisc.size];
-        actorMisc.sizeToken = CONFIG.PL1E.sizeTokens[actorMisc.size];
-        actorMisc.experience = CONFIG.PL1E.experienceTemplates[actorMisc.experienceTemplate].value;
-        actorMisc.slots = Math.floor(actorMisc.experience / 3);
-        for (let otherItem of this.items) {
-            if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
-            actorMisc.slots -= otherItem.system.attributes.level.value;
-        }
-        actorMisc.ranks = actorMisc.experience;
-        actorMisc.maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
+        actorMisc.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
+        actorMisc.sizeToken = CONFIG.PL1E.sizes[actorMisc.size].token;
     }
 
     /**
@@ -149,6 +141,16 @@ export class Pl1eActor extends Actor {
      */
     _prepareCharacterData(systemData) {
         if (this.type !== 'character') return;
+        const actorMisc = systemData.misc ;
+
+        // Handle experience
+        actorMisc.slots = Math.floor(actorMisc.experience / 3);
+        for (let otherItem of this.items) {
+            if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
+            actorMisc.slots -= otherItem.system.attributes.level.value;
+        }
+        actorMisc.ranks = actorMisc.experience;
+        actorMisc.maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
     }
 
     /**
@@ -162,13 +164,23 @@ export class Pl1eActor extends Actor {
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
 
-        // Handle characteristics
+        // Handle experience
+        actorMisc.experience = CONFIG.PL1E.experienceTemplates[actorMisc.experienceTemplate].value;
+        actorMisc.slots = Math.floor(actorMisc.experience / 3);
+        for (let otherItem of this.items) {
+            if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
+            actorMisc.slots -= otherItem.system.attributes.level.value;
+        }
+        actorMisc.ranks = actorMisc.experience;
+        actorMisc.maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
+
+        // Handle characteristics repartition
         let npcTemplateConfig = CONFIG.PL1E.NPCTemplates[actorMisc.NPCTemplate];
         for (let [id, characteristic] of Object.entries(npcTemplateConfig.characteristics)) {
             actorCharacteristics[id].base = characteristic;
         }
 
-        // Handle skills
+        // Handle skills repartition
         let ranks = 0;
         let maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
         let keepLooping = true;
@@ -196,9 +208,9 @@ export class Pl1eActor extends Actor {
         // Add merchant prices
         systemData.merchantPrices = {};
         for (let item of this.items) {
-            let value = Pl1eHelpers.currencyToUnits(item.system.price);
+            let value = Pl1eHelpers.moneyToUnits(item.system.price);
             value += Math.round(value * (systemData.misc.buyMultiplicator / 100));
-            systemData.merchantPrices[item._id] = Pl1eHelpers.unitsToCurrency(value);
+            systemData.merchantPrices[item._id] = Pl1eHelpers.unitsToMoney(value);
         }
     }
 

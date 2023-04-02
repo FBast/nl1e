@@ -189,16 +189,16 @@ export class Pl1eEvent {
     }
 
     /**
-     * Handle currency conversion
+     * Handle money conversion
      * @param {Event} event The originating click event
      * @param {Actor} actor the actor to modify
      */
-    static async onCurrencyConvert(event, actor) {
+    static async onMoneyConvert(event, actor) {
         event.preventDefault();
         event.stopPropagation();
-        let units = Pl1eHelpers.currencyToUnits(actor.system.money);
+        let units = Pl1eHelpers.moneyToUnits(actor.system.money);
         await actor.update({
-            ["system.money"]: Pl1eHelpers.unitsToCurrency(units)
+            ["system.money"]: Pl1eHelpers.unitsToMoney(units)
         });
     }
 

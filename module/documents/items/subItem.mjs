@@ -52,7 +52,7 @@ export class Pl1eSubItem {
                     calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
                 }
                 if (calculatedAttribute.value < 0 && calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
-                    let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductionsPath[calculatedAttribute.reduction]);
+                    let reduction = foundry.utils.getProperty(actor.system, CONFIG.PL1E.reductions[calculatedAttribute.reduction].path);
                     calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
                 }
                 // If resulting value equal to zero then ignore the attribute
