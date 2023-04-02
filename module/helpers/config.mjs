@@ -514,20 +514,6 @@ PL1E.NPCTemplates = {
         },
         "skills": ["throwing", "acrobatics", "vigilance", "search", "craft"]
     },
-    "mystic": {
-        "label": "PL1E.Mystic",
-        "characteristics": {
-            "strength": 2,
-            "agility": 2,
-            "perception": 2,
-            "constitution": 2,
-            "intellect": 4,
-            "cunning": 4,
-            "wisdom": 4,
-            "will": 4
-        },
-        "skills": ["secularMagic", "divineMagic", "erudition", "craft", "diplomacy", "performance"]
-    },
     "wizard": {
         "label": "PL1E.Wizard",
         "characteristics": {
@@ -555,6 +541,20 @@ PL1E.NPCTemplates = {
             "will": 5
         },
         "skills": ["divineMagic", "performance", "diplomacy", "search", "vigilance"]
+    },
+    "mystic": {
+        "label": "PL1E.Mystic",
+        "characteristics": {
+            "strength": 2,
+            "agility": 2,
+            "perception": 2,
+            "constitution": 2,
+            "intellect": 4,
+            "cunning": 4,
+            "wisdom": 4,
+            "will": 4
+        },
+        "skills": ["secularMagic", "divineMagic", "erudition", "craft", "diplomacy", "performance"]
     },
     "battleMage": {
         "label": "PL1E.BattleMage",
@@ -615,21 +615,30 @@ PL1E.NPCTemplates = {
 }
 
 PL1E.experienceTemplates = {
-    "novice": "PL1E.Novice",
-    "apprentice": "PL1E.Apprentice",
-    "adept": "PL1E.Adept",
-    "expert": "PL1E.Expert",
-    "master": "PL1E.Master",
-    "grandMaster": "PL1E.GrandMaster"
-}
-
-PL1E.experienceTemplatesValues = {
-    "novice": 10,
-    "apprentice": 20,
-    "adept": 30,
-    "expert": 40,
-    "master": 50,
-    "grandMaster": 60
+    "novice": {
+        "label": "PL1E.Novice",
+        "value": 10
+    },
+    "apprentice": {
+        "label": "PL1E.Apprentice",
+        "value": 20
+    },
+    "adept": {
+        "label": "PL1E.Adept",
+        "value": 30
+    },
+    "expert": {
+        "label": "PL1E.Expert",
+        "value": 40
+    },
+    "master": {
+        "label": "PL1E.Master",
+        "value": 50,
+    },
+    "grandMaster": {
+        "label": "PL1E.GrandMaster",
+        "value": 60
+    }
 }
 
 PL1E.areaShapes = {

@@ -132,8 +132,7 @@ export class Pl1eActor extends Actor {
         // Handle actorAttributes scores.
         actorMisc.sizeMultiplier = CONFIG.PL1E.sizeMultipliers[actorMisc.size];
         actorMisc.sizeToken = CONFIG.PL1E.sizeTokens[actorMisc.size];
-        if (systemData.experienceTemplate !== undefined)
-            actorMisc.experience = CONFIG.PL1E.experienceTemplatesValues[actorMisc.experienceTemplate];
+        actorMisc.experience = CONFIG.PL1E.experienceTemplates[actorMisc.experienceTemplate].value;
         actorMisc.slots = Math.floor(actorMisc.experience / 3);
         for (let otherItem of this.items) {
             if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
@@ -162,18 +161,20 @@ export class Pl1eActor extends Actor {
         const actorMisc = systemData.misc;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
+
         // Handle characteristics
-        let templateValues = CONFIG.PL1E.NPCTemplates[systemData.NPCTemplate];
-        for (let [id, characteristic] of Object.entries(templateValues.characteristics)) {
+        let npcTemplateConfig = CONFIG.PL1E.NPCTemplates[actorMisc.NPCTemplate];
+        for (let [id, characteristic] of Object.entries(npcTemplateConfig.characteristics)) {
             actorCharacteristics[id].base = characteristic;
         }
+
         // Handle skills
         let ranks = 0;
         let maxRank = Math.min(1 + Math.floor(actorMisc.experience / 10), 5);
         let keepLooping = true;
         while (keepLooping) {
             keepLooping = false;
-            for (let [id, skill] of Object.entries(templateValues.skills)) {
+            for (let [id, skill] of Object.entries(npcTemplateConfig.skills)) {
                 let newRank = actorSkills[skill].rank + 1;
                 if (newRank > maxRank) continue;
                 if (ranks + newRank <= actorMisc.ranks) {
@@ -183,7 +184,6 @@ export class Pl1eActor extends Actor {
                 }
             }
         }
-        //TODO-fred bug with update of dice and rank (maybe?)
     }
 
     /**
@@ -222,7 +222,7 @@ export class Pl1eActor extends Actor {
             actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
         // Handle actorResources scores.
         for (let [id, resource] of Object.entries(actorResources)) {
-            const resourceConfig = PL1E.resources[id];
+            const resourceConfig = CONFIG.PL1E.resources[id];
             for(let characteristic of resourceConfig.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
             }
@@ -230,7 +230,7 @@ export class Pl1eActor extends Actor {
         }
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
-            const skillConfig = PL1E.skills[id];
+            const skillConfig = CONFIG.PL1E.skills[id];
             let characteristicsSum = 0;
             for (let characteristic of skillConfig.weights.characteristics) {
                 characteristicsSum += actorCharacteristics[characteristic].value;
@@ -312,7 +312,7 @@ export class Pl1eActor extends Actor {
     async applyAttribute(attribute, persist) {
         const system = this.system;
         if (attribute.function === undefined) return;
-        const subTarget = PL1E.attributeSubTargets[attribute.subTarget];
+        const subTarget = CONFIG.PL1E.attributeSubTargets[attribute.subTarget];
 
         let newValue = foundry.utils.getProperty(system, subTarget.path);
         switch (attribute.function) {
