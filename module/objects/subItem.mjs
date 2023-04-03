@@ -1,4 +1,4 @@
-import {PL1E} from "../../helpers/config.mjs";
+import {PL1E} from "../helpers/config.mjs";
 
 export class Pl1eSubItem {
 
@@ -12,19 +12,19 @@ export class Pl1eSubItem {
     }
 
     async toggle(options) {
-        throw new Error("Toggle method is not implemented");
+        throw new Error("toggle method is not implemented");
     }
 
     async use(options) {
-        throw new Error("Use method is not implemented");
+        throw new Error("use method is not implemented");
     }
 
     async apply(options) {
-        throw new Error("Apply method is not implemented");
+        throw new Error("apply method is not implemented");
     }
 
     async reload(options) {
-        throw new Error("Reload method is not implemented");
+        throw new Error("reload method is not implemented");
     }
 
     /**
@@ -41,7 +41,7 @@ export class Pl1eSubItem {
 
         // Calculate only if name is defined
         if (calculatedAttribute.name !== undefined) {
-            let data = PL1E.attributeDataGroups[calculatedAttribute.data];
+            let data = PL1E[calculatedAttribute.dataGroup][calculatedAttribute.data];
 
             // Number type
             if (data.type === 'number') {

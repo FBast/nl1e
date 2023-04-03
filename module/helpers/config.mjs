@@ -1,8 +1,6 @@
 export const PL1E = {};
 
-/**
- * Stats
- */
+//region Stats
 
 PL1E.resources = {
     "health": {
@@ -426,9 +424,9 @@ PL1E.reductions = {
     },
 }
 
-/**
- * Templates
- */
+//endregion
+
+//region Templates
 
 PL1E.NPCTemplates = {
     "balanced": {
@@ -628,40 +626,9 @@ PL1E.experienceTemplates = {
     }
 }
 
-/**
- * Attributes Related
- */
+//endregion
 
-PL1E.attributeDataGroups = {
-    "feature": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "override": "PL1E.Override"
-    },
-    "ability": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "override": "PL1E.Override",
-        "transfer": "PL1E.Transfer",
-        "effect": "PL1E.Effect"
-    },
-    "weapon": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "override": "PL1E.Override",
-        "transfer": "PL1E.Transfer"
-    },
-    "wearable": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "override": "PL1E.Override"
-    },
-    "consumable": {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "override": "PL1E.Override"
-    }
-}
+//region Attributes
 
 PL1E.attributes = {
     // Common
@@ -879,22 +846,53 @@ PL1E.attributes = {
     }
 }
 
+PL1E.dynamicAttributesGroups = {
+    "feature": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override"
+    },
+    "ability": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override",
+        "transfer": "PL1E.Transfer",
+        "effect": "PL1E.Effect"
+    },
+    "weapon": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override",
+        "transfer": "PL1E.Transfer"
+    },
+    "wearable": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override"
+    },
+    "consumable": {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override"
+    }
+}
+
 PL1E.dynamicAttributes = {
     "increase": {
         "value": 0,
-        "dataGroup": "characteristics",
+        "dataGroup": "resources",
         "data": "strength",
     },
     "decrease": {
         "value": 0,
-        "label": "PL1E.Decrease",
+        "dataGroup": "resources",
+        "data": "health",
         "reduction": "none",
-        "data": "strength",
     },
     "override": {
         "value": 0,
-        "dataGroup": "characteristics",
-        "data": "strength",
+        "dataGroup": "resources",
+        "data": "health",
     },
     "transfer": {
         "value": 0,
@@ -995,9 +993,9 @@ PL1E.abilityLinks = {
     "mastery": "PL1E.Mastery"
 }
 
-/**
- * Others
- */
+//endregion
+
+//region Others
 
 PL1E.defaultIcons = {
     "character": "systems/pl1e/assets/icons/elf-helmet.svg",
@@ -1102,3 +1100,5 @@ PL1E.activations = {
     "round": "PL1E.Round",
     "special": "PL1E.Special"
 }
+
+//endregion

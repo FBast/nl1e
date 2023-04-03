@@ -1,4 +1,4 @@
-import {Pl1eSubItem} from "./subItem.mjs";
+import {Pl1eSubItem} from "../subItem.mjs";
 
 export class Pl1eWearable extends Pl1eSubItem {
 
@@ -18,13 +18,13 @@ export class Pl1eWearable extends Pl1eSubItem {
         if (!this.item.system.isEquipped) return;
         let ringCount = 1;
 
-        // Unequip other items
+        // Unequip other subItems
         for (let otherItem of this.actor.items) {
             // Ignore if otherItem is not a wearable
             if (otherItem.type !== 'wearable') continue;
             // Ignore if otherItem is item
             if (otherItem === this.item) continue;
-            // Count same items slot
+            // Count same subItems slot
             if (otherItem.system.isEquipped && otherItem.system.attributes.slot.value === slot) {
                 // Unequipped immediately if clothes, armor or amulet
                 if (['clothes', 'armor', 'amulet'].includes(slot)) {

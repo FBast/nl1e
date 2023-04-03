@@ -29,7 +29,7 @@
         <legend class="section-header">{{localize "PL1E.SecondaryAttributes"}}</legend>
         <div class="item-attribute-select flexrow">
             <select name="system.selectedOptionalAttribute">
-                {{selectOptions (configEntry "attributeDataGroups" document.type) selected=system.selectedOptionalAttribute localize=true}}
+                {{selectOptions (configEntry "dynamicAttributesGroups" document.type) selected=system.selectedOptionalAttribute localize=true}}
             </select>
             <a class="attribute-add flexshrink" data-attribute={{system.selectedOptionalAttribute}} data-tooltip='{{localize "PL1E.AddAttribute"}}'>
                 <i class="fas fa-plus"></i>
@@ -38,6 +38,7 @@
         {{#each system.optionalAttributes}}
             {{#with (configEntry "attributes" name)}}
                 <div class="item-attribute flexrow">
+                    <!-- Main data -->
                     <label class="attribute-name">{{localize label}}</label>
                     {{#with (configEntry ../dataGroup ../data)}}
                         {{#if (eq type "number")}}

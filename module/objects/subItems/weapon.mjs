@@ -1,4 +1,4 @@
-import {Pl1eSubItem} from "./subItem.mjs";
+import {Pl1eSubItem} from "../subItem.mjs";
 
 export class Pl1eWeapon extends Pl1eSubItem {
 
@@ -27,7 +27,7 @@ export class Pl1eWeapon extends Pl1eSubItem {
             }
             await this.item.update({["system.isEquippedSecondary"]: !foundry.utils.getProperty(this.item, "system.isEquippedSecondary")});
         }
-        // Unequip other items
+        // Unequip other subItems
         for (let otherItem of this.actor.items) {
             // Ignore if otherItem is not a weapon
             if (otherItem.type !== 'weapon') continue;

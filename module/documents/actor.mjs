@@ -75,7 +75,7 @@ export class Pl1eActor extends Actor {
 
     /** @override */
     async prepareEmbeddedDocuments() {
-        // Iterate items to apply system on actor
+        // Iterate subItems to apply system on actor
         for (let item of this.items) {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
@@ -325,7 +325,7 @@ export class Pl1eActor extends Actor {
 
     async applyAttribute(attribute, persist) {
         if (attribute.name === undefined) return;
-        const data = CONFIG.PL1E.attributeDataGroups[attribute.data];
+        let data = PL1E[calculatedAttribute.dataGroup][calculatedAttribute.data];
 
         let newValue = foundry.utils.getProperty(this, data.path);
         switch (attribute.name) {

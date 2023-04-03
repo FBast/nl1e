@@ -1,4 +1,4 @@
-import {Pl1eSubItem} from "./subItem.mjs";
+import {Pl1eSubItem} from "../subItem.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {AbilityTemplate} from "../../helpers/abilityTemplate.mjs";
 

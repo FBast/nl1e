@@ -84,7 +84,7 @@ export class Pl1eItemSheet extends ItemSheet {
             context.rollData = actor.getRollData();
         }
 
-        // Prepare character data and items.
+        // Prepare character data and subItems.
         if (['feature', 'weapon', 'wearable'].includes(itemData.type)) {
             this._prepareSubItems(context);
         }
@@ -160,7 +160,7 @@ export class Pl1eItemSheet extends ItemSheet {
             5: []
         };
 
-        // Iterate through items, allocating to containers
+        // Iterate through subItems, allocating to containers
         for (let [key, value] of context.item.system.subItems) {
             value.img = value.img || DEFAULT_TOKEN;
             // Append to features.

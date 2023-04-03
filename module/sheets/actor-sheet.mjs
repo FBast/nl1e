@@ -64,7 +64,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Retrieve the data structure from the base sheet. You can inspect or log
         // the context variable to see the structure, but some key properties for
         // sheets are the actor object, the data object, whether or not it's
-        // editable, the items array, and the effects array.
+        // editable, the subItems array, and the effects array.
         const context = super.getData();
 
         // Use a safe clone of the actor data for further operations.
@@ -134,7 +134,7 @@ export class Pl1eActorSheet extends ActorSheet {
         if (this.actor.isOwner) {
             let handler = ev => this._onDragStart(ev);
             html.find('li.item').each((i, li) => {
-                if (li.classList.contains("items-header")) return;
+                if (li.classList.contains("subItems-header")) return;
                 li.setAttribute("draggable", true);
                 li.addEventListener("dragstart", handler, false);
             });
@@ -142,7 +142,7 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Handle sub items to be added as other items
+     * Handle sub subItems to be added as other subItems
      * @param event
      * @param data
      * @returns {Promise<unknown>}
@@ -204,7 +204,7 @@ export class Pl1eActorSheet extends ActorSheet {
             5: []
         };
 
-        // Iterate through items, allocating to containers
+        // Iterate through subItems, allocating to containers
         const sourceIdFlags = [];
         for (let item of context.items) {
             const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;

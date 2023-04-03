@@ -1,4 +1,4 @@
-import {Pl1eSubItem} from "./subItem.mjs";
+import {Pl1eSubItem} from "../subItem.mjs";
 import {PL1E} from "../../helpers/config.mjs";
 
 export class Pl1eConsumable extends Pl1eSubItem {

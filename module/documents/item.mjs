@@ -1,7 +1,7 @@
-import {Pl1eWeapon} from "./items/weapon.mjs";
-import {Pl1eAbility} from "./items/ability.mjs";
-import {Pl1eConsumable} from "./items/consumable.mjs";
-import {Pl1eWearable} from "./items/wearable.mjs";
+import {Pl1eWeapon} from "../objects/subItems/weapon.mjs";
+import {Pl1eAbility} from "../objects/subItems/ability.mjs";
+import {Pl1eConsumable} from "../objects/subItems/consumable.mjs";
+import {Pl1eWearable} from "../objects/subItems/wearable.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -58,11 +58,11 @@ export class Pl1eItem extends Item {
      * Augment the basic Item data model with additional dynamic data.
      */
     prepareData() {
-        // As with the actor class, items are documents that can have their data
+        // As with the actor class, subItems are documents that can have their data
         // preparation methods overridden (such as prepareBaseData()).
         super.prepareData();
 
-        // Prepare Embed items
+        // Prepare Embed subItems
         if (!(this.system.subItems instanceof Map)) {
             const itemsData = Array.isArray(this.system.subItems) ? this.system.subItems : [];
             this.system.subItems = new Map();
@@ -125,7 +125,7 @@ export class Pl1eItem extends Item {
 
     //endregion
 
-    //region Embedded items
+    //region Embedded subItems
 
     /**
      * A reference to the Collection of embedded Item instances in the document, indexed by _id.
@@ -136,7 +136,7 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Shortcut for this.items.get
+     * Shortcut for this.subItems.get
      * @param id
      * @return {Pl1eItem|null}
      */
@@ -169,14 +169,14 @@ export class Pl1eItem extends Item {
         }
 
         // Copy the parent permission to the sub item
-        // In v10 actor's items inherit the ownership from the actor, but theirs ownership do not reflect that.
+        // In v10 actor's subItems inherit the ownership from the actor, but theirs ownership do not reflect that.
         // So we must take actor's ownership for sub-item
         item.ownership = this.actor?.ownership ?? this.ownership;
 
         // Add child id if defined
         if (childId !== undefined) item.system.childId = childId;
 
-        // If this item has sub items
+        // If this item has sub subItems
         if (item.system.subItems !== undefined && item.system.subItems.size > 0 && childId === undefined) {
             let linkId = randomID();
             item.system.parentId = linkId;

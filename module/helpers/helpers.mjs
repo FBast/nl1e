@@ -223,19 +223,19 @@ export class Pl1eHelpers {
      * @returns {Promise<void>}
      */
     static async resetClones(item) {
-        // Reset items subItems
+        // Reset subItems subItems
         for (const subItem of game.items) {
             if (subItem.system.subItems === undefined) continue;
             await this.resetCloneSubItems(subItem, item._id);
         }
-        // Reset actors items
+        // Reset actors subItems
         for (const actor of game.actors) {
             await this.resetCloneActorItems(actor, item._id);
         }
     }
 
     /**
-     * Reset this actor items (if sourceId is corresponding source)
+     * Reset this actor subItems (if sourceId is corresponding source)
      * @param actor
      * @param sourceId
      * @returns {Promise<void>}
