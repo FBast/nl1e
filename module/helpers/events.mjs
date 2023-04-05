@@ -1,8 +1,12 @@
 import {Pl1eTrade} from "./trade.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
-import {PL1E} from "./config.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
+import {DecreaseAttribute} from "../objects/attributes/decreaseAttribute.mjs";
+import {IncreaseAttribute} from "../objects/attributes/increaseAttribute.mjs";
+import {OverrideAttribute} from "../objects/attributes/overrideAttribute.mjs";
+import {TransferAttribute} from "../objects/attributes/transferAttribute.mjs";
+import {EffectAttribute} from "../objects/attributes/effectAttribute.mjs";
 
 export class Pl1eEvent {
 
@@ -266,7 +270,19 @@ export class Pl1eEvent {
         event.preventDefault();
         event.stopPropagation();
         let attributeId = $(event.currentTarget).data("attribute");
-        const dynamicAttribute = CONFIG.PL1E.dynamicAttributes[attributeId];
+
+        const attributeConstructors = {
+            'increase': IncreaseAttribute,
+            'decrease': DecreaseAttribute,
+            'override': OverrideAttribute,
+            'transfer': TransferAttribute,
+            'effect': EffectAttribute
+        };
+
+        let dynamicAttribute = attributeConstructors[attributeId]
+            ? new attributeConstructors[attributeId](item)
+            : (() => { throw new Error("Unknown attribute type: " + attributeId) })();
+
         dynamicAttribute.name = attributeId;
         await item.update({
             ["system.optionalAttributes." + randomID()]: dynamicAttribute

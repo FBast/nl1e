@@ -907,27 +907,6 @@ PL1E.dynamicAttributes = {
     }
 }
 
-PL1E.attributeLinks = {
-    "feature": {
-        "passive": "PL1E.Passive"
-    },
-    "ability": {
-        "passive": "PL1E.Passive",
-        "active": "PL1E.Active"
-    },
-    "weapon": {
-        "passive": "PL1E.Passive",
-        "child": "PL1E.Child"
-    },
-    "wearable": {
-        "passive": "PL1E.Passive",
-        "child": "PL1E.Child"
-    },
-    "consumable": {
-        "active": "PL1E.Active"
-    }
-}
-
 PL1E.abilitySkills = {
     "none": "PL1E.None",
     "parry": "PL1E.Parry",

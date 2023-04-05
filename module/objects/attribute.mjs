@@ -1,33 +1,58 @@
-class DynamicAttribute {
+/**
+ * @typedef {Object} DynamicAttribute
+ * @property {any} value
+ * @property {string} dataGroup
+ * @property {string} data
+ * @property {boolean} showPassiveToggle
+ * @property {boolean} isPassive
+ */
 
-    passiveTypes = ["feature"];
-    activeTypes = ["consumable"];
+/**
+ * @type {DynamicAttribute}
+ */
+export class DynamicAttribute {
 
     value;
     dataGroup;
     data;
-    showPassiveToggle = false;
+
+    showPassiveToggle;
     isPassive;
 
+    showResolutionTypeDropdown;
+    resolutionType;
+
+    showTargetGroupDropdown;
+    targetGroup
+
     constructor(item) {
-        this.item = item;
-        if (["feature"].includes(this.item.type)) {
+        if (["feature"].includes(item.type)) {
             this.isPassive = true;
+            this.showPassiveToggle = false;
         }
-        else if (["consumable"].includes(this.item.type)) {
+        else if (["consumable"].includes(item.type)) {
             this.isPassive = false;
+            this.showPassiveToggle = false;
         }
         else {
-            return this.showPassiveToggle
+            this.showPassiveToggle = true;
         }
     }
 
-    get isPassive() {
-        if (this.passiveTypes.includes(this.item.type)) return true;
-        else if (this.activeTypes.includes(this.item.type)) return false;
-        else return this.isPassive;
+    /**
+     * @param {Pl1eActor} characterActor
+     * @param {Pl1eActor[]} targetActors
+     * @returns {DynamicAttribute[]}
+     */
+    calculate(characterActor, targetActors) {
+        throw new Error("calculate method is not implemented");
     }
 
-    // Define behavior that is common to all dynamic attributes
-}
+    /**
+     * @param {Pl1eActor[]} actors
+     */
+    apply(actors) {
+        throw new Error("apply method is not implemented");
+    }
 
+}

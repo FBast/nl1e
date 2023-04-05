@@ -9,8 +9,8 @@ export const preloadHandlebarsTemplates = async function () {
         // Actor partials.
         "systems/pl1e/templates/actor/parts/character-stats.hbs",
         "systems/pl1e/templates/actor/parts/character-features.hbs",
-        "systems/pl1e/templates/actor/parts/character-subItems.hbs",
-        "systems/pl1e/templates/actor/parts/merchant-subItems.hbs",
+        "systems/pl1e/templates/actor/parts/character-items.hbs",
+        "systems/pl1e/templates/actor/parts/merchant-items.hbs",
         "systems/pl1e/templates/actor/parts/npc-stats.hbs",
 
         // Item partials.

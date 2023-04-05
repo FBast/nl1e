@@ -74,9 +74,6 @@
                     </a>
                 </div>
                 <div class="item-attribute flexrow">
-                    <select name="system.optionalAttributes.{{@key}}.attributeLink">
-                        {{selectOptions (configEntry "attributeLinks" @root.item.type) selected=../attributeLink localize=true}}
-                    </select>
                     <select name="system.optionalAttributes.{{@key}}.dataGroup">
                         {{selectOptions dataGroups selected=../dataGroup localize=true}}
                     </select>

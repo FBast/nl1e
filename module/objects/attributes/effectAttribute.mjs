@@ -1,4 +1,20 @@
-class EffectAttribute extends DynamicAttribute {
+/**
+ * @typedef {Object} EffectAttribute
+ */
 
-    // Define behavior specific to effect attributes
+import {DynamicAttribute} from "../attribute.mjs";
+
+/**
+ * @type {EffectAttribute}
+ */
+export class EffectAttribute extends DynamicAttribute {
+
+    calculate(characterActor, targetActors) {
+        return [];
+    }
+
+    apply(actors) {
+        return undefined;
+    }
+
 }

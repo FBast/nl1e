@@ -109,10 +109,16 @@ Handlebars.registerHelper('minus', function(a, b) {
 })
 
 Handlebars.registerHelper('config', function (key) {
+    if (key === undefined)
+        throw new Error("config key is undefined");
     return PL1E[key];
 })
 
 Handlebars.registerHelper('configEntry', function (key, entry) {
+    if (key === undefined)
+        throw new Error("configEntry key is undefined");
+    if (entry === undefined)
+        throw new Error("configEntry entry is undefined with key " + key);
     return PL1E[key][entry];
 })
 

@@ -1,4 +1,20 @@
-class OverrideAttribute extends DynamicAttribute {
+/**
+ * @typedef {Object} OverrideAttribute
+ */
 
-    // Define behavior specific to override attributes
+import {DynamicAttribute} from "../attribute.mjs";
+
+/**
+ * @type {OverrideAttribute}
+ */
+export class OverrideAttribute extends DynamicAttribute {
+
+    calculate(characterActor, targetActors) {
+        return [];
+    }
+
+    apply(actors) {
+        return undefined;
+    }
+
 }

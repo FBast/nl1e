@@ -1,4 +1,24 @@
-class IncreaseAttribute extends DynamicAttribute {
+/**
+ * @typedef {Object} IncreaseAttribute
+ */
 
-    // Define behavior specific to increase attributes
+import {DynamicAttribute} from "../attribute.mjs";
+
+/**
+ * @type {IncreaseAttribute}
+ */
+export class IncreaseAttribute extends DynamicAttribute {
+
+    constructor(item) {
+        super(item);
+    }
+
+    calculate(characterActor, targetActors) {
+        return [];
+    }
+
+    apply(actors) {
+        return undefined;
+    }
+
 }
