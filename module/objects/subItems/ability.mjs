@@ -226,20 +226,7 @@ export class Pl1eAbility extends Pl1eSubItem {
 
             // Display message
             await this._displayMessage(rollData, characterData, targetData);
-
-            // Apply target optional attributes
-            for (const optionalAttribute of targetData.optionalAttributes) {
-                await targetData.actor.applyAttribute(optionalAttribute, true);
-            }
-            targetData.actor.sheet.render(targetData.actor.sheet.rendered);
         }
-
-        // Apply character attributes
-        const characterData = this.abilityData.characterData;
-        for (let [id, attribute] of Object.entries(characterData.attributes)) {
-            await characterData.actor.applyAttribute(attribute, true);
-        }
-        characterData.actor.sheet.render(characterData.actor.sheet.rendered);
     }
 
     async _displayMessage(rollData, characterData, targetData = null) {

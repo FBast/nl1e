@@ -124,7 +124,6 @@ Handlebars.registerHelper('configEntry', function (key, entry) {
     return PL1E[key][entry];
 });
 
-
 Handlebars.registerHelper('configEntryLabel', function (key, entry) {
     return PL1E[key][entry].label;
 });
