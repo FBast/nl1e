@@ -396,7 +396,7 @@ PL1E.reductions = {
         "label": "PL1E.Piercing",
         "icon": "fa-dagger",
         "type": "number",
-        "path": "system.s.piercing"
+        "path": "system.reductions.piercing"
     },
     "burn": {
         "label": "PL1E.Burn",
@@ -942,7 +942,7 @@ PL1E.areaShapes = {
     "ray": "PL1E.Ray"
 }
 
-PL1E.damageType = {
+PL1E.damageTypes = {
     "raw": "PL1E.Raw",
     "slashing": "PL1E.Slashing",
     "crushing": "PL1E.Crushing",

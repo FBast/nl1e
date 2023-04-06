@@ -89,7 +89,6 @@ Hooks.on("renderChatPopout", (app, html, data) => {
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
 
-// If you need to add Handlebars helpers, here are a few useful examples:
 Handlebars.registerHelper('concat', function () {
     var outStr = '';
     for (var arg in arguments) {
@@ -106,25 +105,29 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 
 Handlebars.registerHelper('minus', function(a, b) {
     return a - b;
-})
+});
 
 Handlebars.registerHelper('config', function (key) {
-    if (key === undefined)
-        throw new Error("config key is undefined");
+    if (key === undefined) {
+        throw new Error(`configEntry key is undefined`);
+    }
     return PL1E[key];
-})
+});
 
 Handlebars.registerHelper('configEntry', function (key, entry) {
-    if (key === undefined)
-        throw new Error("configEntry key is undefined");
-    if (entry === undefined)
-        throw new Error("configEntry entry is undefined with key " + key);
+    if (key === undefined) {
+        throw new Error(`configEntry key is undefined`);
+    }
+    if (entry === undefined) {
+        throw new Error(`configEntry entry is undefined with key ${key}`);
+    }
     return PL1E[key][entry];
-})
+});
+
 
 Handlebars.registerHelper('configEntryLabel', function (key, entry) {
     return PL1E[key][entry].label;
-})
+});
 
 Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {
     const optionsData = {};

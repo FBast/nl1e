@@ -1,6 +1,6 @@
 /**
  * @typedef {Object} DecreaseAttribute
- * @property {number} reduction
+ * @property {string} damageType
  */
 
 import {DynamicAttribute} from "../attribute.mjs";
@@ -10,11 +10,13 @@ import {DynamicAttribute} from "../attribute.mjs";
  */
 export class DecreaseAttribute extends DynamicAttribute {
 
-    reduction;
-
     constructor(item) {
         super(item);
-        this.reduction = 0;
+        this.name = "decrease";
+        this.value = 0;
+        this.dataGroup = "resources";
+        this.data = "health";
+        this.damageType = "raw";
     }
 
     calculate(characterActor, targetActors) {

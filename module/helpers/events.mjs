@@ -283,7 +283,6 @@ export class Pl1eEvent {
             ? new attributeConstructors[attributeId](item)
             : (() => { throw new Error("Unknown attribute type: " + attributeId) })();
 
-        dynamicAttribute.name = attributeId;
         await item.update({
             ["system.optionalAttributes." + randomID()]: dynamicAttribute
         });

@@ -16,7 +16,7 @@ export const preloadHandlebarsTemplates = async function () {
         // Item partials.
         "systems/pl1e/templates/item/parts/item-attributes.hbs",
         "systems/pl1e/templates/item/parts/item-description.hbs",
-        "systems/pl1e/templates/item/parts/item-linked.hbs"
+        "systems/pl1e/templates/item/parts/item-linked.hbs",
 
     ]);
 };

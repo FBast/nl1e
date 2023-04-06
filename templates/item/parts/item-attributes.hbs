@@ -36,13 +36,15 @@
             </a>
         </div>
         {{#each system.optionalAttributes}}
+            <hr>
             {{#with (configEntry "attributes" name)}}
                 <div class="item-attribute flexrow">
-                    <!-- Main data -->
+                    <!-- Main values -->
                     <label class="attribute-name">{{localize label}}</label>
                     {{#with (configEntry ../dataGroup ../data)}}
                         {{#if (eq type "number")}}
-                            <input class="input-positive-decimal" type="number" name="system.optionalAttributes.{{@key}}.value" min="0" step="1" value="{{../../value}}" data-dtype="Number"/>
+                            <input class="input-positive-decimal" type="number" name="system.optionalAttributes.{{@key}}.value"
+                                   value="{{../../value}}" data-dtype="Number"/>
                         {{else if (eq type "bool")}}
                             <input type="checkbox" name="system.optionalAttributes.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
                         {{else if (eq type "select")}}
@@ -51,28 +53,16 @@
                             </select>
                         {{/if}}
                     {{/with}}
-                    {{#if (ne reduction undefined)}}
-                        <select name="system.optionalAttributes.{{@key}}.reduction">
-                            {{selectOptions (config "reductions") selected=reduction localize=true}}
+                    {{#if ../showActivationToggle}}
+                        <select name="system.optionalAttributes.{{@key}}.activation">
+                            {{selectOptions (config "activations") selected=../activation localize=true}}
                         </select>
-                    {{/if}}
-                    {{#if (and (ne ../attributeLink undefined) (ne ../attributeLink "passive"))}}
-                        {{#if (and (ne @system.attributes.range.value undefined) (gt @system.attributes.range.value 0))}}
-                            <select name="system.optionalAttributes.{{@key}}.targetGroup">
-                                {{selectOptions (config "targetGroups") selected=targetGroup localize=true}}
-                            </select>
-                        {{/if}}
-                        {{#if (or (and (ne @system.attributes.characterRoll undefined) (ne @system.attributes.characterRoll.value "none"))
-                                      (and (ne @system.abilityLink undefined) (ne @system.attributes.abilityLink.value "none")))}}
-                            <select name="system.optionalAttributes.{{@key}}.resolutionType">
-                                {{selectOptions (config "resolutionTypes") selected=resolutionType localize=true}}
-                            </select>
-                        {{/if}}
                     {{/if}}
                     <a class="attribute-remove flexshrink" data-attribute={{@key}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
                         <i class="fas fa-trash"></i>
                     </a>
                 </div>
+                <!-- Secondary values -->
                 <div class="item-attribute flexrow">
                     <select name="system.optionalAttributes.{{@key}}.dataGroup">
                         {{selectOptions dataGroups selected=../dataGroup localize=true}}
@@ -80,6 +70,22 @@
                     <select name="system.optionalAttributes.{{@key}}.data">
                         {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
                     </select>
+                    {{#if (ne ../damageType undefined)}}
+                        <select name="system.optionalAttributes.{{@key}}.damageType">
+                            {{selectOptions (config "damageTypes") selected=../damageType localize=true}}
+                        </select>
+                    {{/if}}
+                </div>
+                <!-- Activation related values -->
+                <div class="item-attribute flexrow">
+                    {{#unless (eq ../activation "passive")}}
+                        <select name="system.optionalAttributes.{{@key}}.targetGroup">
+                            {{selectOptions (config "targetGroups") selected=../targetGroup localize=true}}
+                        </select>
+                        <select name="system.optionalAttributes.{{@key}}.resolutionType">
+                            {{selectOptions (config "resolutionTypes") selected=../resolutionType localize=true}}
+                        </select>
+                    {{/unless}}
                 </div>
             {{/with}}
         {{/each}}

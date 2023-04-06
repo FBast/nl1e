@@ -3,8 +3,10 @@
  * @property {any} value
  * @property {string} dataGroup
  * @property {string} data
- * @property {boolean} showPassiveToggle
- * @property {boolean} isPassive
+ * @property {boolean} showActivationToggle
+ * @property {string} activation
+ * @property {string} targetGroup
+ * @property {string} resolutionType
  */
 
 /**
@@ -12,30 +14,18 @@
  */
 export class DynamicAttribute {
 
-    value;
-    dataGroup;
-    data;
-
-    showPassiveToggle;
-    isPassive;
-
-    showResolutionTypeDropdown;
-    resolutionType;
-
-    showTargetGroupDropdown;
-    targetGroup
-
     constructor(item) {
         if (["feature"].includes(item.type)) {
-            this.isPassive = true;
-            this.showPassiveToggle = false;
+            this.activation = "passive";
+            this.showActivationToggle = false;
         }
         else if (["consumable"].includes(item.type)) {
-            this.isPassive = false;
-            this.showPassiveToggle = false;
+            this.activation = "action";
+            this.showActivationToggle = false;
         }
         else {
-            this.showPassiveToggle = true;
+            this.activation = "passive";
+            this.showActivationToggle = true;
         }
     }
 
