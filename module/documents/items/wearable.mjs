@@ -1,21 +1,21 @@
-import {Pl1eSubItem} from "../subItem.mjs";
+import {Pl1eItem} from "../item.mjs";
 
-export class Pl1eWearable extends Pl1eSubItem {
+export class Pl1eWearable extends Pl1eItem {
 
     /** @override */
     async toggle(options) {
-        const slot = this.item.system.attributes.slot.value;
+        const slot = this.system.attributes.slot.value;
 
         // Ignore if not using a slot
         if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
 
         // Toggle item slot
-        await this.item.update({
+        await this.update({
             ["system.isEquipped"]: !foundry.utils.getProperty(this.item, "system.isEquipped"),
         });
 
         // If unequipped then return
-        if (!this.item.system.isEquipped) return;
+        if (!this.system.isEquipped) return;
         let ringCount = 1;
 
         // Unequip other subItems

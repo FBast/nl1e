@@ -1,8 +1,8 @@
-import {Pl1eSubItem} from "../subItem.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {AbilityTemplate} from "../../helpers/abilityTemplate.mjs";
+import {Pl1eItem} from "../item.mjs";
 
-export class Pl1eAbility extends Pl1eSubItem {
+export class Pl1eAbility extends Pl1eItem {
 
     /**
      * Internal type used to manage ability data
@@ -19,10 +19,10 @@ export class Pl1eAbility extends Pl1eSubItem {
 
     /** @override */
     async toggle(options) {
-        if (!this.item.system.isMemorized && this.actor.system.general.slots - this.item.system.attributes.level.value < 0) return;
+        if (!this.system.isMemorized && this.actor.system.general.slots - this.system.attributes.level.value < 0) return;
 
-        await this.item.update({
-            ["system.isMemorized"]: !this.item.system.isMemorized
+        await this.update({
+            ["system.isMemorized"]: !this.system.isMemorized
         });
     }
 
@@ -54,10 +54,10 @@ export class Pl1eAbility extends Pl1eSubItem {
             actor: this.actor,
             tokenId: token?.uuid || null,
             item: this.item,
-            itemId: this.item.uuid,
+            itemId: this.uuid,
             result: 0,
-            attributes: JSON.parse(JSON.stringify(this.item.system.attributes)),
-            optionalAttributes: JSON.parse(JSON.stringify(this.item.system.optionalAttributes)),
+            attributes: JSON.parse(JSON.stringify(this.system.attributes)),
+            optionalAttributes: JSON.parse(JSON.stringify(this.system.optionalAttributes)),
             linkedItem: null
         }
 
@@ -256,14 +256,14 @@ export class Pl1eAbility extends Pl1eSubItem {
      */
     _isContextValid(actor) {
         let isValid = true;
-        const itemAttributes = this.item.system.attributes;
+        const itemAttributes = this.system.attributes;
         // If is not in battle
         if (!actor.bestToken.inCombat) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotInBattle"));
             isValid = false;
         }
         // If is not memorized
-        if (!this.item.system.isMemorized) {
+        if (!this.system.isMemorized) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             isValid = false;
         }

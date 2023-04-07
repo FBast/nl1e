@@ -1,7 +1,7 @@
-import {Pl1eSubItem} from "../subItem.mjs";
 import {PL1E} from "../../helpers/config.mjs";
+import {Pl1eItem} from "../item.mjs";
 
-export class Pl1eConsumable extends Pl1eSubItem {
+export class Pl1eConsumable extends Pl1eItem {
 
     /** @override */
     async use(options) {
@@ -39,7 +39,7 @@ export class Pl1eConsumable extends Pl1eSubItem {
 
     /** @override */
     async reload(options) {
-        await this.item.update({
+        await this.update({
             ["system.removedUses"]: 0
         });
     }

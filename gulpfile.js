@@ -21,9 +21,7 @@ function compileScss() {
   };
   return gulp.src(SYSTEM_SCSS)
     .pipe(sourcemaps.init())
-    .pipe(
-      sass(options)
-        .on('error', handleError)
+    .pipe(sass(options).on('error', handleError)
     )
     .pipe(prefix({
       cascade: false

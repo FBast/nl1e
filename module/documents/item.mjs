@@ -1,7 +1,4 @@
-import {Pl1eWeapon} from "../objects/subItems/weapon.mjs";
-import {Pl1eAbility} from "../objects/subItems/ability.mjs";
-import {Pl1eConsumable} from "../objects/subItems/consumable.mjs";
-import {Pl1eWearable} from "../objects/subItems/wearable.mjs";
+import {PL1E} from "../helpers/config.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -9,32 +6,9 @@ import {Pl1eWearable} from "../objects/subItems/wearable.mjs";
  */
 export class Pl1eItem extends Item {
 
-    /**
-     * @type Pl1eSubItem
-     */
-    subItem;
-
     get isOriginal() {
         const sourceId = this.getFlag('core', 'sourceId');
         return !sourceId || sourceId === this.uuid;
-    }
-
-    constructor(data, context) {
-        super(data, context);
-        switch (this.type) {
-            case 'ability':
-                this.subItem = new Pl1eAbility(this, this.parent);
-                break;
-            case 'weapon':
-                this.subItem = new Pl1eWeapon(this, this.parent);
-                break;
-            case 'wearable':
-                this.subItem = new Pl1eWearable(this, this.parent);
-                break;
-            case 'consumable':
-                this.subItem = new Pl1eConsumable(this, this.parent);
-                break;
-        }
     }
 
     //region Data management
@@ -270,8 +244,8 @@ export class Pl1eItem extends Item {
      * @param options
      * @returns {Promise<void>}
      */
-    async toggle(options = {}) {
-        await this.subItem.toggle(options);
+    async toggle(options) {
+        throw new Error("toggle method is not implemented");
     }
 
     /**
@@ -279,8 +253,8 @@ export class Pl1eItem extends Item {
      * @param options
      * @returns {Promise<void>}
      */
-    async use(options = {}) {
-        await this.subItem.use(options);
+    async use(options) {
+        throw new Error("use method is not implemented");
     }
 
     /**
@@ -288,18 +262,56 @@ export class Pl1eItem extends Item {
      * @param options
      * @returns {Promise<void>}
      */
-    async apply(options = {}) {
-        await this.subItem.apply(options);
+    async apply(options) {
+        throw new Error("apply method is not implemented");
     }
 
     /**+
      * Reload the item
      * @returns {Promise<void>}
      */
-    async reload(options = {}) {
-        await this.subItem.reload(options);
+    async reload(options) {
+        throw new Error("reload method is not implemented");
     }
 
     //endregion
+
+    /**
+     * Calculate the stats of an attribute based on the roll result
+     * @param {object} attribute
+     * @param {number} rollResult
+     * @param {Pl1eActor} actor
+     * @returns {any}
+     * @protected
+     */
+    _calculateAttribute(attribute, rollResult, actor) {
+        // Copy attribute
+        let calculatedAttribute = JSON.parse(JSON.stringify(attribute));
+
+        // Calculate only if name is defined
+        if (calculatedAttribute.name !== undefined) {
+            let data = PL1E[calculatedAttribute.dataGroup][calculatedAttribute.data];
+
+            // Number type
+            if (data.type === 'number') {
+                if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
+                    calculatedAttribute.value *= rollResult > 0 ? rollResult : 0;
+                }
+                if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
+                    calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
+                }
+                if (calculatedAttribute.value < 0 && calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
+                    let reduction = foundry.utils.getProperty(actor, CONFIG.PL1E.reductions[calculatedAttribute.reduction].path);
+                    calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
+                }
+                // If resulting value equal to zero then ignore the attribute
+                if (calculatedAttribute.value === 0) return;
+                // Apply sign
+                calculatedAttribute.value *= calculatedAttribute.name === "decrease" ? -1 : 1;
+            }
+        }
+
+        return calculatedAttribute;
+    }
 
 }
