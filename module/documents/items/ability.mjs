@@ -172,61 +172,59 @@ export class Pl1eAbility extends Pl1eItem {
      * @private
      */
     async _resolveAbility() {
-        // Target Data
         let targetTokens = game.user.targets;
+        const characterData = this.abilityData.characterData;
 
+        // Roll data for every targets
+        let targetsData = []
         for (let targetToken of targetTokens) {
-            // Make a shallow copy of the ability data for this target
-            let abilityData = {...this.abilityData};
-            const characterData = abilityData.characterData;
-
-            /**
-             * Internal type used to manage target data
-             *
-             * @typedef {object} TargetData
-             * @property {Pl1eActor} actor The actor using the ability
-             * @property {string} tokenId The token of the actor which originate the ability
-             * @property {number} result The result of the roll
-             * @property {number} totalResult The character result minus the result
-             * @property {object} attributes The attributes of the item
-             * @property {object} optionalAttributes The optionalAttributes of the item
-             */
-
-            /**
-             * @type {TargetData}
-             */
-            const targetData = {
-                actor: targetToken.actor,
-                tokenId: targetToken?.uuid || null,
-                result: 0,
-                totalResult: characterData.result,
-                attributes: JSON.parse(JSON.stringify(characterData.attributes)),
-                optionalAttributes: JSON.parse(JSON.stringify(characterData.optionalAttributes)),
-            }
-
-            // Target roll if exist
-            let rollData = null;
-            if (targetData.attributes.targetRoll.value !== "none") {
-                const skill = targetData.actor.system.skills[targetData.attributes.targetRoll.value];
-                rollData = await targetData.actor.rollSkill(skill);
-                targetData.result = rollData.total;
-                targetData.totalResult = characterData.result - targetData.result;
-            }
-
-            // Calculate target attributes
-            let calculatedOptionalAttributes = [];
-            for (let [id, optionalAttribute] of Object.entries(targetData.optionalAttributes)) {
-                if ((targetData.attributes.areaShape.value === "self" || optionalAttribute.targetGroup === "self") && targetToken.actor !== characterData.actor) continue;
-                if (optionalAttribute.targetGroup === "allies" && targetToken.document.disposition !== characterData.actor.bestToken.document.disposition) continue;
-                if (optionalAttribute.targetGroup === "opponents" && targetToken.document.disposition === characterData.actor.bestToken.document.disposition) continue;
-                let calculatedAttribute = this._calculateAttribute(optionalAttribute, targetData.totalResult, targetToken.actor);
-                calculatedOptionalAttributes.push(calculatedAttribute);
-            }
-            targetData.optionalAttributes = calculatedOptionalAttributes;
-
-            // Display message
-            await this._displayMessage(rollData, characterData, targetData);
+            targetsData.push(this.rollTarget(characterData, targetToken));
         }
+
+        // Apply dynamic attributes, here we calculate each dynamic attribute for all targets
+        let attributesModifications = [];
+        for (const dynamicAttribute of characterData.optionalAttributes) {
+            attributesModifications.push(dynamicAttribute.apply(characterData, targetsData));
+        }
+
+        // Merging attributes modifications into more readable targetsData
+        targetsData = this.sanitizeTargetsModifications(attributesModifications)
+
+        // Display messages
+        for (const targetData of targetsData) {
+            await this._displayMessage(characterData, targetData);
+        }
+    }
+
+    /**
+     * @typedef TargetData
+     * @property {string} formula
+     * @property {DiceTerm[]} dice
+     * @property {number} total
+     * @property {number} result
+     * @property {Token} token
+     * @property {DynamicAttribute[]} dynamicAttributes
+     */
+
+    /**
+     * @protected
+     * @param {Object} characterData
+     * @param {Token} targetToken
+     * @returns {TargetData}
+     */
+    async rollTarget(characterData, targetToken) {
+        let targetData = {};
+        if (characterData.attributes.targetRoll.value !== "none") {
+            const skill = targetToken.actor.system.skills[characterData.attributes.targetRoll.value];
+            targetData = await targetToken.actor.rollSkill(skill);
+            targetData.result = characterData.result - targetData.total;
+        }
+        targetData.token = targetToken;
+        return targetData;
+    }
+
+    sanitizeTargetsModifications() {
+
     }
 
     async _displayMessage(rollData, characterData, targetData = null) {

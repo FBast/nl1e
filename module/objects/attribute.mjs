@@ -29,6 +29,26 @@ export class DynamicAttribute {
         }
     }
 
+    /**
+     * @typedef {Object} AttributeModification
+     * @property {Token} token
+     * @property {DynamicAttribute} calculatedAttribute
+     */
+
+    /**
+     * @param {TargetData[]} rollsData
+     * @returns {AttributeModification[]} attributeModifications
+     */
+    apply(rollsData) {
+        throw new Error("apply method is not implemented")
+    }
+
+    /**
+     * @protected
+     * @param {Token} characterToken
+     * @param {Token} targetToken
+     * @returns {boolean}
+     */
     isTargetValid(characterToken, targetToken) {
         if (this.targetGroup !== undefined) {
             if (this.targetGroup === "self" && targetToken !== characterToken) return false;
@@ -38,10 +58,7 @@ export class DynamicAttribute {
         return true;
     }
 
-    /**
-     * @param {Pl1eActor[]} actors
-     */
-    apply(actors) {
+    save() {
         // if (attribute.name === undefined) return;
         // let data = PL1E[calculatedAttribute.dataGroup][calculatedAttribute.data];
         //

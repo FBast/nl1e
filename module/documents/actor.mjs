@@ -310,6 +310,11 @@ export class Pl1eActor extends Actor {
 
     //endregion
 
+    /**
+     *
+     * @param skill
+     * @returns {Promise<{total: number, dice: DiceTerm[], formula: string}>}
+     */
     async rollSkill(skill) {
         let formula = skill.number + "d" + skill.dice;
         formula += this.type === "character" ? "xo" + skill.dice : "";
@@ -318,8 +323,8 @@ export class Pl1eActor extends Actor {
         await roll.evaluate({async: true});
         return {
             formula: roll.formula,
-            total: roll.total,
             dice: roll.dice,
+            total: roll.total
         };
     }
 
