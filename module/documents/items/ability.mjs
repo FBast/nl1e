@@ -1,16 +1,9 @@
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {AbilityTemplate} from "../../helpers/abilityTemplate.mjs";
 import {Pl1eItem} from "../item.mjs";
+import {PL1E} from "../../config/config.mjs";
 
 export class Pl1eAbility extends Pl1eItem {
-
-    /**
-     * Internal type used to manage ability data
-     *
-     * @typedef {object} AbilityData
-     * @property {CharacterData} characterData The character data
-     * @property {AbilityTemplate[]} templates  An array of the measure templates
-     */
 
     /**
      * @type {AbilityData}
@@ -34,80 +27,31 @@ export class Pl1eAbility extends Pl1eItem {
         if (token === null) return;
 
         /**
-         * Internal type used to manage character data
-         *
-         * @typedef {object} CharacterData
-         * @property {Pl1eActor} actor The actor using the ability
-         * @property {string} tokenId The token of the actor which originate the ability
-         * @property {Pl1eItem} item The ability itself
-         * @property {string} itemId The ability uuid
-         * @property {number} result The result of the rollData
-         * @property {object} attributes The attributes of the item
-         * @property {object} optionalAttributes The optionalAttributes of the item
-         * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
-         */
-
-        /**
          * @type {CharacterData}
          */
-        const characterData = {
+        let characterData = {
             actor: this.actor,
-            tokenId: token?.uuid || null,
-            item: this.item,
+            token: token,
+            tokenId: token.document.uuid,
+            item: this,
             itemId: this.uuid,
-            result: 0,
             attributes: JSON.parse(JSON.stringify(this.system.attributes)),
-            optionalAttributes: JSON.parse(JSON.stringify(this.system.optionalAttributes)),
+            dynamicAttributes: JSON.parse(JSON.stringify(this.system.dynamicAttributes)),
             linkedItem: null
         }
 
         // Get linked attributes
-        if (characterData.attributes.abilityLink.value === 'mastery') {
-            const relatedMastery = attributes.mastery.value;
-            const relatedItems = characterData.actor.items.filter(value => value.type === 'weapon'
-                && value.system.attributes.mastery.value === relatedMastery);
-            if (relatedItems.length > 1) {
-                ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
-                return;
-            }
-            if (relatedItems.length === 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
-                return;
-            }
-            characterData.linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.optionalAttributes);
-        }
-        if (characterData.attributes.abilityLink.value === 'parent') {
-            let relatedItems = [];
-            for (const item of characterData.actor.items) {
-                if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
-                if (item.system.subItems === undefined) continue;
-                for (let [key, subItem] of item.system.subItems) {
-                    const subItemFlag = subItem.getFlag('core', 'sourceId');
-                    const itemFlag = characterData.item.getFlag('core', 'sourceId');
-                    if (subItemFlag !== itemFlag) continue;
-                    relatedItems.push(item);
-                }
-            }
-            if (relatedItems.length === 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoEquippedParent"));
-                return;
-            }
-            characterData.linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
-            for (let [id, optionalAttribute] of Object.entries(characterData.linkedItem.system.optionalAttributes)) {
-                if (optionalAttribute.attributeLink !== "child") continue;
-                characterData.optionalAttributes[id] = optionalAttribute;
-            }
-        }
+        this._linkItem(characterData);
 
         // Character rollData if exist
         let rollData = null;
         if (characterData.attributes.characterRoll.value !== 'none') {
             const skill = characterData.actor.system.skills[characterData.attributes.characterRoll.value];
-            rollData = await characterData.actor.rollSkill(skill);
-            characterData.result = rollData.total;
+            characterData.rollData = await characterData.actor.rollSkill(skill);
+            characterData.result = characterData.rollData.total;
+        }
+        else {
+            characterData.result = 0;
         }
 
         // Calculate character attributes
@@ -132,7 +76,7 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.attributes.areaNumber.value !== 0 && calculatedAttributes.areaShape.value !== "self") {
                 await characterData.actor.sheet?.minimize();
                 for (let i = 0; i < calculatedAttributes.areaNumber.value; i++) {
-                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.optionalAttributes);
+                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.dynamicAttributes);
                     abilityData.templates.push(template);
                     await template?.drawPreview();
                 }
@@ -141,7 +85,7 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Display message
-        await this._displayMessage(rollData, characterData);
+        await this._displayMessage(characterData);
 
         // Update data
         this.abilityData = abilityData;
@@ -176,19 +120,32 @@ export class Pl1eAbility extends Pl1eItem {
         const characterData = this.abilityData.characterData;
 
         // Roll data for every targets
+        /** @type {TargetData[]} */
         let targetsData = []
         for (let targetToken of targetTokens) {
-            targetsData.push(this.rollTarget(characterData, targetToken));
+            const targetData = {};
+            if (characterData.attributes.targetRoll.value !== "none") {
+                const skill = targetToken.actor.system.skills[characterData.attributes.targetRoll.value];
+                targetData.rollData = await targetToken.actor.rollSkill(skill);
+                targetData.result = characterData.result - targetData.rollData.total;
+            }
+            else {
+                targetData.result = characterData.result;
+            }
+            targetData.token = targetToken;
+            targetData.tokenId = targetToken.document.uuid;
+            targetsData.push(targetData);
         }
 
         // Apply dynamic attributes, here we calculate each dynamic attribute for all targets
-        let attributesModifications = [];
-        for (const dynamicAttribute of characterData.optionalAttributes) {
-            attributesModifications.push(dynamicAttribute.apply(characterData, targetsData));
+        let attributesModificationsData = [];
+        for (let [id, dynamicAttribute] of Object.entries(this.system.dynamicAttributes)) {
+            const attributesModificationsData = PL1E.attributeClasses[dynamicAttribute.type].apply(dynamicAttribute, characterData, targetsData);
+            attributesModificationsData.push(attributesModificationsData);
         }
 
         // Merging attributes modifications into more readable targetsData
-        targetsData = this.sanitizeTargetsModifications(attributesModifications)
+        this.mergeAttributesModifications(targetsData, attributesModificationsData)
 
         // Display messages
         for (const targetData of targetsData) {
@@ -197,38 +154,89 @@ export class Pl1eAbility extends Pl1eItem {
     }
 
     /**
-     * @typedef TargetData
-     * @property {string} formula
-     * @property {DiceTerm[]} dice
-     * @property {number} total
-     * @property {number} result
-     * @property {Token} token
-     * @property {DynamicAttribute[]} dynamicAttributes
+     * Add item attributes and dynamic attributes if ability link defined
+     * @param {CharacterData} characterData
+     * @private
      */
+    _linkItem(characterData) {
+        // Get linked attributes
+        if (characterData.attributes.abilityLink.value === 'mastery') {
+            const relatedMastery = attributes.mastery.value;
+            const relatedItems = characterData.actor.items.filter(value => value.type === 'weapon'
+                && value.system.attributes.mastery.value === relatedMastery);
+            if (relatedItems.length > 1) {
+                ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
+                return;
+            }
+            if (relatedItems.length === 0) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
+                return;
+            }
+            characterData.linkedItem = relatedItems[0];
+            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
+            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.dynamicAttributes);
+        }
+        if (characterData.attributes.abilityLink.value === 'parent') {
+            let relatedItems = [];
+            for (const item of characterData.actor.items) {
+                if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
+                if (item.system.subItems === undefined) continue;
+                for (let [key, subItem] of item.system.subItems) {
+                    const subItemFlag = subItem.getFlag('core', 'sourceId');
+                    const itemFlag = characterData.item.getFlag('core', 'sourceId');
+                    if (subItemFlag !== itemFlag) continue;
+                    relatedItems.push(item);
+                }
+            }
+            if (relatedItems.length === 0) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoEquippedParent"));
+                return;
+            }
+            characterData.linkedItem = relatedItems[0];
+            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
+            for (let [id, dynamicAttribute] of Object.entries(characterData.linkedItem.system.dynamicAttributes)) {
+                if (dynamicAttribute.attributeLink !== "child") continue;
+                characterData.dynamicAttributes[id] = dynamicAttribute;
+            }
+        }
+    }
 
     /**
-     * @protected
-     * @param {Object} characterData
-     * @param {Token} targetToken
-     * @returns {TargetData}
+     * @param {TargetData[]} targetsData
+     * @param {AttributesModificationsData} attributesModificationsData
+     * @private
      */
-    async rollTarget(characterData, targetToken) {
-        let targetData = {};
-        if (characterData.attributes.targetRoll.value !== "none") {
-            const skill = targetToken.actor.system.skills[characterData.attributes.targetRoll.value];
-            targetData = await targetToken.actor.rollSkill(skill);
-            targetData.result = characterData.result - targetData.total;
+    mergeAttributesModifications(targetsData, attributesModificationsData) {
+        for (const targetData of targetsData) {
+            for (const attributeModificationsData of attributesModificationsData) {
+                // For every attribute modifications we check if this target data has modifications
+                let attributeModificationData = attributeModificationsData.find(atd => atd.tokenId === attributeModificationData.tokenId);
+                if (attributeModificationData === undefined) continue;
+
+                // Now we check if a dynamic attribute inside targetData target the same data path
+                let dynamicAttribute = targetData.dynamicAttributes.find(da => da.data === attributeModificationData.calculatedAttribute.data);
+
+                // If no existing targetData dynamic attribute then add a new
+                if (dynamicAttribute === undefined) {
+                    targetData.dynamicAttributes.push(attributeModificationData.calculatedAttribute);
+                }
+                // Else then merge into the existing
+                else {
+                    attributeModificationData.calculatedAttribute.merge(dynamicAttribute);
+                }
+            }
         }
-        targetData.token = targetToken;
-        return targetData;
     }
 
-    sanitizeTargetsModifications() {
-
-    }
-
-    async _displayMessage(rollData, characterData, targetData = null) {
-        const template = targetData === null ? "character" : "target";
+    /**
+     * @param {CharacterData} characterData
+     * @param {TargetData} targetData
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _displayMessage(characterData, targetData = undefined) {
+        const rollData = targetData === undefined ? characterData.rollData : targetData.rollData;
+        const template = targetData === undefined ? "character" : "target";
         // Render the chat card template
         const html = await renderTemplate(`systems/pl1e/templates/chat/ability-${template}.hbs`,
             {rollData: rollData, characterData: characterData, targetData: targetData});

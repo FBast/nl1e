@@ -8,7 +8,7 @@ import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 // Import helper/utility classes and constants.
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
-import {PL1E} from "./helpers/config.mjs";
+import {PL1E} from "./config/config.mjs";
 import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
@@ -64,11 +64,11 @@ Hooks.once("ready", async function () {
 });
 
 Hooks.once("socketlib.ready", () => {
-    PL1E.socket = socketlib.registerSystem("pl1e");
-    PL1E.socket.register("sendItem", function (data) {
+    CONFIG.PL1E.socket = socketlib.registerSystem("pl1e");
+    CONFIG.PL1E.socket.register("sendItem", function (data) {
         Pl1eSocket.sendItem(data.actor, data.targetActor, data.item)
     })
-    PL1E.socket.register("sendContenant", function (data) {
+    CONFIG.PL1E.socket.register("sendContenant", function (data) {
         Pl1eSocket.sendContenant(data.actor, data.targetActor, data.item);
     })
 })
@@ -111,7 +111,7 @@ Handlebars.registerHelper('config', function (key) {
     if (key === undefined) {
         throw new Error(`configEntry key is undefined`);
     }
-    return PL1E[key];
+    return CONFIG.PL1E[key];
 });
 
 Handlebars.registerHelper('configEntry', function (key, entry) {
@@ -121,11 +121,11 @@ Handlebars.registerHelper('configEntry', function (key, entry) {
     if (entry === undefined) {
         throw new Error(`configEntry entry is undefined with key ${key}`);
     }
-    return PL1E[key][entry];
+    return CONFIG.PL1E[key][entry];
 });
 
 Handlebars.registerHelper('configEntryLabel', function (key, entry) {
-    return PL1E[key][entry].label;
+    return CONFIG.PL1E[key][entry].label;
 });
 
 Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {

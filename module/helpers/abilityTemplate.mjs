@@ -27,17 +27,17 @@ export class AbilityTemplate extends MeasuredTemplate {
    * A factory method to create an AbilityTemplate instance using provided data from an Pl1eItem instance
    * @param {Pl1eItem} item               The Item object for which to construct the template
    * @param {object} attributes
-   * @param {object} optionalAttributes
+   * @param {object} dynamicAttributes
    * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
    */
-  static async fromItem(item, attributes, optionalAttributes) {
+  static async fromItem(item, attributes, dynamicAttributes) {
     const areaShape = attributes.areaShape.value;
 
     // Save targetGroups for token selection
     let targetGroups = [];
-    for (const [id, optionalAttribute] of Object.entries(optionalAttributes)) {
-      if (targetGroups.includes(optionalAttribute.targetGroup)) continue;
-      targetGroups.push(optionalAttribute.targetGroup);
+    for (const [id, dynamicAttribute] of Object.entries(dynamicAttributes)) {
+      if (targetGroups.includes(dynamicAttribute.targetGroup)) continue;
+      targetGroups.push(dynamicAttribute.targetGroup);
     }
 
     // Prepare template data

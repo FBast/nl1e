@@ -289,7 +289,7 @@
     "templates": {
       "base": {
         "subItems": [],
-        "optionalAttributes": {},
+        "dynamicAttributes": {},
         "selectedOptionalAttribute": "increase"
       },
       "item": {

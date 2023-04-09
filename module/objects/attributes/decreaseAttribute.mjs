@@ -12,18 +12,15 @@ export class DecreaseAttribute extends DynamicAttribute {
 
     constructor(item) {
         super(item);
-        this.name = "decrease";
+        this.type = "decrease";
         this.value = 0;
         this.dataGroup = "resources";
         this.data = "health";
         this.damageType = "raw";
     }
 
-    calculate(characterActor, targetActors) {
-        return [];
-    }
-
-    apply(actors) {
+    /** @override */
+    static apply(characterData, targetsData) {
         return undefined;
     }
 

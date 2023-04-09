@@ -1,4 +1,3 @@
-import {PL1E} from "../helpers/config.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
@@ -94,7 +93,7 @@ export class Pl1eItemSheet extends ItemSheet {
         context.flags = itemData.flags;
 
         // Add the config data
-        context.config = PL1E;
+        context.config = CONFIG.PL1E;
 
         // Add game access
         context.game = game;

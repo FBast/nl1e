@@ -253,7 +253,7 @@ export class Pl1eHelpers {
                     "name": original.name,
                     "img": original.img,
                     "system.attributes": original.system.attributes,
-                    "system.optionalAttributes": original.system.optionalAttributes
+                    "system.dynamicAttributes": original.system.dynamicAttributes
                 });
                 item.sheet.render(item.sheet.rendered);
                 updateDocument = true;
@@ -284,7 +284,7 @@ export class Pl1eHelpers {
                 subItem.name = original.name;
                 subItem.img = original.img;
                 subItem.system.attributes = original.system.attributes;
-                subItem.system.optionalAttributes = original.system.optionalAttributes;
+                subItem.system.dynamicAttributes = original.system.dynamicAttributes;
                 subItem.sheet.render(subItem.sheet.rendered);
                 updateDocument = true;
             }

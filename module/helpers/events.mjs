@@ -2,11 +2,7 @@ import {Pl1eTrade} from "./trade.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
-import {DecreaseAttribute} from "../objects/attributes/decreaseAttribute.mjs";
-import {IncreaseAttribute} from "../objects/attributes/increaseAttribute.mjs";
-import {OverrideAttribute} from "../objects/attributes/overrideAttribute.mjs";
-import {TransferAttribute} from "../objects/attributes/transferAttribute.mjs";
-import {EffectAttribute} from "../objects/attributes/effectAttribute.mjs";
+import {DynamicAttribute} from "../objects/attribute.mjs";
 
 export class Pl1eEvent {
 
@@ -262,7 +258,7 @@ export class Pl1eEvent {
     }
 
     /**
-     * Enable an attribute with apply
+     * Add a dynamic attribute to the item
      * @param {Event} event The originating click event
      * @param {Item} item the item where the attribute is added
      */
@@ -271,20 +267,13 @@ export class Pl1eEvent {
         event.stopPropagation();
         let attributeId = $(event.currentTarget).data("attribute");
 
-        const attributeConstructors = {
-            'increase': IncreaseAttribute,
-            'decrease': DecreaseAttribute,
-            'override': OverrideAttribute,
-            'transfer': TransferAttribute,
-            'effect': EffectAttribute
-        };
-
-        let dynamicAttribute = attributeConstructors[attributeId]
-            ? new attributeConstructors[attributeId](item)
+        /** @type {DynamicAttribute} */
+        let dynamicAttribute = CONFIG.PL1E.attributeClasses[attributeId]
+            ? new CONFIG.PL1E.attributeClasses[attributeId](item)
             : (() => { throw new Error("Unknown attribute type: " + attributeId) })();
 
         await item.update({
-            ["system.optionalAttributes." + randomID()]: dynamicAttribute
+            ["system.dynamicAttributes." + randomID()]: dynamicAttribute
         });
     }
 
@@ -298,7 +287,7 @@ export class Pl1eEvent {
         event.stopPropagation();
         let attributeId = $(event.currentTarget).data("attribute");
         await item.update({
-            ["system.optionalAttributes.-=" + attributeId]: null
+            ["system.dynamicAttributes.-=" + attributeId]: null
         });
     }
 

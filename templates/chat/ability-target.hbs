@@ -1,9 +1,9 @@
 <div class="chat-card item-card">
     <header class="card-header flexrow">
-        <img class="left-image actor-edit" src="{{targetData.actor.img}}" data-token-id="{{targetData.tokenId}}"
-             title="{{targetData.actor.name}}" width="36" height="36"/>
+        <img class="left-image actor-edit" src="{{targetData.token.actor.img}}" data-token-id="{{targetData.tokenId}}"
+             title="{{targetData.token.actor.name}}" width="36" height="36"/>
         <label class="item-label"></label>
-        <img class="right-image actor-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
+        <img class="right-image actor-edit" src="{{characterData.token.actor.img}}" data-token-id="{{characterData.tokenId}}"
              title="{{characterData.actor.name}}" width="36" height="36"/>
         <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
              data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
@@ -32,17 +32,17 @@
                             </section>
                         {{/each}}
                     </div>
-                    <h4 class="dice-total {{#if (gt targetData.totalResult 0)}}success{{else}}failure{{/if}}">
-                        {{characterData.result}} - {{targetData.result}} = {{targetData.totalResult}} {{localize "PL1E.Success"}}
+                    <h4 class="dice-total {{#if (gt targetData.result 0)}}success{{else}}failure{{/if}}">
+                        {{characterData.rollData.total}} - {{targetData.rollData.total}} = {{targetData.result}} {{localize "PL1E.Success"}}
                     </h4>
                 </div>
             </div>
         {{/if}}
     </div>
     <footer class="card-footer">
-        {{#if (ne targetData.optionalAttributes.length 0)}}
+        {{#if (ne targetData.dynamicAttributes.length 0)}}
             <label>{{localize "PL1E.Effects"}} :</label>
-            {{#each targetData.optionalAttributes as |attribute id|}}
+            {{#each targetData.dynamicAttributes as |attribute id|}}
                 {{#with (configEntry attribute.dataGroup attribute.data) as |data|}}
                     <i class="attribute-icon {{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{data.icon}} hover-green" data-tooltip="{{localize data.label}}">
                         <label>{{formatNumber attribute.value signe=true}}</label>

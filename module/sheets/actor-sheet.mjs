@@ -1,7 +1,5 @@
-import {PL1E} from "../helpers/config.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -82,7 +80,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Prepare active effects
         context.effects = Pl1eHelpers.prepareActiveEffectCategories(this.actor.effects);
         // Add the config data
-        context.config = PL1E;
+        context.config = CONFIG.PL1E;
         // Add game access
         context.game = game;
 
@@ -157,7 +155,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Player to other actor transfer
         if (!this.actor.isOwner) {
             // Player transfer item to a not owned actor
-            PL1E.socket.executeAsGM('sendItem', {
+            CONFIG.PL1E.socket.executeAsGM('sendItem', {
                 actor: game.user.character,
                 targetActor: this.actor,
                 item: item

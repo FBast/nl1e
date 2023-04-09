@@ -1,5 +1,4 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
-import {PL1E} from "../helpers/config.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -80,9 +79,9 @@ export class Pl1eActor extends Actor {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
-            for (let [id, optionalAttribute] of Object.entries(item.system.optionalAttributes)) {
-                if (optionalAttribute.targetGroup !== 'self') continue;
-                await this.applyAttribute(optionalAttribute, false);
+            for (let [id, dynamicAttribute] of Object.entries(item.system.dynamicAttributes)) {
+                if (dynamicAttribute.targetGroup !== 'self') continue;
+                await this.applyAttribute(dynamicAttribute, false);
             }
         }
         super.prepareEmbeddedDocuments();

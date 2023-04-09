@@ -1,4 +1,4 @@
-import {PL1E} from "../helpers/config.mjs";
+
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -290,7 +290,7 @@ export class Pl1eItem extends Item {
 
         // Calculate only if name is defined
         if (calculatedAttribute.name !== undefined) {
-            let data = PL1E[calculatedAttribute.dataGroup][calculatedAttribute.data];
+            let data = CONFIG.PL1E[calculatedAttribute.dataGroup][calculatedAttribute.data];
 
             // Number type
             if (data.type === 'number') {
