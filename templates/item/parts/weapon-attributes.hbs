@@ -1,0 +1,18 @@
+<section class="scroll-auto">
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.MainAttributes"}}</legend>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.Hands"}}</label>
+            <input type="number" name="system.attributes.hands.value" value="{{system.attributes.hands.value}}" data-dtype="Number"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.Ammo"}}</label>
+            <input type="number" name="system.attributes.ammo.value" value="{{system.attributes.ammo.value}}" data-dtype="Number"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.ParryProjectiles"}}</label>
+            <input type="checkbox" name="system.attributes.parryProjectiles.value" {{checked system.attributes.parryProjectiles.value}} data-dtype="Boolean"/>
+        </div>
+    </fieldset>
+    {{> "systems/pl1e/templates/item/parts/item-attributes-dynamics.hbs"}}
+</section>

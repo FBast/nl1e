@@ -3,7 +3,7 @@
  * @property {number} reduction
  */
 
-import {DynamicAttribute} from "../attribute.mjs";
+import {DynamicAttribute} from "../dynamicAttribute.mjs";
 
 /**
  * @type {TransferAttribute}

@@ -2,7 +2,7 @@
  * @typedef {Object} OverrideAttribute
  */
 
-import {DynamicAttribute} from "../attribute.mjs";
+import {DynamicAttribute} from "../dynamicAttribute.mjs";
 
 /**
  * @type {OverrideAttribute}

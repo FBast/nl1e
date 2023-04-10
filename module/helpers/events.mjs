@@ -2,7 +2,7 @@ import {Pl1eTrade} from "./trade.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
-import {DynamicAttribute} from "../objects/attribute.mjs";
+import {DynamicAttribute} from "../objects/dynamicAttribute.mjs";
 
 export class Pl1eEvent {
 

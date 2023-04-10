@@ -41,30 +41,24 @@ export function getAttributes() {
         },
         "healthCost": {
             "label": "PL1E.HealthCost",
-            "icon": "far fa-wave-pulse",
             "category": "fixed",
-            "type": "number",
             "dataGroup": "resources",
             "data": "health",
-            "name": "decrease"
+            "function": "decrease"
         },
         "staminaCost": {
             "label": "PL1E.StaminaCost",
-            "icon": "far fa-wave-pulse",
             "category": "fixed",
-            "type": "number",
             "dataGroup": "resources",
             "data": "stamina",
-            "name": "decrease"
+            "function": "decrease"
         },
         "manaCost": {
             "label": "PL1E.ManaCost",
-            "icon": "far fa-sparkles",
             "category": "fixed",
-            "type": "number",
             "dataGroup": "resources",
             "data": "mana",
-            "name": "decrease"
+            "function": "decrease"
         },
         "abilityLink": {
             "label": "PL1E.AbilityLink",
@@ -158,6 +152,27 @@ export function getAttributes() {
             "type": "select",
             "select": "slots"
         },
+        "slashingReduction": {
+            "label": "PL1E.SlashingReduction",
+            "category": "header",
+            "dataGroup": "reductions",
+            "data": "slashing",
+            "function": "increase"
+        },
+        "piercingReduction": {
+            "label": "PL1E.PiercingReduction",
+            "category": "header",
+            "dataGroup": "reductions",
+            "data": "piercing",
+            "function": "increase"
+        },
+        "crushingReduction": {
+            "label": "PL1E.CrushingReduction",
+            "category": "header",
+            "dataGroup": "reductions",
+            "data": "crushing",
+            "function": "increase"
+        },
         // Consumables
         "activation": {
             "label": "PL1E.Activation",
@@ -175,7 +190,7 @@ export function getAttributes() {
             "category": "fixed",
             "type": "number"
         },
-        // Optionals
+        // Dynamics
         "increase": {
             "label": "PL1E.Increase",
             "dataGroups": {

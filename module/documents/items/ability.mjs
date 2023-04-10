@@ -140,8 +140,8 @@ export class Pl1eAbility extends Pl1eItem {
         // Apply dynamic attributes, here we calculate each dynamic attribute for all targets
         let attributesModificationsData = [];
         for (let [id, dynamicAttribute] of Object.entries(this.system.dynamicAttributes)) {
-            const attributesModificationsData = PL1E.attributeClasses[dynamicAttribute.type].apply(dynamicAttribute, characterData, targetsData);
-            attributesModificationsData.push(attributesModificationsData);
+            const attributeModificationsData = PL1E.attributeClasses[dynamicAttribute.function].apply(dynamicAttribute, characterData, targetsData);
+            attributesModificationsData.push(attributeModificationsData);
         }
 
         // Merging attributes modifications into more readable targetsData
@@ -210,8 +210,11 @@ export class Pl1eAbility extends Pl1eItem {
         for (const targetData of targetsData) {
             for (const attributeModificationsData of attributesModificationsData) {
                 // For every attribute modifications we check if this target data has modifications
-                let attributeModificationData = attributeModificationsData.find(atd => atd.tokenId === attributeModificationData.tokenId);
+                let attributeModificationData = attributeModificationsData.find(atd => atd.token === targetData.token);
                 if (attributeModificationData === undefined) continue;
+
+                // If dynamic attribute array does not exist create
+                if (targetData.dynamicAttributes === undefined) targetData.dynamicAttributes = [];
 
                 // Now we check if a dynamic attribute inside targetData target the same data path
                 let dynamicAttribute = targetData.dynamicAttributes.find(da => da.data === attributeModificationData.calculatedAttribute.data);

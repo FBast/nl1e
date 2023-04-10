@@ -2,7 +2,19 @@
     <header class="card-header flexrow">
         <img class="left-image actor-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
              title="{{characterData.actor.name}}" width="36" height="36"/>
-        <label class="item-label"></label>
+        <div class="item-effects">
+            {{#each characterData.attributes}}
+                {{#with (configEntry "attributes" @key)}}
+                    {{#if (and (ne dataGroup undefined) (ne data undefined) (ne ../value 0))}}
+                        {{#with (configEntry dataGroup data)}}
+                            <i class="{{#if (gt ../../value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                <label>{{formatNumber ../../value signe=true}}</label>
+                            </i>
+                        {{/with}}
+                    {{/if}}
+                {{/with}}
+            {{/each}}
+        </div>
         <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
              data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
         {{#if (ne characterData.linkedItem null)}}
@@ -18,17 +30,17 @@
             <div class="dice-result">
                 <div class="dice-formula">{{rollData.formula}}</div>
                 <div class="dice-tooltip">
-                    {{#each rollData.dice as |die|}}
+                    {{#each rollData.dice}}
                         <section class="tooltip-part">
                             <div class="dice">
                                 <header class="part-header flexrow">
-                                    <span class="part-formula">{{die.number}}d{{die.faces}}{{join die.modifiers ""}}</span>
-                                    <span class="part-total">{{die.total}}</span>
+                                    <span class="part-formula">{{number}}d{{faces}}{{join modifiers ""}}</span>
+                                    <span class="part-total">{{total}}</span>
                                 </header>
                                 <ol class="dice-rolls">
-                                    {{#each die.results as |result|}}
-                                        <li class="roll die d{{die.faces}} {{#if result.success}}success{{/if}}
-                                            {{#if (eq result.result die.faces)}}exploded{{/if}}">{{result.result}}</li>
+                                    {{#each results}}
+                                        <li class="roll die d{{faces}} {{#if success}}success{{/if}}
+                                            {{#if (eq result faces)}}exploded{{/if}}">{{result}}</li>
                                     {{/each}}
                                 </ol>
                             </div>
@@ -41,24 +53,8 @@
             </div>
         </div>
     </div>
-    <div class="card-buttons">
+    <footer class="card-buttons">
         <button data-action="resolve" data-item-id={{characterData.itemId}}>{{localize "PL1E.Resolve"}}</button>
         <button data-action="cancel" data-item-id={{characterData.itemId}}>{{localize "PL1E.Cancel"}}</button>
-    </div>
-    <footer class="card-footer">
-        {{#if (ne characterData.attributes.length 0)}}
-            <label>{{localize "PL1E.Effects"}} :</label>
-            {{#each characterData.attributes as |attribute id|}}
-                {{#if (ne attribute.data undefined)}}
-                    {{#with (configEntry "attributeTargets" attribute.data) as |data|}}
-                        <i class="attribute-icon {{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{data.icon}} hover-green" data-tooltip="{{localize data.label}}">
-                            <label>{{formatNumber attribute.value signe=true}}</label>
-                        </i>
-                    {{/with}}
-                {{/if}}
-            {{/each}}
-        {{else}}
-            <label>{{localize "PL1E.NoEffects"}}</label>
-        {{/if}}
     </footer>
 </div>

@@ -24,8 +24,6 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @override */
     get template() {
-        if (['consumable', 'common'].includes(this.item.type))
-            return `systems/pl1e/templates/item/item-sheet.hbs`;
         return `systems/pl1e/templates/item/item-${this.item.type}-sheet.hbs`;
     }
 

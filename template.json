@@ -429,6 +429,18 @@
         "slot": {
           "value": "none",
           "show": true
+        },
+        "slashingReduction": {
+          "value": 0,
+          "show": true
+        },
+        "piercingReduction": {
+          "value": 0,
+          "show": true
+        },
+        "crushingReduction": {
+          "value": 0,
+          "show": true
         }
       }
     },

@@ -2,7 +2,7 @@
  * @typedef {Object} IncreaseAttribute
  */
 
-import {DynamicAttribute} from "../attribute.mjs";
+import {DynamicAttribute} from "../dynamicAttribute.mjs";
 
 /**
  * @type {IncreaseAttribute}
@@ -11,7 +11,7 @@ export class IncreaseAttribute extends DynamicAttribute {
 
     constructor(item) {
         super(item);
-        this.type = "increase";
+        this.function = "increase";
         this.value = 0;
         this.dataGroup = "resources";
         this.data = "health";
@@ -36,6 +36,7 @@ export class IncreaseAttribute extends DynamicAttribute {
             if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
                 calculatedAttribute.value = targetData.result > 0 ? calculatedAttribute.value : 0;
             }
+            attributeModificationData.calculatedAttribute = calculatedAttribute;
 
             attributeModificationsData.push(attributeModificationData);
         }

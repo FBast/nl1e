@@ -35,10 +35,14 @@
       margin-right: 5px;
     }
 
-    .item-label {
-      font-size: large;
-      text-align: center;
-      text-transform: uppercase;
+    .item-effects {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      i {
+        padding: 0 5px;
+      }
     }
 
     .right-image {
@@ -48,7 +52,6 @@
   }
 
   .card-content {
-    margin: 5px 0;
 
     h3 {
       font-size: 12px;
@@ -66,15 +69,8 @@
   }
 
   .card-buttons {
-    margin: 5px 0;
+    margin: 5px 0 0 0;
     border-top: 2px groove #FFF;
-
-    span {
-      display: block;
-      line-height: 28px;
-      text-align: center;
-      border: 1px solid;
-    }
 
     button {
       font-size: 12px;
@@ -84,17 +80,7 @@
     }
   }
 
-  .card-footer {
-    padding: 3px 0 0;
-    border-top: 2px groove #FFF;
-
-    .attribute-icon {
-      padding-left: 5px;
-    }
-  }
-
   .dice-total {
-    margin: 5px 0;
     text-align: center;
     background: rgba(0, 0, 0, 0.1);
     border: 1px solid var(--color-border-light-2);

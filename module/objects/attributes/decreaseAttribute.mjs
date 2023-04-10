@@ -3,7 +3,7 @@
  * @property {string} damageType
  */
 
-import {DynamicAttribute} from "../attribute.mjs";
+import {DynamicAttribute} from "../dynamicAttribute.mjs";
 
 /**
  * @type {DecreaseAttribute}
@@ -12,7 +12,7 @@ export class DecreaseAttribute extends DynamicAttribute {
 
     constructor(item) {
         super(item);
-        this.type = "decrease";
+        this.function = "decrease";
         this.value = 0;
         this.dataGroup = "resources";
         this.data = "health";

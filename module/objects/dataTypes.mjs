@@ -7,7 +7,7 @@
 
 /**
  * @typedef {Object} DynamicAttribute
- * @property {string} type
+ * @property {string} function
  * @property {any} value
  * @property {string} dataGroup
  * @property {string} data

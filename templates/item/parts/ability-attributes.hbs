@@ -1,0 +1,77 @@
+<section class="scroll-auto">
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.MainAttributes"}}</legend>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">
+                {{localize "PL1E.HealthCost"}}
+                <input type="number" name="system.attributes.healthCost.value" value="{{system.attributes.healthCost.value}}" data-dtype="Number"/>
+            </label>
+            <label class="attribute-name">
+                {{localize "PL1E.StaminaCost"}}
+                <input type="number" name="system.attributes.staminaCost.value" value="{{system.attributes.staminaCost.value}}" data-dtype="Number"/>
+            </label>
+            <label class="attribute-name">
+                {{localize "PL1E.ManaCost"}}
+                <input type="number" name="system.attributes.manaCost.value" value="{{system.attributes.manaCost.value}}" data-dtype="Number"/>
+            </label>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.AbilityLink"}}</label>
+            <select name="system.attributes.abilityLink.value">
+                {{selectOptions (config "abilityLinks") selected=system.attributes.abilityLink.value localize=true}}
+            </select>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>
+            <select name="system.attributes.characterRoll.value">
+                {{selectOptions (config "abilitySkills") selected=system.attributes.characterRoll.value localize=true}}
+            </select>
+        </div>
+        {{#if (ne system.attributes.characterRoll.value "none")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.TargetRoll"}}</label>
+                <select name="system.attributes.targetRoll.value">
+                    {{selectOptions (config "abilitySkills") selected=system.attributes.targetRoll.value localize=true}}
+                </select>
+            </div>
+        {{/if}}
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.AreaShape"}}</label>
+            <select name="system.attributes.areaShape.value">
+                {{selectOptions (config "areaShapes") selected=system.attributes.areaShape.value localize=true}}
+            </select>
+        </div>
+        {{#if (ne system.attributes.areaShape.value "self")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
+                <input type="number" name="system.attributes.areaNumber.value" value="{{system.attributes.areaNumber.value}}" data-dtype="Number"/>
+            </div>
+        {{/if}}
+        {{#if (eq system.attributes.areaShape.value "circle")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.CircleRadius"}}</label>
+                <input type="number" name="system.attributes.circleRadius.value" value="{{system.attributes.circleRadius.value}}" data-dtype="Number"/>
+            </div>
+        {{else if (eq system.attributes.areaShape.value "cone")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.ConeLength"}}</label>
+                <input type="number" name="system.attributes.coneLength.value" value="{{system.attributes.coneLength.value}}" data-dtype="Number"/>
+            </div>
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.ConeAngle"}}</label>
+                <input type="number" name="system.attributes.coneAngle.value" value="{{system.attributes.coneAngle.value}}" data-dtype="Number"/>
+            </div>
+        {{else if (eq system.attributes.areaShape.value "square")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.SquareLength"}}</label>
+                <input type="number" name="system.attributes.squareLength.value" value="{{system.attributes.squareLength.value}}" data-dtype="Number"/>
+            </div>
+        {{else if (eq system.attributes.areaShape.value "ray")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.RayLength"}}</label>
+                <input type="number" name="system.attributes.rayLength.value" value="{{system.attributes.rayLength.value}}" data-dtype="Number"/>
+            </div>
+        {{/if}}
+    </fieldset>
+    {{> "systems/pl1e/templates/item/parts/item-attributes-dynamics.hbs"}}
+</section>

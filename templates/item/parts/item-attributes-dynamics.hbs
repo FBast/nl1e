@@ -1,0 +1,65 @@
+<fieldset>
+    <legend class="section-header">{{localize "PL1E.SecondaryAttributes"}}</legend>
+    <div class="item-attribute-select flexrow">
+        <select name="system.selectedOptionalAttribute">
+            {{selectOptions (configEntry "dynamicAttributesGroups" document.type) selected=system.selectedOptionalAttribute localize=true}}
+        </select>
+        <a class="attribute-add flexshrink" data-attribute={{system.selectedOptionalAttribute}} data-tooltip='{{localize "PL1E.AddAttribute"}}'>
+            <i class="fas fa-plus"></i>
+        </a>
+    </div>
+    {{#each system.dynamicAttributes}}
+        <hr>
+        {{#with (configEntry "attributes" type)}}
+            <div class="item-attribute flexrow">
+                <!-- Main values -->
+                <label class="attribute-name">{{localize label}}</label>
+                {{#with (configEntry ../dataGroup ../data)}}
+                    {{#if (eq type "number")}}
+                        <input class="input-positive-decimal" type="number" name="system.dynamicAttributes.{{@key}}.value"
+                               value="{{../../value}}" data-dtype="Number"/>
+                    {{else if (eq type "bool")}}
+                        <input type="checkbox" name="system.dynamicAttributes.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
+                    {{else if (eq type "select")}}
+                        <select name="system.dynamicAttributes.{{@key}}.value">
+                            {{selectOptions (config select) selected=../../value localize=true}}
+                        </select>
+                    {{/if}}
+                {{/with}}
+                {{#if ../showActivationToggle}}
+                    <select name="system.dynamicAttributes.{{@key}}.activation">
+                        {{selectOptions (config "activations") selected=../activation localize=true}}
+                    </select>
+                {{/if}}
+                <a class="attribute-remove flexshrink" data-attribute={{@key}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+            <!-- Secondary values -->
+            <div class="item-attribute flexrow">
+                <select name="system.dynamicAttributes.{{@key}}.dataGroup">
+                    {{selectOptions dataGroups selected=../dataGroup localize=true}}
+                </select>
+                <select name="system.dynamicAttributes.{{@key}}.data">
+                    {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
+                </select>
+                {{#if (ne ../damageType undefined)}}
+                    <select name="system.dynamicAttributes.{{@key}}.damageType">
+                        {{selectOptions (config "damageTypes") selected=../damageType localize=true}}
+                    </select>
+                {{/if}}
+            </div>
+            <!-- Activation related values -->
+            <div class="item-attribute flexrow">
+                {{#unless (eq ../activation "passive")}}
+                    <select name="system.dynamicAttributes.{{@key}}.targetGroup">
+                        {{selectOptions (config "targetGroups") selected=../targetGroup localize=true}}
+                    </select>
+                    <select name="system.dynamicAttributes.{{@key}}.resolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=../resolutionType localize=true}}
+                    </select>
+                {{/unless}}
+            </div>
+        {{/with}}
+    {{/each}}
+</fieldset>

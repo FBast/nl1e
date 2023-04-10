@@ -33,7 +33,6 @@ export class Pl1eItem extends Item {
      */
     prepareData() {
         // As with the actor class, subItems are documents that can have their data
-        // preparation methods overridden (such as prepareBaseData()).
         super.prepareData();
 
         // Prepare Embed subItems
@@ -44,43 +43,6 @@ export class Pl1eItem extends Item {
             itemsData.forEach((item) => {
                 this.addEmbedItem(item, { save: false, newId: false });
             });
-        }
-    }
-
-    /** @override */
-    prepareBaseData() {
-        const system = this.system;
-        // Activate conditionnal attributes
-        for (let [key, attribute] of Object.entries(system.attributes)) {
-            const attributeConfig = CONFIG.PL1E.attributes[key];
-            if (['header', 'fixed'].includes(attributeConfig.category) && attributeConfig.conditions === undefined)
-                attribute.show = true;
-            if (attributeConfig.conditions !== undefined) {
-                for (const andCondition of attributeConfig.conditions.split('||')) {
-                    let isValid = true;
-                    for (const condition of andCondition.split('&&')) {
-                        if (condition.includes('!==')) {
-                            const attributeCondition = condition.split('!==')[0];
-                            let attributeValue = condition.split('!==')[1];
-                            if (attributeValue === 'true') attributeValue = true;
-                            if (attributeValue === 'false') attributeValue = false;
-                            if (/^\d+$/.test(attributeValue)) attributeValue = +attributeValue;
-                            if (system.attributes[attributeCondition].value === attributeValue) isValid = false;
-                        }
-                        else if(condition.includes('===')) {
-                            const attributeCondition = condition.split('===')[0];
-                            let attributeValue = condition.split('===')[1];
-                            if (attributeValue === 'true') attributeValue = true;
-                            if (attributeValue === 'false') attributeValue = false;
-                            if (system.attributes[attributeCondition].value !== attributeValue) isValid = false;
-                        }
-                    }
-                    attribute.show = isValid;
-                    if (isValid) break;
-                }
-                if (!attribute.show && attributeConfig.fallback !== undefined)
-                    attribute.value = attributeConfig.fallback;
-            }
         }
     }
 

@@ -2,7 +2,7 @@
  * @typedef {Object} EffectAttribute
  */
 
-import {DynamicAttribute} from "../attribute.mjs";
+import {DynamicAttribute} from "../dynamicAttribute.mjs";
 
 /**
  * @type {EffectAttribute}
