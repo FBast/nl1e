@@ -4,7 +4,6 @@ import {Pl1eWearable} from "./items/wearable.mjs";
 import {Pl1eConsumable} from "./items/consumable.mjs";
 import {Pl1eItem} from "./item.mjs";
 import {Pl1eFeature} from "./items/feature.mjs";
-import {Pl1eCommon} from "./items/common.mjs";
 
 const handler = {
     /**
