@@ -238,42 +238,4 @@ export class Pl1eItem extends Item {
 
     //endregion
 
-    /**
-     * Calculate the stats of an attribute based on the roll result
-     * @param {object} attribute
-     * @param {number} rollResult
-     * @param {Pl1eActor} actor
-     * @returns {any}
-     * @protected
-     */
-    _calculateAttribute(attribute, rollResult, actor) {
-        // Copy attribute
-        let calculatedAttribute = JSON.parse(JSON.stringify(attribute));
-
-        // Calculate only if name is defined
-        if (calculatedAttribute.name !== undefined) {
-            let data = CONFIG.PL1E[calculatedAttribute.dataGroup][calculatedAttribute.data];
-
-            // Number type
-            if (data.type === 'number') {
-                if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
-                    calculatedAttribute.value *= rollResult > 0 ? rollResult : 0;
-                }
-                if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
-                    calculatedAttribute.value = rollResult > 0 ? calculatedAttribute.value : 0;
-                }
-                if (calculatedAttribute.value < 0 && calculatedAttribute.reduction !== undefined && calculatedAttribute.reduction !== 'raw') {
-                    let reduction = foundry.utils.getProperty(actor, CONFIG.PL1E.reductions[calculatedAttribute.reduction].path);
-                    calculatedAttribute.value = Math.min(calculatedAttribute.value + reduction, 0);
-                }
-                // If resulting value equal to zero then ignore the attribute
-                if (calculatedAttribute.value === 0) return;
-                // Apply sign
-                calculatedAttribute.value *= calculatedAttribute.name === "decrease" ? -1 : 1;
-            }
-        }
-
-        return calculatedAttribute;
-    }
-
 }

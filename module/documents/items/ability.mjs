@@ -44,7 +44,6 @@ export class Pl1eAbility extends Pl1eItem {
         this._linkItem(characterData);
 
         // Character rollData if exist
-        let rollData = null;
         if (characterData.attributes.characterRoll.value !== 'none') {
             const skill = characterData.actor.system.skills[characterData.attributes.characterRoll.value];
             characterData.rollData = await characterData.actor.rollSkill(skill);
@@ -57,7 +56,14 @@ export class Pl1eAbility extends Pl1eItem {
         // Calculate character attributes
         let calculatedAttributes = {};
         for (let [id, attribute] of Object.entries(characterData.attributes)) {
-            calculatedAttributes[id] = this._calculateAttribute(attribute, characterData.result, characterData.actor);
+            let calculatedAttribute = { ...attribute };
+            if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
+                calculatedAttribute.value *= characterData.result > 0 ? characterData.result : 0;
+            }
+            if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
+                calculatedAttribute.value = characterData.result > 0 ? calculatedAttribute.value : 0;
+            }
+            calculatedAttributes.push(calculatedAttribute);
         }
         characterData.attributes = calculatedAttributes;
 

@@ -45,6 +45,9 @@
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
                 <input type="number" name="system.attributes.areaNumber.value" value="{{system.attributes.areaNumber.value}}" data-dtype="Number"/>
+                <select name="system.attributes.areaNumber.resolutionType">
+                    {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumber.resolutionType localize=true}}
+                </select>
             </div>
         {{/if}}
         {{#if (eq system.attributes.areaShape.value "circle")}}

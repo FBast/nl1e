@@ -36,9 +36,7 @@ export class IncreaseAttribute extends DynamicAttribute {
             if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
                 calculatedAttribute.value = targetData.result > 0 ? calculatedAttribute.value : 0;
             }
-            attributeModificationData.calculatedAttribute = calculatedAttribute;
-
-            attributeModificationsData.push(attributeModificationData);
+            attributeModificationsData.push(calculatedAttribute);
         }
         return attributeModificationsData;
     }

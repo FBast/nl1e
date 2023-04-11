@@ -3,6 +3,8 @@ import {Pl1eWeapon} from "./items/weapon.mjs";
 import {Pl1eWearable} from "./items/wearable.mjs";
 import {Pl1eConsumable} from "./items/consumable.mjs";
 import {Pl1eItem} from "./item.mjs";
+import {Pl1eFeature} from "./items/feature.mjs";
+import {Pl1eCommon} from "./items/common.mjs";
 
 const handler = {
     /**
@@ -11,6 +13,8 @@ const handler = {
      */
     construct(_, args) {
         switch (args[0]?.type) {
+            case "feature":
+                return new Pl1eFeature(...args);
             case "ability":
                 return new Pl1eAbility(...args);
             case "weapon":
@@ -20,7 +24,7 @@ const handler = {
             case "consumable":
                 return new Pl1eConsumable(...args);
             default:
-                throw new Error("Unknown item type from item proxy : " + args[0]?.type);
+                return new Pl1eItem(...args);
         }
     },
 };
