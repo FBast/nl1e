@@ -3,13 +3,17 @@
         <img class="left-image actor-edit" src="{{targetData.token.actor.img}}" data-token-id="{{targetData.tokenId}}"
              title="{{targetData.token.actor.name}}" width="36" height="36"/>
         <div class="item-effects">
-            {{#each targetData.dynamicAttributes as |attribute id|}}
-                {{#with (configEntry attribute.dataGroup attribute.data) as |data|}}
-                    <i class="{{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{data.icon}} hover-green" data-tooltip="{{localize data.label}}">
-                        <label>{{formatNumber attribute.value signe=true}}</label>
-                    </i>
-                {{/with}}
-            {{/each}}
+            {{#if hasEffects}}
+                {{#each targetData.dynamicAttributes as |attribute id|}}
+                    {{#with (configEntry attribute.dataGroup attribute.data) as |data|}}
+                        <i class="{{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{data.icon}} hover-green" data-tooltip="{{localize data.label}}">
+                            <label>{{formatNumber attribute.value signe=true}}</label>
+                        </i>
+                    {{/with}}
+                {{/each}}
+            {{else}}
+                <label>{{localize "PL1E.NoEffects"}}</label>
+            {{/if}}
         </div>
         <img class="right-image actor-edit" src="{{characterData.token.actor.img}}" data-token-id="{{characterData.tokenId}}"
              title="{{characterData.actor.name}}" width="36" height="36"/>
@@ -17,7 +21,7 @@
              data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
     </header>
     <div class="card-content">
-        {{#if (ne ../item.system.attributes.targetRoll.value "none")}}
+        {{#if (ne characterData.attributes.targetRoll.value "none")}}
             <!-- Result of the roll -->
             <div class="dice-roll">
                 <div class="dice-result">
@@ -32,8 +36,8 @@
                                     </header>
                                     <ol class="dice-rolls">
                                         {{#each results}}
-                                            <li class="roll die d{{faces}} {{#if success}}success{{/if}}
-                                                {{#if (eq result faces)}}exploded{{/if}}">{{result}}</li>
+                                            <li class="roll die d{{../faces}} {{#if success}}success{{/if}}
+                                                {{#if (eq result ../faces)}}exploded{{/if}}">{{result}}</li>
                                         {{/each}}
                                     </ol>
                                 </div>

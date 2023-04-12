@@ -277,7 +277,12 @@ export class Pl1eActorSheet extends ActorSheet {
             actor: this.actor
         };
 
-        await item.use(options);
+        try {
+            await item.use(options);
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
 
     /**
@@ -289,7 +294,12 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        await item.reload();
+        try {
+            await item.reload();
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
 
     /**

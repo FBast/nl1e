@@ -50,7 +50,7 @@ export class Pl1eAbility extends Pl1eItem {
             characterData.result = characterData.rollData.total;
         }
         else {
-            characterData.result = 0;
+            characterData.result = 1;
         }
 
         // Calculate character attributes
@@ -63,9 +63,12 @@ export class Pl1eAbility extends Pl1eItem {
             if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
                 calculatedAttribute.value = characterData.result > 0 ? calculatedAttribute.value : 0;
             }
-            calculatedAttributes.push(calculatedAttribute);
+            calculatedAttributes[id] = calculatedAttribute;
         }
         characterData.attributes = calculatedAttributes;
+
+        // Notify if attributes has effects
+        characterData.hasEffects = Object.values(characterData.attributes).some(atr => atr.data !== undefined);
 
         // Ability Data
         const abilityData = {
@@ -153,6 +156,11 @@ export class Pl1eAbility extends Pl1eItem {
         // Merging attributes modifications into more readable targetsData
         this.mergeAttributesModifications(targetsData, attributesModificationsData)
 
+        // Notify if attributes has effects
+        for (const targetData of targetsData) {
+            targetData.hasEffects = targetData.dynamicAttributes.some(atr => atr.data !== undefined);
+        }
+
         // Display messages
         for (const targetData of targetsData) {
             await this._displayMessage(characterData, targetData);
@@ -214,24 +222,25 @@ export class Pl1eAbility extends Pl1eItem {
      */
     mergeAttributesModifications(targetsData, attributesModificationsData) {
         for (const targetData of targetsData) {
+            // If dynamic attribute array does not exist create
+            if (targetData.dynamicAttributes === undefined) targetData.dynamicAttributes = [];
+
             for (const attributeModificationsData of attributesModificationsData) {
                 // For every attribute modifications we check if this target data has modifications
                 let attributeModificationData = attributeModificationsData.find(atd => atd.token === targetData.token);
                 if (attributeModificationData === undefined) continue;
 
-                // If dynamic attribute array does not exist create
-                if (targetData.dynamicAttributes === undefined) targetData.dynamicAttributes = [];
-
-                // Now we check if a dynamic attribute inside targetData target the same data path
-                let dynamicAttribute = targetData.dynamicAttributes.find(da => da.data === attributeModificationData.calculatedAttribute.data);
+                // Now we check if a dynamic attribute inside targetData target the same data path and is not the same
+                let otherAttributeModificationData = attributeModificationsData
+                    .find(am => am.dynamicAttribute.data === attributeModificationData.dynamicAttribute.data && am !== attributeModificationData);
 
                 // If no existing targetData dynamic attribute then add a new
-                if (dynamicAttribute === undefined) {
-                    targetData.dynamicAttributes.push(attributeModificationData.calculatedAttribute);
+                if (otherAttributeModificationData.dynamicAttribute === undefined) {
+                    targetData.dynamicAttributes.push(attributeModificationData.dynamicAttribute);
                 }
                 // Else then merge into the existing
                 else {
-                    attributeModificationData.calculatedAttribute.merge(dynamicAttribute);
+                    attributeModificationData.dynamicAttribute.merge(otherAttributeModificationData.dynamicAttribute);
                 }
             }
         }

@@ -43,6 +43,10 @@
         </div>
         {{#if (ne system.attributes.areaShape.value "self")}}
             <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                <input type="number" name="system.attributes.range.value" value="{{system.attributes.range.value}}" data-dtype="Number"/>
+            </div>
+            <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
                 <input type="number" name="system.attributes.areaNumber.value" value="{{system.attributes.areaNumber.value}}" data-dtype="Number"/>
                 <select name="system.attributes.areaNumber.resolutionType">

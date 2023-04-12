@@ -3,17 +3,21 @@
         <img class="left-image actor-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
              title="{{characterData.actor.name}}" width="36" height="36"/>
         <div class="item-effects">
-            {{#each characterData.attributes}}
-                {{#with (configEntry "attributes" @key)}}
-                    {{#if (and (ne dataGroup undefined) (ne data undefined) (ne ../value 0))}}
-                        {{#with (configEntry dataGroup data)}}
-                            <i class="{{#if (gt ../../value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
-                                <label>{{formatNumber ../../value signe=true}}</label>
-                            </i>
-                        {{/with}}
-                    {{/if}}
-                {{/with}}
-            {{/each}}
+            {{#if hasEffects}}
+                {{#each characterData.attributes}}
+                    {{#with (configEntry "attributes" @key)}}
+                        {{#if (and (ne dataGroup undefined) (ne data undefined) (ne ../value 0))}}
+                            {{#with (configEntry dataGroup data)}}
+                                <i class="{{#if (gt ../../value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                    <label>{{formatNumber ../../value signe=true}}</label>
+                                </i>
+                            {{/with}}
+                        {{/if}}
+                    {{/with}}
+                {{/each}}
+            {{else}}
+                <label>{{localize "PL1E.NoEffects"}}</label>
+            {{/if}}
         </div>
         <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
              data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
@@ -25,33 +29,35 @@
     <div class="card-content">
         <!-- Description of the ability -->
         {{characterData.item.system.attributes.description.value}}
-        <!-- Result of the roll -->
-        <div class="dice-roll">
-            <div class="dice-result">
-                <div class="dice-formula">{{rollData.formula}}</div>
-                <div class="dice-tooltip">
-                    {{#each rollData.dice}}
-                        <section class="tooltip-part">
-                            <div class="dice">
-                                <header class="part-header flexrow">
-                                    <span class="part-formula">{{number}}d{{faces}}{{join modifiers ""}}</span>
-                                    <span class="part-total">{{total}}</span>
-                                </header>
-                                <ol class="dice-rolls">
-                                    {{#each results}}
-                                        <li class="roll die d{{faces}} {{#if success}}success{{/if}}
-                                            {{#if (eq result faces)}}exploded{{/if}}">{{result}}</li>
-                                    {{/each}}
-                                </ol>
-                            </div>
-                        </section>
-                    {{/each}}
+        {{#if (ne characterData.attributes.characterRoll.value "none")}}
+            <!-- Result of the roll -->
+            <div class="dice-roll">
+                <div class="dice-result">
+                    <div class="dice-formula">{{rollData.formula}}</div>
+                    <div class="dice-tooltip">
+                        {{#each rollData.dice}}
+                            <section class="tooltip-part">
+                                <div class="dice">
+                                    <header class="part-header flexrow">
+                                        <span class="part-formula">{{number}}d{{faces}}{{join modifiers ""}}</span>
+                                        <span class="part-total">{{total}}</span>
+                                    </header>
+                                    <ol class="dice-rolls">
+                                        {{#each results}}
+                                            <li class="roll die d{{../faces}} {{#if success}}success{{else}}failure{{/if}}
+                                                {{#if (eq result ../faces)}}exploded{{/if}}">{{result}}</li>
+                                        {{/each}}
+                                    </ol>
+                                </div>
+                            </section>
+                        {{/each}}
+                    </div>
+                    <h4 class="dice-total {{#if (gt rollData.total 0)}}success{{else}}failure{{/if}}">
+                        {{rollData.total}} {{localize "PL1E.Success"}}
+                    </h4>
                 </div>
-                <h4 class="dice-total {{#if (gt rollData.total 0)}}success{{else}}failure{{/if}}">
-                    {{rollData.total}} {{localize "PL1E.Success"}}
-                </h4>
             </div>
-        </div>
+        {{/if}}
     </div>
     <footer class="card-buttons">
         <button data-action="resolve" data-item-id={{characterData.itemId}}>{{localize "PL1E.Resolve"}}</button>

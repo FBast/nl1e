@@ -10,7 +10,7 @@
     </div>
     {{#each system.dynamicAttributes}}
         <hr>
-        {{#with (configEntry "attributes" type)}}
+        {{#with (configEntry "attributes" function)}}
             <div class="item-attribute flexrow">
                 <!-- Main values -->
                 <label class="attribute-name">{{localize label}}</label>

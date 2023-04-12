@@ -37,6 +37,7 @@
  * @property {number} result The result of the rollData
  * @property {object} attributes The attributes of the item
  * @property {DynamicAttribute[]} dynamicAttributes The dynamicAttributes of the item
+ * @property {boolean} hasEffects The possibility of effects based on attributes
  * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
  */
 
@@ -48,13 +49,14 @@
  * @property {Token} token
  * @property {string} tokenId
  * @property {DynamicAttribute[]} dynamicAttributes
+ * @property {boolean} hasEffects The possibility of effects based on dynamic attributes number
  */
 
 /**
  * Manage attribute modification data for a single attribute and a single token
  * @typedef {Object} AttributeModificationData
  * @property {Token} token
- * @property {DynamicAttribute} calculatedAttribute
+ * @property {DynamicAttribute} dynamicAttribute
  */
 
 /**
