@@ -51,7 +51,7 @@ export class Pl1eItem extends Item {
         for (let [id, dynamicAttribute] of Object.entries(this.system.dynamicAttributes)) {
             dynamicAttributes[id] = CONFIG.PL1E.attributeClasses[dynamicAttribute.function]
                 ? new CONFIG.PL1E.attributeClasses[dynamicAttribute.function](dynamicAttribute)
-                : (() => { throw new Error("Unknown attribute type: " + dynamicAttribute.function) })();
+                : (() => { throw new Error("PL1E | Unknown attribute type: " + dynamicAttribute.function) })();
         }
         this.system.dynamicAttributes = dynamicAttributes;
     }
@@ -217,7 +217,7 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async toggle(options) {
-        throw new Error("toggle method is not implemented");
+        throw new Error("PL1E | toggle method is not implemented");
     }
 
     /**
@@ -226,7 +226,7 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async use(options) {
-        throw new Error("use method is not implemented");
+        throw new Error("PL1E | use method is not implemented");
     }
 
     /**
@@ -235,7 +235,7 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async apply(options) {
-        throw new Error("apply method is not implemented");
+        throw new Error("PL1E | apply method is not implemented");
     }
 
     /**+
@@ -243,7 +243,7 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async reload(options) {
-        throw new Error("reload method is not implemented");
+        throw new Error("PL1E | reload method is not implemented");
     }
 
     //endregion

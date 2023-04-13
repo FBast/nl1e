@@ -269,7 +269,7 @@ export class Pl1eEvent {
 
         let dynamicAttribute = CONFIG.PL1E.attributeClasses[attributeId]
             ? new CONFIG.PL1E.attributeClasses[attributeId](item)
-            : (() => { throw new Error("Unknown attribute type: " + attributeId) })();
+            : (() => { throw new Error("PL1E | Unknown attribute type: " + attributeId) })();
 
         const id = randomID();
         item.system.dynamicAttributes[id] = dynamicAttribute;

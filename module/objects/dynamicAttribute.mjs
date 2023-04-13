@@ -28,14 +28,14 @@ export class DynamicAttribute {
      * @returns {AttributeModificationsData} attributeModificationsData
      */
     apply(characterData, targetsData) {
-        throw new Error("apply method is not implemented")
+        throw new Error("PL1E | apply method is not implemented")
     }
 
     /**
      * @param {DynamicAttribute} previousDynamicAttribute
      */
     merge(previousDynamicAttribute) {
-        throw new Error("merge method is not implemented")
+        throw new Error("PL1E | merge method is not implemented")
     }
 
     /**
