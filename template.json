@@ -288,6 +288,7 @@
     "types": ["feature", "ability", "weapon", "wearable", "consumable", "common"],
     "templates": {
       "base": {
+        "subItemsUuid": [],
         "subItems": [],
         "dynamicAttributes": {},
         "selectedOptionalAttribute": "increase"

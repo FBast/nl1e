@@ -58,11 +58,6 @@ export class Pl1eItemSheet extends ItemSheet {
         return buttons;
     }
 
-    async _updateObject(event, formData) {
-        await super._updateObject(event, formData);
-        await Pl1eHelpers.resetClones(this.item);
-    }
-
     /** @override */
     getData() {
         // Retrieve base data structure.
@@ -126,23 +121,19 @@ export class Pl1eItemSheet extends ItemSheet {
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
-        // Check item type and subtype
-        let item = await Pl1eHelpers.getDragNDropTargetObject(event);
+        // Get the item associated to the drop
+        const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
+        const item = await fromUuid(data.uuid);
 
         // Return if item cannot embed
-        if (!this.item.system.embeddable.includes(item.type)) return
+        if (!this.item.system.embeddable.includes(item.type)) return;
 
         // Return if same item
-        if (this.object._id === item._id) return;
+        if (this.item._id === item._id) return;
 
-        // Flag the source GUID
-        if (item.uuid && !item.pack && !item.getFlag('core', 'sourceId')) {
-            await item.setFlag('core', 'sourceId', item.uuid);
-        }
+        await this.item.addSubItem(item);
 
-        const data = item.toObject(false);
-
-        this.document.addEmbedItem(data);
+        this.render(true);
     }
 
     _prepareSubItems(context) {
@@ -158,15 +149,15 @@ export class Pl1eItemSheet extends ItemSheet {
         };
 
         // Iterate through subItems, allocating to containers
-        for (let [key, value] of context.item.system.subItems) {
-            value.img = value.img || DEFAULT_TOKEN;
+        for (let subItem of context.item.system.subItems) {
+            subItem.img = subItem.img || DEFAULT_TOKEN;
             // Append to features.
-            if (value.type === 'feature') {
-                features.push(value);
+            if (subItem.type === 'feature') {
+                features.push(subItem);
             }
             // Append to abilities.
-            else if (value.type === 'ability') {
-                abilities[value.system.attributes.level.value].push(value);
+            else if (subItem.type === 'ability') {
+                abilities[subItem.system.attributes.level.value].push(subItem);
             }
         }
 

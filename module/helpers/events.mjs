@@ -91,7 +91,7 @@ export class Pl1eEvent {
         let item;
         if (document instanceof TokenDocument) item = document.actor.items.get(itemId);
         if (document instanceof Pl1eActor) item = document.items.get(itemId);
-        if (document instanceof Pl1eItem) item = document.getEmbedItem(itemId);
+        if (document instanceof Pl1eItem) item = document.getSubItem(itemId);
         if (item) item.sheet.render(true);
     }
 
@@ -151,15 +151,16 @@ export class Pl1eEvent {
             await parentItem.delete();
         }
         if (document instanceof Pl1eItem) {
-            const item = document.getEmbedItem(itemId);
+            //TODO fix using uuid and deleteSubItem
+            const item = document.getSubItem(itemId);
             if (!item) return;
             for (let [key, value] of document.system.subItems) {
                 if (value === item) continue;
                 if (value.system.childId === undefined) continue;
                 if (value.system.childId !== item.system.parentId) continue;
-                await document.deleteEmbedItem(value._id);
+                await document.deleteSubItem(value._id);
             }
-            await document.deleteEmbedItem(itemId);
+            await document.deleteSubItem(itemId);
         }
     }
 

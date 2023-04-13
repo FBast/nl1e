@@ -29,29 +29,29 @@ export class Pl1eItem extends Item {
         await this.updateSource(updateData);
     }
 
+    /** @override */
+    async prepareBaseData() {
+        super.prepareBaseData();
+
+        // Prepare Sub items
+        await this.importSubItems();
+    }
+
     /**
      * Augment the basic Item data model with additional dynamic data.
      */
-    prepareData() {
+    async prepareData() {
         // As with the actor class, subItems are documents that can have their data
         super.prepareData();
-
-        // Prepare Embed subItems
-        if (!(this.system.subItems instanceof Map)) {
-            const itemsData = Array.isArray(this.system.subItems) ? this.system.subItems : [];
-            this.system.subItems = new Map();
-
-            itemsData.forEach((item) => {
-                this.addEmbedItem(item, { save: false, newId: false });
-            });
-        }
 
         // Prepare Dynamic Attributes
         const dynamicAttributes = {};
         for (let [id, dynamicAttribute] of Object.entries(this.system.dynamicAttributes)) {
             dynamicAttributes[id] = CONFIG.PL1E.attributeClasses[dynamicAttribute.function]
                 ? new CONFIG.PL1E.attributeClasses[dynamicAttribute.function](dynamicAttribute)
-                : (() => { throw new Error("PL1E | Unknown attribute type: " + dynamicAttribute.function) })();
+                : (() => {
+                    throw new Error("PL1E | Unknown attribute type: " + dynamicAttribute.function)
+                })();
         }
         this.system.dynamicAttributes = dynamicAttributes;
     }
@@ -71,101 +71,86 @@ export class Pl1eItem extends Item {
 
     //endregion
 
-    //region Embedded subItems
+    //region Sub items
 
     /**
-     * A reference to the Collection of embedded Item instances in the document, indexed by _id.
-     * @returns {Collection<BaseItem>}
-     */
-    get subItems() {
-        return this.system.subItems || new Map();
-    }
-
-    /**
-     * Shortcut for this.subItems.get
-     * @param id
-     * @return {Pl1eItem|null}
-     */
-    getEmbedItem(id) {
-        return this.subItems?.get(id) || null;
-    }
-
-    /**
-     * Add a Embed Item
+     * Add a Sub Item
      * @param {Pl1eItem} item Object to add
-     * @param {string} childId link id between parent and children
-     * @param {boolean} save   if we save in db or not (used internally)
-     * @param {boolean} newId  if we change the id
+     * @param {boolean} save Save uuid
      * @return {Promise<string>}
      */
-    async addEmbedItem(item, { childId = undefined, save = true, newId = true } = {}) {
-        if (!item) return;
-
-        if (!(item instanceof Item) && item?.name && item?.type) {
-            // Data -> Item
-            item = new Pl1eItem(item);
+    async addSubItem(item, save = true) {
+        if (!item) {
+            throw new Error("PL1E | added item is not defined")
         }
 
-        // New id
-        if (newId || !item._id) {
-            // Bypass the readonly for "_id"
-            const tmpData = item.toJSON();
-            tmpData._id = foundry.utils.randomID();
-            item = new Pl1eItem(tmpData);
+        if (!(item instanceof Pl1eItem)) {
+            throw new Error("PL1E | added item " + item.toString() + " is not an instance of Pl1eItem")
         }
 
-        // Copy the parent permission to the sub item
-        // In v10 actor's subItems inherit the ownership from the actor, but theirs ownership do not reflect that.
-        // So we must take actor's ownership for sub-item
-        item.ownership = this.actor?.ownership ?? this.ownership;
+        // Store the temporary item (will be loose on refresh)
+        this.system.subItems.push(item);
 
-        // Add child id if defined
-        if (childId !== undefined) item.system.childId = childId;
+        // Store the item uuid
+        this.system.subItemsUuid.push(item.uuid);
 
         // If this item has sub subItems
-        if (item.system.subItems !== undefined && item.system.subItems.size > 0 && childId === undefined) {
-            let linkId = randomID();
-            item.system.parentId = linkId;
+        if (item.system.subItems.size > 0) {
             for (let [key, subItem] of item.system.subItems) {
-                await this.addEmbedItem(subItem, { childId : linkId });
+                await this.addSubItem(subItem, false);
             }
         }
 
-        // Object
-        this.system.subItems.set(item._id, item);
-
-        if (save) await this.saveEmbedItems();
-
-        return item._id;
+        if (save) {
+            await this.update({
+                ["system.subItemsUuid"] : this.system.subItemsUuid,
+                ["system.subItems"] : this.system.subItems
+            });
+        }
     }
 
     /**
-     * Save all the Embed Items
-     * @return {Promise<void>}
+     * Imports all subItems using their uuid stored in subItemsUuid
+     * @returns {Promise<void>}
      */
-    async saveEmbedItems() {
-        await this.update({
-            "system.subItems": Array.from(this.system.subItems).map(([id, item]) => item.toObject(false)),
-        });
-        this.sheet.render(false);
+    async importSubItems() {
+        this.system.subItems = [];
+        for (let subItemUuid of this.system.subItemsUuid) {
+            this.system.subItems.push(await fromUuid(subItemUuid));
+        }
     }
 
     /**
-     * Delete the Embed Item and clear the actor bonus if any
-     * @param id Item id
-     * @param {boolean} save   if we save in db or not (used internally)
+     * Delete the Sub Item and clear the actor bonus if any
+     * @param uuid Item uuid
+     * @param {boolean} save
      * @return {Promise<void>}
      */
-    async deleteEmbedItem(id, { save = true} = {}) {
-        if (!this.system.subItems.has(id)) {
-            return;
+    async deleteSubItem(uuid, save = true) {
+        const subItemsUuid = this.system.subItemsUuid;
+        const index = subItemsUuid.indexOf(uuid);
+
+        if (index === -1)
+            throw new Error("PL1E | item to delete with " + uuid + " cannot be found")
+
+        // Remove the item uuid
+        subItemsUuid.splice(index, 1);
+
+        // Remove the item using the same index
+        this.system.subItems.splice(index, 1);
+
+        // If this item has sub subItems
+        if (item.system.subItems.size > 0) {
+            for (let [key, subItem] of item.system.subItems) {
+                await this.deleteSubItem(subItem, false);
+            }
         }
 
-        // Remove the embed item
-        this.system.subItems.delete(id);
-
         if (save) {
-            await this.saveEmbedItems();
+            await this.item.update({
+                ["system.subItemsUuid"] : this.system.subItemsUuid,
+                ["system.subItems"] : this.system.subItems
+            });
         }
     }
 
