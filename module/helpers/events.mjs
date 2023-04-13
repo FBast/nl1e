@@ -260,20 +260,22 @@ export class Pl1eEvent {
     /**
      * Add a dynamic attribute to the item
      * @param {Event} event The originating click event
-     * @param {Item} item the item where the attribute is added
+     * @param {Pl1eItem} item the item where the attribute is added
      */
     static async onAttributeAdd(event, item) {
         event.preventDefault();
         event.stopPropagation();
         let attributeId = $(event.currentTarget).data("attribute");
 
-        /** @type {DynamicAttribute} */
         let dynamicAttribute = CONFIG.PL1E.attributeClasses[attributeId]
             ? new CONFIG.PL1E.attributeClasses[attributeId](item)
             : (() => { throw new Error("Unknown attribute type: " + attributeId) })();
 
+        const id = randomID();
+        item.system.dynamicAttributes[id] = dynamicAttribute;
+
         await item.update({
-            ["system.dynamicAttributes." + randomID()]: dynamicAttribute
+            ["system.dynamicAttributes." + id]: dynamicAttribute
         });
     }
 

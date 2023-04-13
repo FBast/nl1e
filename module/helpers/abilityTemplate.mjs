@@ -255,6 +255,7 @@ export class AbilityTemplate extends MeasuredTemplate {
     // Untarget previous targeted
     for (let token of this.#targets) {
       token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
+      console.log("Untarget " + token.name);
     }
     // Target current position
     for (let gridPosition of gridPositions) {
@@ -262,6 +263,7 @@ export class AbilityTemplate extends MeasuredTemplate {
         // Check if target position in template
         if (token.x === gridPosition.x && token.y === gridPosition.y) {
           // Filter non valid targets
+          //TODO-fred it seems that targetGroups is undefined here
           if (!this.targetGroups.includes('all')) {
             if (!this.targetGroups.includes('self') && token.document === this.token) continue;
             if (!this.targetGroups.includes('allies') && token.document.disposition === this.token.disposition) continue;
@@ -271,6 +273,7 @@ export class AbilityTemplate extends MeasuredTemplate {
           if (token.targeted.has(game.user)) continue;
           // Set target and add to target list
           token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
+          console.log("target " + token.name);
           this.#targets.push(token);
         }
       }

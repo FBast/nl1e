@@ -1,3 +1,4 @@
+import {PL1E} from "../config/config.mjs";
 
 
 /**
@@ -44,6 +45,15 @@ export class Pl1eItem extends Item {
                 this.addEmbedItem(item, { save: false, newId: false });
             });
         }
+
+        // Prepare Dynamic Attributes
+        const dynamicAttributes = {};
+        for (let [id, dynamicAttribute] of Object.entries(this.system.dynamicAttributes)) {
+            dynamicAttributes[id] = CONFIG.PL1E.attributeClasses[dynamicAttribute.function]
+                ? new CONFIG.PL1E.attributeClasses[dynamicAttribute.function](dynamicAttribute)
+                : (() => { throw new Error("Unknown attribute type: " + dynamicAttribute.function) })();
+        }
+        this.system.dynamicAttributes = dynamicAttributes;
     }
 
     /**

@@ -10,6 +10,7 @@ import {DynamicAttribute} from "../dynamicAttribute.mjs";
  */
 export class DecreaseAttribute extends DynamicAttribute {
 
+    /** @override */
     constructor(item) {
         super(item);
         this.function = "decrease";

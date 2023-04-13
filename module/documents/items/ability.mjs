@@ -149,7 +149,7 @@ export class Pl1eAbility extends Pl1eItem {
         // Apply dynamic attributes, here we calculate each dynamic attribute for all targets
         let attributesModificationsData = [];
         for (let [id, dynamicAttribute] of Object.entries(this.system.dynamicAttributes)) {
-            const attributeModificationsData = PL1E.attributeClasses[dynamicAttribute.function].apply(dynamicAttribute, characterData, targetsData);
+            const attributeModificationsData = dynamicAttribute.apply(characterData, targetsData);
             attributesModificationsData.push(attributeModificationsData);
         }
 
@@ -221,26 +221,20 @@ export class Pl1eAbility extends Pl1eItem {
      * @private
      */
     mergeAttributesModifications(targetsData, attributesModificationsData) {
-        for (const targetData of targetsData) {
-            // If dynamic attribute array does not exist create
-            if (targetData.dynamicAttributes === undefined) targetData.dynamicAttributes = [];
+        for (const attributeModificationsData of attributesModificationsData) {
+            for (const attributeModificationData of attributeModificationsData) {
+                // Get for the associated target
+                const targetData = targetsData.find(td => td.token === attributeModificationData.token);
+                if (targetData === undefined)
+                    throw new Error("PL1E | Cannot find any target token associated to attribute modification data")
 
-            for (const attributeModificationsData of attributesModificationsData) {
-                // For every attribute modifications we check if this target data has modifications
-                let attributeModificationData = attributeModificationsData.find(atd => atd.token === targetData.token);
-                if (attributeModificationData === undefined) continue;
+                // Check for an existing dynamic attribute with same data
+                const existingDynamicAttribute = targetData.dynamicAttributes
+                    .find(da => da.data === attributeModificationData.dynamicAttribute.data);
 
-                // Now we check if a dynamic attribute inside targetData target the same data path and is not the same
-                let otherAttributeModificationData = attributeModificationsData
-                    .find(am => am.dynamicAttribute.data === attributeModificationData.dynamicAttribute.data && am !== attributeModificationData);
-
-                // If no existing targetData dynamic attribute then add a new
-                if (otherAttributeModificationData.dynamicAttribute === undefined) {
-                    targetData.dynamicAttributes.push(attributeModificationData.dynamicAttribute);
-                }
-                // Else then merge into the existing
-                else {
-                    attributeModificationData.dynamicAttribute.merge(otherAttributeModificationData.dynamicAttribute);
+                // If found then merge
+                if (existingDynamicAttribute) {
+                    existingDynamicAttribute.merge(attributeModificationData.dynamicAttribute)
                 }
             }
         }
