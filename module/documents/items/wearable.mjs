@@ -18,13 +18,13 @@ export class Pl1eWearable extends Pl1eItem {
         if (!this.system.isEquipped) return;
         let ringCount = 1;
 
-        // Unequip other subItems
+        // Unequip other refItems
         for (let otherItem of this.actor.items) {
             // Ignore if otherItem is not a wearable
             if (otherItem.type !== 'wearable') continue;
             // Ignore if otherItem is item
             if (otherItem === this.item) continue;
-            // Count same subItems slot
+            // Count same refItems slot
             if (otherItem.system.isEquipped && otherItem.system.attributes.slot.value === slot) {
                 // Unequipped immediately if clothes, armor or amulet
                 if (['clothes', 'armor', 'amulet'].includes(slot)) {

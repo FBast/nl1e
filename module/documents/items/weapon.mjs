@@ -27,7 +27,7 @@ export class Pl1eWeapon extends Pl1eItem {
             }
             await this.update({["system.isEquippedSecondary"]: !foundry.utils.getProperty(this.item, "system.isEquippedSecondary")});
         }
-        // Unequip other subItems
+        // Unequip other refItems
         for (let otherItem of this.actor.items) {
             // Ignore if otherItem is not a weapon
             if (otherItem.type !== 'weapon') continue;

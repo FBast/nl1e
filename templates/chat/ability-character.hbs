@@ -19,10 +19,10 @@
                 <label>{{localize "PL1E.NoEffects"}}</label>
             {{/if}}
         </div>
-        <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
+        <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-uuid="{{characterData.item.uuid}}"
              data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
         {{#if (ne characterData.linkedItem null)}}
-            <img class="right-image item-edit" src="{{characterData.linkedItem.img}}" data-item-id="{{characterData.linkedItem._id}}"
+            <img class="right-image item-edit" src="{{characterData.linkedItem.img}}" data-item-uuid="{{characterData.linkedItem.uuid}}"
                  data-token-id="{{characterData.tokenId}}" title="{{characterData.linkedItem.name}}" width="36" height="36"/>
         {{/if}}
     </header>

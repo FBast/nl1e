@@ -194,11 +194,11 @@ export class Pl1eAbility extends Pl1eItem {
             let relatedItems = [];
             for (const item of characterData.actor.items) {
                 if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
-                if (item.system.subItems === undefined) continue;
-                for (let [key, subItem] of item.system.subItems) {
-                    const subItemFlag = subItem.getFlag('core', 'sourceId');
+                if (item.system.refItems === undefined) continue;
+                for (let [key, refItem] of item.system.refItems) {
+                    const refItemFlag = refItem.getFlag('core', 'sourceId');
                     const itemFlag = characterData.item.getFlag('core', 'sourceId');
-                    if (subItemFlag !== itemFlag) continue;
+                    if (refItemFlag !== itemFlag) continue;
                     relatedItems.push(item);
                 }
             }

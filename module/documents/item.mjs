@@ -1,4 +1,5 @@
 import {PL1E} from "../config/config.mjs";
+import {Pl1eActor} from "./actor.mjs";
 
 
 /**
@@ -29,20 +30,18 @@ export class Pl1eItem extends Item {
         await this.updateSource(updateData);
     }
 
-    /** @override */
-    async prepareBaseData() {
-        super.prepareBaseData();
-
-        // Prepare Sub items
-        await this.importSubItems();
-    }
-
     /**
      * Augment the basic Item data model with additional dynamic data.
      */
     async prepareData() {
-        // As with the actor class, subItems are documents that can have their data
+        // As with the actor class, refItems are documents that can have their data
         super.prepareData();
+
+        // Prepare Ref items
+        this.system.refItems = [];
+        for (let refItemUuid of this.system.refItemsUuid) {
+            this.system.refItems.push(await fromUuid(refItemUuid));
+        }
 
         // Prepare Dynamic Attributes
         const dynamicAttributes = {};
@@ -71,87 +70,72 @@ export class Pl1eItem extends Item {
 
     //endregion
 
-    //region Sub items
+    //region Ref items
 
     /**
-     * Add a Sub Item
-     * @param {Pl1eItem} item Object to add
+     * Add this item as ref item
+     * @param {Pl1eItem | Pl1eActor} document The document where the item is ref
      * @param {boolean} save Save uuid
      * @return {Promise<string>}
      */
-    async addSubItem(item, save = true) {
-        if (!item) {
-            throw new Error("PL1E | added item is not defined")
+    async addRefItem(document, save = true) {
+        if (!document) {
+            throw new Error("PL1E | ref document is not defined")
         }
-
-        if (!(item instanceof Pl1eItem)) {
-            throw new Error("PL1E | added item " + item.toString() + " is not an instance of Pl1eItem")
-        }
-
-        // Store the temporary item (will be loose on refresh)
-        this.system.subItems.push(item);
 
         // Store the item uuid
-        this.system.subItemsUuid.push(item.uuid);
+        document.system.refItemsUuid.push(this.uuid);
 
-        // If this item has sub subItems
-        if (item.system.subItems.size > 0) {
-            for (let [key, subItem] of item.system.subItems) {
-                await this.addSubItem(subItem, false);
+        // If this item has refItems
+        if (this.system.refItems.length > 0) {
+            for (let refItem of this.system.refItems) {
+                await refItem.addRefItem(document, false);
             }
         }
 
         if (save) {
-            await this.update({
-                ["system.subItemsUuid"] : this.system.subItemsUuid,
-                ["system.subItems"] : this.system.subItems
+            await document.update({
+                ["system.refItemsUuid"] : document.system.refItemsUuid,
             });
         }
+
+        document.sheet.render(document.sheet.rendered);
     }
 
     /**
-     * Imports all subItems using their uuid stored in subItemsUuid
-     * @returns {Promise<void>}
-     */
-    async importSubItems() {
-        this.system.subItems = [];
-        for (let subItemUuid of this.system.subItemsUuid) {
-            this.system.subItems.push(await fromUuid(subItemUuid));
-        }
-    }
-
-    /**
-     * Delete the Sub Item and clear the actor bonus if any
-     * @param uuid Item uuid
+     * Delete the Ref Item and clear the actor bonus if any
+     * @param {Pl1eItem | Pl1eActor} document The document where the ref is deleted
      * @param {boolean} save
      * @return {Promise<void>}
      */
-    async deleteSubItem(uuid, save = true) {
-        const subItemsUuid = this.system.subItemsUuid;
-        const index = subItemsUuid.indexOf(uuid);
+    async deleteRefItem(document, save = true) {
+        if (!document) {
+            throw new Error("PL1E | ref document is not defined")
+        }
+
+        const refItemsUuid = document.system.refItemsUuid;
+        const index = refItemsUuid.indexOf(this.uuid);
 
         if (index === -1)
-            throw new Error("PL1E | item to delete with " + uuid + " cannot be found")
+            throw new Error("PL1E | item to delete with " + this.uuid + " cannot be found")
 
         // Remove the item uuid
-        subItemsUuid.splice(index, 1);
+        refItemsUuid.splice(index, 1);
 
-        // Remove the item using the same index
-        this.system.subItems.splice(index, 1);
-
-        // If this item has sub subItems
-        if (item.system.subItems.size > 0) {
-            for (let [key, subItem] of item.system.subItems) {
-                await this.deleteSubItem(subItem, false);
+        // If this item has ref refItems
+        if (this.system.refItems.length > 0) {
+            for (let refItem of this.system.refItems) {
+                await refItem.deleteRefItem(document, false);
             }
         }
 
         if (save) {
-            await this.item.update({
-                ["system.subItemsUuid"] : this.system.subItemsUuid,
-                ["system.subItems"] : this.system.subItems
+            await document.update({
+                ["system.refItemsUuid"] : document.system.refItemsUuid,
             });
         }
+
+        document.sheet.render(document.sheet.rendered);
     }
 
     //endregion

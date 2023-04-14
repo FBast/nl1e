@@ -1,4 +1,5 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eItem} from "./item.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -59,33 +60,30 @@ export class Pl1eActor extends Actor {
     }
 
     /** @override */
-    prepareData() {
-        // Prepare data for the actor. Calling the super version of this executes
-        // the following, in order: data reset (to clear active effects),
-        // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
-        // prepareDerivedData().
+    async prepareData() {
         super.prepareData();
-    }
 
-    /** @override */
-    prepareBaseData() {
-
-    }
-
-    /** @override */
-    async prepareEmbeddedDocuments() {
-        // Iterate subItems to apply system on actor
-        for (let item of this.items) {
-            if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
-            if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
-            if (item.type === 'wearable' && !item.system.isEquipped) continue;
-            for (let [id, dynamicAttribute] of Object.entries(item.system.dynamicAttributes)) {
-                if (dynamicAttribute.targetGroup !== 'self') continue;
-                await this.applyAttribute(dynamicAttribute, false);
-            }
+        // Prepare Ref items
+        this.system.refItems = [];
+        for (let refItemUuid of this.system.refItemsUuid) {
+            this.system.refItems.push(await fromUuid(refItemUuid));
         }
-        super.prepareEmbeddedDocuments();
     }
+
+    // /** @override */
+    // async prepareEmbeddedDocuments() {
+    //     // Iterate refItems to apply system on actor
+    //     for (let item of this.items) {
+    //         if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
+    //         if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
+    //         if (item.type === 'wearable' && !item.system.isEquipped) continue;
+    //         for (let [id, dynamicAttribute] of Object.entries(item.system.dynamicAttributes)) {
+    //             if (dynamicAttribute.targetGroup !== 'self') continue;
+    //             await this.applyAttribute(dynamicAttribute, false);
+    //         }
+    //     }
+    //     super.prepareEmbeddedDocuments();
+    // }
 
     /**
      * @override
@@ -261,50 +259,6 @@ export class Pl1eActor extends Actor {
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
             if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
-    }
-
-    /**
-     * Prepare character roll data.
-     * @param data
-     * @private
-     */
-    _getCharacterRollData(data) {
-        if (this.type !== 'character') return;
-
-        // Copy the characteristic scores to the top level, so that rolls can use
-        // formulas like `@str.mod + 4`.
-        // if (data.characteristics) {
-        //     for (let [k, v] of Object.entries(data.characteristics)) {
-        //         data[k] = foundry.utils.deepClone(v);
-        //     }
-        // }
-
-        // Add level for easier access, or fall back to 0.
-        // if (data.attributes.level) {
-        //     data.lvl = data.attributes.level.value ?? 0;
-        // }
-    }
-
-    /**
-     * Prepare NPC roll data.
-     * @param data
-     * @private
-     */
-    _getNpcRollData(data) {
-        if (this.type !== 'npc') return;
-
-        // Process additional NPC data here.
-    }
-
-    /**
-     * Prepare Merchant roll data.
-     * @param data
-     * @private
-     */
-    _getMerchantRollData(data) {
-        if (this.type !== 'npc') return;
-
-        // Process additional NPC data here.
     }
 
     //endregion

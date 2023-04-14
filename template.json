@@ -3,6 +3,8 @@
     "types": ["character", "npc", "merchant"],
     "templates": {
       "base": {
+        "refItemsUuid": [],
+        "refItems": [],
         "resources": {
           "health": {
             "value": 0,
@@ -288,8 +290,8 @@
     "types": ["feature", "ability", "weapon", "wearable", "consumable", "common"],
     "templates": {
       "base": {
-        "subItemsUuid": [],
-        "subItems": [],
+        "refItemsUuid": [],
+        "refItems": [],
         "dynamicAttributes": {},
         "selectedOptionalAttribute": "increase"
       },

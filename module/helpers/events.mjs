@@ -80,18 +80,10 @@ export class Pl1eEvent {
     /**
      * Open item sheet
      * @param event The originating click event
-     * @param {Actor|Item} document the document of the item
      */
-    static async onItemEdit(event, document) {
-        const itemId = $(event.currentTarget).data("item-id");
-        if (document === undefined) {
-            const tokenId = $(event.currentTarget).data("token-id");
-            document = await fromUuid(tokenId);
-        }
-        let item;
-        if (document instanceof TokenDocument) item = document.actor.items.get(itemId);
-        if (document instanceof Pl1eActor) item = document.items.get(itemId);
-        if (document instanceof Pl1eItem) item = document.getSubItem(itemId);
+    static async onItemEdit(event) {
+        const itemUuid = $(event.currentTarget).data("item-uuid");
+        let item = await fromUuid(itemUuid);
         if (item) item.sheet.render(true);
     }
 
@@ -137,31 +129,13 @@ export class Pl1eEvent {
     /**
      * Handle deletion of item
      * @param {Event} event The originating click event
-     * @param {Actor|Item} document the document where the item is deleted
+     * @param {Pl1eActor|Pl1eItem} document the document where the item is deleted
      */
     static async onItemDelete(event, document) {
-        const itemId = $(event.currentTarget).data("item-id");
-        if (document instanceof Actor) {
-            const parentItem = document.items.get(itemId);
-            for (let item of document.items) {
-                if (parentItem === item || item.system.childId === undefined) continue;
-                if (parentItem.system.parentId !== item.system.childId) continue;
-                item.delete();
-            }
-            await parentItem.delete();
-        }
-        if (document instanceof Pl1eItem) {
-            //TODO fix using uuid and deleteSubItem
-            const item = document.getSubItem(itemId);
-            if (!item) return;
-            for (let [key, value] of document.system.subItems) {
-                if (value === item) continue;
-                if (value.system.childId === undefined) continue;
-                if (value.system.childId !== item.system.parentId) continue;
-                await document.deleteSubItem(value._id);
-            }
-            await document.deleteSubItem(itemId);
-        }
+        const itemUuid = $(event.currentTarget).data("item-uuid");
+        /** @type {Pl1eItem} */
+        const item = await fromUuid(itemUuid);
+        await item.deleteRefItem(document)
     }
 
     /**

@@ -62,7 +62,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Retrieve the data structure from the base sheet. You can inspect or log
         // the context variable to see the structure, but some key properties for
         // sheets are the actor object, the data object, whether or not it's
-        // editable, the subItems array, and the effects array.
+        // editable, the refItems array, and the effects array.
         const context = super.getData();
 
         // Use a safe clone of the actor data for further operations.
@@ -94,7 +94,7 @@ export class Pl1eActorSheet extends ActorSheet {
         super.activateListeners(html);
 
         // Render the item sheet for viewing/editing prior to the editable check.
-        html.find('.item-edit').on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
+        html.find('.item-edit').on("click", ev => Pl1eEvent.onItemEdit(ev));
         html.find('.item-buy').on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
 
         // -------------------------------------------------------------
@@ -132,7 +132,7 @@ export class Pl1eActorSheet extends ActorSheet {
         if (this.actor.isOwner) {
             let handler = ev => this._onDragStart(ev);
             html.find('li.item').each((i, li) => {
-                if (li.classList.contains("subItems-header")) return;
+                if (li.classList.contains("refItems-header")) return;
                 li.setAttribute("draggable", true);
                 li.addEventListener("dragstart", handler, false);
             });
@@ -140,7 +140,7 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Handle sub subItems to be added as other subItems
+     * Handle refItems to be added as other refItems
      * @param event
      * @param data
      * @returns {Promise<unknown>}
@@ -148,8 +148,6 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     async _onDropItem(event, data) {
         const item = await Item.implementation.fromDropData(data);
-        // Return if same actor
-        // if (game.user.character === this.actor) return;
         // filter item to actor possibilites
         if (this.actor.type === 'merchant' && ['feature', 'ability'].includes(item.type)) return;
         // Player to other actor transfer
@@ -163,18 +161,11 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Other cases
         else {
-            const itemData = item.toObject();
-            const newItem = await this._onDropItemCreate(item);
-            if (itemData.system.subItems !== undefined && itemData.system.subItems.length > 0) {
-                let linkedId = randomID();
-                await newItem[0].update({'system.parentId': linkedId});
-                for (let subItem of itemData.system.subItems) {
-                    const newSubItem = await this._onDropItemCreate(subItem);
-                    await newSubItem[0].update({'system.childId': linkedId});
-                }
-            }
-            // Delete the source item if it is embedded
-            if (item.isOwned) item.delete();
+            // Get the item associated to the drop
+            const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
+            /** @type {Pl1eItem} */
+            const item = await fromUuid(data.uuid);
+            await item.addRefItem(this.actor);
         }
     }
 
@@ -202,11 +193,9 @@ export class Pl1eActorSheet extends ActorSheet {
             5: []
         };
 
-        // Iterate through subItems, allocating to containers
+        // Iterate through refItems, allocating to containers
         const sourceIdFlags = [];
-        for (let item of context.items) {
-            const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;
-            item.img = item.img || DEFAULT_TOKEN;
+        for (let item of context.actor.system.refItems) {
             // Append to item categories
             if (item.type === 'weapon') {
                 weapons.push(item);
@@ -229,11 +218,9 @@ export class Pl1eActorSheet extends ActorSheet {
                 features.push(item);
             }
             // Append to abilities.
-            else if (item.type === 'ability' && !sourceIdFlags.includes(sourceIdFlag)) {
+            else if (item.type === 'ability') {
                 abilities[item.system.attributes.level.value].push(item);
             }
-            // Push sourceId flag to handle duplicates
-            if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
         }
 
         // Assign and return

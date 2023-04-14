@@ -35,19 +35,6 @@ export class Pl1eItemSheet extends ItemSheet {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            if (!this.item.isOriginal) {
-                buttons.unshift({
-                    label: 'PL1E.OpenOriginal',
-                    class: 'open-original',
-                    icon: 'fas fa-copy',
-                    onclick: async () => {
-                        const sourceId = this.item.getFlag('core', 'sourceId');
-                        const item = await fromUuid(sourceId);
-                        await this.close();
-                        item.sheet.render(true);
-                    }
-                });
-            }
             buttons.unshift({
                 label: 'PL1E.Debug',
                 class: 'debug',
@@ -76,9 +63,9 @@ export class Pl1eItemSheet extends ItemSheet {
             context.rollData = actor.getRollData();
         }
 
-        // Prepare character data and subItems.
+        // Prepare character data and refItems.
         if (['feature', 'weapon', 'wearable'].includes(itemData.type)) {
-            this._prepareSubItems(context);
+            this._prepareRefItems(context);
         }
 
         // Add the actor's data to context.data for easier access, as well as flags.
@@ -105,7 +92,7 @@ export class Pl1eItemSheet extends ItemSheet {
         Pl1eFormValidation.positiveDecimal();
 
         // Roll handlers, click handlers, etc. would go here.
-        html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));
+        html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev));
         html.find(`.item-delete`).on("click", ev => Pl1eEvent.onItemDelete(ev, this.item));
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
         html.find('.attribute-add').on("click", ev => Pl1eEvent.onAttributeAdd(ev, this.item))
@@ -123,6 +110,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Get the item associated to the drop
         const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
+        /** @type {Pl1eItem} */
         const item = await fromUuid(data.uuid);
 
         // Return if item cannot embed
@@ -131,12 +119,10 @@ export class Pl1eItemSheet extends ItemSheet {
         // Return if same item
         if (this.item._id === item._id) return;
 
-        await this.item.addSubItem(item);
-
-        this.render(true);
+        await item.addRefItem(this.item);
     }
 
-    _prepareSubItems(context) {
+    _prepareRefItems(context) {
         // Initialize containers.
         const features = [];
         const abilities = {
@@ -148,16 +134,15 @@ export class Pl1eItemSheet extends ItemSheet {
             5: []
         };
 
-        // Iterate through subItems, allocating to containers
-        for (let subItem of context.item.system.subItems) {
-            subItem.img = subItem.img || DEFAULT_TOKEN;
+        // Iterate through refItems, allocating to containers
+        for (let refItem of context.item.system.refItems) {
             // Append to features.
-            if (subItem.type === 'feature') {
-                features.push(subItem);
+            if (refItem.type === 'feature') {
+                features.push(refItem);
             }
             // Append to abilities.
-            else if (subItem.type === 'ability') {
-                abilities[subItem.system.attributes.level.value].push(subItem);
+            else if (refItem.type === 'ability') {
+                abilities[refItem.system.attributes.level.value].push(refItem);
             }
         }
 
