@@ -65,8 +65,8 @@ export class Pl1eActor extends Actor {
 
         // Prepare Ref items
         this.system.refItems = [];
-        for (let refItemUuid of this.system.refItemsUuid) {
-            this.system.refItems.push(await fromUuid(refItemUuid));
+        for (let data of this.system.refItemsData) {
+            this.system.refItems.push(await fromUuid(data.uuid));
         }
     }
 

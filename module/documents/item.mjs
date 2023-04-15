@@ -39,7 +39,7 @@ export class Pl1eItem extends Item {
 
         // Prepare Ref items
         this.system.refItems = [];
-        for (let refItemUuid of this.system.refItemsUuid) {
+        for (let refItemUuid of this.system.refItemsData) {
             this.system.refItems.push(await fromUuid(refItemUuid));
         }
 
@@ -72,6 +72,17 @@ export class Pl1eItem extends Item {
 
     //region Ref items
 
+    getItemData(document) {
+        const index = getItemIndex(document);
+        return document.system.refItemsData[index];
+    }
+
+    getItemIndex(document) {
+        const index = document.system.refItems.indexOf(this);
+        if (index === -1) throw new Error("PL1E | Item " + name + " is not present inside document " + document.name);
+        return index;
+    }
+
     /**
      * Add this item as ref item
      * @param {Pl1eItem | Pl1eActor} document The document where the item is ref
@@ -84,7 +95,7 @@ export class Pl1eItem extends Item {
         }
 
         // Store the item uuid
-        document.system.refItemsUuid.push(this.uuid);
+        document.system.refItemsData.push({uuid: this.uuid});
 
         // If this item has refItems
         if (this.system.refItems.length > 0) {
@@ -95,7 +106,7 @@ export class Pl1eItem extends Item {
 
         if (save) {
             await document.update({
-                ["system.refItemsUuid"] : document.system.refItemsUuid,
+                ["system.refItemsData"] : document.system.refItemsData,
             });
         }
 
@@ -105,6 +116,7 @@ export class Pl1eItem extends Item {
     /**
      * Delete the Ref Item and clear the actor bonus if any
      * @param {Pl1eItem | Pl1eActor} document The document where the ref is deleted
+     * @param {number} key The index of the item to delete
      * @param {boolean} save
      * @return {Promise<void>}
      */
@@ -113,25 +125,22 @@ export class Pl1eItem extends Item {
             throw new Error("PL1E | ref document is not defined")
         }
 
-        const refItemsUuid = document.system.refItemsUuid;
-        const index = refItemsUuid.indexOf(this.uuid);
-
-        if (index === -1)
-            throw new Error("PL1E | item to delete with " + this.uuid + " cannot be found")
-
-        // Remove the item uuid
-        refItemsUuid.splice(index, 1);
+        // Remove the item data
+        const index = this.getItemIndex(document);
+        document.system.refItemsData.splice(index, 1);
 
         // If this item has ref refItems
         if (this.system.refItems.length > 0) {
             for (let refItem of this.system.refItems) {
-                await refItem.deleteRefItem(document, false);
+                const key = document.system.refItemsData.findIndex(itemData => itemData.uuid === refItem.uuid);
+                const item = document.sheet.refItems[key];
+                await item.deleteRefItem(document, false);
             }
         }
 
         if (save) {
             await document.update({
-                ["system.refItemsUuid"] : document.system.refItemsUuid,
+                ["system.refItemsData"] : document.system.refItemsData,
             });
         }
 

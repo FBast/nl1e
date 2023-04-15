@@ -102,7 +102,6 @@ export class Pl1eActorSheet extends ActorSheet {
         if (!this.isEditable) return;
 
         // Item management
-        html.find('.item-create').on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
         html.find('.item-delete').on("click", ev => Pl1eEvent.onItemDelete(ev, this.actor));
 
         // Active Effect management

@@ -100,42 +100,17 @@ export class Pl1eEvent {
     }
 
     /**
-     * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the actor where the item is created
-     */
-    static async onItemCreate(event, actor) {
-        event.preventDefault();
-        const header = event.currentTarget;
-        // Get the type of item to create.
-        const type = header.dataset.type;
-        // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
-        // Initialize a default name.
-        const name = `New ${type.capitalize()}`;
-        // Prepare the item object.
-        const itemData = {
-            name: name,
-            type: type,
-            system: data
-        };
-        // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.system["type"];
-
-        // Finally, create the item!
-        return await Item.create(itemData, {parent: actor});
-    }
-
-    /**
      * Handle deletion of item
      * @param {Event} event The originating click event
      * @param {Pl1eActor|Pl1eItem} document the document where the item is deleted
      */
     static async onItemDelete(event, document) {
-        const itemUuid = $(event.currentTarget).data("item-uuid");
-        /** @type {Pl1eItem} */
-        const item = await fromUuid(itemUuid);
-        await item.deleteRefItem(document)
+        const itemKey = $(event.currentTarget).data("item-key");
+
+        if (!document) throw new Error("PL1E | ref document is not defined")
+
+        const item = document.system.refItems[itemKey];
+        await item.deleteRefItem(document);
     }
 
     /**

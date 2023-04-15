@@ -127,4 +127,37 @@ export class Pl1eHelpers {
         return documents[0];
     }
 
+    /**
+     * Delete the Ref Item and clear the actor bonus if any
+     * @param {Pl1eItem | Pl1eActor} document The document where the ref is deleted
+     * @param {number} key The index of the item to delete
+     * @param {boolean} save
+     * @return {Promise<void>}
+     */
+    static async deleteRefItem(document, key, save = true) {
+        if (!document) {
+            throw new Error("PL1E | ref document is not defined")
+        }
+
+        // Remove the item uuid
+        document.system.refItemsData.splice(key, 1);
+
+        // If this item has ref refItems
+        if (this.system.refItems.length > 0) {
+            for (let refItem of this.system.refItems) {
+                const key = document.system.refItemsData.findIndex(itemData => itemData.uuid === refItem.uuid);
+                const item = document.sheet.refItems[key];
+                await item.deleteRefItem(document, false);
+            }
+        }
+
+        if (save) {
+            await document.update({
+                ["system.refItemsData"] : document.system.refItemsData,
+            });
+        }
+
+        document.sheet.render(document.sheet.rendered);
+    }
+
 }
