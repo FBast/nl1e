@@ -30,7 +30,7 @@ export class Pl1eHelpers {
      * @param {string|null} parentId Used to avoid an infinite loop in properties if set
      * @return {Promise<null>}
      */
-    static async getObjectGameOrPack({ uuid, id, type, data = null, pack = null, parentId = null }) {
+    static async getObjectGameOrPack({ uuid, id, type, data = null, pack = null}) {
         let document = null;
 
         try {
@@ -79,10 +79,6 @@ export class Pl1eHelpers {
 
             // Final
             if (document) {
-                // Care to infinite loop in properties
-                if (!parentId) {
-                    await Pl1eHelpers.refreshItemProperties(document);
-                }
                 document.prepareData();
             }
         } catch (err) {
@@ -93,8 +89,8 @@ export class Pl1eHelpers {
 
     /**
      * Make a temporary item for compendium drag n drop
-     * @param {string}          type
-     * @param {Pl1eItem|JournalPl1e|any[]} data
+     * @param {string} type
+     * @param {Pl1eItem|any[]} data
      * @return {Pl1eItem}
      */
     static createDocumentFromCompendium({ type, data }) {
@@ -104,51 +100,17 @@ export class Pl1eHelpers {
             case "Item":
                 if (data instanceof Pl1eItem) {
                     document = data;
-                } else {
+                }
+                else {
                     document = new Pl1eItem(data);
                 }
                 break;
-
-            // case "JournalEntry":
-            //     if (data instanceof game.l5r5e.JournalL5r5e) {
-            //         document = data;
-            //     } else {
-            //         document = new game.l5r5e.JournalL5r5e(data);
-            //     }
-            //     break;
-
             default:
                 console.log(`PL1E | createObjectFromCompendium - Unmanaged type ${type}`);
                 break;
-        } // swi
+        }
 
         return document;
-    }
-
-    /**
-     * Babele and properties specific
-     * @param {Document} document
-     * @return {Promise<void>}
-     */
-    static async refreshItemProperties(document) {
-        if (document.system?.properties && typeof Babele !== "undefined") {
-            document.system.properties = await Promise.all(
-                document.system.properties.map(async (property) => {
-                    const gameProp = await Pl1eHelpers.getObjectGameOrPack({
-                        id: property.id,
-                        type: "Item",
-                        parentId: document._id || 1,
-                    });
-                    if (gameProp) {
-                        return { id: gameProp.id, name: gameProp.name };
-                    } else {
-                        console.warn(`L5R5E | Unknown property id[${property.id}]`);
-                    }
-                    return property;
-                })
-            );
-            document.updateSource({ "system.properties": document.system.properties });
-        }
     }
 
     /**
@@ -244,8 +206,8 @@ export class Pl1eHelpers {
         let updateDocument = false;
         const itemsData = [];
         for (let item of actor.items.values()) {
-            if (item.getFlag('core', 'sourceId') === undefined) return;
-            if (item.getFlag('core', 'sourceId').split('.')[1] !== sourceId) return;
+            if (item.getFlag('core', 'sourceId') === undefined) continue;
+            if (item.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
             let original = await fromUuid(item.getFlag('core', 'sourceId'));
             if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                 itemsData.push({
@@ -273,6 +235,7 @@ export class Pl1eHelpers {
      * @param item
      * @param sourceId
      * @returns {Promise<void>}
+     * @private
      */
     static async resetCloneSubItems(item, sourceId) {
         let updateDocument = false;
