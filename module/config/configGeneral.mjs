@@ -69,11 +69,14 @@ export function getGeneral() {
     }
 
     PL1E.activations = {
-        "passive": "PL1E.Passive",
-        "reaction": "PL1E.Reaction",
-        "free": "PL1E.Free",
         "action": "PL1E.Action",
         "round": "PL1E.Round",
-        "special": "PL1E.Special"
+        "free": "PL1E.Free",
+        "reaction": "PL1E.Reaction"
+    }
+
+    PL1E.activationLink = {
+        "passive": "PL1E.Passive",
+        "child": "PL1E.Child"
     }
 }

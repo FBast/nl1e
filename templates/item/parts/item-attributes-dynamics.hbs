@@ -26,9 +26,9 @@
                         </select>
                     {{/if}}
                 {{/with}}
-                {{#if ../showActivationToggle}}
-                    <select name="system.dynamicAttributes.{{@key}}.activation">
-                        {{selectOptions (config "activations") selected=../activation localize=true}}
+                {{#if ../showActivationLinkToggle}}
+                    <select name="system.dynamicAttributes.{{@key}}.activationLink">
+                        {{selectOptions (config "activationLinks") selected=../activationLink localize=true}}
                     </select>
                 {{/if}}
                 <a class="attribute-remove flexshrink" data-attribute={{@key}} data-tooltip='{{localize "PL1E.RemoveAttribute"}}'>
@@ -51,7 +51,7 @@
             </div>
             <!-- Activation related values -->
             <div class="item-attribute flexrow">
-                {{#unless (eq ../activation "passive")}}
+                {{#unless (eq ../activationLink "passive")}}
                     <select name="system.dynamicAttributes.{{@key}}.targetGroup">
                         {{selectOptions (config "targetGroups") selected=../targetGroup localize=true}}
                     </select>

@@ -300,8 +300,7 @@
         },
         "attributes": {
           "description": {
-            "value": "",
-            "show": true
+            "value": ""
           }
         }
       }
@@ -311,12 +310,10 @@
       "embeddable": ["feature", "ability"],
       "attributes": {
         "featureType": {
-          "value": "none",
-          "show": true
+          "value": "none"
         },
         "cost": {
-          "value": 0,
-          "show": true
+          "value": 0
         }
       }
     },
@@ -326,70 +323,58 @@
       "isMemorized": false,
       "attributes": {
         "level": {
-          "value": 1,
-          "show": true
+          "value": 1
         },
         "healthCost": {
-          "value": 0,
-          "show": true
+          "value": 0
         },
         "staminaCost": {
-          "value": 0,
-          "show": true
+          "value": 0
         },
         "manaCost": {
-          "value": 0,
-          "show": true
+          "value": 0
+        },
+        "activation": {
+          "value": "action"
         },
         "abilityLink": {
-          "value": "none",
-          "show": true
+          "value": "none"
         },
         "characterRoll": {
-          "value": "none",
-          "show": true
+          "value": "none"
         },
         "areaShape": {
-          "value": "circle",
-          "show": true
+          "value": "circle"
         },
         "range": {
           "value": 0,
-          "resolutionType": "value",
-          "show": true
+          "resolutionType": "value"
         },
         "areaNumber": {
           "value": 1,
-          "resolutionType": "value",
-          "show": true
+          "resolutionType": "value"
         },
         "circleRadius": {
           "value": 1,
-          "resolutionType": "value",
-          "show": true
+          "resolutionType": "value"
         },
         "coneLength": {
           "value": 1,
-          "resolutionType": "value",
-          "show": true
+          "resolutionType": "value"
         },
         "coneAngle": {
-          "value": 50,
-          "show": true
+          "value": 50
         },
         "squareLength": {
           "value": 1,
-          "resolutionType": "value",
-          "show": true
+          "resolutionType": "value"
         },
         "rayLength": {
           "value": 1,
-          "resolutionType": "value",
-          "show": true
+          "resolutionType": "value"
         },
         "targetRoll": {
-          "value": "none",
-          "show": true
+          "value": "none"
         }
       }
     },
@@ -400,24 +385,19 @@
       "isEquippedSecondary": false,
       "attributes": {
         "mastery": {
-          "value": "none",
-          "show": true
+          "value": "none"
         },
         "parryProjectiles": {
-          "value": false,
-          "show": true
+          "value": false
         },
         "hands": {
-          "value": 0,
-          "show": true
+          "value": 0
         },
         "range": {
-          "value": 0,
-          "show": true
+          "value": 0
         },
         "ammo": {
-          "value": 0,
-          "show": true
+          "value": 0
         }
       }
     },
@@ -427,20 +407,16 @@
       "isEquipped": false,
       "attributes": {
         "slot": {
-          "value": "none",
-          "show": true
+          "value": "none"
         },
         "slashingReduction": {
-          "value": 0,
-          "show": true
+          "value": 0
         },
         "piercingReduction": {
-          "value": 0,
-          "show": true
+          "value": 0
         },
         "crushingReduction": {
-          "value": 0,
-          "show": true
+          "value": 0
         }
       }
     },
@@ -450,16 +426,13 @@
       "removedUses": 0,
       "attributes": {
         "activation": {
-          "value": "action",
-          "show": true
+          "value": "action"
         },
         "reloadable": {
-          "value": false,
-          "show": true
+          "value": false
         },
         "uses": {
-          "value": 1,
-          "show": true
+          "value": 1
         }
       }
     },

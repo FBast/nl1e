@@ -11,8 +11,8 @@
  * @property {any} value
  * @property {string} dataGroup
  * @property {string} data
- * @property {boolean} showActivationToggle
- * @property {string} activation
+ * @property {boolean} showActivationLinkToggle
+ * @property {string} activationLink
  * @property {string} targetGroup
  * @property {string} resolutionType
  */

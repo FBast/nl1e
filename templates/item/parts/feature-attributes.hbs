@@ -1,29 +1,3 @@
 <section class="scroll-auto">
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.MainAttributes"}}</legend>
-        {{#each system.attributes}}
-            {{#with (configEntry "attributes" @key)}}
-                {{#if (and (eq category "fixed") ../show)}}
-                    <div class="item-attribute flexrow">
-                        <label>{{localize label}}</label>
-                        {{#if (eq type "number")}}
-                            <input type="text" name="system.attributes.{{@key}}.value" value="{{../value}}" data-dtype="Number"/>
-                        {{else if (eq type "bool")}}
-                            <input type="checkbox" name="system.attributes.{{@key}}.value" {{checked ../value}} data-dtype="Boolean"/>
-                        {{else if (eq type "select")}}
-                            <select name="system.attributes.{{@key}}.value">
-                                {{selectOptions (config select) selected=../value localize=true}}
-                            </select>
-                        {{/if}}
-                        {{#if (ne resolutionType undefined)}}
-                            <select name="system.attributes.{{@key}}.resolutionType">
-                                {{selectOptions (config "resolutionTypes") selected=resolutionType localize=true}}
-                            </select>
-                        {{/if}}
-                    </div>
-                {{/if}}
-            {{/with}}
-        {{/each}}
-    </fieldset>
     {{> "systems/pl1e/templates/item/parts/item-attributes-dynamics.hbs"}}
 </section>

@@ -5,20 +5,14 @@ export class DynamicAttribute {
 
     constructor(param) {
         if (param instanceof Pl1eItem) {
-            if (["feature"].includes(param.type)) {
-                this.activation = "passive";
-                this.showActivationToggle = false;
-            } else if (["consumable"].includes(item.type)) {
-                this.activation = "action";
-                this.showActivationToggle = false;
-            } else {
-                this.activation = "passive";
-                this.showActivationToggle = true;
+            if (["weapon", "wearable"].includes(param.type)) {
+                this.activationLink = "passive";
+                this.showActivationLinkToggle = true;
             }
         }
         else if (param instanceof Object) {
-            this.activation = param.activation;
-            this.showActivationToggle = param.showActivationToggle;
+            this.activationLink = param.activationLink;
+            this.showActivationLinkToggle = param.showActivationLinkToggle;
         }
     }
 
