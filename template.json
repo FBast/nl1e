@@ -285,7 +285,7 @@
     }
   },
   "Item": {
-    "types": ["feature", "ability", "weapon", "wearable", "consumable", "common"],
+    "types": ["feature", "ability", "weapon", "wearable", "consumable", "common", "aspect"],
     "templates": {
       "base": {
         "subItems": [],
@@ -307,7 +307,7 @@
     },
     "feature": {
       "templates": ["base"],
-      "embeddable": ["feature", "ability"],
+      "embeddable": ["feature", "ability", "aspect"],
       "attributes": {
         "featureType": {
           "value": "none"
@@ -319,7 +319,7 @@
     },
     "ability": {
       "templates": ["base"],
-      "embeddable": [],
+      "embeddable": ["aspect"],
       "isMemorized": false,
       "attributes": {
         "level": {
@@ -380,7 +380,7 @@
     },
     "weapon": {
       "templates": ["base", "item"],
-      "embeddable": ["ability", "feature"],
+      "embeddable": ["ability", "feature", "aspect"],
       "isEquippedMain": false,
       "isEquippedSecondary": false,
       "attributes": {
@@ -403,7 +403,7 @@
     },
     "wearable": {
       "templates": ["base", "item"],
-      "embeddable": ["ability", "feature"],
+      "embeddable": ["ability", "feature", "aspect"],
       "isEquipped": false,
       "attributes": {
         "slot": {
@@ -421,7 +421,7 @@
       }
     },
     "consumable": {
-      "templates": ["base", "item"],
+      "templates": ["base", "item", "aspect"],
       "embeddable": [],
       "removedUses": 0,
       "attributes": {
@@ -442,6 +442,15 @@
       "attributes": {
         "formula": "d20 + @str.mod + ceil(@lvl / 2)"
       }
+    },
+    "aspect": {
+      "value": 0,
+      "function": "increase",
+      "dataGroup": "resources",
+      "data": "health",
+      "damageType": "raw",
+      "targetGroup": "all",
+      "resolutionType": "value"
     }
   }
 }

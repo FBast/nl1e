@@ -81,8 +81,8 @@ export class Pl1eItemSheet extends ItemSheet {
             context.rollData = actor.getRollData();
         }
 
-        // Prepare character data and subItems.
-        if (['feature', 'weapon', 'wearable'].includes(itemData.type)) {
+        // Prepare subItems
+        if (["feature", "weapon", "wearable", "ability", "consumable"].includes(itemData.type)) {
             this._prepareSubItems(context);
         }
 
@@ -147,6 +147,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
     _prepareSubItems(context) {
         // Initialize containers.
+        const aspects = [];
         const features = [];
         const abilities = {
             0: [],
@@ -159,18 +160,22 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Iterate through subItems, allocating to containers
         for (let [key, value] of context.item.system.subItems) {
-            value.img = value.img || DEFAULT_TOKEN;
-            // Append to features.
+            // Append to aspects
+            if (value.type === 'aspect') {
+                aspects.push(value);
+            }
+            // Append to features
             if (value.type === 'feature') {
                 features.push(value);
             }
-            // Append to abilities.
+            // Append to abilities
             else if (value.type === 'ability') {
                 abilities[value.system.attributes.level.value].push(value);
             }
         }
 
         // Assign and return
+        context.aspects = aspects;
         context.features = features;
         context.abilities = abilities;
     }

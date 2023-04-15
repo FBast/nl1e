@@ -109,7 +109,7 @@ Handlebars.registerHelper('minus', function(a, b) {
 
 Handlebars.registerHelper('config', function (key) {
     if (key === undefined) {
-        throw new Error(`PL1E | configEntry key is undefined`);
+        throw new Error(`PL1E | config key is undefined`);
     }
     return CONFIG.PL1E[key];
 });

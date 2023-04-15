@@ -1,5 +1,5 @@
-import {Pl1eItem} from "../item.mjs";
+import {Pl1eActorItem} from "./actorItem.mjs";
 
-export class Pl1eFeature extends Pl1eItem {
+export class Pl1eFeature extends Pl1eActorItem {
 
 }

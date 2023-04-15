@@ -4,6 +4,7 @@ import {Pl1eWearable} from "./items/wearable.mjs";
 import {Pl1eConsumable} from "./items/consumable.mjs";
 import {Pl1eItem} from "./item.mjs";
 import {Pl1eFeature} from "./items/feature.mjs";
+import {Pl1eAspect} from "./items/aspect.mjs";
 
 const handler = {
     /**
@@ -22,6 +23,8 @@ const handler = {
                 return new Pl1eWearable(...args);
             case "consumable":
                 return new Pl1eConsumable(...args);
+            case "aspect":
+                return new Pl1eAspect(...args);
             default:
                 return new Pl1eItem(...args);
         }

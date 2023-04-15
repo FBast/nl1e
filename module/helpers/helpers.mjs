@@ -185,7 +185,7 @@ export class Pl1eHelpers {
      * @returns {Promise<void>}
      */
     static async resetClones(item) {
-        // Reset subItems subItems
+        // Reset items subItems
         for (const subItem of game.items) {
             if (subItem.system.subItems === undefined) continue;
             await this.resetCloneSubItems(subItem, item._id);
@@ -250,6 +250,12 @@ export class Pl1eHelpers {
                 subItem.system.dynamicAttributes = original.system.dynamicAttributes;
                 subItem.sheet.render(subItem.sheet.rendered);
                 updateDocument = true;
+            }
+            else if (subItem.type === "aspect") {
+                subItem.system.function = original.system.function;
+                subItem.system.dataGroup = original.system.dataGroup;
+                subItem.system.data = original.system.data;
+                subItem.system.damageType = original.system.damageType;
             }
             else {
                 console.warn("Unknown type : " + subItem.type);

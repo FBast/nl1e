@@ -1,20 +1,6 @@
-import {Pl1eItem} from "../documents/item.mjs";
+import {Pl1eItem} from "../item.mjs";
 
-/** @type {DynamicAttribute} */
-export class DynamicAttribute {
-
-    constructor(param) {
-        if (param instanceof Pl1eItem) {
-            if (["weapon", "wearable"].includes(param.type)) {
-                this.activationLink = "passive";
-                this.showActivationLinkToggle = true;
-            }
-        }
-        else if (param instanceof Object) {
-            this.activationLink = param.activationLink;
-            this.showActivationLinkToggle = param.showActivationLinkToggle;
-        }
-    }
+export class Pl1eAspect extends Pl1eItem {
 
     /**
      * @param {CharacterData} characterData
@@ -26,7 +12,7 @@ export class DynamicAttribute {
     }
 
     /**
-     * @param {DynamicAttribute} previousDynamicAttribute
+     * @param {Attribute} previousDynamicAttribute
      */
     merge(previousDynamicAttribute) {
         throw new Error("PL1E | merge method is not implemented")
@@ -36,7 +22,7 @@ export class DynamicAttribute {
      * @param {Token} characterToken
      * @param {Token} targetToken
      * @returns {boolean}
-     * @protected
+     * @private
      */
     _isTargetValid(characterToken, targetToken) {
         if (this.targetGroup !== undefined) {

@@ -1,7 +1,7 @@
 import {PL1E} from "../../config/config.mjs";
-import {Pl1eItem} from "../item.mjs";
+import {Pl1eActorItem} from "./actorItem.mjs";
 
-export class Pl1eConsumable extends Pl1eItem {
+export class Pl1eConsumable extends Pl1eActorItem {
 
     /** @override */
     async use(options) {

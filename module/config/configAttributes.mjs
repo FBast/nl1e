@@ -232,6 +232,20 @@ export function getAttributes() {
         }
     }
 
+    PL1E.functions = {
+        "increase": "PL1E.Increase",
+        "decrease": "PL1E.Decrease",
+        "override": "PL1E.Override",
+        "transfer": "PL1E.Transfer",
+        "effect": "PL1E.Effect"
+    }
+
+    PL1E.dataGroups = {
+        "resources": "PL1E.Resources",
+        "characteristics": "PL1E.Characteristics",
+        "misc": "PL1E.Misc"
+    }
+
     PL1E.dynamicAttributesGroups = {
         "feature": {
             "increase": "PL1E.Increase",
