@@ -113,7 +113,7 @@
                     <div class="item-stats">
                         {{#with (configEntry system.dataGroup system.data)}}
                             {{#if (eq type "number")}}
-                                <input class="input-positive-decimal" type="number" name="system.subItems.{{@key}}.[1].value" value="{{../system.value}}" data-dtype="Number"/>
+                                <input class="input-positive-decimal" type="number" name="aspects.{{../_id}}.system.value" value="{{../system.value}}" data-dtype="Number"/>
                             {{else if (eq type "bool")}}
                                 <input type="checkbox" name="system.subItems.{{@key}}.value" {{checked ../system.value}} data-dtype="Boolean"/>
                             {{else if (eq type "select")}}
@@ -130,7 +130,7 @@
                 <div class="item-tooltip flexcol">
                     <div class="flexrow">
                         <label>{{localize "PL1E.TargetGroup"}}</label>
-                        <select name="system.targetGroup">
+                        <select name="aspects.{{_id}}.system.targetGroup">
                             {{selectOptions (config "targetGroups") selected=system.targetGroup localize=true}}
                         </select>
                     </div>

@@ -60,6 +60,19 @@ export class Pl1eItemSheet extends ItemSheet {
 
     async _updateObject(event, formData) {
         await super._updateObject(event, formData);
+
+        // Copy aspects into subItems
+        const nestedFormData = Pl1eHelpers.deepen(formData);
+        const aspects = nestedFormData.aspects;
+        if (aspects !== undefined) {
+            for (let [id, aspect] of Object.entries(aspects)) {
+                let item = this.item.system.subItems.get(id)
+                Pl1eHelpers.mergeDeep(item, aspect);
+                await this.item.saveEmbedItems();
+            }
+        }
+
+        // Reset Clones
         await Pl1eHelpers.resetClones(this.item);
     }
 

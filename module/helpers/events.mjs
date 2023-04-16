@@ -332,6 +332,12 @@ export class Pl1eEvent {
         if (tooltip === undefined) return;
 
         $(tooltip).slideToggle(200);
+        $(tooltip).toggleClass('expanded');
+
+        // Store open/closed state in localStorage
+        const itemId = item.attr("data-item-id");
+        const tooltipState = $(tooltip).hasClass('expanded') ? 'open' : 'closed';
+        localStorage.setItem(`tooltipState_${itemId}`, tooltipState);
     }
 
 }
