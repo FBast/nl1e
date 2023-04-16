@@ -104,7 +104,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Item management
         html.find('.item-create').on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
         html.find('.item-delete').on("click", ev => Pl1eEvent.onItemDelete(ev, this.actor));
-        html.find('.item-name').on("click", ev => Pl1eEvent.onItemClick(ev, this.actor));
+        html.find('.item-name').on("click", ev => Pl1eEvent.onItemClick(ev));
 
         // Active Effect management
         html.find(".effect-control").on("click", ev => Pl1eEvent.onManageActiveEffect(ev, this.actor));

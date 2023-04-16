@@ -320,9 +320,8 @@ export class Pl1eEvent {
     /**
      * Handle clicking of dice tooltip buttons
      * @param {Event} event
-     * @param {Actor} actor
      */
-    static async onItemClick(event, actor) {
+    static async onItemClick(event) {
         event.preventDefault();
         event.stopPropagation();
 

@@ -112,6 +112,7 @@ export class Pl1eItemSheet extends ItemSheet {
         // Roll handlers, click handlers, etc. would go here.
         html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));
         html.find(`.item-delete`).on("click", ev => Pl1eEvent.onItemDelete(ev, this.item));
+        html.find('.item-name').on("click", ev => Pl1eEvent.onItemClick(ev));
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
         html.find('.attribute-add').on("click", ev => Pl1eEvent.onAttributeAdd(ev, this.item))
         html.find('.attribute-remove').on("click", ev => Pl1eEvent.onAttributeRemove(ev, this.item))
