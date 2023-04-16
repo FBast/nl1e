@@ -79,9 +79,8 @@ Hooks.once("ready", async function () {
 
             // If the tooltip state is in local storage, show/hide the tooltip accordingly
             if (tooltipState !== null && tooltipState === "open") {
-                $(tooltip).slideToggle(200, function () {
-                    $(tooltip).toggleClass('expanded');
-                });
+                $(tooltip).show();
+                $(tooltip).toggleClass('expanded');
             }
         });
     }

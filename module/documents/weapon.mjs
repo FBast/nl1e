@@ -9,8 +9,8 @@ export class Pl1eWeapon extends Pl1eActorItem {
         // Toggle item hands
         if (hands === 2) {
             await this.update({
-                ["system.isEquippedMain"]: !foundry.utils.getProperty(this.item, "system.isEquippedMain"),
-                ["system.isEquippedSecondary"]: !foundry.utils.getProperty(this.item, "system.isEquippedSecondary")
+                ["system.isEquippedMain"]: !foundry.utils.getProperty(this, "system.isEquippedMain"),
+                ["system.isEquippedSecondary"]: !foundry.utils.getProperty(this, "system.isEquippedSecondary")
             });
         }
         else if (options.main) {
@@ -18,21 +18,21 @@ export class Pl1eWeapon extends Pl1eActorItem {
             if (!this.system.isEquippedMain && this.system.isEquippedSecondary) {
                 await this.update({["system.isEquippedSecondary"]: false});
             }
-            await this.update({["system.isEquippedMain"]: !foundry.utils.getProperty(this.item, "system.isEquippedMain")})
+            await this.update({["system.isEquippedMain"]: !foundry.utils.getProperty(this, "system.isEquippedMain")})
         }
         else {
             // Switch hand case
             if (!this.system.isEquippedSecondary && this.system.isEquippedMain) {
                 await this.update({["system.isEquippedMain"]: false});
             }
-            await this.update({["system.isEquippedSecondary"]: !foundry.utils.getProperty(this.item, "system.isEquippedSecondary")});
+            await this.update({["system.isEquippedSecondary"]: !foundry.utils.getProperty(this, "system.isEquippedSecondary")});
         }
         // Unequip other subItems
         for (let otherItem of this.actor.items) {
             // Ignore if otherItem is not a weapon
             if (otherItem.type !== 'weapon') continue;
             // Ignore if otherItem is item
-            if (otherItem === this.item) continue;
+            if (otherItem === this) continue;
             // If other item is equipped on main and this item is equipped on main
             if (otherItem.system.isEquippedMain && this.system.isEquippedMain) {
                 // If other item is equipped on two hands
