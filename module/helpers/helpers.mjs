@@ -214,6 +214,7 @@ export class Pl1eHelpers {
                     "_id": item._id,
                     "name": original.name,
                     "img": original.img,
+                    "system.description": original.system.description,
                     "system.attributes": original.system.attributes,
                     "system.dynamicAttributes": original.system.dynamicAttributes
                 });
@@ -246,6 +247,7 @@ export class Pl1eHelpers {
             if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(subItem.type)) {
                 subItem.name = original.name;
                 subItem.img = original.img;
+                subItem.system.description = original.system.description,
                 subItem.system.attributes = original.system.attributes;
                 subItem.system.dynamicAttributes = original.system.dynamicAttributes;
                 subItem.sheet.render(subItem.sheet.rendered);

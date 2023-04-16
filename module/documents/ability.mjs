@@ -1,5 +1,5 @@
-import {Pl1eHelpers} from "../../helpers/helpers.mjs";
-import {AbilityTemplate} from "../../helpers/abilityTemplate.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
 import {Pl1eActorItem} from "./actorItem.mjs";
 
 export class Pl1eAbility extends Pl1eActorItem {

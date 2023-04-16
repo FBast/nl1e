@@ -317,4 +317,22 @@ export class Pl1eEvent {
         cardButtons.remove();
     }
 
+    /**
+     * Handle clicking of dice tooltip buttons
+     * @param {Event} event
+     * @param {Actor} actor
+     */
+    static async onItemClick(event, actor) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const item = $(event.currentTarget).closest(".item");
+
+        // Check if tooltip associated
+        const tooltip = item.find(".item-tooltip");
+        if (tooltip === undefined) return;
+
+        $(tooltip).slideToggle(200);
+    }
+
 }

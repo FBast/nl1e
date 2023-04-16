@@ -1,4 +1,4 @@
-import {Pl1eItem} from "../item.mjs";
+import {Pl1eItem} from "./item.mjs";
 
 export class Pl1eActorItem extends Pl1eItem {
 
@@ -152,7 +152,7 @@ export class Pl1eActorItem extends Pl1eItem {
                 speaker: speaker,
                 rollMode: rollMode,
                 flavor: label,
-                content: item.system.description ?? ''
+                content: item.description ?? ''
             });
         }
         // Otherwise, create a roll and send a chat message from it.

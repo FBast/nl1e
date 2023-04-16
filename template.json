@@ -293,15 +293,11 @@
         "selectedOptionalAttribute": "increase"
       },
       "item": {
+        "description": "",
         "price": {
           "gold": 0,
           "silver": 0,
           "copper": 0
-        },
-        "attributes": {
-          "description": {
-            "value": ""
-          }
         }
       }
     },

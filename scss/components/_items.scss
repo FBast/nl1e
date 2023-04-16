@@ -17,7 +17,7 @@
       padding-left: 5px;
       text-align: left;
       display: flex;
-       font-size: 14px;
+      font-size: 14px;
     }
   }
 
@@ -35,10 +35,18 @@
       padding: 0;
     }
 
+    .item-image {
+      flex: 0 0 30px;
+      height: 30px;
+      background-size: 30px;
+      border: none;
+      margin-right: 5px;
+    }
+
     // Item Name
     .item-name {
       flex: 2;
-      margin: 0;
+      margin: 0 5px;
       overflow: hidden;
       font-size: 13px;
       text-align: left;
@@ -77,11 +85,19 @@
       flex: 0 0 100px;
       justify-content: flex-end;
       color: black;
-      a {
+
+      .item-control {
         font-size: 12px;
-        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin: 0 6px;
       }
+    }
+
+    .item-tooltip {
+      display: none;
+      padding: 10px;
     }
 
     // Individual Item
