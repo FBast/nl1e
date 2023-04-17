@@ -288,12 +288,12 @@
     "types": ["feature", "ability", "weapon", "wearable", "consumable", "common", "aspect"],
     "templates": {
       "base": {
+        "description": "",
         "subItems": [],
         "dynamicAttributes": {},
         "selectedOptionalAttribute": "increase"
       },
       "item": {
-        "description": "",
         "price": {
           "gold": 0,
           "silver": 0,

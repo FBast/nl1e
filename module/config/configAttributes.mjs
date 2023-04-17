@@ -350,7 +350,7 @@ export function getAttributes() {
         "burn": "PL1E.Burn",
         "cold": "PL1E.Cold",
         "acid": "PL1E.Acid",
-        "shock": "PL1E.Shock",
+        "shock": "PL1E.Shock"
     }
 
     PL1E.targetGroups = {

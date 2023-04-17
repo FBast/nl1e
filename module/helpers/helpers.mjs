@@ -244,14 +244,11 @@ export class Pl1eHelpers {
             if (subItem.getFlag('core', 'sourceId') === undefined) continue;
             if (subItem.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
             let original = await fromUuid(subItem.getFlag('core', 'sourceId'));
+            subItem.name = original.name;
+            subItem.img = original.img;
+            subItem.system.description = original.system.description;
             if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(subItem.type)) {
-                subItem.name = original.name;
-                subItem.img = original.img;
-                subItem.system.description = original.system.description,
                 subItem.system.attributes = original.system.attributes;
-                subItem.system.dynamicAttributes = original.system.dynamicAttributes;
-                subItem.sheet.render(subItem.sheet.rendered);
-                updateDocument = true;
             }
             else if (subItem.type === "aspect") {
                 subItem.system.function = original.system.function;
@@ -262,6 +259,8 @@ export class Pl1eHelpers {
             else {
                 console.warn("Unknown type : " + subItem.type);
             }
+            updateDocument = true;
+            subItem.sheet.render(subItem.sheet.rendered);
         }
         if (updateDocument) await item.saveEmbedItems();
     }

@@ -26,11 +26,13 @@
                 {{selectOptionsWithLabel (config system.dataGroup) selected=system.data localize=true}}
             </select>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.DamageType"}}</label>
-            <select name="system.damageType">
-                {{selectOptions (config "damageTypes") selected=system.damageType localize=true}}
-            </select>
-        </div>
+        {{#if (or (eq system.function "decrease") (eq system.function "transfer"))}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.DamageType"}}</label>
+                <select name="system.damageType">
+                    {{selectOptions (config "damageTypes") selected=system.damageType localize=true}}
+                </select>
+            </div>
+        {{/if}}
     </section>
 </form>
