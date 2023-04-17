@@ -36,6 +36,6 @@
  * @property {number} result
  * @property {Token} token
  * @property {string} tokenId
- * @property {Pl1eAspect[]} calculatedAspects
+ * @property {Pl1eAspect[]} aspects The calculated aspects of the target
  * @property {boolean} hasEffects The possibility of effects based on aspects number
  */

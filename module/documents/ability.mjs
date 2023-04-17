@@ -35,9 +35,16 @@ export class Pl1eAbility extends Pl1eActorItem {
             item: this,
             itemId: this.uuid,
             attributes: JSON.parse(JSON.stringify(this.system.attributes)),
-            aspects: JSON.parse(JSON.stringify(this.system.aspects)),
+            aspects: [],
             linkedItem: null
         }
+
+        // Get aspects of the item
+        this.system.subItems.forEach((value, key) => {
+            if (value.type === "aspect") {
+                characterData.aspects.push(value);
+            }
+        });
 
         // Get linked attributes
         this._linkItem(characterData);
@@ -62,12 +69,31 @@ export class Pl1eAbility extends Pl1eActorItem {
             if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
                 calculatedAttribute.value = characterData.result > 0 ? calculatedAttribute.value : 0;
             }
+            // Negate some attributes
+            if (["healthCost", "staminaCost", "manaCost"].includes(id)) {
+                calculatedAttribute.value *= -1;
+            }
             calculatedAttributes[id] = calculatedAttribute;
         }
         characterData.attributes = calculatedAttributes;
 
-        // Notify if attributes has effects
-        characterData.hasEffects = Object.values(characterData.attributes).some(atr => atr.data !== undefined);
+        // Apply attributes and notify effects
+        characterData.hasEffects = false;
+        for (const [key, attribute] of Object.entries(characterData.attributes)) {
+            const attributeConfig = CONFIG.PL1E.attributes[key];
+            if (attributeConfig === undefined) throw new Error("PL1E | attribute " + attribute.key + " is not defined")
+            if (attributeConfig.data === undefined) continue;
+            if (attribute.value === 0) continue;
+            // Apply effects
+            const attributeDataConfig = CONFIG.PL1E[attributeConfig.dataGroup][attributeConfig.data];
+            let actorValue = foundry.utils.getProperty(characterData.token.actor, attributeDataConfig.path);
+            actorValue += attribute.value;
+            await characterData.token.actor.update({
+                [attributeDataConfig.path]: actorValue
+            });
+            // Notify effects
+            characterData.hasEffects = true;
+        }
 
         // Ability Data
         const abilityData = {
@@ -145,24 +171,14 @@ export class Pl1eAbility extends Pl1eActorItem {
             targetsData.push(targetData);
         }
 
-        // Apply dynamic attributes, here we calculate each dynamic attribute for all targets
-        let aspectsModificationsData = [];
-        for (let [id, subItem] of Object.entries(this.system.subItems)) {
-            if (subItem.type !== "calculatedAspects") continue;
-            aspectsModificationsData.push(subItem.apply(characterData, targetsData));
+        // Apply dynamic attributes, here we calculate each aspect for all targets
+        for (let aspect of characterData.aspects) {
+            targetsData = await aspect.apply(characterData, targetsData);
         }
-        // let attributesModificationsData = [];
-        // for (let [id, dynamicAttribute] of Object.entries(this.system.dynamicAttributes)) {
-        //     const attributeModificationsData = dynamicAttribute.apply(characterData, targetsData);
-        //     attributesModificationsData.push(attributeModificationsData);
-        // }
-
-        // Merging attributes modifications into more readable targetsData
-        this.mergeAspectsModifications(targetsData, aspectsModificationsData)
 
         // Notify if attributes has effects
         for (const targetData of targetsData) {
-            targetData.hasEffects = targetData.dynamicAttributes.some(atr => atr.data !== undefined);
+            targetData.hasEffects = targetData.aspects.length > 0;
         }
 
         // Display messages
@@ -215,31 +231,6 @@ export class Pl1eAbility extends Pl1eActorItem {
             for (let [id, dynamicAttribute] of Object.entries(characterData.linkedItem.system.aspects)) {
                 if (dynamicAttribute.attributeLink !== "child") continue;
                 characterData.aspects[id] = dynamicAttribute;
-            }
-        }
-    }
-
-    /**
-     * @param {TargetData[]} targetsData
-     * @param {AspectsModificationsData} aspectsModificationsData
-     * @private
-     */
-    mergeAspectsModifications(targetsData, aspectsModificationsData) {
-        for (const attributeModificationsData of aspectsModificationsData) {
-            for (const attributeModificationData of attributeModificationsData) {
-                // Get for the associated target
-                const targetData = targetsData.find(td => td.token === attributeModificationData.token);
-                if (targetData === undefined)
-                    throw new Error("PL1E | Cannot find any target token associated to attribute modification data")
-
-                // Check for an existing dynamic attribute with same data
-                const existingDynamicAttribute = targetData.dynamicAttributes
-                    .find(da => da.data === attributeModificationData.aspect.data);
-
-                // If found then merge
-                if (existingDynamicAttribute) {
-                    existingDynamicAttribute.merge(attributeModificationData.aspect)
-                }
             }
         }
     }

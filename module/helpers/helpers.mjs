@@ -250,7 +250,7 @@ export class Pl1eHelpers {
             if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(subItem.type)) {
                 subItem.system.attributes = original.system.attributes;
             }
-            else if (subItem.type === "calculatedAspects") {
+            else if (subItem.type === "aspect") {
                 subItem.system.function = original.system.function;
                 subItem.system.dataGroup = original.system.dataGroup;
                 subItem.system.data = original.system.data;

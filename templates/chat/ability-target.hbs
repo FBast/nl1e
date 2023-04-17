@@ -1,13 +1,15 @@
 <div class="chat-card item-card">
     <header class="card-header flexrow">
-        <img class="left-image actor-edit" src="{{targetData.token.actor.img}}" data-token-id="{{targetData.tokenId}}"
-             title="{{targetData.token.actor.name}}" width="36" height="36"/>
-        <div class="item-effects">
-            {{#if hasEffects}}
-                {{#each targetData.dynamicAttributes as |attribute id|}}
-                    {{#with (configEntry attribute.dataGroup attribute.data) as |data|}}
-                        <i class="{{#if (gt attribute.value 0)}}fas{{else}}far{{/if}} {{data.icon}} hover-green" data-tooltip="{{localize data.label}}">
-                            <label>{{formatNumber attribute.value signe=true}}</label>
+        <img class="left-image actor-edit" src="{{characterData.token.actor.img}}" data-token-id="{{characterData.tokenId}}"
+             title="{{characterData.token.name}}" width="36" height="36"/>
+        <img class="left-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
+             data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
+        <div class="item-effects-target">
+            {{#if targetData.hasEffects}}
+                {{#each targetData.aspects}}
+                    {{#with (configEntry system.dataGroup system.data)}}
+                        <i class="{{#if (gt ../system.value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
+                            <label>{{formatNumber ../system.value signe=true}}</label>
                         </i>
                     {{/with}}
                 {{/each}}
@@ -15,10 +17,8 @@
                 <label>{{localize "PL1E.NoEffects"}}</label>
             {{/if}}
         </div>
-        <img class="right-image actor-edit" src="{{characterData.token.actor.img}}" data-token-id="{{characterData.tokenId}}"
-             title="{{characterData.actor.name}}" width="36" height="36"/>
-        <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
-             data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
+        <img class="right-image actor-edit" src="{{targetData.token.actor.img}}" data-token-id="{{targetData.tokenId}}"
+             title="{{targetData.token.actor.name}}" width="36" height="36"/>
     </header>
     <div class="card-content">
         {{#if (ne characterData.attributes.targetRoll.value "none")}}

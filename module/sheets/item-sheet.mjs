@@ -175,7 +175,7 @@ export class Pl1eItemSheet extends ItemSheet {
         // Iterate through subItems, allocating to containers
         for (let [key, value] of context.item.system.subItems) {
             // Append to aspects
-            if (value.type === 'calculatedAspects') {
+            if (value.type === 'aspect') {
                 aspects.push(value);
             }
             // Append to features

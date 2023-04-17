@@ -1,4 +1,5 @@
 import {Pl1eItem} from "./item.mjs";
+import {Pl1eItemProxy} from "./itemProxy.mjs";
 
 export class Pl1eActorItem extends Pl1eItem {
 
@@ -65,7 +66,8 @@ export class Pl1eActorItem extends Pl1eItem {
 
         if (!(item instanceof Item) && item?.name && item?.type) {
             // Data -> Item
-            item = new Pl1eItem(item);
+
+            item = new Pl1eItemProxy(item);
         }
 
         // New id
@@ -73,7 +75,7 @@ export class Pl1eActorItem extends Pl1eItem {
             // Bypass the readonly for "_id"
             const tmpData = item.toJSON();
             tmpData._id = foundry.utils.randomID();
-            item = new Pl1eItem(tmpData);
+            item = new Pl1eItemProxy(tmpData);
         }
 
         // Copy the parent permission to the sub item

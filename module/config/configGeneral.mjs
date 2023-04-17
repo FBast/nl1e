@@ -11,6 +11,7 @@ export function getGeneral() {
         "wearable": "systems/pl1e/assets/icons/armor-vest.svg",
         "consumable": "systems/pl1e/assets/icons/round-potion.svg",
         "common": "systems/pl1e/assets/icons/key.svg",
+        "aspect": "systems/pl1e/assets/icons/nodular.svg",
     }
 
     PL1E.defaultNames = {
@@ -23,6 +24,7 @@ export function getGeneral() {
         "wearable": "PL1E.NewWearable",
         "consumable": "PL1E.NewConsumable",
         "common": "PL1E.NewCommon",
+        "aspect": "PL1E.NewAspect",
     }
 
     PL1E.featureTypes = {

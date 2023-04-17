@@ -35,9 +35,19 @@
       margin-right: 5px;
     }
 
-    .item-effects {
+    .item-effects-character {
       display: flex;
-      justify-content: center;
+      justify-content: left;
+      align-items: center;
+
+      i {
+        padding: 0 5px;
+      }
+    }
+
+    .item-effects-target {
+      display: flex;
+      justify-content: right;
       align-items: center;
 
       i {

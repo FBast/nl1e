@@ -23,7 +23,7 @@ const handler = {
                 return new Pl1eWearable(...args);
             case "consumable":
                 return new Pl1eConsumable(...args);
-            case "calculatedAspects":
+            case "aspect":
                 return new Pl1eAspect(...args);
             default:
                 return new Pl1eItem(...args);
