@@ -6,18 +6,6 @@
  */
 
 /**
- * @typedef {Object} DynamicAttribute
- * @property {string} function
- * @property {any} value
- * @property {string} dataGroup
- * @property {string} data
- * @property {boolean} showActivationLinkToggle
- * @property {string} activationLink
- * @property {string} targetGroup
- * @property {string} resolutionType
- */
-
-/**
  * Manage roll data
  * @typedef {Object} RollData
  * @property {string} formula
@@ -36,7 +24,7 @@
  * @property {RollData} rollData The roll data of the character
  * @property {number} result The result of the rollData
  * @property {object} attributes The attributes of the item
- * @property {DynamicAttribute[]} dynamicAttributes The dynamicAttributes of the item
+ * @property {Pl1eAspect[]} aspects The aspects of the item
  * @property {boolean} hasEffects The possibility of effects based on attributes
  * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
  */
@@ -48,23 +36,6 @@
  * @property {number} result
  * @property {Token} token
  * @property {string} tokenId
- * @property {DynamicAttribute[]} dynamicAttributes
- * @property {boolean} hasEffects The possibility of effects based on dynamic attributes number
- */
-
-/**
- * Manage attribute modification data for a single attribute and a single token
- * @typedef {Object} AttributeModificationData
- * @property {Token} token
- * @property {DynamicAttribute} dynamicAttribute
- */
-
-/**
- * Manage attribute modifications data for a single attribute
- * @typedef {AttributeModificationData[]} AttributeModificationsData
- */
-
-/**
- * Manage attribute modifications data for a multiple attribute
- * @typedef {AttributeModificationsData[]} AttributesModificationsData
+ * @property {Pl1eAspect[]} calculatedAspects
+ * @property {boolean} hasEffects The possibility of effects based on aspects number
  */

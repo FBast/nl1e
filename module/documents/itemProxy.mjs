@@ -23,12 +23,12 @@ const handler = {
                 return new Pl1eWearable(...args);
             case "consumable":
                 return new Pl1eConsumable(...args);
-            case "aspect":
+            case "calculatedAspects":
                 return new Pl1eAspect(...args);
             default:
                 return new Pl1eItem(...args);
         }
-    },
+    }
 };
 
 /** @type {typeof import("./item").Pl1eItem} */

@@ -277,7 +277,7 @@ export function getAttributes() {
         }
     }
 
-    PL1E.dynamicAttributes = {
+    PL1E.aspects = {
         "increase": {
             "value": 0,
             "dataGroup": "resources",

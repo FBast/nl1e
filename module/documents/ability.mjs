@@ -35,7 +35,7 @@ export class Pl1eAbility extends Pl1eActorItem {
             item: this,
             itemId: this.uuid,
             attributes: JSON.parse(JSON.stringify(this.system.attributes)),
-            dynamicAttributes: JSON.parse(JSON.stringify(this.system.dynamicAttributes)),
+            aspects: JSON.parse(JSON.stringify(this.system.aspects)),
             linkedItem: null
         }
 
@@ -73,7 +73,7 @@ export class Pl1eAbility extends Pl1eActorItem {
         const abilityData = {
             characterData: characterData,
             templates: []
-        };
+        }
 
         // Target character if areaShape is self
         if (characterData.attributes.areaShape.value === "self") {
@@ -84,7 +84,7 @@ export class Pl1eAbility extends Pl1eActorItem {
             if (characterData.attributes.areaNumber.value !== 0 && calculatedAttributes.areaShape.value !== "self") {
                 await characterData.actor.sheet?.minimize();
                 for (let i = 0; i < calculatedAttributes.areaNumber.value; i++) {
-                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.dynamicAttributes);
+                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.aspects);
                     abilityData.templates.push(template);
                     await template?.drawPreview();
                 }
@@ -146,14 +146,19 @@ export class Pl1eAbility extends Pl1eActorItem {
         }
 
         // Apply dynamic attributes, here we calculate each dynamic attribute for all targets
-        let attributesModificationsData = [];
-        for (let [id, dynamicAttribute] of Object.entries(this.system.dynamicAttributes)) {
-            const attributeModificationsData = dynamicAttribute.apply(characterData, targetsData);
-            attributesModificationsData.push(attributeModificationsData);
+        let aspectsModificationsData = [];
+        for (let [id, subItem] of Object.entries(this.system.subItems)) {
+            if (subItem.type !== "calculatedAspects") continue;
+            aspectsModificationsData.push(subItem.apply(characterData, targetsData));
         }
+        // let attributesModificationsData = [];
+        // for (let [id, dynamicAttribute] of Object.entries(this.system.dynamicAttributes)) {
+        //     const attributeModificationsData = dynamicAttribute.apply(characterData, targetsData);
+        //     attributesModificationsData.push(attributeModificationsData);
+        // }
 
         // Merging attributes modifications into more readable targetsData
-        this.mergeAttributesModifications(targetsData, attributesModificationsData)
+        this.mergeAspectsModifications(targetsData, aspectsModificationsData)
 
         // Notify if attributes has effects
         for (const targetData of targetsData) {
@@ -187,7 +192,7 @@ export class Pl1eAbility extends Pl1eActorItem {
             }
             characterData.linkedItem = relatedItems[0];
             Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.dynamicAttributes);
+            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.aspects);
         }
         if (characterData.attributes.abilityLink.value === 'parent') {
             let relatedItems = [];
@@ -207,20 +212,20 @@ export class Pl1eAbility extends Pl1eActorItem {
             }
             characterData.linkedItem = relatedItems[0];
             Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
-            for (let [id, dynamicAttribute] of Object.entries(characterData.linkedItem.system.dynamicAttributes)) {
+            for (let [id, dynamicAttribute] of Object.entries(characterData.linkedItem.system.aspects)) {
                 if (dynamicAttribute.attributeLink !== "child") continue;
-                characterData.dynamicAttributes[id] = dynamicAttribute;
+                characterData.aspects[id] = dynamicAttribute;
             }
         }
     }
 
     /**
      * @param {TargetData[]} targetsData
-     * @param {AttributesModificationsData} attributesModificationsData
+     * @param {AspectsModificationsData} aspectsModificationsData
      * @private
      */
-    mergeAttributesModifications(targetsData, attributesModificationsData) {
-        for (const attributeModificationsData of attributesModificationsData) {
+    mergeAspectsModifications(targetsData, aspectsModificationsData) {
+        for (const attributeModificationsData of aspectsModificationsData) {
             for (const attributeModificationData of attributeModificationsData) {
                 // Get for the associated target
                 const targetData = targetsData.find(td => td.token === attributeModificationData.token);
@@ -229,11 +234,11 @@ export class Pl1eAbility extends Pl1eActorItem {
 
                 // Check for an existing dynamic attribute with same data
                 const existingDynamicAttribute = targetData.dynamicAttributes
-                    .find(da => da.data === attributeModificationData.dynamicAttribute.data);
+                    .find(da => da.data === attributeModificationData.aspect.data);
 
                 // If found then merge
                 if (existingDynamicAttribute) {
-                    existingDynamicAttribute.merge(attributeModificationData.dynamicAttribute)
+                    existingDynamicAttribute.merge(attributeModificationData.aspect)
                 }
             }
         }

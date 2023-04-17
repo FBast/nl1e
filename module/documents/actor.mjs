@@ -79,7 +79,7 @@ export class Pl1eActor extends Actor {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
-            for (let [id, dynamicAttribute] of Object.entries(item.system.dynamicAttributes)) {
+            for (let [id, dynamicAttribute] of Object.entries(item.system.aspects)) {
                 if (dynamicAttribute.targetGroup !== 'self') continue;
                 await this.applyAttribute(dynamicAttribute, false);
             }

@@ -216,7 +216,7 @@ export class Pl1eHelpers {
                     "img": original.img,
                     "system.description": original.system.description,
                     "system.attributes": original.system.attributes,
-                    "system.dynamicAttributes": original.system.dynamicAttributes
+                    "system.dynamicAttributes": original.system.aspects
                 });
                 item.sheet.render(item.sheet.rendered);
                 updateDocument = true;
@@ -250,7 +250,7 @@ export class Pl1eHelpers {
             if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(subItem.type)) {
                 subItem.system.attributes = original.system.attributes;
             }
-            else if (subItem.type === "aspect") {
+            else if (subItem.type === "calculatedAspects") {
                 subItem.system.function = original.system.function;
                 subItem.system.dataGroup = original.system.dataGroup;
                 subItem.system.data = original.system.data;
