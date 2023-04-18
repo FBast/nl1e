@@ -72,8 +72,7 @@ export function getConfigGeneral() {
 
     PL1E.activations = {
         "action": "PL1E.Action",
-        "round": "PL1E.Round",
-        "free": "PL1E.Free",
+        "instant": "PL1E.Instant",
         "reaction": "PL1E.Reaction"
     }
 

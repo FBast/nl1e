@@ -186,10 +186,9 @@ export class Pl1eActorItem extends Pl1eItem {
 
     /**
      * Use the item
-     * @param options
      * @returns {Promise<void>}
      */
-    async use(options) {
+    async activate() {
         throw new Error("PL1E | use method is not implemented");
     }
 

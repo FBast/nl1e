@@ -403,6 +403,24 @@ export function getConfigStats() {
             "icon": "fa-eye",
             "type": "number",
             "path": "system.misc.nightVision"
+        },
+        "action": {
+            "label": "PL1E.Action",
+            "icon": "fa-clock",
+            "type": "number",
+            "path": "system.misc.action"
+        },
+        "reaction": {
+            "label": "PL1E.Reaction",
+            "icon": "fa-reply-clock",
+            "type": "number",
+            "path": "system.misc.reaction"
+        },
+        "instant": {
+            "label": "PL1E.Instant",
+            "icon": "fa-bell",
+            "type": "number",
+            "path": "system.misc.instant"
         }
     }
 

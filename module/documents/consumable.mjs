@@ -4,7 +4,7 @@ import {Pl1eActorItem} from "./actorItem.mjs";
 export class Pl1eConsumable extends Pl1eActorItem {
 
     /** @override */
-    async use(options) {
+    async activate(options) {
         const attributes = PL1E.attributes;
 
         // Removed one use

@@ -248,7 +248,10 @@
           "movementPenalty": 0,
           "parryBonuses": 0,
           "dodgeBonuses": 0,
-          "nightVision": 9
+          "nightVision": 9,
+          "action": 2,
+          "reaction": 1,
+          "instant": 1
         },
         "reductions": {
           "slashing": 0,
@@ -263,11 +266,6 @@
           "gold": 0,
           "silver": 0,
           "copper": 0
-        },
-        "combat": {
-          "action": 2,
-          "reaction": 1,
-          "free": 1
         }
       }
     },

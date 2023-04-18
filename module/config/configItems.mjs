@@ -17,6 +17,11 @@ export function getConfigItems() {
             "type": "number",
             "fallback": 0
         },
+        "activation": {
+            "label": "PL1E.Activation",
+            "type": "select",
+            "select": "activations"
+        },
         // Features
         "featureType": {
             "label": "PL1E.FeatureType",
@@ -34,23 +39,24 @@ export function getConfigItems() {
         },
         "healthCost": {
             "label": "PL1E.HealthCost",
+            "type": "number",
             "dataGroup": "resources",
             "data": "health",
-            "negate": true
+            "invertSign": true
         },
         "staminaCost": {
             "label": "PL1E.StaminaCost",
-            "category": "fixed",
+            "type": "number",
             "dataGroup": "resources",
             "data": "stamina",
-            "negate": true
+            "invertSign": true
         },
         "manaCost": {
             "label": "PL1E.ManaCost",
-            "category": "fixed",
+            "type": "number",
             "dataGroup": "resources",
             "data": "mana",
-            "negate": true
+            "invertSign": true
         },
         "abilityLink": {
             "label": "PL1E.AbilityLink",
@@ -124,11 +130,6 @@ export function getConfigItems() {
             "select": "slots"
         },
         // Consumables
-        "activation": {
-            "label": "PL1E.Activation",
-            "type": "select",
-            "select": "activations"
-        },
         "reloadable": {
             "label": "PL1E.Reloadable",
             "type": "bool"
@@ -136,6 +137,25 @@ export function getConfigItems() {
         "uses": {
             "label": "PL1E.Uses",
             "type": "number"
+        },
+        // Select generated
+        "action": {
+            "label": "PL1E.Action",
+            "type": "number",
+            "dataGroup": "misc",
+            "data": "action"
+        },
+        "reaction": {
+            "label": "PL1E.Reaction",
+            "type": "number",
+            "dataGroup": "misc",
+            "data": "reaction"
+        },
+        "instant": {
+            "label": "PL1E.Activation",
+            "type": "number",
+            "dataGroup": "misc",
+            "data": "instant"
         }
     }
 

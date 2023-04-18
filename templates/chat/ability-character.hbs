@@ -4,6 +4,7 @@
              title="{{characterData.token.name}}" width="36" height="36"/>
         <div class="item-effects-character">
             {{#if characterData.hasEffects}}
+                {{log characterData.attributes}}
                 {{#each characterData.attributes}}
                     {{#with (configEntry "attributes" @key)}}
                         {{#if (and (ne dataGroup undefined) (ne data undefined) (ne ../value 0))}}

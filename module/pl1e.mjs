@@ -62,28 +62,16 @@ Hooks.once("ready", async function () {
         }
     });
 
-    Hooks.on("renderChatLog", (app, html, data) => {
-        html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
-        html.on("click", ".actor-edit", Pl1eEvent.onActorEdit.bind(this));
-        html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
-    });
-
-    Hooks.on("renderChatPopout", (app, html, data) => {
-        html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
-        html.on("click", ".actor-edit", Pl1eEvent.onActorEdit.bind(this));
-        html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
-    });
-
     let previousRound = null;
     Hooks.on("updateCombat", async (combat, changed) => {
         if (combat.round !== previousRound) {
             // The round has ended, so reset the combat stats on all actors
             for (let combatant of combat.turns) {
-                const combatStats = combatant.token.actor.system.combat;
+                const actorMisc = combatant.token.actor.system.misc;
                 await combatant.token.actor.update({
-                    "system.combat.action": combatStats.action + 2,
-                    "system.combat.reaction": combatStats.reaction + 1,
-                    "system.combat.free": combatStats.free + 1,
+                    "system.misc.action": actorMisc.action + 2,
+                    "system.misc.reaction": actorMisc.reaction + 1,
+                    "system.misc.instant": actorMisc.instant + 1,
                 });
             }
             previousRound = combat.round;
@@ -113,6 +101,18 @@ Hooks.once("ready", async function () {
             }
         });
     }
+});
+
+Hooks.on("renderChatLog", (app, html, data) => {
+    html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
+    html.on("click", ".actor-edit", Pl1eEvent.onActorEdit.bind(this));
+    html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
+});
+
+Hooks.on("renderChatPopout", (app, html, data) => {
+    html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
+    html.on("click", ".actor-edit", Pl1eEvent.onActorEdit.bind(this));
+    html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
 });
 
 Hooks.once("socketlib.ready", () => {

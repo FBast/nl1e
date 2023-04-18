@@ -1,7 +1,6 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
 import {Pl1eActorItem} from "./actorItem.mjs";
-import {PL1E} from "../config/config.mjs";
 
 export class Pl1eAbility extends Pl1eActorItem {
 
@@ -20,7 +19,7 @@ export class Pl1eAbility extends Pl1eActorItem {
     }
 
     /** @override */
-    async use(options) {
+    async activate() {
         if (!this._isContextValid(this.actor)) return;
 
         const token = this.actor.bestToken;
@@ -60,41 +59,8 @@ export class Pl1eAbility extends Pl1eActorItem {
             characterData.result = 1;
         }
 
-        // Calculate character attributes
-        let calculatedAttributes = {};
-        for (let [id, attribute] of Object.entries(characterData.attributes)) {
-            let calculatedAttribute = { ...attribute };
-            if (calculatedAttribute.resolutionType === 'multiplyBySuccess') {
-                calculatedAttribute.value *= characterData.result > 0 ? characterData.result : 0;
-            }
-            if (calculatedAttribute.resolutionType === 'valueIfSuccess') {
-                calculatedAttribute.value = characterData.result > 0 ? calculatedAttribute.value : 0;
-            }
-            // Negate some attributes
-            if (["healthCost", "staminaCost", "manaCost"].includes(id)) {
-                calculatedAttribute.value *= -1;
-            }
-            calculatedAttributes[id] = calculatedAttribute;
-        }
-        characterData.attributes = calculatedAttributes;
-
-        // Apply attributes and notify effects
-        characterData.hasEffects = false;
-        for (const [key, attribute] of Object.entries(characterData.attributes)) {
-            const attributeConfig = PL1E.attributes[key];
-            if (attributeConfig === undefined) throw new Error("PL1E | attribute " + attribute.key + " is not defined")
-            if (attributeConfig.data === undefined) continue;
-            if (attribute.value === 0) continue;
-            // Apply effects
-            const attributeDataConfig = PL1E[attributeConfig.dataGroup][attributeConfig.data];
-            let actorValue = foundry.utils.getProperty(characterData.token.actor, attributeDataConfig.path);
-            actorValue += attribute.value;
-            await characterData.token.actor.update({
-                [attributeDataConfig.path]: actorValue
-            });
-            // Notify effects
-            characterData.hasEffects = true;
-        }
+        // Apply and calculate attributes
+        await this._applyAttributes(characterData);
 
         // Ability Data
         const abilityData = {
@@ -143,6 +109,59 @@ export class Pl1eAbility extends Pl1eActorItem {
 
         // Reset abilityData
         this.abilityData = {};
+    }
+
+    /**
+     * Calculate and apply the attributes
+     * @param characterData
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _applyAttributes(characterData) {
+        // Calculate character attributes
+        let calculatedAttributes = {};
+        for (let [id, attribute] of Object.entries(characterData.attributes)) {
+            let calculatedAttribute = {...attribute};
+            const attributeConfig = CONFIG.PL1E.attributes[id];
+            if (attributeConfig.type === "number") {
+                if (calculatedAttribute.resolutionType === "multiplyBySuccess") {
+                    calculatedAttribute.value *= characterData.result > 0 ? characterData.result : 0;
+                }
+                if (calculatedAttribute.resolutionType === "valueIfSuccess") {
+                    calculatedAttribute.value = characterData.result > 0 ? calculatedAttribute.value : 0;
+                }
+            }
+            // Type select attribute are very specific and should handle one by one
+            if (attributeConfig.type === "select") {
+                if (id === "activation") {
+                    calculatedAttributes[calculatedAttribute.value] = {
+                        value: -1
+                    };
+                }
+            }
+            // Negate some attributes
+            if (attributeConfig.invertSign) {
+                calculatedAttribute.value *= -1;
+            }
+            calculatedAttributes[id] = calculatedAttribute;
+        }
+        characterData.attributes = calculatedAttributes;
+
+        // Apply attributes and notify effects
+        characterData.hasEffects = false;
+        for (const [key, attribute] of Object.entries(characterData.attributes)) {
+            const attributeConfig = CONFIG.PL1E.attributes[key];
+            if (attributeConfig?.data === undefined || attribute.value === 0) continue;
+            // Apply effects
+            const attributeDataConfig = CONFIG.PL1E[attributeConfig.dataGroup][attributeConfig.data];
+            let actorValue = foundry.utils.getProperty(characterData.token.actor, attributeDataConfig.path);
+            actorValue += attribute.value;
+            await characterData.token.actor.update({
+                [attributeDataConfig.path]: actorValue
+            });
+            // Notify effects
+            characterData.hasEffects = true;
+        }
     }
 
     /**
@@ -282,12 +301,28 @@ export class Pl1eAbility extends Pl1eActorItem {
             isValid = false;
         }
         // If cost is not affordable
-        if (itemAttributes.staminaCost.apply && itemAttributes.staminaCost.value > actor.system.resources.stamina.value) {
-            ui.notifications.info(game.i18n.localize("PL1E.NotEnoughStamina"));
+        if (itemAttributes.staminaCost.value > actor.system.resources.stamina.value) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughStamina"));
             isValid = false;
         }
-        if (itemAttributes.manaCost.apply && itemAttributes.manaCost.value > actor.system.resources.mana.value) {
-            ui.notifications.info(game.i18n.localize("PL1E.NotEnoughMana"));
+        if (itemAttributes.manaCost.value > actor.system.resources.mana.value) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
+            isValid = false;
+        }
+        if (itemAttributes.manaCost.value > actor.system.resources.mana.value) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
+            isValid = false;
+        }
+        if (itemAttributes.activation.value === "action" && actor.system.misc.action <= 0) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            isValid = false;
+        }
+        if (itemAttributes.activation.value === "reaction" && actor.system.misc.reaction <= 0) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            isValid = false;
+        }
+        if (itemAttributes.activation.value === "instant" && actor.system.misc.instant <= 0) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
             isValid = false;
         }
         return isValid;

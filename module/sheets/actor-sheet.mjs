@@ -274,12 +274,8 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        const options = {
-            actor: this.actor
-        };
-
         try {
-            await item.use(options);
+            await item.activate();
         }
         catch (e) {
             console.error(e);
