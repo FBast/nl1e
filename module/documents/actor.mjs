@@ -129,9 +129,14 @@ export class Pl1eActor extends Actor {
     _prepareCommonDataBefore(systemData) {
         const actorGeneral = systemData.general ;
         const actorMisc = systemData.misc;
-        // Handle actorAttributes scores.
+        const actorCombat = systemData.combat;
+        // Handle actorAttributes scores
         actorGeneral.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
         actorGeneral.sizeToken = CONFIG.PL1E.sizes[actorMisc.size].token;
+        // Clamp combat stats
+        actorCombat.action = Math.min(actorCombat.action, 2);
+        actorCombat.reaction = Math.min(actorCombat.reaction, 1);
+        actorCombat.free = Math.min(actorCombat.free, 1);
     }
 
     /**

@@ -189,46 +189,6 @@ export function getAttributes() {
             "label": "PL1E.Uses",
             "category": "fixed",
             "type": "number"
-        },
-        // Dynamics
-        "increase": {
-            "label": "PL1E.Increase",
-            "dataGroups": {
-                "resources": "PL1E.Resources",
-                "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc",
-            }
-        },
-        "decrease": {
-            "label": "PL1E.Decrease",
-            "dataGroups": {
-                "resources": "PL1E.Resources",
-                "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc",
-            }
-        },
-        "override": {
-            "label": "PL1E.Override",
-            "dataGroups": {
-                "resources": "PL1E.Resources",
-                "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc",
-            }
-        },
-        "transfer": {
-            "label": "PL1E.Transfer",
-            "dataGroups": {
-                "resources": "PL1E.Resources",
-                "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc",
-            }
-        },
-        "effect": {
-            "label": "PL1E.Effect",
-            "dataGroups": {
-                "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc",
-            }
         }
     }
 

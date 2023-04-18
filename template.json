@@ -263,6 +263,11 @@
           "gold": 0,
           "silver": 0,
           "copper": 0
+        },
+        "combat": {
+          "action": 2,
+          "reaction": 1,
+          "free": 1
         }
       }
     },
