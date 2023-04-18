@@ -1,6 +1,6 @@
 import {PL1E} from "./config.mjs";
 
-export function getGeneral() {
+export function getConfigGeneral() {
     PL1E.defaultIcons = {
         "character": "systems/pl1e/assets/icons/elf-helmet.svg",
         "npc": "systems/pl1e/assets/icons/goblin-head.svg",

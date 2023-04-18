@@ -1,6 +1,6 @@
 import {PL1E} from "./config.mjs";
 
-export function getTemplates() {
+export function getConfigTemplates() {
     PL1E.NPCTemplates = {
         "balanced": {
             "label": "PL1E.Balanced",

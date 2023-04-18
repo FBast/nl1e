@@ -84,7 +84,7 @@ export class Pl1eActor extends Actor {
                 await this.applyAttribute(dynamicAttribute, false);
             }
         }
-        super.prepareEmbeddedDocuments();
+        await super.prepareEmbeddedDocuments();
     }
 
     /**

@@ -1,6 +1,6 @@
 import {PL1E} from "./config.mjs";
 
-export function getStats() {
+export function getConfigStats() {
     PL1E.resources = {
         "health": {
             "label": "PL1E.Health",

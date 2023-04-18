@@ -1,193 +1,140 @@
 import {PL1E} from "./config.mjs";
 
-export function getAttributes() {
+export function getConfigItems() {
     PL1E.attributes = {
         // Common
         "description": {
             "label": "PL1E.Description",
-            "category": "header",
             "type": "text"
         },
         "mastery": {
             "label": "PL1E.Mastery",
-            "category": "header",
             "type": "select",
             "select": "masteries"
         },
         "range": {
             "label": "PL1E.Range",
-            "category": "fixed",
             "type": "number",
-            "conditions": "areaShape!==self",
             "fallback": 0
         },
         // Features
         "featureType": {
             "label": "PL1E.FeatureType",
-            "category": "header",
             "type": "number",
             "select": "featureTypes"
         },
         "cost": {
             "label": "PL1E.Cost",
-            "category": "header",
             "type": "number"
         },
         // Abilities
         "level": {
             "label": "PL1E.Level",
-            "category": "header",
             "type": "number"
         },
         "healthCost": {
             "label": "PL1E.HealthCost",
-            "category": "fixed",
             "dataGroup": "resources",
             "data": "health",
-            "function": "decrease"
+            "negate": true
         },
         "staminaCost": {
             "label": "PL1E.StaminaCost",
             "category": "fixed",
             "dataGroup": "resources",
             "data": "stamina",
-            "function": "decrease"
+            "negate": true
         },
         "manaCost": {
             "label": "PL1E.ManaCost",
             "category": "fixed",
             "dataGroup": "resources",
             "data": "mana",
-            "function": "decrease"
+            "negate": true
         },
         "abilityLink": {
             "label": "PL1E.AbilityLink",
-            "category": "fixed",
             "type": "select",
             "select": "abilityLinks"
         },
         "characterRoll": {
             "label": "PL1E.CharacterRoll",
-            "category": "fixed",
             "type": "select",
             "select": "abilitySkills"
         },
         "areaShape": {
             "label": "PL1E.AreaShape",
-            "category": "fixed",
             "type": "select",
             "select": "areaShapes",
             "fallback": "circle"
         },
         "areaNumber": {
             "label": "PL1E.AreaNumber",
-            "category": "fixed",
             "type": "number",
-            "conditions": "range!==0",
             "fallback": 1
         },
         "circleRadius": {
             "label": "PL1E.CircleRadius",
-            "category": "fixed",
             "type": "number",
-            "conditions": "areaShape===circle",
             "fallback": 1
         },
         "coneLength": {
             "label": "PL1E.ConeLength",
-            "category": "fixed",
             "type": "number",
-            "conditions": "areaShape===cone",
             "fallback": 1
         },
         "coneAngle": {
             "label": "PL1E.ConeAngle",
-            "category": "fixed",
             "type": "number",
-            "conditions": "areaShape===cone",
             "fallback": 50
         },
         "squareLength": {
             "label": "PL1E.SquareLength",
-            "category": "fixed",
             "type": "number",
-            "conditions": "areaShape===square",
             "fallback": 1
         },
         "rayLength": {
             "label": "PL1E.RayLength",
-            "category": "fixed",
             "type": "number",
-            "conditions": "areaShape===ray",
             "fallback": 1
         },
         "targetRoll": {
             "label": "PL1E.TargetRoll",
-            "category": "fixed",
             "type": "select",
             "select": "abilitySkills",
-            "conditions": "areaShape!==self",
             "fallback": "none"
         },
         // Weapons
         "parryProjectiles": {
             "label": "PL1E.ParryProjectiles",
-            "category": "fixed",
             "type": "bool"
         },
         "hands": {
             "label": "PL1E.Hands",
-            "category": "fixed",
             "type": "number"
         },
         "ammo": {
             "label": "PL1E.Ammo",
-            "category": "fixed",
             "type": "number"
         },
         // Wearables
         "slot": {
             "label": "PL1E.Slot",
-            "category": "header",
             "type": "select",
             "select": "slots"
-        },
-        "slashingReduction": {
-            "label": "PL1E.SlashingReduction",
-            "category": "header",
-            "dataGroup": "reductions",
-            "data": "slashing",
-            "function": "increase"
-        },
-        "piercingReduction": {
-            "label": "PL1E.PiercingReduction",
-            "category": "header",
-            "dataGroup": "reductions",
-            "data": "piercing",
-            "function": "increase"
-        },
-        "crushingReduction": {
-            "label": "PL1E.CrushingReduction",
-            "category": "header",
-            "dataGroup": "reductions",
-            "data": "crushing",
-            "function": "increase"
         },
         // Consumables
         "activation": {
             "label": "PL1E.Activation",
-            "category": "header",
             "type": "select",
             "select": "activations"
         },
         "reloadable": {
             "label": "PL1E.Reloadable",
-            "category": "fixed",
             "type": "bool"
         },
         "uses": {
             "label": "PL1E.Uses",
-            "category": "fixed",
             "type": "number"
         }
     }
@@ -331,4 +278,5 @@ export function getAttributes() {
         "parent": "PL1E.Parent",
         "mastery": "PL1E.Mastery"
     }
+
 }

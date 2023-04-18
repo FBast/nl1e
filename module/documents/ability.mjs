@@ -1,6 +1,7 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
 import {Pl1eActorItem} from "./actorItem.mjs";
+import {PL1E} from "../config/config.mjs";
 
 export class Pl1eAbility extends Pl1eActorItem {
 
@@ -80,12 +81,12 @@ export class Pl1eAbility extends Pl1eActorItem {
         // Apply attributes and notify effects
         characterData.hasEffects = false;
         for (const [key, attribute] of Object.entries(characterData.attributes)) {
-            const attributeConfig = CONFIG.PL1E.attributes[key];
+            const attributeConfig = PL1E.attributes[key];
             if (attributeConfig === undefined) throw new Error("PL1E | attribute " + attribute.key + " is not defined")
             if (attributeConfig.data === undefined) continue;
             if (attribute.value === 0) continue;
             // Apply effects
-            const attributeDataConfig = CONFIG.PL1E[attributeConfig.dataGroup][attributeConfig.data];
+            const attributeDataConfig = PL1E[attributeConfig.dataGroup][attributeConfig.data];
             let actorValue = foundry.utils.getProperty(characterData.token.actor, attributeDataConfig.path);
             actorValue += attribute.value;
             await characterData.token.actor.update({

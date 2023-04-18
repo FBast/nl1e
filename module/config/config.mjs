@@ -1,11 +1,11 @@
-import {getAttributes} from "./configAttributes.mjs";
-import {getGeneral} from "./configGeneral.mjs";
-import {getStats} from "./configStats.mjs";
-import {getTemplates} from "./configTemplates.mjs";
+import {getConfigItems} from "./configItems.mjs";
+import {getConfigGeneral} from "./configGeneral.mjs";
+import {getConfigStats} from "./configStats.mjs";
+import {getConfigTemplates} from "./configTemplates.mjs";
 
 export const PL1E = {};
 
-getGeneral();
-getStats();
-getAttributes();
-getTemplates();
+getConfigGeneral();
+getConfigStats();
+getConfigItems();
+getConfigTemplates();
