@@ -156,7 +156,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         const data = item.toObject(false);
 
-        this.document.addEmbedItem(data);
+        await this.item.addEmbedItem(data);
     }
 
     _prepareSubItems(context) {

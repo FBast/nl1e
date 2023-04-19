@@ -188,11 +188,11 @@ export class Pl1eHelpers {
         // Reset items subItems
         for (const subItem of game.items) {
             if (subItem.system.subItems === undefined) continue;
-            await this.resetCloneSubItems(subItem, item._id);
+            await this._resetCloneSubItems(subItem, item._id);
         }
         // Reset actors subItems
         for (const actor of game.actors) {
-            await this.resetCloneActorItems(actor, item._id);
+            await this._resetCloneActorItems(actor, item._id);
         }
     }
 
@@ -201,8 +201,9 @@ export class Pl1eHelpers {
      * @param actor
      * @param sourceId
      * @returns {Promise<void>}
+     * @private
      */
-    static async resetCloneActorItems(actor, sourceId) {
+    static async _resetCloneActorItems(actor, sourceId) {
         let updateDocument = false;
         const itemsData = [];
         for (let item of actor.items.values()) {
@@ -210,13 +211,14 @@ export class Pl1eHelpers {
             if (item.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
             let original = await fromUuid(item.getFlag('core', 'sourceId'));
             if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
+                // await this._resetCloneSubItems(item, sourceId);
                 itemsData.push({
-                    "_id": item._id,
+                    // "_id": item._id,
                     "name": original.name,
                     "img": original.img,
                     "system.description": original.system.description,
                     "system.attributes": original.system.attributes,
-                    "system.dynamicAttributes": original.system.aspects
+                    "system.aspects": original.system.aspects
                 });
                 item.sheet.render(item.sheet.rendered);
                 updateDocument = true;
@@ -238,7 +240,7 @@ export class Pl1eHelpers {
      * @returns {Promise<void>}
      * @private
      */
-    static async resetCloneSubItems(item, sourceId) {
+    static async _resetCloneSubItems(item, sourceId) {
         let updateDocument = false;
         for (let [key, subItem] of item.system.subItems) {
             if (subItem.getFlag('core', 'sourceId') === undefined) continue;

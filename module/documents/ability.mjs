@@ -20,7 +20,7 @@ export class Pl1eAbility extends Pl1eActorItem {
 
     /** @override */
     async activate() {
-        if (!this._isContextValid(this.actor)) return;
+        if (!this._canActivate(this.actor)) return;
 
         const token = this.actor.bestToken;
         if (token === null) return;
@@ -284,10 +284,11 @@ export class Pl1eAbility extends Pl1eActorItem {
     }
 
     /**
-     * Check if the ability context is valid
+     * Check if the ability activation is valid
+     * @param {Actor} actor
      * @private
      */
-    _isContextValid(actor) {
+    _canActivate(actor) {
         let isValid = true;
         const itemAttributes = this.system.attributes;
         // If is not in battle
@@ -318,11 +319,11 @@ export class Pl1eAbility extends Pl1eActorItem {
             isValid = false;
         }
         if (itemAttributes.activation.value === "reaction" && actor.system.misc.reaction <= 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreRection"));
             isValid = false;
         }
         if (itemAttributes.activation.value === "instant" && actor.system.misc.instant <= 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreInstant"));
             isValid = false;
         }
         return isValid;
