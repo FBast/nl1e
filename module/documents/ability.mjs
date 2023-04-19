@@ -74,9 +74,9 @@ export class Pl1eAbility extends Pl1eActorItem {
         }
         // Else create target selection templates
         else {
-            if (characterData.attributes.areaNumber.value !== 0 && calculatedAttributes.areaShape.value !== "self") {
+            if (characterData.attributes.areaNumber.value !== 0 && characterData.attributes.areaShape.value !== "self") {
                 await characterData.actor.sheet?.minimize();
-                for (let i = 0; i < calculatedAttributes.areaNumber.value; i++) {
+                for (let i = 0; i < characterData.attributes.areaNumber.value; i++) {
                     const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.aspects);
                     abilityData.templates.push(template);
                     await template?.drawPreview();
