@@ -6,7 +6,7 @@ export class Pl1eAspect extends Pl1eItem {
      * @param {CharacterData} characterData
      * @param {TargetData[]} targetsData
      */
-    apply(characterData, targetsData) {
+    async apply(characterData, targetsData) {
         // Calculate the aspect
         switch (this.system.function) {
             case "increase":

@@ -292,9 +292,9 @@
     "templates": {
       "base": {
         "description": "",
-        "subItems": [],
-        "dynamicAttributes": {},
-        "selectedOptionalAttribute": "increase"
+        "refItems": [],
+        "refItemsUuid": [],
+        "refItemsData" : []
       },
       "item": {
         "price": {
@@ -306,7 +306,7 @@
     },
     "feature": {
       "templates": ["base"],
-      "embeddable": ["feature", "ability", "aspect"],
+      "refItemTypes": ["feature", "ability", "aspect"],
       "attributes": {
         "featureType": {
           "value": "none"
@@ -318,7 +318,7 @@
     },
     "ability": {
       "templates": ["base"],
-      "embeddable": ["aspect"],
+      "refItemTypes": ["aspect"],
       "isMemorized": false,
       "attributes": {
         "level": {
@@ -379,7 +379,7 @@
     },
     "weapon": {
       "templates": ["base", "item"],
-      "embeddable": ["ability", "feature", "aspect"],
+      "refItemTypes": ["feature", "ability", "aspect"],
       "isEquippedMain": false,
       "isEquippedSecondary": false,
       "attributes": {
@@ -402,7 +402,7 @@
     },
     "wearable": {
       "templates": ["base", "item"],
-      "embeddable": ["ability", "feature", "aspect"],
+      "refItemTypes": ["feature", "ability", "aspect"],
       "isEquipped": false,
       "attributes": {
         "slot": {
@@ -421,7 +421,7 @@
     },
     "consumable": {
       "templates": ["base", "item", "aspect"],
-      "embeddable": [],
+      "refItemTypes": [],
       "removedUses": 0,
       "attributes": {
         "activation": {
@@ -437,7 +437,7 @@
     },
     "common": {
       "templates": ["base", "item"],
-      "embeddable": [],
+      "refItemTypes": [],
       "attributes": {
         "formula": "d20 + @str.mod + ceil(@lvl / 2)"
       }

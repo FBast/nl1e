@@ -80,4 +80,5 @@ export function getConfigGeneral() {
         "passive": "PL1E.Passive",
         "child": "PL1E.Child"
     }
+
 }

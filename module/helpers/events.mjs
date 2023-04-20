@@ -82,15 +82,17 @@ export class Pl1eEvent {
      * @param {Actor|Item} document the document of the item
      */
     static async onItemEdit(event, document) {
-        const itemId = $(event.currentTarget).data("item-id");
-        if (document === undefined) {
-            const tokenId = $(event.currentTarget).data("token-id");
-            document = await fromUuid(tokenId);
-        }
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
+
+        // Token redirection
+        const tokenId = $(event.currentTarget).data("token-id");
+        if (tokenId !== undefined) document = document.actor;
+
         let item;
-        if (document instanceof TokenDocument) item = document.actor.items.get(itemId);
-        if (document instanceof Pl1eActor) item = document.items.get(itemId);
-        if (document instanceof Pl1eItem) item = document.getEmbedItem(itemId);
+        if (itemUuid) item = await fromUuid(itemUuid);
+        else if (document instanceof Pl1eActor && itemId) item = document.items.get(itemId);
+        else if (document instanceof Pl1eItem && itemId) item = document.getEmbedItem(itemId);
         if (item) item.sheet.render(true);
     }
 
@@ -139,8 +141,11 @@ export class Pl1eEvent {
      * @param {Actor|Item} document the document where the item is deleted
      */
     static async onItemDelete(event, document) {
-        const itemId = $(event.currentTarget).data("item-id");
-        if (document instanceof Actor) {
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
+
+        // Remove subItems from actor
+        if (document instanceof Actor && itemId) {
             const parentItem = document.items.get(itemId);
             for (let item of document.items) {
                 if (parentItem === item || item.system.childId === undefined) continue;
@@ -149,16 +154,20 @@ export class Pl1eEvent {
             }
             await parentItem.delete();
         }
-        if (document instanceof Pl1eItem) {
-            const item = document.getEmbedItem(itemId);
-            if (!item) return;
-            for (let [key, value] of document.system.subItems) {
-                if (value === item) continue;
-                if (value.system.childId === undefined) continue;
-                if (value.system.childId !== item.system.parentId) continue;
-                await document.deleteEmbedItem(value._id);
+        // Remove refItem from item
+        else if (document instanceof Pl1eItem) {
+            let index = -1;
+            if (itemId) index = document.system.refItems.findIndex(item => item._id === itemId);
+            else if (itemUuid) index = document.system.refItemsUuid.indexOf(itemUuid);
+            if (index > -1) {
+                document.system.refItemsUuid.splice(index, 1);
+                document.system.refItemsData.splice(index, 1);
+                await document.update({
+                    "system.refItemsUuid": document.system.refItemsUuid,
+                    "system.refItemsData": document.system.refItemsData,
+                });
+                document.sheet.render(document.sheet.rendered);
             }
-            await document.deleteEmbedItem(itemId);
         }
     }
 
@@ -273,7 +282,7 @@ export class Pl1eEvent {
 
         const attributeItem = await Item.create(itemData);
 
-        await item.addEmbedItem(attributeItem);
+        await item.addSubItem(attributeItem);
     }
 
     /**

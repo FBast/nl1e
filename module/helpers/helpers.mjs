@@ -6,114 +6,6 @@ import {Pl1eItem} from "../documents/item.mjs";
 export class Pl1eHelpers {
 
     /**
-     * Return the target object on a drag n drop event, or null if not found
-     * @param {DragEvent} event
-     * @return {Promise<null>}
-     */
-    static async getDragNDropTargetObject(event) {
-        let data;
-        try {
-            data = JSON.parse(event.dataTransfer?.getData("text/plain"));
-        } catch (err) {
-            return null;
-        }
-        return await Pl1eHelpers.getObjectGameOrPack(data);
-    }
-
-    /**
-     * Return the object from Game or Pack by his ID, or null if not found
-     * @param {string}      uuid     "Item.5qI6SU85VSFqji8W"
-     * @param {string}      id       "5qI6SU85VSFqji8W"
-     * @param {string}      type     Type ("Item", "JournalEntry"...)
-     * @param {any[]|null}  data     Plain document data
-     * @param {string|null} pack     Pack name
-     * @param {string|null} parentId Used to avoid an infinite loop in properties if set
-     * @return {Promise<null>}
-     */
-    static async getObjectGameOrPack({ uuid, id, type, data = null, pack = null}) {
-        let document = null;
-
-        try {
-            // Direct Object
-            if (data?._id) {
-                document = Pl1eHelpers.createDocumentFromCompendium({ type, data });
-            } else if (!uuid && (!id || !type)) {
-                return null;
-            }
-
-            // UUID
-            if (!document && !!uuid) {
-                document = await fromUuid(uuid);
-            }
-            // TODO need to migrate to UUID
-
-            // Named pack
-            if (!document) {
-                // If no pack passed, but it's a core item, we know the pack to get it
-                if (!pack && id.substring(0, 7) === "PLCore") {
-                    pack = Pl1eHelpers.getPackNameForCoreItem(id);
-                }
-
-                if (pack) {
-                    const tmpData = await game.packs.get(pack).getDocument(id);
-                    if (tmpData) {
-                        document = Pl1eHelpers.createDocumentFromCompendium({ type, data: tmpData });
-                    }
-                }
-            }
-
-            // Game object
-            if (!document) {
-                document = CONFIG[type].collection.instance.get(id);
-            }
-
-            // Unknown pack object, iterate all packs
-            if (!document) {
-                for (const comp of game.packs) {
-                    const tmpData = await comp.getDocument(id);
-                    if (tmpData) {
-                        document = Pl1eHelpers.createDocumentFromCompendium({ type, data: tmpData });
-                    }
-                }
-            }
-
-            // Final
-            if (document) {
-                document.prepareData();
-            }
-        } catch (err) {
-            console.warn("PL1E | ", err);
-        }
-        return document;
-    }
-
-    /**
-     * Make a temporary item for compendium drag n drop
-     * @param {string} type
-     * @param {Pl1eItem|any[]} data
-     * @return {Pl1eItem}
-     */
-    static createDocumentFromCompendium({ type, data }) {
-        let document = null;
-
-        switch (type) {
-            case "Item":
-                if (data instanceof Pl1eItem) {
-                    document = data;
-                }
-                else {
-                    document = new Pl1eItem(data);
-                }
-                break;
-            default:
-                console.log(`PL1E | createObjectFromCompendium - Unmanaged type ${type}`);
-                break;
-        }
-
-        return document;
-    }
-
-    /**
      * Simple object check.
      * @param item
      * @returns {boolean}
@@ -185,15 +77,20 @@ export class Pl1eHelpers {
      * @returns {Promise<void>}
      */
     static async resetClones(item) {
-        // Reset items subItems
-        for (const subItem of game.items) {
-            if (subItem.system.subItems === undefined) continue;
-            await this._resetCloneSubItems(subItem, item._id);
-        }
-        // Reset actors subItems
-        for (const actor of game.actors) {
-            await this._resetCloneActorItems(actor, item._id);
-        }
+        // // Reset items subItems
+        // for (const subItem of game.items) {
+        //     if (subItem.system.subItems === undefined) continue;
+        //     await this._resetCloneSubItems(subItem, item._id);
+        // }
+        // // Reset actors subItems
+        // for (const actor of game.actors) {
+        //     await this._resetCloneActorItems(actor, item._id);
+        // }
+        // // Render all sheet currently rendered
+        // const sheets = Object.values(ui.windows).filter(w => w instanceof ActorSheet || w instanceof ItemSheet);
+        // for (let sheet of sheets) {
+        //     sheet.render(true);
+        // }
     }
 
     /**
@@ -229,7 +126,6 @@ export class Pl1eHelpers {
         }
         if (updateDocument) {
             await actor.updateEmbeddedDocuments("Item", itemsData);
-            actor.sheet.render(actor.sheet.rendered);
         }
     }
 
@@ -262,9 +158,8 @@ export class Pl1eHelpers {
                 console.warn("Unknown type : " + subItem.type);
             }
             updateDocument = true;
-            subItem.sheet.render(subItem.sheet.rendered);
         }
-        if (updateDocument) await item.saveEmbedItems();
+        if (updateDocument) await item.saveSubItems();
     }
 
     /**

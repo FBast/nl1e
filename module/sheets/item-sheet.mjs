@@ -61,14 +61,24 @@ export class Pl1eItemSheet extends ItemSheet {
     async _updateObject(event, formData) {
         await super._updateObject(event, formData);
 
-        // Copy aspects into subItems
-        const nestedFormData = Pl1eHelpers.deepen(formData);
+        // Save aspects data
+        const filteredObj = [];
+        for (const [key, value] in Object.entries(formData)) {
+            if (Array.isArray(value)) {
+                filteredObj[key] = value.slice(-1)[0];
+            } else {
+                filteredObj[key] = value;
+            }
+        }
+        const nestedFormData = Pl1eHelpers.deepen(filteredObj);
         const aspects = nestedFormData.aspects;
         if (aspects !== undefined) {
             for (let [id, aspect] of Object.entries(aspects)) {
-                let item = this.item.system.subItems.get(id)
-                Pl1eHelpers.mergeDeep(item, aspect);
-                await this.item.saveEmbedItems();
+                const index = this.item.system.refItems.findIndex(item => item._id === id);
+                this.item.system.refItemsData[index] = aspect;
+                await this.item.update({
+                    "system.refItemsData": this.item.system.refItemsData
+                })
             }
         }
 
@@ -94,9 +104,9 @@ export class Pl1eItemSheet extends ItemSheet {
             context.rollData = actor.getRollData();
         }
 
-        // Prepare subItems
-        if (["feature", "weapon", "wearable", "ability", "consumable"].includes(itemData.type)) {
-            this._prepareSubItems(context);
+        // Prepare refItems
+        if (context.item.system.refItems !== undefined) {
+            this._prepareItems(context);
         }
 
         // Add the actor's data to context.data for easier access, as well as flags.
@@ -141,29 +151,34 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         // Check item type and subtype
-        let item = await Pl1eHelpers.getDragNDropTargetObject(event);
 
-        // Return if item cannot embed
-        if (!this.item.system.embeddable.includes(item.type)) return
-
-        // Return if same item
-        if (this.object._id === item._id) return;
-
-        // Flag the source GUID
-        if (item.uuid && !item.pack && !item.getFlag('core', 'sourceId')) {
-            await item.setFlag('core', 'sourceId', item.uuid);
+        let data = JSON.parse(event.dataTransfer?.getData("text/plain"));
+        let item = await fromUuid(data.uuid);
+        if (!item) {
+            console.log(`PL1E | No item found with UUID ${data}`);
+            return;
         }
 
-        const data = item.toObject(false);
+        // Return if same item
+        if (this.item.uuid === item.uuid) return;
 
-        await this.item.addEmbedItem(data);
+        if (this.item.system.refItemTypes.includes(item.type)) {
+            this.item.system.refItemsUuid.push(item.uuid);
+            this.item.system.refItemsData.push({});
+            // Save
+            await this.item.update({
+                "system.refItemsUuid": this.item.system.refItemsUuid,
+                "system.refItemsData": this.item.system.refItemsData
+            })
+            this.render(this.rendered)
+        }
     }
 
-    _prepareSubItems(context) {
+    _prepareItems(context) {
         // Initialize containers.
         const aspects = [];
         const features = [];
-        const abilities = {
+        let abilities = {
             0: [],
             1: [],
             2: [],
@@ -172,19 +187,20 @@ export class Pl1eItemSheet extends ItemSheet {
             5: []
         };
 
-        // Iterate through subItems, allocating to containers
-        for (let [key, value] of context.item.system.subItems) {
-            // Append to aspects
-            if (value.type === 'aspect') {
-                aspects.push(value);
-            }
+        // Iterate through refItems, allocating to containers
+        for (let i = 0; i < context.item.system.refItems.length; i++) {
+            const item = context.item.system.refItems[i];
             // Append to features
-            if (value.type === 'feature') {
-                features.push(value);
+            if (item.type === 'feature') {
+                features.push(item);
             }
             // Append to abilities
-            else if (value.type === 'ability') {
-                abilities[value.system.attributes.level.value].push(value);
+            else if (item.type === 'ability') {
+                abilities[item.system.attributes.level.value].push(item);
+            }
+            // Append to aspects
+            if (item.type === 'aspect') {
+                aspects.push(item)
             }
         }
 

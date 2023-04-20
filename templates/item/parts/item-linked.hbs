@@ -3,21 +3,16 @@
         <li class="item flexrow items-header">
             <div class="item-name">{{localize "PL1E.Traits"}}</div>
         </li>
-        {{#each features as |item id|}}
-            <li class="item flexrow" data-item-id="{{item._id}}">
-                <div class="item-name">
-                    <div class="item-image">
-                        <a class="item-edit hover-red" data-item-id="{{item._id}}">
-                            <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
-                        </a>
+        {{#each features}}
+            <li class="item" data-item-uuid="{{uuid}}">
+                <div class="flexrow">
+                    <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                    <label class="item-name hover-red">{{name}}</label>
+                    <div class="item-controls">
+                        {{#if (eq system.childId undefined)}}
+                            <a class="item-control item-delete" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        {{/if}}
                     </div>
-                    <h4>{{item.name}}</h4>
-                </div>
-                <div class="item-controls">
-                    <a class="item-control item-edit" data-item-id="{{item._id}}" data-tooltip='{{localize "PL1E.Edit"}}'><i class="fas fa-eye"></i></a>
-                    {{#if (eq item.system.childId undefined)}}
-                        <a class="item-control item-delete" data-item-id="{{item._id}}" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
-                    {{/if}}
                 </div>
             </li>
         {{/each}}
@@ -28,13 +23,13 @@
                 <div class="item-name">{{localize "PL1E.AbilitiesLevel"}} {{level}}</div>
             </li>
             {{#each abilities}}
-                <li class="item" data-item-id="{{_id}}">
+                <li class="item" data-item-uuid="{{uuid}}">
                     <div class="flexrow">
-                        <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24" data-item-id='{{_id}}'/>
+                        <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
                         <label class="item-name hover-red">{{name}}</label>
                         <div class="item-controls">
-                            {{#if (eq item.system.childId undefined)}}
-                                <a class="item-control item-delete" data-item-id="{{item._id}}" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                            {{#if (eq system.childId undefined)}}
+                                <a class="item-control item-delete" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                             {{/if}}
                         </div>
                     </div>
