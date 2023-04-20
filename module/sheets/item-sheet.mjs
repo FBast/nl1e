@@ -61,27 +61,6 @@ export class Pl1eItemSheet extends ItemSheet {
     async _updateObject(event, formData) {
         await super._updateObject(event, formData);
 
-        // Save aspects data
-        const filteredObj = [];
-        for (const [key, value] in Object.entries(formData)) {
-            if (Array.isArray(value)) {
-                filteredObj[key] = value.slice(-1)[0];
-            } else {
-                filteredObj[key] = value;
-            }
-        }
-        const nestedFormData = Pl1eHelpers.deepen(filteredObj);
-        const aspects = nestedFormData.aspects;
-        if (aspects !== undefined) {
-            for (let [id, aspect] of Object.entries(aspects)) {
-                const index = this.item.system.refItems.findIndex(item => item._id === id);
-                this.item.system.refItemsData[index] = aspect;
-                await this.item.update({
-                    "system.refItemsData": this.item.system.refItemsData
-                })
-            }
-        }
-
         // Reset Clones
         await Pl1eHelpers.resetClones(this.item);
     }
@@ -164,11 +143,9 @@ export class Pl1eItemSheet extends ItemSheet {
 
         if (this.item.system.refItemTypes.includes(item.type)) {
             this.item.system.refItemsUuid.push(item.uuid);
-            this.item.system.refItemsData.push({});
             // Save
             await this.item.update({
-                "system.refItemsUuid": this.item.system.refItemsUuid,
-                "system.refItemsData": this.item.system.refItemsData
+                "system.refItemsUuid": this.item.system.refItemsUuid
             })
             this.render(this.rendered)
         }

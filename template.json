@@ -293,8 +293,7 @@
       "base": {
         "description": "",
         "refItems": [],
-        "refItemsUuid": [],
-        "refItemsData" : []
+        "refItemsUuid": []
       },
       "item": {
         "price": {

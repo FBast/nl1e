@@ -13,16 +13,15 @@ export class Pl1eActorItem extends Pl1eItem {
 
         // Prepare refItems
         if (this.system.refItemsUuid) {
-            this.system.refItems = [];
             for (let i = 0; i < this.system.refItemsUuid.length; i++) {
                 const uuid = this.system.refItemsUuid[i];
-                const itemData = this.system.refItemsData[i];
+                const itemData = this.system.refItems[i];
                 let item = game.items.find(item => item.uuid === uuid);
-                // let item = await fromUuid(uuid);
                 item = new Pl1eItemProxy(item);
                 Pl1eHelpers.mergeDeep(item, itemData)
-                this.system.refItems.push(item);
+                this.system.refItems[i] = item;
             }
+            this.system.refItems = Object.values(this.system.refItems);
         }
     }
 
