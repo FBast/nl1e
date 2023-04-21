@@ -1,6 +1,30 @@
 import {PL1E} from "./config.mjs";
 
 export function getConfigItems() {
+    PL1E.items = {
+        "feature": {
+            "droppable": ["feature", "ability", "aspect"]
+        },
+        "ability": {
+            "droppable": ["aspect"]
+        },
+        "weapon": {
+            "droppable": ["feature", "ability", "aspect"]
+        },
+        "wearable": {
+            "droppable": ["feature", "ability", "aspect"]
+        },
+        "consumable": {
+            "droppable": ["aspect"]
+        },
+        "common": {
+            "droppable": []
+        },
+        "aspect": {
+            "droppable": []
+        }
+    }
+
     PL1E.attributes = {
         // Common
         "description": {

@@ -141,7 +141,7 @@ export class Pl1eItemSheet extends ItemSheet {
         // Return if same item
         if (this.item.uuid === item.uuid) return;
 
-        if (this.item.system.refItemTypes.includes(item.type)) {
+        if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
             this.item.system.refItemsUuid.push(item.uuid);
             // Save
             await this.item.update({

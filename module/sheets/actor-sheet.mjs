@@ -141,7 +141,7 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Handle sub subItems to be added as other subItems
+     * Handle drop of items and refItems
      * @param event
      * @param data
      * @returns {Promise<unknown>}
@@ -151,8 +151,10 @@ export class Pl1eActorSheet extends ActorSheet {
         const item = await Item.implementation.fromDropData(data);
         // Return if same actor
         // if (game.user.character === this.actor) return;
-        // filter item to actor possibilites
-        if (this.actor.type === 'merchant' && ['feature', 'ability'].includes(item.type)) return;
+
+        // filter item to actor droppable
+        if (!CONFIG.PL1E.actors[this.actor.type].droppable.includes(item.type)) return;
+
         // Player to other actor transfer
         if (!this.actor.isOwner) {
             // Player transfer item to a not owned actor
@@ -166,16 +168,30 @@ export class Pl1eActorSheet extends ActorSheet {
         else {
             const itemData = item.toObject();
             const newItem = await this._onDropItemCreate(item);
-            if (itemData.system.subItems !== undefined && itemData.system.subItems.length > 0) {
-                let linkedId = randomID();
-                await newItem[0].update({'system.parentId': linkedId});
-                for (let subItem of itemData.system.subItems) {
-                    const newSubItem = await this._onDropItemCreate(subItem);
-                    await newSubItem[0].update({'system.childId': linkedId});
-                }
-            }
+            let linkId = randomID();
+            await newItem[0].update({'system.parentId': linkId});
+            await this.AddRefItems(itemData, linkId);
             // Delete the source item if it is embedded
             if (item.isOwned) item.delete();
+        }
+    }
+
+    /**
+     * Handle refItems (recursive)
+     * @param itemData
+     * @param linkId
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    async AddRefItems(itemData, linkId) {
+        if (itemData.system.refItemsUuid && itemData.system.refItemsUuid.length > 0) {
+            for (let uuid of itemData.system.refItemsUuid) {
+                let item = game.items.find(item => item.uuid === uuid);
+                if (!CONFIG.PL1E.actors[this.actor.type].droppable.includes(item.type)) continue;
+                const newSubItem = await this._onDropItemCreate(item);
+                await newSubItem[0].update({'system.childId': linkId});
+                await this.AddRefItems(item, linkId);
+            }
         }
     }
 

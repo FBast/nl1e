@@ -1,6 +1,18 @@
 import {PL1E} from "./config.mjs";
 
-export function getConfigStats() {
+export function getConfigActor() {
+    PL1E.actors = {
+        "character": {
+            "droppable": ["feature", "ability", "weapon", "wearable", "consumable", "common"]
+        },
+        "npc": {
+            "droppable": ["feature", "ability", "weapon", "wearable", "consumable", "common"]
+        },
+        "merchant": {
+            "droppable": ["weapon", "wearable", "consumable", "common"]
+        }
+    }
+
     PL1E.resources = {
         "health": {
             "label": "PL1E.Health",

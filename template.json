@@ -305,7 +305,6 @@
     },
     "feature": {
       "templates": ["base"],
-      "refItemTypes": ["feature", "ability", "aspect"],
       "attributes": {
         "featureType": {
           "value": "none"
@@ -317,7 +316,6 @@
     },
     "ability": {
       "templates": ["base"],
-      "refItemTypes": ["aspect"],
       "isMemorized": false,
       "attributes": {
         "level": {
@@ -378,7 +376,6 @@
     },
     "weapon": {
       "templates": ["base", "item"],
-      "refItemTypes": ["feature", "ability", "aspect"],
       "isEquippedMain": false,
       "isEquippedSecondary": false,
       "attributes": {
@@ -401,7 +398,6 @@
     },
     "wearable": {
       "templates": ["base", "item"],
-      "refItemTypes": ["feature", "ability", "aspect"],
       "isEquipped": false,
       "attributes": {
         "slot": {
@@ -420,7 +416,6 @@
     },
     "consumable": {
       "templates": ["base", "item", "aspect"],
-      "refItemTypes": [],
       "removedUses": 0,
       "attributes": {
         "activation": {
@@ -436,7 +431,6 @@
     },
     "common": {
       "templates": ["base", "item"],
-      "refItemTypes": [],
       "attributes": {
         "formula": "d20 + @str.mod + ceil(@lvl / 2)"
       }

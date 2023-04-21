@@ -76,85 +76,35 @@ export class Pl1eHelpers {
      * @param {Item} item
      * @returns {Promise<void>}
      */
-    static async resets(item) {
-        // Reset items subItems
-        for (const subItem of game.items) {
-            if (subItem.system.subItems === undefined) continue;
-            await this._resetSubItems(subItem, item._id);
-        }
-        // Reset actors subItems
+    static async resetClones(item) {
         for (const actor of game.actors) {
-            await this._resetCloneActorItems(actor, item._id);
-        }
-    }
-
-    /**
-     * Reset this actor subItems (if sourceId is corresponding source)
-     * @param actor
-     * @param sourceId
-     * @returns {Promise<void>}
-     * @private
-     */
-    static async _resetCloneActorItems(actor, sourceId) {
-        let updateDocument = false;
-        const itemsData = [];
-        for (let item of actor.items.values()) {
-            if (item.getFlag('core', 'sourceId') === undefined) continue;
-            if (item.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
-            let original = await fromUuid(item.getFlag('core', 'sourceId'));
-            if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
-                // await this._resetCloneSubItems(item, sourceId);
-                itemsData.push({
-                    // "_id": item._id,
-                    "name": original.name,
-                    "img": original.img,
-                    "system.description": original.system.description,
-                    "system.attributes": original.system.attributes,
-                    "system.aspects": original.system.aspects
-                });
-                item.sheet.render(item.sheet.rendered);
-                updateDocument = true;
+            let updateDocument = false;
+            const itemsData = [];
+            for (let item of actor.items.values()) {
+                if (item.getFlag('core', 'sourceId') === undefined) continue;
+                if (item.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
+                let original = await fromUuid(item.getFlag('core', 'sourceId'));
+                if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
+                    itemsData.push({
+                        // "_id": item._id,
+                        "name": original.name,
+                        "img": original.img,
+                        "system.description": original.system.description,
+                        "system.attributes": original.system.attributes,
+                        "system.refItems": original.system.refItems,
+                        "system.refItemsUuid": original.system.refItemsUuid
+                    });
+                    item.sheet.render(item.sheet.rendered);
+                    updateDocument = true;
+                }
+                else {
+                    console.warn("Unknown type : " + item.type);
+                }
             }
-            else {
-                console.warn("Unknown type : " + item.type);
+            if (updateDocument) {
+                await actor.updateEmbeddedDocuments("Item", itemsData);
             }
         }
-        if (updateDocument) {
-            await actor.updateEmbeddedDocuments("Item", itemsData);
-        }
-    }
-
-    /**
-     * Reset this item subItem (if sourceId is corresponding source)
-     * @param item
-     * @param sourceId
-     * @returns {Promise<void>}
-     * @private
-     */
-    static async _resetCloneSubItems(item, sourceId) {
-        let updateDocument = false;
-        for (let [key, subItem] of item.system.subItems) {
-            if (subItem.getFlag('core', 'sourceId') === undefined) continue;
-            if (subItem.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
-            let original = await fromUuid(subItem.getFlag('core', 'sourceId'));
-            subItem.name = original.name;
-            subItem.img = original.img;
-            subItem.system.description = original.system.description;
-            if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(subItem.type)) {
-                subItem.system.attributes = original.system.attributes;
-            }
-            else if (subItem.type === "aspect") {
-                subItem.system.function = original.system.function;
-                subItem.system.dataGroup = original.system.dataGroup;
-                subItem.system.data = original.system.data;
-                subItem.system.damageType = original.system.damageType;
-            }
-            else {
-                console.warn("Unknown type : " + subItem.type);
-            }
-            updateDocument = true;
-        }
-        if (updateDocument) await item.saveSubItems();
     }
 
     /**
