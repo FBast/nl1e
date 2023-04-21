@@ -76,21 +76,16 @@ export class Pl1eHelpers {
      * @param {Item} item
      * @returns {Promise<void>}
      */
-    static async resetClones(item) {
-        // // Reset items subItems
-        // for (const subItem of game.items) {
-        //     if (subItem.system.subItems === undefined) continue;
-        //     await this._resetCloneSubItems(subItem, item._id);
-        // }
-        // // Reset actors subItems
-        // for (const actor of game.actors) {
-        //     await this._resetCloneActorItems(actor, item._id);
-        // }
-        // // Render all sheet currently rendered
-        // const sheets = Object.values(ui.windows).filter(w => w instanceof ActorSheet || w instanceof ItemSheet);
-        // for (let sheet of sheets) {
-        //     sheet.render(true);
-        // }
+    static async resets(item) {
+        // Reset items subItems
+        for (const subItem of game.items) {
+            if (subItem.system.subItems === undefined) continue;
+            await this._resetSubItems(subItem, item._id);
+        }
+        // Reset actors subItems
+        for (const actor of game.actors) {
+            await this._resetCloneActorItems(actor, item._id);
+        }
     }
 
     /**

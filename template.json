@@ -442,7 +442,6 @@
       }
     },
     "aspect": {
-      "value": 0,
       "function": "increase",
       "dataGroup": "resources",
       "data": "health",
