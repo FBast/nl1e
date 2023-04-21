@@ -143,9 +143,11 @@ export class Pl1eItemSheet extends ItemSheet {
 
         if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
             this.item.system.refItemsUuid.push(item.uuid);
-            // Save
+            this.item.system.refItemsId.push(randomID());
+            // Save the item
             await this.item.update({
-                "system.refItemsUuid": this.item.system.refItemsUuid
+                "system.refItemsUuid": this.item.system.refItemsUuid,
+                "system.refItemsId": this.item.system.refItemsId
             })
             this.render(this.rendered)
         }

@@ -18,9 +18,9 @@ export class Pl1eActorItem extends Pl1eItem {
             for (let i = 0; i < this.system.refItemsUuid.length; i++) {
                 const uuid = this.system.refItemsUuid[i];
                 const itemData = this.system.refItems[i];
-                let item = game.items.find(item => item.uuid === uuid);
+                let originalItem = game.items.find(item => item.uuid === uuid);
                 // Item does not exist then remove from the arrays
-                if (!item) {
+                if (!originalItem) {
                     this.system.refItems.splice(i, 1);
                     this.system.refItemsUuid.splice(i, 1);
                     await this.update({
@@ -30,12 +30,12 @@ export class Pl1eActorItem extends Pl1eItem {
                     i--;
                 }
                 else {
-                    item = new Pl1eItemProxy(item);
-                    Pl1eHelpers.mergeDeep(item, itemData);
-                    await item.update({
-                        "system.sourceUuid": uuid,
-                    })
-                    this.system.refItems[i] = item;
+                    const originalData = originalItem.toObject(false);
+                    Pl1eHelpers.mergeDeep(originalData, itemData);
+                    originalData._id = this.system.refItemsId[i];
+                    originalData.system.sourceUuid = uuid;
+                    originalItem = new Pl1eItemProxy(originalData);
+                    this.system.refItems[i] = originalItem;
                 }
             }
         }

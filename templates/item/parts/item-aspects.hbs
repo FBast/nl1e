@@ -1,0 +1,49 @@
+<ol class="items-list">
+    <li class="item flexrow items-header">
+        <div class="item-name">{{localize "PL1E.Aspects"}}</div>
+    </li>
+    {{#each system.refItems}}
+        {{#if (eq type "aspect")}}
+            <li class="item" data-item-id="{{_id}}" data-item-uuid="{{system.sourceUuid}}">
+                <div class="flexrow">
+                    <div class="flexrow">
+                        <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-name hover-red">{{name}}</label>
+                    </div>
+                    <div class="flexrow">
+                        <div class="item-stats">
+                            {{#with (configEntry system.dataGroup system.data)}}
+                                {{#if (eq type "number")}}
+                                    <input class="input-positive-decimal" type="number" name="system.refItems.{{@key}}.system.value" value="{{../system.value}}" data-dtype="Number"/>
+                                {{else if (eq type "bool")}}
+                                    <input type="checkbox" name="system.refItems.{{@key}}.system.value" {{checked ../system.value}} data-dtype="Boolean"/>
+                                {{else if (eq type "select")}}
+                                    <select name="system.refItems.{{@key}}.system.value">
+                                        {{selectOptions (config select) selected=../system.value localize=true}}
+                                    </select>
+                                {{/if}}
+                            {{/with}}
+                        </div>
+                        <div class="item-controls">
+                            <a class="item-control item-delete" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-tooltip flexcol">
+                    <div class="flexrow">
+                        <label>{{localize "PL1E.TargetGroup"}}</label>
+                        <select name="system.refItems.{{@key}}.system.targetGroup">
+                            {{selectOptions (config "targetGroups") selected=system.targetGroup localize=true}}
+                        </select>
+                    </div>
+                    <div class="flexrow">
+                        <label>{{localize "PL1E.ResolutionType"}}</label>
+                        <select name="system.refItems.{{@key}}.system.resolutionType">
+                            {{selectOptions (config "resolutionTypes") selected=system.resolutionType localize=true}}
+                        </select>
+                    </div>
+                </div>
+            </li>
+        {{/if}}
+    {{/each}}
+</ol>

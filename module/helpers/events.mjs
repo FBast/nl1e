@@ -149,14 +149,16 @@ export class Pl1eEvent {
         // Remove refItem from item
         else if (document instanceof Pl1eItem) {
             let index = -1;
-            if (itemId) index = document.system.refItems.findIndex(item => item._id === itemId);
+            if (itemId) index = document.system.refItemsId.indexOf(itemId);
             else if (itemUuid) index = document.system.refItemsUuid.indexOf(itemUuid);
             if (index > -1) {
                 document.system.refItems.splice(index, 1);
                 document.system.refItemsUuid.splice(index, 1);
+                document.system.refItemsId.splice(index, 1);
                 await document.update({
                     "system.refItems": document.system.refItems,
-                    "system.refItemsUuid": document.system.refItemsUuid
+                    "system.refItemsUuid": document.system.refItemsUuid,
+                    "system.refItemsId": document.system.refItemsId
                 });
             }
         }
