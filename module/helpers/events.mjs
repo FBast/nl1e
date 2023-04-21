@@ -82,17 +82,9 @@ export class Pl1eEvent {
      * @param {Actor|Item} document the document of the item
      */
     static async onItemEdit(event, document) {
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
 
-        // Token redirection
-        const tokenId = $(event.currentTarget).data("token-id");
-        if (tokenId !== undefined) document = document.actor;
-
-        let item;
-        if (itemUuid) item = await fromUuid(itemUuid);
-        else if (document instanceof Pl1eActor && itemId) item = document.items.get(itemId);
-        else if (document instanceof Pl1eItem && itemId) item = document.getEmbedItem(itemId);
+        let item = game.items.find(item => item.uuid === itemUuid);
         if (item) item.sheet.render(true);
     }
 

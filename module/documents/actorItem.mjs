@@ -32,6 +32,9 @@ export class Pl1eActorItem extends Pl1eItem {
                 else {
                     item = new Pl1eItemProxy(item);
                     Pl1eHelpers.mergeDeep(item, itemData);
+                    await item.update({
+                        "system.sourceUuid": uuid,
+                    })
                     this.system.refItems[i] = item;
                 }
             }

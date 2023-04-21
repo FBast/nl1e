@@ -73,26 +73,24 @@ export class Pl1eHelpers {
 
     /**
      * Reset all clones using their sourceId
-     * @param {Item} item
+     * @param {Item} originalItem
      * @returns {Promise<void>}
      */
-    static async resetClones(item) {
+    static async resetClones(originalItem) {
         for (const actor of game.actors) {
             let updateDocument = false;
             const itemsData = [];
             for (let item of actor.items.values()) {
-                if (item.getFlag('core', 'sourceId') === undefined) continue;
-                if (item.getFlag('core', 'sourceId').split('.')[1] !== sourceId) continue;
-                let original = await fromUuid(item.getFlag('core', 'sourceId'));
+                if (!item.system.sourceUuid || item.system.sourceUuid.split('.')[1] !== originalItem.system.sourceId) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
-                        // "_id": item._id,
-                        "name": original.name,
-                        "img": original.img,
-                        "system.description": original.system.description,
-                        "system.attributes": original.system.attributes,
-                        "system.refItems": original.system.refItems,
-                        "system.refItemsUuid": original.system.refItemsUuid
+                        // "_id": originalItem._id,
+                        "name": originalItem.name,
+                        "img": originalItem.img,
+                        "system.description": originalItem.system.description,
+                        "system.attributes": originalItem.system.attributes,
+                        "system.refItems": originalItem.system.refItems,
+                        "system.refItemsUuid": originalItem.system.refItemsUuid
                     });
                     item.sheet.render(item.sheet.rendered);
                     updateDocument = true;

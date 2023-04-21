@@ -166,11 +166,14 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Other cases
         else {
-            const itemData = item.toObject();
-            const newItem = await this._onDropItemCreate(item);
+            let newItem = await this._onDropItemCreate(item);
+            newItem = newItem[0];
             let linkId = randomID();
-            await newItem[0].update({'system.parentId': linkId});
-            await this.AddRefItems(itemData, linkId);
+            await newItem.update({
+                "system.sourceUuid": data.uuid,
+                "system.parentId": linkId
+            })
+            await this.AddRefItems(newItem, linkId);
             // Delete the source item if it is embedded
             if (item.isOwned) item.delete();
         }
@@ -178,18 +181,21 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /**
      * Handle refItems (recursive)
-     * @param itemData
+     * @param item
      * @param linkId
      * @returns {Promise<void>}
      * @constructor
      */
-    async AddRefItems(itemData, linkId) {
-        if (itemData.system.refItemsUuid && itemData.system.refItemsUuid.length > 0) {
-            for (let uuid of itemData.system.refItemsUuid) {
+    async AddRefItems(item, linkId) {
+        if (item.system.refItemsUuid && item.system.refItemsUuid.length > 0) {
+            for (let uuid of item.system.refItemsUuid) {
                 let item = game.items.find(item => item.uuid === uuid);
                 if (!CONFIG.PL1E.actors[this.actor.type].droppable.includes(item.type)) continue;
                 const newSubItem = await this._onDropItemCreate(item);
-                await newSubItem[0].update({'system.childId': linkId});
+                await newSubItem.update({
+                    "system.sourceUuid": item.uuid,
+                    "system.parentId": linkId
+                })
                 await this.AddRefItems(item, linkId);
             }
         }
