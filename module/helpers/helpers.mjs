@@ -81,10 +81,10 @@ export class Pl1eHelpers {
             let updateDocument = false;
             const itemsData = [];
             for (let item of actor.items.values()) {
-                if (!item.system.sourceUuid || item.system.sourceUuid.split('.')[1] !== originalItem.system.sourceId) continue
+                if (!item.system.sourceUuid || item.system.sourceUuid !== originalItem.uuid) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
-                        // "_id": originalItem._id,
+                        "_id": originalItem._id,
                         "name": originalItem.name,
                         "img": originalItem.img,
                         "system.description": originalItem.system.description,
@@ -92,7 +92,6 @@ export class Pl1eHelpers {
                         "system.refItems": originalItem.system.refItems,
                         "system.refItemsUuid": originalItem.system.refItemsUuid
                     });
-                    item.sheet.render(item.sheet.rendered);
                     updateDocument = true;
                 }
                 else {
