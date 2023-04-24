@@ -154,7 +154,7 @@ export function getConfigItems() {
             "select": "slots"
         },
         // Consumables
-        "reloadable": {
+        "isReloadable": {
             "label": "PL1E.Reloadable",
             "type": "bool"
         },

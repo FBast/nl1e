@@ -32,7 +32,7 @@ export class Pl1eConsumable extends Pl1eActorItem {
             }
         }
         // The item have no more uses and is not reloadable
-        if (this.system.removedUses >= this.system.attributes.uses.value && !this.system.attributes.reloadable.value) {
+        if (this.system.removedUses >= this.system.attributes.uses.value && !this.system.attributes.isReloadable.value) {
             await this.delete();
         }
     }

@@ -120,7 +120,7 @@
                     <label class="item-name">{{name}}</label>
                     <div class="item-controls">
                         {{#if (eq system.attributes.uses.value system.removedUses)}}
-                            {{#if system.attributes.reloadable.value}}
+                            {{#if system.attributes.isReloadable.value}}
                                 <a class="item-control consumable-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
                                     <i class="fas fa-repeat"></i>
                                 </a>

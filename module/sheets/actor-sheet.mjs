@@ -1,5 +1,6 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
+import {AppResting} from "../apps/resting.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -128,6 +129,9 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".item-toggle").on("click", ev => this.onItemToggle(ev));
         html.find(".item-use").on("click", ev => this.onItemUse(ev));
         html.find(".consumable-reload").on("click", ev => this.onReloadConsumable(ev));
+
+        // Button actions
+        html.find(".button-rest").on("click", ev => this.onCampingClick(ev));
 
         // Drag events for macros.
         if (this.actor.isOwner) {
@@ -319,6 +323,10 @@ export class Pl1eActorSheet extends ActorSheet {
         catch (e) {
             console.error(e);
         }
+    }
+
+    async onCampingClick(event) {
+        await AppResting.createCamping(this.actor);
     }
 
     /**

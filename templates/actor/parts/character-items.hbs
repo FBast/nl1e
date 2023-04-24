@@ -1,4 +1,4 @@
-<section class="scroll-auto">
+<section class="pl1e scroll-auto">
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Money"}}</legend>
         <div class="currency flexrow flex-between">
@@ -197,30 +197,28 @@
                                 <label>{{system.attributes.manaRecovery.value}}</label>
                             </i>
                         {{/if}}
-                        {{#if system.attributes.uses.apply}}
-                            {{#if (gt system.attributes.uses.value 1)}}
-                                {{#if (eq system.removedUses 0)}}
-                                    <i class="item-info fas fa-hourglass-start hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                        <label>{{minus system.attributes.uses.value system.removedUses}}</label>
-                                    </i>
-                                {{else if (eq system.removedUses system.attributes.uses.value)}}
-                                    <i class="item-info fas fa-hourglass-end hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                        <label>{{minus system.attributes.uses.value system.removedUses}}</label>
-                                    </i>
-                                {{else}}
-                                    <i class="item-info fas fa-hourglass-half hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                        <label>{{minus system.attributes.uses.value system.removedUses}}</label>
-                                    </i>
-                                {{/if}}
+                        {{#if (gt system.attributes.uses.value 1)}}
+                            {{#if (eq system.removedUses 0)}}
+                                <i class="item-info fas fa-hourglass-start hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                    <label>{{minus system.attributes.uses.value system.removedUses}}</label>
+                                </i>
+                            {{else if (eq system.removedUses system.attributes.uses.value)}}
+                                <i class="item-info fas fa-hourglass-end hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                    <label>{{minus system.attributes.uses.value system.removedUses}}</label>
+                                </i>
+                            {{else}}
+                                <i class="item-info fas fa-hourglass-half hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                    <label>{{minus system.attributes.uses.value system.removedUses}}</label>
+                                </i>
                             {{/if}}
                         {{/if}}
-                        {{#if system.attributes.reloadable.value}}
+                        {{#if system.attributes.isReloadable.value}}
                             <i class="item-info fas fa-repeat hover-green" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
                         {{/if}}
                     </div>
                     <div class="item-controls">
                         {{#if (eq system.attributes.uses.value system.removedUses)}}
-                            {{#if system.attributes.reloadable.value}}
+                            {{#if system.attributes.isReloadable.value}}
                                 <a class="item-control consumable-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
                                     <i class="fas fa-repeat"></i>
                                 </a>

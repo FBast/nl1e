@@ -422,7 +422,7 @@
         "activation": {
           "value": "action"
         },
-        "reloadable": {
+        "isReloadable": {
           "value": false
         },
         "uses": {
@@ -433,7 +433,9 @@
     "common": {
       "templates": ["base", "item"],
       "attributes": {
-        "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+        "isFood": {
+          "value": false
+        }
       }
     },
     "aspect": {
