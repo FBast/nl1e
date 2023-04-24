@@ -147,6 +147,14 @@ Handlebars.registerHelper('minus', function(a, b) {
     return a - b;
 });
 
+Handlebars.registerHelper('plus', function(a, b) {
+    return a + b;
+});
+
+Handlebars.registerHelper('multiply', function(a, b) {
+    return a * b;
+});
+
 Handlebars.registerHelper('config', function (key) {
     if (key === undefined) {
         throw new Error(`PL1E | config key is undefined`);

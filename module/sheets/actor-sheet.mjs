@@ -173,10 +173,8 @@ export class Pl1eActorSheet extends ActorSheet {
             let newItem = await this._onDropItemCreate(item);
             newItem = newItem[0];
             let linkId = randomID();
-            await newItem.update({
-                "system.sourceUuid": data.uuid,
-                "system.parentId": linkId
-            })
+            await newItem.setFlag("core", "sourceUuid", data.uuid);
+            await newItem.setFlag("core", "parentId", linkId);
             await this.AddRefItems(newItem, linkId);
             // Delete the source item if it is embedded
             if (item.isOwned) item.delete();
@@ -196,10 +194,8 @@ export class Pl1eActorSheet extends ActorSheet {
                 let item = game.items.find(item => item.uuid === uuid);
                 if (!CONFIG.PL1E.actors[this.actor.type].droppable.includes(item.type)) continue;
                 const newSubItem = await this._onDropItemCreate(item);
-                await newSubItem.update({
-                    "system.sourceUuid": item.uuid,
-                    "system.parentId": linkId
-                })
+                await newSubItem.setFlag("core", "sourceUuid", data.uuid);
+                await newSubItem.setFlag("core", "parentId", linkId);
                 await this.AddRefItems(item, linkId);
             }
         }
@@ -326,7 +322,7 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     async onCampingClick(event) {
-        await AppResting.createCamping(this.actor);
+        AppResting.createCamping(this.actor);
     }
 
     /**

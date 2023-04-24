@@ -81,7 +81,7 @@ export class Pl1eHelpers {
             let updateDocument = false;
             const itemsData = [];
             for (let item of actor.items.values()) {
-                if (!item.system.sourceUuid || item.system.sourceUuid !== originalItem.uuid) continue
+                if (!item.getFlag("core", "sourceUuid") || item.getFlag("core", "sourceUuid") !== originalItem.uuid) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
                         "_id": originalItem._id,
@@ -180,6 +180,10 @@ export class Pl1eHelpers {
         }
 
         return result;
+    }
+
+    static rankCost(rank) {
+        return ((rank * (rank + 1) / 2) - 1);
     }
 
 }

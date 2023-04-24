@@ -33,7 +33,7 @@ export class Pl1eActorItem extends Pl1eItem {
                     const originalData = originalItem.toObject(false);
                     Pl1eHelpers.mergeDeep(originalData, itemData);
                     originalData._id = this.system.refItemsId[i];
-                    originalData.system.sourceUuid = uuid;
+                    originalData.flags.core.sourceUuid = uuid;
                     originalItem = new Pl1eItemProxy(originalData);
                     this.system.refItems[i] = originalItem;
                 }
