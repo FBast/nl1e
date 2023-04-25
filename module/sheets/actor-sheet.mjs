@@ -40,11 +40,14 @@ export class Pl1eActorSheet extends ActorSheet {
                     label: 'PL1E.CreationMod',
                     class: 'reset-clones',
                     icon: this.actor.system.general.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
-                    onclick: () => {
-                        this.actor.update({
+                    onclick: async () => {
+                        const appRestingForm = Object.values(ui.windows)
+                            .find(w => w instanceof AppResting);
+                        await appRestingForm?.close();
+                        await this.actor.update({
                             "system.general.creationMod": !this.actor.system.general.creationMod
                         });
-                        this.render(false);
+                        this._getHeaderButtons();
                     }
                 });
             }
@@ -126,7 +129,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Custom controls
         html.find('.characteristic-control').on("click", ev => this.onCharacteristicChange(ev));
         html.find('.rank-control').on("click", ev => this.onRankChange(ev));
-        html.find(".item-toggle").on("click", ev => this.onItemToggle(ev));
+        html.find(".item-toggle").on("click", ev => Pl1eEvent.onItemToggle(ev, this.actor));
         html.find(".item-use").on("click", ev => this.onItemUse(ev));
         html.find(".consumable-reload").on("click", ev => this.onReloadConsumable(ev));
 
@@ -270,24 +273,6 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Toggle an ability
-     * @param {Event} event The originating click event
-     */
-    async onItemToggle(event) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = this.actor.items.get(itemId);
-
-        const options = {
-            actor: this.actor
-        };
-        const main = $(event.currentTarget).data("main");
-        if (main) options["main"] = main;
-
-        await item.toggle(options);
-    }
-
-    /**
      * Use an ability
      * @param {Event} event The originating click event
      */
@@ -322,7 +307,19 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     async onCampingClick(event) {
-        AppResting.createCamping(this.actor);
+        const formApp = Object.values(ui.windows)
+            .find(w => w instanceof AppResting);
+        if (formApp) return;
+
+        if (this.actor.system.general.creationMod) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoCampingInCreationMod"));
+            return;
+        }
+
+        const app = new AppResting(this.actor, {
+            title: `${game.i18n.localize("PL1E.CampingTitle")} : ${this.actor.name}`,
+        });
+        app.render(true);
     }
 
     /**

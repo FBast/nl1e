@@ -42,36 +42,12 @@
                             <label class="skill-label hover-green grid-span-3 align-left" data-id="{{@key}}"
                                    data-attributes="{{weights.attributes}}" data-characteristics="{{weights.characteristics}}">{{localize label}}</label>
                             <div class="skill-ranks align-right">
-                                {{#if (eq ../rank 1)}}
-                                    {{#if fixedRank}}
-                                        <i class="fas fa-circle-1 fa-lg"></i>
-                                    {{else}}
-                                        <i class="rank-control far fa-circle-1 fa-lg hover-red" data-skill="{{@key}}"></i>
-                                    {{/if}}
-                                {{else if (eq ../rank 2)}}
-                                    {{#if fixedRank}}
-                                        <i class="fas fa-circle-2 fa-lg"></i>
-                                    {{else}}
-                                        <i class="rank-control far fa-circle-2 fa-lg hover-red" data-skill="{{@key}}"></i>
-                                    {{/if}}
-                                {{else if (eq ../rank 3)}}
-                                    {{#if fixedRank}}
-                                        <i class="fas fa-circle-3 fa-lg"></i>
-                                    {{else}}
-                                        <i class="rank-control far fa-circle-3 fa-lg hover-red" data-skill="{{@key}}"></i>
-                                    {{/if}}
-                                {{else if (eq ../rank 4)}}
-                                    {{#if fixedRank}}
-                                        <i class="fas fa-circle-4 fa-lg"></i>
-                                    {{else}}
-                                        <i class="rank-control far fa-circle-4 fa-lg hover-red" data-skill="{{@key}}"></i>
-                                    {{/if}}
-                                {{else if (eq ../rank 5)}}
-                                    {{#if fixedRank}}
-                                        <i class="fas fa-circle-5 fa-lg"></i>
-                                    {{else}}
-                                        <i class="rank-control far fa-circle-5 fa-lg hover-red" data-skill="{{@key}}"></i>
-                                    {{/if}}
+                                {{#if fixedRank}}
+                                    <i class="fas fa-circle-{{../rank}} fa-lg"></i>
+                                {{else if @root.system.general.creationMod}}
+                                    <i class="rank-control far fa-circle-{{../rank}} fa-lg hover-red" data-skill="{{@key}}"></i>
+                                {{else}}
+                                    <i class="far fa-circle-{{../rank}} fa-lg"></i>
                                 {{/if}}
                             </div>
                         </li>

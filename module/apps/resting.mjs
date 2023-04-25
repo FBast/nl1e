@@ -1,4 +1,5 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eEvent} from "../helpers/events.mjs";
 
 export class AppResting extends FormApplication {
 
@@ -7,11 +8,12 @@ export class AppResting extends FormApplication {
 
         /** @type {Pl1eActor} */
         this.actor = actor;
-        this.skills = mergeObject(deepClone(actor.system.skills), deepClone(CONFIG.PL1E.skills));
+        this.slots = this.actor.system.general.slots;
+        this.items = [];
+        this.skills = deepClone(this.actor.system.skills);
         this.skills = Object.fromEntries(Object.entries(this.skills).filter(([key]) => !CONFIG.PL1E.skills[key].fixedRank));
-        this.maxRank = actor.system.general.maxRank;
-        this.ranks = actor.system.general.ranks;
-        this.updateSkills();
+        this.maxRank = this.actor.system.general.maxRank;
+        this.ranks = this.actor.system.general.ranks;
     }
 
     /** @override */
@@ -33,33 +35,35 @@ export class AppResting extends FormApplication {
     getData() {
         const data = super.getData();
 
-        // Initialize containers.
-        const commons = [];
-        const abilities = {
-            1: [],
-            2: [],
-            3: [],
-            4: [],
-            5: []
-        };
+        // Update all items
+        this._updateItems();
 
-        // Iterate through subItems, allocating to containers
-        const sourceIdFlags = [];
-        for (let item of this.actor.items) {
-            const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;
-            if (item.type === 'common' && !sourceIdFlags.includes(sourceIdFlag)) {
+        // Container filters
+        const commons = [];
+        const abilities = {1: [], 2: [], 3: [], 4: [], 5: []};
+        const sourceUuidFlags = [];
+        for (let item of this.items) {
+            const sourceUuidFlag = item.flags.core ? item.flags.core.sourceUuid : null;
+            if (item.type === 'common' && !sourceUuidFlags.includes(sourceUuidFlag)) {
                 commons.push(item);
             }
             // Append to abilities.
-            else if (item.type === 'ability' && !sourceIdFlags.includes(sourceIdFlag)) {
+            else if (item.type === 'ability' && !sourceUuidFlags.includes(sourceUuidFlag)) {
                 abilities[item.system.attributes.level.value].push(item);
             }
             // Push sourceId flag to handle duplicates
-            if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
+            if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
         }
 
+        // Rest part
         data.commons = commons;
+
+        // Abilities part
+        data.slots = this.slots;
         data.abilities = abilities;
+
+        // Skills part
+        this._updateSkills(this.skills);
         data.skills = this.skills;
         data.maxRank = this.maxRank;
         data.ranks = this.ranks;
@@ -68,12 +72,6 @@ export class AppResting extends FormApplication {
         data.health = 5;
         data.stamina = 5;
         data.mana = 5;
-        data.maxSlots = 5;
-        data.currentSlots = 2;
-        data.memorizedAbilities = ['Fireball', 'Healing Touch'];
-        data.availableAbilities = ['Ice Storm', 'Invisibility', 'Resurrection'];
-
-        data.availableSkills = ['Swordsmanship', 'Archery', 'Magic'];
 
         return data;
     }
@@ -82,9 +80,12 @@ export class AppResting extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
 
-        html.find('.rank-control').on("click", ev => this.onRankChange(ev));
-        html.find('.rest-confirm').on("click", ev => this.onRestConfirm(ev));
-        html.find('.rest-cancel').on("click", ev => this.onRestCancel(ev));
+        html.find('.item-edit').on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
+        html.find('.rank-control').on("click", ev => this._onRankChange(ev));
+        html.find(".item-toggle").on("click", ev => this._onItemMemorize(ev, this.actor));
+
+        html.find('.rest-confirm').on("click", ev => this._onRestConfirm(ev));
+        html.find('.rest-cancel').on("click", ev => this._onRestCancel(ev));
     }
 
     /** @override */
@@ -93,30 +94,10 @@ export class AppResting extends FormApplication {
     }
 
     /**
-     * @param actor
-     */
-    static async createCamping(actor) {
-        const app = new this(actor, {
-            title: `${game.i18n.localize("PL1E.CampingTitle")} : ${actor.name}`,
-        });
-        app.render(true);
-    }
-
-    /**
-     * @param actor
-     */
-    static async createLodging(actor) {
-        const app = new this(actor, {
-            title: `${game.i18n.localize("PL1E.LodgingTitle")} : ${actor.name}`,
-        });
-        app.render(true);
-    }
-
-    /**
      * Handle rank changes
      * @param {Event} event The originating click event
      */
-    async onRankChange(event) {
+    async _onRankChange(event) {
         event.preventDefault();
         event.stopPropagation();
         const skillId = $(event.currentTarget).closest(".skill").data("skill-id");
@@ -125,42 +106,54 @@ export class AppResting extends FormApplication {
             rank = this.skills[skillId].rank;
         this.ranks -= Pl1eHelpers.rankCost(rank) - Pl1eHelpers.rankCost(this.skills[skillId].nextRank);
         this.skills[skillId].nextRank = rank;
-        this.updateSkills();
-        this.render(false);
+        this.render();
+    }
+
+    async _onItemMemorize(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        const item = this.items.find(item => item._id === itemId);
+        item.system.isMemorized = !item.system.isMemorized;
+        this.slots -= (item.system.isMemorized ? 1 : -1) * item.system.attributes.level.value
+        this.render();
     }
 
     /**
      * Handle rank changes
      * @param {Event} event The originating click event
      */
-    async onRestConfirm(event) {
+    async _onRestConfirm(event) {
         event.preventDefault();
         event.stopPropagation();
+        await this.close();
+        // Skills
         for (const [id, skill] of Object.entries(this.skills)) {
             this.actor.system.skills[id].rank = skill.nextRank;
         }
+        // Update
         await this.actor.update({
+            "items": this.items,
             "system.skills": this.actor.system.skills,
             "system.general.ranks": this.ranks
         })
-        await this.close();
     }
 
     /**
      * Handle rank changes
      * @param {Event} event The originating click event
      */
-    async onRestCancel(event) {
+    async _onRestCancel(event) {
         event.preventDefault();
         event.stopPropagation();
         await this.close();
     }
 
     /**
-     * Update the skills to define ranks states
+     * Update the skills to define ranks state
      * @private
      */
-    updateSkills() {
+    _updateSkills() {
         for (const [id, skill] of Object.entries(this.skills)) {
             skill.ranks = [];
             skill.nextRank = skill.nextRank || skill.rank;
@@ -177,6 +170,28 @@ export class AppResting extends FormApplication {
                 else skill.ranks[rank].state = "notAffordable";
             }
         }
+    }
+
+    /**
+     * Update the items based on the original data
+     * @private
+     */
+    _updateItems() {
+        // Retrieve items and copy
+        for (let item of this.actor.items) {
+            const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;
+            if (this.items.find(item => item.flags.core ? item.flags.core.sourceId === sourceIdFlag : null)) continue;
+            this.items.push(item.toObject());
+        }
+
+        // Get sourceUuids of items in origin
+        const originSourceIds = this.actor.items.map(item => item.flags.core?.sourceId);
+
+        // Filter items to only keep those in origin
+        this.items = this.items.filter(item => {
+            const sourceId = item.flags.core?.sourceId;
+            return originSourceIds.includes(sourceId);
+        });
     }
 
 }

@@ -12,6 +12,7 @@ import {PL1E} from "./config/config.mjs";
 import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
+import {AppResting} from "./apps/resting.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -101,6 +102,20 @@ Hooks.once("ready", async function () {
             }
         });
     }
+
+    Hooks.on("renderActorSheet", (actorSheet, html, data) => {
+        if (actorSheet.actor.type === "character") {
+            // Refresh the form application
+            const formApp = Object.values(ui.windows)
+                .find(w => w instanceof AppResting);
+            if (formApp) formApp.render(true);
+            // Apply the user color to the sheet
+            for (const [id, user] of Object.entries(game.users.players)) {
+                if (user.character !== actorSheet.actor) continue;
+                actorSheet.element.css("background-color", user.color);
+            }
+        }
+    });
 });
 
 Hooks.on("renderChatLog", (app, html, data) => {

@@ -1,7 +1,6 @@
 import {Pl1eTrade} from "./trade.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
-import {Pl1eActor} from "../documents/actor.mjs";
 
 export class Pl1eEvent {
 
@@ -86,6 +85,25 @@ export class Pl1eEvent {
 
         let item = game.items.find(item => item.uuid === itemUuid);
         if (item) item.sheet.render(true);
+    }
+
+    /**
+     * Toggle an ability
+     * @param {Event} event The originating click event
+     * @param {Actor} actor the actor which own the item
+     */
+    static async onItemToggle(event, actor) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = actor.items.get(itemId);
+
+        const options = {
+            actor: actor
+        };
+        const main = $(event.currentTarget).data("main");
+        if (main) options["main"] = main;
+
+        await item.toggle(options);
     }
 
     /**
