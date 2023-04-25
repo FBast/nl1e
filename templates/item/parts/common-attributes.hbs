@@ -2,12 +2,26 @@
     <fieldset>
         <legend class="section-header">{{localize "PL1E.MainAttributes"}}</legend>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Food"}}</label>
-            <input type="checkbox" name="system.attributes.isFood.value" {{checked system.attributes.isFood.value}} data-dtype="Boolean"/>
+            <label class="attribute-name">{{localize "PL1E.CommonType"}}</label>
+            <select name="system.attributes.commonType.value">
+                {{selectOptions (config "commonTypes") selected=system.attributes.commonType.value localize=true}}
+            </select>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Drink"}}</label>
-            <input type="checkbox" name="system.attributes.isDrink.value" {{checked system.attributes.isDrink.value}} data-dtype="Boolean"/>
-        </div>
+        {{#if (or (eq system.attributes.commonType.value "food") (eq system.attributes.commonType.value "drink"))}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">
+                    {{localize "PL1E.HealthRest"}}
+                    <input type="number" name="system.attributes.healthRest.value" value="{{system.attributes.healthRest.value}}" data-dtype="Number"/>
+                </label>
+                <label class="attribute-name">
+                    {{localize "PL1E.StaminaRest"}}
+                    <input type="number" name="system.attributes.staminaRest.value" value="{{system.attributes.staminaRest.value}}" data-dtype="Number"/>
+                </label>
+                <label class="attribute-name">
+                    {{localize "PL1E.ManaRest"}}
+                    <input type="number" name="system.attributes.manaRest.value" value="{{system.attributes.manaRest.value}}" data-dtype="Number"/>
+                </label>
+            </div>
+        {{/if}}
     </fieldset>
 </section>

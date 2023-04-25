@@ -162,6 +162,12 @@ export function getConfigItems() {
             "label": "PL1E.Uses",
             "type": "number"
         },
+        // Common
+        "commonType": {
+            "label": "PL1E.CommonType",
+            "type": "select",
+            "select": "commonTypes"
+        },
         // Select generated
         "action": {
             "label": "PL1E.Action",

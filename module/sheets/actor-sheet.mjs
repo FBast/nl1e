@@ -108,7 +108,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Item management
         html.find('.item-create').on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
         html.find('.item-delete').on("click", ev => Pl1eEvent.onItemDelete(ev, this.actor));
-        html.find('.item-name').on("click", ev => Pl1eEvent.onItemClick(ev));
+        html.find('.item-name').on("click", ev => Pl1eEvent.onItemTooltip(ev));
 
         // Active Effect management
         html.find(".effect-control").on("click", ev => Pl1eEvent.onManageActiveEffect(ev, this.actor));
@@ -134,7 +134,7 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".consumable-reload").on("click", ev => this.onReloadConsumable(ev));
 
         // Button actions
-        html.find(".button-rest").on("click", ev => this.onCampingClick(ev));
+        html.find(".button-camping").on("click", ev => this.onCampingClick(ev));
 
         // Drag events for macros.
         if (this.actor.isOwner) {
@@ -317,7 +317,7 @@ export class Pl1eActorSheet extends ActorSheet {
         }
 
         const app = new AppResting(this.actor, {
-            title: `${game.i18n.localize("PL1E.CampingTitle")} : ${this.actor.name}`,
+            title: `${game.i18n.localize("PL1E.Camping")} : ${this.actor.name}`,
         });
         app.render(true);
     }

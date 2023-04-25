@@ -4,7 +4,7 @@ import {Pl1eEvent} from "../helpers/events.mjs";
 export class AppResting extends FormApplication {
 
     constructor(actor, options = {}) {
-        super(options);
+        super(actor, options);
 
         /** @type {Pl1eActor} */
         this.actor = actor;
@@ -14,6 +14,8 @@ export class AppResting extends FormApplication {
         this.skills = Object.fromEntries(Object.entries(this.skills).filter(([key]) => !CONFIG.PL1E.skills[key].fixedRank));
         this.maxRank = this.actor.system.general.maxRank;
         this.ranks = this.actor.system.general.ranks;
+        this.itemEaten = null;
+        this.itemDrink = null;
     }
 
     /** @override */
@@ -39,16 +41,19 @@ export class AppResting extends FormApplication {
         this._updateItems();
 
         // Container filters
-        const commons = [];
+        const foods = [];
+        const drinks = [];
         const abilities = {1: [], 2: [], 3: [], 4: [], 5: []};
         const sourceUuidFlags = [];
         for (let item of this.items) {
             const sourceUuidFlag = item.flags.core ? item.flags.core.sourceUuid : null;
-            if (item.type === 'common' && !sourceUuidFlags.includes(sourceUuidFlag)) {
-                commons.push(item);
+            // Append to foods and drinks
+            if (item.type === "common" && !sourceUuidFlags.includes(sourceUuidFlag)) {
+                if (item.system.attributes.commonType.value === "food") foods.push(item);
+                if (item.system.attributes.commonType.value === "drink") drinks.push(item);
             }
             // Append to abilities.
-            else if (item.type === 'ability' && !sourceUuidFlags.includes(sourceUuidFlag)) {
+            else if (item.type === "ability" && !sourceUuidFlags.includes(sourceUuidFlag)) {
                 abilities[item.system.attributes.level.value].push(item);
             }
             // Push sourceId flag to handle duplicates
@@ -56,7 +61,26 @@ export class AppResting extends FormApplication {
         }
 
         // Rest part
-        data.commons = commons;
+        this.health = 10;
+        this.stamina = 10;
+        this.mana = 10;
+        if (this.itemEaten) {
+            this.health += this.itemEaten.system.attributes.healthRest.value;
+            this.stamina += this.itemEaten.system.attributes.staminaRest.value;
+            this.mana += this.itemEaten.system.attributes.manaRest.value;
+        }
+        if (this.itemDrink) {
+            this.health += this.itemDrink.system.attributes.healthRest.value;
+            this.stamina += this.itemDrink.system.attributes.staminaRest.value;
+            this.mana += this.itemDrink.system.attributes.manaRest.value;
+        }
+        data.foods = foods;
+        data.drinks = drinks;
+        data.health = this.health;
+        data.stamina = this.stamina;
+        data.mana = this.mana;
+        data.itemEaten = this.itemEaten;
+        data.itemDrink = this.itemDrink;
 
         // Abilities part
         data.slots = this.slots;
@@ -68,11 +92,6 @@ export class AppResting extends FormApplication {
         data.maxRank = this.maxRank;
         data.ranks = this.ranks;
 
-        // Placeholders data
-        data.health = 5;
-        data.stamina = 5;
-        data.mana = 5;
-
         return data;
     }
 
@@ -82,7 +101,8 @@ export class AppResting extends FormApplication {
 
         html.find('.item-edit').on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
         html.find('.rank-control').on("click", ev => this._onRankChange(ev));
-        html.find(".item-toggle").on("click", ev => this._onItemMemorize(ev, this.actor));
+        html.find(".item-toggle").on("click", ev => this._onItemMemorize(ev));
+        html.find(".item-use").on("click", ev => this._onItemUse(ev));
 
         html.find('.rest-confirm').on("click", ev => this._onRestConfirm(ev));
         html.find('.rest-cancel').on("click", ev => this._onRestCancel(ev));
@@ -119,6 +139,17 @@ export class AppResting extends FormApplication {
         this.render();
     }
 
+    async _onItemUse(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        const usage = $(event.currentTarget).data("usage");
+        const item = this.items.find(item => item._id === itemId);
+        if (usage === "eaten") this.itemEaten = this.itemEaten === item ? null : item;
+        else if (usage === "drink") this.itemDrink = this.itemDrink === item ? null : item;
+        this.render();
+    }
+
     /**
      * Handle rank changes
      * @param {Event} event The originating click event
@@ -131,11 +162,24 @@ export class AppResting extends FormApplication {
         for (const [id, skill] of Object.entries(this.skills)) {
             this.actor.system.skills[id].rank = skill.nextRank;
         }
+        // Destroy food item
+        if (this.itemEaten) {
+            const itemEaten = this.actor.items.get(this.itemEaten._id);
+            await itemEaten.delete();
+        }
+        // Destroy drink item
+        if (this.itemDrink) {
+            const itemDrink = this.actor.items.get(this.itemDrink._id);
+            await itemDrink.delete();
+        }
         // Update
         await this.actor.update({
             "items": this.items,
             "system.skills": this.actor.system.skills,
-            "system.general.ranks": this.ranks
+            "system.general.ranks": this.ranks,
+            "system.resources.health.value": this.actor.system.resources.health.value + this.health,
+            "system.resources.stamina.value": this.actor.system.resources.stamina.value + this.stamina,
+            "system.resources.mana.value": this.actor.system.resources.mana.value + this.mana,
         })
     }
 

@@ -59,6 +59,12 @@
     <!-- Right column -->
     <div class="attributes scroll-auto grid-span-3">
         <fieldset>
+            <legend class="section-header">{{localize "PL1E.Actions"}}</legend>
+            <div class="flexrow">
+                <button class="button-camping">{{localize "PL1E.Camping"}}</button>
+            </div>
+        </fieldset>
+        <fieldset>
             <legend class="section-header">{{localize "PL1E.General"}}</legend>
             <div class="form-group grid grid-2col attribute">
                 <label>{{localize "PL1E.Experience"}}</label>
@@ -104,7 +110,6 @@
                     {{rangePicker name="system.general.advantages" value=system.general.advantages min=-2 max=2 step=1}}
                 </div>
             </div>
-            <button class="button-rest">{{localize "PL1E.Rest"}}</button>
         </fieldset>
         <fieldset>
             <legend class="section-header">{{localize "PL1E.Misc"}}</legend>

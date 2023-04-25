@@ -81,4 +81,9 @@ export function getConfigGeneral() {
         "child": "PL1E.Child"
     }
 
+    PL1E.commonTypes = {
+        "scrap": "PL1E.Scrap",
+        "food": "PL1E.Food",
+        "drink": "PL1E.Drink"
+    }
 }

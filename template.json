@@ -433,8 +433,17 @@
     "common": {
       "templates": ["base", "item"],
       "attributes": {
-        "isFood": {
-          "value": false
+        "commonType": {
+          "value": "scrap"
+        },
+        "healthRest": {
+          "value": 0
+        },
+        "staminaRest": {
+          "value": 0
+        },
+        "manaRest": {
+          "value": 0
         }
       }
     },
