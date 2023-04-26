@@ -1,6 +1,7 @@
 import {Pl1eTrade} from "./trade.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
+import {Pl1eActor} from "../documents/actor.mjs";
 
 export class Pl1eEvent {
 
@@ -82,8 +83,14 @@ export class Pl1eEvent {
      */
     static async onItemEdit(event, document) {
         const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
 
-        let item = game.items.find(item => item.uuid === itemUuid);
+        let item;
+        if (itemId && document instanceof Pl1eActor)
+            item = document.items.get(itemId);
+        else if (itemUuid) {
+            item = game.items.find(item => item.uuid === itemUuid);
+        }
         if (item) item.sheet.render(true);
     }
 

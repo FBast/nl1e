@@ -84,7 +84,7 @@ export class Pl1eHelpers {
                 if (!item.getFlag("core", "sourceUuid") || item.getFlag("core", "sourceUuid") !== originalItem.uuid) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
-                        "_id": originalItem._id,
+                        "_id": item._id,
                         "name": originalItem.name,
                         "img": originalItem.img,
                         "system.description": originalItem.system.description,
