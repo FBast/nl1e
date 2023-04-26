@@ -14,11 +14,11 @@
                         <div class="item-stats">
                             {{#with (configEntry system.dataGroup system.data)}}
                                 {{#if (eq type "number")}}
-                                    <input class="input-positive-decimal" type="number" name="system.refItems.{{@key}}.system.value" value="{{../system.value}}" data-dtype="Number"/>
+                                    <input class="input-positive-decimal" type="number" name="system.refItems.items.{{@key}}.system.value" value="{{../system.value}}" data-dtype="Number"/>
                                 {{else if (eq type "bool")}}
-                                    <input type="checkbox" name="system.refItems.{{@key}}.system.value" {{checked ../system.value}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.refItems.items.{{@key}}.system.value" {{checked ../system.value}} data-dtype="Boolean"/>
                                 {{else if (eq type "select")}}
-                                    <select name="system.refItems.{{@key}}.system.value">
+                                    <select name="system.refItems.items.{{@key}}.system.value">
                                         {{selectOptions (config select) selected=../system.value localize=true}}
                                     </select>
                                 {{/if}}
@@ -32,13 +32,13 @@
                 <div class="item-tooltip flexcol">
                     <div class="flexrow">
                         <label>{{localize "PL1E.TargetGroup"}}</label>
-                        <select name="system.refItems.{{@key}}.system.targetGroup">
+                        <select name="system.refItems.items.{{@key}}.system.targetGroup">
                             {{selectOptions (config "targetGroups") selected=system.targetGroup localize=true}}
                         </select>
                     </div>
                     <div class="flexrow">
                         <label>{{localize "PL1E.ResolutionType"}}</label>
-                        <select name="system.refItems.{{@key}}.system.resolutionType">
+                        <select name="system.refItems.items.{{@key}}.system.resolutionType">
                             {{selectOptions (config "resolutionTypes") selected=system.resolutionType localize=true}}
                         </select>
                     </div>

@@ -87,10 +87,10 @@ export class Pl1eHelpers {
                         "_id": item._id,
                         "name": originalItem.name,
                         "img": originalItem.img,
+                        "system.price": originalItem.system.price,
                         "system.description": originalItem.system.description,
                         "system.attributes": originalItem.system.attributes,
                         "system.refItems": originalItem.system.refItems,
-                        "system.refItemsUuid": originalItem.system.refItemsUuid
                     });
                     updateDocument = true;
                 }

@@ -12,30 +12,30 @@ export class Pl1eActorItem extends Pl1eItem {
         super.prepareData();
 
         // Prepare refItems
-        if (this.system.refItemsUuid) {
-            this.system.refItemsUuid = Object.values(this.system.refItemsUuid);
-            this.system.refItems = Object.values(this.system.refItems);
-            for (let i = 0; i < this.system.refItemsUuid.length; i++) {
-                const uuid = this.system.refItemsUuid[i];
-                const itemData = this.system.refItems[i];
+        if (this.system.refItems.uuids) {
+            this.system.refItems.uuids = Object.values(this.system.refItems.uuids);
+            this.system.refItems.items = Object.values(this.system.refItems.items);
+            for (let i = 0; i < this.system.refItems.uuids.length; i++) {
+                const uuid = this.system.refItems.uuids[i];
+                const itemData = this.system.refItems.items[i];
                 let originalItem = game.items.find(item => item.uuid === uuid);
                 // Item does not exist then remove from the arrays
                 if (!originalItem) {
-                    this.system.refItems.splice(i, 1);
-                    this.system.refItemsUuid.splice(i, 1);
+                    this.system.refItems.items.splice(i, 1);
+                    this.system.refItems.uuids.splice(i, 1);
                     await this.update({
-                        "system.refItems": this.system.refItems,
-                        "system.refItemsUuid": this.system.refItemsUuid
+                        "system.refItems.items": this.system.refItems.items,
+                        "system.refItems.uuids": this.system.refItems.uuids
                     });
                     i--;
                 }
                 else {
                     const originalData = originalItem.toObject(false);
                     Pl1eHelpers.mergeDeep(originalData, itemData);
-                    originalData._id = this.system.refItemsId[i];
+                    originalData._id = this.system.refItems.ids[i];
                     originalData.flags.core.sourceUuid = uuid;
                     originalItem = new Pl1eItemProxy(originalData);
-                    this.system.refItems[i] = originalItem;
+                    this.system.refItems.items[i] = originalItem;
                 }
             }
         }

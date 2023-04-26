@@ -84,7 +84,7 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Prepare refItems
-        if (context.item.system.refItems !== undefined) {
+        if (context.item.system.refItems.items !== undefined) {
             this._prepareItems(context);
         }
 
@@ -142,12 +142,12 @@ export class Pl1eItemSheet extends ItemSheet {
         if (this.item.uuid === item.uuid) return;
 
         if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
-            this.item.system.refItemsUuid.push(item.uuid);
-            this.item.system.refItemsId.push(randomID());
+            this.item.system.refItems.uuids.push(item.uuid);
+            this.item.system.refItems.ids.push(randomID());
             // Save the item
             await this.item.update({
-                "system.refItemsUuid": this.item.system.refItemsUuid,
-                "system.refItemsId": this.item.system.refItemsId
+                "system.refItems.uuids": this.item.system.refItems.uuids,
+                "system.refItems.ids": this.item.system.refItems.ids
             })
             this.render(this.rendered)
         }
@@ -167,8 +167,8 @@ export class Pl1eItemSheet extends ItemSheet {
         };
 
         // Iterate through refItems, allocating to containers
-        for (let i = 0; i < context.item.system.refItems.length; i++) {
-            const item = context.item.system.refItems[i];
+        for (let i = 0; i < context.item.system.refItems.items.length; i++) {
+            const item = context.item.system.refItems.items[i];
             // Append to features
             if (item.type === 'feature') {
                 features.push(item);

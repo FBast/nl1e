@@ -192,8 +192,8 @@ export class Pl1eActorSheet extends ActorSheet {
      * @constructor
      */
     async AddRefItems(item, linkId) {
-        if (item.system.refItemsUuid && item.system.refItemsUuid.length > 0) {
-            for (let uuid of item.system.refItemsUuid) {
+        if (item.system.refItems.uuids && item.system.refItems.uuids.length > 0) {
+            for (let uuid of item.system.refItems.Uuids) {
                 let item = game.items.find(item => item.uuid === uuid);
                 if (!CONFIG.PL1E.actors[this.actor.type].droppable.includes(item.type)) continue;
                 const newSubItem = await this._onDropItemCreate(item);
@@ -229,37 +229,46 @@ export class Pl1eActorSheet extends ActorSheet {
         };
 
         // Iterate through subItems, allocating to containers
-        const sourceIdFlags = [];
+        const sourceUuidFlags = [];
         for (let item of context.items) {
-            const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;
-            item.img = item.img || DEFAULT_TOKEN;
+            const sourceUuidFlag = item.flags.core ? item.flags.core.sourceUuid : null;
             // Append to item categories
             if (item.type === 'weapon') {
                 weapons.push(item);
-                gear.push(item);
             }
             else if (item.type === 'wearable') {
                 wearables.push(item);
-                gear.push(item);
             }
             else if (item.type === 'consumable') {
-                consumables.push(item);
-                gear.push(item);
+                // Increase units
+                if (sourceUuidFlags.includes(sourceUuidFlag)) {
+                    const sameItem = consumables.find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                    sameItem.system.units++;
+                }
+                else {
+                    consumables.push(item);
+                }
             }
             else if (item.type === 'common') {
-                commons.push(item);
-                gear.push(item);
+                // Increase units
+                if (sourceUuidFlags.includes(sourceUuidFlag)) {
+                    const sameItem = commons.find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                    sameItem.system.units++;
+                }
+                else {
+                    commons.push(item);
+                }
             }
             // Append to features.
             else if (item.type === 'feature') {
                 features.push(item);
             }
             // Append to abilities.
-            else if (item.type === 'ability' && !sourceIdFlags.includes(sourceIdFlag)) {
+            else if (item.type === 'ability' && !sourceUuidFlags.includes(sourceUuidFlag)) {
                 abilities[item.system.attributes.level.value].push(item);
             }
             // Push sourceId flag to handle duplicates
-            if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
+            if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
         }
 
         // Assign and return
@@ -267,7 +276,6 @@ export class Pl1eActorSheet extends ActorSheet {
         context.wearables = wearables;
         context.consumables = consumables;
         context.commons = commons;
-        context.gear = gear;
         context.features = features;
         context.abilities = abilities;
     }

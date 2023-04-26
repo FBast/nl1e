@@ -67,6 +67,7 @@ export class Pl1eTrade {
                 + " " + priceMoney.silver + " " + game.i18n.localize("PL1E.Silver")
                 + " " + priceMoney.copper + " " + game.i18n.localize("PL1E.Copper")
         });
+        await merchantActor.deleteEmbeddedDocuments("Item", [item._id]);
         await buyerActor.createEmbeddedDocuments("Item", [item]);
     }
 

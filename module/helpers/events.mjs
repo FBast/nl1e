@@ -119,7 +119,7 @@ export class Pl1eEvent {
      * @param {Actor} actor the merchant of the item
      */
     static async onItemBuy(event, actor) {
-        const itemId = $(event.currentTarget).data("item-id");
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const item = actor.items.get(itemId);
         if (game.user.character === null) return;
         await Pl1eTrade.buyItem(item, game.user.character, actor);
@@ -161,7 +161,7 @@ export class Pl1eEvent {
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
 
-        // Remove subItems from actor
+        // Remove subitems from actor
         if (document instanceof Actor && itemId) {
             const parentItem = document.items.get(itemId);
             for (let item of document.items) {
@@ -174,16 +174,16 @@ export class Pl1eEvent {
         // Remove refItem from item
         else if (document instanceof Pl1eItem) {
             let index = -1;
-            if (itemId) index = document.system.refItemsId.indexOf(itemId);
-            else if (itemUuid) index = document.system.refItemsUuid.indexOf(itemUuid);
+            if (itemId) index = document.system.refItems.ids.indexOf(itemId);
+            else if (itemUuid) index = document.system.refItems.uuids.indexOf(itemUuid);
             if (index > -1) {
-                document.system.refItems.splice(index, 1);
-                document.system.refItemsUuid.splice(index, 1);
-                document.system.refItemsId.splice(index, 1);
+                document.system.refItems.items.splice(index, 1);
+                document.system.refItems.uuids.splice(index, 1);
+                document.system.refItems.ids.splice(index, 1);
                 await document.update({
-                    "system.refItems": document.system.refItems,
-                    "system.refItemsUuid": document.system.refItemsUuid,
-                    "system.refItemsId": document.system.refItemsId
+                    "system.refItems.items": document.system.refItems.items,
+                    "system.refItems.uuids": document.system.refItems.uuids,
+                    "system.refItems.ids": document.system.refItems.ids
                 });
             }
         }

@@ -292,9 +292,12 @@
     "templates": {
       "base": {
         "description": "",
-        "refItems": [],
-        "refItemsUuid": [],
-        "refItemsId": []
+        "units": 1,
+        "refItems": {
+          "items": [],
+          "uuids": [],
+          "ids": []
+        }
       },
       "item": {
         "price": {
