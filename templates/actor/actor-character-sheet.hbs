@@ -8,8 +8,9 @@
                 {{#each system.resources as |resource key|}}
                     {{#with (configEntry "resources" key) as |resourceConfig|}}
                         <div class="resource box flex-group-center">
-                            <label class="resource-label hover-green" data-id="{{key}}"
-                                   data-characteristics="{{resourceConfig.weights.characteristics}}">{{localize resourceConfig.label}}</label>
+                            <label class="resource-label hover-green"  data-resource-id="{{key}}" data-characteristics="{{resourceConfig.weights.characteristics}}">
+                                {{localize resourceConfig.label}}
+                            </label>
                             <div class="resource-content flexrow flex-center flex-between">
                                 <input type="number" name="system.resources.{{key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
                                 <span> / </span>

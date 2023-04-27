@@ -1,6 +1,6 @@
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {AppResting} from "../apps/resting.mjs";
+import {Pl1eEffect} from "../helpers/effects.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -82,7 +82,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
         // Prepare active effects
-        context.effects = Pl1eHelpers.prepareActiveEffectCategories(this.actor.effects);
+        context.effects = Pl1eEffect.prepareActiveEffectCategories(this.actor.effects);
         // Add the config data
         context.config = CONFIG.PL1E;
         // Add game access
@@ -114,7 +114,7 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".effect-control").on("click", ev => Pl1eEvent.onManageActiveEffect(ev, this.actor));
 
         // Chat messages
-        html.find('.rollable').on("click", ev => Pl1eEvent.onRoll(ev, this.actor));
+        html.find('.skill-roll').on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
 
         // Currency
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.actor));
@@ -313,7 +313,7 @@ export class Pl1eActorSheet extends ActorSheet {
         event.preventDefault();
         event.stopPropagation();
 
-        const characteristic = $(event.currentTarget).data("characteristic");
+        const characteristic = $(event.currentTarget).closest(".characteristic").data("characteristic-id");
         let value = $(event.currentTarget).data("value");
         if (!value || !characteristic) return;
 

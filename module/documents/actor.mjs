@@ -334,7 +334,7 @@ export class Pl1eActor extends Actor {
 
     /**
      * Add an item and all child items as embedded documents
-     * @param item
+     * @param {Pl1eItem} item
      * @returns {Promise<Pl1eItem>}
      */
     async addItem(item) {
@@ -355,7 +355,7 @@ export class Pl1eActor extends Actor {
 
     /**
      * Delete an item and all child items as embedded documents
-     * @param item
+     * @param {Pl1eItem} item
      * @returns {Promise<void>}
      */
     async deleteItem(item) {

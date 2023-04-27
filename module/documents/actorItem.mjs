@@ -64,44 +64,6 @@ export class Pl1eActorItem extends Pl1eItem {
     //region Item interactions
 
     /**
-     * Roll the item
-     */
-    async roll() {
-        const item = this;
-
-        // Initialize chat data.
-        const speaker = ChatMessage.getSpeaker({actor: this.actor});
-        const rollMode = game.settings.get('core', 'rollMode');
-        const label = `[${item.type}] ${item.name}`;
-
-        // If there's no roll data, send a chat message.
-        if (!this.system.formula) {
-            ChatMessage.create({
-                speaker: speaker,
-                rollMode: rollMode,
-                flavor: label,
-                content: item.description ?? ''
-            });
-        }
-        // Otherwise, create a roll and send a chat message from it.
-        else {
-            // Retrieve roll data.
-            const rollData = this.getRollData();
-
-            // Invoke the roll and submit it to chat.
-            const roll = new Roll(rollData.item.formula, rollData);
-            // If you need to store the value first, uncomment the next line.
-            // let result = await roll.roll({async: true});
-            roll.toMessage({
-                speaker: speaker,
-                rollMode: rollMode,
-                flavor: label,
-            });
-            return roll;
-        }
-    }
-
-    /**
      * Toggle the state of the item (could be necessary to be used)
      * @param options
      * @returns {Promise<void>}

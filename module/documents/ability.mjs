@@ -1,6 +1,7 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
 import {Pl1eActorItem} from "./actorItem.mjs";
+import {Pl1eChat} from "../helpers/chat.mjs";
 
 export class Pl1eAbility extends Pl1eActorItem {
 
@@ -86,7 +87,7 @@ export class Pl1eAbility extends Pl1eActorItem {
         }
 
         // Display message
-        await this._displayMessage(characterData);
+        await Pl1eChat.aspectRoll(characterData);
 
         // Update data
         this.abilityData = abilityData;
@@ -203,7 +204,7 @@ export class Pl1eAbility extends Pl1eActorItem {
 
         // Display messages
         for (const targetData of targetsData) {
-            await this._displayMessage(characterData, targetData);
+            await Pl1eChat.aspectRoll(characterData, targetData);
         }
     }
 
@@ -253,34 +254,6 @@ export class Pl1eAbility extends Pl1eActorItem {
                 characterData.aspects[id] = dynamicAttribute;
             }
         }
-    }
-
-    /**
-     * @param {CharacterData} characterData
-     * @param {TargetData} targetData
-     * @returns {Promise<void>}
-     * @private
-     */
-    async _displayMessage(characterData, targetData = undefined) {
-        const rollData = targetData === undefined ? characterData.rollData : targetData.rollData;
-        const template = targetData === undefined ? "character" : "target";
-        // Render the chat card template
-        const html = await renderTemplate(`systems/pl1e/templates/chat/ability-${template}.hbs`,
-            {rollData: rollData, characterData: characterData, targetData: targetData});
-
-        // Create the ChatMessage data object
-        const chatData = {
-            user: game.user.id,
-            speaker: ChatMessage.getSpeaker({actor: this}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + characterData.item.name,
-            rollMode: game.settings.get('core', 'rollMode'),
-            flags: {"core.canPopout": true},
-            content: html
-        };
-
-        // Render message
-        await ChatMessage.create(chatData);
     }
 
     /**

@@ -2,6 +2,7 @@ import {Pl1eTrade} from "./trade.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
+import {Pl1eChat} from "./chat.mjs";
 
 export class Pl1eEvent {
 
@@ -38,31 +39,11 @@ export class Pl1eEvent {
      * @param {Event} event The originating click event
      * @param {Actor} actor the rolling actor
      */
-    static onRoll(event, actor) {
+    static async onSkillRoll(event, actor) {
         event.preventDefault();
-        const element = event.currentTarget;
-        const dataset = element.dataset;
 
-        // Handle item rolls.
-        if (dataset.rollType) {
-            if (dataset.rollType === 'item') {
-                const itemId = element.closest('.item').dataset.itemId;
-                const item = actor.items.get(itemId);
-                if (item) return item.roll();
-            }
-        }
-
-        // Handle rolls that supply the formula directly.
-        if (dataset.roll) {
-            let label = dataset.label ? `[ability] ${dataset.label}` : '';
-            let roll = new Roll(dataset.roll, actor.getRollData());
-            roll.toMessage({
-                speaker: ChatMessage.getSpeaker({actor: actor}),
-                flavor: label,
-                rollMode: game.settings.get('core', 'rollMode'),
-            });
-            return roll;
-        }
+        const skillId = $(event.currentTarget).closest(".skill").data("skillId");
+        await Pl1eChat.skillRoll(actor, skillId);
     }
 
     /**
@@ -239,7 +220,7 @@ export class Pl1eEvent {
         // resources
         if (resources !== undefined) {
             for (let resource of document.getElementsByClassName('resource-label')) {
-                let id = $(resource).data("id");
+                let id = $(resource).closest(".resource").data("resource-id");
                 if (!resources.includes(id)) continue;
                 resource.classList.add('highlight-green');
             }
@@ -247,7 +228,7 @@ export class Pl1eEvent {
         // characteristics
         if (characteristics !== undefined) {
             for (let characteristic of document.getElementsByClassName('characteristic-label')) {
-                let id = $(characteristic).data("id");
+                let id = $(characteristic).closest(".characteristic").data("characteristic-id");
                 if (!characteristics.includes(id)) continue;
                 characteristic.classList.add('highlight-green');
             }
@@ -255,7 +236,7 @@ export class Pl1eEvent {
         // skills
         if (skills !== undefined) {
             for (let skill of document.getElementsByClassName('skill-label')) {
-                let id = $(skill).data("id");
+                let id = $(skill).closest(".skill").data("skill-id");
                 if (!skills.includes(id)) continue;
                 skill.classList.add('highlight-green');
             }

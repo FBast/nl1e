@@ -3,16 +3,17 @@
     <div class="characteristics">
         {{#each system.characteristics}}
             {{#with (configEntry "characteristics" @key)}}
-                <div class="characteristic flex-group-center">
-                    <h3 class="characteristic-label hover-green align-left" data-id="{{@key}}"
-                        data-resources="{{weights.resources}}" data-skills="{{weights.skills}}">{{localize label}}</h3>
+                <div class="characteristic flex-group-center" data-characteristic-id="{{@key}}">
+                    <h3 class="characteristic-label hover-green align-left" data-resources="{{weights.resources}}" data-skills="{{weights.skills}}">
+                        {{localize label}}
+                    </h3>
                     <div class="characteristic-values flexrow flex-group-center">
                         <div class="input-spin">
                             <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" data-dtype="Number" min="0" placeholder="0" disabled/>
                             {{#if @root.system.general.creationMod}}
                                 <span>
-                                    <i class="characteristic-control pointer fa fa-plus-square" data-characteristic="{{@key}}" data-value="1"></i>
-                                    <i class="characteristic-control pointer fa fa-minus-square" data-characteristic="{{@key}}" data-value="-1"></i>
+                                    <i class="characteristic-control pointer fa fa-plus-square" data-value="1"></i>
+                                    <i class="characteristic-control pointer fa fa-minus-square" data-value="-1"></i>
                                 </span>
                             {{/if}}
                         </div>
@@ -32,9 +33,9 @@
                 <!-- Listing defenses, resistances and skills -->
                 {{#each system.skills}}
                     {{#with (configEntry "skills" @key)}}
-                        <li class="skill grid grid-5col">
-                            <i class="skill-roll fas fa-dice-d{{../dice}} hover-red rollable {{#if (gt ../diceMod 0)}}color-green{{/if}} {{#if (lt ../diceMod 0)}}color-red{{/if}}"
-                               data-roll="{{../number}}d{{../dice}}xo{{../dice}}cs>=4" data-label="{{label}}">
+                        <li class="skill grid grid-5col" data-skill-id="{{@key}}">
+                            <i class="skill-roll fas fa-dice-d{{../dice}} hover-red{{#if (gt ../diceMod 0)}}color-green{{/if}}
+                                {{#if (lt ../diceMod 0)}}color-red{{/if}}">
                                 <label class="{{#if (gt ../numberMod 0)}}color-green{{/if}}
                                     {{#if (lt ../numberMod 0)}}color-red{{/if}}
                                     {{#if (eq ../numberMod 0)}}color-black{{/if}}">{{../number}}</label>

@@ -33,9 +33,12 @@ export default class Pl1eSocket {
      * @returns {Promise<void>}
      */
     static async sendItem(sourceActor, targetActor, item) {
-        targetActor = game.actors.get(targetActor._id);
-        sourceActor = game.actors.get(sourceActor._id);
-        await Pl1eTrade.giftItem(item, sourceActor, targetActor);
+        if (targetActor.type === 'character') {
+            await Pl1eTrade.giftItem(item, sourceActor, targetActor);
+        }
+        else if (targetActor.type === 'merchant') {
+            await Pl1eTrade.sellItem(item, sourceActor, targetActor);
+        }
     }
 
     static async sendContenant(actor, targetActor, item) {

@@ -1,0 +1,20 @@
+<div class="chat-card item-card pl1e">
+    <header class="card-header flexrow">
+        <img class="left-image actor-edit" src="{{sourceActor.img}}" title="{{sourceActor.name}}" width="36" height="36"/>
+        <div class="item-effects-character">
+            {{#unless (eq price undefined)}}
+                {{#each price}}
+                    {{#unless (eq this 0)}}
+                        {{#with (configEntry "money" @key)}}
+                            <i class="currency-icon fas fa-coins color-{{@key}} hover-green" data-tooltip='{{localize this}}'>
+                                <label class="color-black">{{#if (eq @root.transaction "purchase")}}-{{/if}}{{../this}}</label>
+                            </i>
+                        {{/with}}
+                    {{/unless}}
+                {{/each}}
+            {{/unless}}
+        </div>
+        <img class="right-image item-edit" src="{{item.img}}" data-item-id="{{item._id}}" title="{{item.name}}" width="36" height="36"/>
+        <img class="right-image item-edit" src="{{targetActor.img}}" title="{{targetActor.name}}" width="36" height="36"/>
+    </header>
+</div>
