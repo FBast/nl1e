@@ -1,0 +1,19 @@
+<ol class="items-list">
+    {{#each effects as |section sid|}}
+        <li class="item items-header flexrow" data-effect-type="{{section.type}}">
+            <label class="item-name flexrow">{{localize section.label}}</label>
+            <label>Source</label>
+            <label>Duration</label>
+        </li>
+        <ol class="item-list">
+            {{#each section.effects as |effect|}}
+                <li class="item flexrow" data-effect-id="{{effect.id}}">
+                    <img class="item-image" src="{{effect.icon}}"/>
+                    <label class="item-name flexrow">{{effect.label}}</label>
+                    <label>{{effect.sourceName}}</label>
+                    <label>{{effect.duration.label}}</label>
+                </li>
+            {{/each}}
+        </ol>
+    {{/each}}
+</ol>

@@ -1,0 +1,109 @@
+<ol class="items-list">
+    <li class="item flexrow items-header">
+        <div class="item-name">{{localize "PL1E.Wearable"}}</div>
+    </li>
+    {{#each wearables}}
+        <li class="item" data-item-id="{{_id}}">
+            <div class="flexrow">
+                <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                <label class="item-name item-tooltip-activate">{{name}}</label>
+                <div class="item-stats grid-span-2">
+                    {{#unless (eq @root.actor.type "npc")}}
+                        {{#if (ne system.attributes.slashingReduction 0)}}
+                            <i class="item-info far fa-axe-battle hover-green" data-tooltip='{{localize "PL1E.SlashingReduction"}}'>
+                                <label>{{system.attributes.slashingReduction.value}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.crushingReduction 0)}}
+                            <i class="item-info far fa-hammer-war hover-green" data-tooltip='{{localize "PL1E.CrushingReduction"}}'>
+                                <label>{{system.attributes.crushingReduction.value}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.piercingReduction 0)}}
+                            <i class="item-info far fa-dagger hover-green" data-tooltip='{{localize "PL1E.PiercingReduction"}}'>
+                                <label>{{system.attributes.piercingReduction.value}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.movementPenalty 0)}}
+                            <i class="item-info fas fa-weight-hanging hover-green" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
+                                <label>{{system.attributes.movementPenalty.value}}</label>
+                            </i>
+                        {{/if}}
+                    {{/unless}}
+                    {{#if (eq @root.actor.type "character")}}
+                        {{#if (gt system.price.gold 0)}}
+                            <i class="item-info fas fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
+                                <label class="color-black">{{system.price.gold}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (gt system.price.silver 0)}}
+                            <i class="item-info fas fa-coins color-silver hover-green" data-tooltip='{{localize "PL1E.Silver"}}'>
+                                <label class="color-black">{{system.price.silver}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (gt system.price.copper 0)}}
+                            <i class="item-info fas fa-coins color-copper hover-green" data-tooltip='{{localize "PL1E.Copper"}}'>
+                                <label class="color-black">{{system.price.copper}}</label>
+                            </i>
+                        {{/if}}
+                    {{else if (eq @root.actor.type "merchant")}}
+                        {{#with (lookup ../system.merchantPrices _id)}}
+                            {{#if (gt gold 0)}}
+                                <i class="item-info fas fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
+                                    <label class="color-black">{{gold}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (gt silver 0)}}
+                                <i class="item-info fas fa-coins color-silver hover-green" data-tooltip='{{localize "PL1E.Silver"}}'>
+                                    <label class="color-black">{{silver}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (gt copper 0)}}
+                                <i class="item-info fas fa-coins color-copper hover-green" data-tooltip='{{localize "PL1E.Copper"}}'>
+                                    <label class="color-black">{{copper}}</label>
+                                </i>
+                            {{/if}}
+                        {{/with}}
+                    {{/if}}
+                </div>
+                <div class="item-controls">
+                    {{#if (eq @root.actor.type "merchant")}}
+                        <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Buy"}}'>
+                            <i class="fas fa-coins"></i>
+                        </a>
+                    {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                        {{#if (eq system.attributes.slot.value "clothes")}}
+                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                <i class="fas fa-shirt-long-sleeve {{#unless system.isEquipped}}icon-inactive{{/unless}}"></i>
+                            </a>
+                        {{else if (eq system.attributes.slot.value "armor")}}
+                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                <i class="fas fa-helmet-battle {{#unless system.isEquipped}}icon-inactive{{/unless}}"></i>
+                            </a>
+                        {{else if (eq system.attributes.slot.value "ring")}}
+                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                <i class="fas fa-ring {{#unless system.isEquipped}}icon-inactive{{/unless}}"></i>
+                            </a>
+                        {{else if (eq system.attributes.slot.value "amulet")}}
+                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                <i class="fas fa-gem {{#unless system.isEquipped}}icon-inactive{{/unless}}"></i>
+                            </a>
+                        {{else}}
+                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                <i class="fas fa-clothes-hanger {{#unless system.isEquipped}}icon-inactive{{/unless}}"></i>
+                            </a>
+                        {{/if}}
+                    {{/if}}
+                    {{#if @root.actor.isOwner}}
+                        {{#if (eq flags.core.childId undefined)}}
+                            <a class="item-control item-delete" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        {{else}}
+                            <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+            <div class="item-tooltip">{{{system.description}}}</div>
+        </li>
+    {{/each}}
+</ol>

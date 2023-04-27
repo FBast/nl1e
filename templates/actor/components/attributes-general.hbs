@@ -1,0 +1,47 @@
+<fieldset>
+    <legend class="section-header">{{localize "PL1E.General"}}</legend>
+    <div class="form-group grid grid-2col attribute">
+        <label>{{localize "PL1E.Experience"}}</label>
+        <input type="number" step="1" min="0" max="60" name="system.general.experience"
+               value="{{system.general.experience}}" data-dtype="Number"/>
+    </div>
+    <div class="form-group grid grid-2col attribute">
+        <label>{{localize "PL1E.Characteristics"}}</label>
+        <input type="number" step="1" min="0" max="60" name="system.general.remainingCharacteristics"
+               value="{{system.general.remainingCharacteristics}}" data-dtype="Number" disabled/>
+    </div>
+    <div class="form-group grid grid-2col attribute">
+        <label>{{localize "PL1E.Slots"}}</label>
+        <label class="align-right">{{system.general.slots}}</label>
+    </div>
+    <div class="form-group grid grid-2col attribute">
+        <label>{{localize "PL1E.Ranks"}}</label>
+        <label class="align-right">{{system.general.ranks}}</label>
+    </div>
+    <div class="form-group grid grid-2col attribute">
+        <label>{{localize "PL1E.MaxRank"}}</label>
+        {{#if (eq system.general.maxRank 1)}}
+            <i class="far fa-circle-1 fa-lg align-right"></i>
+        {{else if (eq system.general.maxRank 2)}}
+            <i class="far fa-circle-2 fa-lg align-right"></i>
+        {{else if (eq system.general.maxRank 3)}}
+            <i class="far fa-circle-3 fa-lg align-right"></i>
+        {{else if (eq system.general.maxRank 4)}}
+            <i class="far fa-circle-4 fa-lg align-right"></i>
+        {{else if (eq system.general.maxRank 5)}}
+            <i class="far fa-circle-5 fa-lg align-right"></i>
+        {{/if}}
+    </div>
+    <div class="form-group grid grid-2col attribute">
+        <label>{{localize "PL1E.Bonuses"}}</label>
+        <div class="form-group">
+            {{rangePicker name="system.general.bonuses" value=system.general.bonuses min=-2 max=2 step=1}}
+        </div>
+    </div>
+    <div class="form-group grid grid-2col attribute">
+        <label>{{localize "PL1E.Advantages"}}</label>
+        <div class="form-group">
+            {{rangePicker name="system.general.advantages" value=system.general.advantages min=-2 max=2 step=1}}
+        </div>
+    </div>
+</fieldset>

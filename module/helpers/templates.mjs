@@ -13,6 +13,20 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/parts/merchant-items.hbs",
         "systems/pl1e/templates/actor/parts/npc-stats.hbs",
 
+        // Actor components
+        "systems/pl1e/templates/actor/components/resources.hbs",
+        "systems/pl1e/templates/actor/components/skills.hbs",
+        "systems/pl1e/templates/actor/components/attributes-general.hbs",
+        "systems/pl1e/templates/actor/components/attributes-reductions.hbs",
+        "systems/pl1e/templates/actor/components/attributes-misc.hbs",
+        "systems/pl1e/templates/actor/components/items-weapons.hbs",
+        "systems/pl1e/templates/actor/components/items-wearables.hbs",
+        "systems/pl1e/templates/actor/components/items-consumables.hbs",
+        "systems/pl1e/templates/actor/components/items-commons.hbs",
+        "systems/pl1e/templates/actor/components/features-features.hbs",
+        "systems/pl1e/templates/actor/components/features-abilities.hbs",
+        "systems/pl1e/templates/actor/components/features-effects.hbs",
+
         // Item partials
         "systems/pl1e/templates/item/parts/ability-attributes.hbs",
         "systems/pl1e/templates/item/parts/common-attributes.hbs",
@@ -24,8 +38,8 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/item/parts/weapon-attributes.hbs",
         "systems/pl1e/templates/item/parts/wearable-attributes.hbs",
 
-        // Components
-        "systems/pl1e/templates/item/components/currency.hbs"
+        // Item components
+        "systems/pl1e/templates/item/components/price.hbs"
 
     ]);
 };

@@ -1,0 +1,11 @@
+<fieldset>
+    <legend class="section-header">{{localize "PL1E.Reduction"}}</legend>
+    {{#each system.reductions}}
+        {{#with (configEntry "reductions" @key)}}
+            <div class="form-group attribute">
+                <label>{{localize label}}</label>
+                <label class="align-right">{{../this}}</label>
+            </div>
+        {{/with}}
+    {{/each}}
+</fieldset>

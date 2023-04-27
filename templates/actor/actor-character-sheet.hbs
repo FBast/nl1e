@@ -4,22 +4,7 @@
         <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
         <div class="header-fields">
             <h1 class="sheet-name"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-            <div class="resources grid grid-3col">
-                {{#each system.resources as |resource key|}}
-                    {{#with (configEntry "resources" key) as |resourceConfig|}}
-                        <div class="resource box flex-group-center">
-                            <label class="resource-label hover-green"  data-resource-id="{{key}}" data-characteristics="{{resourceConfig.weights.characteristics}}">
-                                {{localize resourceConfig.label}}
-                            </label>
-                            <div class="resource-content flexrow flex-center flex-between">
-                                <input type="number" name="system.resources.{{key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
-                                <span> / </span>
-                                <input type="number" name="system.resources.{{key}}.max" value="{{../max}}" data-dtype="Number" disabled/>
-                            </div>
-                        </div>
-                    {{/with}}
-                {{/each}}
-            </div>
+            {{> "systems/pl1e/templates/actor/components/resources.hbs" resources=system.resources}}
         </div>
     </header>
     {{!-- Sheet Tab Navigation --}}

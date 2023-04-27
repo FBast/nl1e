@@ -109,7 +109,8 @@ export class Pl1eActorSheet extends ActorSheet {
         // Item management
         html.find('.item-create').on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
         html.find('.item-delete').on("click", ev => Pl1eEvent.onItemDelete(ev, this.actor));
-        html.find('.item-name').on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find('.item-link').on("click", ev => this.onItemLink(ev));
 
         // Active Effect management
         html.find(".effect-control").on("click", ev => Pl1eEvent.onManageActiveEffect(ev, this.actor));
@@ -122,10 +123,8 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find('.currency-convert').on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
 
         // Highlights indications
-        html.find('.resource-label,.characteristic-label,.skill-label')
-            .on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
-        html.find('.resource-label,.characteristic-label,.skill-label')
-            .on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
+        html.find('.highlight-link').on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
+        html.find('.highlight-link').on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
 
         // Custom controls
         html.find('.characteristic-control').on("click", ev => this.onCharacteristicChange(ev));
@@ -307,6 +306,21 @@ export class Pl1eActorSheet extends ActorSheet {
             title: `${game.i18n.localize("PL1E.Camping")} : ${this.actor.name}`,
         });
         app.render(true);
+    }
+
+    /**
+     * Render the linked parent item
+     * @param {Event} event
+     */
+    async onItemLink(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        const item = this.actor.items.get(itemId);
+        const linkId = item.getFlag("core", "linkId");
+        const parentItem = this.actor.items.find(item => item.getFlag("core", "parentId") === linkId);
+        parentItem.sheet.render(true);
     }
 
     /**

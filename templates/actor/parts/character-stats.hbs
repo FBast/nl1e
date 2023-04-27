@@ -1,10 +1,10 @@
-<section class="scroll-hidden grid grid-6col">
+<section class="scroll-hidden grid grid-12col">
     <!-- Left column : Listing characteristics -->
-    <div class="characteristics">
+    <div class="characteristics grid-span-2">
         {{#each system.characteristics}}
             {{#with (configEntry "characteristics" @key)}}
                 <div class="characteristic flex-group-center" data-characteristic-id="{{@key}}">
-                    <h3 class="characteristic-label hover-green align-left" data-resources="{{weights.resources}}" data-skills="{{weights.skills}}">
+                    <h3 class="characteristic-label highlight-link hover-green align-left" data-resources="{{weights.resources}}" data-skills="{{weights.skills}}">
                         {{localize label}}
                     </h3>
                     <div class="characteristic-values flexrow flex-group-center">
@@ -26,118 +26,19 @@
         {{/each}}
     </div>
     <!-- Middle column -->
-    <div class="grid-span-2">
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.Skills"}}</legend>
-            <ul class="skills">
-                <!-- Listing defenses, resistances and skills -->
-                {{#each system.skills}}
-                    {{#with (configEntry "skills" @key)}}
-                        <li class="skill grid grid-5col" data-skill-id="{{@key}}">
-                            <i class="skill-roll fas fa-dice-d{{../dice}} hover-red{{#if (gt ../diceMod 0)}}color-green{{/if}}
-                                {{#if (lt ../diceMod 0)}}color-red{{/if}}">
-                                <label class="{{#if (gt ../numberMod 0)}}color-green{{/if}}
-                                    {{#if (lt ../numberMod 0)}}color-red{{/if}}
-                                    {{#if (eq ../numberMod 0)}}color-black{{/if}}">{{../number}}</label>
-                            </i>
-                            <label class="skill-label hover-green grid-span-3 align-left" data-id="{{@key}}"
-                                   data-attributes="{{weights.attributes}}" data-characteristics="{{weights.characteristics}}">{{localize label}}</label>
-                            <div class="skill-ranks align-right">
-                                {{#if fixedRank}}
-                                    <i class="fas fa-circle-{{../rank}} fa-lg"></i>
-                                {{else if @root.system.general.creationMod}}
-                                    <i class="rank-control far fa-circle-{{../rank}} fa-lg hover-red" data-skill="{{@key}}"></i>
-                                {{else}}
-                                    <i class="far fa-circle-{{../rank}} fa-lg"></i>
-                                {{/if}}
-                            </div>
-                        </li>
-                    {{/with}}
-                {{/each}}
-            </ul>
-        </fieldset>
+    <div class="grid-span-4">
+        {{> "systems/pl1e/templates/actor/components/skills.hbs"}}
     </div>
     <!-- Right column -->
-    <div class="attributes scroll-auto grid-span-3">
+    <div class="attributes scroll-auto grid-span-6">
         <fieldset>
             <legend class="section-header">{{localize "PL1E.Actions"}}</legend>
             <div class="flexrow">
                 <button class="button-camping">{{localize "PL1E.Camping"}}</button>
             </div>
         </fieldset>
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.General"}}</legend>
-            <div class="form-group grid grid-2col attribute">
-                <label>{{localize "PL1E.Experience"}}</label>
-                <input type="number" step="1" min="0" max="60" name="system.general.experience"
-                       value="{{system.general.experience}}" data-dtype="Number"/>
-            </div>
-            <div class="form-group grid grid-2col attribute">
-                <label>{{localize "PL1E.Characteristics"}}</label>
-                <input type="number" step="1" min="0" max="60" name="system.general.remainingCharacteristics"
-                       value="{{system.general.remainingCharacteristics}}" data-dtype="Number" disabled/>
-            </div>
-            <div class="form-group grid grid-2col attribute">
-                <label>{{localize "PL1E.Slots"}}</label>
-                <label class="align-right">{{system.general.slots}}</label>
-            </div>
-            <div class="form-group grid grid-2col attribute">
-                <label>{{localize "PL1E.Ranks"}}</label>
-                <label class="align-right">{{system.general.ranks}}</label>
-            </div>
-            <div class="form-group grid grid-2col attribute">
-                <label>{{localize "PL1E.MaxRank"}}</label>
-                {{#if (eq system.general.maxRank 1)}}
-                    <i class="far fa-circle-1 fa-lg align-right"></i>
-                {{else if (eq system.general.maxRank 2)}}
-                    <i class="far fa-circle-2 fa-lg align-right"></i>
-                {{else if (eq system.general.maxRank 3)}}
-                    <i class="far fa-circle-3 fa-lg align-right"></i>
-                {{else if (eq system.general.maxRank 4)}}
-                    <i class="far fa-circle-4 fa-lg align-right"></i>
-                {{else if (eq system.general.maxRank 5)}}
-                    <i class="far fa-circle-5 fa-lg align-right"></i>
-                {{/if}}
-            </div>
-            <div class="form-group grid grid-2col attribute">
-                <label>{{localize "PL1E.Bonuses"}}</label>
-                <div class="form-group">
-                    {{rangePicker name="system.general.bonuses" value=system.general.bonuses min=-2 max=2 step=1}}
-                </div>
-            </div>
-            <div class="form-group grid grid-2col attribute">
-                <label>{{localize "PL1E.Advantages"}}</label>
-                <div class="form-group">
-                    {{rangePicker name="system.general.advantages" value=system.general.advantages min=-2 max=2 step=1}}
-                </div>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.Misc"}}</legend>
-            {{#each system.misc}}
-                {{#with (configEntry "misc" @key)}}
-                    <div class="form-group attribute">
-                        <label>{{localize label}}</label>
-                        {{#if (eq type "select")}}
-                            <label class="align-right">{{localize (configEntryLabel select ../this)}}</label>
-                        {{/if}}
-                        {{#if (eq type "number")}}
-                            <label class="align-right">{{../this}}</label>
-                        {{/if}}
-                    </div>
-                {{/with}}
-            {{/each}}
-        </fieldset>
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.Reduction"}}</legend>
-            {{#each system.reductions}}
-                {{#with (configEntry "reductions" @key)}}
-                    <div class="form-group attribute">
-                        <label>{{localize label}}</label>
-                        <label class="align-right">{{../this}}</label>
-                    </div>
-                {{/with}}
-            {{/each}}
-        </fieldset>
+        {{> "systems/pl1e/templates/actor/components/attributes-reductions.hbs"}}
+        {{> "systems/pl1e/templates/actor/components/attributes-general.hbs"}}
+        {{> "systems/pl1e/templates/actor/components/attributes-misc.hbs"}}
     </div>
 </section>

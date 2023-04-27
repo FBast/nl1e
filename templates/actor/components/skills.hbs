@@ -1,0 +1,29 @@
+<fieldset>
+    <legend class="section-header">{{localize "PL1E.Skills"}}</legend>
+    <ul class="skills">
+        <!-- Listing defenses, resistances and skills -->
+        {{#each system.skills}}
+            {{#with (configEntry "skills" @key)}}
+                <li class="skill grid grid-5col" data-skill-id="{{@key}}">
+                    <i class="skill-roll fas fa-dice-d{{../dice}} hover-red{{#if (gt ../diceMod 0)}}color-green{{/if}}
+                        {{#if (lt ../diceMod 0)}}color-red{{/if}}">
+                        <label class="{{#if (gt ../numberMod 0)}}color-green{{/if}}
+                            {{#if (lt ../numberMod 0)}}color-red{{/if}}
+                            {{#if (eq ../numberMod 0)}}color-black{{/if}}">{{../number}}</label>
+                    </i>
+                    <label class="skill-label {{#if (eq @root.type "character")}}highlight-link hover-green{{/if}} grid-span-3 align-left"
+                           data-id="{{@key}}" data-attributes="{{weights.attributes}}" data-characteristics="{{weights.characteristics}}">
+                        {{localize label}}
+                    </label>
+                    <div class="skill-rank align-right">
+                        {{#if (and (not fixedRank) (not @root.system.general.creationMod) (ne @root.type "character"))}}
+                            <i class="rank-control far fa-circle-{{../rank}} fa-lg hover-red" data-skill="{{@key}}"></i>
+                        {{else}}
+                            <i class="fas fa-circle-{{../rank}} fa-lg"></i>
+                        {{/if}}
+                    </div>
+                </li>
+            {{/with}}
+        {{/each}}
+    </ul>
+</fieldset>

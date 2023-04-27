@@ -1,0 +1,16 @@
+<fieldset>
+    <legend class="section-header">{{localize "PL1E.Misc"}}</legend>
+    {{#each system.misc}}
+        {{#with (configEntry "misc" @key)}}
+            <div class="form-group attribute">
+                <label>{{localize label}}</label>
+                {{#if (eq type "select")}}
+                    <label class="align-right">{{localize (configEntryLabel select ../this)}}</label>
+                {{/if}}
+                {{#if (eq type "number")}}
+                    <label class="align-right">{{../this}}</label>
+                {{/if}}
+            </div>
+        {{/with}}
+    {{/each}}
+</fieldset>
