@@ -4,6 +4,21 @@
 export class Pl1eHelpers {
 
     /**
+     * Return true is a GM is connected
+     * @returns {boolean}
+     */
+    static isGMConnected() {
+        let isGMConnected = false;
+        for (let user of game.users) {
+            if (user.role === 4 && user.active) { // 4 is the role ID for GM
+                isGMConnected = true;
+                break;
+            }
+        }
+        return isGMConnected;
+    }
+
+    /**
      * Simple object check.
      * @param item
      * @returns {boolean}

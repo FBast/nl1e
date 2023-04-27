@@ -38,7 +38,7 @@ export class Pl1eChat {
         const skill = actor.system.skills[skillId];
         const skillConfig = CONFIG.PL1E.skills[skillId];
 
-        let roll = new Roll(`${skill.number}d${skill.dice}xo${skill.dice}cs>=4`, actor.getRollData());
+        let roll = await actor.rollSkill(skill)
 
         // Render message
         await roll.toMessage({

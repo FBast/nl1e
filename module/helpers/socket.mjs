@@ -27,17 +27,24 @@ export default class Pl1eSocket {
 
     /**
      * Send item from sourceActor to target targetActor
-     * @param sourceActor {Pl1eActor} the source actor
-     * @param targetActor {Pl1eActor} the target actor
-     * @param item {Pl1eItem} the send item
-     * @returns {Promise<void>}
+     * @param {string} sourceActorId the source actor
+     * @param {string} targetActorId the target actor
+     * @param {string} itemId the send item
      */
-    static async sendItem(sourceActor, targetActor, item) {
-        if (targetActor.type === 'character') {
-            await Pl1eTrade.giftItem(item, sourceActor, targetActor);
+    static async sendItem(sourceActorId, targetActorId, itemId) {
+        // Object are loose in transit, so we need to get them from this client using id
+        const sourceActor = game.actors.get(sourceActorId);
+        const targetActor = game.actors.get(targetActorId);
+        const item = sourceActor.items.get(itemId);
+
+        if (sourceActor.type === "character" && targetActor.type === "character") {
+            await Pl1eTrade.giftItem(sourceActor, targetActor, item);
         }
-        else if (targetActor.type === 'merchant') {
-            await Pl1eTrade.sellItem(item, sourceActor, targetActor);
+        else if (targetActor.type === "merchant") {
+            await Pl1eTrade.sellItem(sourceActor, targetActor, item);
+        }
+        else if (sourceActor.type === "merchant") {
+            await Pl1eTrade.buyItem(targetActor, sourceActor, item);
         }
     }
 

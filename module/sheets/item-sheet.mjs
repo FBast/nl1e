@@ -73,8 +73,8 @@ export class Pl1eItemSheet extends ItemSheet {
         // Use a safe clone of the item data for further operations.
         const itemData = context.item;
 
-        // If the sheet is not an original then disable edition
-        this.options.editable = this.item.isOriginal;
+        // If the user is not a GM the sheet is not editable
+        // this.options.editable = game.user.isGM;
 
         // Retrieve the roll data for TinyMCE editors.
         context.rollData = {};

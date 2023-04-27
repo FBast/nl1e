@@ -132,11 +132,11 @@ Hooks.on("renderChatPopout", (app, html, data) => {
 
 Hooks.once("socketlib.ready", () => {
     PL1E.socket = socketlib.registerSystem("pl1e");
-    PL1E.socket.register("sendItem", function (data) {
-        Pl1eSocket.sendItem(data.actor, data.targetActor, data.item)
+    PL1E.socket.register("sendItem", async function (data) {
+        await Pl1eSocket.sendItem(data.sourceActorId, data.targetActorId, data.itemId)
     })
-    PL1E.socket.register("sendContenant", function (data) {
-        Pl1eSocket.sendContenant(data.actor, data.targetActor, data.item);
+    PL1E.socket.register("sendContenant", async function (data) {
+        await Pl1eSocket.sendContenant(data.sourceActorId, data.targetActorId, data.itemId);
     })
 })
 

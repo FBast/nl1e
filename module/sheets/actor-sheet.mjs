@@ -1,6 +1,7 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {AppResting} from "../apps/resting.mjs";
 import {Pl1eEffect} from "../helpers/effects.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -164,18 +165,22 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Player to other actor transfer
         if (!this.actor.isOwner) {
+            if (!Pl1eHelpers.isGMConnected()) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoGMConnected"));
+                return;
+            }
             // Player transfer item to a not owned actor
             CONFIG.PL1E.socket.executeAsGM('sendItem', {
-                actor: game.user.character,
-                targetActor: this.actor,
-                item: item
+                sourceActorId: game.user.character.id,
+                targetActorId: this.actor.id,
+                itemId: item.id
             });
         }
         // Other cases
         else {
             await this.actor.addItem(item);
             // Delete the source item if it is embedded
-            if (item.isOwned) await this.actor.deleteItem(item);
+            if (item.isOwned) await item.parent.deleteItem(item);
         }
     }
 
@@ -192,7 +197,6 @@ export class Pl1eActorSheet extends ActorSheet {
         const wearables = [];
         const consumables = [];
         const commons = [];
-        const gear = [];
         const features = [];
         const abilities = {
             0: [],

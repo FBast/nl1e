@@ -97,13 +97,23 @@ export class Pl1eEvent {
     /**
      * Buy item
      * @param {Event} event The originating click event
-     * @param {Actor} actor the merchant of the item
+     * @param {Pl1eActor} actor the merchant of the item
      */
     static async onItemBuy(event, actor) {
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const item = actor.items.get(itemId);
-        if (game.user.character === null) return;
-        await Pl1eTrade.buyItem(item, game.user.character, actor);
+
+        if (!Pl1eHelpers.isGMConnected()) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoGMConnected"));
+            return;
+        }
+
+        // Player transfer item to a not owned actor
+        CONFIG.PL1E.socket.executeAsGM('sendItem', {
+            sourceActorId: actor.id,
+            targetActorId: game.user.character.id,
+            itemId: item.id
+        });
     }
 
     /**

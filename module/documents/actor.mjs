@@ -317,19 +317,14 @@ export class Pl1eActor extends Actor {
     /**
      *
      * @param skill
-     * @returns {Promise<{total: number, dice: DiceTerm[], formula: string}>}
+     * @returns {Promise<Roll>}
      */
     async rollSkill(skill) {
         let formula = skill.number + "d" + skill.dice;
         formula += this.type === "character" ? "xo" + skill.dice : "";
         formula += "cs>=4";
         let roll = new Roll(formula, this.getRollData());
-        await roll.evaluate({async: true});
-        return {
-            formula: roll.formula,
-            dice: roll.dice,
-            total: roll.total
-        };
+        return roll.evaluate({async: true});
     }
 
     /**
@@ -340,8 +335,11 @@ export class Pl1eActor extends Actor {
     async addItem(item) {
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
         newItem = newItem[0];
-        let linkId = randomID();
-        await newItem.setFlag("core", "sourceUuid", item.uuid);
+
+        const sourceUuid = await newItem.getFlag("core", "sourceUuid");
+        if (!sourceUuid) await newItem.setFlag("core", "sourceUuid", item.uuid);
+        const linkId = randomID();
+
         if (newItem.system.refItems.uuids && newItem.system.refItems.uuids.length > 0) {
             await newItem.setFlag("core", "parentId", linkId);
             for (let uuid of newItem.system.refItems.uuids) {
