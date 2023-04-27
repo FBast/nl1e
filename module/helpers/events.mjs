@@ -161,15 +161,10 @@ export class Pl1eEvent {
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
 
-        // Remove subitems from actor
-        if (document instanceof Actor && itemId) {
-            const parentItem = document.items.get(itemId);
-            for (let item of document.items) {
-                if (parentItem === item || item.system.childId === undefined) continue;
-                if (parentItem.system.parentId !== item.system.childId) continue;
-                item.delete();
-            }
-            await parentItem.delete();
+        // Remove embedded items from actor
+        if (document instanceof Pl1eActor && itemId) {
+            const item = document.items.get(itemId);
+            await document.deleteItem(item);
         }
         // Remove refItem from item
         else if (document instanceof Pl1eItem) {

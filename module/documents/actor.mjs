@@ -79,10 +79,12 @@ export class Pl1eActor extends Actor {
             if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
             if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === 'wearable' && !item.system.isEquipped) continue;
-            for (let [id, dynamicAttribute] of Object.entries(item.system.aspects)) {
-                if (dynamicAttribute.targetGroup !== 'self') continue;
-                await this.applyAttribute(dynamicAttribute, false);
-            }
+            //TODO integrate new aspect system
+
+            // for (let [id, aspect] of Object.entries(item.system.aspects)) {
+            //     if (aspect.targetGroup !== 'self') continue;
+            //     await this.applyAttribute(aspect, false);
+            // }
         }
         await super.prepareEmbeddedDocuments();
     }
@@ -328,6 +330,43 @@ export class Pl1eActor extends Actor {
             dice: roll.dice,
             total: roll.total
         };
+    }
+
+    /**
+     * Add an item and all child items as embedded documents
+     * @param item
+     * @returns {Promise<Pl1eItem>}
+     */
+    async addItem(item) {
+        let newItem = await this.createEmbeddedDocuments("Item", [item]);
+        newItem = newItem[0];
+        let linkId = randomID();
+        await newItem.setFlag("core", "sourceUuid", item.uuid);
+        if (newItem.system.refItems.uuids && newItem.system.refItems.uuids.length > 0) {
+            await newItem.setFlag("core", "parentId", linkId);
+            for (let uuid of newItem.system.refItems.uuids) {
+                const refItem = game.items.find(item => item.uuid === uuid);
+                let newRefItem = await this.addItem(refItem);
+                await newRefItem.setFlag("core", "childId", linkId);
+            }
+        }
+        return newItem;
+    }
+
+    /**
+     * Delete an item and all child items as embedded documents
+     * @param item
+     * @returns {Promise<void>}
+     */
+    async deleteItem(item) {
+        let parentId = item.getFlag("core", "parentId");
+        if (parentId) {
+            for (const otherItem of this.items) {
+                let childId = otherItem.getFlag("core", "childId");
+                if (parentId === childId) await this.deleteItem(otherItem);
+            }
+        }
+        await this.deleteEmbeddedDocuments("Item", [item._id]);
     }
 
 }

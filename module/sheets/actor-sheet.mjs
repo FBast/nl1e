@@ -173,34 +173,9 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Other cases
         else {
-            let newItem = await this._onDropItemCreate(item);
-            newItem = newItem[0];
-            let linkId = randomID();
-            await newItem.setFlag("core", "sourceUuid", data.uuid);
-            await newItem.setFlag("core", "parentId", linkId);
-            await this.AddRefItems(newItem, linkId);
+            await this.actor.addItem(item);
             // Delete the source item if it is embedded
-            if (item.isOwned) item.delete();
-        }
-    }
-
-    /**
-     * Handle refItems (recursive)
-     * @param item
-     * @param linkId
-     * @returns {Promise<void>}
-     * @constructor
-     */
-    async AddRefItems(item, linkId) {
-        if (item.system.refItems.uuids && item.system.refItems.uuids.length > 0) {
-            for (let uuid of item.system.refItems.Uuids) {
-                let item = game.items.find(item => item.uuid === uuid);
-                if (!CONFIG.PL1E.actors[this.actor.type].droppable.includes(item.type)) continue;
-                const newSubItem = await this._onDropItemCreate(item);
-                await newSubItem.setFlag("core", "sourceUuid", data.uuid);
-                await newSubItem.setFlag("core", "parentId", linkId);
-                await this.AddRefItems(item, linkId);
-            }
+            if (item.isOwned) await this.actor.deleteItem(item);
         }
     }
 
