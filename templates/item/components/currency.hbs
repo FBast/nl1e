@@ -1,0 +1,19 @@
+<div class="box flexrow">
+    {{#each price}}
+        <div class="form-group flex-group-center">
+            <div class="input-spin currency">
+                {{#with (configEntry "money" @key)}}
+                    <i class="currency-icon fas fa-coins color-{{@key}} hover-green" data-tooltip='{{localize this}}'></i>
+                {{/with}}
+                <input name="system.price.{{@key}}" type="number" value="{{this}}" data-dtype="Number" min="0" placeholder="0"/>
+                {{#if @root.game.user.isGM}}
+                    <span>
+                    <i class="currency-control pointer fa fa-plus-square" data-currency="{{@key}}" data-value="1"></i>
+                    <i class="currency-control pointer fa fa-minus-square" data-currency="{{@key}}" data-value="-1"></i>
+                </span>
+                {{/if}}
+            </div>
+        </div>
+    {{/each}}
+</div>
+

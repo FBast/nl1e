@@ -4,24 +4,7 @@
         <img class="profile" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
             <h1 class="sheet-name"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-            <div class="resources grid grid-3col">
-                {{#each system.price}}
-                    <div class="resource box flex-group-center">
-                        <div class="input-spin currency">
-                            {{#with (configEntry "money" @key)}}
-                                <i class="currency-icon fas fa-coins color-{{@key}} hover-green" data-tooltip='{{localize this}}'></i>
-                            {{/with}}
-                            <input name="system.price.{{key}}.value" type="number" value="{{this}}" data-dtype="Number" min="0" placeholder="0" disabled/>
-                            {{#if ../game.user.isGM}}
-                                <span>
-                                    <i class="currency-control pointer fa fa-plus-square" data-currency="{{@key}}" data-value="1"></i>
-                                    <i class="currency-control pointer fa fa-minus-square" data-currency="{{@key}}" data-value="-1"></i>
-                                </span>
-                            {{/if}}
-                        </div>
-                    </div>
-                {{/each}}
-            </div>
+            {{> "systems/pl1e/templates/item/components/currency.hbs" price=system.price}}
         </div>
     </header>
     {{#if game.user.isGM}}

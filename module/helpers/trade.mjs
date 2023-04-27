@@ -46,10 +46,7 @@ export class Pl1eTrade {
         let priceMoney = sellerActor.system.merchantPrices[item.id];
         let priceUnits = Pl1eHelpers.moneyToUnits(priceMoney);
         let units = Pl1eHelpers.moneyToUnits(buyerActor.system.money);
-        if (units < priceUnits) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMoney"));
-            return;
-        }
+        if (units < priceUnits) return;
         units -= priceUnits;
         const money = Pl1eHelpers.unitsToMoney(units);
         await buyerActor.update({

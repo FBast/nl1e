@@ -110,9 +110,9 @@ export class Pl1eEvent {
 
         // Player transfer item to a not owned actor
         CONFIG.PL1E.socket.executeAsGM('sendItem', {
-            sourceActorId: actor.id,
-            targetActorId: game.user.character.id,
-            itemId: item.id
+            sourceActorId: actor._id,
+            targetActorId: game.user.character._id,
+            itemId: item._id
         });
     }
 
