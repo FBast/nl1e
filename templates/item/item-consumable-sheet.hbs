@@ -10,7 +10,9 @@
                         {{selectOptions (config "masteries") selected=system.attributes.mastery.value localize=true}}
                     </select>
                 </div>
-                {{> "systems/pl1e/templates/item/components/price.hbs"}}
+                <div class="grid-span-3">
+                    {{> "systems/pl1e/templates/item/components/price.hbs"}}
+                </div>
             </div>
         </div>
     </header>
