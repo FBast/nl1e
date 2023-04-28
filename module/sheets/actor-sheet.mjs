@@ -156,8 +156,9 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     async _onDropItem(event, data) {
         const item = await Item.implementation.fromDropData(data);
+
         // Return if same actor
-        // if (game.user.character === this.actor) return;
+        if (item.parent === this.actor) return;
 
         // filter item to actor droppable
         if (!CONFIG.PL1E.actors[this.actor.type].droppable.includes(item.type)) return;

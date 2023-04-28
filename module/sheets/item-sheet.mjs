@@ -154,6 +154,15 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     _prepareItems(context) {
+        // Get ref items using uuid
+        const items = [];
+        for (let i = 0; i < this.item.system.refItems.uuids.length; i++) {
+            const uuid = this.item.system.refItems.uuids[i];
+            const item = game.items.find(item => item.uuid === uuid);
+            if (item) items[i] = item;
+            else throw new Error(`PL1E | Cannot find item with uuid : ${uuid}`)
+        }
+
         // Initialize containers.
         const aspects = [];
         const features = [];
@@ -167,8 +176,7 @@ export class Pl1eItemSheet extends ItemSheet {
         };
 
         // Iterate through refItems, allocating to containers
-        for (let i = 0; i < context.item.system.refItems.items.length; i++) {
-            const item = context.item.system.refItems.items[i];
+        for (const item of items) {
             // Append to features
             if (item.type === 'feature') {
                 features.push(item);

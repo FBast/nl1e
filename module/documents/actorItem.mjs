@@ -11,41 +11,26 @@ export class Pl1eActorItem extends Pl1eItem {
         // As with the actor class, subItems are documents that can have their data
         super.prepareData();
 
-        //TODO this process should be done for original item only, not actor embedded items
-
-        // // Prepare refItems
-        // if (this.system.refItems.uuids) {
-        //     this.system.refItems.uuids = Object.values(this.system.refItems.uuids);
-        //     this.system.refItems.items = Object.values(this.system.refItems.items);
-        //     for (let i = 0; i < this.system.refItems.uuids.length; i++) {
-        //         const uuid = this.system.refItems.uuids[i];
-        //         const itemData = this.system.refItems.items[i];
-        //         let originalItem = game.items.find(item => item.uuid === uuid);
-        //         // Item does not exist then remove from the arrays
-        //         if (!originalItem) {
-        //             this.system.refItems.items.splice(i, 1);
-        //             this.system.refItems.uuids.splice(i, 1);
-        //             await this.update({
-        //                 "system.refItems.items": this.system.refItems.items,
-        //                 "system.refItems.uuids": this.system.refItems.uuids
-        //             });
-        //             i--;
-        //         }
-        //         else {
-        //             await this.addItem(originalItem);
-        //             // this.system.refItems.items[i] = originalItem;
-        //
-        //
-        //
-        //             // const originalData = originalItem.toObject(false);
-        //             // Pl1eHelpers.mergeDeep(originalData, itemData);
-        //             // originalData._id = this.system.refItems.ids[i];
-        //             // originalItem = new Pl1eItemProxy(originalData);
-        //             // await originalItem.setFlag("core", "sourceUuid", uuid);
-        //             // this.system.refItems.items[i] = originalItem;
-        //         }
-        //     }
-        // }
+        // Prepare refItems
+        if (this.system.refItems.uuids) {
+            this.system.refItems.uuids = Object.values(this.system.refItems.uuids);
+            this.system.refItems.ids = Object.values(this.system.refItems.ids);
+            for (let i = 0; i < this.system.refItems.uuids.length; i++) {
+                const uuid = this.system.refItems.uuids[i];
+                // const itemData = this.system.refItems.items[i];
+                let originalItem = game.items.find(item => item.uuid === uuid);
+                // Item does not exist then remove from the arrays
+                if (!originalItem) {
+                    this.system.refItems.items.splice(i, 1);
+                    this.system.refItems.uuids.splice(i, 1);
+                    await this.update({
+                        "system.refItems.items": this.system.refItems.items,
+                        "system.refItems.uuids": this.system.refItems.uuids
+                    });
+                    i--;
+                }
+            }
+        }
     }
 
     /**
