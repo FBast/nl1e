@@ -36,6 +36,8 @@
   "PL1E.AddAttribute": "Add attribute",
   "PL1E.TargetGroup": "Target group",
   "PL1E.Misc": "Miscellaneous",
+  "PL1E.PassiveAspects": "Passive Aspects",
+  "PL1E.ActiveAspects": "Active Aspects",
   "PL1E.Increase": "Increase",
   "PL1E.Decrease": "Decrease",
   "PL1E.Override": "Override",

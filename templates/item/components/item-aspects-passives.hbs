@@ -1,0 +1,53 @@
+<ol class="items-list">
+    <li class="item flexrow items-header">
+        <div class="item-name">{{localize "PL1E.PassiveAspects"}}</div>
+        <div class="item-controls">
+            {{#each passiveAspectsObjects}}
+                {{#with (configEntry "aspects" name)}}
+                    <input type="image" class="item-control aspect-add hover-red" src="{{img}}" data-aspect-id="{{@key}}"
+                           data-aspect-type="passive" data-tooltip='{{localize label}}' width="20" height="20"/>
+                {{/with}}
+            {{/each}}
+        </div>
+    </li>
+    {{#each passiveAspects}}
+        {{#with (configEntry "aspects" name)}}
+            <li class="item" data-aspect-id="{{@key}}" data-aspect-type="passive">
+                <div class="flexrow">
+                    <img class="item-image" src="{{img}}" title="{{localize label}}" width="24" height="24"/>
+                    <label class="item-name item-tooltip-activate">{{localize label}}</label>
+                    <div class="item-stats">
+                        {{#with (configEntry ../dataGroup ../data)}}
+                            {{#if (eq type "number")}}
+                                <input class="input-positive-decimal" type="number" name="system.passiveAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
+                            {{else if (eq type "bool")}}
+                                <input type="checkbox" name="system.passiveAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
+                            {{else if (eq type "select")}}
+                                <select name="system.passiveAspects.{{@key}}.value">
+                                    {{selectOptions (config select) selected=../../value localize=true}}
+                                </select>
+                            {{/if}}
+                        {{/with}}
+                    </div>
+                    <div class="item-controls">
+                        <a class="item-control aspect-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+                <div class="item-tooltip flexcol">
+                    <div class="flexrow">
+                        <label>{{localize "PL1E.DataGroup"}}</label>
+                        <select name="system.passiveAspects.{{@key}}.dataGroup">
+                            {{selectOptions dataGroups selected=../dataGroup localize=true}}
+                        </select>
+                    </div>
+                    <div class="flexrow">
+                        <label>{{localize "PL1E.Data"}}</label>
+                        <select name="system.passiveAspects.{{@key}}.data">
+                            {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
+                        </select>
+                    </div>
+                </div>
+            </li>
+        {{/with}}
+    {{/each}}
+</ol>

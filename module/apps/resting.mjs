@@ -22,7 +22,7 @@ export class AppResting extends FormApplication {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["my-apps"],
-            template: "systems/pl1e/templates/apps/app-resting.hbs",
+            template: "systems/pl1e/templates/apps/resting.hbs",
             width: 400,
             height: "auto",
             scrollY: [

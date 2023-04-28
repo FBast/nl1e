@@ -118,6 +118,8 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
         html.find('.attribute-add').on("click", ev => Pl1eEvent.onAttributeAdd(ev, this.item))
         html.find('.attribute-remove').on("click", ev => Pl1eEvent.onAttributeRemove(ev, this.item))
+        html.find('.aspect-add').on("click", ev => this.onAspectAdd(ev))
+        html.find('.aspect-remove').on("click", ev => this.onAspectRemove(ev))
     }
 
     /**
@@ -164,7 +166,6 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Initialize containers.
-        const aspects = [];
         const features = [];
         let abilities = {
             0: [],
@@ -185,16 +186,65 @@ export class Pl1eItemSheet extends ItemSheet {
             else if (item.type === 'ability') {
                 abilities[item.system.attributes.level.value].push(item);
             }
-            // Append to aspects
-            if (item.type === 'aspect') {
-                aspects.push(item)
-            }
         }
 
         // Assign and return
-        context.aspects = aspects;
         context.features = features;
         context.abilities = abilities;
+        context.passiveAspects = this.item.system.passiveAspects;
+        context.activeAspects = this.item.system.activeAspects;
+        context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
+        context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+    }
+
+    async onAspectAdd(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const aspectId = $(event.currentTarget).data("aspect-id");
+        const aspectType = $(event.currentTarget).data("aspect-type");
+
+        let target;
+        let aspectsObjects;
+        switch (aspectType) {
+            case "passive":
+                target = "passiveAspects";
+                aspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
+                break;
+            case "active":
+                target = "activeAspects";
+                aspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+                break;
+        }
+
+        await this.item.update({
+            [`system.${target}.${randomID()}`]: aspectsObjects[aspectId]
+        })
+    }
+
+    async onAspectRemove(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const aspectId = $(event.currentTarget).closest(".item").data("aspect-id");
+        const aspectType = $(event.currentTarget).closest(".item").data("aspect-type");
+
+        let target;
+        let aspectsObjects;
+        switch (aspectType) {
+            case "passive":
+                target = "passiveAspects";
+                aspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
+                break;
+            case "active":
+                target = "activeAspects";
+                aspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+                break;
+        }
+
+        await this.item.update({
+            [`system.${target}.-=${aspectId}`]: null
+        });
     }
 
 }

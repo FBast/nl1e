@@ -120,9 +120,6 @@
       .item-stats {
         flex-flow: wrap;
       }
-      :first-child { // add padding for non tooltip
-        padding: 2px 0px;
-      }
     }
 
     .item-inactive {

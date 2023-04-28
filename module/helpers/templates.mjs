@@ -39,7 +39,9 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/item/parts/wearable-attributes.hbs",
 
         // Item components
-        "systems/pl1e/templates/item/components/price.hbs"
+        "systems/pl1e/templates/item/components/price.hbs",
+        "systems/pl1e/templates/item/components/item-aspects-passives.hbs",
+        "systems/pl1e/templates/item/components/item-aspects-actives.hbs"
 
     ]);
 };

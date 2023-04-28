@@ -189,78 +189,116 @@ export function getConfigItems() {
         }
     }
 
-    PL1E.functions = {
-        "increase": "PL1E.Increase",
-        "decrease": "PL1E.Decrease",
-        "override": "PL1E.Override",
-        "transfer": "PL1E.Transfer",
-        "effect": "PL1E.Effect"
-    }
-
-    PL1E.dataGroups = {
-        "resources": "PL1E.Resources",
-        "characteristics": "PL1E.Characteristics",
-        "misc": "PL1E.Misc"
-    }
-
-    PL1E.dynamicAttributesGroups = {
-        "feature": {
-            "increase": "PL1E.Increase",
-            "decrease": "PL1E.Decrease",
-            "override": "PL1E.Override"
+    PL1E.passiveAspectsObjects = [
+        {
+            "name": "increase",
+            "value": 0,
+            "dataGroup": "resources",
+            "data": "mana"
         },
-        "ability": {
-            "increase": "PL1E.Increase",
-            "decrease": "PL1E.Decrease",
-            "override": "PL1E.Override",
-            "transfer": "PL1E.Transfer",
-            "effect": "PL1E.Effect"
+        {
+            "name": "decrease",
+            "value": 0,
+            "dataGroup": "resources",
+            "data": "stamina"
         },
-        "weapon": {
-            "increase": "PL1E.Increase",
-            "decrease": "PL1E.Decrease",
-            "override": "PL1E.Override",
-            "transfer": "PL1E.Transfer"
-        },
-        "wearable": {
-            "increase": "PL1E.Increase",
-            "decrease": "PL1E.Decrease",
-            "override": "PL1E.Override"
-        },
-        "consumable": {
-            "increase": "PL1E.Increase",
-            "decrease": "PL1E.Decrease",
-            "override": "PL1E.Override"
+        {
+            "name": "override",
+            "value": 0,
+            "dataGroup": "resources",
+            "data": "health",
         }
-    }
+    ]
 
-    PL1E.aspects = {
-        "increase": {
+    PL1E.activeAspectsObjects = [
+        {
+            "name": "increase",
             "value": 0,
             "dataGroup": "resources",
-            "data": "strength",
+            "data": "mana",
+            "targetGroup": "all",
+            "resolutionType": "value"
         },
-        "decrease": {
+        {
+            "name": "decrease",
+            "value": 0,
+            "dataGroup": "resources",
+            "data": "stamina",
+            "targetGroup": "all",
+            "resolutionType": "value"
+        },
+        {
+            "name": "override",
             "value": 0,
             "dataGroup": "resources",
             "data": "health",
+            "targetGroup": "all",
+            "resolutionType": "value"
+        },
+        {
+            "name": "transfer",
+            "value": 0,
+            "dataGroup": "resources",
+            "data": "health",
+            "targetGroup": "all",
+            "resolutionType": "value",
             "reduction": "none",
         },
-        "override": {
-            "value": 0,
-            "dataGroup": "resources",
-            "data": "health",
-        },
-        "transfer": {
-            "value": 0,
-            "reduction": "none",
-            "dataGroup": "resources",
-            "data": "health",
-        },
-        "effect": {
+        {
+            "name": "effect",
             "value": 0,
             "dataGroup": "characteristics",
             "data": "strength",
+            "targetGroup": "all",
+            "resolutionType": "value"
+        }
+    ]
+
+    PL1E.aspects = {
+        "increase": {
+            "label": "PL1E.Increase",
+            "img": "icons/svg/upgrade.svg",
+            "dataGroups": {
+                "resources": "PL1E.Resources",
+                "characteristics": "PL1E.Characteristics",
+                "misc": "PL1E.Misc"
+            }
+        },
+        "decrease": {
+            "label": "PL1E.Decrease",
+            "img": "icons/svg/downgrade.svg",
+            "dataGroups": {
+                "resources": "PL1E.Resources",
+                "characteristics": "PL1E.Characteristics",
+                "misc": "PL1E.Misc"
+            }
+        },
+        "override": {
+            "label": "PL1E.Override",
+            "img": "icons/svg/target.svg",
+            "dataGroups": {
+                "resources": "PL1E.Resources",
+                "characteristics": "PL1E.Characteristics",
+                "misc": "PL1E.Misc"
+            }
+        },
+        "transfer": {
+            "label": "PL1E.Transfer",
+            "img": "icons/svg/sun.svg",
+            "dataGroups": {
+                "resources": "PL1E.Resources",
+                "characteristics": "PL1E.Characteristics",
+                "misc": "PL1E.Misc"
+            }
+        },
+        "effect": {
+            "label": "PL1E.Effect",
+            "img": "icons/svg/aura.svg",
+            "dataGroups": {
+                "resources": "PL1E.Resources",
+                "characteristics": "PL1E.Characteristics",
+                "misc": "PL1E.Misc"
+            }
         }
     }
 

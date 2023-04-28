@@ -297,7 +297,9 @@
           "items": [],
           "uuids": [],
           "ids": []
-        }
+        },
+        "passiveAspects": {},
+        "activeAspects": {}
       },
       "item": {
         "price": {

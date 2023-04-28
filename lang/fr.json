@@ -25,6 +25,8 @@
   "PL1E.Increase": "Augmenter",
   "PL1E.Decrease": "Réduire",
   "PL1E.Override": "Définir",
+  "PL1E.PassiveAspects": "Aspects Passifs",
+  "PL1E.ActiveAspects": "Aspects Actifs",
   "PL1E.Transfer": "Transférer",
   "PL1E.HealthRest": "Vie par repos",
   "PL1E.StaminaRest": "Endurance par repos",
