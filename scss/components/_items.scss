@@ -45,7 +45,7 @@
 
     // Item Name
     .item-name {
-      flex: 2;
+      flex: 1;
       margin: 0 5px;
       overflow: hidden;
       font-size: 13px;
@@ -82,7 +82,7 @@
     // Control Buttons
     .item-controls {
       display: contents;
-      flex: 0 0 100px;
+      flex: 0;
       flex-wrap: wrap;
       justify-content: flex-end;
 
