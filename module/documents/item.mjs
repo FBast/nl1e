@@ -20,4 +20,31 @@ export class Pl1eItem extends Item {
         await this.updateSource(updateData);
     }
 
+    /**
+     * Augment the basic Item data model with additional dynamic data.
+     */
+    async prepareData() {
+        // As with the actor class, subItems are documents that can have their data
+        super.prepareData();
+
+        // Prepare refItems
+        if (this.system.refItemsUuids) {
+            this.system.refItemsUuids = Object.values(this.system.refItemsUuids);
+            for (let i = 0; i < this.system.refItemsUuids.length; i++) {
+                const uuid = this.system.refItemsUuids[i];
+                let originalItem = game.items.find(item => item.uuid === uuid);
+                // Item does not exist then remove from the arrays
+                if (!originalItem) {
+                    this.system.refItemsUuids.splice(i, 1);
+                    await this.update({
+                        "system.refItemsUuids": this.system.refItemsUuids
+                    });
+                    i--;
+                }
+            }
+        }
+    }
+
+
+
 }

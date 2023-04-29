@@ -1,6 +1,6 @@
-import {Pl1eActorItem} from "./actorItem.mjs";
+import {Pl1eItem} from "./item.mjs";
 
-export class Pl1eWearable extends Pl1eActorItem {
+export class Pl1eWearable extends Pl1eItem {
 
     /** @override */
     async toggle(options) {

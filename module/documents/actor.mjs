@@ -340,9 +340,9 @@ export class Pl1eActor extends Actor {
         if (!sourceUuid) await newItem.setFlag("core", "sourceUuid", item.uuid);
         const linkId = randomID();
 
-        if (newItem.system.refItems.uuids && newItem.system.refItems.uuids.length > 0) {
+        if (newItem.system.refItemsUuids && newItem.system.refItemsUuids.length > 0) {
             await newItem.setFlag("core", "parentId", linkId);
-            for (let uuid of newItem.system.refItems.uuids) {
+            for (let uuid of newItem.system.refItemsUuids) {
                 const refItem = game.items.find(item => item.uuid === uuid);
                 let newRefItem = await this.addItem(refItem);
                 await newRefItem.setFlag("core", "childId", linkId);

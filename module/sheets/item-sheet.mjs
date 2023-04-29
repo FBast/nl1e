@@ -84,9 +84,7 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Prepare refItems
-        if (context.item.system.refItems.items !== undefined) {
-            this._prepareItems(context);
-        }
+        this._prepareItems(context);
 
         // Add the actor's data to context.data for easier access, as well as flags.
         context.system = itemData.system;
@@ -144,12 +142,10 @@ export class Pl1eItemSheet extends ItemSheet {
         if (this.item.uuid === item.uuid) return;
 
         if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
-            this.item.system.refItems.uuids.push(item.uuid);
-            this.item.system.refItems.ids.push(randomID());
+            this.item.system.refItemsUuids.push(item.uuid);
             // Save the item
             await this.item.update({
-                "system.refItems.uuids": this.item.system.refItems.uuids,
-                "system.refItems.ids": this.item.system.refItems.ids
+                "system.refItemsUuids": this.item.system.refItemsUuids,
             })
             this.render(this.rendered)
         }
@@ -158,11 +154,11 @@ export class Pl1eItemSheet extends ItemSheet {
     _prepareItems(context) {
         // Get ref items using uuid
         const items = [];
-        for (let i = 0; i < this.item.system.refItems.uuids.length; i++) {
-            const uuid = this.item.system.refItems.uuids[i];
+        for (let i = 0; i < this.item.system.refItemsUuids.length; i++) {
+            const uuid = this.item.system.refItemsUuids[i];
             const item = game.items.find(item => item.uuid === uuid);
             if (item) items[i] = item;
-            else throw new Error(`PL1E | Cannot find item with uuid : ${uuid}`)
+            // else throw new Error(`PL1E | Cannot find item with uuid : ${uuid}`)
         }
 
         // Initialize containers.

@@ -1,9 +1,10 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
-import {Pl1eActorItem} from "./actorItem.mjs";
 import {Pl1eChat} from "../helpers/chat.mjs";
+import {Pl1eItem} from "./item.mjs";
+import {Pl1eAspect} from "../helpers/aspect.mjs";
 
-export class Pl1eAbility extends Pl1eActorItem {
+export class Pl1eAbility extends Pl1eItem {
 
     /**
      * @type {AbilityData}
@@ -36,16 +37,9 @@ export class Pl1eAbility extends Pl1eActorItem {
             item: this,
             itemId: this.uuid,
             attributes: JSON.parse(JSON.stringify(this.system.attributes)),
-            aspects: [],
+            activeAspects: this.system.activeAspects,
             linkedItem: null
         }
-
-        // Get aspects of the item
-        this.system.subItems.forEach((value, key) => {
-            if (value.type === "aspect") {
-                characterData.aspects.push(value);
-            }
-        });
 
         // Get linked attributes
         this._linkItem(characterData);
@@ -87,7 +81,7 @@ export class Pl1eAbility extends Pl1eActorItem {
         }
 
         // Display message
-        await Pl1eChat.aspectRoll(characterData);
+        await Pl1eChat.abilityRoll(characterData);
 
         // Update data
         this.abilityData = abilityData;
@@ -193,18 +187,18 @@ export class Pl1eAbility extends Pl1eActorItem {
         }
 
         // Apply dynamic attributes, here we calculate each aspect for all targets
-        for (let aspect of characterData.aspects) {
-            targetsData = await aspect.apply(characterData, targetsData);
+        for (let aspect of characterData.activeAspects) {
+            targetsData = await Pl1eAspect.apply(characterData, targetsData);
         }
 
         // Notify if attributes has effects
         for (const targetData of targetsData) {
-            targetData.hasEffects = targetData.aspects.length > 0;
+            targetData.hasEffects = targetData.activeAspects.length > 0;
         }
 
         // Display messages
         for (const targetData of targetsData) {
-            await Pl1eChat.aspectRoll(characterData, targetData);
+            await Pl1eChat.abilityRoll(characterData, targetData);
         }
     }
 
@@ -229,7 +223,7 @@ export class Pl1eAbility extends Pl1eActorItem {
             }
             characterData.linkedItem = relatedItems[0];
             Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.aspects);
+            Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
         }
         if (characterData.attributes.abilityLink.value === 'parent') {
             let relatedItems = [];
@@ -249,9 +243,9 @@ export class Pl1eAbility extends Pl1eActorItem {
             }
             characterData.linkedItem = relatedItems[0];
             Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
-            for (let [id, dynamicAttribute] of Object.entries(characterData.linkedItem.system.aspects)) {
+            for (let [id, dynamicAttribute] of Object.entries(characterData.linkedItem.system.activeAspects)) {
                 if (dynamicAttribute.attributeLink !== "child") continue;
-                characterData.aspects[id] = dynamicAttribute;
+                characterData.activeAspects[id] = dynamicAttribute;
             }
         }
     }

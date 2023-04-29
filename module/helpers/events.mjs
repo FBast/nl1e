@@ -1,4 +1,3 @@
-import {Pl1eTrade} from "./trade.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
@@ -158,18 +157,12 @@ export class Pl1eEvent {
             await document.deleteItem(item);
         }
         // Remove refItem from item
-        else if (document instanceof Pl1eItem) {
-            let index = -1;
-            if (itemId) index = document.system.refItems.ids.indexOf(itemId);
-            else if (itemUuid) index = document.system.refItems.uuids.indexOf(itemUuid);
+        else if (document instanceof Pl1eItem && itemUuid) {
+            let index = document.system.refItemsUuids.indexOf(itemUuid);
             if (index > -1) {
-                document.system.refItems.items.splice(index, 1);
-                document.system.refItems.uuids.splice(index, 1);
-                document.system.refItems.ids.splice(index, 1);
+                document.system.refItemsUuids.splice(index, 1);
                 await document.update({
-                    "system.refItems.items": document.system.refItems.items,
-                    "system.refItems.uuids": document.system.refItems.uuids,
-                    "system.refItems.ids": document.system.refItems.ids
+                    "system.refItemsUuids": document.system.refItemsUuids,
                 });
             }
         }
@@ -301,7 +294,7 @@ export class Pl1eEvent {
         event.stopPropagation();
         let attributeId = $(event.currentTarget).data("attribute");
         await item.update({
-            ["system.dynamicAttributes.-=" + attributeId]: null
+            [`system.dynamicAttributes.-=${attributeId}`]: null
         });
     }
 

@@ -41,7 +41,7 @@
                                     {{/if}}
                                 </div>
                                 <div class="item-controls">
-                                    <a class="item-control item-use {{#if (ne _id @root.itemEaten._id)}}icon-inactive{{/if}}"
+                                    <a class="item-control item-use {{#if (ne _id @root.itemEaten._id)}}color-grey{{/if}}"
                                        data-usage="eaten" data-tooltip='{{localize "PL1E.Eat"}}'><i class="fas fa-fork-knife"></i></a>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                                     {{/if}}
                                 </div>
                                 <div class="item-controls">
-                                    <a class="item-control item-use {{#if (ne _id @root.itemDrink._id)}}icon-inactive{{/if}}"
+                                    <a class="item-control item-use {{#if (ne _id @root.itemDrink._id)}}color-grey{{/if}}"
                                        data-usage="drink" data-tooltip='{{localize "PL1E.Drink"}}'><i class="fas fa-glass"></i></a>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                                         </div>
                                         <div class="item-controls">
                                             <a class="item-control {{#if system.isMemorized}}item-toggle{{else if (lt (minus @root.slots system.attributes.level.value) 0)}}
-                                            color-red{{else}}icon-inactive item-toggle{{/if}}" data-tooltip='{{localize "PL1E.Memorize"}}'>
+                                            color-red{{else}}color-grey item-toggle{{/if}}" data-tooltip='{{localize "PL1E.Memorize"}}'>
                                                 <i class="fas fa-book"></i>
                                             </a>
                                         </div>
@@ -133,7 +133,7 @@
                                         {{#if (eq state "bought")}}
                                             rank-control hover-red color-green
                                         {{else if (eq state "affordable")}}
-                                            rank-control hover-red icon-inactive
+                                            rank-control hover-red color-grey
                                         {{else if (eq state "notAffordable")}}
                                             color-red
                                         {{/if}}" data-rank="{{@key}}">

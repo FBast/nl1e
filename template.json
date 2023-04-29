@@ -288,16 +288,12 @@
     }
   },
   "Item": {
-    "types": ["feature", "ability", "weapon", "wearable", "consumable", "common", "aspect"],
+    "types": ["feature", "ability", "weapon", "wearable", "consumable", "common"],
     "templates": {
       "base": {
         "description": "",
         "units": 1,
-        "refItems": {
-          "items": [],
-          "uuids": [],
-          "ids": []
-        },
+        "refItemsUuids": [],
         "passiveAspects": {},
         "activeAspects": {}
       },
@@ -421,7 +417,7 @@
       }
     },
     "consumable": {
-      "templates": ["base", "item", "aspect"],
+      "templates": ["base", "item"],
       "removedUses": 0,
       "attributes": {
         "activation": {
@@ -451,14 +447,6 @@
           "value": 0
         }
       }
-    },
-    "aspect": {
-      "function": "increase",
-      "dataGroup": "resources",
-      "data": "health",
-      "damageType": "raw",
-      "targetGroup": "all",
-      "resolutionType": "value"
     }
   }
 }

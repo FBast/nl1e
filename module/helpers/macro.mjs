@@ -1,5 +1,3 @@
-import {Pl1eHelpers} from "./helpers.mjs";
-
 export class Pl1eMacro {
 
     /**

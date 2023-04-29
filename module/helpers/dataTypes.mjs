@@ -24,7 +24,7 @@
  * @property {RollData} rollData The roll data of the character
  * @property {number} result The result of the rollData
  * @property {object} attributes The attributes of the item
- * @property {Pl1eAspect[]} aspects The aspects of the item
+ * @property {object} activeAspects The aspects of the item
  * @property {boolean} hasEffects The possibility of effects based on attributes
  * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
  */

@@ -1,12 +1,12 @@
 export class Pl1eChat {
 
     /**
-     * Send a message for an aspect roll
+     * Send a message for an ability roll
      * @param {CharacterData} characterData
      * @param {TargetData} targetData
      * @returns {Promise<void>}
      */
-    static async aspectRoll(characterData, targetData = undefined) {
+    static async abilityRoll(characterData, targetData = undefined) {
         const rollData = targetData === undefined ? characterData.rollData : targetData.rollData;
         const template = targetData === undefined ? "character" : "target";
         // Render the chat card template

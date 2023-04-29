@@ -1,30 +1,36 @@
-import {Pl1eItem} from "./item.mjs";
-
-export class Pl1eAspect extends Pl1eItem {
+export class Pl1eAspect {
 
     /**
+     * @param {string} aspectName
      * @param {CharacterData} characterData
      * @param {TargetData[]} targetsData
      */
-    async apply(characterData, targetsData) {
+    static async apply(aspectName, characterData, targetsData) {
         // Calculate the aspect
-        switch (this.system.function) {
+        switch (aspectName) {
             case "increase":
                 return this._increase(characterData, targetsData);
             case "decrease":
-                return this._increase(characterData, targetsData);
+                return this._decrease(characterData, targetsData);
             case "override":
-                return this._increase(characterData, targetsData);
+                return this._override(characterData, targetsData);
             case "transfer":
-                return this._increase(characterData, targetsData);
+                return this._transfer(characterData, targetsData);
             case "effect":
-                return this._increase(characterData, targetsData);
+                return this._effect(characterData, targetsData);
             default:
-                throw new Error("PL1E | unknown aspect function : " + this.system.function);
+                throw new Error("PL1E | unknown aspect : " + aspectName);
         }
     }
 
-    async _increase(characterData, targetsData) {
+    /**
+     *
+     * @param characterData
+     * @param targetsData
+     * @returns {Promise<*>}
+     * @private
+     */
+    static async _increase(characterData, targetsData) {
         for (const targetData of targetsData) {
             // Check target validation
             if (!this._isTargetValid(characterData.token, targetData.token)) continue;
@@ -57,12 +63,56 @@ export class Pl1eAspect extends Pl1eItem {
     }
 
     /**
+     *
+     * @param characterData
+     * @param targetsData
+     * @returns {Promise<*>}
+     * @private
+     */
+    static async _decrease(characterData, targetsData) {
+
+    }
+
+    /**
+     *
+     * @param characterData
+     * @param targetsData
+     * @returns {Promise<*>}
+     * @private
+     */
+    static async _override(characterData, targetsData) {
+
+    }
+
+    /**
+     *
+     * @param characterData
+     * @param targetsData
+     * @returns {Promise<*>}
+     * @private
+     */
+    static async _transfer(characterData, targetsData) {
+
+    }
+
+    /**
+     *
+     * @param characterData
+     * @param targetsData
+     * @returns {Promise<*>}
+     * @private
+     */
+    static async _effect(characterData, targetsData) {
+
+    }
+
+    /**
      * @param {Token} characterToken
      * @param {Token} targetToken
      * @returns {boolean}
      * @private
      */
-    _isTargetValid(characterToken, targetToken) {
+    static _isTargetValid(characterToken, targetToken) {
         if (this.targetGroup !== undefined) {
             if (this.targetGroup === "self" && targetToken !== characterToken) return false;
             if (this.targetGroup === "allies" && targetToken.document.disposition !== characterToken.document.disposition) return false;

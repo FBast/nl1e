@@ -32,7 +32,6 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/item/parts/common-attributes.hbs",
         "systems/pl1e/templates/item/parts/consumable-attributes.hbs",
         "systems/pl1e/templates/item/parts/feature-attributes.hbs",
-        "systems/pl1e/templates/item/parts/item-aspects.hbs",
         "systems/pl1e/templates/item/parts/item-description.hbs",
         "systems/pl1e/templates/item/parts/item-linked.hbs",
         "systems/pl1e/templates/item/parts/weapon-attributes.hbs",

@@ -10,8 +10,7 @@ export function getConfigGeneral() {
         "weapon": "systems/pl1e/assets/icons/combat.svg",
         "wearable": "systems/pl1e/assets/icons/armor-vest.svg",
         "consumable": "systems/pl1e/assets/icons/round-potion.svg",
-        "common": "systems/pl1e/assets/icons/key.svg",
-        "aspect": "systems/pl1e/assets/icons/nodular.svg",
+        "common": "systems/pl1e/assets/icons/key.svg"
     }
 
     PL1E.defaultNames = {
@@ -23,8 +22,7 @@ export function getConfigGeneral() {
         "weapon": "PL1E.NewWeapon",
         "wearable": "PL1E.NewWearable",
         "consumable": "PL1E.NewConsumable",
-        "common": "PL1E.NewCommon",
-        "aspect": "PL1E.NewAspect",
+        "common": "PL1E.NewCommon"
     }
 
     PL1E.featureTypes = {
