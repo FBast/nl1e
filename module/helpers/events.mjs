@@ -143,11 +143,11 @@ export class Pl1eEvent {
     }
 
     /**
-     * Handle deletion of item
+     * Handle remove of item
      * @param {Event} event The originating click event
-     * @param {Actor|Item} document the document where the item is deleted
+     * @param {Actor|Item} document the document where the item is removed
      */
-    static async onItemDelete(event, document) {
+    static async onItemRemove(event, document) {
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
 

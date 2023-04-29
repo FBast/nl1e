@@ -108,7 +108,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Item management
         html.find('.item-create').on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
-        html.find('.item-delete').on("click", ev => Pl1eEvent.onItemDelete(ev, this.actor));
+        html.find('.item-remove').on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find('.item-link').on("click", ev => this.onItemLink(ev));
 
@@ -243,8 +243,15 @@ export class Pl1eActorSheet extends ActorSheet {
                 features.push(item);
             }
             // Append to abilities.
-            else if (item.type === 'ability' && !sourceUuidFlags.includes(sourceUuidFlag)) {
-                abilities[item.system.attributes.level.value].push(item);
+            else if (item.type === 'ability') {
+                // Increase units
+                if (sourceUuidFlags.includes(sourceUuidFlag)) {
+                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                    sameItem.system.units++;
+                }
+                else {
+                    abilities[item.system.attributes.level.value].push(item);
+                }
             }
             // Push sourceUuid flag to handle duplicates
             if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
@@ -319,9 +326,20 @@ export class Pl1eActorSheet extends ActorSheet {
 
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const item = this.actor.items.get(itemId);
-        const linkId = item.getFlag("core", "childId");
-        const parentItem = this.actor.items.find(item => item.getFlag("core", "parentId") === linkId);
-        parentItem.sheet.render(true);
+        const sourceUuid = item.getFlag("core", "sourceUuid");
+
+        // Render multiple parent in case of child stack
+        let sheetPosition = Pl1eHelpers.screenCenter();
+        for (const otherItem of this.actor.items) {
+            const childId = otherItem.getFlag("core", "childId");
+            const otherSourceUuid = otherItem.getFlag("core", "sourceUuid");
+            if (childId && otherSourceUuid === sourceUuid) {
+                const parentItem = this.actor.items.find(item => item.getFlag("core", "parentId") === childId);
+                parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
+                sheetPosition.x += 30;
+                sheetPosition.y += 30;
+            }
+        }
     }
 
     /**

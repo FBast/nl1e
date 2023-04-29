@@ -73,8 +73,8 @@ export class Pl1eItemSheet extends ItemSheet {
         // Use a safe clone of the item data for further operations.
         const itemData = context.item;
 
-        // If the user is not a GM the sheet is not editable
-        // this.options.editable = game.user.isGM;
+        // Sheet editable if original and user is owner
+        this.options.editable = this.item.isOriginal && this.item.isOwner;
 
         // Retrieve the roll data for TinyMCE editors.
         context.rollData = {};
@@ -111,7 +111,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Roll handlers, click handlers, etc. would go here.
         html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));
-        html.find(`.item-delete`).on("click", ev => Pl1eEvent.onItemDelete(ev, this.item));
+        html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
         html.find('.attribute-add').on("click", ev => Pl1eEvent.onAttributeAdd(ev, this.item))
@@ -207,6 +207,9 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.${randomID()}`]: aspectsObjects[aspectId]
         })
+
+        // Reset Clones
+        await Pl1eHelpers.resetClones(this.item);
     }
 
     async onAspectRemove(event) {
@@ -232,6 +235,9 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null
         });
+
+        // Reset Clones
+        await Pl1eHelpers.resetClones(this.item);
     }
 
 }

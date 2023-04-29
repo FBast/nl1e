@@ -98,7 +98,7 @@
                     {{/if}}
                     {{#if @root.actor.isOwner}}
                         {{#if (eq flags.core.childId undefined)}}
-                            <a class="item-control item-delete" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                            <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                         {{else}}
                             <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
                         {{/if}}

@@ -57,7 +57,7 @@ export class Pl1eHelpers {
         for (const actor of game.actors) {
             let updateDocument = false;
             const itemsData = [];
-            for (let item of actor.items.values()) {
+            for (let item of actor.items) {
                 if (!item.getFlag("core", "sourceUuid") || item.getFlag("core", "sourceUuid") !== originalItem.uuid) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
@@ -67,7 +67,9 @@ export class Pl1eHelpers {
                         "system.price": originalItem.system.price,
                         "system.description": originalItem.system.description,
                         "system.attributes": originalItem.system.attributes,
-                        "system.refItems": originalItem.system.refItems,
+                        "system.passiveAspects": originalItem.system.passiveAspects,
+                        "system.activeAspects": originalItem.system.activeAspects,
+                        "system.refItems": originalItem.system.refItems
                     });
                     updateDocument = true;
                 }
@@ -79,6 +81,9 @@ export class Pl1eHelpers {
                 await actor.updateEmbeddedDocuments("Item", itemsData);
             }
         }
+        // Render all visible sheets
+        const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
+        sheets.forEach(sheet => sheet.render(true));
     }
 
     /**
@@ -133,6 +138,18 @@ export class Pl1eHelpers {
 
     static rankCost(rank) {
         return ((rank * (rank + 1) / 2) - 1);
+    }
+
+    /**
+     * Center of the screen
+     * @returns {{x: number, y: number}}
+     */
+    static screenCenter() {
+        // const canvas = document.getElementById("board");
+        return {
+            x: window.innerWidth / 4,
+            y: window.innerHeight / 4
+        }
     }
 
 }

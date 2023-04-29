@@ -21,12 +21,19 @@ export class Pl1eItem extends Item {
     }
 
     /** @override */
-    _preDelete(options, user) {
+    async _preDelete(options, user) {
+        // Remove embedded from actors
         for (const actor of game.actors) {
             for (const item of actor.items) {
                 if (item.getFlag("core", "sourceUuid") !== this.uuid) continue;
                 item.parent.removeItem(item);
             }
+        }
+
+        // Remove ref items from other items
+        for (const item of game.items) {
+            if (item.system.refItemsUuids.includes(this.uuid))
+                await item.removeRefItem(this.uuid);
         }
         return super._preDelete(options, user);
     }
@@ -38,22 +45,6 @@ export class Pl1eItem extends Item {
         // As with the actor class, subItems are documents that can have their data
         super.prepareData();
 
-        // Prepare refItems
-        if (this.system.refItemsUuids) {
-            this.system.refItemsUuids = Object.values(this.system.refItemsUuids);
-            for (let i = 0; i < this.system.refItemsUuids.length; i++) {
-                const uuid = this.system.refItemsUuids[i];
-                let originalItem = game.items.find(item => item.uuid === uuid);
-                // Item does not exist then remove from the arrays
-                if (!originalItem) {
-                    this.system.refItemsUuids.splice(i, 1);
-                    await this.update({
-                        "system.refItemsUuids": this.system.refItemsUuids
-                    });
-                    i--;
-                }
-            }
-        }
     }
 
     /**
@@ -67,7 +58,6 @@ export class Pl1eItem extends Item {
         // Return if item with same uuid exist
         if (this.system.refItemsUuids.find(uuid => uuid === item.uuid)) return;
 
-        // Save the item
         this.system.refItemsUuids.push(item.uuid);
         await this.update({
             "system.refItemsUuids": this.system.refItemsUuids,
@@ -93,7 +83,7 @@ export class Pl1eItem extends Item {
             });
         }
 
-        // Update actors with this item to remove the old item
+        // Update actors with this item to remove the related embedded items
         for (const actor of game.actors) {
             for (const existingItem of actor.items) {
                 if (existingItem.getFlag("core", "sourceUuid") !== this.uuid) continue;
