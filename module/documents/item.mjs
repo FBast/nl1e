@@ -20,6 +20,17 @@ export class Pl1eItem extends Item {
         await this.updateSource(updateData);
     }
 
+    /** @override */
+    _preDelete(options, user) {
+        for (const actor of game.actors) {
+            for (const item of actor.items) {
+                if (item.getFlag("core", "sourceUuid") !== this.uuid) continue;
+                item.parent.removeItem(item);
+            }
+        }
+        return super._preDelete(options, user);
+    }
+
     /**
      * Augment the basic Item data model with additional dynamic data.
      */
