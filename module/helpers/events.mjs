@@ -154,17 +154,11 @@ export class Pl1eEvent {
         // Remove embedded items from actor
         if (document instanceof Pl1eActor && itemId) {
             const item = document.items.get(itemId);
-            await document.deleteItem(item);
+            await document.removeItem(item);
         }
         // Remove refItem from item
         else if (document instanceof Pl1eItem && itemUuid) {
-            let index = document.system.refItemsUuids.indexOf(itemUuid);
-            if (index > -1) {
-                document.system.refItemsUuids.splice(index, 1);
-                await document.update({
-                    "system.refItemsUuids": document.system.refItemsUuids,
-                });
-            }
+            await document.removeRefItem(itemUuid)
         }
 
         document.sheet.render(document.sheet.rendered);

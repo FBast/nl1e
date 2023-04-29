@@ -56,7 +56,7 @@ export class AppResting extends FormApplication {
             else if (item.type === "ability" && !sourceUuidFlags.includes(sourceUuidFlag)) {
                 abilities[item.system.attributes.level.value].push(item);
             }
-            // Push sourceId flag to handle duplicates
+            // Push sourceUuid flag to handle duplicates
             if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
         }
 
@@ -223,18 +223,18 @@ export class AppResting extends FormApplication {
     _updateItems() {
         // Retrieve items and copy
         for (let item of this.actor.items) {
-            const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;
-            if (this.items.find(item => item.flags.core ? item.flags.core.sourceId === sourceIdFlag : null)) continue;
+            const sourceUuid = item.flags.core ? item.flags.core.sourceUuid : null;
+            if (this.items.find(item => item.flags.core ? item.flags.core.sourceUuid === sourceUuid : null)) continue;
             this.items.push(item.toObject());
         }
 
         // Get sourceUuids of items in origin
-        const originSourceIds = this.actor.items.map(item => item.flags.core?.sourceId);
+        const originSourceUuids = this.actor.items.map(item => item.flags.core?.sourceUuid);
 
         // Filter items to only keep those in origin
         this.items = this.items.filter(item => {
-            const sourceId = item.flags.core?.sourceId;
-            return originSourceIds.includes(sourceId);
+            const sourceUuid = item.flags.core?.sourceUuid;
+            return originSourceUuids.includes(sourceUuid);
         });
     }
 

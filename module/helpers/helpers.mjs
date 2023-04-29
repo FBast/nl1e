@@ -49,7 +49,7 @@ export class Pl1eHelpers {
     }
 
     /**
-     * Reset all clones using their sourceId
+     * Reset all clones using their sourceUuid
      * @param {Item} originalItem
      * @returns {Promise<void>}
      */

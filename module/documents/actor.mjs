@@ -330,25 +330,25 @@ export class Pl1eActor extends Actor {
     /**
      * Add an item and all child items as embedded documents
      * @param {Pl1eItem} item
+     * @param {string} childId
      * @returns {Promise<Pl1eItem>}
      */
-    async addItem(item) {
+    async addItem(item, childId = undefined) {
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
         newItem = newItem[0];
 
         const sourceUuid = await newItem.getFlag("core", "sourceUuid");
         if (!sourceUuid) await newItem.setFlag("core", "sourceUuid", item.uuid);
+        if (childId) await newItem.setFlag("core", "childId", childId);
         const linkId = randomID();
+        await newItem.setFlag("core", "parentId", linkId);
 
         if (newItem.system.refItemsUuids && newItem.system.refItemsUuids.length > 0) {
-            await newItem.setFlag("core", "parentId", linkId);
             for (let uuid of newItem.system.refItemsUuids) {
                 const refItem = game.items.find(item => item.uuid === uuid);
-                let newRefItem = await this.addItem(refItem);
-                await newRefItem.setFlag("core", "childId", linkId);
+                await this.addItem(refItem, linkId);
             }
         }
-        return newItem;
     }
 
     /**
@@ -356,12 +356,12 @@ export class Pl1eActor extends Actor {
      * @param {Pl1eItem} item
      * @returns {Promise<void>}
      */
-    async deleteItem(item) {
+    async removeItem(item) {
         let parentId = item.getFlag("core", "parentId");
         if (parentId) {
             for (const otherItem of this.items) {
                 let childId = otherItem.getFlag("core", "childId");
-                if (parentId === childId) await this.deleteItem(otherItem);
+                if (parentId === childId) await this.removeItem(otherItem);
             }
         }
         await this.deleteEmbeddedDocuments("Item", [item._id]);

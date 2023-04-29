@@ -246,7 +246,7 @@ export class Pl1eActorSheet extends ActorSheet {
             else if (item.type === 'ability' && !sourceUuidFlags.includes(sourceUuidFlag)) {
                 abilities[item.system.attributes.level.value].push(item);
             }
-            // Push sourceId flag to handle duplicates
+            // Push sourceUuid flag to handle duplicates
             if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
         }
 

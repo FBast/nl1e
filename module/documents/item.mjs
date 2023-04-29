@@ -1,8 +1,8 @@
 export class Pl1eItem extends Item {
 
     get isOriginal() {
-        const sourceId = this.getFlag('core', 'sourceId');
-        return !sourceId || sourceId === this.uuid;
+        const sourceUuid = this.getFlag('core', 'sourceUuid');
+        return !sourceUuid || sourceUuid === this.uuid;
     }
 
     /** @override */
@@ -45,6 +45,52 @@ export class Pl1eItem extends Item {
         }
     }
 
+    /**
+     * Add a new ref Item
+     * @param item
+     * @returns {Promise<void>}
+     */
+    async addRefItem(item) {
+        // Return if same item
+        if (this.uuid === item.uuid) return;
+        // Return if item with same uuid exist
+        if (this.system.refItemsUuids.find(uuid => uuid === item.uuid)) return;
 
+        // Save the item
+        this.system.refItemsUuids.push(item.uuid);
+        await this.update({
+            "system.refItemsUuids": this.system.refItemsUuids,
+        });
+        this.sheet.render(this.sheet.rendered);
+
+        // Update actors with this item to add the new item
+        for (const actor of game.actors) {
+            for (const existingItem of actor.items) {
+                if (existingItem.getFlag("core", "sourceUuid") !== this.uuid) continue;
+                const parentId = existingItem.getFlag("core", "parentId");
+                await actor.addItem(item, parentId);
+            }
+        }
+    }
+
+    async removeRefItem(itemUuid) {
+        let index = this.system.refItemsUuids.indexOf(itemUuid);
+        if (index > -1) {
+            this.system.refItemsUuids.splice(index, 1);
+            await this.update({
+                "system.refItemsUuids": this.system.refItemsUuids,
+            });
+        }
+
+        // Update actors with this item to remove the old item
+        for (const actor of game.actors) {
+            for (const existingItem of actor.items) {
+                if (existingItem.getFlag("core", "sourceUuid") !== this.uuid) continue;
+                const itemToRemove = actor.items.find(item => item.getFlag("core", "sourceUuid") === itemUuid &&
+                    item.getFlag("core", "childId") === existingItem.getFlag("core", "parentId"))
+                await actor.removeItem(itemToRemove);
+            }
+        }
+    }
 
 }

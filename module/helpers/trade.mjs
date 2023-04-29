@@ -11,7 +11,7 @@ export class Pl1eTrade {
      */
     static async giftItem(sourceActor, targetActor, item) {
         await targetActor.addItem(item);
-        await sourceActor.deleteItem(item);
+        await sourceActor.removeItem(item);
         // Send message for historic
         await Pl1eChat.tradeMessage(item, sourceActor, targetActor, "gift");
     }
@@ -31,7 +31,7 @@ export class Pl1eTrade {
             ["system.money.copper"]: sellerActor.system.money.copper + priceMoney.copper,
         });
         await buyerActor.addItem(item);
-        await sellerActor.deleteItem(item);
+        await sellerActor.removeItem(item);
         // Send message for historic
         await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "sale", priceMoney);
     }
@@ -55,7 +55,7 @@ export class Pl1eTrade {
             ["system.money.copper"]: money.copper,
         })
         await buyerActor.addItem(item);
-        await sellerActor.deleteItem(item);
+        await sellerActor.removeItem(item);
         // Send message for historic
         await Pl1eChat.tradeMessage(item, buyerActor, sellerActor, "purchase", priceMoney);
     }

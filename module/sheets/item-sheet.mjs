@@ -41,8 +41,8 @@ export class Pl1eItemSheet extends ItemSheet {
                     class: 'open-original',
                     icon: 'fas fa-copy',
                     onclick: async () => {
-                        const sourceId = this.item.getFlag('core', 'sourceId');
-                        const item = await fromUuid(sourceId);
+                        const sourceUuid = this.item.getFlag('core', 'sourceUuid');
+                        const item = await fromUuid(sourceUuid);
                         await this.close();
                         item.sheet.render(true);
                     }
@@ -130,7 +130,6 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         // Check item type and subtype
-
         let data = JSON.parse(event.dataTransfer?.getData("text/plain"));
         let item = await fromUuid(data.uuid);
         if (!item) {
@@ -138,16 +137,8 @@ export class Pl1eItemSheet extends ItemSheet {
             return;
         }
 
-        // Return if same item
-        if (this.item.uuid === item.uuid) return;
-
         if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
-            this.item.system.refItemsUuids.push(item.uuid);
-            // Save the item
-            await this.item.update({
-                "system.refItemsUuids": this.item.system.refItemsUuids,
-            })
-            this.render(this.rendered)
+            await this.item.addRefItem(item);
         }
     }
 
