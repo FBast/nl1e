@@ -4,28 +4,16 @@ export class Pl1eItem extends Item {
         return this.getFlag("core", "linkId");
     }
 
-    async set linkId(id) {
-        await this.setFlag("core", "linkId", id);
-    }
-
     get childId() {
         return this.getFlag("core", "childId");
-    }
-
-    async set childId(id) {
-        await this.setFlag("core", "childId", id);
     }
 
     get parentId() {
         return this.getFlag("core", "parentId");
     }
 
-    async set parentId(id) {
-        await this.setFlag("core", "parentId", id);
-    }
-
     get isOriginal() {
-        return this.isEmbedded;
+        return !this.isEmbedded;
     }
 
     /** @override */
@@ -43,22 +31,31 @@ export class Pl1eItem extends Item {
         await this.updateSource(updateData);
     }
 
+    _onCreate(data, options, userId) {
+        super._onCreate(data, options, userId);
+
+        // Add the link id which will be used to synchronize all clones
+        if (this.linkId === undefined) this.setFlag("core", "linkId", randomID());
+    }
+
     /** @override */
     async _preDelete(options, user) {
-        // Remove embedded from actors
-        for (const actor of game.actors) {
-            for (const item of actor.items) {
-                if (item.getFlag("core", "sourceUuid") !== this.uuid) continue;
-                item.parent.removeItem(item);
+        if (this.isOriginal) {
+            // Remove embedded from actors
+            for (const actor of game.actors) {
+                for (const item of actor.items) {
+                    if (item.linkId !== this.linkId) continue;
+                    item.parent.removeItem(item);
+                }
             }
-        }
 
-        // Remove ref items from other items
-        for (const item of game.items) {
-            if (item.system.refItemsUuids.includes(this.uuid))
-                await item.removeRefItem(this.uuid);
+            // Remove ref items from other items
+            for (const item of game.items) {
+                if (item.system.refItemsLinkIds.includes(this.linkId))
+                    await item.removeRefItem(this.linkId);
+            }
+            return super._preDelete(options, user);
         }
-        return super._preDelete(options, user);
     }
 
     /**
@@ -78,40 +75,39 @@ export class Pl1eItem extends Item {
     async addRefItem(item) {
         // Return if same item
         if (this.uuid === item.uuid) return;
-        // Return if item with same uuid exist
-        if (this.system.refItemsUuids.find(uuid => uuid === item.uuid)) return;
+        // Return if item with same link id exist
+        if (this.system.refItemsLinkIds.find(linkId => linkId === item.linkId)) return;
 
-        this.system.refItemsUuids.push(item.uuid);
+        this.system.refItemsLinkIds.push(item.linkId);
         await this.update({
-            "system.refItemsUuids": this.system.refItemsUuids,
+            "system.refItemsLinkIds": this.system.refItemsLinkIds,
         });
         this.sheet.render(this.sheet.rendered);
 
         // Update actors with this item to add the new item
         for (const actor of game.actors) {
             for (const existingItem of actor.items) {
-                if (existingItem.getFlag("core", "sourceUuid") !== this.uuid) continue;
-                const parentId = existingItem.parentId;
-                await actor.addItem(item, parentId);
+                if (existingItem.linkId !== this.linkId) continue;
+                await actor.addItem(item, existingItem.parentId);
             }
         }
     }
 
-    async removeRefItem(itemUuid) {
-        let index = this.system.refItemsUuids.indexOf(itemUuid);
+    async removeRefItem(linkId) {
+        let index = this.system.refItemsLinkIds.indexOf(linkId);
         if (index > -1) {
-            this.system.refItemsUuids.splice(index, 1);
+            this.system.refItemsLinkIds.splice(index, 1);
             await this.update({
-                "system.refItemsUuids": this.system.refItemsUuids,
+                "system.refItemsLinkIds": this.system.refItemsLinkIds,
             });
         }
 
-        // Update actors with this item to remove the related embedded items
+        // Update actors with this item to remove the new item
         for (const actor of game.actors) {
             for (const existingItem of actor.items) {
-                if (existingItem.getFlag("core", "sourceUuid") !== this.uuid) continue;
-                const itemToRemove = actor.items.find(item => item.getFlag("core", "sourceUuid") === itemUuid &&
-                    item.childId === existingItem.parentId)
+                if (existingItem.linkId !== this.linkId) continue;
+                const itemToRemove = actor.items.find(item => item.linkId === linkId &&
+                    item.childId === existingItem.parentId);
                 await actor.removeItem(itemToRemove);
             }
         }
@@ -121,33 +117,39 @@ export class Pl1eItem extends Item {
      * Reset all clones using their linkId
      * @returns {Promise<void>}
      */
-     async resetClones() {
+    async resetClones() {
+        // Reset embedded items
         for (const actor of game.actors) {
-            let updateDocument = false;
             const itemsData = [];
             for (let item of actor.items) {
-                if (!item.linkId || item.linkId !== this.uuid) continue
-                if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
-                    itemsData.push({
-                        "_id": item._id,
-                        "name": this.name,
-                        "img": this.img,
-                        "system.price": this.system.price,
-                        "system.description": this.system.description,
-                        "system.attributes": this.system.attributes,
-                        "system.passiveAspects": this.system.passiveAspects,
-                        "system.activeAspects": this.system.activeAspects,
-                        "system.refItems": this.system.refItems
-                    });
-                    updateDocument = true;
-                }
-                else {
-                    console.warn("Unknown type : " + item.type);
-                }
+                if (item.linkId !== this.linkId) continue;
+                itemsData.push({
+                    "_id": item._id,
+                    "name": this.name,
+                    "img": this.img,
+                    "system.price": this.system.price,
+                    "system.description": this.system.description,
+                    "system.attributes": this.system.attributes,
+                    "system.passiveAspects": this.system.passiveAspects,
+                    "system.activeAspects": this.system.activeAspects,
+                    "system.refItemsLinkIds": this.system.refItemsLinkIds
+                });
             }
-            if (updateDocument) {
-                await actor.updateEmbeddedDocuments("Item", itemsData);
-            }
+            await actor.updateEmbeddedDocuments("Item", itemsData);
+        }
+        // Reset items
+        for (const item of game.items) {
+            if (item.linkId !== this.linkId) continue;
+            await item.update({
+                "name": this.name,
+                "img": this.img,
+                "system.price": this.system.price,
+                "system.description": this.system.description,
+                "system.attributes": this.system.attributes,
+                "system.passiveAspects": this.system.passiveAspects,
+                "system.activeAspects": this.system.activeAspects,
+                "system.refItemsLinkIds": this.system.refItemsLinkIds
+            });
         }
         // Render all visible sheets
         const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);

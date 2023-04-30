@@ -80,28 +80,8 @@ Hooks.once("ready", async function () {
     });
 
     // Restore tooltip expanded state
-    Hooks.on("renderItemSheet", handleTooltipState);
-    Hooks.on("renderActorSheet", handleTooltipState);
-    function handleTooltipState(app, html, data) {
-        const tooltips = html.find('.item-tooltip');
-        tooltips.each(function() {
-            const tooltip = $(this);
-            const item = $(tooltip).closest(".item");
-
-            // Check if tooltip associated
-            if (tooltip === undefined) return;
-
-            // Check if the tooltip state is in local storage
-            const itemId = item.attr("data-item-id");
-            const tooltipState = localStorage.getItem(`tooltipState_${itemId}`);
-
-            // If the tooltip state is in local storage, show/hide the tooltip accordingly
-            if (tooltipState !== null && tooltipState === "open") {
-                $(tooltip).show();
-                $(tooltip).toggleClass('expanded');
-            }
-        });
-    }
+    Hooks.on("renderItemSheet", Pl1eEvent.onHandleTooltipState);
+    Hooks.on("renderActorSheet", Pl1eEvent.onHandleTooltipState);
 
     Hooks.on("renderActorSheet", (actorSheet, html, data) => {
         if (actorSheet.actor.type === "character") {

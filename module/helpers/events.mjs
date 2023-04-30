@@ -1,7 +1,5 @@
-import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
-import {Pl1eChat} from "./chat.mjs";
 
 export class Pl1eEvent {
 
@@ -34,18 +32,6 @@ export class Pl1eEvent {
     }
 
     /**
-     * Handle clickable rolls.
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the rolling actor
-     */
-    static async onSkillRoll(event, actor) {
-        event.preventDefault();
-
-        const skillId = $(event.currentTarget).closest(".skill").data("skillId");
-        await Pl1eChat.skillRoll(actor, skillId);
-    }
-
-    /**
      * Open actor sheet
      * @param event The originating click event
      */
@@ -75,96 +61,6 @@ export class Pl1eEvent {
     }
 
     /**
-     * Toggle an ability
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the actor which own the item
-     */
-    static async onItemToggle(event, actor) {
-        event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = actor.items.get(itemId);
-
-        const options = {
-            actor: actor
-        };
-        const main = $(event.currentTarget).data("main");
-        if (main) options["main"] = main;
-
-        await item.toggle(options);
-    }
-
-    /**
-     * Buy item
-     * @param {Event} event The originating click event
-     * @param {Pl1eActor} actor the merchant of the item
-     */
-    static async onItemBuy(event, actor) {
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
-        const item = actor.items.get(itemId);
-
-        if (!Pl1eHelpers.isGMConnected()) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoGMConnected"));
-            return;
-        }
-
-        // Player transfer item to a not owned actor
-        CONFIG.PL1E.socket.executeAsGM('sendItem', {
-            sourceActorId: actor._id,
-            targetActorId: game.user.character._id,
-            itemId: item._id
-        });
-    }
-
-    /**
-     * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the actor where the item is created
-     */
-    static async onItemCreate(event, actor) {
-        event.preventDefault();
-        const header = event.currentTarget;
-        // Get the type of item to create.
-        const type = header.dataset.type;
-        // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
-        // Initialize a default name.
-        const name = `New ${type.capitalize()}`;
-        // Prepare the item object.
-        const itemData = {
-            name: name,
-            type: type,
-            system: data
-        };
-        // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.system["type"];
-
-        // Finally, create the item!
-        return await Item.create(itemData, {parent: actor});
-    }
-
-    /**
-     * Handle remove of item
-     * @param {Event} event The originating click event
-     * @param {Actor|Item} document the document where the item is removed
-     */
-    static async onItemRemove(event, document) {
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
-        const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
-
-        // Remove embedded items from actor
-        if (document instanceof Pl1eActor && itemId) {
-            const item = document.items.get(itemId);
-            await document.removeItem(item);
-        }
-        // Remove refItem from item
-        else if (document instanceof Pl1eItem && itemUuid) {
-            await document.removeRefItem(itemUuid)
-        }
-
-        document.sheet.render(document.sheet.rendered);
-    }
-
-    /**
      * Handle currency changes
      * @param {Event} event The originating click event
      * @param {Actor|Item} document the document to modify
@@ -187,109 +83,6 @@ export class Pl1eEvent {
                 ["system.price." + currency]: oldValue + value
             });
         }
-    }
-
-    /**
-     * Handle money conversion
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the actor to modify
-     */
-    static async onMoneyConvert(event, actor) {
-        event.preventDefault();
-        event.stopPropagation();
-        let units = Pl1eHelpers.moneyToUnits(actor.system.money);
-        await actor.update({
-            ["system.money"]: Pl1eHelpers.unitsToMoney(units)
-        });
-    }
-
-    /**
-     * Create highlights
-     * @param {Event} event The originating mouseenter event
-     *
-     */
-    static onCreateHighlights(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        let resources = $(event.currentTarget).data("resources");
-        let characteristics = $(event.currentTarget).data("characteristics");
-        let skills = $(event.currentTarget).data("skills");
-        // resources
-        if (resources !== undefined) {
-            for (let resource of document.getElementsByClassName('resource-label')) {
-                let id = $(resource).closest(".resource").data("resource-id");
-                if (!resources.includes(id)) continue;
-                resource.classList.add('highlight-green');
-            }
-        }
-        // characteristics
-        if (characteristics !== undefined) {
-            for (let characteristic of document.getElementsByClassName('characteristic-label')) {
-                let id = $(characteristic).closest(".characteristic").data("characteristic-id");
-                if (!characteristics.includes(id)) continue;
-                characteristic.classList.add('highlight-green');
-            }
-        }
-        // skills
-        if (skills !== undefined) {
-            for (let skill of document.getElementsByClassName('skill-label')) {
-                let id = $(skill).closest(".skill").data("skill-id");
-                if (!skills.includes(id)) continue;
-                skill.classList.add('highlight-green');
-            }
-        }
-    }
-
-    /**
-     * Remove highlights
-     * @param {Event} event The originating mouseexit event
-     */
-    static onRemoveHighlights(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        for (let characteristic of document.getElementsByClassName('characteristic-label')) {
-            characteristic.classList.remove('highlight-green')
-        }
-        for (let resource of document.getElementsByClassName('resource-label')) {
-            resource.classList.remove('highlight-green')
-        }
-        for (let skill of document.getElementsByClassName('skill-label')) {
-            skill.classList.remove('highlight-green')
-        }
-    }
-
-    /**
-     * Add a dynamic attribute to the item
-     * @param {Event} event The originating click event
-     * @param {Pl1eItem} item the item where the attribute is added
-     */
-    static async onAttributeAdd(event, item) {
-        event.preventDefault();
-        event.stopPropagation();
-        let attributeId = $(event.currentTarget).data("attribute");
-
-        const itemData = {
-            name: "Increase",
-            type: "increase"
-        }
-
-        const attributeItem = await Item.create(itemData);
-
-        await item.addSubItem(attributeItem);
-    }
-
-    /**
-     * Disable an attribute with apply
-     * @param {Event} event The originating click event
-     * @param {Item} item the item where the attribute is removed
-     */
-    static async onAttributeRemove(event, item) {
-        event.preventDefault();
-        event.stopPropagation();
-        let attributeId = $(event.currentTarget).data("attribute");
-        await item.update({
-            [`system.dynamicAttributes.-=${attributeId}`]: null
-        });
     }
 
     /**
@@ -340,6 +133,27 @@ export class Pl1eEvent {
         const itemId = item.attr("data-item-id");
         const tooltipState = $(tooltip).hasClass('expanded') ? 'open' : 'closed';
         localStorage.setItem(`tooltipState_${itemId}`, tooltipState);
+    }
+
+    static onHandleTooltipState(app, html, data) {
+        const tooltips = html.find('.item-tooltip');
+        tooltips.each(function() {
+            const tooltip = $(this);
+            const item = $(tooltip).closest(".item");
+
+            // Check if tooltip associated
+            if (tooltip === undefined) return;
+
+            // Check if the tooltip state is in local storage
+            const itemId = item.attr("data-item-id");
+            const tooltipState = localStorage.getItem(`tooltipState_${itemId}`);
+
+            // If the tooltip state is in local storage, show/hide the tooltip accordingly
+            if (tooltipState !== null && tooltipState === "open") {
+                $(tooltip).show();
+                $(tooltip).toggleClass('expanded');
+            }
+        });
     }
 
 }

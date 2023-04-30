@@ -1,4 +1,3 @@
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
 
@@ -35,19 +34,6 @@ export class Pl1eItemSheet extends ItemSheet {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            if (!this.item.isOriginal) {
-                buttons.unshift({
-                    label: 'PL1E.OpenOriginal',
-                    class: 'open-original',
-                    icon: 'fas fa-copy',
-                    onclick: async () => {
-                        const sourceUuid = this.item.getFlag('core', 'sourceUuid');
-                        const item = await fromUuid(sourceUuid);
-                        await this.close();
-                        item.sheet.render(true);
-                    }
-                });
-            }
             buttons.unshift({
                 label: 'PL1E.Debug',
                 class: 'debug',
@@ -111,11 +97,9 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Roll handlers, click handlers, etc. would go here.
         html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));
-        html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
+        html.find(`.item-remove`).on("click", ev => this.onItemRemove(ev));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
-        html.find('.attribute-add').on("click", ev => Pl1eEvent.onAttributeAdd(ev, this.item))
-        html.find('.attribute-remove').on("click", ev => Pl1eEvent.onAttributeRemove(ev, this.item))
         html.find('.aspect-add').on("click", ev => this.onAspectAdd(ev))
         html.find('.aspect-remove').on("click", ev => this.onAspectRemove(ev))
     }
@@ -131,9 +115,10 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Check item type and subtype
         let data = JSON.parse(event.dataTransfer?.getData("text/plain"));
-        let item = await fromUuid(data.uuid);
+        const item = await Item.implementation.fromDropData(data);
+        // const item = game.items.find(item => item._id === data._id);
         if (!item) {
-            console.log(`PL1E | No item found with UUID ${data}`);
+            console.log(`PL1E | No item found with id ${data._id}`);
             return;
         }
 
@@ -143,13 +128,13 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     _prepareItems(context) {
-        // Get ref items using uuid
+        // Get ref items using link ids
         const items = [];
-        for (let i = 0; i < this.item.system.refItemsUuids.length; i++) {
-            const uuid = this.item.system.refItemsUuids[i];
-            const item = game.items.find(item => item.uuid === uuid);
+        for (let i = 0; i < this.item.system.refItemsLinkIds.length; i++) {
+            const linkId = this.item.system.refItemsLinkIds[i];
+            const item = game.items.find(item => item.linkId === linkId);
             if (item) items[i] = item;
-            // else throw new Error(`PL1E | Cannot find item with uuid : ${uuid}`)
+            // else throw new Error(`PL1E | Cannot find item with linkId : ${linkId}`)
         }
 
         // Initialize containers.
@@ -238,6 +223,17 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Reset Clones
         await this.item.resetClones();
+    }
+
+    /**
+     * Handle remove of item
+     * @param {Event} event The originating click event
+     */
+    async onItemRemove(event) {
+        const itemLinkId = $(event.currentTarget).closest(".item").data("item-link-id");
+
+        await this.item.removeRefItem(itemLinkId);
+        this.render(this.rendered);
     }
 
 }

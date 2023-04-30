@@ -44,20 +44,20 @@ export class AppResting extends FormApplication {
         const foods = [];
         const drinks = [];
         const abilities = {1: [], 2: [], 3: [], 4: [], 5: []};
-        const sourceUuidFlags = [];
+        const linkIdFlags = [];
         for (let item of this.items) {
-            const sourceUuidFlag = item.flags.core ? item.flags.core.sourceUuid : null;
+            const linkIdFlag = item.flags.core ? item.flags.core.linkId : null;
             // Append to foods and drinks
-            if (item.type === "common" && !sourceUuidFlags.includes(sourceUuidFlag)) {
+            if (item.type === "common" && !linkIdFlags.includes(linkIdFlag)) {
                 if (item.system.attributes.commonType.value === "food") foods.push(item);
                 if (item.system.attributes.commonType.value === "drink") drinks.push(item);
             }
             // Append to abilities.
-            else if (item.type === "ability" && !sourceUuidFlags.includes(sourceUuidFlag)) {
+            else if (item.type === "ability" && !linkIdFlags.includes(linkIdFlag)) {
                 abilities[item.system.attributes.level.value].push(item);
             }
-            // Push sourceUuid flag to handle duplicates
-            if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
+            // Push linkId flag to handle duplicates
+            if (linkIdFlag && !linkIdFlags.includes(linkIdFlag)) linkIdFlags.push(linkIdFlag);
         }
 
         // Rest part
@@ -223,18 +223,18 @@ export class AppResting extends FormApplication {
     _updateItems() {
         // Retrieve items and copy
         for (let item of this.actor.items) {
-            const sourceUuid = item.flags.core ? item.flags.core.sourceUuid : null;
-            if (this.items.find(item => item.flags.core ? item.flags.core.sourceUuid === sourceUuid : null)) continue;
+            const linkId = item.flags.core ? item.flags.core.linkId : null;
+            if (this.items.find(item => item.flags.core ? item.flags.core.linkId === linkId : null)) continue;
             this.items.push(item.toObject());
         }
 
-        // Get sourceUuids of items in origin
-        const originSourceUuids = this.actor.items.map(item => item.flags.core?.sourceUuid);
+        // Get linkIds of items in origin
+        const originLinkIds = this.actor.items.map(item => item.flags.core?.linkId);
 
         // Filter items to only keep those in origin
         this.items = this.items.filter(item => {
-            const sourceUuid = item.flags.core?.sourceUuid;
-            return originSourceUuids.includes(sourceUuid);
+            const linkId = item.flags.core?.linkId;
+            return originLinkIds.includes(linkId);
         });
     }
 

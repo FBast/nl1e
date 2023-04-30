@@ -231,9 +231,7 @@ export class Pl1eAbility extends Pl1eItem {
                 if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
                 if (item.system.subItems === undefined) continue;
                 for (let [key, subItem] of item.system.subItems) {
-                    const subItemUuid = subItem.getFlag('core', 'sourceUuid');
-                    const itemUuid = characterData.item.getFlag('core', 'sourceUuid');
-                    if (itemUuid !== subItemUuid) continue;
+                    if (characterData.item.linkId !== subItem.linkId) continue;
                     relatedItems.push(item);
                 }
             }

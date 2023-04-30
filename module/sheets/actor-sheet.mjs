@@ -2,6 +2,7 @@ import {Pl1eEvent} from "../helpers/events.mjs";
 import {AppResting} from "../apps/resting.mjs";
 import {Pl1eEffect} from "../helpers/effects.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eChat} from "../helpers/chat.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -100,15 +101,14 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Render the item sheet for viewing/editing prior to the editable check.
         html.find('.item-edit').on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
-        html.find('.item-buy').on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
+        html.find('.item-buy').on("click", ev => this.onItemBuy(ev));
 
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
         // Item management
-        html.find('.item-create').on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
-        html.find('.item-remove').on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
+        html.find('.item-remove').on("click", ev => this.onItemRemove(ev));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find('.item-link').on("click", ev => this.onItemLink(ev));
 
@@ -116,20 +116,20 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".effect-control").on("click", ev => Pl1eEvent.onManageActiveEffect(ev, this.actor));
 
         // Chat messages
-        html.find('.skill-roll').on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
+        html.find('.skill-roll').on("click", ev => this.onSkillRoll(ev));
 
         // Currency
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.actor));
-        html.find('.currency-convert').on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
+        html.find('.currency-convert').on("click", ev => this.onMoneyConvert(ev));
 
         // Highlights indications
-        html.find('.highlight-link').on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
-        html.find('.highlight-link').on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
+        html.find('.highlight-link').on("mouseenter", ev => this.onCreateHighlights(ev));
+        html.find('.highlight-link').on("mouseleave", ev => this.onRemoveHighlights(ev));
 
         // Custom controls
         html.find('.characteristic-control').on("click", ev => this.onCharacteristicChange(ev));
         html.find('.rank-control').on("click", ev => this.onRankChange(ev));
-        html.find(".item-toggle").on("click", ev => Pl1eEvent.onItemToggle(ev, this.actor));
+        html.find(".item-toggle").on("click", ev => this.onItemToggle(ev));
         html.find(".item-use").on("click", ev => this.onItemUse(ev));
         html.find(".consumable-reload").on("click", ev => this.onReloadConsumable(ev));
 
@@ -180,7 +180,7 @@ export class Pl1eActorSheet extends ActorSheet {
         else {
             await this.actor.addItem(item);
             // Delete the source item if it is embedded
-            if (item.isOwned) await item.parent.deleteItem(item);
+            if (item.isEmbedded) await item.parent.deleteItem(item);
         }
     }
 
@@ -208,9 +208,9 @@ export class Pl1eActorSheet extends ActorSheet {
         };
 
         // Iterate through subItems, allocating to containers
-        const sourceUuidFlags = [];
+        const linkIdFlags = [];
         for (let item of context.items) {
-            const sourceUuidFlag = item.flags.core ? item.flags.core.sourceUuid : null;
+            const linkIdFlag = item.flags.core ? item.flags.core.linkId : null;
             // Append to item categories
             if (item.type === 'weapon') {
                 weapons.push(item);
@@ -220,8 +220,8 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             else if (item.type === 'consumable') {
                 // Increase units
-                if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = consumables.find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                if (linkIdFlags.includes(linkIdFlag)) {
+                    const sameItem = consumables.find(item => item.flags.core.linkId === linkIdFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -230,8 +230,8 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             else if (item.type === 'common') {
                 // Increase units
-                if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = commons.find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                if (linkIdFlags.includes(linkIdFlag)) {
+                    const sameItem = commons.find(item => item.flags.core.linkId === linkIdFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -245,16 +245,16 @@ export class Pl1eActorSheet extends ActorSheet {
             // Append to abilities.
             else if (item.type === 'ability') {
                 // Increase units
-                if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                if (linkIdFlags.includes(linkIdFlag)) {
+                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.core.linkId === linkIdFlag);
                     sameItem.system.units++;
                 }
                 else {
                     abilities[item.system.attributes.level.value].push(item);
                 }
             }
-            // Push sourceUuid flag to handle duplicates
-            if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
+            // Push linkId flag to handle duplicates
+            if (linkIdFlag && !linkIdFlags.includes(linkIdFlag)) linkIdFlags.push(linkIdFlag);
         }
 
         // Assign and return
@@ -264,6 +264,36 @@ export class Pl1eActorSheet extends ActorSheet {
         context.commons = commons;
         context.features = features;
         context.abilities = abilities;
+    }
+
+    /**
+     * Handle remove of item
+     * @param {Event} event The originating click event
+     */
+    async onItemRemove(event) {
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+
+        const item = this.actor.items.get(itemId);
+        await this.actor.removeItem(item);
+        this.render(this.rendered);
+    }
+
+    /**
+     * Toggle an ability
+     * @param {Event} event The originating click event
+     */
+     async onItemToggle(event) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.items.get(itemId);
+
+        const options = {
+            actor: this
+        };
+        const main = $(event.currentTarget).data("main");
+        if (main) options["main"] = main;
+
+        await item.toggle(options);
     }
 
     /**
@@ -281,6 +311,27 @@ export class Pl1eActorSheet extends ActorSheet {
         catch (e) {
             console.error(e);
         }
+    }
+
+    /**
+     * Buy item
+     * @param {Event} event The originating click event
+     */
+     async onItemBuy(event) {
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        const item = this.actor.items.get(itemId);
+
+        if (!Pl1eHelpers.isGMConnected()) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoGMConnected"));
+            return;
+        }
+
+        // Player transfer item to a not owned actor
+        CONFIG.PL1E.socket.executeAsGM('sendItem', {
+            sourceActorId: this.actor._id,
+            targetActorId: game.user.character._id,
+            itemId: item._id
+        });
     }
 
     /**
@@ -326,14 +377,12 @@ export class Pl1eActorSheet extends ActorSheet {
 
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const item = this.actor.items.get(itemId);
-        const sourceUuid = item.getFlag("core", "sourceUuid");
 
         // Render multiple parent in case of child stack
         let sheetPosition = Pl1eHelpers.screenCenter();
         for (const otherItem of this.actor.items) {
             const childId = otherItem.childId;
-            const otherSourceUuid = otherItem.getFlag("core", "sourceUuid");
-            if (childId && otherSourceUuid === sourceUuid) {
+            if (childId && otherItem.linkId === item.linkId) {
                 const parentItem = this.actor.items.find(item => item.parentId === childId);
                 parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
                 sheetPosition.x += 30;
@@ -390,6 +439,86 @@ export class Pl1eActorSheet extends ActorSheet {
             ["system.skills." + skill + ".rank"]: newValue
         });
         this.render(false);
+    }
+
+    /**
+     * Handle clickable rolls.
+     * @param {Event} event The originating click event
+     * @param {Actor} actor the rolling actor
+     */
+     async onSkillRoll(event) {
+        event.preventDefault();
+
+        const skillId = $(event.currentTarget).closest(".skill").data("skillId");
+        await Pl1eChat.skillRoll(this.actor, skillId);
+    }
+
+    /**
+     * Handle money conversion
+     * @param {Event} event The originating click event
+     */
+     async onMoneyConvert(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        let units = Pl1eHelpers.moneyToUnits(this.actor.system.money);
+        await this.actor.update({
+            ["system.money"]: Pl1eHelpers.unitsToMoney(units)
+        });
+    }
+
+    /**
+     * Create highlights
+     * @param {Event} event The originating mouseenter event
+     *
+     */
+    onCreateHighlights(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        let resources = $(event.currentTarget).data("resources");
+        let characteristics = $(event.currentTarget).data("characteristics");
+        let skills = $(event.currentTarget).data("skills");
+        // resources
+        if (resources !== undefined) {
+            for (let resource of document.getElementsByClassName('resource-label')) {
+                let id = $(resource).closest(".resource").data("resource-id");
+                if (!resources.includes(id)) continue;
+                resource.classList.add('highlight-green');
+            }
+        }
+        // characteristics
+        if (characteristics !== undefined) {
+            for (let characteristic of document.getElementsByClassName('characteristic-label')) {
+                let id = $(characteristic).closest(".characteristic").data("characteristic-id");
+                if (!characteristics.includes(id)) continue;
+                characteristic.classList.add('highlight-green');
+            }
+        }
+        // skills
+        if (skills !== undefined) {
+            for (let skill of document.getElementsByClassName('skill-label')) {
+                let id = $(skill).closest(".skill").data("skill-id");
+                if (!skills.includes(id)) continue;
+                skill.classList.add('highlight-green');
+            }
+        }
+    }
+
+    /**
+     * Remove highlights
+     * @param {Event} event The originating mouseexit event
+     */
+    onRemoveHighlights(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        for (let characteristic of document.getElementsByClassName('characteristic-label')) {
+            characteristic.classList.remove('highlight-green')
+        }
+        for (let resource of document.getElementsByClassName('resource-label')) {
+            resource.classList.remove('highlight-green')
+        }
+        for (let skill of document.getElementsByClassName('skill-label')) {
+            skill.classList.remove('highlight-green')
+        }
     }
 
 }

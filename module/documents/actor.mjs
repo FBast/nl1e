@@ -27,7 +27,8 @@ export class Pl1eActor extends Actor {
 
         // If we have a token, try to find it in the canvas tokens
         if (token) {
-            const canvasToken = canvas.tokens.placeables.find(t => t.document.uuid === token.uuid);
+            const canvasToken = canvas.tokens.placeables
+                .find(t => t.document.uuid === token.uuid);
             if (!canvasToken) {
                 ui.notifications.error(game.i18n.localize("PL1E.CannotFindTokenOnCanvas"));
             } else {
@@ -337,16 +338,14 @@ export class Pl1eActor extends Actor {
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
         newItem = newItem[0];
 
-        const sourceUuid = await newItem.getFlag("core", "sourceUuid");
-        if (!sourceUuid) await newItem.setFlag("core", "sourceUuid", item.uuid);
-        if (childId) await newItem.childId = childId;
-        const linkId = randomID();
-        await newItem.setFlag("core", "parentId", linkId);
+        if (childId) await newItem.setFlag("core", "childId", childId);
+        const parentId = randomID();
+        await newItem.setFlag("core", "parentId", parentId);
 
-        if (newItem.system.refItemsUuids && newItem.system.refItemsUuids.length > 0) {
-            for (let uuid of newItem.system.refItemsUuids) {
-                const refItem = game.items.find(item => item.uuid === uuid);
-                await this.addItem(refItem, linkId);
+        if (newItem.system.refItemsLinkIds && newItem.system.refItemsLinkIds.length > 0) {
+            for (let linkId of newItem.system.refItemsLinkIds) {
+                const refItem = game.items.find(item => item.linkId === linkId);
+                await this.addItem(refItem, parentId);
             }
         }
     }
@@ -357,11 +356,11 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<void>}
      */
     async removeItem(item) {
-        let parentId = item.parentId;
-        if (parentId) {
+        if (item.parentId) {
             for (const otherItem of this.items) {
                 let childId = otherItem.childId;
-                if (parentId === childId) await this.removeItem(otherItem);
+                if (item.parentId === childId)
+                    await this.removeItem(otherItem);
             }
         }
         await this.deleteEmbeddedDocuments("Item", [item._id]);

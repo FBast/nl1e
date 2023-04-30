@@ -293,7 +293,7 @@
       "base": {
         "description": "",
         "units": 1,
-        "refItemsUuids": [],
+        "refItemsLinkIds": [],
         "passiveAspects": {},
         "activeAspects": {}
       },
