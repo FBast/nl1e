@@ -1,8 +1,31 @@
 export class Pl1eItem extends Item {
 
+    get linkId() {
+        return this.getFlag("core", "linkId");
+    }
+
+    async set linkId(id) {
+        await this.setFlag("core", "linkId", id);
+    }
+
+    get childId() {
+        return this.getFlag("core", "childId");
+    }
+
+    async set childId(id) {
+        await this.setFlag("core", "childId", id);
+    }
+
+    get parentId() {
+        return this.getFlag("core", "parentId");
+    }
+
+    async set parentId(id) {
+        await this.setFlag("core", "parentId", id);
+    }
+
     get isOriginal() {
-        const sourceUuid = this.getFlag('core', 'sourceUuid');
-        return !sourceUuid || sourceUuid === this.uuid;
+        return this.isEmbedded;
     }
 
     /** @override */
@@ -68,7 +91,7 @@ export class Pl1eItem extends Item {
         for (const actor of game.actors) {
             for (const existingItem of actor.items) {
                 if (existingItem.getFlag("core", "sourceUuid") !== this.uuid) continue;
-                const parentId = existingItem.getFlag("core", "parentId");
+                const parentId = existingItem.parentId;
                 await actor.addItem(item, parentId);
             }
         }
@@ -88,7 +111,7 @@ export class Pl1eItem extends Item {
             for (const existingItem of actor.items) {
                 if (existingItem.getFlag("core", "sourceUuid") !== this.uuid) continue;
                 const itemToRemove = actor.items.find(item => item.getFlag("core", "sourceUuid") === itemUuid &&
-                    item.getFlag("core", "childId") === existingItem.getFlag("core", "parentId"))
+                    item.childId === existingItem.parentId)
                 await actor.removeItem(itemToRemove);
             }
         }
@@ -103,7 +126,7 @@ export class Pl1eItem extends Item {
             let updateDocument = false;
             const itemsData = [];
             for (let item of actor.items) {
-                if (!item.getFlag("core", "linkId") || item.getFlag("core", "linkId") !== this.uuid) continue
+                if (!item.linkId || item.linkId !== this.uuid) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
                         "_id": item._id,

@@ -339,7 +339,7 @@ export class Pl1eActor extends Actor {
 
         const sourceUuid = await newItem.getFlag("core", "sourceUuid");
         if (!sourceUuid) await newItem.setFlag("core", "sourceUuid", item.uuid);
-        if (childId) await newItem.setFlag("core", "childId", childId);
+        if (childId) await newItem.childId = childId;
         const linkId = randomID();
         await newItem.setFlag("core", "parentId", linkId);
 
@@ -357,10 +357,10 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<void>}
      */
     async removeItem(item) {
-        let parentId = item.getFlag("core", "parentId");
+        let parentId = item.parentId;
         if (parentId) {
             for (const otherItem of this.items) {
-                let childId = otherItem.getFlag("core", "childId");
+                let childId = otherItem.childId;
                 if (parentId === childId) await this.removeItem(otherItem);
             }
         }
