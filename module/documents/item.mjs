@@ -94,4 +94,41 @@ export class Pl1eItem extends Item {
         }
     }
 
+    /**
+     * Reset all clones using their linkId
+     * @returns {Promise<void>}
+     */
+     async resetClones() {
+        for (const actor of game.actors) {
+            let updateDocument = false;
+            const itemsData = [];
+            for (let item of actor.items) {
+                if (!item.getFlag("core", "linkId") || item.getFlag("core", "linkId") !== this.uuid) continue
+                if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
+                    itemsData.push({
+                        "_id": item._id,
+                        "name": this.name,
+                        "img": this.img,
+                        "system.price": this.system.price,
+                        "system.description": this.system.description,
+                        "system.attributes": this.system.attributes,
+                        "system.passiveAspects": this.system.passiveAspects,
+                        "system.activeAspects": this.system.activeAspects,
+                        "system.refItems": this.system.refItems
+                    });
+                    updateDocument = true;
+                }
+                else {
+                    console.warn("Unknown type : " + item.type);
+                }
+            }
+            if (updateDocument) {
+                await actor.updateEmbeddedDocuments("Item", itemsData);
+            }
+        }
+        // Render all visible sheets
+        const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
+        sheets.forEach(sheet => sheet.render(true));
+    }
+
 }

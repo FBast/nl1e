@@ -62,7 +62,7 @@ export class Pl1eItemSheet extends ItemSheet {
         await super._updateObject(event, formData);
 
         // Reset Clones
-        await Pl1eHelpers.resetClones(this.item);
+        await this.item.resetClones();
     }
 
     /** @override */
@@ -209,7 +209,7 @@ export class Pl1eItemSheet extends ItemSheet {
         })
 
         // Reset Clones
-        await Pl1eHelpers.resetClones(this.item);
+        await this.item.resetClones();
     }
 
     async onAspectRemove(event) {
@@ -237,7 +237,7 @@ export class Pl1eItemSheet extends ItemSheet {
         });
 
         // Reset Clones
-        await Pl1eHelpers.resetClones(this.item);
+        await this.item.resetClones();
     }
 
 }

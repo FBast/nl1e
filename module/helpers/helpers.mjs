@@ -49,44 +49,6 @@ export class Pl1eHelpers {
     }
 
     /**
-     * Reset all clones using their sourceUuid
-     * @param {Item} originalItem
-     * @returns {Promise<void>}
-     */
-    static async resetClones(originalItem) {
-        for (const actor of game.actors) {
-            let updateDocument = false;
-            const itemsData = [];
-            for (let item of actor.items) {
-                if (!item.getFlag("core", "sourceUuid") || item.getFlag("core", "sourceUuid") !== originalItem.uuid) continue
-                if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
-                    itemsData.push({
-                        "_id": item._id,
-                        "name": originalItem.name,
-                        "img": originalItem.img,
-                        "system.price": originalItem.system.price,
-                        "system.description": originalItem.system.description,
-                        "system.attributes": originalItem.system.attributes,
-                        "system.passiveAspects": originalItem.system.passiveAspects,
-                        "system.activeAspects": originalItem.system.activeAspects,
-                        "system.refItems": originalItem.system.refItems
-                    });
-                    updateDocument = true;
-                }
-                else {
-                    console.warn("Unknown type : " + item.type);
-                }
-            }
-            if (updateDocument) {
-                await actor.updateEmbeddedDocuments("Item", itemsData);
-            }
-        }
-        // Render all visible sheets
-        const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
-        sheets.forEach(sheet => sheet.render(true));
-    }
-
-    /**
      * Convert a value to money with gold, silver and copper
      * @param value the units sum
      * @returns {{gold: number, copper: number, silver: number}}
