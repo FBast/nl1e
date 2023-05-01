@@ -58,7 +58,7 @@ export class Pl1eHelpers {
             let updateDocument = false;
             const itemsData = [];
             for (let item of actor.items) {
-                if (!item.getFlag("core", "sourceUuid") || item.getFlag("core", "sourceUuid") !== originalItem.uuid) continue
+                if (!item.sourceUuid || item.sourceUuid !== originalItem.uuid) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
                         "_id": item._id,

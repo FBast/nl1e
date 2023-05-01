@@ -337,16 +337,15 @@ export class Pl1eActor extends Actor {
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
         newItem = newItem[0];
 
-        const sourceUuid = await newItem.getFlag("core", "sourceUuid");
-        if (!sourceUuid) await newItem.setFlag("core", "sourceUuid", item.uuid);
+        if (!newItem.sourceUuid) await newItem.setFlag("core", "sourceUuid", item.uuid);
         if (childId) await newItem.setFlag("core", "childId", childId);
-        const linkId = randomID();
-        await newItem.setFlag("core", "parentId", linkId);
+        const parentId = randomID();
+        await newItem.setFlag("core", "parentId", parentId);
 
-        if (newItem.system.refItemsUuids && newItem.system.refItemsUuids.length > 0) {
-            for (let uuid of newItem.system.refItemsUuids) {
+        if (newItem.system.refItemsChildren && newItem.system.refItemsChildren.length > 0) {
+            for (let uuid of newItem.system.refItemsChildren) {
                 const refItem = game.items.find(item => item.uuid === uuid);
-                await this.addItem(refItem, linkId);
+                await this.addItem(refItem, parentId);
             }
         }
     }
@@ -357,10 +356,10 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<void>}
      */
     async removeItem(item) {
-        let parentId = item.getFlag("core", "parentId");
+        let parentId = item.parentId;
         if (parentId) {
             for (const otherItem of this.items) {
-                let childId = otherItem.getFlag("core", "childId");
+                let childId = otherItem.childId;
                 if (parentId === childId) await this.removeItem(otherItem);
             }
         }

@@ -1,8 +1,19 @@
 export class Pl1eItem extends Item {
 
+    get sourceUuid() {
+        return this.getFlag("core", "sourceUuid");
+    }
+
+    get parentId() {
+        return this.getFlag("core", "parentId");
+    }
+
+    get childId() {
+        return this.getFlag("core", "childId");
+    }
+
     get isOriginal() {
-        const sourceUuid = this.getFlag('core', 'sourceUuid');
-        return !sourceUuid || sourceUuid === this.uuid;
+        return !this.isEmbedded;
     }
 
     /** @override */
@@ -22,19 +33,22 @@ export class Pl1eItem extends Item {
 
     /** @override */
     async _preDelete(options, user) {
-        // Remove embedded from actors
-        for (const actor of game.actors) {
-            for (const item of actor.items) {
-                if (item.getFlag("core", "sourceUuid") !== this.uuid) continue;
-                item.parent.removeItem(item);
+        if (this.isOriginal) {
+            // Remove embedded from actors
+            for (const actor of game.actors) {
+                for (const item of actor.items) {
+                    if (item.sourceUuid !== this.uuid) continue;
+                    item.parent.removeItem(item);
+                }
+            }
+
+            // Remove item from parents items
+            for (const uuid of this.system.refItemsParents) {
+                const item = fromUuid(uuid);
+                item.removeRefItem(this);
             }
         }
 
-        // Remove ref items from other items
-        for (const item of game.items) {
-            if (item.system.refItemsUuids.includes(this.uuid))
-                await item.removeRefItem(this.uuid);
-        }
         return super._preDelete(options, user);
     }
 
@@ -56,39 +70,50 @@ export class Pl1eItem extends Item {
         // Return if same item
         if (this.uuid === item.uuid) return;
         // Return if item with same uuid exist
-        if (this.system.refItemsUuids.find(uuid => uuid === item.uuid)) return;
+        if (this.system.refItemsChildren.find(uuid => uuid === item.uuid)) return;
 
-        this.system.refItemsUuids.push(item.uuid);
+        // Add item as child uuid to this
+        this.system.refItemsChildren.push(item.uuid);
         await this.update({
-            "system.refItemsUuids": this.system.refItemsUuids,
+            "system.refItemsChildren": this.system.refItemsChildren
         });
         this.sheet.render(this.sheet.rendered);
+
+        // Add this as parent uuid to item
+        item.system.refItemsParents.push(this.uuid)
+        await item.update({
+            "system.refItemsParents": item.system.refItemsParents
+        })
 
         // Update actors with this item to add the new item
         for (const actor of game.actors) {
             for (const existingItem of actor.items) {
-                if (existingItem.getFlag("core", "sourceUuid") !== this.uuid) continue;
-                const parentId = existingItem.getFlag("core", "parentId");
+                if (existingItem.sourceUuid !== this.uuid) continue;
+                const parentId = existingItem.parentId;
                 await actor.addItem(item, parentId);
             }
         }
     }
 
-    async removeRefItem(itemUuid) {
-        let index = this.system.refItemsUuids.indexOf(itemUuid);
-        if (index > -1) {
-            this.system.refItemsUuids.splice(index, 1);
-            await this.update({
-                "system.refItemsUuids": this.system.refItemsUuids,
-            });
-        }
+    async removeRefItem(item) {
+        // Remove item as child uuid from this
+        this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(item.uuid), 1);
+        await this.update({
+            "system.refItemsChildren": this.system.refItemsChildren
+        });
+
+        item.system.refItemsParents.splice(item.system.refItemsParents.indexOf(this.uuid), 1);
+        // Remove this as parent uuid from item
+        await item.update({
+            "system.refItemsParents": item.system.refItemsParents
+        })
 
         // Update actors with this item to remove the related embedded items
         for (const actor of game.actors) {
             for (const existingItem of actor.items) {
-                if (existingItem.getFlag("core", "sourceUuid") !== this.uuid) continue;
-                const itemToRemove = actor.items.find(item => item.getFlag("core", "sourceUuid") === itemUuid &&
-                    item.getFlag("core", "childId") === existingItem.getFlag("core", "parentId"))
+                if (existingItem.sourceUuid !== this.uuid) continue;
+                const itemToRemove = actor.items.find(item => item.sourceUuid === itemUuid &&
+                    item.childId === existingItem.parentId)
                 await actor.removeItem(itemToRemove);
             }
         }

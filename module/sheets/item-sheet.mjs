@@ -41,8 +41,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     class: 'open-original',
                     icon: 'fas fa-copy',
                     onclick: async () => {
-                        const sourceUuid = this.item.getFlag('core', 'sourceUuid');
-                        const item = await fromUuid(sourceUuid);
+                        const item = await fromUuid(this.item.sourceUUid);
                         await this.close();
                         item.sheet.render(true);
                     }
@@ -145,8 +144,8 @@ export class Pl1eItemSheet extends ItemSheet {
     _prepareItems(context) {
         // Get ref items using uuid
         const items = [];
-        for (let i = 0; i < this.item.system.refItemsUuids.length; i++) {
-            const uuid = this.item.system.refItemsUuids[i];
+        for (let i = 0; i < this.item.system.refItemsChildren.length; i++) {
+            const uuid = this.item.system.refItemsChildren[i];
             const item = game.items.find(item => item.uuid === uuid);
             if (item) items[i] = item;
             // else throw new Error(`PL1E | Cannot find item with uuid : ${uuid}`)
