@@ -1,7 +1,7 @@
 export class Pl1eItem extends Item {
 
-    get sourceUuid() {
-        return this.getFlag("core", "sourceUuid");
+    get sourceId() {
+        return this.getFlag("core", "sourceId").split(".")[1];
     }
 
     get parentId() {
@@ -37,15 +37,15 @@ export class Pl1eItem extends Item {
             // Remove embedded from actors
             for (const actor of game.actors) {
                 for (const item of actor.items) {
-                    if (item.sourceUuid !== this.uuid) continue;
+                    if (item.sourceId !== this._id) continue;
                     item.parent.removeItem(item);
                 }
             }
 
             // Remove item from parents items
-            for (const uuid of this.system.refItemsParents) {
-                const item = fromUuid(uuid);
-                item.removeRefItem(this);
+            for (const id of this.system.refItemsParents) {
+                const item = game.items.get(id);
+                if (item) await item.removeRefItem(this);
             }
         }
 
@@ -70,17 +70,16 @@ export class Pl1eItem extends Item {
         // Return if same item
         if (this.uuid === item.uuid) return;
         // Return if item with same uuid exist
-        if (this.system.refItemsChildren.find(uuid => uuid === item.uuid)) return;
+        if (this.system.refItemsChildren.find(id => id === item._id)) return;
 
         // Add item as child uuid to this
-        this.system.refItemsChildren.push(item.uuid);
+        this.system.refItemsChildren.push(item._id);
         await this.update({
             "system.refItemsChildren": this.system.refItemsChildren
         });
-        this.sheet.render(this.sheet.rendered);
 
         // Add this as parent uuid to item
-        item.system.refItemsParents.push(this.uuid)
+        item.system.refItemsParents.push(this._id);
         await item.update({
             "system.refItemsParents": item.system.refItemsParents
         })
@@ -88,7 +87,7 @@ export class Pl1eItem extends Item {
         // Update actors with this item to add the new item
         for (const actor of game.actors) {
             for (const existingItem of actor.items) {
-                if (existingItem.sourceUuid !== this.uuid) continue;
+                if (existingItem.sourceId !== this._id) continue;
                 const parentId = existingItem.parentId;
                 await actor.addItem(item, parentId);
             }
@@ -97,12 +96,12 @@ export class Pl1eItem extends Item {
 
     async removeRefItem(item) {
         // Remove item as child uuid from this
-        this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(item.uuid), 1);
+        this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(item._id), 1);
         await this.update({
             "system.refItemsChildren": this.system.refItemsChildren
         });
 
-        item.system.refItemsParents.splice(item.system.refItemsParents.indexOf(this.uuid), 1);
+        item.system.refItemsParents.splice(item.system.refItemsParents.indexOf(this._id), 1);
         // Remove this as parent uuid from item
         await item.update({
             "system.refItemsParents": item.system.refItemsParents
@@ -111,8 +110,8 @@ export class Pl1eItem extends Item {
         // Update actors with this item to remove the related embedded items
         for (const actor of game.actors) {
             for (const existingItem of actor.items) {
-                if (existingItem.sourceUuid !== this.uuid) continue;
-                const itemToRemove = actor.items.find(item => item.sourceUuid === itemUuid &&
+                if (existingItem.sourceId !== this._id) continue;
+                const itemToRemove = actor.items.find(item => item.sourceId === item._id &&
                     item.childId === existingItem.parentId)
                 await actor.removeItem(itemToRemove);
             }

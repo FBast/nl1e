@@ -1,3 +1,4 @@
+import {PL1E} from "./config/config.mjs";
 // Import document classes.
 import {Pl1eActor} from "./documents/actor.mjs";
 import {Pl1eItem} from "./documents/item.mjs";
@@ -6,13 +7,13 @@ import {Pl1eItemProxy} from "./documents/itemProxy.mjs";
 // Import sheet classes.
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
+// Import apps classes.
+import {Pl1eResting} from "./apps/resting.mjs";
 // Import helper/utility classes and constants.
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
-import {PL1E} from "./config/config.mjs";
 import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
-import {AppResting} from "./apps/resting.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -107,7 +108,7 @@ Hooks.once("ready", async function () {
         if (actorSheet.actor.type === "character") {
             // Refresh the form application
             const formApp = Object.values(ui.windows)
-                .find(w => w instanceof AppResting);
+                .find(w => w instanceof Pl1eResting);
             if (formApp) formApp.render(true);
             // Apply the user color to the sheet
             for (const [id, user] of Object.entries(game.users.players)) {

@@ -35,13 +35,23 @@ export class Pl1eItemSheet extends ItemSheet {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            if (!this.item.isOriginal) {
+            if (this.item.isOriginal) {
+                buttons.unshift({
+                    label: 'PL1E.ResetClones',
+                    class: 'open-original',
+                    icon: 'fal fa-clone',
+                    onclick: async () => {
+                        await Pl1eHelpers.resetClones(this.item);
+                    }
+                });
+            }
+            else {
                 buttons.unshift({
                     label: 'PL1E.OpenOriginal',
                     class: 'open-original',
-                    icon: 'fas fa-copy',
+                    icon: 'fas fa-clone',
                     onclick: async () => {
-                        const item = await fromUuid(this.item.sourceUUid);
+                        const item = game.items.get(this.item.sourceId);
                         await this.close();
                         item.sheet.render(true);
                     }
@@ -60,8 +70,6 @@ export class Pl1eItemSheet extends ItemSheet {
     async _updateObject(event, formData) {
         await super._updateObject(event, formData);
 
-        // Reset Clones
-        await Pl1eHelpers.resetClones(this.item);
     }
 
     /** @override */
@@ -145,8 +153,8 @@ export class Pl1eItemSheet extends ItemSheet {
         // Get ref items using uuid
         const items = [];
         for (let i = 0; i < this.item.system.refItemsChildren.length; i++) {
-            const uuid = this.item.system.refItemsChildren[i];
-            const item = game.items.find(item => item.uuid === uuid);
+            const id = this.item.system.refItemsChildren[i];
+            const item = game.items.get(id);
             if (item) items[i] = item;
             // else throw new Error(`PL1E | Cannot find item with uuid : ${uuid}`)
         }
@@ -206,9 +214,6 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.${randomID()}`]: aspectsObjects[aspectId]
         })
-
-        // Reset Clones
-        await Pl1eHelpers.resetClones(this.item);
     }
 
     async onAspectRemove(event) {
@@ -234,9 +239,45 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null
         });
+    }
 
-        // Reset Clones
-        await Pl1eHelpers.resetClones(this.item);
+    /**
+     * Reset all clones using their sourceId
+     * @param {Item} originalItem
+     * @returns {Promise<void>}
+     */
+    async resetClones() {
+        for (const actor of game.actors) {
+            let updateDocument = false;
+            const itemsData = [];
+            for (let item of actor.items) {
+                if (!item.sourceId || item.sourceId !== this.item._id) continue
+                if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
+                    itemsData.push({
+                        "_id": item._id,
+                        "name": this.item.name,
+                        "img": this.item.img,
+                        "system.price": this.item.system.price,
+                        "system.description": this.item.system.description,
+                        "system.attributes": this.item.system.attributes,
+                        "system.passiveAspects": this.item.system.passiveAspects,
+                        "system.activeAspects": this.item.system.activeAspects,
+                        "system.refItemsChildren": this.item.system.refItemsChildren,
+                        "system.refItemsParents": this.item.system.refItemsParents,
+                    });
+                    updateDocument = true;
+                }
+                else {
+                    console.warn("Unknown type : " + item.type);
+                }
+            }
+            if (updateDocument) {
+                await actor.updateEmbeddedDocuments("Item", itemsData);
+            }
+        }
+        // Render all visible sheets
+        const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
+        sheets.forEach(sheet => sheet.render(true));
     }
 
 }

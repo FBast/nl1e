@@ -1,5 +1,5 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {AppResting} from "../apps/resting.mjs";
+import {Pl1eResting} from "../apps/resting.mjs";
 import {Pl1eEffect} from "../helpers/effects.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
@@ -43,7 +43,7 @@ export class Pl1eActorSheet extends ActorSheet {
                     icon: this.actor.system.general.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
                     onclick: async () => {
                         const appRestingForm = Object.values(ui.windows)
-                            .find(w => w instanceof AppResting);
+                            .find(w => w instanceof Pl1eResting);
                         await appRestingForm?.close();
                         await this.actor.update({
                             "system.general.creationMod": !this.actor.system.general.creationMod
@@ -208,9 +208,9 @@ export class Pl1eActorSheet extends ActorSheet {
         };
 
         // Iterate through subItems, allocating to containers
-        const sourceUuidFlags = [];
+        const sourceIdFlags = [];
         for (let item of context.items) {
-            const sourceUuidFlag = item.flags.core ? item.flags.core.sourceUuid : null;
+            const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;
             // Append to item categories
             if (item.type === 'weapon') {
                 weapons.push(item);
@@ -220,8 +220,8 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             else if (item.type === 'consumable') {
                 // Increase units
-                if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = consumables.find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = consumables.find(item => item.flags.core.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -230,8 +230,8 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             else if (item.type === 'common') {
                 // Increase units
-                if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = commons.find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = commons.find(item => item.flags.core.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -245,16 +245,16 @@ export class Pl1eActorSheet extends ActorSheet {
             // Append to abilities.
             else if (item.type === 'ability') {
                 // Increase units
-                if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.core.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 }
                 else {
                     abilities[item.system.attributes.level.value].push(item);
                 }
             }
-            // Push sourceUuid flag to handle duplicates
-            if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
+            // Push sourceId flag to handle duplicates
+            if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
         }
 
         // Assign and return
@@ -302,7 +302,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
     async onCampingClick(event) {
         const formApp = Object.values(ui.windows)
-            .find(w => w instanceof AppResting);
+            .find(w => w instanceof Pl1eResting);
         if (formApp) return;
 
         if (this.actor.system.general.creationMod) {
@@ -310,7 +310,7 @@ export class Pl1eActorSheet extends ActorSheet {
             return;
         }
 
-        const app = new AppResting(this.actor, {
+        const app = new Pl1eResting(this.actor, {
             title: `${game.i18n.localize("PL1E.Camping")} : ${this.actor.name}`,
         });
         app.render(true);
@@ -326,14 +326,13 @@ export class Pl1eActorSheet extends ActorSheet {
 
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const item = this.actor.items.get(itemId);
-        const sourceUuid = item.sourceUuid;
 
         // Render multiple parent in case of child stack
         let sheetPosition = Pl1eHelpers.screenCenter();
         for (const otherItem of this.actor.items) {
             const childId = otherItem.childId;
-            const otherSourceUuid = otherItem.sourceUuid;
-            if (childId && otherSourceUuid === sourceUuid) {
+            const otherSourceId = otherItem.sourceId;
+            if (childId && otherSourceId === item.sourceId) {
                 const parentItem = this.actor.items.find(item => item.parentId === childId);
                 parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
                 sheetPosition.x += 30;

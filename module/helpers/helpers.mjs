@@ -49,7 +49,7 @@ export class Pl1eHelpers {
     }
 
     /**
-     * Reset all clones using their sourceUuid
+     * Reset all clones using their sourceId
      * @param {Item} originalItem
      * @returns {Promise<void>}
      */
@@ -58,7 +58,7 @@ export class Pl1eHelpers {
             let updateDocument = false;
             const itemsData = [];
             for (let item of actor.items) {
-                if (!item.sourceUuid || item.sourceUuid !== originalItem.uuid) continue
+                if (!item.sourceId || item.sourceId !== originalItem._id) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
                         "_id": item._id,
@@ -69,7 +69,8 @@ export class Pl1eHelpers {
                         "system.attributes": originalItem.system.attributes,
                         "system.passiveAspects": originalItem.system.passiveAspects,
                         "system.activeAspects": originalItem.system.activeAspects,
-                        "system.refItems": originalItem.system.refItems
+                        "system.refItemsChildren": originalItem.system.refItemsChildren,
+                        "system.refItemsParents": originalItem.system.refItemsParents,
                     });
                     updateDocument = true;
                 }
