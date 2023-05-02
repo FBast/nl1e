@@ -1,7 +1,7 @@
 export class Pl1eItem extends Item {
 
     get sourceId() {
-        return this.getFlag("core", "sourceId").split(".")[1];
+        return this.getFlag("core", "sourceId")?.split(".")[1];
     }
 
     get parentId() {
@@ -33,21 +33,21 @@ export class Pl1eItem extends Item {
 
     /** @override */
     async _preDelete(options, user) {
-        if (this.isOriginal) {
-            // Remove embedded from actors
-            for (const actor of game.actors) {
-                for (const item of actor.items) {
-                    if (item.sourceId !== this._id) continue;
-                    item.parent.removeItem(item);
-                }
-            }
-
-            // Remove item from parents items
-            for (const id of this.system.refItemsParents) {
-                const item = game.items.get(id);
-                if (item) await item.removeRefItem(this);
-            }
-        }
+        // if (this.isOriginal) {
+        //     // Remove embedded from actors
+        //     for (const actor of game.actors) {
+        //         for (const item of actor.items) {
+        //             if (item.sourceId !== this._id) continue;
+        //             item.parent.removeItem(item);
+        //         }
+        //     }
+        //
+        //     // Remove item from parents items
+        //     for (const id of this.system.refItemsParents) {
+        //         const item = game.items.get(id);
+        //         if (item) await item.removeRefItem(this);
+        //     }
+        // }
 
         return super._preDelete(options, user);
     }
