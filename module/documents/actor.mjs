@@ -336,14 +336,14 @@ export class Pl1eActor extends Actor {
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
         newItem = newItem[0];
 
-        if (!newItem.sourceUuid) await newItem.setFlag("core", "sourceUuid", item.uuid);
-        if (childId) await newItem.setFlag("core", "childId", childId);
+        if (!newItem.sourceUuid) await newItem.setFlag("pl1e", "sourceUuid", item.uuid);
+        if (childId) await newItem.setFlag("pl1e", "childId", childId);
         const parentId = randomID();
-        await newItem.setFlag("core", "parentId", parentId);
+        await newItem.setFlag("pl1e", "parentId", parentId);
 
         if (newItem.system.refItemsChildren && newItem.system.refItemsChildren.length > 0) {
             for (let id of newItem.system.refItemsChildren) {
-                const refItem = game.items.get(id);
+                const refItem = await fromUuid(id);
                 await this.addItem(refItem, parentId);
             }
         }

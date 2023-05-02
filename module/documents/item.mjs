@@ -107,7 +107,7 @@ export class Pl1eItem extends Item {
         // Remove this as parent uuid from item
         await item.update({
             "system.refItemsParents": item.system.refItemsParents
-        })
+        });
 
         //TODO should use a macro to update all the actors once instead
 
