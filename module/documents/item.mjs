@@ -122,4 +122,11 @@ export class Pl1eItem extends Item {
         // }
     }
 
+    async removeEmptyRefItem(uuid) {
+        this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(uuid), 1);
+        await this.update({
+            "system.refItemsChildren": this.system.refItemsChildren
+        });
+    }
+
 }

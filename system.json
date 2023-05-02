@@ -14,7 +14,125 @@
   "esmodules": ["module/pl1e.mjs"],
   "styles": ["css/pl1e.css"],
   "scripts": [],
-  "packs": [],
+  "packs": [
+    {
+      "name": "characters",
+      "label": "Characters",
+      "system": "pl1e",
+      "path": "packs/characters.db",
+      "type": "Actor",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "npc",
+      "label": "NPCs",
+      "system": "pl1e",
+      "path": "packs/npc.db",
+      "type": "Actor",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "merchants",
+      "label": "Merchants",
+      "system": "pl1e",
+      "path": "packs/merchants.db",
+      "type": "Actor",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "features",
+      "label": "Features",
+      "system": "pl1e",
+      "path": "packs/features.db",
+      "type": "Item",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "abilities",
+      "label": "Abilities",
+      "system": "pl1e",
+      "path": "packs/abilities.db",
+      "type": "Item",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "weapons",
+      "label": "Weapons",
+      "system": "pl1e",
+      "path": "packs/weapons.db",
+      "type": "Item",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "wearable",
+      "label": "Wearables",
+      "system": "pl1e",
+      "path": "packs/wearable.db",
+      "type": "Item",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "consumable",
+      "label": "Consumables",
+      "system": "pl1e",
+      "path": "packs/consumable.db",
+      "type": "Item",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "common",
+      "label": "Common",
+      "system": "pl1e",
+      "path": "packs/common.db",
+      "type": "Item",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "maps",
+      "label": "Maps",
+      "system": "pl1e",
+      "path": "packs/maps.db",
+      "type": "Scene",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "cities",
+      "label": "Cities",
+      "system": "pl1e",
+      "path": "packs/cities.db",
+      "type": "Scene",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "lore",
+      "label": "Lore",
+      "system": "pl1e",
+      "path": "packs/lore.db",
+      "type": "JournalEntry",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "documentation",
+      "label": "Documentation",
+      "system": "pl1e",
+      "path": "packs/documentation.db",
+      "type": "JournalEntry",
+      "private": true,
+      "flags": {}
+    }
+  ],
   "languages": [
     {
       "lang": "en",

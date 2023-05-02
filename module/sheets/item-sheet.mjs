@@ -154,12 +154,19 @@ export class Pl1eItemSheet extends ItemSheet {
         const items = [];
         for (let i = 0; i < this.item.system.refItemsChildren.length; i++) {
             const uuid = this.item.system.refItemsChildren[i];
-            const item = await fromUuid(uuid);
-            if (item) items[i] = item;
-            // else throw new Error(`PL1E | Cannot find item with uuid : ${uuid}`)
+            let item = await fromUuid(uuid);
+            if (!item) {
+                // Create an unknown item for display
+                item = {
+                    type: "unknown",
+                    uuid: uuid
+                }
+            }
+            items[i] = item;
         }
 
         // Initialize containers.
+        const unknowns = [];
         const features = [];
         let abilities = {
             0: [],
@@ -172,17 +179,23 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Iterate through refItems, allocating to containers
         for (const item of items) {
+            // Append to unknowns
+            if (item.type === "unknown") {
+                unknowns.push(item);
+            }
             // Append to features
-            if (item.type === 'feature') {
+            if (item.type === "feature") {
                 features.push(item);
             }
             // Append to abilities
-            else if (item.type === 'ability') {
+            else if (item.type === "ability") {
                 abilities[item.system.attributes.level.value].push(item);
             }
         }
 
         // Assign and return
+        context.hasUnknowns = unknowns.length > 0;
+        context.unknowns = unknowns;
         context.features = features;
         context.abilities = abilities;
         context.passiveAspects = this.item.system.passiveAspects;
