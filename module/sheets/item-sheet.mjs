@@ -51,7 +51,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     class: 'open-original',
                     icon: 'fas fa-clone',
                     onclick: async () => {
-                        const item = game.items.get(this.item.sourceId);
+                        const item = fromUuid(this.item.sourceUuid);
                         await this.close();
                         item.sheet.render(true);
                     }
@@ -149,12 +149,12 @@ export class Pl1eItemSheet extends ItemSheet {
         }
     }
 
-    _prepareItems(context) {
+    async _prepareItems(context) {
         // Get ref items using uuid
         const items = [];
         for (let i = 0; i < this.item.system.refItemsChildren.length; i++) {
-            const id = this.item.system.refItemsChildren[i];
-            const item = game.items.get(id);
+            const uuid = this.item.system.refItemsChildren[i];
+            const item = await fromUuid(uuid);
             if (item) items[i] = item;
             // else throw new Error(`PL1E | Cannot find item with uuid : ${uuid}`)
         }
@@ -242,7 +242,7 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     /**
-     * Reset all clones using their sourceId
+     * Reset all clones using their sourceUuid
      * @param {Item} originalItem
      * @returns {Promise<void>}
      */
@@ -251,7 +251,7 @@ export class Pl1eItemSheet extends ItemSheet {
             let updateDocument = false;
             const itemsData = [];
             for (let item of actor.items) {
-                if (!item.sourceId || item.sourceId !== this.item._id) continue
+                if (!item.sourceUuid || item.sourceUuid !== this.item.uuid) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
                         "_id": item._id,

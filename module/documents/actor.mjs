@@ -336,7 +336,7 @@ export class Pl1eActor extends Actor {
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
         newItem = newItem[0];
 
-        if (!newItem.sourceId) await newItem.setFlag("core", "sourceId", item.uuid);
+        if (!newItem.sourceUuid) await newItem.setFlag("core", "sourceUuid", item.uuid);
         if (childId) await newItem.setFlag("core", "childId", childId);
         const parentId = randomID();
         await newItem.setFlag("core", "parentId", parentId);

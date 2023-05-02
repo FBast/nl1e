@@ -49,7 +49,7 @@ export class Pl1eHelpers {
     }
 
     /**
-     * Reset all clones using their sourceId
+     * Reset all clones using their sourceUuid
      * @param {Item} originalItem
      * @returns {Promise<void>}
      */
@@ -58,7 +58,7 @@ export class Pl1eHelpers {
             let updateDocument = false;
             const itemsData = [];
             for (let item of actor.items) {
-                if (!item.sourceId || item.sourceId !== originalItem._id) continue
+                if (!item.sourceUuid || item.sourceUuid !== originalItem._id) continue
                 if (['feature', 'ability', 'weapon', 'wearable', 'consumable', 'common'].includes(item.type)) {
                     itemsData.push({
                         "_id": item._id,

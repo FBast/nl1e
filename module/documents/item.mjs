@@ -1,15 +1,15 @@
 export class Pl1eItem extends Item {
 
-    get sourceId() {
-        return this.getFlag("core", "sourceId")?.split(".")[1];
+    get sourceUuid() {
+        return this.getFlag("pl1e", "sourceUuid");
     }
 
     get parentId() {
-        return this.getFlag("core", "parentId");
+        return this.getFlag("pl1e", "parentId");
     }
 
     get childId() {
-        return this.getFlag("core", "childId");
+        return this.getFlag("pl1e", "childId");
     }
 
     get isOriginal() {
@@ -37,7 +37,7 @@ export class Pl1eItem extends Item {
         //     // Remove embedded from actors
         //     for (const actor of game.actors) {
         //         for (const item of actor.items) {
-        //             if (item.sourceId !== this._id) continue;
+        //             if (item.sourceUuid !== this._id) continue;
         //             item.parent.removeItem(item);
         //         }
         //     }
@@ -70,52 +70,56 @@ export class Pl1eItem extends Item {
         // Return if same item
         if (this.uuid === item.uuid) return;
         // Return if item with same uuid exist
-        if (this.system.refItemsChildren.find(id => id === item._id)) return;
+        if (this.system.refItemsChildren.find(id => id === item.uuid)) return;
 
         // Add item as child uuid to this
-        this.system.refItemsChildren.push(item._id);
+        this.system.refItemsChildren.push(item.uuid);
         await this.update({
             "system.refItemsChildren": this.system.refItemsChildren
         });
 
         // Add this as parent uuid to item
-        item.system.refItemsParents.push(this._id);
+        item.system.refItemsParents.push(this.uuid);
         await item.update({
             "system.refItemsParents": item.system.refItemsParents
         })
 
-        // Update actors with this item to add the new item
-        for (const actor of game.actors) {
-            for (const existingItem of actor.items) {
-                if (existingItem.sourceId !== this._id) continue;
-                const parentId = existingItem.parentId;
-                await actor.addItem(item, parentId);
-            }
-        }
+        //TODO should use a macro to update all the actors once instead
+
+        // // Update actors with this item to add the new item
+        // for (const actor of game.actors) {
+        //     for (const existingItem of actor.items) {
+        //         if (existingItem.sourceUuid !== this._id) continue;
+        //         const parentId = existingItem.parentId;
+        //         await actor.addItem(item, parentId);
+        //     }
+        // }
     }
 
     async removeRefItem(item) {
         // Remove item as child uuid from this
-        this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(item._id), 1);
+        this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(item.uuid), 1);
         await this.update({
             "system.refItemsChildren": this.system.refItemsChildren
         });
 
-        item.system.refItemsParents.splice(item.system.refItemsParents.indexOf(this._id), 1);
+        item.system.refItemsParents.splice(item.system.refItemsParents.indexOf(this.uuid), 1);
         // Remove this as parent uuid from item
         await item.update({
             "system.refItemsParents": item.system.refItemsParents
         })
 
-        // Update actors with this item to remove the related embedded items
-        for (const actor of game.actors) {
-            for (const existingItem of actor.items) {
-                if (existingItem.sourceId !== this._id) continue;
-                const itemToRemove = actor.items.find(item => item.sourceId === item._id &&
-                    item.childId === existingItem.parentId)
-                await actor.removeItem(itemToRemove);
-            }
-        }
+        //TODO should use a macro to update all the actors once instead
+
+        // // Update actors with this item to remove the related embedded items
+        // for (const actor of game.actors) {
+        //     for (const existingItem of actor.items) {
+        //         if (existingItem.sourceUuid !== this._id) continue;
+        //         const itemToRemove = actor.items.find(item => item.sourceUuid === item._id &&
+        //             item.childId === existingItem.parentId)
+        //         await actor.removeItem(itemToRemove);
+        //     }
+        // }
     }
 
 }
