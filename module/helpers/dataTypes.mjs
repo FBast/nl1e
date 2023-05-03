@@ -24,8 +24,7 @@
  * @property {RollData} rollData The roll data of the character
  * @property {number} result The result of the rollData
  * @property {object} attributes The attributes of the item
- * @property {object} activeAspects The aspects of the item
- * @property {boolean} hasEffects The possibility of effects based on attributes
+ * @property {object} activeAspects The active aspects of the item
  * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
  */
 
@@ -36,6 +35,5 @@
  * @property {number} result
  * @property {Token} token
  * @property {string} tokenId
- * @property {Pl1eAspect[]} aspects The calculated aspects of the target
- * @property {boolean} hasEffects The possibility of effects based on aspects number
+ * @property {Pl1eAspect[]} activeAspects The calculated active aspects of the target
  */

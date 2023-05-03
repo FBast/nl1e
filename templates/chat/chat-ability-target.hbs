@@ -1,21 +1,18 @@
 <div class="chat-card item-card pl1e">
+    {{log this}}
     <header class="card-header flexrow">
         <img class="left-image actor-edit" src="{{characterData.token.actor.img}}" data-token-id="{{characterData.tokenId}}"
              title="{{characterData.token.name}}" width="36" height="36"/>
         <img class="left-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
              data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
         <div class="item-effects-target">
-            {{#if targetData.hasEffects}}
-                {{#each targetData.aspects}}
-                    {{#with (configEntry system.dataGroup system.data)}}
-                        <i class="{{#if (gt ../system.value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
-                            <label>{{formatNumber ../system.value signe=true}}</label>
-                        </i>
-                    {{/with}}
-                {{/each}}
-            {{else}}
-                <label>{{localize "PL1E.NoEffects"}}</label>
-            {{/if}}
+            {{#each targetData.activeAspects}}
+                {{#with (configEntry dataGroup data)}}
+                    <i class="{{#if (gt ../value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
+                        <label>{{formatNumber ../value signe=true}}</label>
+                    </i>
+                {{/with}}
+            {{/each}}
         </div>
         <img class="right-image actor-edit" src="{{targetData.token.actor.img}}" data-token-id="{{targetData.tokenId}}"
              title="{{targetData.token.actor.name}}" width="36" height="36"/>

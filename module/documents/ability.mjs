@@ -54,8 +54,8 @@ export class Pl1eAbility extends Pl1eItem {
             characterData.result = 1;
         }
 
-        // Apply and calculate attributes
-        await this._applyAttributes(characterData);
+        // Calculate attributes
+        characterData.attributes = await this._calculateAttributes(characterData);
 
         // Ability Data
         const abilityData = {
@@ -90,7 +90,15 @@ export class Pl1eAbility extends Pl1eItem {
     /** @override */
     async apply(options) {
         // Handle different actions
-        if (options.action === 'resolve') await this._resolveAbility();
+        switch (options.action) {
+            case "launch":
+                await this._applyAttributes();
+                await this._launchAbility();
+                break;
+            case "counter":
+                await this._applyAttributes();
+                break;
+        }
 
         // Destroy templates after fetching target with df-template
         for (const template of this.abilityData.templates) {
@@ -107,12 +115,50 @@ export class Pl1eAbility extends Pl1eItem {
     }
 
     /**
-     * Calculate and apply the attributes
+     * Launch the ability
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _launchAbility() {
+        let targetTokens = game.user.targets;
+        const characterData = this.abilityData.characterData;
+
+        // Roll data for every targets
+        /** @type {TargetData[]} */
+        let targetsData = []
+        for (let targetToken of targetTokens) {
+            const targetData = {};
+            if (characterData.attributes.targetRoll.value !== "none") {
+                const skill = targetToken.actor.system.skills[characterData.attributes.targetRoll.value];
+                targetData.rollData = await targetToken.actor.rollSkill(skill);
+                targetData.result = characterData.result - targetData.rollData.total;
+            }
+            else {
+                targetData.result = characterData.result;
+            }
+            targetData.token = targetToken;
+            targetData.tokenId = targetToken.document.uuid;
+            targetsData.push(targetData);
+        }
+
+        // Apply aspects, here we calculate each aspect for all targets
+        for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
+            targetsData = await Pl1eAspect.apply(aspect, characterData, targetsData);
+        }
+
+        // Display messages
+        for (const targetData of targetsData) {
+            await Pl1eChat.abilityRoll(characterData, targetData);
+        }
+    }
+
+    /**
+     * Calculate the attributes
      * @param characterData
      * @returns {Promise<void>}
      * @private
      */
-    async _applyAttributes(characterData) {
+    _calculateAttributes(characterData) {
         // Calculate character attributes
         let calculatedAttributes = {};
         for (let [id, attribute] of Object.entries(characterData.attributes)) {
@@ -140,10 +186,17 @@ export class Pl1eAbility extends Pl1eItem {
             }
             calculatedAttributes[id] = calculatedAttribute;
         }
-        characterData.attributes = calculatedAttributes;
+        return calculatedAttributes;
+    }
 
-        // Apply attributes and notify effects
-        characterData.hasEffects = false;
+    /**
+     * Apply the attributes effects
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _applyAttributes() {
+        const characterData = this.abilityData.characterData;
+
         for (const [key, attribute] of Object.entries(characterData.attributes)) {
             const attributeConfig = CONFIG.PL1E.attributes[key];
             if (attributeConfig?.data === undefined || attribute.value === 0) continue;
@@ -154,51 +207,6 @@ export class Pl1eAbility extends Pl1eItem {
             await characterData.token.actor.update({
                 [attributeDataConfig.path]: actorValue
             });
-            // Notify effects
-            characterData.hasEffects = true;
-        }
-    }
-
-    /**
-     * Resolve the ability
-     * @returns {Promise<void>}
-     * @private
-     */
-    async _resolveAbility() {
-        let targetTokens = game.user.targets;
-        const characterData = this.abilityData.characterData;
-
-        // Roll data for every targets
-        /** @type {TargetData[]} */
-        let targetsData = []
-        for (let targetToken of targetTokens) {
-            const targetData = {};
-            if (characterData.attributes.targetRoll.value !== "none") {
-                const skill = targetToken.actor.system.skills[characterData.attributes.targetRoll.value];
-                targetData.rollData = await targetToken.actor.rollSkill(skill);
-                targetData.result = characterData.result - targetData.rollData.total;
-            }
-            else {
-                targetData.result = characterData.result;
-            }
-            targetData.token = targetToken;
-            targetData.tokenId = targetToken.document.uuid;
-            targetsData.push(targetData);
-        }
-
-        // Apply aspects, here we calculate each aspect for all targets
-        for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
-            targetsData = await Pl1eAspect.apply(aspect, characterData, targetsData);
-        }
-
-        // Notify if attributes has effects
-        for (const targetData of targetsData) {
-            targetData.hasEffects = targetData.activeAspects.length > 0;
-        }
-
-        // Display messages
-        for (const targetData of targetsData) {
-            await Pl1eChat.abilityRoll(characterData, targetData);
         }
     }
 

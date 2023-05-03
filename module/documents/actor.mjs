@@ -245,6 +245,7 @@ export class Pl1eActor extends Actor {
                 resource.max += actorCharacteristics[characteristic].value;
             }
             resource.max *= resourceConfig.multiplier * actorGeneral.sizeMultiplier;
+            if (resource.value > resource.max) resource.value = resource.max;
         }
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
