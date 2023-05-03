@@ -1,13 +1,13 @@
 export class Pl1eAspect {
 
     /**
-     * @param {string} aspectName
+     * @param {Object} aspect
      * @param {CharacterData} characterData
      * @param {TargetData[]} targetsData
      */
-    static async apply(aspectName, characterData, targetsData) {
+    static async apply(aspect, characterData, targetsData) {
         // Calculate the aspect
-        switch (aspectName) {
+        switch (aspect.name) {
             case "increase":
                 return this._increase(characterData, targetsData);
             case "decrease":
@@ -19,7 +19,7 @@ export class Pl1eAspect {
             case "effect":
                 return this._effect(characterData, targetsData);
             default:
-                throw new Error("PL1E | unknown aspect : " + aspectName);
+                throw new Error("PL1E | unknown aspect : " + aspect.name);
         }
     }
 
@@ -70,7 +70,7 @@ export class Pl1eAspect {
      * @private
      */
     static async _decrease(characterData, targetsData) {
-
+        throw new Error("Not implemented yet");
     }
 
     /**
@@ -81,7 +81,7 @@ export class Pl1eAspect {
      * @private
      */
     static async _override(characterData, targetsData) {
-
+        throw new Error("Not implemented yet");
     }
 
     /**
@@ -92,7 +92,7 @@ export class Pl1eAspect {
      * @private
      */
     static async _transfer(characterData, targetsData) {
-
+        throw new Error("Not implemented yet");
     }
 
     /**
@@ -103,7 +103,7 @@ export class Pl1eAspect {
      * @private
      */
     static async _effect(characterData, targetsData) {
-
+        throw new Error("Not implemented yet");
     }
 
     /**

@@ -168,6 +168,21 @@ export class Pl1eItem extends Item {
                     "system.refItemsChildren": this.system.refItemsChildren,
                     "system.refItemsParents": this.system.refItemsParents,
                 });
+                await item.update({
+                    "system.passiveAspects": null,
+                    "system.activeAspects": null,
+                })
+                await item.update({
+                    "name": this.name,
+                    "img": this.img,
+                    "system.price": this.system.price,
+                    "system.description": this.system.description,
+                    "system.attributes": this.system.attributes,
+                    "system.passiveAspects": this.system.passiveAspects,
+                    "system.activeAspects": this.system.activeAspects,
+                    "system.refItemsChildren": this.system.refItemsChildren,
+                    "system.refItemsParents": this.system.refItemsParents,
+                })
             }
             // It seems that updateEmbeddedDocuments don't update aspects correctly
             // so i need to empty them before update

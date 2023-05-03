@@ -46,6 +46,14 @@
                             {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
                         </select>
                     </div>
+                    {{#if ../damageType}}
+                        <div class="flexrow">
+                            <label>{{localize "PL1E.DamageType"}}</label>
+                            <select name="system.activeAspects.{{@key}}.damageType">
+                                {{selectOptions (config "damageTypes") selected=../damageType localize=true}}
+                            </select>
+                        </div>
+                    {{/if}}
                     {{#if ../targetGroup}}
                         <div class="flexrow">
                             <label>{{localize "PL1E.TargetGroup"}}</label>

@@ -27,15 +27,15 @@ export class AbilityTemplate extends MeasuredTemplate {
    * A factory method to create an AbilityTemplate instance using provided data from an Pl1eItem instance
    * @param {Pl1eItem} item               The Item object for which to construct the template
    * @param {object} attributes
-   * @param {object} dynamicAttributes
+   * @param {object} activeAspects
    * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
    */
-  static async fromItem(item, attributes, dynamicAttributes) {
+  static async fromItem(item, attributes, activeAspects) {
     const areaShape = attributes.areaShape.value;
 
     // Save targetGroups for token selection
     let targetGroups = [];
-    for (const [id, dynamicAttribute] of Object.entries(dynamicAttributes)) {
+    for (const [id, dynamicAttribute] of Object.entries(activeAspects)) {
       if (targetGroups.includes(dynamicAttribute.targetGroup)) continue;
       targetGroups.push(dynamicAttribute.targetGroup);
     }
@@ -255,7 +255,6 @@ export class AbilityTemplate extends MeasuredTemplate {
     // Untarget previous targeted
     for (let token of this.#targets) {
       token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
-      console.log("Untarget " + token.name);
     }
     // Target current position
     for (let gridPosition of gridPositions) {
@@ -273,7 +272,6 @@ export class AbilityTemplate extends MeasuredTemplate {
           if (token.targeted.has(game.user)) continue;
           // Set target and add to target list
           token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
-          console.log("target " + token.name);
           this.#targets.push(token);
         }
       }

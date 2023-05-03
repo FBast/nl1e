@@ -149,10 +149,7 @@ export class Pl1eItemSheet extends ItemSheet {
         // Check item type and subtype
         let data = JSON.parse(event.dataTransfer?.getData("text/plain"));
         let item = await fromUuid(data.uuid);
-        if (!item) {
-            console.log(`PL1E | No item found with UUID ${data}`);
-            return;
-        }
+        if (!item) throw new Error(`PL1E | No item found with UUID ${data}`);
 
         if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
             await this.item.addRefItem(item);

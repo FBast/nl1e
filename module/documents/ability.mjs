@@ -72,7 +72,7 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.attributes.areaNumber.value !== 0 && characterData.attributes.areaShape.value !== "self") {
                 await characterData.actor.sheet?.minimize();
                 for (let i = 0; i < characterData.attributes.areaNumber.value; i++) {
-                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.aspects);
+                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
                     abilityData.templates.push(template);
                     await template?.drawPreview();
                 }
@@ -186,9 +186,9 @@ export class Pl1eAbility extends Pl1eItem {
             targetsData.push(targetData);
         }
 
-        // Apply dynamic attributes, here we calculate each aspect for all targets
-        for (let aspect of characterData.activeAspects) {
-            targetsData = await Pl1eAspect.apply(characterData, targetsData);
+        // Apply aspects, here we calculate each aspect for all targets
+        for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
+            targetsData = await Pl1eAspect.apply(aspect, characterData, targetsData);
         }
 
         // Notify if attributes has effects

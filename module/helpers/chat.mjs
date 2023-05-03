@@ -10,7 +10,7 @@ export class Pl1eChat {
         const rollData = targetData === undefined ? characterData.rollData : targetData.rollData;
         const template = targetData === undefined ? "character" : "target";
         // Render the chat card template
-        const html = await renderTemplate(`systems/pl1e/templates/chat/ability-${template}.hbs`,
+        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-${template}.hbs`,
             {rollData: rollData, characterData: characterData, targetData: targetData});
 
         // Create the ChatMessage data object

@@ -222,7 +222,8 @@ export function getConfigItems() {
             "dataGroup": "resources",
             "data": "stamina",
             "targetGroup": "all",
-            "resolutionType": "value"
+            "resolutionType": "value",
+            "damageType": "none",
         },
         {
             "name": "override",
@@ -239,7 +240,7 @@ export function getConfigItems() {
             "data": "health",
             "targetGroup": "all",
             "resolutionType": "value",
-            "reduction": "none",
+            "damageType": "none",
         },
         {
             "name": "effect",
