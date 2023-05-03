@@ -35,31 +35,39 @@ export class Pl1eItemSheet extends ItemSheet {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            if (this.item.isOriginal) {
+            if (this.item.isEmbedded) {
                 buttons.unshift({
-                    label: 'PL1E.ResetClones',
-                    class: 'open-original',
-                    icon: 'fal fa-clone',
+                    label: 'PL1E.Original',
+                    class: 'button-original',
+                    icon: 'fas fa-clone',
                     onclick: async () => {
-                        await Pl1eHelpers.resetClones(this.item);
+                        await this.close();
+                        const item = await fromUuid(this.item.sourceUuid);
+                        item.sheet.render(true);
                     }
                 });
             }
             else {
                 buttons.unshift({
-                    label: 'PL1E.OpenOriginal',
+                    label: 'PL1E.ResetClones',
                     class: 'open-original',
-                    icon: 'fas fa-clone',
+                    icon: 'fal fa-clone',
                     onclick: async () => {
-                        const item = fromUuid(this.item.sourceUuid);
-                        await this.close();
-                        item.sheet.render(true);
+                        await this.item.resetClones();
+                    }
+                });
+                buttons.unshift({
+                    label: 'PL1E.Parents',
+                    class: 'button-parents',
+                    icon: 'fas fa-up',
+                    onclick: async () => {
+                        await this._renderParents();
                     }
                 });
             }
             buttons.unshift({
                 label: 'PL1E.Debug',
-                class: 'debug',
+                class: 'button-debug',
                 icon: 'fas fa-ban-bug',
                 onclick: () => console.log(this)
             });
@@ -70,10 +78,12 @@ export class Pl1eItemSheet extends ItemSheet {
     async _updateObject(event, formData) {
         await super._updateObject(event, formData);
 
+        // Update clones if not embedded
+        if (!this.item.isEmbedded) await this.item.resetClones();
     }
 
     /** @override */
-    getData() {
+    async getData() {
         // Retrieve base data structure.
         const context = super.getData();
 
@@ -81,7 +91,7 @@ export class Pl1eItemSheet extends ItemSheet {
         const itemData = context.item;
 
         // Sheet editable if original and user is owner
-        this.options.editable = this.item.isOriginal && this.item.isOwner;
+        this.options.editable = !this.item.isEmbedded && this.item.isOwner;
 
         // Retrieve the roll data for TinyMCE editors.
         context.rollData = {};
@@ -91,7 +101,7 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Prepare refItems
-        this._prepareItems(context);
+        await this._prepareItems(context);
 
         // Add the actor's data to context.data for easier access, as well as flags.
         context.system = itemData.system;
@@ -123,8 +133,8 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
         html.find('.attribute-add').on("click", ev => Pl1eEvent.onAttributeAdd(ev, this.item))
         html.find('.attribute-remove').on("click", ev => Pl1eEvent.onAttributeRemove(ev, this.item))
-        html.find('.aspect-add').on("click", ev => this.onAspectAdd(ev))
-        html.find('.aspect-remove').on("click", ev => this.onAspectRemove(ev))
+        html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev))
+        html.find('.aspect-remove').on("click", ev => this._onAspectRemove(ev))
     }
 
     /**
@@ -204,7 +214,13 @@ export class Pl1eItemSheet extends ItemSheet {
         context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
     }
 
-    async onAspectAdd(event) {
+    /**
+     * Add an aspect
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onAspectAdd(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -227,9 +243,17 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.${randomID()}`]: aspectsObjects[aspectId]
         })
+
+        await this.item.resetClones();
     }
 
-    async onAspectRemove(event) {
+    /**
+     * Remove an aspect
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onAspectRemove(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -252,6 +276,30 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null
         });
+
+        await this.item.resetClones();
+    }
+
+    /**
+     * Render all parents
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _renderParents() {
+        if (this.item.system.refItemsParents.length === 0) {
+            ui.notifications.info(game.i18n.localize("Pl1E.NoParents"));
+            return;
+        }
+
+        let sheetPosition = Pl1eHelpers.screenCenter();
+        for (const uuid of this.item.system.refItemsParents) {
+            const parentItem = await fromUuid(uuid);
+            parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
+            sheetPosition.x += 30;
+            sheetPosition.y += 30;
+        }
+
+        await this.close();
     }
 
 }

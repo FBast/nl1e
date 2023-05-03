@@ -210,7 +210,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Iterate through subItems, allocating to containers
         const sourceUuidFlags = [];
         for (let item of context.items) {
-            const sourceUuidFlag = item.flags.core ? item.flags.core.sourceUuid : null;
+            const sourceUuidFlag = item.flags.pl1e ? item.flags.pl1e.sourceUuid : null;
             // Append to item categories
             if (item.type === 'weapon') {
                 weapons.push(item);
@@ -221,7 +221,7 @@ export class Pl1eActorSheet extends ActorSheet {
             else if (item.type === 'consumable') {
                 // Increase units
                 if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = consumables.find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                    const sameItem = consumables.find(item => item.flags.pl1e.sourceUuid === sourceUuidFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -231,7 +231,7 @@ export class Pl1eActorSheet extends ActorSheet {
             else if (item.type === 'common') {
                 // Increase units
                 if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = commons.find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                    const sameItem = commons.find(item => item.flags.pl1e.sourceUuid === sourceUuidFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -246,7 +246,7 @@ export class Pl1eActorSheet extends ActorSheet {
             else if (item.type === 'ability') {
                 // Increase units
                 if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.core.sourceUuid === sourceUuidFlag);
+                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.pl1e.sourceUuid === sourceUuidFlag);
                     sameItem.system.units++;
                 }
                 else {

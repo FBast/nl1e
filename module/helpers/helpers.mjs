@@ -49,66 +49,6 @@ export class Pl1eHelpers {
     }
 
     /**
-     * Reset all clones using their sourceUuid
-     * @param {Item} originalItem
-     * @returns {Promise<void>}
-     */
-    static async resetClones(originalItem) {
-        // Update actors embedded items copied of original item
-        for (const actor of game.actors) {
-            const itemsData = [];
-            for (let item of actor.items) {
-                if (!item.isEmbedded) continue;
-                if (!item.sourceUuid || item.sourceUuid !== originalItem.uuid) continue
-                itemsData.push({
-                    "_id": item._id,
-                    "name": originalItem.name,
-                    "img": originalItem.img,
-                    "system.price": originalItem.system.price,
-                    "system.description": originalItem.system.description,
-                    "system.attributes": originalItem.system.attributes,
-                    "system.passiveAspects": originalItem.system.passiveAspects,
-                    "system.activeAspects": originalItem.system.activeAspects,
-                    "system.refItemsChildren": originalItem.system.refItemsChildren,
-                    "system.refItemsParents": originalItem.system.refItemsParents,
-                });
-            }
-            await actor.updateEmbeddedDocuments("Item", itemsData);
-        }
-
-        // Update actors with this item to add the new item
-        for (const actor of game.actors) {
-            for (const actorItem of actor.items) {
-                if (actorItem.sourceUuid !== originalItem.uuid) continue;
-                for (const uuid of actorItem.system.refItemsChildren) {
-                    if (actor.items.find(item => item.uuid === uuid)) continue;
-                    // Actor does not contain the uuid child as item
-                    const newItem = await fromUuid(uuid);
-                    await actor.addItem(newItem, actorItem.parentId);
-                }
-            }
-        }
-
-        // Update actors with this item to remove the related embedded items
-        for (const actor of game.actors) {
-            for (const actorItem of actor.items) {
-                if (actorItem.sourceUuid !== originalItem.uuid) continue;
-                for (const otherActorItem of actor.items) {
-                    if (otherActorItem.childId !== actorItem.parentId) continue;
-                    // Other actor item is a child of actor item
-                    if (actorItem.system.refItemsChildren.includes(otherActorItem.sourceUuid)) continue;
-                    // Other actor item is not in the ref items children array
-                    await actor.removeItem(otherActorItem);
-                }
-            }
-        }
-
-        // Render all visible sheets
-        const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
-        sheets.forEach(sheet => sheet.render(true));
-    }
-
-    /**
      * Convert a value to money with gold, silver and copper
      * @param value the units sum
      * @returns {{gold: number, copper: number, silver: number}}

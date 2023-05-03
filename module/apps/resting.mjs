@@ -46,7 +46,7 @@ export class Pl1eResting extends FormApplication {
         const abilities = {1: [], 2: [], 3: [], 4: [], 5: []};
         const sourceUuidFlags = [];
         for (let item of this.items) {
-            const sourceUuidFlag = item.flags.core ? item.flags.core.sourceUuid : null;
+            const sourceUuidFlag = item.flags.pl1e ? item.flags.pl1e.sourceUuid : null;
             // Append to foods and drinks
             if (item.type === "common" && !sourceUuidFlags.includes(sourceUuidFlag)) {
                 if (item.system.attributes.commonType.value === "food") foods.push(item);
@@ -223,17 +223,17 @@ export class Pl1eResting extends FormApplication {
     _updateItems() {
         // Retrieve items and copy
         for (let item of this.actor.items) {
-            const sourceUuid = item.flags.core ? item.flags.core.sourceUuid : null;
-            if (this.items.find(item => item.flags.core ? item.flags.core.sourceUuid === sourceUuid : null)) continue;
+            const sourceUuid = item.flags.pl1e ? item.flags.pl1e.sourceUuid : null;
+            if (this.items.find(item => item.flags.pl1e ? item.flags.pl1e.sourceUuid === sourceUuid : null)) continue;
             this.items.push(item.toObject());
         }
 
         // Get sourceUuids of items in origin
-        const originsourceUuids = this.actor.items.map(item => item.flags.core?.sourceUuid);
+        const originsourceUuids = this.actor.items.map(item => item.flags.pl1e?.sourceUuid);
 
         // Filter items to only keep those in origin
         this.items = this.items.filter(item => {
-            const sourceUuid = item.flags.core?.sourceUuid;
+            const sourceUuid = item.flags.pl1e?.sourceUuid;
             return originsourceUuids.includes(sourceUuid);
         });
     }

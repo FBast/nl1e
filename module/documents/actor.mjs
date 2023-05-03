@@ -69,6 +69,7 @@ export class Pl1eActor extends Actor {
     /** @override */
     prepareBaseData() {
 
+        super.prepareBaseData();
     }
 
     /** @override */
@@ -356,11 +357,8 @@ export class Pl1eActor extends Actor {
      */
     async removeItem(item) {
         let parentId = item.parentId;
-        if (parentId) {
-            for (const otherItem of this.items) {
-                let childId = otherItem.childId;
-                if (parentId === childId) await this.removeItem(otherItem);
-            }
+        for (const otherItem of this.items) {
+            if (parentId === otherItem.childId) await this.removeItem(otherItem);
         }
         await this.deleteEmbeddedDocuments("Item", [item._id]);
     }
