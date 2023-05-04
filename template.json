@@ -214,14 +214,14 @@
             "dice": 4,
             "diceMod": 0
           },
-          "divineMagic": {
+          "nature": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
             "diceMod": 0
           },
-          "secularMagic": {
+          "magic": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,

@@ -100,7 +100,7 @@ export function getConfigActor() {
             "label": "PL1E.Intellect",
             "weights": {
                 "resources": ["mana"],
-                "skills": ["resilience", "diplomacy", "bluff", "erudition", "secularMagic"]
+                "skills": ["resilience", "diplomacy", "bluff", "erudition", "nature"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -110,7 +110,7 @@ export function getConfigActor() {
             "label": "PL1E.Cunning",
             "weights": {
                 "resources": [],
-                "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "secularMagic"]
+                "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "magic"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -120,7 +120,7 @@ export function getConfigActor() {
             "label": "PL1E.Wisdom",
             "weights": {
                 "resources": [],
-                "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "divineMagic"]
+                "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "nature"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -130,7 +130,7 @@ export function getConfigActor() {
             "label": "PL1E.Will",
             "weights": {
                 "resources": ["health", "mana"],
-                "skills": ["resilience", "performance", "handling", "divineMagic"]
+                "skills": ["resilience", "performance", "magic"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -322,23 +322,23 @@ export function getConfigActor() {
                 "characteristics": ["intellect", "cunning"]
             }
         },
-        "divineMagic": {
-            "label": "PL1E.DivineMagic",
+        "nature": {
+            "label": "PL1E.Nature",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": true,
             "weights": {
-                "characteristics": ["wisdom", "will"],
+                "characteristics": ["intellect", "wisdom"],
                 "misc": ["movementPenalty"]
             }
         },
-        "secularMagic": {
-            "label": "PL1E.SecularMagic",
+        "magic": {
+            "label": "PL1E.Magic",
             "fixedRank": false,
             "divider": 2,
             "magicPenalty": true,
             "weights": {
-                "characteristics": ["intellect", "cunning"],
+                "characteristics": ["cunning", "will"],
                 "misc": ["movementPenalty"]
             }
         }

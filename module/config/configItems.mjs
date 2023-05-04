@@ -322,8 +322,8 @@ export function getConfigItems() {
         "bluff": "PL1E.Bluff",
         "craft": "PL1E.Craft",
         "erudition": "PL1E.Erudition",
-        "divineMagic": "PL1E.DivineMagic",
-        "secularMagic": "PL1E.SecularMagic",
+        "nature": "PL1E.Nature",
+        "magic": "PL1E.Magic",
     }
 
     PL1E.areaShapes = {
