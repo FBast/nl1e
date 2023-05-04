@@ -1,4 +1,5 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eAspect} from "../helpers/aspect.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -68,25 +69,23 @@ export class Pl1eActor extends Actor {
 
     /** @override */
     prepareBaseData() {
-
         super.prepareBaseData();
     }
 
     /** @override */
     async prepareEmbeddedDocuments() {
-        // Iterate subItems to apply system on actor
-        for (let item of this.items) {
-            if (!['weapon', 'wearable', 'feature'].includes(item.type)) continue;
-            if (item.type === 'weapon' && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
-            if (item.type === 'wearable' && !item.system.isEquipped) continue;
-            //TODO integrate new aspect system
+        super.prepareEmbeddedDocuments();
 
-            // for (let [id, aspect] of Object.entries(item.system.aspects)) {
-            //     if (aspect.targetGroup !== 'self') continue;
-            //     await this.applyAttribute(aspect, false);
-            // }
+        // Iterate actor items to apply passive aspects
+        for (let item of this.items) {
+            if (item.type === "weapon" && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
+            if (item.type === "wearable" && !item.system.isEquipped) continue;
+            if (item.type === "ability" && !item.isMemorized) continue;
+
+            for (let [id, aspect] of Object.entries(item.system.passiveAspects)) {
+                await Pl1eAspect.applyPassives(this, aspect);
+            }
         }
-        await super.prepareEmbeddedDocuments();
     }
 
     /**
@@ -127,12 +126,14 @@ export class Pl1eActor extends Actor {
      * @param systemData
      * @private
      */
-    _prepareCommonDataBefore(systemData) {
-        const actorGeneral = systemData.general ;
+    async _prepareCommonDataBefore(systemData) {
+        const actorGeneral = systemData.general;
         const actorMisc = systemData.misc;
+
         // Handle actorAttributes scores
         actorGeneral.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
         actorGeneral.sizeToken = CONFIG.PL1E.sizes[actorMisc.size].token;
+
         // Clamp combat stats
         actorMisc.action = Math.min(actorMisc.action, 2);
         actorMisc.reaction = Math.min(actorMisc.reaction, 1);

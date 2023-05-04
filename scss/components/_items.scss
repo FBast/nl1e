@@ -74,6 +74,9 @@
         white-space: nowrap;
         overflow-x: hidden;
       }
+      & > * {
+        flex: 1;
+      }
       .item-info {
         padding: 5px;
       }

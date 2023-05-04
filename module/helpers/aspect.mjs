@@ -5,7 +5,7 @@ export class Pl1eAspect {
      * @param {CharacterData} characterData
      * @param {TargetData[]} targetsData
      */
-    static async apply(aspect, characterData, targetsData) {
+    static async applyActives(aspect, characterData, targetsData) {
         // Calculate the aspect
         switch (aspect.name) {
             case "increase":
@@ -21,6 +21,33 @@ export class Pl1eAspect {
             default:
                 throw new Error("PL1E | unknown aspect : " + aspect.name);
         }
+    }
+
+    /**
+     *
+     * @param actor
+     * @param aspect
+     * @returns {Promise<void>}
+     */
+    static async applyPassives(actor, aspect) {
+        const aspectDataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        let actorValue = foundry.utils.getProperty(actor, aspectDataConfig.path);
+
+        switch (aspect.name) {
+            case "increase":
+                actorValue += aspect.value;
+                break;
+            case "decrease":
+                actorValue -= aspect.value;
+                break;
+            case "override":
+                actorValue = aspect.value;
+                break;
+        }
+
+        await actor.update({
+            [aspectDataConfig.path]: actorValue
+        });
     }
 
     /**

@@ -143,7 +143,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Apply aspects, here we calculate each aspect for all targets
         for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
-            targetsData = await Pl1eAspect.apply(aspect, characterData, targetsData);
+            targetsData = await Pl1eAspect.applyActives(aspect, characterData, targetsData);
         }
 
         // Display messages
