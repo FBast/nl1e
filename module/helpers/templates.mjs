@@ -15,6 +15,7 @@ export const preloadHandlebarsTemplates = async function () {
 
         // Actor components
         "systems/pl1e/templates/actor/components/resources.hbs",
+        "systems/pl1e/templates/actor/components/characteristics.hbs",
         "systems/pl1e/templates/actor/components/skills.hbs",
         "systems/pl1e/templates/actor/components/attributes-general.hbs",
         "systems/pl1e/templates/actor/components/attributes-reductions.hbs",

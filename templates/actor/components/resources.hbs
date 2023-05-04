@@ -1,14 +1,14 @@
 <div class="resources grid grid-3col">
-    {{#each resources as |resource key|}}
-        {{#with (configEntry "resources" key) as |resourceConfig|}}
-            <div class="resource box flex-group-center">
-                <label class="resource-label highlight-link hover-green"  data-resource-id="{{key}}" data-characteristics="{{resourceConfig.weights.characteristics}}">
-                    {{localize resourceConfig.label}}
+    {{#each resources}}
+        {{#with (configEntry "resources" @key)}}
+            <div class="resource box flex-group-center" data-resource-id="{{@key}}">
+                <label class="resource-label highlight-link hover-green" data-characteristics="{{weights.characteristics}}">
+                    {{localize label}}
                 </label>
                 <div class="resource-content flexrow flex-center flex-between">
-                    <input type="number" name="system.resources.{{key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
+                    <input type="number" name="system.resources.{{@key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
                     <span> / </span>
-                    <input type="number" name="system.resources.{{key}}.max" value="{{../max}}" data-dtype="Number" disabled/>
+                    <input type="number" name="system.resources.{{@key}}.max" value="{{../max}}" data-dtype="Number" disabled/>
                 </div>
             </div>
         {{/with}}

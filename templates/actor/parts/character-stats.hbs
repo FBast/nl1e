@@ -1,29 +1,7 @@
 <section class="scroll-hidden grid grid-12col">
     <!-- Left column : Listing characteristics -->
     <div class="characteristics grid-span-2">
-        {{#each system.characteristics}}
-            {{#with (configEntry "characteristics" @key)}}
-                <div class="characteristic flex-group-center" data-characteristic-id="{{@key}}">
-                    <h3 class="characteristic-label highlight-link hover-green align-left" data-resources="{{weights.resources}}" data-skills="{{weights.skills}}">
-                        {{localize label}}
-                    </h3>
-                    <div class="characteristic-values flexrow flex-group-center">
-                        <div class="input-spin">
-                            <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" data-dtype="Number" min="0" placeholder="0" disabled/>
-                            {{#if @root.system.general.creationMod}}
-                                <span>
-                                    <i class="characteristic-control pointer fa fa-plus-square" data-value="1"></i>
-                                    <i class="characteristic-control pointer fa fa-minus-square" data-value="-1"></i>
-                                </span>
-                            {{/if}}
-                        </div>
-                        <span class="characteristic-mod {{#if (gt ../mod 0)}}color-green{{/if}} {{#if (lt ../mod 0)}}color-red{{/if}}">
-                            {{numberFormat ../mod decimals=0 sign=true}}
-                        </span>
-                    </div>
-                </div>
-            {{/with}}
-        {{/each}}
+        {{> "systems/pl1e/templates/actor/components/characteristics.hbs"}}
     </div>
     <!-- Middle column -->
     <div class="grid-span-4">
