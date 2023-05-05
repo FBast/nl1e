@@ -191,19 +191,22 @@ export function getConfigItems() {
             "name": "increase",
             "value": 0,
             "dataGroup": "resources",
-            "data": "mana"
+            "data": "mana",
+            "createEffect": false
         },
         {
             "name": "decrease",
             "value": 0,
             "dataGroup": "resources",
-            "data": "stamina"
+            "data": "stamina",
+            "createEffect": false
         },
         {
             "name": "override",
             "value": 0,
             "dataGroup": "resources",
             "data": "health",
+            "createEffect": false
         }
     ]
 
@@ -214,7 +217,9 @@ export function getConfigItems() {
             "dataGroup": "resources",
             "data": "mana",
             "targetGroup": "all",
-            "resolutionType": "value"
+            "resolutionType": "value",
+            "createEffect": false,
+            "effectDuration": 1
         },
         {
             "name": "decrease",
@@ -224,6 +229,8 @@ export function getConfigItems() {
             "targetGroup": "all",
             "resolutionType": "value",
             "damageType": "none",
+            "createEffect": false,
+            "effectDuration": 1
         },
         {
             "name": "override",
@@ -231,7 +238,9 @@ export function getConfigItems() {
             "dataGroup": "resources",
             "data": "health",
             "targetGroup": "all",
-            "resolutionType": "value"
+            "resolutionType": "value",
+            "createEffect": false,
+            "effectDuration": 1
         },
         {
             "name": "transfer",
@@ -241,6 +250,8 @@ export function getConfigItems() {
             "targetGroup": "all",
             "resolutionType": "value",
             "damageType": "none",
+            "createEffect": false,
+            "effectDuration": 1
         },
         {
             "name": "effect",
@@ -248,7 +259,9 @@ export function getConfigItems() {
             "dataGroup": "characteristics",
             "data": "strength",
             "targetGroup": "all",
-            "resolutionType": "value"
+            "resolutionType": "value",
+            "createEffect": false,
+            "effectDuration": 1
         }
     ]
 

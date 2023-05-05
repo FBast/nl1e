@@ -26,28 +26,73 @@ export class Pl1eAspect {
     /**
      *
      * @param actor
+     * @param item
+     * @param aspectId
      * @param aspect
      * @returns {Promise<void>}
      */
-    static async applyPassives(actor, aspect) {
-        const aspectDataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-        let actorValue = foundry.utils.getProperty(actor, aspectDataConfig.path);
+    static async applyPassives(actor, item, aspectId, aspect) {
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        let actorValue = foundry.utils.getProperty(actor, dataConfig.path);
 
-        switch (aspect.name) {
-            case "increase":
-                actorValue += aspect.value;
-                break;
-            case "decrease":
-                actorValue -= aspect.value;
-                break;
-            case "override":
-                actorValue = aspect.value;
-                break;
+        const isArray = Array.isArray(actorValue);
+        if (isArray) {
+            switch (aspect.name) {
+                case "increase":
+                    actorValue.push(aspect.value);
+                    break;
+                case "decrease":
+                    actorValue.push(-aspect.value);
+                    break;
+                case "override":
+                    actorValue = [aspect.value];
+                    break;
+            }
+        }
+        else {
+            switch (aspect.name) {
+                case "increase":
+                    actorValue += aspect.value;
+                    break;
+                case "decrease":
+                    actorValue -= aspect.value;
+                    break;
+                case "override":
+                    actorValue = aspect.value;
+                    break;
+            }
         }
 
-        await actor.update({
-            [aspectDataConfig.path]: actorValue
-        });
+        const existingEffect = actor.effects.find(async e => e.getFlag("pl1e", "aspectId") === aspectId);
+        if (aspect.createEffect && !existingEffect) {
+            const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
+
+            let effectData = {
+                label: game.i18n.localize(aspectConfig.label),
+                icon: aspectConfig.img,
+                changes: [{
+                    key: dataConfig.path,
+                    mode: 2,
+                    value: actorValue
+                }],
+                flags: {
+                    pl1e: {
+                        aspectId: aspectId,
+                        itemId: item._id
+                    }
+                },
+                origin: { type: "Item", uuid: item.uuid }
+            };
+
+            // Add the effect to an actor
+            await actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+        }
+        else {
+            actor[dataConfig.path] = actorValue;
+            // await actor.update({
+            //     [dataConfig.path]: actorValue
+            // });
+        }
     }
 
     /**

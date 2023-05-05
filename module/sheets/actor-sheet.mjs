@@ -1,6 +1,5 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eResting} from "../apps/resting.mjs";
-import {Pl1eEffect} from "../helpers/effects.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 /**
@@ -79,11 +78,10 @@ export class Pl1eActorSheet extends ActorSheet {
         context.items = actorData.items;
 
         this._prepareItems(context);
+        this._prepareEffects(context);
 
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
-        // Prepare active effects
-        context.effects = Pl1eEffect.prepareActiveEffectCategories(this.actor.effects);
         // Add the config data
         context.config = CONFIG.PL1E;
         // Add game access
@@ -101,6 +99,13 @@ export class Pl1eActorSheet extends ActorSheet {
         // Render the item sheet for viewing/editing prior to the editable check.
         html.find('.item-edit').on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
         html.find('.item-buy').on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
+        html.find('.effect-edit').on("click", ev => this.onEffectEdit(ev));
+        html.find('.item-link').on("click", ev => this.onItemLink(ev));
+        html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
+
+        // Highlights indications
+        html.find('.highlight-link').on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
+        html.find('.highlight-link').on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
 
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
@@ -109,11 +114,6 @@ export class Pl1eActorSheet extends ActorSheet {
         // Item management
         html.find('.item-create').on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
         html.find('.item-remove').on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
-        html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
-        html.find('.item-link').on("click", ev => this.onItemLink(ev));
-
-        // Active Effect management
-        html.find(".effect-control").on("click", ev => Pl1eEvent.onManageActiveEffect(ev, this.actor));
 
         // Chat messages
         html.find('.skill-roll').on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
@@ -121,10 +121,6 @@ export class Pl1eActorSheet extends ActorSheet {
         // Currency
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.actor));
         html.find('.currency-convert').on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
-
-        // Highlights indications
-        html.find('.highlight-link').on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
-        html.find('.highlight-link').on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
 
         // Custom controls
         html.find('.characteristic-control').on("click", ev => this.onCharacteristicChange(ev));
@@ -186,9 +182,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /**
      * Organize and classify Items for Character sheets.
-     *
      * @param {Object} context The actor to prepare.
-     *
      * @return {undefined}
      */
     _prepareItems(context) {
@@ -267,6 +261,29 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
+     * Organize and classify Effects for Character sheets.
+     * @param {Object} context The actor to prepare.
+     * @return {undefined}
+     */
+    async _prepareEffects(context) {
+        const passiveEffects = [];
+        const temporaryEffects = [];
+        const inactiveEffects = [];
+
+        // Iterate over active effects, classifying them into categories
+        for (let effect of this.actor.effects) {
+            await effect._getSourceName(); // Trigger a lookup for the source name
+            if (effect.disabled) inactiveEffects.push(effect);
+            else if (effect.isTemporary) temporaryEffects.push(effect);
+            else passiveEffects.push(effect);
+        }
+
+        context.passiveEffects = passiveEffects;
+        context.temporaryEffects = temporaryEffects;
+        context.inactiveEffects = inactiveEffects;
+    }
+
+    /**
      * Use an ability
      * @param {Event} event The originating click event
      */
@@ -324,18 +341,26 @@ export class Pl1eActorSheet extends ActorSheet {
         event.preventDefault();
         event.stopPropagation();
 
+        const itemLink = $(event.currentTarget).closest(".item").data("item-link-id");
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
-        const item = this.actor.items.get(itemId);
 
-        // Render multiple parent in case of child stack
-        let sheetPosition = Pl1eHelpers.screenCenter();
-        for (const otherItem of this.actor.items) {
-            const childId = otherItem.childId;
-            if (childId && otherItem.sourceUuid === item.sourceUuid) {
-                const parentItem = this.actor.items.find(item => item.parentId === childId);
-                parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
-                sheetPosition.x += 30;
-                sheetPosition.y += 30;
+        if (itemLink) {
+            const parentItem = this.actor.items.get(itemLink);
+            parentItem.sheet.render(true);
+        }
+        else {
+            const item = this.actor.items.get(itemId);
+
+            // Render multiple parent in case of child stack
+            let sheetPosition = Pl1eHelpers.screenCenter();
+            for (const otherItem of this.actor.items) {
+                const childId = otherItem.childId;
+                if (childId && otherItem.sourceUuid === item.sourceUuid) {
+                    const parentItem = this.actor.items.find(item => item.parentId === childId);
+                    parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
+                    sheetPosition.x += 30;
+                    sheetPosition.y += 30;
+                }
             }
         }
     }
@@ -388,6 +413,21 @@ export class Pl1eActorSheet extends ActorSheet {
             ["system.skills." + skill + ".rank"]: newValue
         });
         this.render(false);
+    }
+
+    /**
+     * Open aspect sheet
+     * @param {Event} event
+     */
+    onEffectEdit(event) {
+        event.preventDefault();
+
+        const effectId = $(event.currentTarget).closest(".item").data("effect-id");
+        const effect = this.actor.effects.get(effectId);
+
+        return effect.sheet.render(true, {
+            editable: game.user.isGM
+        });
     }
 
 }

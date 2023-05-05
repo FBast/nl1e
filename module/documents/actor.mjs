@@ -68,8 +68,9 @@ export class Pl1eActor extends Actor {
     }
 
     /** @override */
-    prepareBaseData() {
+    async prepareBaseData() {
         super.prepareBaseData();
+
     }
 
     /** @override */
@@ -80,10 +81,10 @@ export class Pl1eActor extends Actor {
         for (let item of this.items) {
             if (item.type === "weapon" && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
             if (item.type === "wearable" && !item.system.isEquipped) continue;
-            if (item.type === "ability" && !item.isMemorized) continue;
+            if (item.type === "ability" && !item.system.isMemorized) continue;
 
             for (let [id, aspect] of Object.entries(item.system.passiveAspects)) {
-                await Pl1eAspect.applyPassives(this, aspect);
+                await Pl1eAspect.applyPassives(this, item, id, aspect);
             }
         }
     }
