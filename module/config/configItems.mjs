@@ -191,22 +191,19 @@ export function getConfigItems() {
             "name": "increase",
             "value": 0,
             "dataGroup": "resources",
-            "data": "mana",
-            "createEffect": false
+            "data": "mana"
         },
         {
             "name": "decrease",
             "value": 0,
             "dataGroup": "resources",
-            "data": "stamina",
-            "createEffect": false
+            "data": "stamina"
         },
         {
-            "name": "override",
+            "name": "set",
             "value": 0,
             "dataGroup": "resources",
-            "data": "health",
-            "createEffect": false
+            "data": "health"
         }
     ]
 
@@ -219,7 +216,9 @@ export function getConfigItems() {
             "targetGroup": "all",
             "resolutionType": "value",
             "createEffect": false,
-            "effectDuration": 1
+            "effectDuration": 1,
+            "eachTurnEffect": false,
+            "effectIcon": "icons/svg/aura.svg"
         },
         {
             "name": "decrease",
@@ -230,17 +229,20 @@ export function getConfigItems() {
             "resolutionType": "value",
             "damageType": "none",
             "createEffect": false,
-            "effectDuration": 1
+            "effectDuration": 1,
+            "eachTurnEffect": false,
+            "effectIcon": "icons/svg/aura.svg"
         },
         {
-            "name": "override",
+            "name": "set",
             "value": 0,
             "dataGroup": "resources",
             "data": "health",
             "targetGroup": "all",
             "resolutionType": "value",
             "createEffect": false,
-            "effectDuration": 1
+            "effectDuration": 1,
+            "effectIcon": "icons/svg/aura.svg"
         },
         {
             "name": "transfer",
@@ -251,17 +253,9 @@ export function getConfigItems() {
             "resolutionType": "value",
             "damageType": "none",
             "createEffect": false,
-            "effectDuration": 1
-        },
-        {
-            "name": "effect",
-            "value": 0,
-            "dataGroup": "characteristics",
-            "data": "strength",
-            "targetGroup": "all",
-            "resolutionType": "value",
-            "createEffect": false,
-            "effectDuration": 1
+            "effectDuration": 1,
+            "eachTurnEffect": false,
+            "effectIcon": "icons/svg/aura.svg"
         }
     ]
 
@@ -284,8 +278,8 @@ export function getConfigItems() {
                 "misc": "PL1E.Misc"
             }
         },
-        "override": {
-            "label": "PL1E.Override",
+        "set": {
+            "label": "PL1E.Set",
             "img": "icons/svg/target.svg",
             "dataGroups": {
                 "resources": "PL1E.Resources",
@@ -296,15 +290,6 @@ export function getConfigItems() {
         "transfer": {
             "label": "PL1E.Transfer",
             "img": "icons/svg/sun.svg",
-            "dataGroups": {
-                "resources": "PL1E.Resources",
-                "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc"
-            }
-        },
-        "effect": {
-            "label": "PL1E.Effect",
-            "img": "icons/svg/aura.svg",
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",

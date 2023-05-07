@@ -16,13 +16,13 @@ export class Pl1eConsumable extends Pl1eItem {
         // Launch consumable effect
         for (let [id, attribute] of Object.entries(this.system.attributes)) {
             if (attributes[id]["path"] === undefined) continue;
-            if (attributes[id]["operator"] === 'override') {
-                foundry.utils.setProperty(this.actor, attributes[id]["path"], attribute.value);
+            if (attributes[id]["operator"] === 'set') {
+                setProperty(this.actor, attributes[id]["path"], attribute.value);
             } else if (attributes[id]["operator"] === 'push') {
                 let currentValue = foundry.utils.getProperty(this.actor, attributes[id]["path"]);
                 if (currentValue === undefined) currentValue = [];
                 currentValue.push(attribute.value);
-                foundry.utils.setProperty(this.actor, attributes[id]["path"], currentValue);
+                setProperty(this.actor, attributes[id]["path"], currentValue);
             } else if (attributes[id]["operator"] === 'add') {
                 let currentValue = foundry.utils.getProperty(this.actor, attributes[id]["path"]);
                 if (currentValue === undefined) currentValue = 0;

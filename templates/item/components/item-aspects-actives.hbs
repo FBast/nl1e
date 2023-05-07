@@ -14,10 +14,10 @@
         {{#with (configEntry "aspects" name)}}
             <li class="item" data-aspect-id="{{@key}}" data-aspect-type="active">
                 <div class="item-attribute flexrow">
-                    <img class="item-image" src="{{img}}" title="{{localize label}}" width="24" height="24"/>
-                    <label class="item-name item-tooltip-activate">{{localize label}}</label>
-                    <div class="item-stats">
-                        {{#with (configEntry ../dataGroup ../data)}}
+                    <img class="item-image" src="{{#if ../createEffect}}{{../effectIcon}}{{else}}{{img}}{{/if}}" title="{{localize label}}" width="24" height="24"/>
+                    {{#with (configEntry ../dataGroup ../data)}}
+                        <label class="item-name item-tooltip-activate">{{localize ../label}} ({{localize label}})</label>
+                        <div class="item-stats">
                             {{#if (eq type "number")}}
                                 <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
                             {{else if (eq type "bool")}}
@@ -27,8 +27,8 @@
                                     {{selectOptions (config select) selected=../../value localize=true}}
                                 </select>
                             {{/if}}
-                        {{/with}}
-                    </div>
+                        </div>
+                    {{/with}}
                     <div class="item-controls">
                         <a class="item-control aspect-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                     </div>
@@ -78,6 +78,17 @@
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
                             <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{../effectDuration}}" data-dtype="Number"/>
+                        </div>
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.EachTurnEffect"}}</label>
+                            <input type="checkbox" name="system.activeAspects.{{@key}}.eachTurnEffect" {{checked ../eachTurnEffect}} data-dtype="Boolean"/>
+                        </div>
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.EffectIcon"}}</label>
+                            <div class="flexrow">
+                                <input name="system.activeAspects.{{@key}}.effectIcon" type="text" value="{{../effectIcon}}"/>
+                                {{filePicker target=(concat "system.activeAspects." @key ".effectIcon") type="image"}}
+                            </div>
                         </div>
                     {{/if}}
                 </div>

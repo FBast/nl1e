@@ -77,14 +77,11 @@ export class Pl1eActor extends Actor {
     async prepareEmbeddedDocuments() {
         super.prepareEmbeddedDocuments();
 
-        // Iterate actor items to apply passive aspects
-        for (let item of this.items) {
-            if (item.type === "weapon" && !item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
-            if (item.type === "wearable" && !item.system.isEquipped) continue;
-            if (item.type === "ability" && !item.system.isMemorized) continue;
-
-            for (let [id, aspect] of Object.entries(item.system.passiveAspects)) {
-                await Pl1eAspect.applyPassives(this, item, id, aspect);
+        for (const item of this.items) {
+            if (item.type === "feature") {
+                for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
+                    Pl1eAspect.applyPassiveValue(this, aspect);
+                }
             }
         }
     }
@@ -127,7 +124,7 @@ export class Pl1eActor extends Actor {
      * @param systemData
      * @private
      */
-    async _prepareCommonDataBefore(systemData) {
+     _prepareCommonDataBefore(systemData) {
         const actorGeneral = systemData.general;
         const actorMisc = systemData.misc;
 
@@ -315,8 +312,6 @@ export class Pl1eActor extends Actor {
         // Process additional NPC data here.
     }
 
-    //endregion
-
     /**
      *
      * @param skill
@@ -340,11 +335,13 @@ export class Pl1eActor extends Actor {
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
         newItem = newItem[0];
 
+        // Flag the new item
         if (!newItem.sourceUuid) await newItem.setFlag("pl1e", "sourceUuid", item.uuid);
         if (childId) await newItem.setFlag("pl1e", "childId", childId);
         const parentId = randomID();
         await newItem.setFlag("pl1e", "parentId", parentId);
 
+        // Add new item children
         if (newItem.system.refItemsChildren && newItem.system.refItemsChildren.length > 0) {
             for (let id of newItem.system.refItemsChildren) {
                 const refItem = await fromUuid(id);
@@ -354,11 +351,47 @@ export class Pl1eActor extends Actor {
     }
 
     /**
+     * Update an item and all child items as embedded documents
+     * @param {Pl1eItem} item
+     * @param {Pl1eItem} newItem
+     * @returns {Promise<void>}
+     */
+    async updateItem(item, newItem) {
+        // For some unknown reason, aspects are not updated if not set to null before
+        await this.updateEmbeddedDocuments("Item", [{
+            "_id": item._id,
+            "system.passiveAspects": null,
+            "system.activeAspects": null
+        }]);
+        await this.updateEmbeddedDocuments("Item", [{
+            "_id": item._id,
+            "name": newItem.name,
+            "img": newItem.img,
+            "system.price": newItem.system.price,
+            "system.description": newItem.system.description,
+            "system.attributes": newItem.system.attributes,
+            "system.passiveAspects": newItem.system.passiveAspects,
+            "system.activeAspects": newItem.system.activeAspects,
+            "system.refItemsChildren": newItem.system.refItemsChildren,
+            "system.refItemsParents": newItem.system.refItemsParents,
+        }]);
+
+        for (const [id, aspect] of Object.entries(newItem.system.passiveAspects)) {
+            await Pl1eAspect.updatePassiveEffect(this, item, id, aspect);
+        }
+    }
+
+    /**
      * Delete an item and all child items as embedded documents
      * @param {Pl1eItem} item
      * @returns {Promise<void>}
      */
     async removeItem(item) {
+        // Remove the passive effects
+        for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
+            await Pl1eAspect.removePassiveEffect(this, item, id);
+        }
+
         let parentId = item.parentId;
         for (const otherItem of this.items) {
             if (parentId === otherItem.childId) await this.removeItem(otherItem);

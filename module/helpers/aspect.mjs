@@ -1,19 +1,19 @@
 export class Pl1eAspect {
 
     /**
+     * Apply an active aspect
      * @param {Object} aspect
      * @param {CharacterData} characterData
      * @param {TargetData[]} targetsData
      */
-    static async applyActives(aspect, characterData, targetsData) {
-        // Calculate the aspect
+    static async applyActive(aspect, characterData, targetsData) {
         switch (aspect.name) {
             case "increase":
                 return this._increase(aspect, characterData, targetsData);
             case "decrease":
                 return this._decrease(aspect, characterData, targetsData);
-            case "override":
-                return this._override(aspect, characterData, targetsData);
+            case "set":
+                return this._set(aspect, characterData, targetsData);
             case "transfer":
                 return this._transfer(aspect, characterData, targetsData);
             case "effect":
@@ -24,75 +24,145 @@ export class Pl1eAspect {
     }
 
     /**
-     *
+     * Apply directly the passive value (reserved to features)
+     * @param {Pl1eActor} actor
+     * @param {Object} aspect
+     */
+    static applyPassiveValue(actor, aspect) {
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        setProperty(actor, dataConfig.path, Pl1eAspect.getAspectValue(actor, aspect));
+    }
+
+    /**
+     * Create a passive effect
      * @param actor
      * @param item
      * @param aspectId
      * @param aspect
      * @returns {Promise<void>}
      */
-    static async applyPassives(actor, item, aspectId, aspect) {
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-        let actorValue = foundry.utils.getProperty(actor, dataConfig.path);
-
-        const isArray = Array.isArray(actorValue);
-        if (isArray) {
-            switch (aspect.name) {
-                case "increase":
-                    actorValue.push(aspect.value);
-                    break;
-                case "decrease":
-                    actorValue.push(-aspect.value);
-                    break;
-                case "override":
-                    actorValue = [aspect.value];
-                    break;
-            }
-        }
-        else {
-            switch (aspect.name) {
-                case "increase":
-                    actorValue += aspect.value;
-                    break;
-                case "decrease":
-                    actorValue -= aspect.value;
-                    break;
-                case "override":
-                    actorValue = aspect.value;
-                    break;
-            }
-        }
-
-        const existingEffect = actor.effects.find(async e => e.getFlag("pl1e", "aspectId") === aspectId);
-        if (aspect.createEffect && !existingEffect) {
+    static async createPassiveEffect(actor, item, aspectId, aspect) {
+        // Feature dont create effects
+        if (item.type !== "feature") {
+            const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
             const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
-
-            let effectData = {
-                label: game.i18n.localize(aspectConfig.label),
+            const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
+            const value = await Pl1eAspect.getAspectValue(actor, aspect);
+            await actor.createEmbeddedDocuments("ActiveEffect", [{
+                label: label,
                 icon: aspectConfig.img,
                 changes: [{
                     key: dataConfig.path,
                     mode: 2,
-                    value: actorValue
+                    value: value
                 }],
                 flags: {
                     pl1e: {
-                        aspectId: aspectId,
-                        itemId: item._id
+                        itemId: item._id,
+                        aspectId: aspectId
                     }
-                },
-                origin: { type: "Item", uuid: item.uuid }
-            };
+                }
+            }]);
+        }
+    }
 
-            // Add the effect to an actor
-            await actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+    /**
+     * Update a passive effect
+     * @param actor
+     * @param item
+     * @param aspectId
+     * @param aspect
+     * @returns {Promise<void>}
+     */
+    static async updatePassiveEffect(actor, item, aspectId, aspect) {
+        if (item.type !== "feature") {
+            // State of the effect
+            let isEnabled = false;
+            switch (item.type) {
+                case "weapon":
+                    isEnabled = item.system.isEquippedMain || item.system.isEquippedSecondary;
+                    break;
+                case "wearable":
+                    isEnabled = item.system.isEquipped;
+                    break;
+                case "ability":
+                    isEnabled = item.system.isMemorized;
+                    break;
+            }
+
+            const existingEffect = actor.effects.find(async effect =>
+                effect.getFlag("pl1e", "aspectId") === aspectId &&
+                effect.getFlag("pl1e", "itemId") === item._id);
+
+            if (isEnabled && existingEffect === undefined) {
+                await this.createPassiveEffect(actor, item, aspectId, aspect);
+            }
+            if (!isEnabled && existingEffect !== undefined) {
+                await this.removePassiveEffect(actor, item, aspectId);
+            }
         }
         else {
-            actor[dataConfig.path] = actorValue;
-            // await actor.update({
-            //     [dataConfig.path]: actorValue
-            // });
+            const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+            setProperty(this, dataConfig.path, Pl1eAspect.getAspectValue(actor, aspect));
         }
+    }
+
+    /**
+     * Remove a passive aspect
+     * @param actor
+     * @param item
+     * @param aspectId
+     * @returns {Promise<void>}
+     */
+    static async removePassiveEffect(actor, item, aspectId) {
+        // Feature dont create effects
+        if (item.type !== "feature") {
+            const existingEffect = actor.effects.find(async effect =>
+                effect.getFlag("pl1e", "aspectId") === aspectId &&
+                effect.getFlag("pl1e", "itemId") === item._id);
+
+            if (existingEffect) await actor.deleteEmbeddedDocuments("ActiveEffect", [existingEffect._id])
+        }
+    }
+
+    /**
+     *
+     * @param actor
+     * @param aspect
+     * @returns {Promise<any>}
+     */
+    static getAspectValue(actor, aspect) {
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        let value = getProperty(actor, dataConfig.path);
+
+        const isArray = Array.isArray(value);
+        if (isArray) {
+            switch (aspect.name) {
+                case "increase":
+                    value.push(aspect.value);
+                    break;
+                case "decrease":
+                    value.push(-aspect.value);
+                    break;
+                case "set":
+                    value = [aspect.value];
+                    break;
+            }
+        }
+        else {
+            switch (aspect.name) {
+                case "increase":
+                    value += aspect.value;
+                    break;
+                case "decrease":
+                    value -= aspect.value;
+                    break;
+                case "set":
+                    value = aspect.value;
+                    break;
+            }
+        }
+        return value;
     }
 
     /**
@@ -155,7 +225,7 @@ export class Pl1eAspect {
      * @returns {Promise<*>}
      * @private
      */
-    static async _override(aspect, characterData, targetsData) {
+    static async _set(aspect, characterData, targetsData) {
         throw new Error("Not implemented yet");
     }
 
@@ -184,6 +254,7 @@ export class Pl1eAspect {
     }
 
     /**
+     *
      * @param {Token} characterToken
      * @param {Token} targetToken
      * @returns {boolean}

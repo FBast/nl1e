@@ -15,9 +15,9 @@
             <li class="item" data-aspect-id="{{@key}}" data-aspect-type="passive">
                 <div class="item-attribute flexrow">
                     <img class="item-image" src="{{img}}" title="{{localize label}}" width="24" height="24"/>
-                    <label class="item-name item-tooltip-activate">{{localize label}}</label>
-                    <div class="item-stats">
-                        {{#with (configEntry ../dataGroup ../data)}}
+                    {{#with (configEntry ../dataGroup ../data)}}
+                        <label class="item-name item-tooltip-activate">{{localize ../label}} ({{localize label}})</label>
+                        <div class="item-stats">
                             {{#if (eq type "number")}}
                                 <input class="input-positive-decimal" type="number" name="system.passiveAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
                             {{else if (eq type "bool")}}
@@ -27,8 +27,8 @@
                                     {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
                                 </select>
                             {{/if}}
-                        {{/with}}
-                    </div>
+                        </div>
+                    {{/with}}
                     <div class="item-controls">
                         <a class="item-control aspect-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                     </div>
@@ -45,10 +45,6 @@
                         <select name="system.passiveAspects.{{@key}}.data">
                             {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
                         </select>
-                    </div>
-                    <div class="item-attribute flexrow">
-                        <label class="attribute-name">{{localize "PL1E.CreateEffect"}}</label>
-                        <input type="checkbox" name="system.passiveAspects.{{@key}}.createEffect" {{checked ../createEffect}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </li>

@@ -1,6 +1,8 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
+import {Pl1eItem} from "../documents/item.mjs";
+import {Pl1eActor} from "../documents/actor.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -53,7 +55,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     class: 'open-original',
                     icon: 'fal fa-clone',
                     onclick: async () => {
-                        await this.item.resetClones();
+                        await this._resetClones();
                     }
                 });
                 buttons.unshift({
@@ -78,8 +80,7 @@ export class Pl1eItemSheet extends ItemSheet {
     async _updateObject(event, formData) {
         await super._updateObject(event, formData);
 
-        // Update clones if not embedded
-        if (!this.item.isEmbedded) await this.item.resetClones();
+        await this._resetClones();
     }
 
     /** @override */
@@ -219,7 +220,6 @@ export class Pl1eItemSheet extends ItemSheet {
      */
     async _onAspectAdd(event) {
         event.preventDefault();
-        event.stopPropagation();
 
         const aspectId = $(event.currentTarget).data("aspect-id");
         const aspectType = $(event.currentTarget).data("aspect-type");
@@ -239,9 +239,9 @@ export class Pl1eItemSheet extends ItemSheet {
 
         await this.item.update({
             [`system.${target}.${randomID()}`]: aspectsObjects[aspectId]
-        })
+        });
 
-        await this.item.resetClones();
+        await this._resetClones();
     }
 
     /**
@@ -274,7 +274,7 @@ export class Pl1eItemSheet extends ItemSheet {
             [`system.${target}.-=${aspectId}`]: null
         });
 
-        await this.item.resetClones();
+        await this._resetClones();
     }
 
     /**
@@ -297,6 +297,26 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         await this.close();
+    }
+
+    /**
+     * Reset all clones using their sourceUuid, should be used when the item is modified
+     * @returns {Promise<void>}
+     */
+    async _resetClones() {
+        if (this.item.isEmbedded) return;
+        // Update actors embedded items copied of original item
+        for (const actor of game.actors) {
+            for (let item of actor.items) {
+                if (!item.sourceUuid || item.sourceUuid !== this.item.uuid) continue;
+                await actor.updateItem(item, this.item);
+                console.log(`PL1E | ${item.name} is reset`);
+            }
+        }
+
+        // Render all visible sheets
+        const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
+        sheets.forEach(sheet => sheet.render(true));
     }
 
 }

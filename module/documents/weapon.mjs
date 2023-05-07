@@ -4,7 +4,7 @@ export class Pl1eWeapon extends Pl1eItem {
 
     /** @override */
     async toggle(options) {
-        if (!this._canToggle(this.actor)) return;
+        if (!this._canToggle()) return;
 
         const hands = this.system.attributes.hands.value;
         const takenHands = (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0);
@@ -30,11 +30,12 @@ export class Pl1eWeapon extends Pl1eItem {
             }
             await this.update({"system.isEquippedSecondary": !this.system.isEquippedSecondary});
         }
-        // Unequip other subItems
+
+        // Unequip other items
         for (let otherItem of this.actor.items) {
             // Ignore if otherItem is not a weapon
             if (otherItem.type !== 'weapon') continue;
-            // Ignore if otherItem is item
+            // Ignore if otherItem is this
             if (otherItem === this) continue;
             // If other item is equipped on main and this item is equipped on main
             if (otherItem.system.isEquippedMain && this.system.isEquippedMain) {
@@ -76,13 +77,11 @@ export class Pl1eWeapon extends Pl1eItem {
     }
 
     /**
-     * Check if the ability toggle is valid
-     * @param {Actor} actor
+     * Check if the toggle is valid
      * @private
      */
-    _canToggle(actor) {
+    _canToggle() {
         let isValid = true;
-        // If is not in battle
         const token = actor.bestToken;
         if (token.inCombat && token.id !== game.combat.current.tokenId) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));

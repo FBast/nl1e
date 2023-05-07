@@ -2,6 +2,7 @@ import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
 import {Pl1eChat} from "./chat.mjs";
+import {Pl1eAspect} from "./aspect.mjs";
 
 export class Pl1eEvent {
 
@@ -53,12 +54,11 @@ export class Pl1eEvent {
      */
     static async onItemToggle(event, actor) {
         event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = actor.items.get(itemId);
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
 
-        const options = {
-            actor: actor
-        };
+        /** @type {Pl1eItem} */
+        const item = actor.items.get(itemId);
+        let options = {};
         const main = $(event.currentTarget).data("main");
         if (main) options["main"] = main;
 

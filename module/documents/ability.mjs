@@ -18,6 +18,16 @@ export class Pl1eAbility extends Pl1eItem {
         await this.update({
             ["system.isMemorized"]: !this.system.isMemorized
         });
+
+        // Update passive effects
+        for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
+            if (this.system.isMemorized) {
+                await Pl1eAspect.createPassiveEffect(this.parent, this, id, aspect);
+            }
+            else {
+                await Pl1eAspect.removePassiveEffect(this.parent, this, id);
+            }
+        }
     }
 
     /** @override */
@@ -143,7 +153,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Apply aspects, here we calculate each aspect for all targets
         for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
-            targetsData = await Pl1eAspect.applyActives(aspect, characterData, targetsData);
+            targetsData = await Pl1eAspect.applyActive(aspect, characterData, targetsData);
         }
 
         // Display messages

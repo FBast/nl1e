@@ -1,4 +1,4 @@
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eAspect} from "../helpers/aspect.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -55,7 +55,6 @@ export class Pl1eItem extends Item {
      * Augment the basic Item data model with additional dynamic data.
      */
     async prepareData() {
-        // As with the actor class, subItems are documents that can have their data
         super.prepareData();
 
     }
@@ -140,60 +139,16 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Reset all clones using their sourceUuid, should be used when the item is modified
+     * Toggle the item state
+     * @param options
      * @returns {Promise<void>}
      */
-    async resetClones() {
-        // Update actors embedded items copied of original item
-        for (const actor of game.actors) {
-            const itemsRemove = [];
-            const itemsData = [];
-            for (let item of actor.items) {
-                if (!item.isEmbedded) continue;
-                if (!item.sourceUuid || item.sourceUuid !== this.uuid) continue
-                itemsRemove.push({
-                    "_id": item._id,
-                    "system.passiveAspects": null,
-                    "system.activeAspects": null
-                })
-                itemsData.push({
-                    "_id": item._id,
-                    "name": this.name,
-                    "img": this.img,
-                    "system.price": this.system.price,
-                    "system.description": this.system.description,
-                    "system.attributes": this.system.attributes,
-                    "system.passiveAspects": this.system.passiveAspects,
-                    "system.activeAspects": this.system.activeAspects,
-                    "system.refItemsChildren": this.system.refItemsChildren,
-                    "system.refItemsParents": this.system.refItemsParents,
-                });
-                await item.update({
-                    "system.passiveAspects": null,
-                    "system.activeAspects": null,
-                })
-                await item.update({
-                    "name": this.name,
-                    "img": this.img,
-                    "system.price": this.system.price,
-                    "system.description": this.system.description,
-                    "system.attributes": this.system.attributes,
-                    "system.passiveAspects": this.system.passiveAspects,
-                    "system.activeAspects": this.system.activeAspects,
-                    "system.refItemsChildren": this.system.refItemsChildren,
-                    "system.refItemsParents": this.system.refItemsParents,
-                })
-            }
-            // It seems that updateEmbeddedDocuments don't update aspects correctly
-            // so i need to empty them before update
-            await actor.updateEmbeddedDocuments("Item", itemsRemove);
-            // Update the actors item
-            await actor.updateEmbeddedDocuments("Item", itemsData);
-        }
+    async toggle(options) {}
 
-        // Render all visible sheets
-        const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
-        sheets.forEach(sheet => sheet.render(true));
-    }
+    /**
+     * Activate the item
+     * @returns {Promise<void>}
+     */
+    async activate() {}
 
 }
