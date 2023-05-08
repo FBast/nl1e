@@ -1,8 +1,6 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
-import {Pl1eItem} from "../documents/item.mjs";
-import {Pl1eActor} from "../documents/actor.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -77,10 +75,27 @@ export class Pl1eItemSheet extends ItemSheet {
         return buttons;
     }
 
-    async _updateObject(event, formData) {
-        await super._updateObject(event, formData);
+    // /** @override */
+    // async close(options) {
+    //     if (!this.item.isEmbedded && this.item.needReset)
+    //         await this._resetClones();
+    //
+    //     return super.close(options);
+    // }
 
-        await this._resetClones();
+    async _updateObject(event, formData) {
+        let needReset = false;
+        for (let [field, value] of Object.entries(formData)) {
+            if (getProperty(this.item, field) !== value) {
+                needReset = true;
+                break;
+            }
+        }
+
+        // Set has dirty if something changed
+        if (needReset) await this.item.setFlag("pl1e", "needReset", true);
+
+        await super._updateObject(event, formData);
     }
 
     /** @override */
@@ -240,8 +255,6 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.${randomID()}`]: aspectsObjects[aspectId]
         });
-
-        await this._resetClones();
     }
 
     /**
@@ -273,8 +286,6 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null
         });
-
-        await this._resetClones();
     }
 
     /**
@@ -304,19 +315,20 @@ export class Pl1eItemSheet extends ItemSheet {
      * @returns {Promise<void>}
      */
     async _resetClones() {
-        if (this.item.isEmbedded) return;
-        // Update actors embedded items copied of original item
+        let updateNumber = 0;
         for (const actor of game.actors) {
             for (let item of actor.items) {
-                if (!item.sourceUuid || item.sourceUuid !== this.item.uuid) continue;
-                await actor.updateItem(item, this.item);
-                console.log(`PL1E | ${item.name} is reset`);
+                if (!item.sourceUuid || item.sourceUuid !== this.item.uuid) continue
+                await item.resetClone(this.item);
+                updateNumber++;
             }
         }
 
         // Render all visible sheets
         const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
         sheets.forEach(sheet => sheet.render(true));
+
+        ui.notifications.warn(game.i18n.localize(`Number of clones updated : ${updateNumber}`));
     }
 
 }

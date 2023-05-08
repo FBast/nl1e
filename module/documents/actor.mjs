@@ -59,12 +59,13 @@ export class Pl1eActor extends Actor {
     }
 
     /** @override */
-    prepareData() {
+    async prepareData() {
         // Prepare data for the actor. Calling the super version of this executes
         // the following, in order: data reset (to clear active effects),
         // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
         // prepareDerivedData().
         super.prepareData();
+
     }
 
     /** @override */
@@ -77,13 +78,6 @@ export class Pl1eActor extends Actor {
     async prepareEmbeddedDocuments() {
         super.prepareEmbeddedDocuments();
 
-        for (const item of this.items) {
-            if (item.type === "feature") {
-                for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
-                    Pl1eAspect.applyPassiveValue(this, aspect);
-                }
-            }
-        }
     }
 
     /**
@@ -136,6 +130,15 @@ export class Pl1eActor extends Actor {
         actorMisc.action = Math.min(actorMisc.action, 2);
         actorMisc.reaction = Math.min(actorMisc.reaction, 1);
         actorMisc.instant = Math.min(actorMisc.instant, 1);
+
+        // Apply passive values
+        for (const item of this.items) {
+            if (item.type === "feature") {
+                for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
+                    Pl1eAspect.applyPassiveValue(this, aspect);
+                }
+            }
+        }
     }
 
     /**
@@ -351,51 +354,16 @@ export class Pl1eActor extends Actor {
     }
 
     /**
-     * Update an item and all child items as embedded documents
-     * @param {Pl1eItem} item
-     * @param {Pl1eItem} newItem
-     * @returns {Promise<void>}
-     */
-    async updateItem(item, newItem) {
-        // For some unknown reason, aspects are not updated if not set to null before
-        await this.updateEmbeddedDocuments("Item", [{
-            "_id": item._id,
-            "system.passiveAspects": null,
-            "system.activeAspects": null
-        }]);
-        await this.updateEmbeddedDocuments("Item", [{
-            "_id": item._id,
-            "name": newItem.name,
-            "img": newItem.img,
-            "system.price": newItem.system.price,
-            "system.description": newItem.system.description,
-            "system.attributes": newItem.system.attributes,
-            "system.passiveAspects": newItem.system.passiveAspects,
-            "system.activeAspects": newItem.system.activeAspects,
-            "system.refItemsChildren": newItem.system.refItemsChildren,
-            "system.refItemsParents": newItem.system.refItemsParents,
-        }]);
-
-        for (const [id, aspect] of Object.entries(newItem.system.passiveAspects)) {
-            await Pl1eAspect.updatePassiveEffect(this, item, id, aspect);
-        }
-    }
-
-    /**
      * Delete an item and all child items as embedded documents
      * @param {Pl1eItem} item
      * @returns {Promise<void>}
      */
     async removeItem(item) {
-        // Remove the passive effects
-        for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
-            await Pl1eAspect.removePassiveEffect(this, item, id);
+        // Remove item children
+        for (const otherItem of this.items) {
+            if (item.parentId === otherItem.childId) await this.removeItem(otherItem);
         }
 
-        let parentId = item.parentId;
-        for (const otherItem of this.items) {
-            if (parentId === otherItem.childId) await this.removeItem(otherItem);
-        }
         await this.deleteEmbeddedDocuments("Item", [item._id]);
     }
 

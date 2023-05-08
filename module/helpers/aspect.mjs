@@ -26,11 +26,15 @@ export class Pl1eAspect {
     /**
      * Apply directly the passive value (reserved to features)
      * @param {Pl1eActor} actor
+     * @param {Pl1eItem} item
      * @param {Object} aspect
      */
-    static applyPassiveValue(actor, aspect) {
+    static applyPassiveValue(actor, item, aspect) {
+        if (item.type === "feature")
+            throw new Error(`PL1E | Cannot add aspect value with ${item.name} because it's a feature`)
+
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-        setProperty(actor, dataConfig.path, Pl1eAspect.getAspectValue(actor, aspect));
+        setProperty(actor, dataConfig.path, Pl1eAspect._getAspectValue(actor, aspect));
     }
 
     /**
@@ -42,87 +46,42 @@ export class Pl1eAspect {
      * @returns {Promise<void>}
      */
     static async createPassiveEffect(actor, item, aspectId, aspect) {
-        // Feature dont create effects
-        if (item.type !== "feature") {
-            const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-            const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
-            const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
-            const value = await Pl1eAspect.getAspectValue(actor, aspect);
-            await actor.createEmbeddedDocuments("ActiveEffect", [{
-                label: label,
-                icon: aspectConfig.img,
-                changes: [{
-                    key: dataConfig.path,
-                    mode: 2,
-                    value: value
-                }],
-                flags: {
-                    pl1e: {
-                        itemId: item._id,
-                        aspectId: aspectId
-                    }
+        if (item.type === "feature")
+            throw new Error(`PL1E | Cannot create effect with ${item.name} because it's a feature`)
+
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
+        const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
+        const value = await Pl1eAspect._getAspectValue(actor, aspect);
+        await actor.createEmbeddedDocuments("ActiveEffect", [{
+            label: label,
+            icon: aspectConfig.img,
+            changes: [{
+                key: dataConfig.path,
+                mode: 2,
+                value: value
+            }],
+            flags: {
+                pl1e: {
+                    itemId: item._id,
+                    aspectId: aspectId
                 }
-            }]);
-        }
-    }
-
-    /**
-     * Update a passive effect
-     * @param actor
-     * @param item
-     * @param aspectId
-     * @param aspect
-     * @returns {Promise<void>}
-     */
-    static async updatePassiveEffect(actor, item, aspectId, aspect) {
-        if (item.type !== "feature") {
-            // State of the effect
-            let isEnabled = false;
-            switch (item.type) {
-                case "weapon":
-                    isEnabled = item.system.isEquippedMain || item.system.isEquippedSecondary;
-                    break;
-                case "wearable":
-                    isEnabled = item.system.isEquipped;
-                    break;
-                case "ability":
-                    isEnabled = item.system.isMemorized;
-                    break;
             }
-
-            const existingEffect = actor.effects.find(async effect =>
-                effect.getFlag("pl1e", "aspectId") === aspectId &&
-                effect.getFlag("pl1e", "itemId") === item._id);
-
-            if (isEnabled && existingEffect === undefined) {
-                await this.createPassiveEffect(actor, item, aspectId, aspect);
-            }
-            if (!isEnabled && existingEffect !== undefined) {
-                await this.removePassiveEffect(actor, item, aspectId);
-            }
-        }
-        else {
-            const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-            setProperty(this, dataConfig.path, Pl1eAspect.getAspectValue(actor, aspect));
-        }
+        }]);
     }
 
     /**
      * Remove a passive aspect
      * @param actor
      * @param item
-     * @param aspectId
+     * @param effect
      * @returns {Promise<void>}
      */
-    static async removePassiveEffect(actor, item, aspectId) {
-        // Feature dont create effects
-        if (item.type !== "feature") {
-            const existingEffect = actor.effects.find(async effect =>
-                effect.getFlag("pl1e", "aspectId") === aspectId &&
-                effect.getFlag("pl1e", "itemId") === item._id);
+    static async removePassiveEffect(actor, item, effect) {
+        if (item.type === "feature")
+            throw new Error(`PL1E | Cannot remove effect with ${item.name} because it's a feature`)
 
-            if (existingEffect) await actor.deleteEmbeddedDocuments("ActiveEffect", [existingEffect._id])
-        }
+        await actor.deleteEmbeddedDocuments("ActiveEffect", [effect._id])
     }
 
     /**
@@ -130,8 +89,9 @@ export class Pl1eAspect {
      * @param actor
      * @param aspect
      * @returns {Promise<any>}
+     * @private
      */
-    static getAspectValue(actor, aspect) {
+    static _getAspectValue(actor, aspect) {
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         let value = getProperty(actor, dataConfig.path);
 

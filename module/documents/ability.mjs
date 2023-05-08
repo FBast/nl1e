@@ -19,15 +19,7 @@ export class Pl1eAbility extends Pl1eItem {
             ["system.isMemorized"]: !this.system.isMemorized
         });
 
-        // Update passive effects
-        for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
-            if (this.system.isMemorized) {
-                await Pl1eAspect.createPassiveEffect(this.parent, this, id, aspect);
-            }
-            else {
-                await Pl1eAspect.removePassiveEffect(this.parent, this, id);
-            }
-        }
+        await super.toggle(options);
     }
 
     /** @override */

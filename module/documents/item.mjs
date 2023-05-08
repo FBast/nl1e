@@ -14,6 +14,23 @@ export class Pl1eItem extends Item {
         return this.getFlag("pl1e", "childId");
     }
 
+    get needReset() {
+        return this.getFlag("pl1e", "needReset");
+    }
+
+    get isEnabled() {
+        switch (this.type) {
+            case "weapon":
+                return this.system.isEquippedMain || this.system.isEquippedSecondary;
+            case "wearable":
+                return this.system.isEquipped;
+            case "ability":
+                return this.system.isMemorized;
+            default:
+                return false;
+        }
+    }
+
     /** @override */
     async _preCreate(data, options, userId) {
         await super._preCreate(data, options, userId);
@@ -68,7 +85,7 @@ export class Pl1eItem extends Item {
         // Return if same item
         if (this.uuid === item.uuid) return;
         // Return if item with same uuid exist
-        if (this.system.refItemsChildren.find(id => id === item.uuid)) return;
+        if (this.system.refItemsChildren.some(id => id === item.uuid)) return;
 
         // Add item as child uuid to this
         this.system.refItemsChildren.push(item.uuid);
@@ -143,12 +160,73 @@ export class Pl1eItem extends Item {
      * @param options
      * @returns {Promise<void>}
      */
-    async toggle(options) {}
+    async toggle(options) {
+        if (this.isEnabled) {
+            for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
+                await Pl1eAspect.createPassiveEffect(this.actor, this, id, aspect);
+            }
+        }
+        else {
+            for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
+                const effect = this.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
+                await Pl1eAspect.removePassiveEffect(this.actor, this, effect);
+            }
+        }
+    }
 
     /**
      * Activate the item
      * @returns {Promise<void>}
      */
     async activate() {}
+
+    /**
+     * Reset this clone based on the original item
+     * @param originalItem
+     * @returns {Promise<void>}
+     */
+    async resetClone(originalItem) {
+        if (!this.isEmbedded)
+            throw new Error(`PL1E | Item ${this.name} should not be reset because not embedded`)
+
+        const itemData = {
+            "_id": this._id,
+            "name": originalItem.name,
+            "img": originalItem.img,
+            "system.price": originalItem.system.price,
+            "system.description": originalItem.system.description,
+            "system.attributes": originalItem.system.attributes,
+            "system.passiveAspects": originalItem.system.passiveAspects,
+            "system.activeAspects": originalItem.system.activeAspects,
+            "system.refItemsChildren": originalItem.system.refItemsChildren,
+            "system.refItemsParents": originalItem.system.refItemsParents,
+        };
+        // Remove obsolete aspects
+        for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
+            if (Object.keys(originalItem.system.passiveAspects).some(aspectId => aspectId === id)) continue;
+            itemData[`system.passiveAspects.-=${id}`] = null;
+            // Remove the old effect
+            const effect = this.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
+            if (originalItem.type !== "feature" && this.isEnabled && effect !== undefined) {
+                await Pl1eAspect.removePassiveEffect(this.actor, this, effect);
+            }
+        }
+        // Add new aspects
+        for (const [id, aspect] of Object.entries(originalItem.system.passiveAspects)) {
+            if (Object.keys(this.system.passiveAspects).some(aspectId => aspectId === id)) continue;
+            itemData[`system.passiveAspects.${id}`] = aspect;
+            // Add the new effect
+            if (originalItem.type !== "feature" && this.isEnabled) {
+                await Pl1eAspect.createPassiveEffect(this.actor, this, id, aspect);
+            }
+        }
+        // Update the item
+        await this.actor.updateEmbeddedDocuments("Item", [itemData]);
+
+        // Change flag to reflect
+        await this.setFlag("pl1e", "needReset", false);
+
+        console.log(`PL1E | ${this.name} is reset`);
+    }
 
 }

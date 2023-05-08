@@ -272,7 +272,6 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Iterate over active effects, classifying them into categories
         for (let effect of this.actor.effects) {
-            await effect._getSourceName(); // Trigger a lookup for the source name
             if (effect.disabled) inactiveEffects.push(effect);
             else if (effect.createEffect) temporaryEffects.push(effect);
             else passiveEffects.push(effect);

@@ -224,7 +224,7 @@ export class Pl1eResting extends FormApplication {
         // Retrieve items and copy
         for (let item of this.actor.items) {
             const sourceUuid = item.flags.pl1e ? item.flags.pl1e.sourceUuid : null;
-            if (this.items.find(item => item.flags.pl1e ? item.flags.pl1e.sourceUuid === sourceUuid : null)) continue;
+            if (this.items.some(item => item.flags.pl1e ? item.flags.pl1e.sourceUuid === sourceUuid : null)) continue;
             this.items.push(item.toObject());
         }
 
