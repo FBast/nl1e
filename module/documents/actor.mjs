@@ -43,9 +43,10 @@ export class Pl1eActor extends Actor {
 
     //region Data management
 
-    /** @override */
+    /** @inheritDoc */
     async _preCreate(data, options, userId) {
         await super._preCreate(data, options, userId);
+
         const updateData = {};
         if (data.img === undefined) {
             const img = CONFIG.PL1E.defaultIcons[data.type];
@@ -58,67 +59,20 @@ export class Pl1eActor extends Actor {
         await this.updateSource( updateData );
     }
 
-    /** @override */
+    /** @inheritDoc
+     * Prepare data for the actor. Calling the super version of this executes
+     * the following, in order: data reset (to clear active effects),
+     * prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
+     * prepareDerivedData().
+     */
     async prepareData() {
-        // Prepare data for the actor. Calling the super version of this executes
-        // the following, in order: data reset (to clear active effects),
-        // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
-        // prepareDerivedData().
         super.prepareData();
 
     }
 
-    /** @override */
+    /** @inheritDoc */
     async prepareBaseData() {
         super.prepareBaseData();
-
-    }
-
-    /** @override */
-    async prepareEmbeddedDocuments() {
-        super.prepareEmbeddedDocuments();
-
-    }
-
-    /**
-     * @override
-     * Augment the basic actor data with additional dynamic data. Typically,
-     * you'll want to handle most of your calculated/derived data in this step.
-     * Data calculated in this step should generally not exist in template.json
-     * (such as ability modifiers rather than ability scores) and should be
-     * available both inside and outside of character sheets (such as if an actor
-     * is queried and has a roll executed directly from it).
-     */
-    prepareDerivedData() {
-        const systemData = this.system;
-
-        this._prepareCommonDataBefore(systemData);
-        this._prepareCharacterData(systemData);
-        this._prepareNpcData(systemData);
-        this._prepareMerchantData(systemData);
-        this._prepareCommonDataAfter(systemData);
-    }
-
-    /**
-     * Override getRollData() that's supplied to rolls.
-     */
-    getRollData() {
-        const data = super.getRollData();
-
-        // Prepare character roll data.
-        // this._getCharacterRollData(data);
-        // this._getNpcRollData(data);
-        // this._getMerchantRollData(data);
-
-        return data;
-    }
-
-    /**
-     * Prepare common actor data before specific process
-     * @param systemData
-     * @private
-     */
-     _prepareCommonDataBefore(systemData) {
         const actorGeneral = systemData.general;
         const actorMisc = systemData.misc;
 
@@ -130,6 +84,11 @@ export class Pl1eActor extends Actor {
         actorMisc.action = Math.min(actorMisc.action, 2);
         actorMisc.reaction = Math.min(actorMisc.reaction, 1);
         actorMisc.instant = Math.min(actorMisc.instant, 1);
+    }
+
+    /** @inheritDoc */
+    async prepareEmbeddedDocuments() {
+        super.prepareEmbeddedDocuments();
 
         // Apply passive values
         for (const item of this.items) {
@@ -142,96 +101,23 @@ export class Pl1eActor extends Actor {
     }
 
     /**
-     * Prepare Character type specific data
-     * @param systemData
-     * @private
+     * @inheritDoc
+     * Augment the basic actor data with additional dynamic data. Typically,
+     * you'll want to handle most of your calculated/derived data in this step.
+     * Data calculated in this step should generally not exist in template.json
+     * (such as ability modifiers rather than ability scores) and should be
+     * available both inside and outside of character sheets (such as if an actor
+     * is queried and has a roll executed directly from it).
      */
-    _prepareCharacterData(systemData) {
-        if (this.type !== 'character') return;
-        const actorGeneral = systemData.general ;
-
-        // Handle experience
-        actorGeneral.slots = Math.floor(actorGeneral.experience / 3);
-        for (let otherItem of this.items) {
-            if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
-            actorGeneral.slots -= otherItem.system.attributes.level.value;
-        }
-        actorGeneral.ranks = actorGeneral.experience;
-        actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
-    }
-
-    /**
-     * Prepare NPC type specific data.
-     * @param systemData
-     * @private
-     */
-    _prepareNpcData(systemData) {
-        if (this.type !== 'npc') return;
-        const actorGeneral = systemData.general;
-        const actorCharacteristics = systemData.characteristics;
-        const actorSkills = systemData.skills;
-
-        // Handle experience
-        actorGeneral.experience = CONFIG.PL1E.experienceTemplates[actorGeneral.experienceTemplate].value;
-        actorGeneral.slots = Math.floor(actorGeneral.experience / 3);
-        for (let otherItem of this.items) {
-            if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
-            actorGeneral.slots -= otherItem.system.attributes.level.value;
-        }
-        actorGeneral.ranks = actorGeneral.experience;
-        actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
-
-        // Handle characteristics repartition
-        let npcTemplateConfig = CONFIG.PL1E.NPCTemplates[actorGeneral.NPCTemplate];
-        for (let [id, characteristic] of Object.entries(npcTemplateConfig.characteristics)) {
-            actorCharacteristics[id].base = characteristic;
-        }
-
-        // Handle skills repartition
-        let ranks = 0;
-        let maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
-        let keepLooping = true;
-        while (keepLooping) {
-            keepLooping = false;
-            for (let [id, skill] of Object.entries(npcTemplateConfig.skills)) {
-                let newRank = actorSkills[skill].rank + 1;
-                if (newRank > maxRank) continue;
-                if (ranks + newRank <= actorGeneral.ranks) {
-                    actorSkills[skill].rank = newRank;
-                    ranks += newRank;
-                    keepLooping = true;
-                }
-            }
-        }
-    }
-
-    /**
-     * Prepare NPC type specific data.
-     * @param systemData
-     * @private
-     */
-    _prepareMerchantData(systemData) {
-        if (this.type !== 'merchant') return;
-        // Add merchant prices
-        systemData.merchantPrices = {};
-        for (let item of this.items) {
-            let value = Pl1eHelpers.moneyToUnits(item.system.price);
-            value += Math.round(value * (systemData.general.buyModifier / 100));
-            systemData.merchantPrices[item._id] = Pl1eHelpers.unitsToMoney(value);
-        }
-    }
-
-    /**
-     * Prepare common actor data after specific process
-     * @param systemData
-     * @private
-     */
-    _prepareCommonDataAfter(systemData) {
+    prepareDerivedData() {
+        super.prepareDerivedData();
+        const systemData = this.system;
         const actorResources = systemData.resources;
         const actorMisc = systemData.misc;
         const actorGeneral = systemData.general;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
+
         // Handle actorCharacteristics scores.
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
             characteristic.mod = characteristic.mods.filter(value => value < 0).reduce((a, b) => a + b, 0)
@@ -240,6 +126,7 @@ export class Pl1eActor extends Actor {
         }
         actorMisc.initiative = actorMisc.speed + actorCharacteristics.agility.value +
             actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
+
         // Handle actorResources scores.
         for (let [id, resource] of Object.entries(actorResources)) {
             const resourceConfig = CONFIG.PL1E.resources[id];
@@ -249,6 +136,7 @@ export class Pl1eActor extends Actor {
             resource.max *= resourceConfig.multiplier * actorGeneral.sizeMultiplier;
             if (resource.value > resource.max) resource.value = resource.max;
         }
+
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
             const skillConfig = CONFIG.PL1E.skills[id];
@@ -271,48 +159,11 @@ export class Pl1eActor extends Actor {
         }
     }
 
-    /**
-     * Prepare character roll data.
-     * @param data
-     * @private
-     */
-    _getCharacterRollData(data) {
-        if (this.type !== 'character') return;
+    /** @inheritDoc */
+    getRollData() {
+        const data = super.getRollData();
 
-        // Copy the characteristic scores to the top level, so that rolls can use
-        // formulas like `@str.mod + 4`.
-        // if (data.characteristics) {
-        //     for (let [k, v] of Object.entries(data.characteristics)) {
-        //         data[k] = foundry.utils.deepClone(v);
-        //     }
-        // }
-
-        // Add level for easier access, or fall back to 0.
-        // if (data.attributes.level) {
-        //     data.lvl = data.attributes.level.value ?? 0;
-        // }
-    }
-
-    /**
-     * Prepare NPC roll data.
-     * @param data
-     * @private
-     */
-    _getNpcRollData(data) {
-        if (this.type !== 'npc') return;
-
-        // Process additional NPC data here.
-    }
-
-    /**
-     * Prepare Merchant roll data.
-     * @param data
-     * @private
-     */
-    _getMerchantRollData(data) {
-        if (this.type !== 'npc') return;
-
-        // Process additional NPC data here.
+        return data;
     }
 
     /**

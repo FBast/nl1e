@@ -8,7 +8,7 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
  */
 export class Pl1eActorSheet extends ActorSheet {
 
-    /** @override */
+    /** @inheritDoc */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "actor"],
@@ -22,7 +22,7 @@ export class Pl1eActorSheet extends ActorSheet {
         });
     }
 
-    /** @override */
+    /** @inheritDoc */
     get template() {
         return `systems/pl1e/templates/actor/actor-${this.actor.type}-sheet.hbs`;
     }
@@ -61,7 +61,7 @@ export class Pl1eActorSheet extends ActorSheet {
         return buttons;
     }
 
-    /** @override */
+    /** @inheritDoc */
     getData() {
         // Retrieve the data structure from the base sheet. You can inspect or log
         // the context variable to see the structure, but some key properties for
@@ -92,7 +92,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /* -------------------------------------------- */
 
-    /** @override */
+    /** @inheritDoc */
     activateListeners(html) {
         super.activateListeners(html);
 

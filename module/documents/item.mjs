@@ -31,7 +31,7 @@ export class Pl1eItem extends Item {
         }
     }
 
-    /** @override */
+    /** @inheritDoc */
     async _preCreate(data, options, userId) {
         await super._preCreate(data, options, userId);
         const updateData = {};
@@ -46,7 +46,7 @@ export class Pl1eItem extends Item {
         await this.updateSource(updateData);
     }
 
-    /** @override */
+    /** @inheritDoc */
     async _preDelete(options, user) {
         // Delete an original item
         if (!this.isEmbedded) {

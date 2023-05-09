@@ -56,6 +56,9 @@ export class Pl1eAspect {
         await actor.createEmbeddedDocuments("ActiveEffect", [{
             label: label,
             icon: aspectConfig.img,
+            duration: { // How long the effect should last (in seconds)
+                seconds: 10
+            },
             changes: [{
                 key: dataConfig.path,
                 mode: 2,

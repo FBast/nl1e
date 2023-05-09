@@ -8,7 +8,7 @@ import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
  */
 export class Pl1eItemSheet extends ItemSheet {
 
-    /** @override */
+    /** @inheritDoc */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "item"],
@@ -22,7 +22,7 @@ export class Pl1eItemSheet extends ItemSheet {
         });
     }
 
-    /** @override */
+    /** @inheritDoc */
     get template() {
         return `systems/pl1e/templates/item/item-${this.item.type}-sheet.hbs`;
     }
@@ -98,7 +98,7 @@ export class Pl1eItemSheet extends ItemSheet {
         await super._updateObject(event, formData);
     }
 
-    /** @override */
+    /** @inheritDoc */
     async getData() {
         // Retrieve base data structure.
         const context = super.getData();
@@ -132,7 +132,7 @@ export class Pl1eItemSheet extends ItemSheet {
         return context;
     }
 
-    /** @override */
+    /** @inheritDoc */
     activateListeners(html) {
         super.activateListeners(html);
 

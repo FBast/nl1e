@@ -2,8 +2,9 @@ import {PL1E} from "./config/config.mjs";
 // Import document classes.
 import {Pl1eActor} from "./documents/actor.mjs";
 import {Pl1eItem} from "./documents/item.mjs";
-import {Pl1eActiveEffect} from "./documents/effect.mjs";
+import {Pl1eActiveEffect} from "./documents/items/effect.mjs";
 // Import subDocument classes
+import {Pl1eActorProxy} from "./documents/actorProxy.mjs";
 import {Pl1eItemProxy} from "./documents/itemProxy.mjs";
 // Import sheet classes.
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
@@ -15,6 +16,7 @@ import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
 import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
+
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -43,9 +45,9 @@ Hooks.once('init', async function () {
     };
 
     // Define custom Document classes
-    CONFIG.Actor.documentClass = Pl1eActor;
+    CONFIG.Actor.documentClass = Pl1eActorProxy;
     CONFIG.Item.documentClass = Pl1eItemProxy;
-    CONFIG.ActiveEffect.documentClass = Pl1eActiveEffect;
+    // CONFIG.ActiveEffect.documentClass = Pl1eActiveEffect;
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);

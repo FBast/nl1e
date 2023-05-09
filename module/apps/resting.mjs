@@ -18,7 +18,7 @@ export class Pl1eResting extends FormApplication {
         this.itemDrink = null;
     }
 
-    /** @override */
+    /** @inheritDoc */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["my-apps"],
@@ -33,7 +33,7 @@ export class Pl1eResting extends FormApplication {
         });
     }
 
-    /** @override */
+    /** @inheritDoc */
     getData() {
         const data = super.getData();
 
@@ -95,7 +95,7 @@ export class Pl1eResting extends FormApplication {
         return data;
     }
 
-    /** @override */
+    /** @inheritDoc */
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -108,7 +108,7 @@ export class Pl1eResting extends FormApplication {
         html.find('.rest-cancel').on("click", ev => this._onRestCancel(ev));
     }
 
-    /** @override */
+    /** @inheritDoc */
     async _updateObject(event, formData) {
         // Handle form submission here
     }

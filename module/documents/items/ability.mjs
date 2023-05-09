@@ -1,8 +1,8 @@
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
-import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
-import {Pl1eChat} from "../helpers/chat.mjs";
-import {Pl1eItem} from "./item.mjs";
-import {Pl1eAspect} from "../helpers/aspect.mjs";
+import {Pl1eHelpers} from "../../helpers/helpers.mjs";
+import {AbilityTemplate} from "../../helpers/abilityTemplate.mjs";
+import {Pl1eChat} from "../../helpers/chat.mjs";
+import {Pl1eItem} from "../item.mjs";
+import {Pl1eAspect} from "../../helpers/aspect.mjs";
 
 export class Pl1eAbility extends Pl1eItem {
 

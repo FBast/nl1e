@@ -1,4 +1,4 @@
-import {Pl1eItem} from "./item.mjs";
+import {Pl1eItem} from "../item.mjs";
 
 export class Pl1eWeapon extends Pl1eItem {
 
