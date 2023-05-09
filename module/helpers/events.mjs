@@ -2,7 +2,6 @@ import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
 import {Pl1eChat} from "./chat.mjs";
-import {Pl1eAspect} from "./aspect.mjs";
 
 export class Pl1eEvent {
 

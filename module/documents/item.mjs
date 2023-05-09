@@ -82,6 +82,9 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async addRefItem(item) {
+        if (this.isEmbedded)
+            throw new Error("PL1E | Cannot add ref item on the embedded " + this.name);
+
         // Return if same item
         if (this.uuid === item.uuid) return;
         // Return if item with same uuid exist
@@ -99,9 +102,6 @@ export class Pl1eItem extends Item {
             "system.refItemsParents": item.system.refItemsParents
         })
 
-        // The next part is not for embedded items
-        if (this.isEmbedded) return;
-
         // Update actors with this item to add the new item
         for (const actor of game.actors) {
             for (const actorItem of actor.items) {
@@ -117,6 +117,9 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async removeRefItem(item) {
+        if (this.isEmbedded)
+            throw new Error("PL1E | Cannot remove ref item on the embedded " + this.name);
+
         // Remove item as child uuid from this
         this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(item.uuid), 1);
         await this.update({
@@ -128,9 +131,6 @@ export class Pl1eItem extends Item {
         await item.update({
             "system.refItemsParents": item.system.refItemsParents
         });
-
-        // The next part is not for embedded items
-        if (this.isEmbedded) return;
 
         // Update actors with this item to remove the related embedded items
         for (const actor of game.actors) {

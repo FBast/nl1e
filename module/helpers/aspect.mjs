@@ -30,8 +30,8 @@ export class Pl1eAspect {
      * @param {Object} aspect
      */
     static applyPassiveValue(actor, item, aspect) {
-        if (item.type === "feature")
-            throw new Error(`PL1E | Cannot add aspect value with ${item.name} because it's a feature`)
+        if (item.type !== "feature")
+            throw new Error(`PL1E | Cannot apply passive value with ${item.name} because it's not a feature`)
 
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         setProperty(actor, dataConfig.path, Pl1eAspect._getAspectValue(actor, aspect));
