@@ -6,24 +6,24 @@ export class Pl1eWearable extends Pl1eItem {
     async toggle(options) {
         const slot = this.system.attributes.slot.value;
 
-        // Ignore if not using a slot
-        if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
-
         // Toggle item slot
         await this.update({
-            ["system.isEquipped"]: !foundry.utils.getProperty(this.item, "system.isEquipped"),
+            ["system.isEquipped"]: !getProperty(this, "system.isEquipped"),
         });
 
         // If unequipped then return
         if (!this.system.isEquipped) return;
-        let ringCount = 1;
+
+        // Ignore if not using a slot
+        if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
 
         // Unequip other subItems
+        let ringCount = 1;
         for (let otherItem of this.actor.items) {
             // Ignore if otherItem is not a wearable
             if (otherItem.type !== 'wearable') continue;
             // Ignore if otherItem is item
-            if (otherItem === this.item) continue;
+            if (otherItem === this) continue;
             // Count same subItems slot
             if (otherItem.system.isEquipped && otherItem.system.attributes.slot.value === slot) {
                 // Unequipped immediately if clothes, armor or amulet

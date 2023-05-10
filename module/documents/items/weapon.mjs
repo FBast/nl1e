@@ -82,12 +82,12 @@ export class Pl1eWeapon extends Pl1eItem {
      */
     _canToggle() {
         let isValid = true;
-        const token = actor.bestToken;
-        if (token.inCombat && token.id !== game.combat.current.tokenId) {
+        const token = this.actor.bestToken;
+        if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
             isValid = false;
         }
-        if (token.inCombat && token.id === game.combat.current.tokenId && this.actor.system.misc.action === 0) {
+        if (token !== null && token.inCombat && token.id === game.combat.current.tokenId && this.actor.system.misc.action === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
             isValid = false;
         }

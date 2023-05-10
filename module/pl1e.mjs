@@ -58,7 +58,7 @@ Hooks.once('init', async function () {
     game.settings.register("pl1e", "enableCompendiumLinkTransfer", {
         name: "Enable compendium link transfer",
         hint: "Be aware : if you disable this you can only create linked items from compendium to compendium object, " +
-            "every objects link will break when copied to a compendium.",
+            "every objects link will break when exported to a compendium.",
         scope: "world",
         config: true,
         type: Boolean,
