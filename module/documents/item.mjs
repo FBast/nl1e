@@ -1,6 +1,11 @@
 import {Pl1eAspect} from "../helpers/aspect.mjs";
+import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
 
 export class Pl1eItem extends Item {
+
+    get originalUuid() {
+        return this.getFlag("pl1e", "originalUuid");
+    }
 
     get sourceUuid() {
         return this.getFlag("pl1e", "sourceUuid");
@@ -43,7 +48,36 @@ export class Pl1eItem extends Item {
             const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
             if (name) updateData['name'] = name;
         }
+
         await this.updateSource(updateData);
+    }
+
+    async _onCreate(data, options, userId) {
+        super._onCreate(data, options, userId);
+
+        const enableCompendiumLinkTransfer = game.settings.get("pl1e", "enableCompendiumLinkTransfer");
+        if (!this.isEmbedded && enableCompendiumLinkTransfer) {
+            if (this.compendium === undefined) {
+                // Creating a world element must save the uuid as flag and empty the parent link (in case of copy)
+                await this.update({
+                    "system.refItemsParents": []
+                });
+                await this.setFlag("pl1e", "originalUuid", this.uuid);
+            }
+            else {
+                const existingItem = this.compendium.find(item => item.name === this.name
+                    && item.type === this.type && item.uuid !== this.uuid);
+                if (existingItem !== undefined) {
+                    ui.notifications.warn(game.i18n.localize("PL1E.ItemWithSameName"));
+                    await this.delete();
+                }
+                else {
+                    // Creating an element into a compendium must update the ref items uuid
+                    await Pl1eSynchronizer.updateItemReferences(this, this.originalUuid);
+                    await Pl1eSynchronizer.deleteOriginalItem(this);
+                }
+            }
+        }
     }
 
     /** @inheritDoc */
@@ -179,54 +213,5 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async activate() {}
-
-    /**
-     * Reset this clone based on the original item
-     * @param originalItem
-     * @returns {Promise<void>}
-     */
-    async resetClone(originalItem) {
-        if (!this.isEmbedded)
-            throw new Error(`PL1E | Item ${this.name} should not be reset because not embedded`)
-
-        const itemData = {
-            "_id": this._id,
-            "name": originalItem.name,
-            "img": originalItem.img,
-            "system.price": originalItem.system.price,
-            "system.description": originalItem.system.description,
-            "system.attributes": originalItem.system.attributes,
-            "system.passiveAspects": originalItem.system.passiveAspects,
-            "system.activeAspects": originalItem.system.activeAspects,
-            "system.refItemsChildren": originalItem.system.refItemsChildren,
-            "system.refItemsParents": originalItem.system.refItemsParents,
-        };
-        // Remove obsolete aspects
-        for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
-            if (Object.keys(originalItem.system.passiveAspects).some(aspectId => aspectId === id)) continue;
-            itemData[`system.passiveAspects.-=${id}`] = null;
-            // Remove the old effect
-            const effect = this.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
-            if (originalItem.type !== "feature" && this.isEnabled && effect !== undefined) {
-                await Pl1eAspect.removePassiveEffect(this.actor, this, effect);
-            }
-        }
-        // Add new aspects
-        for (const [id, aspect] of Object.entries(originalItem.system.passiveAspects)) {
-            if (Object.keys(this.system.passiveAspects).some(aspectId => aspectId === id)) continue;
-            itemData[`system.passiveAspects.${id}`] = aspect;
-            // Add the new effect
-            if (originalItem.type !== "feature" && this.isEnabled) {
-                await Pl1eAspect.createPassiveEffect(this.actor, this, id, aspect);
-            }
-        }
-        // Update the item
-        await this.actor.updateEmbeddedDocuments("Item", [itemData]);
-
-        // Change flag to reflect
-        await this.setFlag("pl1e", "needReset", false);
-
-        console.log(`PL1E | ${this.name} is reset`);
-    }
 
 }

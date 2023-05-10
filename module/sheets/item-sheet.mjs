@@ -1,6 +1,7 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
+import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -53,7 +54,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     class: 'open-original',
                     icon: 'fal fa-clone',
                     onclick: async () => {
-                        await this._resetClones();
+                        await Pl1eSynchronizer.resetClones(this.item);
                     }
                 });
                 buttons.unshift({
@@ -302,33 +303,14 @@ export class Pl1eItemSheet extends ItemSheet {
         let sheetPosition = Pl1eHelpers.screenCenter();
         for (const uuid of this.item.system.refItemsParents) {
             const parentItem = await fromUuid(uuid);
+            if (parentItem === null)
+                throw new Error("PL1E | Cannot find parent with uuid " + uuid);
             parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
             sheetPosition.x += 30;
             sheetPosition.y += 30;
         }
 
         await this.close();
-    }
-
-    /**
-     * Reset all clones using their sourceUuid, should be used when the item is modified
-     * @returns {Promise<void>}
-     */
-    async _resetClones() {
-        let updateNumber = 0;
-        for (const actor of game.actors) {
-            for (let item of actor.items) {
-                if (!item.sourceUuid || item.sourceUuid !== this.item.uuid) continue
-                await item.resetClone(this.item);
-                updateNumber++;
-            }
-        }
-
-        // Render all visible sheets
-        const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
-        sheets.forEach(sheet => sheet.render(true));
-
-        ui.notifications.warn(game.i18n.localize(`Number of clones updated : ${updateNumber}`));
     }
 
 }

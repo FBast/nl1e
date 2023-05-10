@@ -41,7 +41,7 @@ export class Pl1eEvent {
         if (itemId && document instanceof Pl1eActor)
             item = document.items.get(itemId);
         else if (itemUuid) {
-            item = game.items.find(item => item.uuid === itemUuid);
+            item = await fromUuid(itemUuid);
         }
         if (item) item.sheet.render(true);
     }

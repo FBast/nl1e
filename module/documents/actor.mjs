@@ -1,11 +1,15 @@
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
+import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
 export class Pl1eActor extends Actor {
+
+    get originalUuid() {
+        return this.getFlag("pl1e", "originalUuid");
+    }
 
     /**
      * Seek for any token which represent this actor
@@ -59,6 +63,51 @@ export class Pl1eActor extends Actor {
         await this.updateSource( updateData );
     }
 
+    /** @inheritDoc */
+    async _onCreate(data, options, userId) {
+        super._onCreate(data, options, userId);
+
+        const enableCompendiumLinkTransfer = game.settings.get("pl1e", "enableCompendiumLinkTransfer");
+        if (enableCompendiumLinkTransfer) {
+            if (this.compendium === undefined) {
+                // Creating a world element must save the uuid as flag
+                await this.setFlag("pl1e", "originalUuid", this.uuid);
+
+                // New actor from compendium should add the ref to actor items original
+                for (const actorItem of this.items) {
+                    const sourceItem = await fromUuid(actorItem.sourceUuid);
+                    sourceItem.system.refActors.push(this.uuid);
+                    await sourceItem.update({
+                        "system.refActors": sourceItem.system.refActors
+                    })
+                }
+            }
+            else {
+                const existingActor = this.compendium.find(actor => actor.name === this.name
+                    && actor.type === this.type && actor.uuid !== this.uuid);
+                if (existingActor !== undefined) {
+                    ui.notifications.warn(game.i18n.localize("PL1E.ActorWithSameName"));
+                    await this.delete();
+                }
+                else {
+                    // Creating an element into a compendium must update the ref items uuid
+                    await Pl1eSynchronizer.updateActorReferences(this, this.originalUuid);
+                    await Pl1eSynchronizer.deleteOriginalActor(this);
+                }
+            }
+        }
+    }
+
+    /** @inheritDoc */
+    async _preDelete(options, user) {
+        // Removing all items while refresh items references to this actor
+        for (const item of this.items) {
+            await this.removeItem(item);
+        }
+
+        return super._preDelete(options, user);
+    }
+
     /** @inheritDoc
      * Prepare data for the actor. Calling the super version of this executes
      * the following, in order: data reset (to clear active effects),
@@ -73,8 +122,8 @@ export class Pl1eActor extends Actor {
     /** @inheritDoc */
     async prepareBaseData() {
         super.prepareBaseData();
-        const actorGeneral = systemData.general;
-        const actorMisc = systemData.misc;
+        const actorGeneral = this.system.general;
+        const actorMisc = this.system.misc;
 
         // Handle actorAttributes scores
         actorGeneral.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
@@ -202,6 +251,14 @@ export class Pl1eActor extends Actor {
                 await this.addItem(refItem, parentId);
             }
         }
+
+        // Add this actor in item actors refs if no other item with same sourceUuid
+        if (this.items.filter(otherItem => otherItem.sourceUuid === item.sourceUuid).length === 0) {
+            item.system.refActors.push(this.uuid);
+            await item.update({
+                "system.refActors": item.system.refActors
+            });
+        }
     }
 
     /**
@@ -213,6 +270,16 @@ export class Pl1eActor extends Actor {
         // Remove item children
         for (const otherItem of this.items) {
             if (item.parentId === otherItem.childId) await this.removeItem(otherItem);
+        }
+
+        // Remove this actor in item actors refs if no other item with same sourceUuid
+        if (this.items.filter(otherItem => otherItem.sourceUuid === item.sourceUuid).length === 1) {
+            const sourceItem = await fromUuid(item.sourceUuid);
+            const index = sourceItem.system.refActors.indexOf(this.uuid);
+            sourceItem.system.refActors.splice(index, 1);
+            await sourceItem.update({
+                "system.refActors": sourceItem.system.refActors
+            });
         }
 
         await this.deleteEmbeddedDocuments("Item", [item._id]);

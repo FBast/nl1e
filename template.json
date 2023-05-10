@@ -295,6 +295,7 @@
         "units": 1,
         "refItemsChildren": [],
         "refItemsParents": [],
+        "refActors": [],
         "passiveAspects": {},
         "activeAspects": {}
       },

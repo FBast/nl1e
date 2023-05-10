@@ -344,7 +344,7 @@ export class Pl1eActorSheet extends ActorSheet {
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
 
         if (itemLink) {
-            const parentItem = this.actor.items.get(itemLink);
+            const parentItem = this.actor.items.find(item => item.parentId === itemLink);
             parentItem.sheet.render(true);
         }
         else {

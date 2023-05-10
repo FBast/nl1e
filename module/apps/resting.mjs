@@ -229,12 +229,12 @@ export class Pl1eResting extends FormApplication {
         }
 
         // Get sourceUuids of items in origin
-        const originsourceUuids = this.actor.items.map(item => item.flags.pl1e?.sourceUuid);
+        const originSourceUuids = this.actor.items.map(item => item.flags.pl1e?.sourceUuid);
 
         // Filter items to only keep those in origin
         this.items = this.items.filter(item => {
             const sourceUuid = item.flags.pl1e?.sourceUuid;
-            return originsourceUuids.includes(sourceUuid);
+            return originSourceUuids.includes(sourceUuid);
         });
     }
 

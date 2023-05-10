@@ -55,6 +55,16 @@ Hooks.once('init', async function () {
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
 
+    game.settings.register("pl1e", "enableCompendiumLinkTransfer", {
+        name: "Enable compendium link transfer",
+        hint: "Be aware : if you disable this you can only create linked items from compendium to compendium object, " +
+            "every objects link will break when copied to a compendium.",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: true
+    });
+
     // Preload Handlebars templates.
     return preloadHandlebarsTemplates();
 });
