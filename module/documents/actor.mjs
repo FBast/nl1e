@@ -265,11 +265,13 @@ export class Pl1eActor extends Actor {
         // Remove this actor in item actors refs if no other item with same sourceUuid
         if (this.items.filter(otherItem => otherItem.sourceUuid === item.sourceUuid).length === 1) {
             const sourceItem = await fromUuid(item.sourceUuid);
-            const index = sourceItem.system.refActors.indexOf(this.uuid);
-            sourceItem.system.refActors.splice(index, 1);
-            await sourceItem.update({
-                "system.refActors": sourceItem.system.refActors
-            });
+            if (sourceItem !== null) {
+                const index = sourceItem.system.refActors.indexOf(this.uuid);
+                if (index > -1) sourceItem.system.refActors.splice(index, 1);
+                await sourceItem.update({
+                    "system.refActors": sourceItem.system.refActors
+                });
+            }
         }
 
         await this.deleteEmbeddedDocuments("Item", [item._id]);

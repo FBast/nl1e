@@ -18,14 +18,25 @@ export class Pl1eEvent {
     }
 
     /**
-     * Open actor sheet
+     * Open token sheet
      * @param event The originating click event
      */
-    static async onActorEdit(event) {
+    static async onTokenEdit(event) {
         const tokenId = $(event.currentTarget).data("token-id");
         const tokenDocument = await fromUuid(tokenId);
 
         if (tokenDocument) tokenDocument.actor.sheet.render(true);
+    }
+
+    /**
+     * Open actor sheet
+     * @param event The originating click event
+     */
+    static async onActorEdit(event) {
+        const actorUuid = $(event.currentTarget).closest(".item").data("actor-uuid");
+        const actor = await fromUuid(actorUuid);
+
+        if (actor) actor.sheet.render(true);
     }
 
     /**

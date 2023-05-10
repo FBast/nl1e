@@ -135,13 +135,13 @@ Hooks.once("ready", async function () {
 
 Hooks.on("renderChatLog", (app, html, data) => {
     html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
-    html.on("click", ".actor-edit", Pl1eEvent.onActorEdit.bind(this));
+    html.on("click", ".actor-edit", Pl1eEvent.onTokenEdit.bind(this));
     html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
 });
 
 Hooks.on("renderChatPopout", (app, html, data) => {
     html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
-    html.on("click", ".actor-edit", Pl1eEvent.onActorEdit.bind(this));
+    html.on("click", ".actor-edit", Pl1eEvent.onTokenEdit.bind(this));
     html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
 });
 

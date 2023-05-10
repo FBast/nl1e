@@ -144,6 +144,7 @@ export class Pl1eItemSheet extends ItemSheet {
         Pl1eFormValidation.positiveDecimal();
 
         // Roll handlers, click handlers, etc. would go here.
+        html.find(`.actor-edit`).on("click", ev => Pl1eEvent.onActorEdit(ev, this.item));
         html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));
         html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
@@ -174,8 +175,24 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     async _prepareItems(context) {
-        // Get ref items using uuid
-        const items = [];
+        // Get ref itemsParents using uuid
+        const itemsParents = [];
+        for (let i = 0; i < this.item.system.refItemsParents.length; i++) {
+            const uuid = this.item.system.refItemsParents[i];
+            let item = await fromUuid(uuid);
+            if (!item) {
+                // Create an unknown item for display
+                item = {
+                    type: "unknown",
+                    uuid: uuid
+                }
+            }
+            itemsParents[i] = item;
+        }
+
+
+        // Get ref itemsChildren using uuid
+        const itemsChildren = [];
         for (let i = 0; i < this.item.system.refItemsChildren.length; i++) {
             const uuid = this.item.system.refItemsChildren[i];
             let item = await fromUuid(uuid);
@@ -186,42 +203,28 @@ export class Pl1eItemSheet extends ItemSheet {
                     uuid: uuid
                 }
             }
-            items[i] = item;
+            itemsChildren[i] = item;
         }
 
-        // Initialize containers.
-        const unknowns = [];
-        const features = [];
-        let abilities = {
-            0: [],
-            1: [],
-            2: [],
-            3: [],
-            4: [],
-            5: []
-        };
-
-        // Iterate through refItems, allocating to containers
-        for (const item of items) {
-            // Append to unknowns
-            if (item.type === "unknown") {
-                unknowns.push(item);
+        // Get ref actorsParents using uuid
+        const actorsParents = [];
+        for (let i = 0; i < this.item.system.refActors.length; i++) {
+            const uuid = this.item.system.refActors[i];
+            let actor = await fromUuid(uuid);
+            if (!actor) {
+                // Create an unknown item for display
+                actor = {
+                    type: "unknown",
+                    uuid: uuid
+                }
             }
-            // Append to features
-            if (item.type === "feature") {
-                features.push(item);
-            }
-            // Append to abilities
-            else if (item.type === "ability") {
-                abilities[item.system.attributes.level.value].push(item);
-            }
+            actorsParents[i] = actor;
         }
 
         // Assign and return
-        context.hasUnknowns = unknowns.length > 0;
-        context.unknowns = unknowns;
-        context.features = features;
-        context.abilities = abilities;
+        context.itemsParents = itemsParents;
+        context.itemsChildren = itemsChildren;
+        context.actorsParents = actorsParents;
         context.passiveAspects = this.item.system.passiveAspects;
         context.activeAspects = this.item.system.activeAspects;
         context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
