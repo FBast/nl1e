@@ -19,10 +19,6 @@ export class Pl1eItem extends Item {
         return this.getFlag("pl1e", "childId");
     }
 
-    get needReset() {
-        return this.getFlag("pl1e", "needReset");
-    }
-
     get isEnabled() {
         switch (this.type) {
             case "weapon":
@@ -55,14 +51,17 @@ export class Pl1eItem extends Item {
     async _onCreate(data, options, userId) {
         super._onCreate(data, options, userId);
 
+        // This flag maintain retroactive link transfer
+        if (this.compendium === undefined)
+            await this.setFlag("pl1e", "originalUuid", this.uuid);
+
         const enableCompendiumLinkTransfer = game.settings.get("pl1e", "enableCompendiumLinkTransfer");
         if (!this.isEmbedded && enableCompendiumLinkTransfer) {
             if (this.compendium === undefined) {
-                // Creating a world element must save the uuid as flag and empty the parent link (in case of copy)
+                // Creating a world element must empty the parent link (in case of copy)
                 await this.update({
                     "system.refItemsParents": []
                 });
-                await this.setFlag("pl1e", "originalUuid", this.uuid);
             }
             else {
                 const existingItem = this.compendium.find(item => item.name === this.name
@@ -100,6 +99,14 @@ export class Pl1eItem extends Item {
         }
 
         return super._preDelete(options, user);
+    }
+
+    async _onUpdate(changed, options, userId) {
+        super._onUpdate(changed, options, userId);
+
+        const enableAutoResetActorsItems = game.settings.get("pl1e", "enableAutoResetActorsItems");
+        if (!this.isEmbedded && enableAutoResetActorsItems)
+            await Pl1eSynchronizer.resetActorsItems(this);
     }
 
     /**

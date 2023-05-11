@@ -68,29 +68,6 @@ export class Pl1eItemSheet extends ItemSheet {
         return buttons;
     }
 
-    // /** @override */
-    // async close(options) {
-    //     if (!this.item.isEmbedded && this.item.needReset)
-    //         await Pl1eSynchronizer.resetActorsItems(this.item);
-    //
-    //     return super.close(options);
-    // }
-
-    async _updateObject(event, formData) {
-        let needReset = false;
-        for (let [field, value] of Object.entries(formData)) {
-            if (getProperty(this.item, field) !== value) {
-                needReset = true;
-                break;
-            }
-        }
-
-        // Set has dirty if something changed
-        if (needReset) await this.item.setFlag("pl1e", "needReset", true);
-
-        await super._updateObject(event, formData);
-    }
-
     /** @inheritDoc */
     async getData() {
         // Retrieve base data structure.
@@ -278,30 +255,6 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null
         });
-    }
-
-    /**
-     * Render all parents
-     * @returns {Promise<void>}
-     * @private
-     */
-    async _renderParents() {
-        if (this.item.system.refItemsParents.length === 0) {
-            ui.notifications.info(game.i18n.localize("Pl1E.NoParents"));
-            return;
-        }
-
-        let sheetPosition = Pl1eHelpers.screenCenter();
-        for (const uuid of this.item.system.refItemsParents) {
-            const parentItem = await fromUuid(uuid);
-            if (parentItem === null)
-                throw new Error("PL1E | Cannot find parent with uuid " + uuid);
-            parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
-            sheetPosition.x += 30;
-            sheetPosition.y += 30;
-        }
-
-        await this.close();
     }
 
 }

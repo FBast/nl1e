@@ -14,11 +14,8 @@ export class Pl1eSynchronizer {
                 // Update the item
                 await item.updateItem(sourceItem);
 
-                // Change flag to reflect
-                await item.setFlag("pl1e", "needReset", false);
-
                 // Log and update count
-                console.log(`PL1E | ${item.name} is reset`);
+                console.log(`PL1E | ${item.name} of ${actor.name} is reset`);
                 updateNumber++;
             }
         }
@@ -27,7 +24,9 @@ export class Pl1eSynchronizer {
         const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
         sheets.forEach(sheet => sheet.render(true));
 
-        ui.notifications.warn(game.i18n.localize(`Number of clones updated : ${updateNumber}`));
+        const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
+        if (enableDebugUINotifications)
+            ui.notifications.info(game.i18n.localize(`Number of clones updated : ${updateNumber}`));
     }
 
     static async updateItemReferences(item, uuidReference) {

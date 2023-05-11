@@ -57,7 +57,7 @@ Hooks.once('init', async function () {
 
     game.settings.register("pl1e", "enableCompendiumLinkTransfer", {
         name: "Enable compendium link transfer",
-        hint: "Be aware : if you disable this you can only create linked items from compendium to compendium object, " +
+        hint: "If you disable this you can only create linked items from compendium to compendium object, " +
             "every objects link will break when exported to a compendium.",
         scope: "world",
         config: true,
@@ -65,6 +65,24 @@ Hooks.once('init', async function () {
         default: true
     });
 
+    game.settings.register("pl1e", "enableAutoResetActorsItems", {
+        name: "Enable auto reset actors items",
+        hint: "Enable this to automatically reset all actors items when their source item is modified.",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: true
+    });
+
+    game.settings.register("pl1e", "enableDebugUINotifications", {
+        name: "Enable debug UI notifications",
+        hint: "Enable this to display major debug to ui as notification.",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: true
+    });
+    
     // Preload Handlebars templates.
     return preloadHandlebarsTemplates();
 });
