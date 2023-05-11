@@ -114,6 +114,22 @@ export class Pl1eHelpers {
         }
     }
 
+    /**
+     * Check recursive loop for items
+     * @param item
+     * @param newUuid
+     * @returns {Promise<boolean>}
+     */
+    static async createRecursiveLoop(item, newUuid) {
+        if (item.uuid === newUuid) return true;
+        for (const uuid of item.system.refItemsParents) {
+            const subItem = await fromUuid(uuid);
+            if (await this.createRecursiveLoop(subItem, newUuid)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }

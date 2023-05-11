@@ -57,35 +57,12 @@ export class Pl1eActor extends Actor {
     async _onCreate(data, options, userId) {
         super._onCreate(data, options, userId);
 
-        const enableCompendiumLinkTransfer = game.settings.get("pl1e", "enableCompendiumLinkTransfer");
-        if (enableCompendiumLinkTransfer) {
-            if (this.compendium === undefined) {
-                // Creating a world element must save the uuid as flag
-                await this.setFlag("pl1e", "originalUuid", this.uuid);
+        // This flag maintain retroactive link transfer
+        if (this.compendium === undefined)
+            await this.setFlag("pl1e", "originalUuid", this.uuid);
 
-                // New actor from compendium should add the ref to actor items original
-                for (const actorItem of this.items) {
-                    const sourceItem = await fromUuid(actorItem.sourceUuid);
-                    sourceItem.system.refActors.push(this.uuid);
-                    await sourceItem.update({
-                        "system.refActors": sourceItem.system.refActors
-                    })
-                }
-            }
-            else {
-                const existingActor = this.compendium.find(actor => actor.name === this.name
-                    && actor.type === this.type && actor.uuid !== this.uuid);
-                if (existingActor !== undefined) {
-                    ui.notifications.warn(game.i18n.localize("PL1E.ActorWithSameName"));
-                    await this.delete();
-                }
-                else {
-                    // Creating an element into a compendium must update the ref items uuid
-                    await Pl1eSynchronizer.updateActorReferences(this, this.originalUuid);
-                    await Pl1eSynchronizer.deleteOriginalActor(this);
-                }
-            }
-        }
+        const enableCompendiumLinkTransfer = game.settings.get("pl1e", "enableCompendiumLinkTransfer");
+        if (enableCompendiumLinkTransfer) await Pl1eSynchronizer.synchronizeActor(this);
     }
 
     /** @inheritDoc */
@@ -225,8 +202,8 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<Pl1eItem>}
      */
     async addItem(item, childId = undefined) {
-        // Add this actor in item actors refs if no other item with same sourceUuid
-        if (this.items.filter(otherItem => otherItem.sourceUuid === item.sourceUuid).length === 0) {
+        // Add this actor in item actors refs if does not exist
+        if (!item.system.refActors.includes(this.uuid)) {
             item.system.refActors.push(this.uuid);
             await item.update({
                 "system.refActors": item.system.refActors

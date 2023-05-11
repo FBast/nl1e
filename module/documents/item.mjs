@@ -1,5 +1,6 @@
 import {Pl1eAspect} from "../helpers/aspect.mjs";
 import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -56,27 +57,7 @@ export class Pl1eItem extends Item {
             await this.setFlag("pl1e", "originalUuid", this.uuid);
 
         const enableCompendiumLinkTransfer = game.settings.get("pl1e", "enableCompendiumLinkTransfer");
-        if (!this.isEmbedded && enableCompendiumLinkTransfer) {
-            if (this.compendium === undefined) {
-                // Creating a world element must empty the parent link (in case of copy)
-                await this.update({
-                    "system.refItemsParents": []
-                });
-            }
-            else {
-                const existingItem = this.compendium.find(item => item.name === this.name
-                    && item.type === this.type && item.uuid !== this.uuid);
-                if (existingItem !== undefined) {
-                    ui.notifications.warn(game.i18n.localize("PL1E.ItemWithSameName"));
-                    await this.delete();
-                }
-                else {
-                    // Creating an element into a compendium must update the ref items uuid
-                    await Pl1eSynchronizer.updateItemReferences(this, this.originalUuid);
-                    await Pl1eSynchronizer.deleteOriginalItem(this);
-                }
-            }
-        }
+        if (!this.isEmbedded && enableCompendiumLinkTransfer) await Pl1eSynchronizer.synchronizeItem(this);
     }
 
     /** @inheritDoc */
@@ -104,9 +85,11 @@ export class Pl1eItem extends Item {
     async _onUpdate(changed, options, userId) {
         super._onUpdate(changed, options, userId);
 
-        const enableAutoResetActorsItems = game.settings.get("pl1e", "enableAutoResetActorsItems");
-        if (!this.isEmbedded && enableAutoResetActorsItems)
-            await Pl1eSynchronizer.resetActorsItems(this);
+        if (!this.isEmbedded) {
+            // Auto reset actors items on update
+            const enableAutoResetActorsItems = game.settings.get("pl1e", "enableAutoResetActorsItems");
+            if (enableAutoResetActorsItems) await Pl1eSynchronizer.resetActorsItems(this);
+        }
     }
 
     /**
@@ -126,10 +109,21 @@ export class Pl1eItem extends Item {
         if (this.isEmbedded)
             throw new Error("PL1E | Cannot add ref item on embedded " + this.name);
 
-        // Return if same item
-        if (this.uuid === item.uuid) return;
         // Return if item with same uuid exist
-        if (this.system.refItemsChildren.some(id => id === item.uuid)) return;
+        if (this.system.refItemsChildren.some(id => id === item.uuid)) {
+            const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
+            if (enableDebugUINotifications)
+                ui.notifications.warn(game.i18n.localize(`A child with the same uuid exist`));
+            return;
+        }
+
+        // Return against recursive loop
+        if (await Pl1eHelpers.createRecursiveLoop(this, item.uuid)) {
+            const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
+            if (enableDebugUINotifications)
+                ui.notifications.warn(game.i18n.localize(`This will create a recursive loop and is aborted`));
+            return;
+        }
 
         // Add item as child uuid to this
         this.system.refItemsChildren.push(item.uuid);
@@ -181,50 +175,6 @@ export class Pl1eItem extends Item {
                     otherItem.childId === actorItem.parentId)
                 await actor.removeItem(itemToRemove);
             }
-        }
-    }
-
-    async updateItem(sourceItem) {
-        const itemData = {
-            "name": sourceItem.name,
-            "img": sourceItem.img,
-            "system.price": sourceItem.system.price,
-            "system.description": sourceItem.system.description,
-            "system.attributes": sourceItem.system.attributes,
-            "system.passiveAspects": sourceItem.system.passiveAspects,
-            "system.activeAspects": sourceItem.system.activeAspects,
-            "system.refItemsChildren": sourceItem.system.refItemsChildren,
-            "system.refItemsParents": sourceItem.system.refItemsParents,
-            "system.refActors": sourceItem.system.refActors
-        };
-
-        // Remove obsolete aspects
-        for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
-            if (Object.keys(sourceItem.system.passiveAspects).some(aspectId => aspectId === id)) continue;
-            itemData[`system.passiveAspects.-=${id}`] = null;
-            // Remove the old effect
-            const effect = this.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
-            if (sourceItem.type !== "feature" && this.isEnabled && effect !== undefined) {
-                await Pl1eAspect.removePassiveEffect(this.actor, this, effect);
-            }
-        }
-
-        // Add new aspects
-        for (const [id, aspect] of Object.entries(sourceItem.system.passiveAspects)) {
-            if (Object.keys(this.system.passiveAspects).some(aspectId => aspectId === id)) continue;
-            itemData[`system.passiveAspects.${id}`] = aspect;
-            // Add the new effect
-            if (sourceItem.type !== "feature" && this.isEnabled) {
-                await Pl1eAspect.createPassiveEffect(this.actor, this, id, aspect);
-            }
-        }
-
-        if (this.isEmbedded) {
-            itemData["_id"] = this._id;
-            await this.actor.updateEmbeddedDocuments("Item", [itemData]);
-        }
-        else {
-            await this.update(itemData);
         }
     }
 
