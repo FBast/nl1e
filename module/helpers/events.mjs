@@ -25,7 +25,8 @@ export class Pl1eEvent {
         const tokenId = $(event.currentTarget).data("token-id");
         const tokenDocument = await fromUuid(tokenId);
 
-        if (tokenDocument) tokenDocument.actor.sheet.render(true);
+        if (tokenDocument.sheet.rendered) tokenDocument.sheet.bringToTop();
+        else tokenDocument.sheet.render(true);
     }
 
     /**
@@ -36,7 +37,8 @@ export class Pl1eEvent {
         const actorUuid = $(event.currentTarget).closest(".item").data("actor-uuid");
         const actor = await fromUuid(actorUuid);
 
-        if (actor) actor.sheet.render(true);
+        if (actor.sheet.rendered) actor.sheet.bringToTop();
+        else actor.sheet.render(true);
     }
 
     /**
@@ -54,7 +56,8 @@ export class Pl1eEvent {
         else if (itemUuid) {
             item = await fromUuid(itemUuid);
         }
-        if (item) item.sheet.render(true);
+        if (item.sheet.rendered) item.sheet.bringToTop();
+        else item.sheet.render(true);
     }
 
     /**
@@ -141,8 +144,7 @@ export class Pl1eEvent {
         // Remove refItem from item
         else if (document instanceof Pl1eItem && itemUuid) {
             const item = await fromUuid(itemUuid);
-            if (item) await document.removeRefItem(item)
-            else await document.removeEmptyRefItem(itemUuid);
+            if (item) await document.removeRefItem(item);
         }
 
         document.sheet.render(document.sheet.rendered);

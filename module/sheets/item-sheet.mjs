@@ -50,19 +50,11 @@ export class Pl1eItemSheet extends ItemSheet {
             }
             else {
                 buttons.unshift({
-                    label: 'PL1E.ResetClones',
-                    class: 'open-original',
+                    label: 'PL1E.ResetActorsItems',
+                    class: 'button-reset',
                     icon: 'fal fa-clone',
                     onclick: async () => {
-                        await Pl1eSynchronizer.resetClones(this.item);
-                    }
-                });
-                buttons.unshift({
-                    label: 'PL1E.Parents',
-                    class: 'button-parents',
-                    icon: 'fas fa-up',
-                    onclick: async () => {
-                        await this._renderParents();
+                        await Pl1eSynchronizer.resetActorsItems(this.item);
                     }
                 });
             }
@@ -79,7 +71,7 @@ export class Pl1eItemSheet extends ItemSheet {
     // /** @override */
     // async close(options) {
     //     if (!this.item.isEmbedded && this.item.needReset)
-    //         await this._resetClones();
+    //         await Pl1eSynchronizer.resetActorsItems(this.item);
     //
     //     return super.close(options);
     // }
@@ -120,14 +112,10 @@ export class Pl1eItemSheet extends ItemSheet {
         // Prepare refItems
         await this._prepareItems(context);
 
-        // Add the actor's data to context.data for easier access, as well as flags.
+        // Add the actor's data to context.data for easier access
         context.system = itemData.system;
         context.flags = itemData.flags;
-
-        // Add the config data
         context.config = CONFIG.PL1E;
-
-        // Add game access
         context.game = game;
 
         return context;

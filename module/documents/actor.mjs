@@ -225,6 +225,14 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<Pl1eItem>}
      */
     async addItem(item, childId = undefined) {
+        // Add this actor in item actors refs if no other item with same sourceUuid
+        if (this.items.filter(otherItem => otherItem.sourceUuid === item.sourceUuid).length === 0) {
+            item.system.refActors.push(this.uuid);
+            await item.update({
+                "system.refActors": item.system.refActors
+            });
+        }
+
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
         newItem = newItem[0];
 
@@ -240,14 +248,6 @@ export class Pl1eActor extends Actor {
                 const refItem = await fromUuid(id);
                 await this.addItem(refItem, parentId);
             }
-        }
-
-        // Add this actor in item actors refs if no other item with same sourceUuid
-        if (this.items.filter(otherItem => otherItem.sourceUuid === item.sourceUuid).length === 0) {
-            item.system.refActors.push(this.uuid);
-            await item.update({
-                "system.refActors": item.system.refActors
-            });
         }
     }
 

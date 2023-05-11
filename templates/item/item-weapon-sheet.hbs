@@ -17,27 +17,27 @@
         </div>
     </header>
     {{#if game.user.isGM}}
-    {{!-- Sheet Tab Navigation --}}
-        <nav class="sheet-tabs tabs" data-group="primary">
-            <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
-            <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
-            <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
-        </nav>
-    {{!-- Sheet Body --}}
-    <section class="sheet-body">
-        {{!-- Description Tab --}}
-        <div class="tab description flexcol" data-group="primary" data-tab="description">
-            {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
-        </div>
-        {{!-- Attributes Tab --}}
-        <div class="tab attributes flexcol" data-group="primary" data-tab="attributes">
-            {{> "systems/pl1e/templates/item/parts/weapon-attributes.hbs"}}
-        </div>
-        {{!-- Linked Items Tab --}}
-        <div class="tab items flexcol" data-group="primary" data-tab="linked-items">
-            {{> "systems/pl1e/templates/item/parts/item-linked.hbs"}}
-        </div>
-    </section>
+        {{!-- Sheet Tab Navigation --}}
+            <nav class="sheet-tabs tabs" data-group="primary">
+                <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
+                <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
+                <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
+            </nav>
+        {{!-- Sheet Body --}}
+        <section class="sheet-body">
+            {{!-- Description Tab --}}
+            <div class="tab description flexcol" data-group="primary" data-tab="description">
+                {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
+            </div>
+            {{!-- Attributes Tab --}}
+            <div class="tab attributes flexcol" data-group="primary" data-tab="attributes">
+                {{> "systems/pl1e/templates/item/parts/weapon-attributes.hbs"}}
+            </div>
+            {{!-- Linked Items Tab --}}
+            <div class="tab items flexcol" data-group="primary" data-tab="linked-items">
+                {{> "systems/pl1e/templates/item/parts/item-linked.hbs"}}
+            </div>
+        </section>
     {{else}}
     {{!-- Sheet Body --}}
     <section class="sheet-body">

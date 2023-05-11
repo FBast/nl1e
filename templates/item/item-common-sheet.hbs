@@ -8,10 +8,11 @@
         </div>
     </header>
     {{#if game.user.isGM}}
-    {{!-- Sheet Tab Navigation --}}
+        {{!-- Sheet Tab Navigation --}}
         <nav class="sheet-tabs tabs" data-group="primary">
             <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
             <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
+            <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
         </nav>
         {{!-- Sheet Body --}}
         <section class="sheet-body">
@@ -27,8 +28,13 @@
     {{else}}
     {{!-- Sheet Body --}}
         <section class="sheet-body">
+            {{!-- Description Tab --}}
             <div class="tab flexcol">
                 {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
+            </div>
+            {{!-- Linked Items Tab --}}
+            <div class="tab items flexcol" data-group="primary" data-tab="linked-items">
+                {{> "systems/pl1e/templates/item/parts/item-linked.hbs"}}
             </div>
         </section>
     {{/if}}

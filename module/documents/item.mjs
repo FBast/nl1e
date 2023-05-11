@@ -117,7 +117,7 @@ export class Pl1eItem extends Item {
      */
     async addRefItem(item) {
         if (this.isEmbedded)
-            throw new Error("PL1E | Cannot add ref item on the embedded " + this.name);
+            throw new Error("PL1E | Cannot add ref item on embedded " + this.name);
 
         // Return if same item
         if (this.uuid === item.uuid) return;
@@ -152,7 +152,7 @@ export class Pl1eItem extends Item {
      */
     async removeRefItem(item) {
         if (this.isEmbedded)
-            throw new Error("PL1E | Cannot remove ref item on the embedded " + this.name);
+            throw new Error("PL1E | Cannot remove ref item on embedded " + this.name);
 
         // Remove item as child uuid from this
         this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(item.uuid), 1);
@@ -177,16 +177,48 @@ export class Pl1eItem extends Item {
         }
     }
 
-    /**
-     * This method should not be used because dead link are automatically removed
-     * @param uuid
-     * @returns {Promise<void>}
-     */
-    async removeEmptyRefItem(uuid) {
-        this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(uuid), 1);
-        await this.update({
-            "system.refItemsChildren": this.system.refItemsChildren
-        });
+    async updateItem(sourceItem) {
+        const itemData = {
+            "name": sourceItem.name,
+            "img": sourceItem.img,
+            "system.price": sourceItem.system.price,
+            "system.description": sourceItem.system.description,
+            "system.attributes": sourceItem.system.attributes,
+            "system.passiveAspects": sourceItem.system.passiveAspects,
+            "system.activeAspects": sourceItem.system.activeAspects,
+            "system.refItemsChildren": sourceItem.system.refItemsChildren,
+            "system.refItemsParents": sourceItem.system.refItemsParents,
+            "system.refActors": sourceItem.system.refActors
+        };
+
+        // Remove obsolete aspects
+        for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
+            if (Object.keys(sourceItem.system.passiveAspects).some(aspectId => aspectId === id)) continue;
+            itemData[`system.passiveAspects.-=${id}`] = null;
+            // Remove the old effect
+            const effect = this.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
+            if (sourceItem.type !== "feature" && this.isEnabled && effect !== undefined) {
+                await Pl1eAspect.removePassiveEffect(this.actor, this, effect);
+            }
+        }
+
+        // Add new aspects
+        for (const [id, aspect] of Object.entries(sourceItem.system.passiveAspects)) {
+            if (Object.keys(this.system.passiveAspects).some(aspectId => aspectId === id)) continue;
+            itemData[`system.passiveAspects.${id}`] = aspect;
+            // Add the new effect
+            if (sourceItem.type !== "feature" && this.isEnabled) {
+                await Pl1eAspect.createPassiveEffect(this.actor, this, id, aspect);
+            }
+        }
+
+        if (this.isEmbedded) {
+            itemData["_id"] = this._id;
+            await this.actor.updateEmbeddedDocuments("Item", [itemData]);
+        }
+        else {
+            await this.update(itemData);
+        }
     }
 
     /**
