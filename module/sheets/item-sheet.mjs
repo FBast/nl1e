@@ -257,4 +257,12 @@ export class Pl1eItemSheet extends ItemSheet {
         });
     }
 
+    /**
+     * Short method to render if not or bring on top
+     */
+    renderOnTop() {
+        if (this.rendered) this.bringToTop();
+        else this.render(true);
+    }
+
 }

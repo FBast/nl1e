@@ -43,16 +43,12 @@ export function getConfigItems() {
             "type": "select",
             "select": "activations"
         },
-        "activateMacro": {
-            "label": "PL1E.ActivateMacro",
+        "activationMacro": {
+            "label": "PL1E.ActivationMacro",
             "type": "text"
         },
         "launchMacro": {
             "label": "PL1E.LaunchMacro",
-            "type": "text"
-        },
-        "counterMacro": {
-            "label": "PL1E.CounterMacro",
             "type": "text"
         },
         // Features

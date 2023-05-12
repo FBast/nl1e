@@ -177,7 +177,35 @@ export class Pl1eAspect {
      * @private
      */
     static async _decrease(aspect, characterData, targetsData) {
-        throw new Error("Not implemented yet");
+        for (const targetData of targetsData) {
+            // Check target validation
+            if (!this._isTargetValid(characterData.token, targetData.token)) continue;
+
+            // Copy the aspect to calculate the new values
+            let aspectCopy = JSON.parse(JSON.stringify(aspect));
+            switch (aspect.resolutionType) {
+                case "multiplyBySuccess":
+                    aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
+                    break;
+                case "valueIfSuccess":
+                    aspectCopy.value = targetData.result > 0 ? aspectCopy.value : 0;
+                    break;
+            }
+
+            // Apply the aspect
+            const aspectDataConfig = CONFIG.PL1E[aspectCopy.dataGroup][aspectCopy.data];
+            let actorValue = foundry.utils.getProperty(targetData.token.actor, aspectDataConfig.path);
+            actorValue -= aspectCopy.value;
+            await targetData.token.actor.update({
+                [aspectDataConfig.path]: actorValue
+            });
+
+            // Check for existing aspect related to same function
+            targetData.activeAspects ??= [];
+            let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
+            existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value -= aspectCopy.value;
+        }
+        return targetsData;
     }
 
     /**

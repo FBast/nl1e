@@ -299,13 +299,10 @@
         "passiveAspects": {},
         "activeAspects": {},
         "attributes": {
-          "activateMacro": {
+          "activationMacro": {
             "value": ""
           },
           "launchMacro": {
-            "value": ""
-          },
-          "counterMacro": {
             "value": ""
           }
         }

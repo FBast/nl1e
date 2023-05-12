@@ -25,8 +25,7 @@ export class Pl1eEvent {
         const tokenId = $(event.currentTarget).data("token-id");
         const tokenDocument = await fromUuid(tokenId);
 
-        if (tokenDocument.sheet.rendered) tokenDocument.sheet.bringToTop();
-        else tokenDocument.sheet.render(true);
+        tokenDocument.sheet.renderOnTop();
     }
 
     /**
@@ -37,8 +36,7 @@ export class Pl1eEvent {
         const actorUuid = $(event.currentTarget).closest(".item").data("actor-uuid");
         const actor = await fromUuid(actorUuid);
 
-        if (actor.sheet.rendered) actor.sheet.bringToTop();
-        else actor.sheet.render(true);
+        actor.sheet.renderOnTop();
     }
 
     /**
@@ -56,8 +54,8 @@ export class Pl1eEvent {
         else if (itemUuid) {
             item = await fromUuid(itemUuid);
         }
-        if (item.sheet.rendered) item.sheet.bringToTop();
-        else item.sheet.render(true);
+
+        item.sheet.renderOnTop();
     }
 
     /**

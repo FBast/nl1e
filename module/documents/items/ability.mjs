@@ -83,7 +83,7 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Activate macro if found
-        const macroId = characterData.item.system.attributes.activateMacro.value;
+        const macroId = characterData.item.system.attributes.activationMacro.value;
         const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
         if (macro !== undefined) macro.execute(characterData, {
             active: true
@@ -111,7 +111,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Activate macro if found end
         const characterData = this.abilityData.characterData;
-        const macroId = characterData.item.system.attributes.activateMacro.value;
+        const macroId = characterData.item.system.attributes.activationMacro.value;
         const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
         if (macro !== undefined) macro.execute(characterData, {
             active: false
@@ -163,8 +163,13 @@ export class Pl1eAbility extends Pl1eItem {
             targetsData = await Pl1eAspect.applyActive(aspect, characterData, targetsData);
         }
 
-        // Display messages
         for (const targetData of targetsData) {
+            // Activate macro if found
+            const macroId = characterData.item.system.attributes.launchMacro.value;
+            const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
+            if (macro !== undefined) macro.execute(characterData, targetData);
+
+            // Display messages
             await Pl1eChat.abilityRoll(characterData, targetData);
         }
     }
