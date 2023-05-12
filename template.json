@@ -297,7 +297,18 @@
         "refItemsParents": [],
         "refActors": [],
         "passiveAspects": {},
-        "activeAspects": {}
+        "activeAspects": {},
+        "attributes": {
+          "activateMacro": {
+            "value": ""
+          },
+          "launchMacro": {
+            "value": ""
+          },
+          "counterMacro": {
+            "value": ""
+          }
+        }
       },
       "item": {
         "price": {

@@ -97,6 +97,24 @@
       "flags": {}
     },
     {
+      "name": "item-macros",
+      "label": "Item Macros",
+      "system": "pl1e",
+      "path": "packs/item-macros.db",
+      "type": "Macro",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "utils-macros",
+      "label": "Utils Macros",
+      "system": "pl1e",
+      "path": "packs/utils-macros.db",
+      "type": "Macro",
+      "private": true,
+      "flags": {}
+    },
+    {
       "name": "maps",
       "label": "Maps",
       "system": "pl1e",

@@ -38,7 +38,7 @@ export class Pl1eActorSheet extends ActorSheet {
             if (this.actor.type === 'character') {
                 buttons.unshift({
                     label: 'PL1E.CreationMod',
-                    class: 'reset-clones',
+                    class: 'button-creation-mod',
                     icon: this.actor.system.general.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
                     onclick: async () => {
                         const appRestingForm = Object.values(ui.windows)
@@ -53,7 +53,7 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             buttons.unshift({
                 label: 'PL1E.Debug',
-                class: 'debug',
+                class: 'button-debug',
                 icon: 'fas fa-ban-bug',
                 onclick: () => console.log(this)
             });

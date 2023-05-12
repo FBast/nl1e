@@ -82,6 +82,13 @@ export class Pl1eAbility extends Pl1eItem {
             }
         }
 
+        // Activate macro if found
+        const macroId = characterData.item.system.attributes.activateMacro.value;
+        const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
+        if (macro !== undefined) macro.execute(characterData, {
+            active: true
+        });
+
         // Display message
         await Pl1eChat.abilityRoll(characterData);
 
@@ -101,6 +108,14 @@ export class Pl1eAbility extends Pl1eItem {
                 await this._applyAttributes();
                 break;
         }
+
+        // Activate macro if found end
+        const characterData = this.abilityData.characterData;
+        const macroId = characterData.item.system.attributes.activateMacro.value;
+        const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
+        if (macro !== undefined) macro.execute(characterData, {
+            active: false
+        });
 
         // Destroy templates after fetching target with df-template
         for (const template of this.abilityData.templates) {
@@ -258,50 +273,42 @@ export class Pl1eAbility extends Pl1eItem {
         }
     }
 
-    /**
-     * Check if the ability activation is valid
-     * @param {Actor} actor
-     * @private
-     */
+    /** @inheritDoc */
     _canActivate(actor) {
-        let isValid = true;
+        if (!super._canActivate(actor)) return false;
+
         const itemAttributes = this.system.attributes;
-        // If is not in battle
-        if (!actor.bestToken.inCombat) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotInBattle"));
-            isValid = false;
-        }
         // If is not memorized
         if (!this.system.isMemorized) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
-            isValid = false;
+            return false;
         }
         // If cost is not affordable
         if (itemAttributes.staminaCost.value > actor.system.resources.stamina.value) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughStamina"));
-            isValid = false;
+            return false;
         }
         if (itemAttributes.manaCost.value > actor.system.resources.mana.value) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
-            isValid = false;
+            return false;
         }
         if (itemAttributes.manaCost.value > actor.system.resources.mana.value) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
-            isValid = false;
+            return false;
         }
         if (itemAttributes.activation.value === "action" && actor.system.misc.action <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
-            isValid = false;
+            return false;
         }
         if (itemAttributes.activation.value === "reaction" && actor.system.misc.reaction <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreRection"));
-            isValid = false;
+            return false;
         }
         if (itemAttributes.activation.value === "instant" && actor.system.misc.instant <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreInstant"));
-            isValid = false;
+            return false;
         }
-        return isValid;
+        return true;
     }
 
 }

@@ -203,4 +203,23 @@ export class Pl1eItem extends Item {
      */
     async activate() {}
 
+    /**
+     * Check if the item activation is valid
+     * @param actor
+     * @protected
+     */
+    _canActivate(actor) {
+        // If no token found
+        if (!actor.bestToken) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoToken"));
+            return false;
+        }
+        // If is not in battle
+        if (!actor.bestToken.inCombat) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotInBattle"));
+            return false;
+        }
+        return true;
+    }
+
 }

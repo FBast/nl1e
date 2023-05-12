@@ -131,5 +131,25 @@ export class Pl1eHelpers {
         return false;
     }
 
+    static async getDocument(id, type) {
+        let document = undefined;
+
+        // Search inside current game
+        switch (type) {
+            case "Macro":
+                document = game.macros.get(id)
+                break;
+        }
+
+        if (document === undefined) {
+            // Search inside compendiums
+            for (const pack of game.packs.filter(pack => pack.documentName === type)) {
+                document = await pack.getDocument(id);
+                if (document !== undefined) break;
+            }
+        }
+
+        return document;
+    }
 
 }

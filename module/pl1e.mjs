@@ -58,7 +58,8 @@ Hooks.once('init', async function () {
     game.settings.register("pl1e", "enableCompendiumLinkTransfer", {
         name: "Enable compendium link transfer",
         hint: "If you disable this you can only create linked items from compendium to compendium object, " +
-            "every objects link will break when exported to a compendium.",
+            "every objects link will break when exported to a compendium (this is the default behavior for " +
+            "dnd5 advancement link system).",
         scope: "world",
         config: true,
         type: Boolean,
