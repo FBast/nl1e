@@ -1,21 +1,4 @@
 <section class="scroll-auto">
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.MainAttributes"}}</legend>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">
-                {{localize "PL1E.SlashingReduction"}}
-                <input type="number" name="system.attribute.slashingReduction.value" value="{{system.attributes.slashingReduction.value}}" data-dtype="Number"/>
-            </label>
-            <label class="attribute-name">
-                {{localize "PL1E.PiercingReduction"}}
-                <input type="number" name="system.attributes.piercingReduction.value" value="{{system.attributes.piercingReduction.value}}" data-dtype="Number"/>
-            </label>
-            <label class="attribute-name">
-                {{localize "PL1E.CrushingReduction"}}
-                <input type="number" name="system.attributes.crushingReduction.value" value="{{system.attributes.crushingReduction.value}}" data-dtype="Number"/>
-            </label>
-        </div>
-    </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
     {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
 </section>

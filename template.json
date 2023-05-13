@@ -299,12 +299,9 @@
         "passiveAspects": {},
         "activeAspects": {},
         "attributes": {
-          "activationMacro": {
-            "value": ""
-          },
-          "launchMacro": {
-            "value": ""
-          }
+          "customMacro": false,
+          "activationMacro":  "",
+          "launchMacro": ""
         }
       },
       "item": {
@@ -318,72 +315,36 @@
     "feature": {
       "templates": ["base"],
       "attributes": {
-        "featureType": {
-          "value": "none"
-        },
-        "cost": {
-          "value": 0
-        }
+        "featureType": "none",
+        "cost": 0
       }
     },
     "ability": {
       "templates": ["base"],
       "isMemorized": false,
       "attributes": {
-        "level": {
-          "value": 1
-        },
-        "healthCost": {
-          "value": 0
-        },
-        "staminaCost": {
-          "value": 0
-        },
-        "manaCost": {
-          "value": 0
-        },
-        "activation": {
-          "value": "action"
-        },
-        "abilityLink": {
-          "value": "none"
-        },
-        "characterRoll": {
-          "value": "none"
-        },
-        "areaShape": {
-          "value": "circle"
-        },
-        "range": {
-          "value": 0,
-          "resolutionType": "value"
-        },
-        "areaNumber": {
-          "value": 1,
-          "resolutionType": "value"
-        },
-        "circleRadius": {
-          "value": 1,
-          "resolutionType": "value"
-        },
-        "coneLength": {
-          "value": 1,
-          "resolutionType": "value"
-        },
-        "coneAngle": {
-          "value": 50
-        },
-        "squareLength": {
-          "value": 1,
-          "resolutionType": "value"
-        },
-        "rayLength": {
-          "value": 1,
-          "resolutionType": "value"
-        },
-        "targetRoll": {
-          "value": "none"
-        }
+        "level": 1,
+        "healthCost": 0,
+        "staminaCost": 0,
+        "manaCost": 0,
+        "activation": "action",
+        "abilityLink": "none",
+        "characterRoll": "none",
+        "areaShape": "circle",
+        "range": 0,
+        "rangeResolutionType": "value",
+        "areaNumber": 1,
+        "areaNumberResolutionType": "value",
+        "circleRadius": 1,
+        "circleRadiusResolutionType": "value",
+        "coneLength": 1,
+        "coneLengthResolutionType": "value",
+        "coneAngle": 50,
+        "squareLength": 1,
+        "squareLengthResolutionType": "value",
+        "rayLength": 1,
+        "rayLengthResolutionType": "value",
+        "targetRoll": "none"
       }
     },
     "weapon": {
@@ -391,71 +352,36 @@
       "isEquippedMain": false,
       "isEquippedSecondary": false,
       "attributes": {
-        "mastery": {
-          "value": "none"
-        },
-        "parryProjectiles": {
-          "value": false
-        },
-        "hands": {
-          "value": 0
-        },
-        "range": {
-          "value": 0
-        },
-        "ammo": {
-          "value": 0
-        }
+        "mastery": "none",
+        "hands": 1,
+        "range": 1,
+        "ammo": 0,
+        "parryProjectiles": false
       }
     },
     "wearable": {
       "templates": ["base", "item"],
       "isEquipped": false,
       "attributes": {
-        "slot": {
-          "value": "none"
-        },
-        "slashingReduction": {
-          "value": 0
-        },
-        "piercingReduction": {
-          "value": 0
-        },
-        "crushingReduction": {
-          "value": 0
-        }
+        "slot": "none"
       }
     },
     "consumable": {
       "templates": ["base", "item"],
       "removedUses": 0,
       "attributes": {
-        "activation": {
-          "value": "action"
-        },
-        "isReloadable": {
-          "value": false
-        },
-        "uses": {
-          "value": 1
-        }
+        "activation": "action",
+        "isReloadable": false,
+        "uses": 1
       }
     },
     "common": {
       "templates": ["base", "item"],
       "attributes": {
-        "commonType": {
-          "value": "scrap"
-        },
-        "healthRest": {
-          "value": 0
-        },
-        "staminaRest": {
-          "value": 0
-        },
-        "manaRest": {
-          "value": 0
-        }
+        "commonType": "scrap",
+        "healthRest": 0,
+        "staminaRest": 0,
+        "manaRest": 0
       }
     }
   }

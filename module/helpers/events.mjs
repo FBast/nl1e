@@ -49,9 +49,7 @@ export class Pl1eEvent {
 
         let item;
         if (itemId && document instanceof Pl1eActor)
-            item = await Pl1eHelpers.getDocument(itemId, "Item", {
-                actor: document
-            });
+            item = document.items.get(itemId);
         else if (itemId) {
             item = await Pl1eHelpers.getDocument(itemId, "Item");
         }
@@ -136,9 +134,7 @@ export class Pl1eEvent {
 
         // Remove embedded items from actor
         if (document instanceof Pl1eActor && itemId) {
-            const item = await Pl1eHelpers.getDocument(itemId, "Item", {
-                actor: document
-            })
+            const item = document.items.get(itemId);
             await document.removeItem(item);
         }
         // Remove refItem from item
@@ -289,11 +285,10 @@ export class Pl1eEvent {
         // Extract card data
         let action = $(event.currentTarget).data("action");
         let itemId = $(event.currentTarget).data("item-id");
+        let actorId = $(event.currentTarget).data("actor-id");
 
-        /**
-         * @type {Pl1eItem}
-         */
-        const item = await Pl1eHelpers.getDocument(itemId, "Item");
+        const actor = await Pl1eHelpers.getDocument(actorId, "Actor");
+        const item = actor.items.get(itemId);
 
         const options = {
             action: action

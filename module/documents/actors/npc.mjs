@@ -21,7 +21,7 @@ export class Pl1eNPC extends Pl1eActor {
         actorGeneral.slots = Math.floor(actorGeneral.experience / 3);
         for (let otherItem of this.items) {
             if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
-            actorGeneral.slots -= otherItem.system.attributes.level.value;
+            actorGeneral.slots -= otherItem.system.attributes.level;
         }
         actorGeneral.ranks = actorGeneral.experience;
         actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);

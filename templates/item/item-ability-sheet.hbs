@@ -6,12 +6,12 @@
             <div class="resources grid grid-2col">
                 <div class="form-group box">
                     <label>{{localize "PL1E.Level"}}</label>
-                    <input type="number" step="1" min="0" max="5" name="system.attributes.level.value"
-                           value="{{system.attributes.level.value}}" data-dtype="Number"/>
+                    <input type="number" step="1" min="0" max="5" name="system.attributes.level"
+                           value="{{system.attributes.level}}" data-dtype="Number"/>
                 </div>
                 <div class="form-group box">
-                    <select name="system.attributes.mastery.value">
-                        {{selectOptions (config "masteries") selected=system.attributes.mastery.value localize=true}}
+                    <select name="system.attributes.mastery">
+                        {{selectOptions (config "masteries") selected=system.attributes.mastery localize=true}}
                     </select>
                 </div>
             </div>

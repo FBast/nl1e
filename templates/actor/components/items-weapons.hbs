@@ -9,75 +9,23 @@
                 <label class="item-name item-tooltip-activate">{{name}}</label>
                 <div class="item-stats grid-span-2">
                     {{#unless (eq @root.actor.type "npc")}}
-                        {{#if (ne system.attributes.contactAttackRange 0)}}
-                            <i class="item-info fas fa-swords hover-green" data-tooltip="{{localize "PL1E.ContactAttackRange"}}">
-                                <label>{{system.attributes.contactAttackRange.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.rangedAttackRange 0)}}
-                            <i class="item-info fas fa-bow-arrow hover-green" data-tooltip="{{localize "PL1E.RangedAttackRange"}}">
-                                <label>{{system.attributes.rangedAttackRange.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.parryProjectiles 0)}}
-                            {{#if system.attributes.parryProjectiles.value}}
-                                <i class="item-info fas fa-shield-halved hover-green" data-tooltip="{{localize "PL1E.ParryProjectiles"}}"></i>
-                            {{/if}}
-                        {{/if}}
-                        {{#if (ne system.attributes.slashing 0)}}
-                            <i class="item-info fas fa-axe-battle hover-green" data-tooltip="{{localize "PL1E.Slashing"}}">
-                                <label>{{system.attributes.slashing.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.crushing 0)}}
-                            <i class="item-info fas fa-hammer-war hover-green" data-tooltip='{{localize "PL1E.Crushing"}}'>
-                                <label>{{system.attributes.crushing.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.piercing 0)}}
-                            <i class="item-info fas fa-dagger hover-green" data-tooltip='{{localize "PL1E.Piercing"}}'>
-                                <label>{{system.attributes.piercing.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.parryBonuses 0)}}
-                            <i class="item-info fas fa-shield hover-green" data-tooltip='{{localize "PL1E.Parry"}}'>
-                                <label>{{system.attributes.parryBonuses.value}}</label>
-                            </i>
-                        {{/if}}
                         {{#if (ne system.attributes.hands 0)}}
                             <i class="item-info fas fa-hand hover-green" data-tooltip='{{localize "PL1E.Hands"}}'>
-                                <label>{{system.attributes.hands.value}}</label>
+                                <label>{{system.attributes.hands}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.range 1)}}
+                            <i class="item-info fas fa-swords hover-green" data-tooltip="{{localize "PL1E.Range"}}">
+                                <label>{{system.attributes.range}}</label>
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.ammo 0)}}
                             <i class="item-info fas fa-tally hover-green" data-tooltip='{{localize "PL1E.Ammo"}}'>
-                                <label>{{system.attributes.ammo.value}}</label>
+                                <label>{{system.attributes.ammo}}</label>
                             </i>
                         {{/if}}
-                        {{#if (ne system.attributes.movementPenalty 0)}}
-                            <i class="item-info fas fa-weight-hanging hover-green" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
-                                <label>{{system.attributes.movementPenalty.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.slashingReduction 0)}}
-                            <i class="item-info far fa-axe-battle hover-green" data-tooltip='{{localize "PL1E.SlashingReduction"}}'>
-                                <label>{{system.attributes.slashingReduction.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.crushingReduction 0)}}
-                            <i class="item-info far fa-hammer-war hover-green" data-tooltip='{{localize "PL1E.CrushingReduction"}}'>
-                                <label>{{system.attributes.crushingReduction.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.piercingReduction 0)}}
-                            <i class="item-info far fa-dagger hover-green" data-tooltip='{{localize "PL1E.PiercingReduction"}}'>
-                                <label>{{system.attributes.piercingReduction.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.movementPenalty 0)}}
-                            <i class="item-info fas fa-weight-hanging hover-green" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
-                                <label>{{system.attributes.movementPenalty.value}}</label>
-                            </i>
+                        {{#if (ne system.attributes.parryProjectiles false)}}
+                            <i class="item-info fas fa-shield-halved hover-green" data-tooltip="{{localize "PL1E.ParryProjectiles"}}"></i>
                         {{/if}}
                     {{/unless}}
                     {{#if (eq @root.actor.type "character")}}

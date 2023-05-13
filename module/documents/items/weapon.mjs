@@ -6,7 +6,7 @@ export class Pl1eWeapon extends Pl1eItem {
     async toggle(options) {
         if (!this._canToggle()) return;
 
-        const hands = this.system.attributes.hands.value;
+        const hands = this.system.attributes.hands;
         const takenHands = (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0);
 
         // Toggle item hands
@@ -40,7 +40,7 @@ export class Pl1eWeapon extends Pl1eItem {
             // If other item is equipped on main and this item is equipped on main
             if (otherItem.system.isEquippedMain && this.system.isEquippedMain) {
                 // If other item is equipped on two hands
-                if (otherItem.system.attributes.hands.value === 2) {
+                if (otherItem.system.attributes.hands === 2) {
                     await otherItem.update({
                         "system.isEquippedMain": false,
                         "system.isEquippedSecondary": false
@@ -54,7 +54,7 @@ export class Pl1eWeapon extends Pl1eItem {
             // If other item is equipped on secondary and this item is equipped on secondary
             if (otherItem.system.isEquippedSecondary && this.system.isEquippedSecondary) {
                 // If other item is equipped on two hands
-                if (otherItem.system.attributes.hands.value === 2) {
+                if (otherItem.system.attributes.hands === 2) {
                     await otherItem.update({
                         "system.isEquippedMain": false,
                         "system.isEquippedSecondary": false

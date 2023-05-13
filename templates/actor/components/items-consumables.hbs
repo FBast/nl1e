@@ -11,35 +11,35 @@
                     {{#unless (eq @root.actor.type "npc")}}
                         {{#if (ne system.attributes.healthRecovery 0)}}
                             <i class="item-info fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRecovery"}}'>
-                                <label>{{system.attributes.healthRecovery.value}}</label>
+                                <label>{{system.attributes.healthRecovery}}</label>
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.staminaRecovery 0)}}
                             <i class="item-info fas fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRecovery"}}'>
-                                <label>{{system.attributes.staminaRecovery.value}}</label>
+                                <label>{{system.attributes.staminaRecovery}}</label>
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.manaRecovery 0)}}
                             <i class="item-info fas fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRecovery"}}'>
-                                <label>{{system.attributes.manaRecovery.value}}</label>
+                                <label>{{system.attributes.manaRecovery}}</label>
                             </i>
                         {{/if}}
-                        {{#if (gt system.attributes.uses.value 1)}}
+                        {{#if (gt system.attributes.uses 1)}}
                             {{#if (eq system.removedUses 0)}}
                                 <i class="item-info fas fa-hourglass-start hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                    <label>{{minus system.attributes.uses.value system.removedUses}}</label>
+                                    <label>{{minus system.attributes.uses system.removedUses}}</label>
                                 </i>
-                            {{else if (eq system.removedUses system.attributes.uses.value)}}
+                            {{else if (eq system.removedUses system.attributes.uses)}}
                                 <i class="item-info fas fa-hourglass-end hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                    <label>{{minus system.attributes.uses.value system.removedUses}}</label>
+                                    <label>{{minus system.attributes.uses system.removedUses}}</label>
                                 </i>
                             {{else}}
                                 <i class="item-info fas fa-hourglass-half hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                    <label>{{minus system.attributes.uses.value system.removedUses}}</label>
+                                    <label>{{minus system.attributes.uses system.removedUses}}</label>
                                 </i>
                             {{/if}}
                         {{/if}}
-                        {{#if system.attributes.isReloadable.value}}
+                        {{#if system.attributes.isReloadable}}
                             <i class="item-info fas fa-repeat hover-green" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
                         {{/if}}
                     {{/unless}}
@@ -85,12 +85,12 @@
                             <i class="fas fa-coins"></i>
                         </a>
                     {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#if (and (eq system.attributes.uses.value system.removedUses) (system.attributes.isReloadable.value))}}
+                        {{#if (and (eq system.attributes.uses system.removedUses) (system.attributes.isReloadable))}}
                             <a class="item-control consumable-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
                                 <i class="fas fa-repeat"></i>
                             </a>
                         {{/if}}
-                        {{#if (ne system.attributes.uses.value system.removedUses)}}
+                        {{#if (ne system.attributes.uses system.removedUses)}}
                             <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'>
                                 <i class="fas fa-dice-d20"></i>
                             </a>

@@ -24,19 +24,19 @@
                                 <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
                                 <label class="item-name hover-red">{{name}}</label>
                                 <div class="item-stats">
-                                    {{#if (gt system.attributes.healthRest.value 0)}}
+                                    {{#if (gt system.attributes.healthRest 0)}}
                                         <i class="item-info fas fa-heart hover-green" data-tooltip="{{localize "PL1E.HealthRest"}}">
-                                            <label>{{system.attributes.healthRest.value}}</label>
+                                            <label>{{system.attributes.healthRest}}</label>
                                         </i>
                                     {{/if}}
-                                    {{#if (gt system.attributes.staminaRest.value 0)}}
+                                    {{#if (gt system.attributes.staminaRest 0)}}
                                         <i class="item-info fas fa-wave-pulse hover-green" data-tooltip="{{localize "PL1E.StaminaRest"}}">
-                                            <label>{{system.attributes.staminaRest.value}}</label>
+                                            <label>{{system.attributes.staminaRest}}</label>
                                         </i>
                                     {{/if}}
-                                    {{#if (gt system.attributes.manaRest.value 0)}}
+                                    {{#if (gt system.attributes.manaRest 0)}}
                                         <i class="item-info fas fa-sparkles hover-green" data-tooltip="{{localize "PL1E.ManaRest"}}">
-                                            <label>{{system.attributes.manaRest.value}}</label>
+                                            <label>{{system.attributes.manaRest}}</label>
                                         </i>
                                     {{/if}}
                                 </div>
@@ -55,19 +55,19 @@
                                 <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
                                 <label class="item-name hover-red">{{name}}</label>
                                 <div class="item-stats grid-span-2">
-                                    {{#if (gt system.attributes.healthRest.value 0)}}
+                                    {{#if (gt system.attributes.healthRest 0)}}
                                         <i class="item-info fas fa-heart hover-green" data-tooltip="{{localize "PL1E.HealthRest"}}">
-                                            <label>{{system.attributes.healthRest.value}}</label>
+                                            <label>{{system.attributes.healthRest}}</label>
                                         </i>
                                     {{/if}}
-                                    {{#if (gt system.attributes.staminaRest.value 0)}}
+                                    {{#if (gt system.attributes.staminaRest 0)}}
                                         <i class="item-info fas fa-wave-pulse hover-green" data-tooltip="{{localize "PL1E.StaminaRest"}}">
-                                            <label>{{system.attributes.staminaRest.value}}</label>
+                                            <label>{{system.attributes.staminaRest}}</label>
                                         </i>
                                     {{/if}}
-                                    {{#if (gt system.attributes.manaRest.value 0)}}
+                                    {{#if (gt system.attributes.manaRest 0)}}
                                         <i class="item-info fas fa-sparkles hover-green" data-tooltip="{{localize "PL1E.ManaRest"}}">
-                                            <label>{{system.attributes.manaRest.value}}</label>
+                                            <label>{{system.attributes.manaRest}}</label>
                                         </i>
                                     {{/if}}
                                 </div>
@@ -100,7 +100,7 @@
 
                                         </div>
                                         <div class="item-controls">
-                                            <a class="item-control {{#if system.isMemorized}}item-toggle{{else if (lt (minus @root.slots system.attributes.level.value) 0)}}
+                                            <a class="item-control {{#if system.isMemorized}}item-toggle{{else if (lt (minus @root.slots system.attributes.level) 0)}}
                                             color-red{{else}}color-grey item-toggle{{/if}}" data-tooltip='{{localize "PL1E.Memorize"}}'>
                                                 <i class="fas fa-book"></i>
                                             </a>

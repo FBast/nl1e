@@ -17,6 +17,7 @@
  * Manage character data
  * @typedef {Object} CharacterData
  * @property {Pl1eActor} actor The actor of the character
+ * @property {string} actorId The actor id of the character
  * @property {Token} token The token of the character
  * @property {string} tokenId The token id of the character
  * @property {Pl1eItem} item The ability itself

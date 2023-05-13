@@ -6,8 +6,8 @@
             <h1 class="sheet-name"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
             <div class="resources grid grid-5col">
                 <div class="form-group resource box grid-span-2">
-                    <select name="system.attributes.slot.value">
-                        {{selectOptions (config "slots") selected=system.attributes.slot.value localize=true}}
+                    <select name="system.attributes.slot">
+                        {{selectOptions (config "slots") selected=system.attributes.slot localize=true}}
                     </select>
                 </div>
                 <div class="grid-span-3">

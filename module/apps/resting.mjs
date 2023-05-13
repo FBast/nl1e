@@ -49,12 +49,12 @@ export class Pl1eResting extends FormApplication {
             const sourceIdFlag = item.flags.pl1e ? item.flags.core.sourceId : null;
             // Append to foods and drinks
             if (item.type === "common" && !sourceIdFlags.includes(sourceIdFlag)) {
-                if (item.system.attributes.commonType.value === "food") foods.push(item);
-                if (item.system.attributes.commonType.value === "drink") drinks.push(item);
+                if (item.system.attributes.commonType === "food") foods.push(item);
+                if (item.system.attributes.commonType === "drink") drinks.push(item);
             }
             // Append to abilities.
             else if (item.type === "ability" && !sourceIdFlags.includes(sourceIdFlag)) {
-                abilities[item.system.attributes.level.value].push(item);
+                abilities[item.system.attributes.level].push(item);
             }
             // Push sourceId flag to handle duplicates
             if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
@@ -65,14 +65,14 @@ export class Pl1eResting extends FormApplication {
         this.stamina = 10;
         this.mana = 10;
         if (this.itemEaten) {
-            this.health += this.itemEaten.system.attributes.healthRest.value;
-            this.stamina += this.itemEaten.system.attributes.staminaRest.value;
-            this.mana += this.itemEaten.system.attributes.manaRest.value;
+            this.health += this.itemEaten.system.attributes.healthRest;
+            this.stamina += this.itemEaten.system.attributes.staminaRest;
+            this.mana += this.itemEaten.system.attributes.manaRest;
         }
         if (this.itemDrink) {
-            this.health += this.itemDrink.system.attributes.healthRest.value;
-            this.stamina += this.itemDrink.system.attributes.staminaRest.value;
-            this.mana += this.itemDrink.system.attributes.manaRest.value;
+            this.health += this.itemDrink.system.attributes.healthRest;
+            this.stamina += this.itemDrink.system.attributes.staminaRest;
+            this.mana += this.itemDrink.system.attributes.manaRest;
         }
         data.foods = foods;
         data.drinks = drinks;
@@ -135,7 +135,7 @@ export class Pl1eResting extends FormApplication {
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
         const item = this.items.find(item => item._id === itemId);
         item.system.isMemorized = !item.system.isMemorized;
-        this.slots -= (item.system.isMemorized ? 1 : -1) * item.system.attributes.level.value
+        this.slots -= (item.system.isMemorized ? 1 : -1) * item.system.attributes.level
         this.render();
     }
 

@@ -9,26 +9,7 @@
                 <label class="item-name item-tooltip-activate">{{name}}</label>
                 <div class="item-stats grid-span-2">
                     {{#unless (eq @root.actor.type "npc")}}
-                        {{#if (ne system.attributes.slashingReduction 0)}}
-                            <i class="item-info far fa-axe-battle hover-green" data-tooltip='{{localize "PL1E.SlashingReduction"}}'>
-                                <label>{{system.attributes.slashingReduction.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.crushingReduction 0)}}
-                            <i class="item-info far fa-hammer-war hover-green" data-tooltip='{{localize "PL1E.CrushingReduction"}}'>
-                                <label>{{system.attributes.crushingReduction.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.piercingReduction 0)}}
-                            <i class="item-info far fa-dagger hover-green" data-tooltip='{{localize "PL1E.PiercingReduction"}}'>
-                                <label>{{system.attributes.piercingReduction.value}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.movementPenalty 0)}}
-                            <i class="item-info fas fa-weight-hanging hover-green" data-tooltip='{{localize "PL1E.MovementPenalty"}}'>
-                                <label>{{system.attributes.movementPenalty.value}}</label>
-                            </i>
-                        {{/if}}
+
                     {{/unless}}
                     {{#if (eq @root.actor.type "character")}}
                         {{#if (gt system.price.gold 0)}}
@@ -72,19 +53,19 @@
                             <i class="fas fa-coins"></i>
                         </a>
                     {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#if (eq system.attributes.slot.value "clothes")}}
+                        {{#if (eq system.attributes.slot "clothes")}}
                             <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                                 <i class="fas fa-shirt-long-sleeve {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
                             </a>
-                        {{else if (eq system.attributes.slot.value "armor")}}
+                        {{else if (eq system.attributes.slot "armor")}}
                             <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                                 <i class="fas fa-helmet-battle {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
                             </a>
-                        {{else if (eq system.attributes.slot.value "ring")}}
+                        {{else if (eq system.attributes.slot "ring")}}
                             <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                                 <i class="fas fa-ring {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
                             </a>
-                        {{else if (eq system.attributes.slot.value "amulet")}}
+                        {{else if (eq system.attributes.slot "amulet")}}
                             <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                                 <i class="fas fa-gem {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
                             </a>

@@ -3,17 +3,17 @@
         <legend class="section-header">{{localize "PL1E.MainAttributes"}}</legend>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Activation"}}</label>
-            <select name="system.attributes.activation.value">
-                {{selectOptions (config "activations") selected=system.attributes.activation.value localize=true}}
+            <select name="system.attributes.activation">
+                {{selectOptions (config "activations") selected=system.attributes.activation localize=true}}
             </select>
         </div>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Uses"}}</label>
-            <input type="number" name="system.attributes.uses.value" value="{{system.attributes.uses.value}}" data-dtype="Number"/>
+            <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
         </div>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Reloadable"}}</label>
-            <input type="checkbox" name="system.attributes.isReloadable.value" {{checked system.attributes.isReloadable.value}} data-dtype="Boolean"/>
+            <input type="checkbox" name="system.attributes.isReloadable" {{checked system.attributes.isReloadable}} data-dtype="Boolean"/>
         </div>
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}

@@ -141,12 +141,6 @@ export class Pl1eHelpers {
     static async getDocument(id, type, options = {}) {
         let document = undefined;
 
-        // Search embedded inside an actor
-        if (options.actor !== undefined) {
-            if (type !== "Item") throw new Error("PL1E | Cannot search something else than Item inside Actor")
-            return options.actor.items.get(id);
-        }
-
         // Search inside current game
         switch (type) {
             case "Actor":

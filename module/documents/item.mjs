@@ -199,6 +199,13 @@ export class Pl1eItem extends Item {
     }
 
     /**
+     * Apply the item effect with an action
+     * @param options
+     * @returns {Promise<void>}
+     */
+    async apply(options) {}
+
+    /**
      * Activate the item
      * @returns {Promise<void>}
      */

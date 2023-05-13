@@ -240,11 +240,11 @@ export class Pl1eActorSheet extends ActorSheet {
             else if (item.type === 'ability') {
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.core.sourceId === sourceIdFlag);
+                    const sameItem = abilities[item.system.attributes.level].find(item => item.flags.core.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 }
                 else {
-                    abilities[item.system.attributes.level.value].push(item);
+                    abilities[item.system.attributes.level].push(item);
                 }
             }
             // Push sourceId flag to handle duplicates

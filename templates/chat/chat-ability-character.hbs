@@ -25,7 +25,7 @@
     <div class="card-content">
         <!-- Description of the ability -->
         {{characterData.item.system.description}}
-        {{#if (ne characterData.attributes.characterRoll.value "none")}}
+        {{#if (ne characterData.attributes.characterRoll "none")}}
             <!-- Result of the roll -->
             <div class="dice-roll">
                 <div class="dice-result">
@@ -56,8 +56,8 @@
         {{/if}}
     </div>
     <footer class="card-buttons">
-        <button data-action="launch" data-item-id={{characterData.itemId}}>{{localize "PL1E.Launch"}}</button>
-        <button data-action="counter" data-item-id={{characterData.itemId}}>{{localize "PL1E.Counter"}}</button>
-        <button data-action="cancel" data-item-id={{characterData.itemId}}>{{localize "PL1E.Cancel"}}</button>
+        <button data-action="launch" data-item-id={{characterData.itemId}} data-actor-id={{characterData.actorId}}>{{localize "PL1E.Launch"}}</button>
+        <button data-action="counter" data-item-id={{characterData.itemId}} data-actor-id={{characterData.actorId}}>{{localize "PL1E.Counter"}}</button>
+        <button data-action="cancel" data-item-id={{characterData.itemId}} data-actor-id={{characterData.actorId}}>{{localize "PL1E.Cancel"}}</button>
     </footer>
 </div>

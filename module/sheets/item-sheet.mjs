@@ -89,6 +89,9 @@ export class Pl1eItemSheet extends ItemSheet {
         // Prepare refItems
         await this._prepareItems(context);
 
+        // Prepare macros
+        await this._prepareMacros(context);
+
         // Add the actor's data to context.data for easier access
         context.system = itemData.system;
         context.flags = itemData.flags;
@@ -195,6 +198,19 @@ export class Pl1eItemSheet extends ItemSheet {
         context.activeAspects = this.item.system.activeAspects;
         context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
         context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+    }
+
+    async _prepareMacros(context) {
+        const itemMacros = {
+            "": "PL1E.None"
+        };
+
+        const itemMacrosPack = game.packs.find(pack => pack.metadata.name === "item-macros");
+        for (const macro of await itemMacrosPack.getDocuments()) {
+            itemMacros[macro._id] = macro.name;
+        }
+
+        context.itemMacros = itemMacros;
     }
 
     /**

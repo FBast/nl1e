@@ -31,7 +31,7 @@ export class AbilityTemplate extends MeasuredTemplate {
    * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
    */
   static async fromItem(item, attributes, activeAspects) {
-    const areaShape = attributes.areaShape.value;
+    const areaShape = attributes.areaShape;
 
     // Save targetGroups for token selection
     let targetGroups = [];
@@ -61,22 +61,22 @@ export class AbilityTemplate extends MeasuredTemplate {
         templateData.height = gridSize;
         break;
       case "circle":
-        templateData.distance = attributes.circleRadius.value * game.system.gridDistance;
+        templateData.distance = attributes.circleRadius * game.system.gridDistance;
         break;
       case "cone":
-        templateData.distance = attributes.coneLength.value * game.system.gridDistance;
-        templateData.angle = attributes.coneAngle.value;
+        templateData.distance = attributes.coneLength * game.system.gridDistance;
+        templateData.angle = attributes.coneAngle;
         break;
       case "square":
         templateData.t = "rect";
-        templateData.distance = attributes.squareLength.value * game.system.gridDistance;
-        templateData.width = attributes.squareLength.value * game.system.gridDistance;
-        templateData.height = attributes.squareLength.value * game.system.gridDistance;
+        templateData.distance = attributes.squareLength * game.system.gridDistance;
+        templateData.width = attributes.squareLength * game.system.gridDistance;
+        templateData.height = attributes.squareLength * game.system.gridDistance;
         templateData.direction = 45;
         break;
       case "ray":
         templateData.width = game.system.gridDistance;
-        templateData.distance = attributes.rayLength.value * game.system.gridDistance;
+        templateData.distance = attributes.rayLength * game.system.gridDistance;
         break;
     }
 
@@ -182,7 +182,7 @@ export class AbilityTemplate extends MeasuredTemplate {
     templateCenter.x -= offset;
     templateCenter.y -= offset;
     // Clamp with range
-    const range = this.item.system.attributes.range.value * game.system.gridDistance;
+    const range = this.item.system.attributes.range * game.system.gridDistance;
     templateCenter = this._clampVectorRadius(templateCenter, this.token, range * 100);
     // Snap position
     templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 1);

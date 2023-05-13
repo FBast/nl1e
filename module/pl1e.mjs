@@ -2,7 +2,6 @@ import {PL1E} from "./config/config.mjs";
 // Import document classes.
 import {Pl1eActor} from "./documents/actor.mjs";
 import {Pl1eItem} from "./documents/item.mjs";
-import {Pl1eActiveEffect} from "./documents/items/effect.mjs";
 // Import subDocument classes
 import {Pl1eActorProxy} from "./documents/actorProxy.mjs";
 import {Pl1eItemProxy} from "./documents/itemProxy.mjs";
@@ -54,21 +53,6 @@ Hooks.once('init', async function () {
     Actors.registerSheet("pl1e", Pl1eActorSheet, {makeDefault: true});
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
-
-    game.settings.register('mySystem', 'myButton', {
-        name: 'My Button',
-        hint: 'Click to execute some code',
-        scope: 'world',
-        config: true,
-        type: String,
-        default: '',
-        onChange: value => {
-            if (value === 'clicked') {
-                // Your code here
-                console.log('Button clicked!');
-            }
-        }
-    });
 
     game.settings.register("pl1e", "enableAutoResetActorsItems", {
         name: "Enable auto reset actors items",

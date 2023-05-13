@@ -13,7 +13,7 @@ export class Pl1eAbility extends Pl1eItem {
 
     /** @override */
     async toggle(options) {
-        if (!this.system.isMemorized && this.actor.system.general.slots - this.system.attributes.level.value < 0) return;
+        if (!this.system.isMemorized && this.actor.system.general.slots - this.system.attributes.level < 0) return;
 
         await this.update({
             ["system.isMemorized"]: !this.system.isMemorized
@@ -34,6 +34,7 @@ export class Pl1eAbility extends Pl1eItem {
          */
         let characterData = {
             actor: this.actor,
+            actorId: this.actor._id,
             token: token,
             tokenId: token.document._id,
             item: this,
@@ -47,8 +48,8 @@ export class Pl1eAbility extends Pl1eItem {
         this._linkItem(characterData);
 
         // Character rollData if exist
-        if (characterData.attributes.characterRoll.value !== 'none') {
-            const skill = characterData.actor.system.skills[characterData.attributes.characterRoll.value];
+        if (characterData.attributes.characterRoll !== 'none') {
+            const skill = characterData.actor.system.skills[characterData.attributes.characterRoll];
             characterData.rollData = await characterData.actor.rollSkill(skill);
             characterData.result = characterData.rollData.total;
         }
@@ -66,14 +67,14 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Target character if areaShape is self
-        if (characterData.attributes.areaShape.value === "self") {
+        if (characterData.attributes.areaShape === "self") {
             token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
         }
         // Else create target selection templates
         else {
-            if (characterData.attributes.areaNumber.value !== 0 && characterData.attributes.areaShape.value !== "self") {
+            if (characterData.attributes.areaNumber !== 0 && characterData.attributes.areaShape !== "self") {
                 await characterData.actor.sheet?.minimize();
-                for (let i = 0; i < characterData.attributes.areaNumber.value; i++) {
+                for (let i = 0; i < characterData.attributes.areaNumber; i++) {
                     const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
                     abilityData.templates.push(template);
                     await template?.drawPreview();
@@ -83,7 +84,7 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Activate macro if found
-        const macroId = characterData.item.system.attributes.activationMacro.value;
+        const macroId = characterData.item.system.attributes.activationMacro;
         const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
         if (macro !== undefined) macro.execute(characterData, {
             active: true
@@ -111,7 +112,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Activate macro if found end
         const characterData = this.abilityData.characterData;
-        const macroId = characterData.item.system.attributes.activationMacro.value;
+        const macroId = characterData.item.system.attributes.activationMacro;
         const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
         if (macro !== undefined) macro.execute(characterData, {
             active: false
@@ -145,8 +146,8 @@ export class Pl1eAbility extends Pl1eItem {
         let targetsData = []
         for (let targetToken of targetTokens) {
             const targetData = {};
-            if (characterData.attributes.targetRoll.value !== "none") {
-                const skill = targetToken.actor.system.skills[characterData.attributes.targetRoll.value];
+            if (characterData.attributes.targetRoll !== "none") {
+                const skill = targetToken.actor.system.skills[characterData.attributes.targetRoll];
                 targetData.rollData = await targetToken.actor.rollSkill(skill);
                 targetData.result = characterData.result - targetData.rollData.total;
             }
@@ -165,7 +166,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         for (const targetData of targetsData) {
             // Activate macro if found
-            const macroId = characterData.item.system.attributes.launchMacro.value;
+            const macroId = characterData.item.system.attributes.launchMacro;
             const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
             if (macro !== undefined) macro.execute(characterData, targetData);
 
@@ -186,25 +187,28 @@ export class Pl1eAbility extends Pl1eItem {
         for (let [id, attribute] of Object.entries(characterData.attributes)) {
             let calculatedAttribute = {...attribute};
             const attributeConfig = CONFIG.PL1E.attributes[id];
-            if (attributeConfig.type === "number") {
-                if (calculatedAttribute.resolutionType === "multiplyBySuccess") {
-                    calculatedAttribute.value *= characterData.result > 0 ? characterData.result : 0;
+            if (attributeConfig !== undefined) {
+                if (attributeConfig.type === "number" && characterData.attributes[`${id}ResolutionType`] !== undefined) {
+                    const resolutionType = characterData.attributes[`${id}ResolutionType`];
+                    if (resolutionType === "multiplyBySuccess") {
+                        calculatedAttribute *= characterData.result > 0 ? characterData.result : 0;
+                    }
+                    if (resolutionType === "valueIfSuccess") {
+                        calculatedAttribute = characterData.result > 0 ? calculatedAttribute : 0;
+                    }
                 }
-                if (calculatedAttribute.resolutionType === "valueIfSuccess") {
-                    calculatedAttribute.value = characterData.result > 0 ? calculatedAttribute.value : 0;
+                // Type select attribute are very specific and should handle one by one
+                if (attributeConfig.type === "select") {
+                    if (id === "activation") {
+                        calculatedAttributes[calculatedAttribute] = {
+                            value: -1
+                        };
+                    }
                 }
-            }
-            // Type select attribute are very specific and should handle one by one
-            if (attributeConfig.type === "select") {
-                if (id === "activation") {
-                    calculatedAttributes[calculatedAttribute.value] = {
-                        value: -1
-                    };
+                // Negate some attributes
+                if (attributeConfig.invertSign) {
+                    calculatedAttribute *= -1;
                 }
-            }
-            // Negate some attributes
-            if (attributeConfig.invertSign) {
-                calculatedAttribute.value *= -1;
             }
             calculatedAttributes[id] = calculatedAttribute;
         }
@@ -221,11 +225,11 @@ export class Pl1eAbility extends Pl1eItem {
 
         for (const [key, attribute] of Object.entries(characterData.attributes)) {
             const attributeConfig = CONFIG.PL1E.attributes[key];
-            if (attributeConfig?.data === undefined || attribute.value === 0) continue;
+            if (attributeConfig?.data === undefined || attribute === 0) continue;
             // Apply effects
             const attributeDataConfig = CONFIG.PL1E[attributeConfig.dataGroup][attributeConfig.data];
             let actorValue = foundry.utils.getProperty(characterData.token.actor, attributeDataConfig.path);
-            actorValue += attribute.value;
+            actorValue += attribute;
             await characterData.token.actor.update({
                 [attributeDataConfig.path]: actorValue
             });
@@ -239,10 +243,10 @@ export class Pl1eAbility extends Pl1eItem {
      */
     _linkItem(characterData) {
         // Get linked attributes
-        if (characterData.attributes.abilityLink.value === 'mastery') {
-            const relatedMastery = attributes.mastery.value;
+        if (characterData.attributes.abilityLink === 'mastery') {
+            const relatedMastery = attributes.mastery;
             const relatedItems = characterData.actor.items.filter(value => value.type === 'weapon'
-                && value.system.attributes.mastery.value === relatedMastery);
+                && value.system.attributes.mastery === relatedMastery);
             if (relatedItems.length > 1) {
                 ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
                 return;
@@ -255,7 +259,7 @@ export class Pl1eAbility extends Pl1eItem {
             Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
             Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
         }
-        if (characterData.attributes.abilityLink.value === 'parent') {
+        if (characterData.attributes.abilityLink === 'parent') {
             let relatedItems = [];
             for (const item of characterData.actor.items) {
                 if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
@@ -289,27 +293,27 @@ export class Pl1eAbility extends Pl1eItem {
             return false;
         }
         // If cost is not affordable
-        if (itemAttributes.staminaCost.value > actor.system.resources.stamina.value) {
+        if (itemAttributes.staminaCost > actor.system.resources.stamina) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughStamina"));
             return false;
         }
-        if (itemAttributes.manaCost.value > actor.system.resources.mana.value) {
+        if (itemAttributes.manaCost > actor.system.resources.mana) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
             return false;
         }
-        if (itemAttributes.manaCost.value > actor.system.resources.mana.value) {
+        if (itemAttributes.manaCost > actor.system.resources.mana) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
             return false;
         }
-        if (itemAttributes.activation.value === "action" && actor.system.misc.action <= 0) {
+        if (itemAttributes.activation === "action" && actor.system.misc.action <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
         }
-        if (itemAttributes.activation.value === "reaction" && actor.system.misc.reaction <= 0) {
+        if (itemAttributes.activation === "reaction" && actor.system.misc.reaction <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreRection"));
             return false;
         }
-        if (itemAttributes.activation.value === "instant" && actor.system.misc.instant <= 0) {
+        if (itemAttributes.activation === "instant" && actor.system.misc.instant <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreInstant"));
             return false;
         }
