@@ -2,13 +2,13 @@
     <ul class="traits-list">
         {{#each abilities as |abilities level|}}
             {{#each abilities}}
-                <li class="item item-edit tag" data-item-uuid="{{this.uuid}}">
+                <li class="item item-edit tag" data-item-id="{{this._id}}">
                     <a>{{this.name}} ({{level}})</a>
                 </li>
             {{/each}}
         {{/each}}
         {{#each features}}
-            <li class="item item-edit tag" data-item-uuid="{{this.uuid}}">
+            <li class="item item-edit tag" data-item-id="{{this._id}}">
                 <a>{{this.name}}</a>
             </li>
         {{/each}}

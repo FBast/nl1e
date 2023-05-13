@@ -55,15 +55,19 @@ Hooks.once('init', async function () {
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
 
-    game.settings.register("pl1e", "enableCompendiumLinkTransfer", {
-        name: "Enable compendium link transfer",
-        hint: "If you disable this you can only create linked items from compendium to compendium object, " +
-            "every objects link will break when exported to a compendium (this is the default behavior for " +
-            "dnd5 advancement link system).",
-        scope: "world",
+    game.settings.register('mySystem', 'myButton', {
+        name: 'My Button',
+        hint: 'Click to execute some code',
+        scope: 'world',
         config: true,
-        type: Boolean,
-        default: true
+        type: String,
+        default: '',
+        onChange: value => {
+            if (value === 'clicked') {
+                // Your code here
+                console.log('Button clicked!');
+            }
+        }
     });
 
     game.settings.register("pl1e", "enableAutoResetActorsItems", {

@@ -23,7 +23,7 @@ export class Pl1eEvent {
      */
     static async onTokenEdit(event) {
         const tokenId = $(event.currentTarget).data("token-id");
-        const tokenDocument = await fromUuid(tokenId);
+        const tokenDocument = await Pl1eHelpers.getDocument(tokenId, "Token");
 
         tokenDocument.sheet.renderOnTop();
     }
@@ -33,8 +33,8 @@ export class Pl1eEvent {
      * @param event The originating click event
      */
     static async onActorEdit(event) {
-        const actorUuid = $(event.currentTarget).closest(".item").data("actor-uuid");
-        const actor = await fromUuid(actorUuid);
+        const actorId = $(event.currentTarget).closest(".item").data("actor-id");
+        const actor = await Pl1eHelpers.getDocument(actorId, "Actor");
 
         actor.sheet.renderOnTop();
     }
@@ -45,14 +45,15 @@ export class Pl1eEvent {
      * @param {Actor|Item} document the document of the item
      */
     static async onItemEdit(event, document) {
-        const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
 
         let item;
         if (itemId && document instanceof Pl1eActor)
-            item = document.items.get(itemId);
-        else if (itemUuid) {
-            item = await fromUuid(itemUuid);
+            item = await Pl1eHelpers.getDocument(itemId, "Item", {
+                actor: document
+            });
+        else if (itemId) {
+            item = await Pl1eHelpers.getDocument(itemId, "Item");
         }
 
         item.sheet.renderOnTop();
@@ -132,16 +133,17 @@ export class Pl1eEvent {
      */
     static async onItemRemove(event, document) {
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
-        const itemUuid = $(event.currentTarget).closest(".item").data("item-uuid");
 
         // Remove embedded items from actor
         if (document instanceof Pl1eActor && itemId) {
-            const item = document.items.get(itemId);
+            const item = await Pl1eHelpers.getDocument(itemId, "Item", {
+                actor: document
+            })
             await document.removeItem(item);
         }
         // Remove refItem from item
-        else if (document instanceof Pl1eItem && itemUuid) {
-            const item = await fromUuid(itemUuid);
+        else if (document instanceof Pl1eItem && itemId) {
+            const item = await Pl1eHelpers.getDocument(itemId, "Item");
             if (item) await document.removeRefItem(item);
         }
 
@@ -291,7 +293,7 @@ export class Pl1eEvent {
         /**
          * @type {Pl1eItem}
          */
-        const item = await fromUuid(itemId);
+        const item = await Pl1eHelpers.getDocument(itemId, "Item");
 
         const options = {
             action: action

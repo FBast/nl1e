@@ -1,5 +1,5 @@
 import {Pl1eAspect} from "../helpers/aspect.mjs";
-import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -7,8 +7,8 @@ import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
  */
 export class Pl1eActor extends Actor {
 
-    get originalUuid() {
-        return this.getFlag("pl1e", "originalUuid");
+    get sourceId() {
+        return this.getFlag("pl1e", "sourceId");
     }
 
     /**
@@ -50,6 +50,7 @@ export class Pl1eActor extends Actor {
             const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
             if (name) updateData['name'] = name;
         }
+
         await this.updateSource( updateData );
     }
 
@@ -57,19 +58,16 @@ export class Pl1eActor extends Actor {
     async _onCreate(data, options, userId) {
         super._onCreate(data, options, userId);
 
-        // This flag maintain retroactive link transfer
-        if (this.compendium === undefined)
-            await this.setFlag("pl1e", "originalUuid", this.uuid);
-
-        const enableCompendiumLinkTransfer = game.settings.get("pl1e", "enableCompendiumLinkTransfer");
-        if (enableCompendiumLinkTransfer) await Pl1eSynchronizer.synchronizeActor(this);
     }
 
     /** @inheritDoc */
     async _preDelete(options, user) {
-        // Removing all items while refresh items references to this actor
-        for (const item of this.items) {
-            await this.removeItem(item);
+        // If the actor is the last then update refs
+        const documents = await Pl1eHelpers.getDocuments(this._id, "Item");
+        if (documents.length === 1) {
+            for (const item of this.items) {
+                await this.removeItem(item);
+            }
         }
 
         return super._preDelete(options, user);
@@ -203,8 +201,8 @@ export class Pl1eActor extends Actor {
      */
     async addItem(item, childId = undefined) {
         // Add this actor in item actors refs if does not exist
-        if (!item.system.refActors.includes(this.uuid)) {
-            item.system.refActors.push(this.uuid);
+        if (!item.system.refActors.includes(this._id)) {
+            item.system.refActors.push(this._id);
             await item.update({
                 "system.refActors": item.system.refActors
             });
@@ -214,7 +212,6 @@ export class Pl1eActor extends Actor {
         newItem = newItem[0];
 
         // Flag the new item
-        if (!newItem.sourceUuid) await newItem.setFlag("pl1e", "sourceUuid", item.uuid);
         if (childId) await newItem.setFlag("pl1e", "childId", childId);
         const parentId = randomID();
         await newItem.setFlag("pl1e", "parentId", parentId);
@@ -222,7 +219,7 @@ export class Pl1eActor extends Actor {
         // Add new item children
         if (newItem.system.refItemsChildren && newItem.system.refItemsChildren.length > 0) {
             for (let id of newItem.system.refItemsChildren) {
-                const refItem = await fromUuid(id);
+                const refItem = await Pl1eHelpers.getDocument(id, "Item");
                 await this.addItem(refItem, parentId);
             }
         }
@@ -239,11 +236,11 @@ export class Pl1eActor extends Actor {
             if (item.parentId === otherItem.childId) await this.removeItem(otherItem);
         }
 
-        // Remove this actor in item actors refs if no other item with same sourceUuid
-        if (this.items.filter(otherItem => otherItem.sourceUuid === item.sourceUuid).length === 1) {
-            const sourceItem = await fromUuid(item.sourceUuid);
-            if (sourceItem !== null) {
-                const index = sourceItem.system.refActors.indexOf(this.uuid);
+        // Remove this actor in item actors refs if no other item with same sourceId
+        if (this.items.filter(otherItem => otherItem.sourceId === item.sourceId).length === 1) {
+            const sourceItem = await Pl1eHelpers.getDocument(item.sourceId, "Item");
+            if (sourceItem != null) {
+                const index = sourceItem.system.refActors.indexOf(this._id);
                 if (index > -1) sourceItem.system.refActors.splice(index, 1);
                 await sourceItem.update({
                     "system.refActors": sourceItem.system.refActors

@@ -35,9 +35,9 @@ export class Pl1eAbility extends Pl1eItem {
         let characterData = {
             actor: this.actor,
             token: token,
-            tokenId: token.document.uuid,
+            tokenId: token.document._id,
             item: this,
-            itemId: this.uuid,
+            itemId: this._id,
             attributes: JSON.parse(JSON.stringify(this.system.attributes)),
             activeAspects: this.system.activeAspects,
             linkedItem: null
@@ -154,7 +154,7 @@ export class Pl1eAbility extends Pl1eItem {
                 targetData.result = characterData.result;
             }
             targetData.token = targetToken;
-            targetData.tokenId = targetToken.document.uuid;
+            targetData.tokenId = targetToken.document._id;
             targetsData.push(targetData);
         }
 
@@ -261,7 +261,7 @@ export class Pl1eAbility extends Pl1eItem {
                 if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
                 if (item.system.subItems === undefined) continue;
                 for (let [key, subItem] of item.system.subItems) {
-                    if (characterData.item.sourceUuid !== subItem.sourceUuid) continue;
+                    if (characterData.item.sourceId !== subItem.sourceId) continue;
                     relatedItems.push(item);
                 }
             }

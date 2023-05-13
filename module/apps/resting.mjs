@@ -44,20 +44,20 @@ export class Pl1eResting extends FormApplication {
         const foods = [];
         const drinks = [];
         const abilities = {1: [], 2: [], 3: [], 4: [], 5: []};
-        const sourceUuidFlags = [];
+        const sourceIdFlags = [];
         for (let item of this.items) {
-            const sourceUuidFlag = item.flags.pl1e ? item.flags.pl1e.sourceUuid : null;
+            const sourceIdFlag = item.flags.pl1e ? item.flags.core.sourceId : null;
             // Append to foods and drinks
-            if (item.type === "common" && !sourceUuidFlags.includes(sourceUuidFlag)) {
+            if (item.type === "common" && !sourceIdFlags.includes(sourceIdFlag)) {
                 if (item.system.attributes.commonType.value === "food") foods.push(item);
                 if (item.system.attributes.commonType.value === "drink") drinks.push(item);
             }
             // Append to abilities.
-            else if (item.type === "ability" && !sourceUuidFlags.includes(sourceUuidFlag)) {
+            else if (item.type === "ability" && !sourceIdFlags.includes(sourceIdFlag)) {
                 abilities[item.system.attributes.level.value].push(item);
             }
-            // Push sourceUuid flag to handle duplicates
-            if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
+            // Push sourceId flag to handle duplicates
+            if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
         }
 
         // Rest part
@@ -223,18 +223,18 @@ export class Pl1eResting extends FormApplication {
     _updateItems() {
         // Retrieve items and copy
         for (let item of this.actor.items) {
-            const sourceUuid = item.flags.pl1e ? item.flags.pl1e.sourceUuid : null;
-            if (this.items.some(item => item.flags.pl1e ? item.flags.pl1e.sourceUuid === sourceUuid : null)) continue;
+            const sourceId = item.flags.core ? item.flags.core.sourceId : null;
+            if (this.items.some(item => item.flags.core ? item.flags.core.sourceId === sourceId : null)) continue;
             this.items.push(item.toObject());
         }
 
-        // Get sourceUuids of items in origin
-        const originSourceUuids = this.actor.items.map(item => item.flags.pl1e?.sourceUuid);
+        // Get sourceIds of items in origin
+        const originSourceIds = this.actor.items.map(item => item.flags.core?.sourceId);
 
         // Filter items to only keep those in origin
         this.items = this.items.filter(item => {
-            const sourceUuid = item.flags.pl1e?.sourceUuid;
-            return originSourceUuids.includes(sourceUuid);
+            const sourceId = item.flags.core?.sourceId;
+            return originSourceIds.includes(sourceId);
         });
     }
 

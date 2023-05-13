@@ -47,8 +47,7 @@ export class AbilityTemplate extends MeasuredTemplate {
       direction: 0,
       x: 0,
       y: 0,
-      fillColor: game.user.color,
-      flags: {pl1e: {origin: item.uuid}}
+      fillColor: game.user.color
     };
 
     // Additional type-specific data

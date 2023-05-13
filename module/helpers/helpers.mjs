@@ -120,22 +120,41 @@ export class Pl1eHelpers {
      * @param newUuid
      * @returns {Promise<boolean>}
      */
-    static async createRecursiveLoop(item, newUuid) {
-        if (item.uuid === newUuid) return true;
-        for (const uuid of item.system.refItemsParents) {
-            const subItem = await fromUuid(uuid);
-            if (await this.createRecursiveLoop(subItem, newUuid)) {
+    static async createRecursiveLoop(item, newId) {
+        if (item._id === newId) return true;
+        for (const id of item.system.refItemsParents) {
+            const subItem = await Pl1eHelpers.getDocument(id, "Item");
+            if (await this.createRecursiveLoop(subItem, newId)) {
                 return true;
             }
         }
         return false;
     }
 
-    static async getDocument(id, type) {
+    /**
+     * Get a document from a compendium if not in the game using id
+     * @param {string} id
+     * @param {string} type
+     * @param {Object} options
+     * @returns {Promise<Pl1eItem | Pl1eActor | Macro>}
+     */
+    static async getDocument(id, type, options = {}) {
         let document = undefined;
+
+        // Search embedded inside an actor
+        if (options.actor !== undefined) {
+            if (type !== "Item") throw new Error("PL1E | Cannot search something else than Item inside Actor")
+            return options.actor.items.get(id);
+        }
 
         // Search inside current game
         switch (type) {
+            case "Actor":
+                document = game.actors.get(id)
+                break;
+            case "Item":
+                document = game.items.get(id)
+                break;
             case "Macro":
                 document = game.macros.get(id)
                 break;
@@ -145,11 +164,54 @@ export class Pl1eHelpers {
             // Search inside compendiums
             for (const pack of game.packs.filter(pack => pack.documentName === type)) {
                 document = await pack.getDocument(id);
-                if (document !== undefined) break;
+                if (document) break;
             }
         }
 
         return document;
+    }
+
+    /**
+     * Get a document from a compendium if not in the game using id
+     * @param {string} id
+     * @param {string} type
+     * @param {Object} options
+     * @returns {Promise<Pl1eItem[] | Pl1eActor[] | Macro[]>}
+     */
+    static async getDocuments(id, type, options = {}) {
+        let documents = [];
+        let document = undefined;
+
+        // Search embedded inside an actor
+        if (options.actor !== undefined) {
+            if (type !== "Item") throw new Error("PL1E | Cannot search something else than Item inside Actor")
+            document = options.actor.items.get(id);
+            if (document) documents.push(document);
+        }
+
+        // Search inside current game
+        switch (type) {
+            case "Actor":
+                document = game.actors.get(id)
+                if (document) documents.push(document);
+                break;
+            case "Item":
+                document = game.items.get(id)
+                if (document) documents.push(document);
+                break;
+            case "Macro":
+                document = game.macros.get(id)
+                if (document) documents.push(document);
+                break;
+        }
+
+        // Search inside compendiums
+        for (const pack of game.packs.filter(pack => pack.documentName === type)) {
+            document = await pack.getDocument(id);
+            if (document) documents.push(document);
+        }
+
+        return documents;
     }
 
 }

@@ -43,7 +43,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     icon: 'fas fa-clone',
                     onclick: async () => {
                         await this.close();
-                        const item = await fromUuid(this.item.sourceUuid);
+                        const item = await Pl1eHelpers.getDocument(this.item.sourceId, "Item");
                         item.sheet.render(true);
                     }
                 });
@@ -54,7 +54,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     class: 'button-reset',
                     icon: 'fal fa-clone',
                     onclick: async () => {
-                        await Pl1eSynchronizer.resetActorsItems(this.item);
+                        await Pl1eSynchronizer.resetActorsItems(this.item, true);
                     }
                 });
             }
@@ -131,7 +131,8 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Check item type and subtype
         let data = JSON.parse(event.dataTransfer?.getData("text/plain"));
-        let item = await fromUuid(data.uuid);
+        let itemId = data.uuid.split(".")[1];
+        let item = await Pl1eHelpers.getDocument(itemId, "Item");
         if (!item) throw new Error(`PL1E | No item found with UUID ${data}`);
 
         if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
@@ -140,47 +141,47 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     async _prepareItems(context) {
-        // Get ref itemsParents using uuid
+        // Get ref itemsParents using id
         const itemsParents = [];
         for (let i = 0; i < this.item.system.refItemsParents.length; i++) {
-            const uuid = this.item.system.refItemsParents[i];
-            let item = await fromUuid(uuid);
+            const id = this.item.system.refItemsParents[i];
+            let item = await Pl1eHelpers.getDocument(id, "Item");
             if (!item) {
                 // Create an unknown item for display
                 item = {
                     type: "unknown",
-                    uuid: uuid
+                    id: id
                 }
             }
             itemsParents[i] = item;
         }
 
 
-        // Get ref itemsChildren using uuid
+        // Get ref itemsChildren using id
         const itemsChildren = [];
         for (let i = 0; i < this.item.system.refItemsChildren.length; i++) {
-            const uuid = this.item.system.refItemsChildren[i];
-            let item = await fromUuid(uuid);
+            const id = this.item.system.refItemsChildren[i];
+            let item = await Pl1eHelpers.getDocument(id, "Item");
             if (!item) {
                 // Create an unknown item for display
                 item = {
                     type: "unknown",
-                    uuid: uuid
+                    id: id
                 }
             }
             itemsChildren[i] = item;
         }
 
-        // Get ref actorsParents using uuid
+        // Get ref actorsParents using id
         const actorsParents = [];
         for (let i = 0; i < this.item.system.refActors.length; i++) {
-            const uuid = this.item.system.refActors[i];
-            let actor = await fromUuid(uuid);
+            const id = this.item.system.refActors[i];
+            let actor = await Pl1eHelpers.getDocument(id, "Actor");
             if (!actor) {
                 // Create an unknown item for display
                 actor = {
                     type: "unknown",
-                    uuid: uuid
+                    id: id
                 }
             }
             actorsParents[i] = actor;

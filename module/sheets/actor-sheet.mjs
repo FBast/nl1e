@@ -202,9 +202,9 @@ export class Pl1eActorSheet extends ActorSheet {
         };
 
         // Iterate through subItems, allocating to containers
-        const sourceUuidFlags = [];
+        const sourceIdFlags = [];
         for (let item of context.items) {
-            const sourceUuidFlag = item.flags.pl1e ? item.flags.pl1e.sourceUuid : null;
+            const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;
             // Append to item categories
             if (item.type === 'weapon') {
                 weapons.push(item);
@@ -214,8 +214,8 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             else if (item.type === 'consumable') {
                 // Increase units
-                if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = consumables.find(item => item.flags.pl1e.sourceUuid === sourceUuidFlag);
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = consumables.find(item => item.flags.core.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -224,8 +224,8 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             else if (item.type === 'common') {
                 // Increase units
-                if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = commons.find(item => item.flags.pl1e.sourceUuid === sourceUuidFlag);
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = commons.find(item => item.flags.core.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -239,16 +239,16 @@ export class Pl1eActorSheet extends ActorSheet {
             // Append to abilities.
             else if (item.type === 'ability') {
                 // Increase units
-                if (sourceUuidFlags.includes(sourceUuidFlag)) {
-                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.pl1e.sourceUuid === sourceUuidFlag);
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = abilities[item.system.attributes.level.value].find(item => item.flags.core.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 }
                 else {
                     abilities[item.system.attributes.level.value].push(item);
                 }
             }
-            // Push sourceUuid flag to handle duplicates
-            if (sourceUuidFlag && !sourceUuidFlags.includes(sourceUuidFlag)) sourceUuidFlags.push(sourceUuidFlag);
+            // Push sourceId flag to handle duplicates
+            if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
         }
 
         // Assign and return
@@ -354,7 +354,7 @@ export class Pl1eActorSheet extends ActorSheet {
             let sheetPosition = Pl1eHelpers.screenCenter();
             for (const otherItem of this.actor.items) {
                 const childId = otherItem.childId;
-                if (childId && otherItem.sourceUuid === item.sourceUuid) {
+                if (childId && otherItem.sourceId === item.sourceId) {
                     const parentItem = this.actor.items.find(item => item.parentId === childId);
                     parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
                     sheetPosition.x += 30;
@@ -427,6 +427,14 @@ export class Pl1eActorSheet extends ActorSheet {
         return effect.sheet.render(true, {
             editable: game.user.isGM
         });
+    }
+
+    /**
+     * Short method to render if not or bring on top
+     */
+    renderOnTop() {
+        if (this.rendered) this.bringToTop();
+        else this.render(true);
     }
 
 }

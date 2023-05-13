@@ -20,7 +20,7 @@
  * @property {Token} token The token of the character
  * @property {string} tokenId The token id of the character
  * @property {Pl1eItem} item The ability itself
- * @property {string} itemId The ability uuid
+ * @property {string} itemId The ability id
  * @property {RollData} rollData The roll data of the character
  * @property {number} result The result of the rollData
  * @property {object} attributes The attributes of the item
