@@ -82,6 +82,27 @@
       }
     }
 
+    .item-icons {
+      flex: 2;
+      margin: 0;
+      overflow: hidden;
+      font-size: 13px;
+      text-align: left;
+      align-items: center;
+      display: -webkit-box;
+      h3, h4 {
+        margin: 0;
+        white-space: nowrap;
+        overflow-x: hidden;
+      }
+      & > * {
+        flex: 1;
+      }
+      .item-info {
+        padding: 5px;
+      }
+    }
+
     // Control Buttons
     .item-controls {
       display: contents;

@@ -7,22 +7,14 @@
             <div class="flexrow">
                 <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
                 <label class="item-name item-tooltip-activate">{{system.units}}x {{name}}</label>
-                <div class="item-stats">
+                <div class="item-icons">
                     {{#unless (eq @root.actor.type "npc")}}
-                        {{#if (ne system.attributes.healthRecovery 0)}}
-                            <i class="item-info fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRecovery"}}'>
-                                <label>{{system.attributes.healthRecovery}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.staminaRecovery 0)}}
-                            <i class="item-info fas fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRecovery"}}'>
-                                <label>{{system.attributes.staminaRecovery}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.manaRecovery 0)}}
-                            <i class="item-info fas fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRecovery"}}'>
-                                <label>{{system.attributes.manaRecovery}}</label>
-                            </i>
+                        {{#if (eq system.attributes.activation "action")}}
+                            <i class="item-info fas fa-clock hover-green" data-tooltip='{{localize "PL1E.Action"}}'></i>
+                        {{else if (eq system.attributes.activation "instant")}}
+                            <i class="item-info fas fa-bell hover-green" data-tooltip='{{localize "PL1E.Instant"}}'></i>
+                        {{else if (eq system.attributes.activation "reaction")}}
+                            <i class="item-info fas fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.Reaction"}}'></i>
                         {{/if}}
                         {{#if (gt system.attributes.uses 1)}}
                             {{#if (eq system.removedUses 0)}}
@@ -85,14 +77,14 @@
                             <i class="fas fa-coins"></i>
                         </a>
                     {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#if (and (eq system.attributes.uses system.removedUses) (system.attributes.isReloadable))}}
+                        {{#if (and (ne system.removedUses 0) system.attributes.isReloadable)}}
                             <a class="item-control consumable-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
                                 <i class="fas fa-repeat"></i>
                             </a>
                         {{/if}}
                         {{#if (ne system.attributes.uses system.removedUses)}}
                             <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'>
-                                <i class="fas fa-dice-d20"></i>
+                                <i class="fas fa-flask-round-potion"></i>
                             </a>
                         {{/if}}
                     {{/if}}

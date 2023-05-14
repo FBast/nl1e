@@ -7,7 +7,7 @@
             <div class="flexrow">
                 <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
                 <label class="item-name item-tooltip-activate">{{name}}</label>
-                <div class="item-stats grid-span-2">
+                <div class="item-icons grid-span-2">
                     {{#unless (eq @root.actor.type "npc")}}
                         {{#if (ne system.attributes.hands 0)}}
                             <i class="item-info fas fa-hand hover-green" data-tooltip='{{localize "PL1E.Hands"}}'>
@@ -15,7 +15,7 @@
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.range 1)}}
-                            <i class="item-info fas fa-swords hover-green" data-tooltip="{{localize "PL1E.Range"}}">
+                            <i class="item-info fas fa-bullseye hover-green" data-tooltip="{{localize "PL1E.Range"}}">
                                 <label>{{system.attributes.range}}</label>
                             </i>
                         {{/if}}
