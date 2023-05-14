@@ -32,9 +32,12 @@
 /**
  * Manage target data
  * @typedef {Object} TargetData
- * @typedef {RollData} rollData
- * @property {number} result
- * @property {Token} token
- * @property {string} tokenId
+
+ * @property {Actor} actor The actor of the target
+ * @property {string} actorId The actor id of the target
+ * @property {Token} token The token of the target
+ * @property {string} tokenId The token id of the target
+ * @typedef {RollData} rollData The roll data of the target
+ * @property {number} result The result of the rollData
  * @property {Pl1eAspect[]} activeAspects The calculated active aspects of the target
  */

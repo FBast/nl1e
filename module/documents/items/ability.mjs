@@ -39,7 +39,7 @@ export class Pl1eAbility extends Pl1eItem {
             tokenId: token.document._id,
             item: this,
             itemId: this._id,
-            attributes: JSON.parse(JSON.stringify(this.system.attributes)),
+            attributes: this.system.attributes,
             activeAspects: this.system.activeAspects,
             linkedItem: null
         }
@@ -154,6 +154,8 @@ export class Pl1eAbility extends Pl1eItem {
             else {
                 targetData.result = characterData.result;
             }
+            targetData.actor = targetToken.actor;
+            targetData.actorId = targetToken.actor._id;
             targetData.token = targetToken;
             targetData.tokenId = targetToken.document._id;
             targetsData.push(targetData);
@@ -197,6 +199,7 @@ export class Pl1eAbility extends Pl1eItem {
                         calculatedAttribute = characterData.result > 0 ? calculatedAttribute : 0;
                     }
                 }
+
                 // Type select attribute are very specific and should handle one by one
                 if (attributeConfig.type === "select") {
                     if (id === "activation") {
@@ -205,6 +208,7 @@ export class Pl1eAbility extends Pl1eItem {
                         };
                     }
                 }
+
                 // Negate some attributes
                 if (attributeConfig.invertSign) {
                     calculatedAttribute *= -1;
@@ -226,11 +230,12 @@ export class Pl1eAbility extends Pl1eItem {
         for (const [key, attribute] of Object.entries(characterData.attributes)) {
             const attributeConfig = CONFIG.PL1E.attributes[key];
             if (attributeConfig?.data === undefined || attribute === 0) continue;
+
             // Apply effects
             const attributeDataConfig = CONFIG.PL1E[attributeConfig.dataGroup][attributeConfig.data];
-            let actorValue = foundry.utils.getProperty(characterData.token.actor, attributeDataConfig.path);
+            let actorValue = foundry.utils.getProperty(characterData.actor, attributeDataConfig.path);
             actorValue += attribute;
-            await characterData.token.actor.update({
+            await characterData.actor.update({
                 [attributeDataConfig.path]: actorValue
             });
         }
@@ -305,12 +310,13 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
             return false;
         }
+        // If not enough actions points
         if (itemAttributes.activation === "action" && actor.system.misc.action <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
         }
         if (itemAttributes.activation === "reaction" && actor.system.misc.reaction <= 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreRection"));
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
             return false;
         }
         if (itemAttributes.activation === "instant" && actor.system.misc.instant <= 0) {

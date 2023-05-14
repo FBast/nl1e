@@ -66,16 +66,18 @@ export class Pl1eSynchronizer {
             }
         }
 
-        itemData = {
+        //TODO the diff dont seems to work correctly
+
+        // Update the item with diff false
+        await item.actor.updateEmbeddedDocuments("Item", [{
             "_id": item._id,
             "system.passiveAspects": originalItem.system.passiveAspects,
             "system.activeAspects": originalItem.system.activeAspects
-        };
-
-        // Update the item with diff false
-        await item.actor.updateEmbeddedDocuments("Item", [itemData], {
-            diff: false
-        });
+        }], { diff: false });
+        await item.update({
+            "system.passiveAspects": originalItem.system.passiveAspects,
+            "system.activeAspects": originalItem.system.activeAspects
+        }, { diff: false })
 
         // Add new passive effects
         for (const [id, aspect] of Object.entries(originalItem.system.passiveAspects)) {
