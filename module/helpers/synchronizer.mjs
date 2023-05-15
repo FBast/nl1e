@@ -43,8 +43,7 @@ export class Pl1eSynchronizer {
         if (!item.isEmbedded)
             throw new Error(`PL1E | Item ${item.name} should not be reset because not embedded`)
 
-        let itemData = {
-            "_id": item._id,
+        const itemData = {
             "name": originalItem.name,
             "img": originalItem.img,
             "system.price": originalItem.system.price,
@@ -53,38 +52,45 @@ export class Pl1eSynchronizer {
             "system.refItemsChildren": originalItem.system.refItemsChildren,
             "system.refItemsParents": originalItem.system.refItemsParents,
             "system.refActors": originalItem.system.refActors
-        };
+        }
 
-        // Update the item
-        await item.actor.updateEmbeddedDocuments("Item", [itemData]);
-
-        // Remove obsolete passive effects
+        // Remove obsolete passive aspects
         for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
+            if (!Object.keys(originalItem.system.passiveAspects).some(aspectId => aspectId === id)) {
+                itemData[`system.passiveAspects.-=${id}`] = null;
+            }
+
+            // Remove the associated effect (updated aspect are removed too)
             const effect = item.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
-            if (originalItem.type !== "feature" && item.isEnabled && effect !== undefined) {
+            if (effect !== undefined && item.isEnabled) {
                 await Pl1eAspect.removePassiveEffect(item.actor, item, effect);
             }
         }
 
-        //TODO the diff dont seems to work correctly
-
-        // Update the item with diff false
-        await item.actor.updateEmbeddedDocuments("Item", [{
-            "_id": item._id,
-            "system.passiveAspects": originalItem.system.passiveAspects,
-            "system.activeAspects": originalItem.system.activeAspects
-        }], { diff: false });
-        await item.update({
-            "system.passiveAspects": originalItem.system.passiveAspects,
-            "system.activeAspects": originalItem.system.activeAspects
-        }, { diff: false })
-
-        // Add new passive effects
+        // Add new passive aspects
         for (const [id, aspect] of Object.entries(originalItem.system.passiveAspects)) {
-            if (originalItem.type !== "feature" && item.isEnabled) {
+            itemData[`system.passiveAspects.${id}`] = aspect;
+
+            // Add the associated effect
+            if (aspect.createEffect && item.isEnabled) {
                 await Pl1eAspect.createPassiveEffect(item.actor, item, id, aspect);
             }
         }
+
+        // Remove obsolete active aspects
+        for (const [id, aspect] of Object.entries(item.system.activeAspects)) {
+            if (!Object.keys(originalItem.system.activeAspects).some(aspectId => aspectId === id)) {
+                itemData[`system.activeAspects.-=${id}`] = null;
+            }
+        }
+
+        // Update the active aspects
+        for (const [id, aspect] of Object.entries(originalItem.system.activeAspects)) {
+            itemData[`system.activeAspects.${id}`] = aspect;
+        }
+
+        // Update the item data
+        await item.update(itemData);
     }
 
 }

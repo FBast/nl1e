@@ -14,7 +14,8 @@
         {{#with (configEntry "aspects" name)}}
             <li class="item" data-aspect-id="{{@key}}" data-aspect-type="active">
                 <div class="item-attribute flexrow">
-                    <img class="item-image" src="{{#if ../createEffect}}{{../effectIcon}}{{else}}{{img}}{{/if}}" title="{{localize label}}" width="24" height="24"/>
+                    <img class="item-image" src="{{#if ../createEffect}}{{../effectIcon}}{{else}}{{img}}{{/if}}"
+                         title="{{localize label}}" width="24" height="24"/>
                     {{#with (configEntry ../dataGroup ../data)}}
                         <label class="item-name item-tooltip-activate">{{localize ../label}} ({{localize label}})</label>
                         <div class="item-stats">

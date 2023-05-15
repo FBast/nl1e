@@ -199,19 +199,25 @@ export function getConfigItems() {
             "name": "increase",
             "value": 0,
             "dataGroup": "resources",
-            "data": "mana"
+            "data": "mana",
+            "createEffect": false,
+            "effectIcon": "icons/svg/upgrade.svg"
         },
         {
             "name": "decrease",
             "value": 0,
             "dataGroup": "resources",
-            "data": "stamina"
+            "data": "stamina",
+            "createEffect": false,
+            "effectIcon": "icons/svg/downgrade.svg"
         },
         {
             "name": "set",
             "value": 0,
             "dataGroup": "resources",
-            "data": "health"
+            "data": "health",
+            "createEffect": false,
+            "effectIcon": "icons/svg/target.svg"
         }
     ]
 
@@ -226,7 +232,7 @@ export function getConfigItems() {
             "createEffect": false,
             "effectDuration": 1,
             "eachTurnEffect": false,
-            "effectIcon": "icons/svg/aura.svg"
+            "effectIcon": "icons/svg/upgrade.svg"
         },
         {
             "name": "decrease",
@@ -239,7 +245,7 @@ export function getConfigItems() {
             "createEffect": false,
             "effectDuration": 1,
             "eachTurnEffect": false,
-            "effectIcon": "icons/svg/aura.svg"
+            "effectIcon": "icons/svg/downgrade.svg"
         },
         {
             "name": "set",
@@ -250,7 +256,7 @@ export function getConfigItems() {
             "resolutionType": "value",
             "createEffect": false,
             "effectDuration": 1,
-            "effectIcon": "icons/svg/aura.svg"
+            "effectIcon": "icons/svg/target.svg"
         },
         {
             "name": "transfer",
@@ -263,7 +269,7 @@ export function getConfigItems() {
             "createEffect": false,
             "effectDuration": 1,
             "eachTurnEffect": false,
-            "effectIcon": "icons/svg/aura.svg"
+            "effectIcon": "icons/svg/sun.svg"
         }
     ]
 

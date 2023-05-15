@@ -20,6 +20,8 @@ export class Pl1eItem extends Item {
 
     get isEnabled() {
         switch (this.type) {
+            case "feature":
+                return true;
             case "weapon":
                 return this.system.isEquippedMain || this.system.isEquippedSecondary;
             case "wearable":
@@ -187,13 +189,14 @@ export class Pl1eItem extends Item {
     async toggle(options) {
         if (this.isEnabled) {
             for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
+                if (!aspect.createEffect) continue;
                 await Pl1eAspect.createPassiveEffect(this.actor, this, id, aspect);
             }
         }
         else {
             for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
                 const effect = this.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
-                await Pl1eAspect.removePassiveEffect(this.actor, this, effect);
+                if (effect !== undefined) await Pl1eAspect.removePassiveEffect(this.actor, this, effect);
             }
         }
     }

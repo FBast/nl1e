@@ -72,9 +72,6 @@ export class Pl1eAspect {
      * @returns {Promise<void>}
      */
     static async createPassiveEffect(actor, item, aspectId, aspect) {
-        if (item.type === "feature")
-            throw new Error(`PL1E | Cannot create effect with ${item.name} because it's a feature`)
-
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
         const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
@@ -107,9 +104,6 @@ export class Pl1eAspect {
      * @returns {Promise<void>}
      */
     static async removePassiveEffect(actor, item, effect) {
-        if (item.type === "feature")
-            throw new Error(`PL1E | Cannot remove effect with ${item.name} because it's a feature`)
-
         await actor.deleteEmbeddedDocuments("ActiveEffect", [effect._id])
     }
 
