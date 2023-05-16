@@ -24,43 +24,56 @@ export class Pl1eAspect {
     }
 
     /**
-     *
+     * Get the aspect value
      * @param actor
      * @param aspect
-     * @returns {Promise<any>}
+     * @returns {[number]|[string]|number|string}
      */
     static getAspectValue(actor, aspect) {
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-        let value = getProperty(actor, dataConfig.path);
 
-        const isArray = Array.isArray(value);
-        if (isArray) {
+        if (aspect.createEffect) {
             switch (aspect.name) {
                 case "increase":
-                    value.push(aspect.value);
-                    break;
-                case "decrease":
-                    value.push(-aspect.value);
-                    break;
                 case "set":
-                    value = [aspect.value];
-                    break;
+                    return aspect.value;
+                case "decrease":
+                    return -aspect.value;
             }
         }
         else {
+            let value = getProperty(actor, dataConfig.path);
+            const isArray = Array.isArray(value);
             switch (aspect.name) {
                 case "increase":
-                    value += aspect.value;
+                    if (isArray) value.push(aspect.value);
+                    else value += aspect.value;
                     break;
                 case "decrease":
-                    value -= aspect.value;
+                    if (isArray) value.push(-aspect.value);
+                    else value -= aspect.value;
                     break;
                 case "set":
-                    value = aspect.value;
+                    if (isArray) value = [aspect.value];
+                    else value = aspect.value;
                     break;
             }
+            return value;
         }
-        return value;
+    }
+
+    /**
+     * Get the aspect effect mode
+     * @param aspect
+     * @returns {number}
+     */
+    static getAspectMode(aspect) {
+        switch (aspect.name) {
+            case "set":
+                return 5;
+            default:
+                return 2;
+        }
     }
 
     /**
@@ -100,17 +113,13 @@ export class Pl1eAspect {
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
         const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
-        const value = await Pl1eAspect.getAspectValue(actor, aspect);
         await actor.createEmbeddedDocuments("ActiveEffect", [{
             label: label,
             icon: aspectConfig.img,
-            duration: { // How long the effect should last (in seconds)
-                seconds: 10
-            },
             changes: [{
                 key: dataConfig.path,
-                mode: 2,
-                value: value
+                mode: Pl1eAspect.getAspectMode(aspect),
+                value: Pl1eAspect.getAspectValue(actor, aspect)
             }],
             flags: {
                 pl1e: {
@@ -167,11 +176,17 @@ export class Pl1eAspect {
                 aspectCopy.value = Math.max(aspectCopy.value, 0);
             }
 
-            // Apply the aspect
-            const dataConfig = CONFIG.PL1E[aspectCopy.dataGroup][aspectCopy.data];
-            await targetData.actor.update({
-                [dataConfig.path]: this.getAspectValue(targetData.actor, aspectCopy)
-            });
+            if (aspectCopy.createEffect) {
+                // Create the effect
+                await this.createPassiveEffect(targetData.actor, characterData.item, aspectCopy._id, aspectCopy);
+            }
+            else {
+                // Apply the aspect
+                const dataConfig = CONFIG.PL1E[aspectCopy.dataGroup][aspectCopy.data];
+                await targetData.actor.update({
+                    [dataConfig.path]: this.getAspectValue(targetData.actor, aspectCopy)
+                });
+            }
 
             // Check for existing aspect related to same function
             targetData.activeAspects ??= [];

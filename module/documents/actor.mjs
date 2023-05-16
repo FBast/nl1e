@@ -63,11 +63,8 @@ export class Pl1eActor extends Actor {
     /** @inheritDoc */
     async _preDelete(options, user) {
         // If the actor is the last then update refs
-        const documents = await Pl1eHelpers.getDocuments(this._id, "Item");
-        if (documents.length === 1) {
-            for (const item of this.items) {
-                await this.removeItem(item);
-            }
+        for (const item of this.items) {
+            await this.removeItem(item);
         }
 
         return super._preDelete(options, user);
@@ -107,7 +104,7 @@ export class Pl1eActor extends Actor {
         // Apply passive values
         for (const item of this.items) {
             for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
-                if (aspect.createEffect) continue;
+                if (aspect.createEffect || !item.isEnabled) continue;
                 const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
                 setProperty(this, dataConfig.path, Pl1eAspect.getAspectValue(this, aspect));
             }
@@ -236,7 +233,7 @@ export class Pl1eActor extends Actor {
             if (item.parentId === otherItem.childId) await this.removeItem(otherItem);
         }
 
-        // Remove this actor in item actors refs if no other item with same sourceId
+        // Remove this actor in item actors refs if no otIher item with same sourced
         if (this.items.filter(otherItem => otherItem.sourceId === item.sourceId).length === 1) {
             const sourceItem = await Pl1eHelpers.getDocument(item.sourceId, "Item");
             if (sourceItem != null) {

@@ -27,49 +27,49 @@
           "strength": {
             "value": 2,
             "base": 2,
-            "mods": [],
+            "mods": [0],
             "mod": 0
           },
           "agility": {
             "value": 2,
             "base": 2,
-            "mods": [],
+            "mods": [0],
             "mod": 0
           },
           "perception": {
             "value": 2,
             "base": 2,
-            "mods": [],
+            "mods": [0],
             "mod": 0
           },
           "constitution": {
             "value": 2,
             "base": 2,
-            "mods": [],
+            "mods": [0],
             "mod": 0
           },
           "intellect": {
             "value": 2,
             "base": 2,
-            "mods": [],
+            "mods": [0],
             "mod": 0
           },
           "cunning": {
             "value": 2,
             "base": 2,
-            "mods": [],
+            "mods": [0],
             "mod": 0
           },
           "wisdom": {
             "value": 2,
             "base": 2,
-            "mods": [],
+            "mods": [0],
             "mod": 0
           },
           "will": {
             "value": 2,
             "base": 2,
-            "mods": [],
+            "mods": [0],
             "mod": 0
           }
         },
