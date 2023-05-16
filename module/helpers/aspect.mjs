@@ -64,6 +64,31 @@ export class Pl1eAspect {
     }
 
     /**
+     * Get the default data (based on data group)
+     * @param aspect
+     */
+    static getDefaultData(aspect) {
+        return Object.keys(PL1E[aspect.dataGroup])[0];
+    }
+
+    /**
+     * Get the default value (based in data group and data)
+     * @param aspect
+     * @returns {number|boolean|string}
+     */
+    static getDefaultValue(aspect) {
+        const data = PL1E[aspect.dataGroup][aspect.data];
+        switch (data.type) {
+            case "number":
+                return 0;
+            case "select":
+                return Object.keys(PL1E[data.select])[0];
+            case "bool":
+                return false;
+        }
+    }
+
+    /**
      * Create a passive effect
      * @param actor
      * @param item

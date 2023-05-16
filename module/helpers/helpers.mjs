@@ -98,6 +98,26 @@ export class Pl1eHelpers {
         return result;
     }
 
+    static flatten(obj) {
+        const toReturn = {};
+
+        for (const i in obj) {
+            if (!obj.hasOwnProperty(i)) continue;
+
+            if ((typeof obj[i]) == 'object' && obj[i] !== null) {
+                const flatObject = flattenObject(obj[i]);
+                for (const x in flatObject) {
+                    if (!flatObject.hasOwnProperty(x)) continue;
+
+                    toReturn[i + '.' + x] = flatObject[x];
+                }
+            } else {
+                toReturn[i] = obj[i];
+            }
+        }
+        return toReturn;
+    }
+
     static rankCost(rank) {
         return ((rank * (rank + 1) / 2) - 1);
     }

@@ -2,6 +2,8 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
 import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
+import {PL1E} from "../config/config.mjs";
+import {Pl1eAspect} from "../helpers/aspect.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -100,6 +102,33 @@ export class Pl1eItemSheet extends ItemSheet {
 
         return context;
     }
+
+    _updateObject(event, formData) {
+        // Set the passive aspects default data and default value
+        const deepenFormData = Pl1eHelpers.deepen(formData)
+        if (deepenFormData.system.passiveAspects !== undefined) {
+            for (const [id, aspect] of Object.entries(deepenFormData.system.passiveAspects)) {
+                if (PL1E[aspect.dataGroup][aspect.data] === undefined)
+                    aspect.data = Pl1eAspect.getDefaultData(aspect);
+                if (aspect.data !== this.item.system.passiveAspects[id].data)
+                    aspect.value = Pl1eAspect.getDefaultValue(aspect);
+            }
+        }
+
+        // Set the active aspects default data and default value
+        if (deepenFormData.system.activeAspects !== undefined) {
+            for (const [id, aspect] of Object.entries(deepenFormData.system.activeAspects)) {
+                if (PL1E[aspect.dataGroup][aspect.data] === undefined)
+                    aspect.data = Pl1eAspect.getDefaultData(aspect);
+                if (aspect.data !== this.item.system.activeAspects[id].data)
+                    aspect.value = Pl1eAspect.getDefaultValue(aspect);
+            }
+        }
+
+        formData = Pl1eHelpers.flatten(deepenFormData);
+        return super._updateObject(event, formData);
+    }
+
 
     /** @inheritDoc */
     activateListeners(html) {
