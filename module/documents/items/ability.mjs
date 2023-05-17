@@ -187,7 +187,7 @@ export class Pl1eAbility extends Pl1eItem {
         // Calculate character attributes
         let calculatedAttributes = {};
         for (let [id, attribute] of Object.entries(characterData.attributes)) {
-            let calculatedAttribute = {...attribute};
+            let calculatedAttribute = attribute;
             const attributeConfig = CONFIG.PL1E.attributes[id];
             if (attributeConfig !== undefined) {
                 if (attributeConfig.type === "number" && characterData.attributes[`${id}ResolutionType`] !== undefined) {
