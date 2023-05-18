@@ -46,7 +46,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     onclick: async () => {
                         await this.close();
                         const item = await Pl1eHelpers.getDocument(this.item.sourceId, "Item");
-                        item.sheet.render(true);
+                        item.sheet.renderOnTop();
                     }
                 });
             }

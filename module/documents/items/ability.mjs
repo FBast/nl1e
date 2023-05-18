@@ -200,15 +200,6 @@ export class Pl1eAbility extends Pl1eItem {
                     }
                 }
 
-                // Type select attribute are very specific and should handle one by one
-                if (attributeConfig.type === "select") {
-                    if (id === "activation") {
-                        calculatedAttributes[calculatedAttribute] = {
-                            value: -1
-                        };
-                    }
-                }
-
                 // Negate some attributes
                 if (attributeConfig.invertSign) {
                     calculatedAttribute *= -1;
