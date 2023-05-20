@@ -114,7 +114,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Activate macro if found end
         const characterData = this.abilityData.characterData;
-        const macroId = characterData.item.system.attributes.launchMacro;
+        const macroId = characterData.item.system.attributes.activationMacro;
         const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
         if (macro !== undefined) macro.execute(characterData, {
             active: false
