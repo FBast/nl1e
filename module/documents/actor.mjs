@@ -105,8 +105,7 @@ export class Pl1eActor extends Actor {
         for (const item of this.items) {
             for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
                 if (aspect.createEffect || !item.isEnabled) continue;
-                const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-                setProperty(this, dataConfig.path, Pl1eAspect.getAspectValue(this, aspect));
+                await Pl1eAspect.applyPassive(aspect, id, this, item);
             }
         }
     }

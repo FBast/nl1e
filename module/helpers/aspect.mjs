@@ -24,55 +24,63 @@ export class Pl1eAspect {
     }
 
     /**
-     * Get the aspect value
-     * @param actor
-     * @param aspect
-     * @returns {[number]|[string]|number|string}
+     * Apply a passive aspect
+     * @param {Object} aspect
+     * @param {string} aspectId
+     * @param {Pl1eActor} actor
+     * @param {Pl1eItem} item
      */
-    static getAspectValue(actor, aspect) {
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-
+    static async applyPassive(aspect, aspectId, actor, item) {
+        const value = aspect.name === "decrease" ? -aspect.value : aspect.value;
         if (aspect.createEffect) {
+            const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+            const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
+            const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
+            await actor.createEmbeddedDocuments("ActiveEffect", [{
+                label: label,
+                icon: aspectConfig.img,
+                changes: [{
+                    key: dataConfig.path,
+                    mode: aspect.name === "set" ? 5 : 2,
+                    value: value
+                }],
+                flags: {
+                    pl1e: {
+                        itemId: item._id,
+                        aspectId: aspectId
+                    }
+                }
+            }]);
+        } else {
+            const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+            let currentValue = getProperty(actor, dataConfig.path);
             switch (aspect.name) {
                 case "increase":
-                case "set":
-                    return aspect.value;
                 case "decrease":
-                    return -aspect.value;
-            }
-        }
-        else {
-            let value = getProperty(actor, dataConfig.path);
-            const isArray = Array.isArray(value);
-            switch (aspect.name) {
-                case "increase":
-                    if (isArray) value.push(aspect.value);
-                    else value += aspect.value;
-                    break;
-                case "decrease":
-                    if (isArray) value.push(-aspect.value);
-                    else value -= aspect.value;
+                    if (Array.isArray(currentValue)) currentValue.push(value);
+                    else currentValue += value;
                     break;
                 case "set":
-                    if (isArray) value = [aspect.value];
-                    else value = aspect.value;
+                    if (Array.isArray(currentValue)) currentValue = [value];
+                    else currentValue = value;
                     break;
             }
-            return value;
+            setProperty(actor, dataConfig.path, currentValue);
         }
     }
 
     /**
-     * Get the aspect effect mode
-     * @param aspect
-     * @returns {number}
+     * Remove a passive aspect
+     * @param {Object} aspect
+     * @param {string} aspectId
+     * @param {Pl1eActor} actor
+     * @returns {Promise<void>}
      */
-    static getAspectMode(aspect) {
-        switch (aspect.name) {
-            case "set":
-                return 5;
-            default:
-                return 2;
+    static async removePassive(aspect, aspectId, actor) {
+        // We don't remove aspect which does not create effect because they are not saved
+        if (aspect.createEffect) {
+            const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === aspectId);
+            if (effect) await actor.deleteEmbeddedDocuments("ActiveEffect", [effect._id])
         }
     }
 
@@ -100,48 +108,6 @@ export class Pl1eAspect {
                 return false;
         }
     }
-
-    /**
-     * Create a passive effect
-     * @param actor
-     * @param item
-     * @param aspectId
-     * @param aspect
-     * @returns {Promise<void>}
-     */
-    static async createPassiveEffect(actor, item, aspectId, aspect) {
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-        const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
-        const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
-        await actor.createEmbeddedDocuments("ActiveEffect", [{
-            label: label,
-            icon: aspectConfig.img,
-            changes: [{
-                key: dataConfig.path,
-                mode: Pl1eAspect.getAspectMode(aspect),
-                value: Pl1eAspect.getAspectValue(actor, aspect)
-            }],
-            flags: {
-                pl1e: {
-                    itemId: item._id,
-                    aspectId: aspectId
-                }
-            }
-        }]);
-    }
-
-    /**
-     * Remove a passive aspect
-     * @param actor
-     * @param item
-     * @param effect
-     * @returns {Promise<void>}
-     */
-    static async removePassiveEffect(actor, item, effect) {
-        await actor.deleteEmbeddedDocuments("ActiveEffect", [effect._id])
-    }
-
-
 
     /**
      * Apply numeric aspect (such as increase, decrease or set)
@@ -176,15 +142,19 @@ export class Pl1eAspect {
                 aspectCopy.value = Math.max(aspectCopy.value, 0);
             }
 
+            // Negate the value
+            aspectCopy.value = aspect.name === "decrease" ? -aspectCopy.value : aspectCopy.value
+
             if (aspectCopy.createEffect) {
                 // Create the effect
-                await this.createPassiveEffect(targetData.actor, characterData.item, aspectCopy._id, aspectCopy);
+                await this._createActiveEffect(targetData.actor, characterData.item, aspectCopy._id, aspectCopy);
             }
             else {
                 // Apply the aspect
                 const dataConfig = CONFIG.PL1E[aspectCopy.dataGroup][aspectCopy.data];
+                let currentValue = getProperty(targetData.actor, dataConfig.path);
                 await targetData.actor.update({
-                    [dataConfig.path]: this.getAspectValue(targetData.actor, aspectCopy)
+                    [dataConfig.path]: aspectCopy.name === "set" ? aspectCopy.value : currentValue += aspectCopy.value
                 });
             }
 
@@ -218,6 +188,36 @@ export class Pl1eAspect {
      */
     static async _effect(aspect, characterData, targetsData) {
         throw new Error("Not implemented yet");
+    }
+
+    /**
+     * Create an active effect
+     * @param actor
+     * @param item
+     * @param aspectId
+     * @param aspect
+     * @returns {Promise<void>}
+     * @private
+     */
+    static async _createActiveEffect(actor, item, aspectId, aspect) {
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
+        const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
+        await actor.createEmbeddedDocuments("ActiveEffect", [{
+            label: label,
+            icon: aspectConfig.img,
+            changes: [{
+                key: dataConfig.path,
+                mode: aspect.name === "set" ? 5 : 2,
+                value: aspect.value
+            }],
+            flags: {
+                pl1e: {
+                    itemId: item._id,
+                    aspectId: aspectId
+                }
+            }
+        }]);
     }
 
     /**

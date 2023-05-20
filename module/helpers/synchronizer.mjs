@@ -63,7 +63,7 @@ export class Pl1eSynchronizer {
             // Remove the associated effect (updated aspect are removed too)
             const effect = item.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
             if (effect !== undefined && item.isEnabled) {
-                await Pl1eAspect.removePassiveEffect(item.actor, item, effect);
+                await Pl1eAspect.removePassive(item.actor, item, effect);
             }
         }
 
@@ -73,7 +73,7 @@ export class Pl1eSynchronizer {
 
             // Add the associated effect
             if (aspect.createEffect && item.isEnabled) {
-                await Pl1eAspect.createPassiveEffect(item.actor, item, id, aspect);
+                await Pl1eAspect.applyPassive(aspect, id, item.actor, item);
             }
         }
 

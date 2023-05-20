@@ -190,13 +190,12 @@ export class Pl1eItem extends Item {
         if (this.isEnabled) {
             for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
                 if (!aspect.createEffect) continue;
-                await Pl1eAspect.createPassiveEffect(this.actor, this, id, aspect);
+                await Pl1eAspect.applyPassive(aspect, id, this.actor, this);
             }
         }
         else {
             for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
-                const effect = this.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
-                if (effect !== undefined) await Pl1eAspect.removePassiveEffect(this.actor, this, effect);
+                await Pl1eAspect.removePassive(aspect, id, this.actor);
             }
         }
     }
