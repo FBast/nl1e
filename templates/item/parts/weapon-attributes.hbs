@@ -6,13 +6,29 @@
             <input type="number" name="system.attributes.hands" value="{{system.attributes.hands}}" data-dtype="Number"/>
         </div>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Range"}}</label>
-            <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+            <label class="attribute-name">{{localize "PL1E.Melee"}}</label>
+            <input type="checkbox" name="system.attributes.melee" {{checked system.attributes.melee}} data-dtype="Boolean"/>
         </div>
+        {{#if system.attributes.melee}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.Reach"}}</label>
+                <input type="number" name="system.attributes.reach" value="{{system.attributes.reach}}" data-dtype="Number"/>
+            </div>
+        {{/if}}
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Ammo"}}</label>
-            <input type="number" name="system.attributes.ammo" value="{{system.attributes.ammo}}" data-dtype="Number"/>
+            <label class="attribute-name">{{localize "PL1E.Ranged"}}</label>
+            <input type="checkbox" name="system.attributes.ranged" {{checked system.attributes.ranged}} data-dtype="Boolean"/>
         </div>
+        {{#if system.attributes.ranged}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+            </div>
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.Ammo"}}</label>
+                <input type="number" name="system.attributes.ammo" value="{{system.attributes.ammo}}" data-dtype="Number"/>
+            </div>
+        {{/if}}
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.ParryProjectiles"}}</label>
             <input type="checkbox" name="system.attributes.parryProjectiles" {{checked system.attributes.parryProjectiles}} data-dtype="Boolean"/>

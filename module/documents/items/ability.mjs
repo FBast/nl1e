@@ -45,7 +45,9 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Get linked attributes
-        this._linkItem(characterData);
+        if (characterData.attributes.weaponLink !== "none") {
+            this._linkItem(characterData);
+        }
 
         // Character rollData if exist
         if (characterData.attributes.characterRoll !== 'none') {
@@ -238,44 +240,55 @@ export class Pl1eAbility extends Pl1eItem {
      * @private
      */
     _linkItem(characterData) {
+        // Get weapons using the same mastery
+        const relatedItems = [];
+        for (const item of characterData.actor.items) {
+            if (item.type !== "weapon" || !item.isEnabled) continue;
+            if (characterData.item.system.attributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
+            if (characterData.item.system.attributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
+            if (item.system.attributes.mastery !== characterData.item.system.attributes.mastery) continue;
+            relatedItems.push(item);
+        }
+
+        // // Open dialogue if multiple related items
+        // new Dialog({
+        //     title: "Image Buttons",
+        //     content: `<div>
+        //                 <button data-action="button1">
+        //                     <img src="image1.png" alt="Button 1">
+        //                 </button>
+        //                 <button data-action="button2">
+        //                     <img src="image2.png" alt="Button 2">
+        //                 </button>
+        //                 <button data-action="button3">
+        //                     <img src="image3.png" alt="Button 3">
+        //                 </button>
+        //             </div>`,
+        //     buttons: {},
+        //     close: () => {},
+        //     render: () => {},
+        //     default: "",
+        //     closeOnSubmit: false,
+        //     submitOnClose: false,
+        //     jQuery: false,
+        //     resizable: true
+        // }).render(true);
+
+        characterData.linkedItem = relatedItems[0];
+
         // Get linked attributes
-        if (characterData.attributes.abilityLink === 'mastery') {
-            const relatedMastery = attributes.mastery;
-            const relatedItems = characterData.actor.items.filter(value => value.type === 'weapon'
-                && value.system.attributes.mastery === relatedMastery);
-            if (relatedItems.length > 1) {
-                ui.notifications.warn(game.i18n.localize("PL1E.MultipleRelatedMastery"));
-                return;
-            }
-            if (relatedItems.length === 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoRelatedMastery"));
-                return;
-            }
-            characterData.linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
-            Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
+        if (characterData.attributes.weaponLink === "melee") {
+            characterData.attributes.areaShape = "target";
+            characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
+            characterData.attributes.rangeResolutionType = "value";
+            characterData.attributes.areaNumber = 1;
         }
-        if (characterData.attributes.abilityLink === 'parent') {
-            let relatedItems = [];
-            for (const item of characterData.actor.items) {
-                if (!item.system.isEquippedMain && !item.system.isEquippedSecondary) continue;
-                if (item.system.subItems === undefined) continue;
-                for (let [key, subItem] of item.system.subItems) {
-                    if (characterData.item.sourceId !== subItem.sourceId) continue;
-                    relatedItems.push(item);
-                }
-            }
-            if (relatedItems.length === 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoEquippedParent"));
-                return;
-            }
-            characterData.linkedItem = relatedItems[0];
-            Pl1eHelpers.mergeDeep(characterData.attributes, characterData.linkedItem.system.attributes);
-            for (let [id, dynamicAttribute] of Object.entries(characterData.linkedItem.system.activeAspects)) {
-                if (dynamicAttribute.attributeLink !== "child") continue;
-                characterData.activeAspects[id] = dynamicAttribute;
-            }
+        else if (characterData.attributes.weaponLink === "ranged") {
+            characterData.attributes.range = characterData.linkedItem.system.attributes.range;
+            characterData.attributes.rangeResolutionType = "value";
+            characterData.attributes.areaNumber = 1;
         }
+        Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
     }
 
     /** @inheritDoc */

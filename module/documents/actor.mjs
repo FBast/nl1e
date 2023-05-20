@@ -212,6 +212,7 @@ export class Pl1eActor extends Actor {
         if (childId) await newItem.setFlag("pl1e", "childId", childId);
         const parentId = randomID();
         await newItem.setFlag("pl1e", "parentId", parentId);
+        await newItem.setFlag("core", "sourceId", item.uuid);
 
         // Add new item children
         if (newItem.system.refItemsChildren && newItem.system.refItemsChildren.length > 0) {

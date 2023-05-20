@@ -14,12 +14,15 @@
                                 <label>{{system.attributes.hands}}</label>
                             </i>
                         {{/if}}
-                        {{#if (ne system.attributes.range 1)}}
-                            <i class="item-info fas fa-bullseye hover-green" data-tooltip="{{localize "PL1E.Range"}}">
-                                <label>{{system.attributes.range}}</label>
+                        {{#if system.attributes.melee}}
+                            <i class="item-info fas fa-sword hover-green" data-tooltip="{{localize "PL1E.Reach"}}">
+                                <label>{{system.attributes.reach}}</label>
                             </i>
                         {{/if}}
-                        {{#if (ne system.attributes.ammo 0)}}
+                        {{#if system.attributes.ranged}}
+                            <i class="item-info fas fa-bow-arrow hover-green" data-tooltip="{{localize "PL1E.Range"}}">
+                                <label>{{system.attributes.range}}</label>
+                            </i>
                             <i class="item-info fas fa-tally hover-green" data-tooltip='{{localize "PL1E.Ammo"}}'>
                                 <label>{{system.attributes.ammo}}</label>
                             </i>

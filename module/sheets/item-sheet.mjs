@@ -38,19 +38,19 @@ export class Pl1eItemSheet extends ItemSheet {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            if (this.item.isEmbedded) {
+            if (this.item.isEmbedded && this.item.sourceId !== undefined) {
                 buttons.unshift({
                     label: 'PL1E.Original',
                     class: 'button-original',
                     icon: 'fas fa-clone',
                     onclick: async () => {
-                        await this.close();
                         const item = await Pl1eHelpers.getDocument(this.item.sourceId, "Item");
+                        await this.close();
                         item.sheet.renderOnTop();
                     }
                 });
             }
-            else {
+            else if (!this.item.isEmbedded) {
                 buttons.unshift({
                     label: 'PL1E.ResetActorsItems',
                     class: 'button-reset',

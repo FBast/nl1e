@@ -32,43 +32,47 @@
                             {{else if (eq system.attributes.activation "reaction")}}
                                 <i class="item-info fas fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.Reaction"}}'></i>
                             {{/if}}
-                            {{#if (eq system.attributes.abilityLink "parent")}}
-                                <i class="item-info fas fa-link hover-green" data-tooltip='{{localize "PL1E.Parent"}}'></i>
-                            {{else if (eq system.attributes.abilityLink "mastery")}}
-                                <i class="item-info fas fa-book-open-cover hover-green" data-tooltip='{{localize "PL1E.Mastery"}}'></i>
+                            {{#if (eq system.attributes.weaponLink "melee")}}
+                                <i class="item-info fas fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>
+                            {{else if (eq system.attributes.weaponLink "ranged")}}
+                                <i class="item-info fas fa-bow-arrow hover-green" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
+                            {{else if (eq system.attributes.weaponLink "special")}}
+                                <i class="item-info fas wand-sparkles hover-green" data-tooltip='{{localize "PL1E.Special"}}'></i>
                             {{/if}}
-                            {{#if (ne system.attributes.range 0)}}
-                                <i class="item-info fas fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
-                                    <label>{{system.attributes.range}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (eq system.attributes.areaShape "self")}}
-                                <i class="item-info fas fa-person hover-green" data-tooltip='{{localize "PL1E.Self"}}'></i>
-                            {{else if (eq system.attributes.areaShape "target")}}
-                                <i class="item-info fas fa-crosshairs-simple hover-green" data-tooltip='{{localize "PL1E.Target"}}'>
-                                    <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
-                                        {{system.attributes.areaNumber}}</label>
-                                </i>
-                            {{else if (eq system.attributes.areaShape "circle")}}
-                                <i class="item-info fas fa-circle-xmark hover-green" data-tooltip='{{localize "PL1E.Circle"}}'>
-                                    <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
-                                        {{system.attributes.areaNumber}}</label>
-                                </i>
-                            {{else if (eq system.attributes.areaShape "cone")}}
-                                <i class="item-info fas fa-triangle hover-green" data-tooltip='{{localize "PL1E.Cone"}}'>
-                                    <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
-                                        {{system.attributes.areaNumber}}</label>
-                                </i>
-                            {{else if (eq system.attributes.areaShape "square")}}
-                                <i class="item-info fas fa-square hover-green" data-tooltip='{{localize "PL1E.Square"}}'>
-                                    <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
-                                        {{system.attributes.areaNumber}}</label>
-                                </i>
-                            {{else if (eq system.attributes.areaShape "ray")}}
-                                <i class="item-info fas fa-rectangle-vertical hover-green" data-tooltip='{{localize "PL1E.Ray"}}'>
-                                    <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}x{{/if}}
-                                        {{system.attributes.areaNumber}}</label>
-                                </i>
+                            {{#if (or (eq system.attributes.weaponLink "none") (eq system.attributes.weaponLink "special"))}}
+                                {{#if (ne system.attributes.range 0)}}
+                                    <i class="item-info fas fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
+                                        <label>{{system.attributes.range}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (eq system.attributes.areaShape "self")}}
+                                    <i class="item-info fas fa-person hover-green" data-tooltip='{{localize "PL1E.Self"}}'></i>
+                                {{else if (eq system.attributes.areaShape "target")}}
+                                    <i class="item-info fas fa-crosshairs-simple hover-green" data-tooltip='{{localize "PL1E.Target"}}'>
+                                        <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
+                                            {{system.attributes.areaNumber}}</label>
+                                    </i>
+                                {{else if (eq system.attributes.areaShape "circle")}}
+                                    <i class="item-info fas fa-circle-xmark hover-green" data-tooltip='{{localize "PL1E.Circle"}}'>
+                                        <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
+                                            {{system.attributes.areaNumber}}</label>
+                                    </i>
+                                {{else if (eq system.attributes.areaShape "cone")}}
+                                    <i class="item-info fas fa-triangle hover-green" data-tooltip='{{localize "PL1E.Cone"}}'>
+                                        <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
+                                            {{system.attributes.areaNumber}}</label>
+                                    </i>
+                                {{else if (eq system.attributes.areaShape "square")}}
+                                    <i class="item-info fas fa-square hover-green" data-tooltip='{{localize "PL1E.Square"}}'>
+                                        <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
+                                            {{system.attributes.areaNumber}}</label>
+                                    </i>
+                                {{else if (eq system.attributes.areaShape "ray")}}
+                                    <i class="item-info fas fa-rectangle-vertical hover-green" data-tooltip='{{localize "PL1E.Ray"}}'>
+                                        <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}x{{/if}}
+                                            {{system.attributes.areaNumber}}</label>
+                                    </i>
+                                {{/if}}
                             {{/if}}
                         {{/unless}}
                     </div>

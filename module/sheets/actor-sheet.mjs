@@ -141,6 +141,11 @@ export class Pl1eActorSheet extends ActorSheet {
                 li.addEventListener("dragstart", handler, false);
             });
         }
+
+        const titleElement = html.find(".window-title")[0];
+        if (titleElement) {
+            titleElement.textContent = "New Title";
+        }
     }
 
     /**

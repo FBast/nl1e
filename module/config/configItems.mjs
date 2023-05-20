@@ -136,7 +136,7 @@ export function getConfigItems() {
         "targetRoll": {
             "label": "PL1E.TargetRoll",
             "type": "select",
-            "select": "abilitySkills",
+            "select": "abilityResistances",
             "fallback": "none"
         },
         // Weapons
@@ -314,12 +314,6 @@ export function getConfigItems() {
 
     PL1E.abilitySkills = {
         "none": "PL1E.None",
-        "parry": "PL1E.Parry",
-        "dodge": "PL1E.Dodge",
-        "vigor": "PL1E.Vigor",
-        "reflex": "PL1E.Reflex",
-        "resilience": "PL1E.Resilience",
-        "intuition": "PL1E.Intuition",
         "handling": "PL1E.Handling",
         "throwing": "PL1E.Throwing",
         "athletics": "PL1E.Athletics",
@@ -336,6 +330,16 @@ export function getConfigItems() {
         "erudition": "PL1E.Erudition",
         "nature": "PL1E.Nature",
         "magic": "PL1E.Magic",
+    }
+    
+    PL1E.abilityResistances = {
+        "none": "PL1E.None",
+        "parry": "PL1E.Parry",
+        "dodge": "PL1E.Dodge",
+        "vigor": "PL1E.Vigor",
+        "reflex": "PL1E.Reflex",
+        "resilience": "PL1E.Resilience",
+        "intuition": "PL1E.Intuition"
     }
 
     PL1E.areaShapes = {
@@ -366,15 +370,16 @@ export function getConfigItems() {
     }
 
     PL1E.resolutionTypes = {
-        "value" : "PL1E.Value",
+        "value": "PL1E.Value",
         "valueIfSuccess" : "PL1E.ValueIfSuccess",
         "multiplyBySuccess": "PL1E.MultiplyBySuccess"
     }
 
-    PL1E.abilityLinks = {
-        "none" : "PL1E.None",
-        "parent": "PL1E.Parent",
-        "mastery": "PL1E.Mastery"
+    PL1E.weaponLinks = {
+        "none": "PL1E.None",
+        "melee": "PL1E.Melee",
+        "ranged": "PL1E.Ranged",
+        "special": "PL1E.Special"
     }
 
 }
