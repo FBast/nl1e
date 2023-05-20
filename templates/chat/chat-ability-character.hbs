@@ -3,7 +3,6 @@
         <img class="left-image actor-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
              title="{{characterData.token.name}}" width="36" height="36"/>
         <div class="item-effects-character">
-            {{log characterData.attributes}}
             {{#each characterData.attributes}}
                 {{#with (configEntry "attributes" @key)}}
                     {{#if (and (ne dataGroup undefined) (ne data undefined) (ne ../value 0) (ne ../value -0))}}

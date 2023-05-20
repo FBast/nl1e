@@ -47,7 +47,6 @@
                             {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
                         </select>
                     </div>
-                    {{log @root}}
                     {{#unless (eq @root.item.type "feature")}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.CreateEffect"}}</label>
