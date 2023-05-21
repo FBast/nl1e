@@ -1,11 +1,4 @@
 /**
- * Manage ability data
- * @typedef {Object} AbilityData
- * @property {CharacterData} characterData The character data
- * @property {AbilityTemplate[]} templates  An array of the measure templates
- */
-
-/**
  * Manage roll data
  * @typedef {Object} RollData
  * @property {string} formula
@@ -27,12 +20,12 @@
  * @property {object} attributes The attributes of the item
  * @property {object} activeAspects The active aspects of the item
  * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
+ * @property {object} templates The templates of the ability
  */
 
 /**
  * Manage target data
  * @typedef {Object} TargetData
-
  * @property {Actor} actor The actor of the target
  * @property {string} actorId The actor id of the target
  * @property {Token} token The token of the target

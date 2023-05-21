@@ -267,7 +267,7 @@ export class AbilityTemplate extends MeasuredTemplate {
             if (!this.targetGroups.includes('allies') && token.document.disposition === this.token.disposition) continue;
             if (!this.targetGroups.includes('opponents') && token.document.disposition !== this.token.disposition) continue;
           }
-          // Dont target a token which is already targeted
+          // Don't target a token which is already targeted
           if (token.targeted.has(game.user)) continue;
           // Set target and add to target list
           token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });

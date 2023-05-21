@@ -7,9 +7,9 @@ import {Pl1eAspect} from "../../helpers/aspect.mjs";
 export class Pl1eAbility extends Pl1eItem {
 
     /**
-     * @type {AbilityData}
+     * @type {CharacterData}
      */
-    abilityData;
+    characterData;
 
     /** @override */
     async toggle(options) {
@@ -32,7 +32,7 @@ export class Pl1eAbility extends Pl1eItem {
         /**
          * @type {CharacterData}
          */
-        let characterData = {
+        this.characterData = {
             actor: this.actor,
             actorId: this.actor._id,
             token: token,
@@ -41,62 +41,54 @@ export class Pl1eAbility extends Pl1eItem {
             itemId: this._id,
             attributes: this.system.attributes,
             activeAspects: this.system.activeAspects,
-            linkedItem: null
-        }
-
-        // Get linked attributes
-        if (characterData.attributes.weaponLink !== "none") {
-            this._linkItem(characterData);
-        }
-
-        // Character rollData if exist
-        if (characterData.attributes.characterRoll !== 'none') {
-            const skill = characterData.actor.system.skills[characterData.attributes.characterRoll];
-            characterData.rollData = await characterData.actor.rollSkill(skill);
-            characterData.result = characterData.rollData.total;
-        }
-        else {
-            characterData.result = 1;
-        }
-
-        // Calculate attributes
-        characterData.attributes = await this._calculateAttributes(characterData);
-
-        // Ability Data
-        const abilityData = {
-            characterData: characterData,
+            linkedItem: null,
             templates: []
         }
 
+        // Get linked attributes
+        if (this.characterData.attributes.weaponLink !== "none") {
+            this._linkItem(this.characterData);
+        }
+
+        // Character rollData if exist
+        if (this.characterData.attributes.characterRoll !== 'none') {
+            const skill = this.characterData.actor.system.skills[this.characterData.attributes.characterRoll];
+            this.characterData.rollData = await this.characterData.actor.rollSkill(skill);
+            this.characterData.result = this.characterData.rollData.total;
+        }
+        else {
+            this.characterData.result = 1;
+        }
+
+        // Calculate attributes
+        this.characterData.attributes = await this._calculateAttributes(this.characterData);
+
         // Target character if areaShape is self
-        if (characterData.attributes.areaShape === "self") {
+        if (this.characterData.attributes.areaShape === "self") {
             token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
         }
         // Else create target selection templates
         else {
-            if (characterData.attributes.areaNumber !== 0 && characterData.attributes.areaShape !== "self") {
-                await characterData.actor.sheet?.minimize();
-                for (let i = 0; i < characterData.attributes.areaNumber; i++) {
-                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
-                    abilityData.templates.push(template);
+            if (this.characterData.attributes.areaNumber !== 0 && this.characterData.attributes.areaShape !== "self") {
+                await this.characterData.actor.sheet?.minimize();
+                for (let i = 0; i < this.characterData.attributes.areaNumber; i++) {
+                    const template = await AbilityTemplate.fromItem(this.characterData.item, this.characterData.attributes, this.characterData.activeAspects);
+                    this.characterData.templates.push(template);
                     await template?.drawPreview();
                 }
-                await characterData.actor.sheet?.maximize();
+                await this.characterData.actor.sheet?.maximize();
             }
         }
 
         // Activate macro if found
-        const macroId = characterData.item.system.attributes.activationMacro;
+        const macroId = this.characterData.item.system.attributes.activationMacro;
         const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
-        if (macro !== undefined) macro.execute(characterData, {
+        if (macro !== undefined) macro.execute(this.characterData, {
             active: true
         });
 
         // Display message
-        await Pl1eChat.abilityRoll(characterData);
-
-        // Update data
-        this.abilityData = abilityData;
+        await Pl1eChat.abilityRoll(this.characterData);
     }
 
     /** @override */
@@ -113,15 +105,14 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Activate macro if found end
-        const characterData = this.abilityData.characterData;
-        const macroId = characterData.item.system.attributes.activationMacro;
+        const macroId = this.characterData.item.system.attributes.activationMacro;
         const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
-        if (macro !== undefined) macro.execute(characterData, {
+        if (macro !== undefined) macro.execute(this.characterData, {
             active: false
         });
 
         // Destroy templates after fetching target with df-template
-        for (const template of this.abilityData.templates) {
+        for (const template of this.characterData.templates) {
             await template.releaseTemplate();
         }
 
@@ -130,8 +121,8 @@ export class Pl1eAbility extends Pl1eItem {
             token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
         }
 
-        // Reset abilityData
-        this.abilityData = {};
+        // Empty ability data
+        this.characterData = {};
     }
 
     /**
@@ -141,20 +132,21 @@ export class Pl1eAbility extends Pl1eItem {
      */
     async _launchAbility() {
         let targetTokens = game.user.targets;
-        const characterData = this.abilityData.characterData;
 
         // Roll data for every targets
         /** @type {TargetData[]} */
         let targetsData = []
         for (let targetToken of targetTokens) {
+            //TODO iterate over template to get the target instead of game.user.targets then retrieve template for position
+
             const targetData = {};
-            if (characterData.attributes.targetRoll !== "none") {
-                const skill = targetToken.actor.system.skills[characterData.attributes.targetRoll];
+            if (this.characterData.attributes.targetRoll !== "none") {
+                const skill = targetToken.actor.system.skills[this.characterData.attributes.targetRoll];
                 targetData.rollData = await targetToken.actor.rollSkill(skill);
-                targetData.result = characterData.result - targetData.rollData.total;
+                targetData.result = this.characterData.result - targetData.rollData.total;
             }
             else {
-                targetData.result = characterData.result;
+                targetData.result = this.characterData.result;
             }
             targetData.actor = targetToken.actor;
             targetData.actorId = targetToken.actor._id;
@@ -164,18 +156,18 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Apply aspects, here we calculate each aspect for all targets
-        for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
-            targetsData = await Pl1eAspect.applyActive(aspect, characterData, targetsData);
+        for (let [id, aspect] of Object.entries(this.characterData.activeAspects)) {
+            targetsData = await Pl1eAspect.applyActive(aspect, this.characterData, targetsData);
         }
 
         for (const targetData of targetsData) {
             // Activate macro if found
-            const macroId = characterData.item.system.attributes.launchMacro;
+            const macroId = this.characterData.item.system.attributes.launchMacro;
             const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
-            if (macro !== undefined) macro.execute(characterData, targetData);
+            if (macro !== undefined) macro.execute(this.characterData, targetData);
 
             // Display messages
-            await Pl1eChat.abilityRoll(characterData, targetData);
+            await Pl1eChat.abilityRoll(this.characterData, targetData);
         }
     }
 
@@ -218,17 +210,15 @@ export class Pl1eAbility extends Pl1eItem {
      * @private
      */
     async _applyAttributes() {
-        const characterData = this.abilityData.characterData;
-
-        for (const [key, attribute] of Object.entries(characterData.attributes)) {
+        for (const [key, attribute] of Object.entries(this.characterData.attributes)) {
             const attributeConfig = CONFIG.PL1E.attributes[key];
             if (attributeConfig?.data === undefined || attribute === 0) continue;
 
             // Apply effects
             const attributeDataConfig = CONFIG.PL1E[attributeConfig.dataGroup][attributeConfig.data];
-            let actorValue = foundry.utils.getProperty(characterData.actor, attributeDataConfig.path);
+            let actorValue = foundry.utils.getProperty(this.characterData.actor, attributeDataConfig.path);
             actorValue += attribute;
-            await characterData.actor.update({
+            await this.characterData.actor.update({
                 [attributeDataConfig.path]: actorValue
             });
         }
