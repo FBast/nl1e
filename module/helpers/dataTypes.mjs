@@ -20,7 +20,7 @@
  * @property {object} attributes The attributes of the item
  * @property {object} activeAspects The active aspects of the item
  * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
- * @property {object} templates The templates of the ability
+ * @property {object} templatePosition The template position
  */
 
 /**
@@ -30,6 +30,7 @@
  * @property {string} actorId The actor id of the target
  * @property {Token} token The token of the target
  * @property {string} tokenId The token id of the target
+ * @property {object} template The template where this target is in
  * @typedef {RollData} rollData The roll data of the target
  * @property {number} result The result of the rollData
  * @property {Pl1eAspect[]} activeAspects The calculated active aspects of the target
