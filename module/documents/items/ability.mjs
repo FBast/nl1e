@@ -131,28 +131,33 @@ export class Pl1eAbility extends Pl1eItem {
      * @private
      */
     async _launchAbility() {
-        let targetTokens = game.user.targets;
-
         // Roll data for every targets
         /** @type {TargetData[]} */
         let targetsData = []
-        for (let targetToken of targetTokens) {
-            //TODO iterate over template to get the target instead of game.user.targets then retrieve template for position
 
-            const targetData = {};
-            if (this.characterData.attributes.targetRoll !== "none") {
-                const skill = targetToken.actor.system.skills[this.characterData.attributes.targetRoll];
-                targetData.rollData = await targetToken.actor.rollSkill(skill);
-                targetData.result = this.characterData.result - targetData.rollData.total;
+        // Iterate over targets
+        for (let template of this.characterData.templates) {
+            for (let token of template.getTargets()) {
+
+                const targetData = {};
+                if (this.characterData.attributes.targetRoll !== "none") {
+                    const skill = token.actor.system.skills[this.characterData.attributes.targetRoll];
+                    targetData.rollData = await token.actor.rollSkill(skill);
+                    targetData.result = this.characterData.result - targetData.rollData.total;
+                }
+                else {
+                    targetData.result = this.characterData.result;
+                }
+                targetData.actor = token.actor;
+                targetData.actorId = token.actor._id;
+                targetData.token = token;
+                targetData.tokenId = token.document._id;
+                targetData.templatePosition = {
+                    x: template.document.x,
+                    y: template.document.y
+                };
+                targetsData.push(targetData);
             }
-            else {
-                targetData.result = this.characterData.result;
-            }
-            targetData.actor = targetToken.actor;
-            targetData.actorId = targetToken.actor._id;
-            targetData.token = targetToken;
-            targetData.tokenId = targetToken.document._id;
-            targetsData.push(targetData);
         }
 
         // Apply aspects, here we calculate each aspect for all targets

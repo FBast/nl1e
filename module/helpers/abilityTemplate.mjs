@@ -1,25 +1,23 @@
 export class AbilityTemplate extends MeasuredTemplate {
 
   /**
-  * Track the timestamp when the last mouse move event was captured.
-  * @type {number}
-  */
+   * Track the timestamp when the last mouse move event was captured.
+   * @type {number}
+   */
   #moveTime = 0;
 
   /**
-  * The initially active CanvasLayer to re-activate after the workflow is complete.
-  * @type {CanvasLayer}
-  */
+   * The initially active CanvasLayer to re-activate after the workflow is complete.
+   * @type {CanvasLayer}
+   */
   #initialLayer;
 
   /**
-  * Track the bound event handlers so they can be properly canceled later.
-  * @type {object}
-  */
+   * Track the bound event handlers so they can be properly canceled later.
+   * @type {object}
+   */
   #events;
-
-  #targets = [];
-  #templates = [];
+  #template;
 
   /* -------------------------------------------- */
 
@@ -124,18 +122,44 @@ export class AbilityTemplate extends MeasuredTemplate {
    * Delete the templates after releasing targets
    */
   releaseTemplate() {
-    for (let document of this.#templates) {
-      document.delete();
+    this.#template.delete();
+  }
+
+  /**
+   * Get targets currently inside the template
+   * @returns {Token[]}
+   */
+  getTargets() {
+    const gridPositions = this._getGridHighlightPositions();
+    const targets = [];
+
+    // Target current position
+    for (let gridPosition of gridPositions) {
+      for (let token of canvas.tokens.placeables) {
+        // Check if target position in template
+        if (token.x === gridPosition.x && token.y === gridPosition.y) {
+          // Filter non valid targets
+          if (!this.targetGroups.includes('all')) {
+            if (!this.targetGroups.includes('self') && token.document === this.token) continue;
+            if (!this.targetGroups.includes('allies') && token.document.disposition === this.token.disposition) continue;
+            if (!this.targetGroups.includes('opponents') && token.document.disposition !== this.token.disposition) continue;
+          }
+
+          // Add to targets array
+          targets.push(token);
+        }
+      }
     }
+    return targets;
   }
 
   /* -------------------------------------------- */
 
   /**
-  * Activate listeners for the template preview
-  * @param {CanvasLayer} initialLayer  The initially active CanvasLayer to re-activate after the workflow is complete
-  * @returns {Promise}                 A promise that resolves with the final measured template if created.
-  */
+   * Activate listeners for the template preview
+   * @param {CanvasLayer} initialLayer  The initially active CanvasLayer to re-activate after the workflow is complete
+   * @returns {Promise}                 A promise that resolves with the final measured template if created.
+   */
   activatePreviewListeners(initialLayer) {
     return new Promise((resolve, reject) => {
       this.#initialLayer = initialLayer;
@@ -157,9 +181,11 @@ export class AbilityTemplate extends MeasuredTemplate {
   }
 
   /**
-  * Shared code for when template placement ends by being confirmed or canceled.
-  * @param {Event} event  Triggering event that ended the placement.
-  */
+   * Shared code for when template placement ends by being confirmed or canceled.
+   * @param event
+   * @returns {Promise<void>}
+   * @private
+   */
   async _finishPlacement(event) {
     this.layer._onDragLeftCancel(event);
     canvas.stage.off("mousemove", this.#events.move);
@@ -170,9 +196,10 @@ export class AbilityTemplate extends MeasuredTemplate {
   }
 
   /**
-  * Move the template preview when the mouse moves.
-  * @param {Event} event  Triggering mouse event.
-  */
+   * Move the template preview when the mouse moves
+   * @param event
+   * @private
+   */
   _onMovePlacement(event) {
     event.stopPropagation();
     let now = Date.now(); // Apply a 20ms throttle
@@ -190,11 +217,22 @@ export class AbilityTemplate extends MeasuredTemplate {
     this.document.updateSource({x: templateCenter.x + offset, y: templateCenter.y + offset});
     this.refresh();
     // Target tokens
-    const gridPositions = this._getGridHighlightPositions();
-    this._targetTokensInPositions(gridPositions);
+    const targets = this.getTargets();
+    for (const token of canvas.tokens.placeables) {
+      // Target the current token and group with others
+      token.setTarget(targets.includes(token), { user: game.user, releaseOthers: false, groupSelect: false });
+    }
     this.#moveTime = now;
   }
 
+  /**
+   * Clamp a vector position within a radius
+   * @param source
+   * @param destination
+   * @param max
+   * @returns {{x: *, y: *}}
+   * @private
+   */
   _clampVectorRadius(source, destination, max) {
     let x = source.x - destination.x;
     let y = source.y - destination.y;
@@ -207,9 +245,10 @@ export class AbilityTemplate extends MeasuredTemplate {
   }
 
   /**
-  * Rotate the template preview by 3˚ increments when the mouse wheel is rotated.
-  * @param {Event} event  Triggering mouse event.
-  */
+   * Rotate the template preview by 3˚ increments when the mouse wheel is rotated.
+   * @param event
+   * @private
+   */
   _onRotatePlacement(event) {
     if ( event.ctrlKey ) event.preventDefault(); // Avoid zooming the browser window
     if (["square", "circle"].includes(this.document.t)) return;
@@ -220,63 +259,43 @@ export class AbilityTemplate extends MeasuredTemplate {
     this.document.updateSource(update);
     this.refresh();
     // Target tokens
-    const gridPositions = this._getGridHighlightPositions();
-    this._targetTokensInPositions(gridPositions);
+    const targets = this.getTargets();
+    for (const token of canvas.tokens.placeables) {
+      // Target the current token and group with others
+      token.setTarget(targets.some(token => token.id === token.id), { user: game.user, releaseOthers: false, groupSelect: false });
+    }
   }
 
   /**
-  * Confirm placement when the left mouse button is clicked.
-  * @param {Event} event  Triggering mouse event.
-  */
+   * Confirm placement when the left mouse button is clicked.
+   * @param event
+   * @returns {Promise<void>}
+   * @private
+   */
   async _onConfirmPlacement(event) {
     await this._finishPlacement(event);
     const destination = canvas.grid.getSnappedPosition(this.document.x, this.document.y, 2);
     this.document.updateSource(destination);
-    this.#templates = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]);
-    this.#events.resolve(this.#templates);
+    this.#template = (await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]))[0];
+    this.#events.resolve(this.#template);
   }
 
   /**
-  * Cancel placement when the right mouse button is clicked.
-  * @param {Event} event  Triggering mouse event.
-  */
+   * Cancel placement when the right mouse button is clicked.
+   * @param event
+   * @returns {Promise<void>}
+   * @private
+   */
   async _onCancelPlacement(event) {
     await this._finishPlacement(event);
     this.#events.reject();
   }
 
   /**
-   * Target all tokens inside the template
-   * @param gridPositions
+   * Return the positions inside a template
+   * @returns {*[]}
    * @private
    */
-  _targetTokensInPositions(gridPositions) {
-    // Untarget previous targeted
-    for (let token of this.#targets) {
-      token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
-    }
-    // Target current position
-    for (let gridPosition of gridPositions) {
-      for (let token of canvas.tokens.placeables) {
-        // Check if target position in template
-        if (token.x === gridPosition.x && token.y === gridPosition.y) {
-          // Filter non valid targets
-          //TODO-fred it seems that targetGroups is undefined here
-          if (!this.targetGroups.includes('all')) {
-            if (!this.targetGroups.includes('self') && token.document === this.token) continue;
-            if (!this.targetGroups.includes('allies') && token.document.disposition === this.token.disposition) continue;
-            if (!this.targetGroups.includes('opponents') && token.document.disposition !== this.token.disposition) continue;
-          }
-          // Don't target a token which is already targeted
-          if (token.targeted.has(game.user)) continue;
-          // Set target and add to target list
-          token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
-          this.#targets.push(token);
-        }
-      }
-    }
-  }
-
   _getGridHighlightPositions() {
     const grid = canvas.grid.grid;
     const d = canvas.dimensions;
