@@ -7,11 +7,12 @@ import {Pl1eAspect} from "../../helpers/aspect.mjs";
 export class Pl1eAbility extends Pl1eItem {
 
     /**
+     * Data of the character
      * @type {CharacterData}
      */
     characterData;
 
-    /** @override */
+    /** @inheritDoc */
     async toggle(options) {
         if (!this.system.isMemorized && this.actor.system.general.slots - this.system.attributes.level < 0) return;
 
@@ -22,7 +23,7 @@ export class Pl1eAbility extends Pl1eItem {
         await super.toggle(options);
     }
 
-    /** @override */
+    /** @inheritDoc */
     async activate() {
         if (!this._canActivate(this.actor)) return;
 
@@ -80,10 +81,10 @@ export class Pl1eAbility extends Pl1eItem {
             }
         }
 
-        // Activate macro if found
+        // Execute activationMacro if found (pass for activation)
         const macroId = this.characterData.item.system.attributes.activationMacro;
-        const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
-        if (macro !== undefined) macro.execute(this.characterData, {
+        const activationMacro = await Pl1eHelpers.getDocument(macroId, "Macro");
+        if (activationMacro !== undefined) activationMacro.execute(this.characterData, {
             active: true
         });
 
@@ -91,7 +92,7 @@ export class Pl1eAbility extends Pl1eItem {
         await Pl1eChat.abilityRoll(this.characterData);
     }
 
-    /** @override */
+    /** @inheritDoc */
     async apply(options) {
         // Handle different actions
         switch (options.action) {
@@ -104,10 +105,10 @@ export class Pl1eAbility extends Pl1eItem {
                 break;
         }
 
-        // Activate macro if found end
+        // Execute activationMacro if found (pass for deactivation)
         const macroId = this.characterData.item.system.attributes.activationMacro;
-        const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
-        if (macro !== undefined) macro.execute(this.characterData, {
+        const activationMacro = await Pl1eHelpers.getDocument(macroId, "Macro");
+        if (activationMacro !== undefined) activationMacro.execute(this.characterData, {
             active: false
         });
 
@@ -135,10 +136,9 @@ export class Pl1eAbility extends Pl1eItem {
         /** @type {TargetData[]} */
         let targetsData = []
 
-        // Iterate over targets
+        // Populate targetsData
         for (let template of this.characterData.templates) {
             for (let token of template.getTargets()) {
-
                 const targetData = {};
                 if (this.characterData.attributes.targetRoll !== "none") {
                     const skill = token.actor.system.skills[this.characterData.attributes.targetRoll];
@@ -152,10 +152,6 @@ export class Pl1eAbility extends Pl1eItem {
                 targetData.actorId = token.actor._id;
                 targetData.token = token;
                 targetData.tokenId = token.document._id;
-                targetData.templatePosition = {
-                    x: template.document.x,
-                    y: template.document.y
-                };
                 targetsData.push(targetData);
             }
         }
@@ -165,13 +161,16 @@ export class Pl1eAbility extends Pl1eItem {
             targetsData = await Pl1eAspect.applyActive(aspect, this.characterData, targetsData);
         }
 
-        for (const targetData of targetsData) {
-            // Activate macro if found
+        // Execute launchMacro on templates
+        for (let template of this.characterData.templates) {
+            // Execute launchMacro if found
             const macroId = this.characterData.item.system.attributes.launchMacro;
-            const macro = await Pl1eHelpers.getDocument(macroId, "Macro");
-            if (macro !== undefined) macro.execute(this.characterData, targetData);
+            const launchMacro = await Pl1eHelpers.getDocument(macroId, "Macro");
+            if (launchMacro !== undefined) launchMacro.execute(this.characterData, template);
+        }
 
-            // Display messages
+        // Display messages
+        for (const targetData of targetsData) {
             await Pl1eChat.abilityRoll(this.characterData, targetData);
         }
     }
