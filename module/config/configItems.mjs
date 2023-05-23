@@ -268,7 +268,17 @@ export function getConfigItems() {
             "transferDestination": "all",
             "resolutionType": "value",
             "damageType": "raw",
-            "effectIcon": "icons/svg/sun.svg"
+            "effectIcon": "icons/svg/stoned.svg"
+        },
+        {
+            "name": "status",
+            "value": 0,
+            "dataGroup": "status",
+            "data": "dead",
+            "targetGroup": "all",
+            "statusType": "permanent",
+            "statusDuration": 1,
+            "effectIcon": "icons/svg/aura.svg"
         }
     ]
 
@@ -302,11 +312,18 @@ export function getConfigItems() {
         },
         "transfer": {
             "label": "PL1E.Transfer",
-            "img": "icons/svg/sun.svg",
+            "img": "icons/svg/stoned.svg",
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
                 "misc": "PL1E.Misc"
+            }
+        },
+        "status": {
+            "label": "PL1E.Status",
+            "img": "icons/svg/aura.svg",
+            "dataGroups": {
+                "status": "PL1E.Status"
             }
         }
     }
@@ -379,6 +396,12 @@ export function getConfigItems() {
         "melee": "PL1E.Melee",
         "ranged": "PL1E.Ranged",
         "special": "PL1E.Special"
+    }
+
+    PL1E.statusTypes = {
+        "permanentIfSuccess": "PL1E.PermanentIfSuccess",
+        "durationFromSuccess": "PL1E.DurationFromSuccess",
+        "durationIfSuccess": "PL1E.DurationIfSuccess"
     }
 
 }

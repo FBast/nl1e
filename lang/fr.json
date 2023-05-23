@@ -10,6 +10,8 @@
   "PL1E.Action": "Action",
   "PL1E.Activation": "Activation",
   "PL1E.Function": "Fonction",
+  "PL1E.Status": "Etat",
+  "PL1E.Dead": "Mort",
   "PL1E.ResolutionType": "Type de résolution",
   "PL1E.DataGroup": "Groupe de donnée",
   "PL1E.Data": "Donnée",

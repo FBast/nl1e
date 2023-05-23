@@ -20,6 +20,8 @@
   "PL1E.ExcludeSelf": "Exclude self",
   "PL1E.TransferSource": "Transfer source",
   "PL1E.TransferDestination": "Transfer destination",
+  "PL1E.Status": "Status",
+  "PL1E.Dead": "Dead",
   "PL1E.Unknown": "Unknown",
   "PL1E.Actions": "Actions",
   "PL1E.HealthRest": "Health by rest",

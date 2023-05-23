@@ -16,8 +16,8 @@ export class Pl1eAspect {
                 return await this._numeric(aspect, characterData, targetsData);
             case "transfer":
                 return this._transfer(aspect, characterData, targetsData);
-            case "effect":
-                return this._effect(aspect, characterData, targetsData);
+            case "status":
+                return this._status(aspect, characterData, targetsData);
             default:
                 throw new Error("PL1E | unknown aspect : " + aspect.name);
         }
@@ -251,7 +251,8 @@ export class Pl1eAspect {
      * @returns {Promise<TargetData[]>}
      * @private
      */
-    static async _effect(aspect, characterData, targetsData) {
+    static async _status(aspect, characterData, targetsData) {
+
         throw new Error("Not implemented yet");
     }
 

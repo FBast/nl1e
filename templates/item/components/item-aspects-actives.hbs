@@ -14,8 +14,15 @@
         {{#with (configEntry "aspects" name)}}
             <li class="item" data-aspect-id="{{@key}}" data-aspect-type="active">
                 <div class="item-attribute flexrow">
-                    <img class="item-image" src="{{#if ../createEffect}}{{../effectIcon}}{{else}}{{img}}{{/if}}"
-                         title="{{localize label}}" width="24" height="24"/>
+                    <img class="item-image" src="{{#if ../createEffect}}
+                        {{../effectIcon}}
+                    {{else if (eq ../name "status")}}
+                        {{#with (configEntry ../dataGroup ../data)}}
+                            {{img}}
+                        {{/with}}
+                    {{else}}
+                        {{img}}
+                    {{/if}}" title="{{localize label}}" width="24" height="24"/>
                     {{#with (configEntry ../dataGroup ../data)}}
                         <label class="item-name item-tooltip-activate">{{localize ../label}} ({{localize label}})</label>
                         <div class="item-stats">
@@ -79,6 +86,20 @@
                             </select>
                         </div>
                     {{/if}}
+                    {{#if ../statusType}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.StatusType"}}</label>
+                            <select name="system.activeAspects.{{@key}}.statusType">
+                                {{selectOptions (config "statusTypes") selected=../statusType localize=true}}
+                            </select>
+                        </div>
+                    {{/if}}
+                    {{#if (eq ../statusType "durationIfSuccess")}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.StatusDuration"}}</label>
+                            <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.statusDuration" value="{{../statusDuration}}" data-dtype="Number"/>
+                        </div>
+                    {{/if}}
                     {{#if ../resolutionType}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
@@ -87,10 +108,12 @@
                             </select>
                         </div>
                     {{/if}}
-                    <div class="item-attribute flexrow">
-                        <label class="attribute-name">{{localize "PL1E.CreateEffect"}}</label>
-                        <input type="checkbox" name="system.activeAspects.{{@key}}.createEffect" {{checked ../createEffect}} data-dtype="Boolean"/>
-                    </div>
+                    {{#if (ne ../name "status")}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.CreateEffect"}}</label>
+                            <input type="checkbox" name="system.activeAspects.{{@key}}.createEffect" {{checked ../createEffect}} data-dtype="Boolean"/>
+                        </div>
+                    {{/if}}
                     {{#if ../createEffect}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>

@@ -480,4 +480,151 @@ export function getConfigActor() {
             "path": "system.reductions.shock"
         },
     }
+
+    PL1E.status = {
+        "dead": {
+            "label": "PL1E.Dead",
+            "img": "icons/svg/skull.svg",
+            "type": "bool",
+            "path": "system.status.dead"
+        },
+        "unconscious": {
+            "label": "PL1E.Unconscious",
+            "img": "icons/svg/unconscious.svg",
+            "type": "bool",
+            "path": "system.status.unconscious"
+        },
+        "asleep": {
+            "label": "PL1E.Asleep",
+            "img": "icons/svg/sleep.svg",
+            "type": "bool",
+            "path": "system.status.asleep"
+        },
+        "stunned": {
+            "label": "PL1E.Stunned",
+            "img": "icons/svg/daze.svg",
+            "type": "bool",
+            "path": "system.status.stunned"
+        },
+        "prone": {
+            "label": "PL1E.Prone",
+            "img": "icons/svg/falling.svg",
+            "type": "bool",
+            "path": "system.status.prone"
+        },
+        "restrained": {
+            "label": "PL1E.Restrained",
+            "img": "icons/svg/net.svg",
+            "type": "bool",
+            "path": "system.status.restrained"
+        },
+        "paralysed": {
+            "label": "PL1E.Paralysed",
+            "img": "icons/svg/paralysis.svg",
+            "type": "bool",
+            "path": "system.status.paralysed"
+        },
+        "flying": {
+            "label": "PL1E.Flying",
+            "img": "icons/svg/wing.svg",
+            "type": "bool",
+            "path": "system.status.flying"
+        },
+        "blind": {
+            "label": "PL1E.Blind",
+            "img": "icons/svg/blind.svg",
+            "type": "bool",
+            "path": "system.status.blind"
+        },
+        "deaf": {
+            "label": "PL1E.Deaf",
+            "img": "icons/svg/deaf.svg",
+            "type": "bool",
+            "path": "system.status.deaf"
+        },
+        "silenced": {
+            "label": "PL1E.Silenced",
+            "img": "icons/svg/silenced.svg",
+            "type": "bool",
+            "path": "system.status.silenced"
+        },
+        "frightened": {
+            "label": "PL1E.Frightened",
+            "img": "icons/svg/terror.svg",
+            "type": "bool",
+            "path": "system.status.frightened"
+        },
+        "cursed": {
+            "label": "PL1E.Cursed",
+            "img": "icons/svg/sun.svg",
+            "type": "bool",
+            "path": "system.status.cursed"
+        },
+        "invisible": {
+            "label": "PL1E.Invisible",
+            "img": "icons/svg/invisible.svg",
+            "type": "bool",
+            "path": "system.status.invisible"
+        },
+        "targeted": {
+            "label": "PL1E.Targeted",
+            "img": "icons/svg/target.svg",
+            "type": "bool",
+            "path": "system.status.targeted"
+        },
+        "marked": {
+            "label": "PL1E.Marked",
+            "img": "icons/svg/eye.svg",
+            "type": "bool",
+            "path": "system.status.marked"
+        },
+        "blessed": {
+            "label": "PL1E.Blessed",
+            "img": "icons/svg/angel.svg",
+            "type": "bool",
+            "path": "system.status.blessed"
+        },
+        "slashingImmunity": {
+            "label": "PL1E.SlashingImmunity",
+            "img": "icons/svg/skull.svg",
+            "type": "bool",
+            "path": "system.status.slashingImmunity"
+        },
+        "piercingImmunity": {
+            "label": "PL1E.PiercingImmunity",
+            "img": "icons/svg/skull.svg",
+            "type": "bool",
+            "path": "system.status.piercingImmunity"
+        },
+        "crushingImmunity": {
+            "label": "PL1E.CrushingImmunity",
+            "img": "icons/svg/skull.svg",
+            "type": "bool",
+            "path": "system.status.crushingImmunity"
+        },
+        "burnImmunity": {
+            "label": "PL1E.BurnImmunity",
+            "img": "icons/svg/skull.svg",
+            "type": "bool",
+            "path": "system.status.burnImmunity"
+        },
+        "coldImmunity": {
+            "label": "PL1E.ColdImmunity",
+            "img": "icons/svg/skull.svg",
+            "type": "bool",
+            "path": "system.status.coldImmunity"
+        },
+        "acidImmunity": {
+            "label": "PL1E.AcidImmunity",
+            "img": "icons/svg/skull.svg",
+            "type": "bool",
+            "path": "system.status.acidImmunity"
+        },
+        "shockImmunity": {
+            "label": "PL1E.ShockImmunity",
+            "img": "icons/svg/skull.svg",
+            "type": "bool",
+            "path": "system.status.shockImmunity"
+        }
+    }
 }
