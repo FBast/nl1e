@@ -17,9 +17,7 @@
                     <img class="item-image" src="{{#if ../createEffect}}
                         {{../effectIcon}}
                     {{else if (eq ../name "status")}}
-                        {{#with (configEntry ../dataGroup ../data)}}
-                            {{img}}
-                        {{/with}}
+                        {{#with (configEntry ../dataGroup ../data)}}{{img}}{{/with}}
                     {{else}}
                         {{img}}
                     {{/if}}" title="{{localize label}}" width="24" height="24"/>
