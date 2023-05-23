@@ -50,6 +50,10 @@
             </div>
             {{#if (ne system.attributes.areaShape "self")}}
                 <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.ExcludeSelf"}}</label>
+                    <input type="checkbox" name="system.attributes.excludeSelf" {{checked system.attributes.excludeSelf}} data-dtype="Boolean"/>
+                </div>
+                <div class="item-attribute flexrow">
                     <label class="attribute-name">{{localize "PL1E.Range"}}</label>
                     <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
                 </div>

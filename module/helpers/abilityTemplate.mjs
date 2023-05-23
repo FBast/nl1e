@@ -31,13 +31,6 @@ export class AbilityTemplate extends MeasuredTemplate {
   static async fromItem(item, attributes, activeAspects) {
     const areaShape = attributes.areaShape;
 
-    // Save targetGroups for token selection
-    let targetGroups = [];
-    for (const [id, dynamicAttribute] of Object.entries(activeAspects)) {
-      if (targetGroups.includes(dynamicAttribute.targetGroup)) continue;
-      targetGroups.push(dynamicAttribute.targetGroup);
-    }
-
     // Prepare template data
     const templateData = {
       t: areaShape,
@@ -83,9 +76,9 @@ export class AbilityTemplate extends MeasuredTemplate {
     const template = new cls(templateData, {parent: canvas.scene});
     const object = new this(template);
     object.item = item;
-    object.actorSheet = item.actor?.sheet || null;
     object.token = item.actor?.bestToken;
-    object.targetGroups = targetGroups;
+    object.attributes = attributes;
+    object.activeAspects = activeAspects;
 
     //TODO-fred change the controlIcon sprite
 
@@ -130,6 +123,13 @@ export class AbilityTemplate extends MeasuredTemplate {
    * @returns {Token[]}
    */
   getTargets() {
+    // Get targetGroups for token selection
+    let targetGroups = [];
+    for (const [id, aspect] of Object.entries(this.activeAspects)) {
+      if (targetGroups.includes(aspect.targetGroup)) continue;
+      targetGroups.push(aspect.targetGroup);
+    }
+
     const gridPositions = this._getGridHighlightPositions();
     const targets = [];
 
@@ -139,11 +139,14 @@ export class AbilityTemplate extends MeasuredTemplate {
         // Check if target position in template
         if (token.x === gridPosition.x && token.y === gridPosition.y) {
           // Filter non valid targets
-          if (!this.targetGroups.includes('all')) {
-            if (!this.targetGroups.includes('self') && token.document === this.token) continue;
-            if (!this.targetGroups.includes('allies') && token.document.disposition === this.token.disposition) continue;
-            if (!this.targetGroups.includes('opponents') && token.document.disposition !== this.token.disposition) continue;
+          if (!targetGroups.includes("all")) {
+            if (!targetGroups.includes("self") && token.document === this.token) continue;
+            if (!targetGroups.includes("allies") && token.document.disposition === this.token.disposition) continue;
+            if (!targetGroups.includes("opponents") && token.document.disposition !== this.token.disposition) continue;
           }
+
+          // Filter exclude self
+          if (this.attributes.excludeSelf && !targetGroups.includes("self") && token === this.token) continue;
 
           // Add to targets array
           targets.push(token);
@@ -262,7 +265,7 @@ export class AbilityTemplate extends MeasuredTemplate {
     const targets = this.getTargets();
     for (const token of canvas.tokens.placeables) {
       // Target the current token and group with others
-      token.setTarget(targets.some(token => token.id === token.id), { user: game.user, releaseOthers: false, groupSelect: false });
+      token.setTarget(targets.includes(token), { user: game.user, releaseOthers: false, groupSelect: false });
     }
   }
 

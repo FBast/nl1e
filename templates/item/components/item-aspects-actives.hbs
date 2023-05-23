@@ -55,11 +55,27 @@
                             </select>
                         </div>
                     {{/if}}
-                    {{#if ../targetGroup}}
+                    {{#if (and ../targetGroup (ne ../name "transfer"))}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.TargetGroup"}}</label>
                             <select name="system.activeAspects.{{@key}}.targetGroup">
                                 {{selectOptions (config "targetGroups") selected=../targetGroup localize=true}}
+                            </select>
+                        </div>
+                    {{/if}}
+                    {{#if ../transferSource}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.TransferSource"}}</label>
+                            <select name="system.activeAspects.{{@key}}.transferSource">
+                                {{selectOptions (config "targetGroups") selected=../transferSource localize=true}}
+                            </select>
+                        </div>
+                    {{/if}}
+                    {{#if ../transferDestination}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.TransferDestination"}}</label>
+                            <select name="system.activeAspects.{{@key}}.transferDestination">
+                                {{selectOptions (config "targetGroups") selected=../transferDestination localize=true}}
                             </select>
                         </div>
                     {{/if}}

@@ -264,11 +264,10 @@ export function getConfigItems() {
             "dataGroup": "resources",
             "data": "health",
             "targetGroup": "all",
+            "transferSource": "all",
+            "transferDestination": "all",
             "resolutionType": "value",
             "damageType": "raw",
-            "createEffect": false,
-            "effectDuration": 1,
-            "eachTurnEffect": false,
             "effectIcon": "icons/svg/sun.svg"
         }
     ]

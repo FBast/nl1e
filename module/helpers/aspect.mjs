@@ -114,13 +114,13 @@ export class Pl1eAspect {
      * @param aspect
      * @param characterData
      * @param targetsData
-     * @returns {Promise<*>}
+     * @returns {Promise<TargetData[]>}
      * @private
      */
     static async _numeric(aspect, characterData, targetsData) {
         for (const targetData of targetsData) {
-            // Check target validation
-            if (!this._isTargetValid(characterData.token, targetData.token)) continue;
+            // Check targetGroup validation for aspect
+            if (!this.isTargetValid(aspect.targetGroup, targetData.token, characterData.token)) continue;
 
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
@@ -167,15 +167,80 @@ export class Pl1eAspect {
     }
 
     /**
-     *
+     * Apply transfer aspect
      * @param aspect
      * @param characterData
      * @param targetsData
-     * @returns {Promise<*>}
+     * @returns {Promise<TargetData[]>}
      * @private
      */
     static async _transfer(aspect, characterData, targetsData) {
-        throw new Error("Not implemented yet");
+        // Source transfer sum
+        let transferValue = 0;
+
+        // First pass for source
+        for (const targetData of targetsData) {
+            // Check transferSource validation for aspect
+            if (!this.isTargetValid(aspect.transferSource, targetData.token, characterData.token)) continue;
+
+            // Copy the aspect to calculate the new values
+            let aspectCopy = JSON.parse(JSON.stringify(aspect));
+
+            // Modify aspect value by resolution type
+            switch (aspect.resolutionType) {
+                case "multiplyBySuccess":
+                    aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
+                    break;
+                case "valueIfSuccess":
+                    aspectCopy.value = targetData.result > 0 ? aspectCopy.value : 0;
+                    break;
+            }
+
+            // Modify aspect value by damage type
+            if (aspect.damageType !== "raw") {
+                const damageTypeData = PL1E.reductions[aspect.damageType];
+                aspectCopy.value -= getProperty(targetData.actor, damageTypeData.path);
+                aspectCopy.value = Math.max(aspectCopy.value, 0);
+            }
+
+            // Negate the value
+            aspectCopy.value = -aspectCopy.value;
+
+            // Add to the sum
+            transferValue+= aspectCopy.value;
+
+            // Check for existing aspect related to same function
+            targetData.activeAspects ??= [];
+            let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
+            existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
+        }
+
+        // Count destination targets
+        const destinationNumber = targetsData.filter(target => {
+            return this.isTargetValid(aspect.transferDestination, target.token, characterData.token);
+        }).length;
+
+        // Split sum into destination number
+        transferValue /= destinationNumber;
+        transferValue = Math.floor(transferValue);
+
+        // Second pass for destination
+        for (const targetData of targetsData) {
+            // Check transferSource validation for aspect
+            if (!this.isTargetValid(aspect.transferDestination, targetData.token, characterData.token)) continue;
+
+            // Copy the aspect to calculate the new values
+            let aspectCopy = JSON.parse(JSON.stringify(aspect));
+
+            // Define aspect value based on transfer value
+            aspectCopy.value = -transferValue;
+
+            // Check for existing aspect related to same function
+            targetData.activeAspects ??= [];
+            let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
+            existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
+        }
+        return targetsData;
     }
 
     /**
@@ -183,7 +248,7 @@ export class Pl1eAspect {
      * @param aspect
      * @param characterData
      * @param targetsData
-     * @returns {Promise<*>}
+     * @returns {Promise<TargetData[]>}
      * @private
      */
     static async _effect(aspect, characterData, targetsData) {
@@ -220,19 +285,10 @@ export class Pl1eAspect {
         }]);
     }
 
-    /**
-     *
-     * @param {Token} characterToken
-     * @param {Token} targetToken
-     * @returns {boolean}
-     * @private
-     */
-    static _isTargetValid(characterToken, targetToken) {
-        if (this.targetGroup !== undefined) {
-            if (this.targetGroup === "self" && targetToken !== characterToken) return false;
-            if (this.targetGroup === "allies" && targetToken.document.disposition !== characterToken.document.disposition) return false;
-            if (this.targetGroup === "opponents" && targetToken.document.disposition === characterToken.document.disposition) return false;
-        }
+    static isTargetValid(group, targetToken, characterToken) {
+        if (group === "self" && targetToken !== characterToken) return false;
+        if (group === "allies" && targetToken.document.disposition !== characterToken.document.disposition) return false;
+        if (group === "opponents" && targetToken.document.disposition === characterToken.document.disposition) return false;
         return true;
     }
 
