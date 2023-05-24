@@ -114,7 +114,7 @@ Hooks.once("ready", async function () {
             if (tooltip === undefined) return;
 
             // Check if the tooltip state is in local storage
-            const itemId = item.attr("data-item-id");
+            const itemId = item.data("item-id");
             const tooltipState = localStorage.getItem(`tooltipState_${itemId}`);
 
             // If the tooltip state is in local storage, show/hide the tooltip accordingly

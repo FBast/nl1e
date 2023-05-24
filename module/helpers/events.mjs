@@ -284,7 +284,7 @@ export class Pl1eEvent {
         $(tooltip).toggleClass('expanded');
 
         // Store open/closed state in localStorage
-        const itemId = item.attr("data-item-id");
+        const itemId = item.data("item-id");
         const tooltipState = $(tooltip).hasClass('expanded') ? 'open' : 'closed';
         localStorage.setItem(`tooltipState_${itemId}`, tooltipState);
     }

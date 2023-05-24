@@ -243,7 +243,7 @@
         },
         "misc": {
           "size": "medium",
-          "speed": 4.5,
+          "speed": "medium",
           "initiative": 0,
           "movementPenalty": 0,
           "parryBonuses": 0,

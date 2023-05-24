@@ -84,12 +84,7 @@ export class Pl1eActor extends Actor {
     /** @inheritDoc */
     async prepareBaseData() {
         super.prepareBaseData();
-        const actorGeneral = this.system.general;
         const actorMisc = this.system.misc;
-
-        // Handle actorAttributes scores
-        actorGeneral.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
-        actorGeneral.sizeToken = CONFIG.PL1E.sizes[actorMisc.size].token;
 
         // Clamp combat stats
         actorMisc.action = Math.min(actorMisc.action, 2);
@@ -128,6 +123,12 @@ export class Pl1eActor extends Actor {
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
 
+        // Selection based values
+        actorMisc.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
+        actorMisc.tokenSize = CONFIG.PL1E.sizes[actorMisc.size].token;
+        actorMisc.movement = CONFIG.PL1E.speeds[actorMisc.speed].movement;
+        actorMisc.baseInitiative = CONFIG.PL1E.speeds[actorMisc.speed].baseInitiative;
+
         // Handle actorCharacteristics scores.
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
             console.log(`${id} with ${characteristic.mods}`);
@@ -135,8 +136,6 @@ export class Pl1eActor extends Actor {
                 + Math.max(...characteristic.mods.filter(value => value > 0), 0);
             characteristic.value = characteristic.base + characteristic.mod;
         }
-        actorMisc.initiative = actorMisc.speed + actorCharacteristics.agility.value +
-            actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
 
         // Handle actorResources scores.
         for (let [id, resource] of Object.entries(actorResources)) {
@@ -168,6 +167,10 @@ export class Pl1eActor extends Actor {
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
             if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
+
+        // Calculate initiative
+        actorMisc.initiative = actorMisc.baseInitiative + actorCharacteristics.agility.value +
+            actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
     }
 
     /** @inheritDoc */
@@ -229,6 +232,8 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<void>}
      */
     async removeItem(item) {
+        if (item === undefined) throw new Error("Cannot find item to remove");
+
         // Remove item children
         for (const otherItem of this.items) {
             if (item.parentId === otherItem.childId) await this.removeItem(otherItem);

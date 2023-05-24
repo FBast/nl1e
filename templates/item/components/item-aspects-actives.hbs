@@ -12,7 +12,7 @@
     </li>
     {{#each activeAspects}}
         {{#with (configEntry "aspects" name)}}
-            <li class="item" data-aspect-id="{{@key}}" data-aspect-type="active">
+            <li class="item" data-aspect-id="{{@key}}" data-aspect-type="active"  data-item-id="{{@key}}">
                 <div class="item-attribute flexrow">
                     <img class="item-image" src="{{#if ../createEffect}}
                         {{../effectIcon}}
