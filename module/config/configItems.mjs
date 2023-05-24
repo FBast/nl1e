@@ -31,7 +31,7 @@ export function getConfigItems() {
         "mastery": {
             "label": "PL1E.Mastery",
             "type": "select",
-            "select": "masteries"
+            "select": "masters"
         },
         "range": {
             "label": "PL1E.Range",

@@ -43,6 +43,33 @@
       "flags": {}
     },
     {
+      "name": "races",
+      "label": "Races",
+      "system": "pl1e",
+      "path": "packs/races.db",
+      "type": "Item",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "classes",
+      "label": "Classes",
+      "system": "pl1e",
+      "path": "packs/classes.db",
+      "type": "Item",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "masters",
+      "label": "Masters",
+      "system": "pl1e",
+      "path": "packs/masters.db",
+      "type": "Item",
+      "private": true,
+      "flags": {}
+    },
+    {
       "name": "features",
       "label": "Features",
       "system": "pl1e",

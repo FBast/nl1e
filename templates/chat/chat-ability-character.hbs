@@ -1,11 +1,11 @@
 <div class="chat-card item-card">
     <header class="card-header flexrow">
-        <img class="left-image actor-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
+        <img class="left-image token-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
              title="{{characterData.token.name}}" width="36" height="36"/>
         <div class="item-effects-character">
             {{#each characterData.attributes}}
                 {{#with (configEntry "attributes" @key)}}
-                    {{#if (and (ne dataGroup undefined) (ne data undefined) (ne ../value 0) (ne ../value -0))}}
+                    {{#if (and (ne dataGroup undefined) (ne data undefined) (ne ../this 0))}}
                         {{#with (configEntry dataGroup data)}}
                             <i class="{{#if (gt ../../value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
                                 <label>{{formatNumber ../../this signe=true}}</label>

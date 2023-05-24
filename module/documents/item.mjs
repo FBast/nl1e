@@ -6,8 +6,9 @@ export class Pl1eItem extends Item {
 
     get sourceId() {
         const sourceId = this.getFlag("core", "sourceId")
-        if (sourceId !== undefined) return sourceId.split(".")[1];
-        return undefined;
+        if (sourceId === undefined) return undefined;
+        const sourceIdArray = sourceId.split(".");
+        return sourceIdArray[sourceIdArray.length - 1];
     }
 
     get parentId() {
@@ -190,12 +191,12 @@ export class Pl1eItem extends Item {
         if (this.isEnabled) {
             for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
                 if (!aspect.createEffect) continue;
-                await Pl1eAspect.applyPassive(aspect, id, this.actor, this);
+                await Pl1eAspect.applyPassiveEffect(aspect, id, this.actor, this);
             }
         }
         else {
             for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
-                await Pl1eAspect.removePassive(aspect, id, this.actor);
+                await Pl1eAspect.removePassiveEffect(aspect, id, this.actor);
             }
         }
     }

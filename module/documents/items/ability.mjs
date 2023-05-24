@@ -199,7 +199,7 @@ export class Pl1eAbility extends Pl1eItem {
                 }
 
                 // Negate some attributes
-                if (attributeConfig.invertSign) {
+                if (attribute.value > 0 && attributeConfig.invertSign) {
                     calculatedAttribute *= -1;
                 }
             }

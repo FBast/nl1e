@@ -146,10 +146,8 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
-        html.find('.attribute-add').on("click", ev => Pl1eEvent.onAttributeAdd(ev, this.item))
-        html.find('.attribute-remove').on("click", ev => Pl1eEvent.onAttributeRemove(ev, this.item))
-        html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev))
-        html.find('.aspect-remove').on("click", ev => this._onAspectRemove(ev))
+        html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));
+        html.find('.aspect-remove').on("click", ev => this._onAspectRemove(ev));
     }
 
     /**
@@ -162,10 +160,11 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         // Check item type and subtype
-        let data = JSON.parse(event.dataTransfer?.getData("text/plain"));
-        let itemId = data.uuid.split(".")[1];
-        let item = await Pl1eHelpers.getDocument(itemId, "Item");
-        if (!item) throw new Error(`PL1E | No item found with UUID ${data}`);
+        const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
+        const uuidArray = data.uuid.split(".");
+        const itemId = uuidArray[uuidArray.length - 1];
+        const item = await Pl1eHelpers.getDocument(itemId, "Item");
+        if (!item) throw new Error(`PL1E | No item found with UUID ${data.uuid}`);
 
         if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
             await this.item.addRefItem(item);

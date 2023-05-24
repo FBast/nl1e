@@ -24,49 +24,58 @@ export class Pl1eAspect {
     }
 
     /**
-     * Apply a passive aspect
+     * Apply a passive value
+     * @param {Object} aspect
+     * @param {string} aspectId
+     * @param {Pl1eActor} actor
+     */
+    static applyPassiveValue(aspect, aspectId, actor) {
+        const value = aspect.name === "decrease" ? -aspect.value : aspect.value;
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        let currentValue = getProperty(actor, dataConfig.path);
+        console.log(`${aspect.name} ${aspect.data} at ${dataConfig.path} ${currentValue} to ${value}`);
+        switch (aspect.name) {
+            case "increase":
+            case "decrease":
+                if (Array.isArray(currentValue)) currentValue.push(value);
+                else currentValue += value;
+                break;
+            case "set":
+                if (Array.isArray(currentValue)) currentValue = [value];
+                else currentValue = value;
+                break;
+        }
+        setProperty(actor, dataConfig.path, currentValue);
+    }
+
+    /**
+     * Apply a passive effect
      * @param {Object} aspect
      * @param {string} aspectId
      * @param {Pl1eActor} actor
      * @param {Pl1eItem} item
+     * @returns {Promise<void>}
      */
-    static async applyPassive(aspect, aspectId, actor, item) {
+    static async applyPassiveEffect(aspect, aspectId, actor, item) {
         const value = aspect.name === "decrease" ? -aspect.value : aspect.value;
-        if (aspect.createEffect) {
-            const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-            const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
-            const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
-            await actor.createEmbeddedDocuments("ActiveEffect", [{
-                label: label,
-                icon: aspectConfig.img,
-                changes: [{
-                    key: dataConfig.path,
-                    mode: aspect.name === "set" ? 5 : 2,
-                    value: value
-                }],
-                flags: {
-                    pl1e: {
-                        itemId: item._id,
-                        aspectId: aspectId
-                    }
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
+        const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
+        await actor.createEmbeddedDocuments("ActiveEffect", [{
+            label: label,
+            icon: aspectConfig.img,
+            changes: [{
+                key: dataConfig.path,
+                mode: aspect.name === "set" ? 5 : 2,
+                value: value
+            }],
+            flags: {
+                pl1e: {
+                    itemId: item._id,
+                    aspectId: aspectId
                 }
-            }]);
-        } else {
-            const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-            let currentValue = getProperty(actor, dataConfig.path);
-            switch (aspect.name) {
-                case "increase":
-                case "decrease":
-                    if (Array.isArray(currentValue)) currentValue.push(value);
-                    else currentValue += value;
-                    break;
-                case "set":
-                    if (Array.isArray(currentValue)) currentValue = [value];
-                    else currentValue = value;
-                    break;
             }
-            setProperty(actor, dataConfig.path, currentValue);
-        }
+        }]);
     }
 
     /**
@@ -76,12 +85,9 @@ export class Pl1eAspect {
      * @param {Pl1eActor} actor
      * @returns {Promise<void>}
      */
-    static async removePassive(aspect, aspectId, actor) {
-        // We don't remove aspect which does not create effect because they are not saved
-        if (aspect.createEffect) {
-            const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === aspectId);
-            if (effect) await actor.deleteEmbeddedDocuments("ActiveEffect", [effect._id])
-        }
+    static async removePassiveEffect(aspect, aspectId, actor) {
+        const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === aspectId);
+        if (effect) await actor.deleteEmbeddedDocuments("ActiveEffect", [effect._id])
     }
 
     /**

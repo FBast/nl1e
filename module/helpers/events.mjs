@@ -241,40 +241,6 @@ export class Pl1eEvent {
     }
 
     /**
-     * Add a dynamic attribute to the item
-     * @param {Event} event The originating click event
-     * @param {Pl1eItem} item the item where the attribute is added
-     */
-    static async onAttributeAdd(event, item) {
-        event.preventDefault();
-        event.stopPropagation();
-        let attributeId = $(event.currentTarget).data("attribute");
-
-        const itemData = {
-            name: "Increase",
-            type: "increase"
-        }
-
-        const attributeItem = await Item.create(itemData);
-
-        await item.addSubItem(attributeItem);
-    }
-
-    /**
-     * Disable an attribute with apply
-     * @param {Event} event The originating click event
-     * @param {Item} item the item where the attribute is removed
-     */
-    static async onAttributeRemove(event, item) {
-        event.preventDefault();
-        event.stopPropagation();
-        let attributeId = $(event.currentTarget).data("attribute");
-        await item.update({
-            [`system.dynamicAttributes.-=${attributeId}`]: null
-        });
-    }
-
-    /**
      * Handle execution of a chat card action via a click event on one of the card buttons
      * @param {Event} event       The originating click event
      * @returns {Promise}         A promise which resolves once the handler workflow is complete

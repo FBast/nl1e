@@ -37,7 +37,7 @@ export function getConfigGeneral() {
         "copper": "PL1E.Copper"
     }
 
-    PL1E.masteries = {
+    PL1E.masters = {
         "none": "PL1E.None",
         "crossbows": "PL1E.Crossbows",
         "bows": "PL1E.Bows",

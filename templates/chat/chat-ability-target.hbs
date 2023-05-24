@@ -1,6 +1,6 @@
 <div class="chat-card item-card pl1e">
     <header class="card-header flexrow">
-        <img class="left-image actor-edit" src="{{characterData.token.actor.img}}" data-token-id="{{characterData.tokenId}}"
+        <img class="left-image token-edit" src="{{characterData.token.actor.img}}" data-token-id="{{characterData.tokenId}}"
              title="{{characterData.token.name}}" width="36" height="36"/>
         <img class="left-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
              data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
@@ -13,7 +13,7 @@
                 {{/with}}
             {{/each}}
         </div>
-        <img class="right-image actor-edit" src="{{targetData.token.actor.img}}" data-token-id="{{targetData.tokenId}}"
+        <img class="right-image token-edit" src="{{targetData.token.actor.img}}" data-token-id="{{targetData.tokenId}}"
              title="{{targetData.token.actor.name}}" width="36" height="36"/>
     </header>
     <div class="card-content">
