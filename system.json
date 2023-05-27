@@ -6,7 +6,7 @@
   "compatibility": {
     "minimum": 10,
     "verified": "10.291",
-    "maximum": 10
+    "maximum": 11
   },
   "authors": [{
     "name": "Dizy"
@@ -16,163 +16,46 @@
   "scripts": [],
   "packs": [
     {
-      "name": "characters",
-      "label": "Characters",
+      "name": "legacy-characters",
+      "label": "Legacy Characters",
       "system": "pl1e",
-      "path": "packs/characters.db",
+      "path": "packs/legacy-characters.db",
       "type": "Actor",
       "private": true,
       "flags": {}
     },
     {
-      "name": "npc",
-      "label": "NPCs",
+      "name": "legacy-items",
+      "label": "Legacy Items",
       "system": "pl1e",
-      "path": "packs/npc.db",
-      "type": "Actor",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "merchants",
-      "label": "Merchants",
-      "system": "pl1e",
-      "path": "packs/merchants.db",
-      "type": "Actor",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "races",
-      "label": "Races",
-      "system": "pl1e",
-      "path": "packs/races.db",
+      "path": "packs/legacy-items.db",
       "type": "Item",
       "private": true,
       "flags": {}
     },
     {
-      "name": "classes",
-      "label": "Classes",
+      "name": "legacy-macros",
+      "label": "Legacy Macros",
       "system": "pl1e",
-      "path": "packs/classes.db",
-      "type": "Item",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "masters",
-      "label": "Masters",
-      "system": "pl1e",
-      "path": "packs/masters.db",
-      "type": "Item",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "features",
-      "label": "Features",
-      "system": "pl1e",
-      "path": "packs/features.db",
-      "type": "Item",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "abilities",
-      "label": "Abilities",
-      "system": "pl1e",
-      "path": "packs/abilities.db",
-      "type": "Item",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "weapons",
-      "label": "Weapons",
-      "system": "pl1e",
-      "path": "packs/weapons.db",
-      "type": "Item",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "wearable",
-      "label": "Wearables",
-      "system": "pl1e",
-      "path": "packs/wearable.db",
-      "type": "Item",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "consumable",
-      "label": "Consumables",
-      "system": "pl1e",
-      "path": "packs/consumable.db",
-      "type": "Item",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "common",
-      "label": "Common",
-      "system": "pl1e",
-      "path": "packs/common.db",
-      "type": "Item",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "item-macros",
-      "label": "Item Macros",
-      "system": "pl1e",
-      "path": "packs/item-macros.db",
+      "path": "packs/legacy-macros.db",
       "type": "Macro",
       "private": true,
       "flags": {}
     },
     {
-      "name": "utils-macros",
-      "label": "Utils Macros",
+      "name": "legacy-scenes",
+      "label": "Legacy Scenes",
       "system": "pl1e",
-      "path": "packs/utils-macros.db",
-      "type": "Macro",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "maps",
-      "label": "Maps",
-      "system": "pl1e",
-      "path": "packs/maps.db",
+      "path": "packs/legacy-scenes.db",
       "type": "Scene",
       "private": true,
       "flags": {}
     },
     {
-      "name": "cities",
-      "label": "Cities",
+      "name": "legacy-journals",
+      "label": "Legacy Journals",
       "system": "pl1e",
-      "path": "packs/cities.db",
-      "type": "Scene",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "lore",
-      "label": "Lore",
-      "system": "pl1e",
-      "path": "packs/lore.db",
-      "type": "JournalEntry",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "documentation",
-      "label": "Documentation",
-      "system": "pl1e",
-      "path": "packs/documentation.db",
+      "path": "packs/legacy-journals.db",
       "type": "JournalEntry",
       "private": true,
       "flags": {}
@@ -190,25 +73,6 @@
       "path": "lang/fr.json"
     }
   ],
-  "relationships": {
-    "requires": [
-      {
-        "id": "socketlib",
-        "type": "module",
-        "manifest": "https://raw/githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
-      },
-      {
-        "id": "sequencer",
-        "type": "module",
-        "manifest": "https://raw.githubusercontent.com/fantasycalendar/FoundryVTT-Sequencer/master/module.json"
-      },
-      {
-        "id": "jb2a",
-        "type": "module",
-        "manifest": "https://raw.githubusercontent.com/Jules-Bens-Aa/JB2A_DnD5e/main/module.json"
-      }
-    ]
-  },
   "socket": true,
   "gridDistance": 1,
   "gridUnits": "m",

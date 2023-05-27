@@ -71,7 +71,16 @@ Hooks.once('init', async function () {
         type: Boolean,
         default: true
     });
-    
+
+    game.settings.register("pl1e", "enableVFXAndSFX", {
+        name: "Enable VFX and SFX",
+        hint: "Enable this to use the VFX and SFX provided by Sequencer and JB2A.",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false
+    });
+
     // Preload Handlebars templates.
     return preloadHandlebarsTemplates();
 });
