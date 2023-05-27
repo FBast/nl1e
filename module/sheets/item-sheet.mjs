@@ -233,7 +233,7 @@ export class Pl1eItemSheet extends ItemSheet {
             "": "PL1E.None"
         };
 
-        const itemMacrosPack = game.packs.find(pack => pack.metadata.name === "item-macros");
+        const itemMacrosPack = game.packs.find(pack => pack.metadata.name === "legacy-macros");
         for (const macro of await itemMacrosPack.getDocuments()) {
             itemMacros[macro._id] = macro.name;
         }
