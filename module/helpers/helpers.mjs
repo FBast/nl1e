@@ -189,17 +189,15 @@ export class Pl1eHelpers {
      * Get a document from a compendium if not in the game using id
      * @param {string} id
      * @param {string} type
-     * @param {Object} options
      * @returns {Promise<Pl1eItem[] | Pl1eActor[] | Macro[]>}
      */
-    static async getDocuments(id, type, options = {}) {
+    static async getDocuments(id, type) {
         let documents = [];
         let document = undefined;
 
-        // Search embedded inside an actor
-        if (options.actor !== undefined) {
-            if (type !== "Item") throw new Error("PL1E | Cannot search something else than Item inside Actor")
-            document = options.actor.items.get(id);
+        // Search inside compendiums
+        for (const pack of game.packs.filter(pack => pack.documentName === type)) {
+            document = await pack.getDocument(id);
             if (document) documents.push(document);
         }
 
@@ -217,12 +215,6 @@ export class Pl1eHelpers {
                 document = game.macros.get(id)
                 if (document) documents.push(document);
                 break;
-        }
-
-        // Search inside compendiums
-        for (const pack of game.packs.filter(pack => pack.documentName === type)) {
-            document = await pack.getDocument(id);
-            if (document) documents.push(document);
         }
 
         return documents;
