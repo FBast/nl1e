@@ -161,24 +161,24 @@ export class Pl1eHelpers {
     static async getDocument(id, type, options = {}) {
         let document = undefined;
 
-        // Search inside current game
-        switch (type) {
-            case "Actor":
-                document = game.actors.get(id)
-                break;
-            case "Item":
-                document = game.items.get(id)
-                break;
-            case "Macro":
-                document = game.macros.get(id)
-                break;
+        // Search inside compendiums
+        for (const pack of game.packs.filter(pack => pack.documentName === type)) {
+            document = await pack.getDocument(id);
+            if (document) break;
         }
 
         if (document === undefined) {
-            // Search inside compendiums
-            for (const pack of game.packs.filter(pack => pack.documentName === type)) {
-                document = await pack.getDocument(id);
-                if (document) break;
+            // Search inside current game
+            switch (type) {
+                case "Actor":
+                    document = game.actors.get(id)
+                    break;
+                case "Item":
+                    document = game.items.get(id)
+                    break;
+                case "Macro":
+                    document = game.macros.get(id)
+                    break;
             }
         }
 
