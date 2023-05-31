@@ -28,7 +28,8 @@ export function getConfigGeneral() {
     PL1E.featureTypes = {
         "race": "PL1E.Race",
         "class": "PL1E.Class",
-        "mastery": "PL1E.Mastery"
+        "mastery": "PL1E.Mastery",
+        "faith": "PL1E.Faith"
     }
 
     PL1E.money = {
