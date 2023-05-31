@@ -289,7 +289,8 @@ export function getConfigItems() {
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc"
+                "misc": "PL1E.Misc",
+                "reductions": "PL1E.Reductions"
             }
         },
         "decrease": {
@@ -298,7 +299,8 @@ export function getConfigItems() {
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc"
+                "misc": "PL1E.Misc",
+                "reductions": "PL1E.Reductions"
             }
         },
         "set": {
@@ -307,7 +309,8 @@ export function getConfigItems() {
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc"
+                "misc": "PL1E.Misc",
+                "reductions": "PL1E.Reductions"
             }
         },
         "transfer": {
@@ -316,7 +319,8 @@ export function getConfigItems() {
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc"
+                "misc": "PL1E.Misc",
+                "reductions": "PL1E.Reductions"
             }
         },
         "status": {
