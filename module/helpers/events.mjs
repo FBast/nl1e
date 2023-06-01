@@ -23,7 +23,7 @@ export class Pl1eEvent {
      */
     static async onTokenEdit(event) {
         const tokenId = $(event.currentTarget).data("token-id");
-        const tokenDocument = await Pl1eHelpers.getDocument(tokenId, "Token");
+        const tokenDocument = await Pl1eHelpers.getDocument("Token", tokenId);
 
         tokenDocument.sheet.renderOnTop();
     }
@@ -34,7 +34,7 @@ export class Pl1eEvent {
      */
     static async onActorEdit(event) {
         const actorId = $(event.currentTarget).closest(".item").data("actor-id");
-        const actor = await Pl1eHelpers.getDocument(actorId, "Actor");
+        const actor = await Pl1eHelpers.getDocument("Actor", actorId);
 
         actor.sheet.renderOnTop();
     }
@@ -51,7 +51,7 @@ export class Pl1eEvent {
         if (itemId && document instanceof Pl1eActor)
             item = document.items.get(itemId);
         else if (itemId) {
-            item = await Pl1eHelpers.getDocument(itemId, "Item");
+            item = await Pl1eHelpers.getDocument("Item", itemId);
         }
 
         item.sheet.renderOnTop();
@@ -139,7 +139,7 @@ export class Pl1eEvent {
         }
         // Remove refItem from item
         else if (document instanceof Pl1eItem && itemId) {
-            const item = await Pl1eHelpers.getDocument(itemId, "Item");
+            const item = await Pl1eHelpers.getDocument("Item", itemId);
             if (item) await document.removeRefItem(item);
         }
 
@@ -253,7 +253,7 @@ export class Pl1eEvent {
         let itemId = $(event.currentTarget).data("item-id");
         let actorId = $(event.currentTarget).data("actor-id");
 
-        const actor = await Pl1eHelpers.getDocument(actorId, "Actor");
+        const actor = await Pl1eHelpers.getDocument("Actor", actorId);
         const item = actor.items.get(itemId);
 
         const options = {

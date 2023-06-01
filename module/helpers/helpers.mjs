@@ -141,24 +141,24 @@ export class Pl1eHelpers {
      * @returns {Promise<boolean>}
      */
     static async createRecursiveLoop(item, newId) {
-        if (item._id === newId) return true;
-        for (const id of item.system.refItemsParents) {
-            const subItem = await Pl1eHelpers.getDocument(id, "Item");
-            if (await this.createRecursiveLoop(subItem, newId)) {
-                return true;
-            }
-        }
+        // if (item._id === newId) return true;
+        // for (const id of item.system.refItemsParents) {
+        //     const subItem = await Pl1eHelpers.getDocument("Item", id);
+        //     if (await this.createRecursiveLoop(subItem, newId)) {
+        //         return true;
+        //     }
+        // }
         return false;
     }
 
     /**
      * Get a document from a compendium if not in the game using id
-     * @param {string} id
      * @param {string} type
+     * @param {string} id
      * @param {Object} options
      * @returns {Promise<Pl1eItem | Pl1eActor | Macro>}
      */
-    static async getDocument(id, type, options = {}) {
+    static async getDocument(type, id, options = {}) {
         let document = undefined;
 
         // Search inside compendiums
@@ -167,7 +167,7 @@ export class Pl1eHelpers {
             if (document) break;
         }
 
-        if (document === undefined) {
+        if (document === undefined || document === null) {
             // Search inside current game
             switch (type) {
                 case "Actor":
@@ -187,34 +187,37 @@ export class Pl1eHelpers {
 
     /**
      * Get a document from a compendium if not in the game using id
-     * @param {string} id
      * @param {string} type
+     * @param {string} id
      * @returns {Promise<Pl1eItem[] | Pl1eActor[] | Macro[]>}
      */
-    static async getDocuments(id, type) {
+    static async getDocuments(type, id = undefined) {
         let documents = [];
-        let document = undefined;
 
         // Search inside compendiums
         for (const pack of game.packs.filter(pack => pack.documentName === type)) {
-            document = await pack.getDocument(id);
-            if (document) documents.push(document);
+            for (const document of await pack.getDocuments()) {
+                if (id !== undefined && document._id === id) documents.push(document);
+                else if (id === undefined) documents.push(document);
+            }
         }
 
-        // Search inside current game
+        // Search inside world collection game
+        let worldCollection;
         switch (type) {
             case "Actor":
-                document = game.actors.get(id)
-                if (document) documents.push(document);
+                worldCollection = game.actors;
                 break;
             case "Item":
-                document = game.items.get(id)
-                if (document) documents.push(document);
+                worldCollection = game.items;
                 break;
             case "Macro":
-                document = game.macros.get(id)
-                if (document) documents.push(document);
+                worldCollection = game.macros;
                 break;
+        }
+        for (const document of worldCollection) {
+            if (id !== undefined && document._id === id) documents.push(document);
+            else if (id === undefined) documents.push(document);
         }
 
         return documents;

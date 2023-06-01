@@ -53,32 +53,19 @@ export class Pl1eItem extends Item {
     /** @inheritDoc */
     async _preDelete(options, user) {
         // If the item is not embedded and is the last then update refs
-        const documents = await Pl1eHelpers.getDocuments(this._id, "Item");
+        const documents = await Pl1eHelpers.getDocuments("Item", this._id);
         if (!this.isEmbedded && documents.length === 1) {
-            // Remove item from parents items
-            for (const id of this.system.refItemsParents) {
-                const items = await Pl1eHelpers.getDocuments(id, "Item");
-                for (const item of items) {
+            // Remove item from items
+            for (const item of await Pl1eHelpers.getDocuments("Item")) {
+                if (item.system.refItems.includes(this._id))
                     await item.removeRefItem(this);
-                }
-            }
-
-            // Remove item from children items
-            for (const id of this.system.refItemsChildren) {
-                const items = await Pl1eHelpers.getDocuments(id, "Item");
-                for (const item of items) {
-                    await item.removeRefItem(this);
-                }
             }
 
             // Remove embedded from actors
-            for (const id of this.system.refActors) {
-                const actors = await Pl1eHelpers.getDocuments(id, "Actor");
-                for (const actor of actors) {
-                    for (const item of actor.items) {
-                        if (item.sourceId !== this._id) continue;
-                        await actor.removeItem(item);
-                    }
+            for (const actor of await Pl1eHelpers.getDocuments("Actor")) {
+                for (const item of actor.items) {
+                    if (item.sourceId !== this._id) continue;
+                    await actor.removeItem(item);
                 }
             }
         }
@@ -114,7 +101,7 @@ export class Pl1eItem extends Item {
             throw new Error("PL1E | Cannot add ref item on embedded " + this.name);
 
         // Return if item with same id exist
-        if (this.system.refItemsChildren.some(id => id === item._id)) {
+        if (this.system.refItems.some(id => id === item._id)) {
             const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
             if (enableDebugUINotifications)
                 ui.notifications.warn(game.i18n.localize(`A child with the same id exist`));
@@ -130,16 +117,10 @@ export class Pl1eItem extends Item {
         }
 
         // Add item as child id to this
-        this.system.refItemsChildren.push(item._id);
+        this.system.refItems.push(item._id);
         await this.update({
-            "system.refItemsChildren": this.system.refItemsChildren
+            "system.refItems": this.system.refItems
         });
-
-        // Add this as parent id to item
-        item.system.refItemsParents.push(this._id);
-        await item.update({
-            "system.refItemsParents": item.system.refItemsParents
-        })
 
         // Update actors with this item to add the new item
         for (const actor of game.actors) {
@@ -160,15 +141,9 @@ export class Pl1eItem extends Item {
             throw new Error("PL1E | Cannot remove ref item on embedded " + this.name);
 
         // Remove item as child id from this
-        this.system.refItemsChildren.splice(this.system.refItemsChildren.indexOf(item._id), 1);
+        this.system.refItems.splice(this.system.refItems.indexOf(item._id), 1);
         await this.update({
-            "system.refItemsChildren": this.system.refItemsChildren
-        });
-
-        // Remove this as parent id from item
-        item.system.refItemsParents.splice(item.system.refItemsParents.indexOf(this._id), 1);
-        await item.update({
-            "system.refItemsParents": item.system.refItemsParents
+            "system.refItems": this.system.refItems
         });
 
         // Update actors with this item to remove the related embedded items

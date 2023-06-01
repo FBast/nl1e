@@ -200,14 +200,6 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<Pl1eItem>}
      */
     async addItem(item, childId = undefined) {
-        // Add this actor in item actors refs if does not exist
-        if (!item.system.refActors.includes(this._id)) {
-            item.system.refActors.push(this._id);
-            await item.update({
-                "system.refActors": item.system.refActors
-            });
-        }
-
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
         newItem = newItem[0];
 
@@ -218,9 +210,9 @@ export class Pl1eActor extends Actor {
         await newItem.setFlag("core", "sourceId", item.uuid);
 
         // Add new item children
-        if (newItem.system.refItemsChildren && newItem.system.refItemsChildren.length > 0) {
-            for (let id of newItem.system.refItemsChildren) {
-                const refItem = await Pl1eHelpers.getDocument(id, "Item");
+        if (newItem.system.refItems && newItem.system.refItems.length > 0) {
+            for (let id of newItem.system.refItems) {
+                const refItem = await Pl1eHelpers.getDocument("Item", id);
                 await this.addItem(refItem, parentId);
             }
         }
@@ -237,18 +229,6 @@ export class Pl1eActor extends Actor {
         // Remove item children
         for (const otherItem of this.items) {
             if (item.parentId === otherItem.childId) await this.removeItem(otherItem);
-        }
-
-        // Remove this actor in item actors refs if no otIher item with same sourced
-        if (this.items.filter(otherItem => otherItem.sourceId === item.sourceId).length === 1) {
-            const sourceItem = await Pl1eHelpers.getDocument(item.sourceId, "Item");
-            if (sourceItem != null) {
-                const index = sourceItem.system.refActors.indexOf(this._id);
-                if (index > -1) sourceItem.system.refActors.splice(index, 1);
-                await sourceItem.update({
-                    "system.refActors": sourceItem.system.refActors
-                });
-            }
         }
 
         await this.deleteEmbeddedDocuments("Item", [item._id]);

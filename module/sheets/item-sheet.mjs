@@ -44,7 +44,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     class: 'button-original',
                     icon: 'fas fa-clone',
                     onclick: async () => {
-                        const item = await Pl1eHelpers.getDocument(this.item.sourceId, "Item");
+                        const item = await Pl1eHelpers.getDocument("Item", this.item.sourceId);
                         await this.close();
                         item.sheet.renderOnTop();
                     }
@@ -163,7 +163,7 @@ export class Pl1eItemSheet extends ItemSheet {
         const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
         const uuidArray = data.uuid.split(".");
         const itemId = uuidArray[uuidArray.length - 1];
-        const item = await Pl1eHelpers.getDocument(itemId, "Item");
+        const item = await Pl1eHelpers.getDocument("Item", itemId);
         if (!item) throw new Error(`PL1E | No item found with UUID ${data.uuid}`);
 
         if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
@@ -172,11 +172,11 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     async _prepareItems(context) {
-        // Get ref itemsParents using id
-        const itemsParents = [];
-        for (let i = 0; i < this.item.system.refItemsParents.length; i++) {
-            const id = this.item.system.refItemsParents[i];
-            let item = await Pl1eHelpers.getDocument(id, "Item");
+        // Get ref items using id
+        const items = [];
+        for (let i = 0; i < this.item.system.refItems.length; i++) {
+            const id = this.item.system.refItems[i];
+            let item = await Pl1eHelpers.getDocument("Item", id);
             if (!item) {
                 // Create an unknown item for display
                 item = {
@@ -184,44 +184,11 @@ export class Pl1eItemSheet extends ItemSheet {
                     id: id
                 }
             }
-            itemsParents[i] = item;
-        }
-
-
-        // Get ref itemsChildren using id
-        const itemsChildren = [];
-        for (let i = 0; i < this.item.system.refItemsChildren.length; i++) {
-            const id = this.item.system.refItemsChildren[i];
-            let item = await Pl1eHelpers.getDocument(id, "Item");
-            if (!item) {
-                // Create an unknown item for display
-                item = {
-                    type: "unknown",
-                    id: id
-                }
-            }
-            itemsChildren[i] = item;
-        }
-
-        // Get ref actorsParents using id
-        const actorsParents = [];
-        for (let i = 0; i < this.item.system.refActors.length; i++) {
-            const id = this.item.system.refActors[i];
-            let actor = await Pl1eHelpers.getDocument(id, "Actor");
-            if (!actor) {
-                // Create an unknown item for display
-                actor = {
-                    type: "unknown",
-                    id: id
-                }
-            }
-            actorsParents[i] = actor;
+            items[i] = item;
         }
 
         // Assign and return
-        context.itemsParents = itemsParents;
-        context.itemsChildren = itemsChildren;
-        context.actorsParents = actorsParents;
+        context.items = items;
         context.passiveAspects = this.item.system.passiveAspects;
         context.activeAspects = this.item.system.activeAspects;
         context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;

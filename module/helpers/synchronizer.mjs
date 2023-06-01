@@ -9,8 +9,8 @@ export class Pl1eSynchronizer {
      */
     static async resetActorsItems(sourceItem, notifyInfo = false) {
         let updateNumber = 0;
-        for (const id of sourceItem.system.refActors) {
-            const actor = await Pl1eHelpers.getDocument(id, "Actor");
+        const actors = await Pl1eHelpers.getDocuments("Actor");
+        for (const actor of actors) {
             for (let item of actor.items) {
                 if (item.sourceId !== sourceItem._id) continue
 
@@ -49,9 +49,7 @@ export class Pl1eSynchronizer {
             "system.price": originalItem.system.price,
             "system.description": originalItem.system.description,
             "system.attributes": originalItem.system.attributes,
-            "system.refItemsChildren": originalItem.system.refItemsChildren,
-            "system.refItemsParents": originalItem.system.refItemsParents,
-            "system.refActors": originalItem.system.refActors
+            "system.refItems": originalItem.system.refItems
         }
 
         // Remove obsolete passive aspects
