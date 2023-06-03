@@ -85,9 +85,7 @@ export class Pl1eAbility extends Pl1eItem {
         const macroId = this.characterData.item.system.attributes.activationMacro;
         const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
         const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
-        if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute(this.characterData, {
-            active: true
-        });
+        if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({characterData: this.characterData, active: true});
 
         // Display message
         await Pl1eChat.abilityRoll(this.characterData);
@@ -110,9 +108,7 @@ export class Pl1eAbility extends Pl1eItem {
         const macroId = this.characterData.item.system.attributes.activationMacro;
         const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
         const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
-        if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute(this.characterData, {
-            active: false
-        });
+        if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({characterData: this.characterData, active: false});
 
         // Destroy templates after fetching target with df-template
         for (const template of this.characterData.templates) {
@@ -169,7 +165,7 @@ export class Pl1eAbility extends Pl1eItem {
             const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
             const macroId = this.characterData.item.system.attributes.launchMacro;
             const launchMacro = await Pl1eHelpers.getDocument("Macro", macroId);
-            if (enableVFXAndSFX && launchMacro !== undefined) launchMacro.execute(this.characterData, template);
+            if (enableVFXAndSFX && launchMacro !== undefined) launchMacro.execute({characterData: this.characterData, template: template});
         }
 
         // Display messages

@@ -131,7 +131,6 @@ export class Pl1eActor extends Actor {
 
         // Handle actorCharacteristics scores.
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
-            console.log(`${id} with ${characteristic.mods}`);
             characteristic.mod = characteristic.mods.filter(value => value < 0).reduce((a, b) => a + b, 0)
                 + Math.max(...characteristic.mods.filter(value => value > 0), 0);
             characteristic.value = characteristic.base + characteristic.mod;

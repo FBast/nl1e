@@ -1,8 +1,21 @@
-2023/06/01-10:38:35.015 22b4 Recovering log #33
-2023/06/01-10:38:35.024 22b4 Delete type=0 #33
-2023/06/01-10:38:35.024 22b4 Delete type=3 #31
-2023/06/01-10:52:03.129 2c6c Level-0 table #38: started
-2023/06/01-10:52:03.129 2c6c Level-0 table #38: 0 bytes OK
-2023/06/01-10:52:03.135 2c6c Delete type=0 #36
-2023/06/01-10:52:03.139 2c6c Manual compaction at level-0 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)
-2023/06/01-10:52:03.139 2c6c Manual compaction at level-1 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)
+2023/06/03-22:24:29.265 3c0 Recovering log #67
+2023/06/03-22:24:29.271 3c0 Delete type=0 #67
+2023/06/03-22:24:29.272 3c0 Delete type=3 #66
+2023/06/03-22:33:49.288 370c Level-0 table #71: started
+2023/06/03-22:33:49.288 370c Level-0 table #71: 0 bytes OK
+2023/06/03-22:33:49.289 370c Delete type=0 #69
+2023/06/03-22:33:49.290 370c Manual compaction at level-0 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at '!macros!95CRByBwKNbm1X0u' @ 36 : 1
+2023/06/03-22:33:49.290 370c Compacting 1@0 + 0@1 files
+2023/06/03-22:33:49.291 370c Generated table #72@0: 1 keys, 1301 bytes
+2023/06/03-22:33:49.291 370c Compacted 1@0 + 0@1 files => 1301 bytes
+2023/06/03-22:33:49.293 370c compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/06/03-22:33:49.293 370c Delete type=2 #64
+2023/06/03-22:33:49.297 370c Manual compaction at level-0 from '!macros!95CRByBwKNbm1X0u' @ 36 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)
+2023/06/03-22:33:49.297 370c Manual compaction at level-1 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at '!macros!95CRByBwKNbm1X0u' @ 37 : 1
+2023/06/03-22:33:49.297 370c Compacting 1@1 + 1@2 files
+2023/06/03-22:33:49.302 370c Generated table #73@1: 9 keys, 3942 bytes
+2023/06/03-22:33:49.302 370c Compacted 1@1 + 1@2 files => 3942 bytes
+2023/06/03-22:33:49.305 370c compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/06/03-22:33:49.305 370c Delete type=2 #60
+2023/06/03-22:33:49.305 370c Delete type=2 #72
+2023/06/03-22:33:49.305 370c Manual compaction at level-1 from '!macros!95CRByBwKNbm1X0u' @ 37 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)

@@ -33,7 +33,6 @@ export class Pl1eAspect {
         const value = aspect.name === "decrease" ? -aspect.value : aspect.value;
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         let currentValue = getProperty(actor, dataConfig.path);
-        console.log(`${aspect.name} ${aspect.data} at ${dataConfig.path} ${currentValue} to ${value}`);
         switch (aspect.name) {
             case "increase":
             case "decrease":
