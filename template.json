@@ -412,5 +412,21 @@
         "manaRest": 0
       }
     }
+  },
+  "JournalEntryPage": {
+    "types": ["class"],
+    "htmlFields": ["description.value", "description.additionalHitPoints", "description.additionalTraits", "description.additionalEquipment", "description.subclass"],
+    "class": {
+      "item": "",
+      "description": {
+        "value": "",
+        "additionalHitPoints": "",
+        "additionalTraits": "",
+        "additionalEquipment": "",
+        "subclass": ""
+      },
+      "subclassHeader": "",
+      "subclassItems": []
+    }
   }
 }

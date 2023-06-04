@@ -53,6 +53,10 @@ Hooks.once('init', async function () {
     Actors.registerSheet("pl1e", Pl1eActorSheet, {makeDefault: true});
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
+    DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", JournalClassPageSheet, {
+        label: "PL1E.SheetClassClassSummary",
+        types: ["class"]
+    })
 
     game.settings.register("pl1e", "enableAutoResetActorsItems", {
         name: "Enable auto reset actors items",
