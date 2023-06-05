@@ -8,6 +8,7 @@ import {Pl1eItemProxy} from "./documents/itemProxy.mjs";
 // Import sheet classes.
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
+import {JournalClassPageSheet} from "./sheets/journal-sheet.mjs";
 // Import apps classes.
 import {Pl1eResting} from "./apps/resting.mjs";
 // Import helper/utility classes and constants.
@@ -15,7 +16,6 @@ import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
 import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
-
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -55,7 +55,7 @@ Hooks.once('init', async function () {
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
     DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", JournalClassPageSheet, {
         label: "PL1E.SheetClassClassSummary",
-        types: ["class"]
+        types: ["class", "location"]
     })
 
     game.settings.register("pl1e", "enableAutoResetActorsItems", {

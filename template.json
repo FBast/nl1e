@@ -414,7 +414,7 @@
     }
   },
   "JournalEntryPage": {
-    "types": ["class"],
+    "types": ["class", "location"],
     "htmlFields": ["description.value", "description.additionalHitPoints", "description.additionalTraits", "description.additionalEquipment", "description.subclass"],
     "class": {
       "item": "",
@@ -427,6 +427,9 @@
       },
       "subclassHeader": "",
       "subclassItems": []
+    },
+    "location": {
+
     }
   }
 }
