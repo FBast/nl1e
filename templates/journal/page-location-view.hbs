@@ -6,10 +6,12 @@
         <img src="{{system.banner}}" alt="{{localize "PL1E.Banner"}}" style="width: 100%">
     {{/if}}
     <table>
-        <tr>
-            <td><strong>{{localize "PL1E.Translation"}}</strong></td>
-            <td><p>{{system.translation}}</p></td>
-        </tr>
+        {{#if (ne system.translation "")}}
+            <tr>
+                <td><strong>{{localize "PL1E.Translation"}}</strong></td>
+                <td><p>{{system.translation}}</p></td>
+            </tr>
+        {{/if}}
         <tr>
             <td><strong>{{localize "PL1E.Type"}}</strong></td>
             <td><p>{{system.type}}</p></td>
