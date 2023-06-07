@@ -1,39 +1,23 @@
 <form class="pl1e {{cssClass}} flexcol" autocomplete="off">
-    <header class="sheet-header">
-        <!-- Left part -->
-        <div>
-            <h1 class="page-title">Title</h1>
-            <img class="page-img" src="{{object.img}}" data-edit="img" title="{{actor.name}}"/>
-        </div>
-        <!-- Right part -->
-        <div>
-            <ul class="page-properties">
-                <li><h2>Type</h2><label>Type</label></li>
-                <li><h2>Culture</h2><label>Culture</label></li>
-                <li><h2>Faction</h2><label>Faction</label></li>
-                <li><h2>Traduction</h2><label>Traduction</label></li>
-                <li><h2>Race</h2><label>Race</label></li>
-            </ul>
-        </div>
+    <header>
+        <h{{title.level1}}>{{data.name}}</h{{title.level1}}>
     </header>
-    <section class="page-content">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac finibus odio. Proin non pulvinar ex, at iaculis
-        turpis. Suspendisse potenti. Aliquam id pulvinar lectus. Nunc aliquam nisi eu velit aliquet, sit amet lacinia
-        leo ullamcorper. Cras id ullamcorper risus. Curabitur euismod libero quis malesuada auctor. Phasellus at odio
-        sed turpis aliquam tristique non ac augue. Pellentesque consectetur metus quis dui volutpat, a ullamcorper nunc
-        viverra. Sed pulvinar fringilla feugiat. Fusce sit amet justo libero. Quisque posuere felis vitae purus
-        ullamcorper, non aliquet mauris volutpat.
-        <hr>
-        <h2>Administration</h2>
-        Sed blandit sem vitae ultrices cursus. Integer nec fringilla enim. Aenean suscipit elit et aliquam pharetra.
-        Proin cursus, enim in dictum pharetra, nulla ipsum scelerisque mauris, nec convallis est lorem in nisl. Nunc
-        hendrerit dui quis sem faucibus, eget rutrum justo pharetra. Sed vulputate tellus vel ante congue placerat.
-        Fusce tristique tristique elit, id gravida quam mattis ac.
-        <hr>
-        <h2>Religion</h2>
-        Quisque consequat velit et laoreet posuere. Sed commodo ligula ac leo finibus eleifend. Curabitur eu lorem
-        consequat, aliquam odio ut, auctor nunc. In a velit eu justo pulvinar pulvinar a at elit. Fusce at sollicitudin
-        neque. Cras pretium placerat est, a faucibus nunc congue in. Suspendisse et nisl vel erat posuere aliquam. Nulla
-        volutpat ligula id est luctus, at faucibus mauris euismod.
-    </section>
+    {{#if (ne system.banner "")}}
+        <img src="{{system.banner}}" alt="{{localize "PL1E.Banner"}}" style="width: 100%">
+    {{/if}}
+    <table>
+        <tr>
+            <td><strong>{{localize "PL1E.Translation"}}</strong></td>
+            <td><p>{{system.translation}}</p></td>
+        </tr>
+        <tr>
+            <td><strong>{{localize "PL1E.Type"}}</strong></td>
+            <td><p>{{system.type}}</p></td>
+        </tr>
+        <tr>
+            <td><strong>{{localize "PL1E.Climate"}}</strong></td>
+            <td><p>{{system.climate}}</p></td>
+        </tr>
+    </table>
+    {{{system.content}}}
 </form>

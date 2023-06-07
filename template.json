@@ -414,22 +414,20 @@
     }
   },
   "JournalEntryPage": {
-    "types": ["class", "location"],
-    "htmlFields": ["description.value", "description.additionalHitPoints", "description.additionalTraits", "description.additionalEquipment", "description.subclass"],
-    "class": {
-      "item": "",
-      "description": {
-        "value": "",
-        "additionalHitPoints": "",
-        "additionalTraits": "",
-        "additionalEquipment": "",
-        "subclass": ""
-      },
-      "subclassHeader": "",
-      "subclassItems": []
-    },
+    "types": ["location", "organization"],
     "location": {
-
+      "banner": "",
+      "type": "",
+      "translation": "",
+      "climate": "",
+      "content": ""
+    },
+    "organization": {
+      "blazon": "",
+      "type": "",
+      "translation": "",
+      "power": "",
+      "content": ""
     }
   }
 }

@@ -1,0 +1,26 @@
+<form class="pl1e {{cssClass}} flexcol" autocomplete="off">
+    <header>
+        <h{{title.level1}}>{{data.name}}</h{{title.level1}}>
+    </header>
+    <div class="flexrow">
+        {{#if (ne system.blazon "")}}
+            <img class="flexshrink" src="{{system.blazon}}" alt="{{localize "PL1E.Blazon"}}"
+                 height="200" width="200" style="border-style: none">
+        {{/if}}
+        <table>
+            <tr>
+                <td><strong>{{localize "PL1E.Translation"}}</strong></td>
+                <td><p>{{system.translation}}</p></td>
+            </tr>
+            <tr>
+                <td><strong>{{localize "PL1E.Type"}}</strong></td>
+                <td><p>{{system.type}}</p></td>
+            </tr>
+            <tr>
+                <td><strong>{{localize "PL1E.Power"}}</strong></td>
+                <td><p>{{system.power}}</p></td>
+            </tr>
+        </table>
+    </div>
+    {{{system.content}}}
+</form>
