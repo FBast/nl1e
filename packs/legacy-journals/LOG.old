@@ -1,24 +1,3 @@
-2023/06/07-21:34:28.649 4c7c Recovering log #159
-2023/06/07-21:34:28.650 4c7c Level-0 table #161: started
-2023/06/07-21:34:28.654 4c7c Level-0 table #161: 120264 bytes OK
-2023/06/07-21:34:28.658 4c7c Delete type=0 #159
-2023/06/07-21:34:28.659 4c7c Delete type=3 #158
-2023/06/07-21:48:27.346 e88 Moved #161 to level-1 120264 bytes OK: files[ 0 1 1 0 0 0 0 ]
-2023/06/07-21:49:16.265 e88 Compacting 1@1 + 1@2 files
-2023/06/07-21:49:16.267 e88 Generated table #163@1: 82 keys, 23314 bytes
-2023/06/07-21:49:16.267 e88 Compacted 1@1 + 1@2 files => 23314 bytes
-2023/06/07-21:49:16.268 e88 compacted to: files[ 0 0 1 0 0 0 0 ]
-2023/06/07-21:49:16.268 e88 Delete type=2 #157
-2023/06/07-21:49:16.268 e88 Delete type=2 #161
-2023/06/08-00:28:53.518 e88 Level-0 table #165: started
-2023/06/08-00:28:53.522 e88 Level-0 table #165: 75969 bytes OK
-2023/06/08-00:28:53.525 e88 Delete type=0 #162
-2023/06/08-00:28:53.525 e88 Manual compaction at level-0 from '!journal!TTfYEg2HBJI2qojb' @ 72057594037927935 : 1 .. '!journal.pages!TTfYEg2HBJI2qojb.yxguczvcr6KxmcI1' @ 0 : 0; will stop at (end)
-2023/06/08-00:28:53.525 e88 Manual compaction at level-1 from '!journal!TTfYEg2HBJI2qojb' @ 72057594037927935 : 1 .. '!journal.pages!TTfYEg2HBJI2qojb.yxguczvcr6KxmcI1' @ 0 : 0; will stop at '!journal.pages!TTfYEg2HBJI2qojb.w3AqXxUYXt0TDnFz' @ 350 : 1
-2023/06/08-00:28:53.525 e88 Compacting 1@1 + 1@2 files
-2023/06/08-00:28:53.531 e88 Generated table #166@1: 82 keys, 25575 bytes
-2023/06/08-00:28:53.531 e88 Compacted 1@1 + 1@2 files => 25575 bytes
-2023/06/08-00:28:53.532 e88 compacted to: files[ 0 0 1 0 0 0 0 ]
-2023/06/08-00:28:53.532 e88 Delete type=2 #163
-2023/06/08-00:28:53.533 e88 Delete type=2 #165
-2023/06/08-00:28:53.533 e88 Manual compaction at level-1 from '!journal.pages!TTfYEg2HBJI2qojb.w3AqXxUYXt0TDnFz' @ 350 : 1 .. '!journal.pages!TTfYEg2HBJI2qojb.yxguczvcr6KxmcI1' @ 0 : 0; will stop at (end)
+2023/06/08-01:13:05.633 46e8 Recovering log #164
+2023/06/08-01:13:05.637 46e8 Delete type=0 #164
+2023/06/08-01:13:05.637 46e8 Delete type=3 #160
