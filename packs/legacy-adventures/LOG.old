@@ -1,0 +1,7 @@
+2023/06/10-18:00:57.716 cec Recovering log #66
+2023/06/10-18:00:57.722 cec Delete type=0 #66
+2023/06/10-18:00:57.722 cec Delete type=3 #64
+2023/06/10-18:16:46.953 2a78 Level-0 table #71: started
+2023/06/10-18:16:46.953 2a78 Level-0 table #71: 0 bytes OK
+2023/06/10-18:16:46.958 2a78 Delete type=0 #69
+2023/06/10-18:16:46.958 2a78 Manual compaction at level-0 from '!adventures!b3pxDTwa7eRY58T5' @ 72057594037927935 : 1 .. '!adventures!b3pxDTwa7eRY58T5' @ 0 : 0; will stop at (end)

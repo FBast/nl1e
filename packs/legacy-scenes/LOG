@@ -1,3 +1,7 @@
-2023/06/08-22:20:43.284 3dbc Recovering log #167
-2023/06/08-22:20:43.289 3dbc Delete type=0 #167
-2023/06/08-22:20:43.290 3dbc Delete type=3 #166
+2023/06/09-15:39:59.514 2d3c Recovering log #216
+2023/06/09-15:39:59.519 2d3c Delete type=0 #216
+2023/06/09-15:39:59.519 2d3c Delete type=3 #214
+2023/06/09-15:55:21.569 2e5c Level-0 table #221: started
+2023/06/09-15:55:21.569 2e5c Level-0 table #221: 0 bytes OK
+2023/06/09-15:55:21.571 2e5c Delete type=0 #219
+2023/06/09-15:55:21.576 2e5c Manual compaction at level-0 from '!scenes!xw0agNWwwyCfVIhc' @ 72057594037927935 : 1 .. '!scenes.notes!xw0agNWwwyCfVIhc.zpMzlAZeaPma2NUZ' @ 0 : 0; will stop at (end)

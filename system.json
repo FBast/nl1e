@@ -43,20 +43,11 @@
       "flags": {}
     },
     {
-      "name": "legacy-scenes",
-      "label": "Legacy Scenes",
+      "name": "legacy-adventures",
+      "label": "Legacy Adventures",
       "system": "pl1e",
-      "path": "packs/legacy-scenes.db",
-      "type": "Scene",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "legacy-journals",
-      "label": "Legacy Journals",
-      "system": "pl1e",
-      "path": "packs/legacy-journals.db",
-      "type": "JournalEntry",
+      "path": "packs/legacy-adventures.db",
+      "type": "Adventure",
       "private": true,
       "flags": {}
     }

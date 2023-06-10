@@ -1,6 +1,11 @@
 import {JournalEditor} from "./journal-editor-sheet.mjs";
+import {PL1E} from "../config/config.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 export class Pl1eJournalPageSheet extends JournalPageSheet {
+
+    /** @inheritdoc */
+    toc = {};
 
     /** @inheritdoc */
     static get defaultOptions() {
@@ -26,7 +31,28 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
             Array.fromRange(4, 1).map(n => [`level${n}`, context.data.title.level + n - 1])
         );
 
+        // if (this.document.type === "location") {
+        //     if (context.system.subType === undefined) {
+        //         let array = PL1E[`${context.system.type}Types`];
+        //         if (array === undefined) {
+        //             await this.document.update({
+        //                 "system.type": "area"
+        //             })
+        //             array = PL1E["areaTypes"];
+        //         }
+        //         await this.document.update({
+        //             "system.subType": Object.keys(array)[0]
+        //         })
+        //     }
+        // }
         return context;
+    }
+
+    /** @inheritDoc */
+    async _renderInner(...args) {
+        const html = await super._renderInner(...args);
+        this.toc = JournalEntryPage.buildTOC(html.get());
+        return html;
     }
 
     /** @inheritDoc */

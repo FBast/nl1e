@@ -417,14 +417,16 @@
     "types": ["location", "organization"],
     "location": {
       "banner": "",
-      "type": "",
+      "type": "area",
+      "subType": "forest",
+      "ruin": false,
       "translation": "",
       "climate": "",
       "content": ""
     },
     "organization": {
       "blazon": "",
-      "type": "",
+      "type": "nation",
       "translation": "",
       "power": "",
       "content": ""
