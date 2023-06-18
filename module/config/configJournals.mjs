@@ -44,10 +44,12 @@ export function getConfigJournals() {
         "market": "PL1E.Market",
         "guardhouse": "PL1E.Guardhouse",
         "barrack": "PL1E.Barrack",
-        "guild": "PL1E.Guild",
+        "stable": "PL1E.Stable",
         "temple": "PL1E.Temple",
+        "administrative": "PL1E.Administrative",
         "district": "PL1E.District",
         "access": "PL1E.Access",
+        "ship": "PL1E.Ship",
         "other": "PL1E.Other"
     }
 
@@ -65,7 +67,8 @@ export function getConfigJournals() {
         "nation": "PL1E.Nation",
         "guild": "PL1E.Guild",
         "cult": "PL1E.Cult",
-        "family": "PL1E.Family"
+        "family": "PL1E.Family",
+        "firm": "PL1E.Firm"
     }
 
     PL1E.powers = {
