@@ -1,3 +1,4 @@
+{{log this}}
 <form class="pl1e {{cssClass}} flexcol" autocomplete="off">
     <header>
         <h{{title.level1}}>{{data.name}}</h{{title.level1}}>
@@ -16,10 +17,12 @@
             <td><strong>{{localize "PL1E.Type"}}</strong></td>
             <td><p>{{localize (configEntry "locationTypes" system.type)}}</p></td>
         </tr>
-        <tr>
-            <td><strong>{{localize "PL1E.SubType"}}</strong></td>
-            <td><p>{{localize (configEntry (concat system.type "Types") system.subType)}}</p></td>
-        </tr>
+        {{#if (ne system.subType undefined)}}
+            <tr>
+                <td><strong>{{localize "PL1E.SubType"}}</strong></td>
+                <td><p>{{localize (configEntry (concat system.type "Types") system.subType)}}</p></td>
+            </tr>
+        {{/if}}
         {{#if (ne system.type "area")}}
             <tr>
                 <td><strong>{{localize "PL1E.Ruin"}}</strong></td>

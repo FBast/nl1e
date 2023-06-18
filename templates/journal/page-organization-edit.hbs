@@ -22,7 +22,7 @@
         <label>{{localize "PL1E.Type"}}</label>
         <div class="form-fields">
             <select name="system.type">
-                {{selectOptions (config "organizationType") selected=system.type localize=true}}
+                {{selectOptions (config "organizationTypes") selected=system.type localize=true}}
             </select>
         </div>
         <p class="hint">{{localize "PL1E.DescriptionLocationType"}}</p>

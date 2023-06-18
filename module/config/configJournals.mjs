@@ -16,8 +16,8 @@ export function getConfigJournals() {
         "swamp": "PL1E.Swamp",
         "dunes": "PL1E.Dunes",
         "bay": "PL1E.Bay",
-        "coastline": "PL1E.Coastline", // Littoral
-        "strait": "PL1E.Strait", // Détroit
+        "coastline": "PL1E.Coastline",
+        "strait": "PL1E.Strait",
         "island": "PL1E.Island",
         "archipelago": "PL1E.Archipelago",
         "sea": "PL1E.Sea",
@@ -38,14 +38,17 @@ export function getConfigJournals() {
         "inn": "PL1E.Inn",
         "smithy": "PL1E.Smithy",
         "armory": "PL1E.Armory",
+        "carpentry": "PL1E.Carpentry",
         "alchemy": "PL1E.Alchemy",
         "jewelry": "PL1E.Jewelry",
         "market": "PL1E.Market",
         "guardhouse": "PL1E.Guardhouse",
         "barrack": "PL1E.Barrack",
         "guild": "PL1E.Guild",
+        "temple": "PL1E.Temple",
         "district": "PL1E.District",
-        "access": "PL1E.Access"
+        "access": "PL1E.Access",
+        "other": "PL1E.Other"
     }
 
     PL1E.climates = {
@@ -58,7 +61,7 @@ export function getConfigJournals() {
         "tropical": "PL1E.Tropical",
     }
 
-    PL1E.organizationType = {
+    PL1E.organizationTypes = {
         "nation": "PL1E.Nation",
         "guild": "PL1E.Guild",
         "cult": "PL1E.Cult",

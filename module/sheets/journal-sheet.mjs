@@ -1,6 +1,5 @@
 import {JournalEditor} from "./journal-editor-sheet.mjs";
 import {PL1E} from "../config/config.mjs";
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 export class Pl1eJournalPageSheet extends JournalPageSheet {
 
@@ -31,20 +30,25 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
             Array.fromRange(4, 1).map(n => [`level${n}`, context.data.title.level + n - 1])
         );
 
-        // if (this.document.type === "location") {
-        //     if (context.system.subType === undefined) {
-        //         let array = PL1E[`${context.system.type}Types`];
-        //         if (array === undefined) {
-        //             await this.document.update({
-        //                 "system.type": "area"
-        //             })
-        //             array = PL1E["areaTypes"];
-        //         }
-        //         await this.document.update({
-        //             "system.subType": Object.keys(array)[0]
-        //         })
-        //     }
-        // }
+        // Default system type
+        if (context.system.type === undefined) {
+            let typeArray = PL1E[`${context.document.type}Types`];
+            if (typeArray === undefined) throw new Error(`PL1E | Cannot find any ${context.document.type}Types`);
+            await this.document.update({
+                "system.type": Object.keys(typeArray)[0]
+            });
+        }
+
+        // Default system subType
+        if (context.system.subType === undefined) {
+            let subTypeArray = PL1E[`${context.system.type}Types`];
+            if (subTypeArray !== undefined) {
+                await this.document.update({
+                    "system.subType": Object.keys(subTypeArray)[0]
+                });
+            }
+        }
+
         return context;
     }
 
