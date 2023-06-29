@@ -171,13 +171,16 @@ export class Pl1eHelpers {
             // Search inside current game
             switch (type) {
                 case "Actor":
-                    document = game.actors.get(id)
+                    document = game.actors.get(id);
+                    break;
+                case "Token":
+                    document = game.scenes.viewed.tokens.get(id);
                     break;
                 case "Item":
-                    document = game.items.get(id)
+                    document = game.items.get(id);
                     break;
                 case "Macro":
-                    document = game.macros.get(id)
+                    document = game.macros.get(id);
                     break;
             }
         }

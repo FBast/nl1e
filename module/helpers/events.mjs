@@ -251,10 +251,10 @@ export class Pl1eEvent {
         // Extract card data
         let action = $(event.currentTarget).data("action");
         let itemId = $(event.currentTarget).data("item-id");
-        let actorId = $(event.currentTarget).data("actor-id");
+        let actorId = $(event.currentTarget).data("token-id");
 
-        const actor = await Pl1eHelpers.getDocument("Actor", actorId);
-        const item = actor.items.get(itemId);
+        const token = await Pl1eHelpers.getDocument("Token", actorId);
+        const item = token.actor.items.get(itemId);
 
         const options = {
             action: action

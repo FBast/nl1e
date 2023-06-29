@@ -25,17 +25,17 @@ export class Pl1eAbility extends Pl1eItem {
 
     /** @inheritDoc */
     async activate() {
-        if (!this._canActivate(this.actor)) return;
-
         const token = this.actor.bestToken;
         if (token === null) return;
+
+        if (!this._canActivate(token.actor)) return;
 
         /**
          * @type {CharacterData}
          */
         this.characterData = {
-            actor: this.actor,
-            actorId: this.actor._id,
+            actor: token.actor,
+            actorId: token.actor._id,
             token: token,
             tokenId: token.document._id,
             item: this,
@@ -48,7 +48,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Get linked attributes
         if (this.characterData.attributes.weaponLink !== "none") {
-            this._linkItem(this.characterData);
+            if (!this._linkItem(this.characterData)) return;
         }
 
         // Character rollData if exist
@@ -82,7 +82,7 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Execute activationMacro if found (pass for activation)
-        const macroId = this.characterData.item.system.attributes.activationMacro;
+        const macroId = this.characterData.attributes.activationMacro;
         const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
         const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
         if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({characterData: this.characterData, active: true});
@@ -163,7 +163,7 @@ export class Pl1eAbility extends Pl1eItem {
         for (let template of this.characterData.templates) {
             // Execute launchMacro if found
             const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
-            const macroId = this.characterData.item.system.attributes.launchMacro;
+            const macroId = this.characterData.attributes.launchMacro;
             const launchMacro = await Pl1eHelpers.getDocument("Macro", macroId);
             if (enableVFXAndSFX && launchMacro !== undefined) launchMacro.execute({characterData: this.characterData, template: template});
         }
@@ -213,7 +213,7 @@ export class Pl1eAbility extends Pl1eItem {
      * @private
      */
     async _applyAttributes() {
-        for (const [key, attribute] of Object.entries(this.characterData.attributes)) {
+       for (const [key, attribute] of Object.entries(this.characterData.attributes)) {
             const attributeConfig = CONFIG.PL1E.attributes[key];
             if (attributeConfig?.data === undefined || attribute === 0) continue;
 
@@ -239,8 +239,14 @@ export class Pl1eAbility extends Pl1eItem {
             if (item.type !== "weapon" || !item.isEnabled) continue;
             if (characterData.item.system.attributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
             if (characterData.item.system.attributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
-            if (item.system.attributes.mastery !== characterData.item.system.attributes.mastery) continue;
+            if (characterData.item.system.attributes.mastery !== "none" && item.system.attributes.mastery !== characterData.item.system.attributes.mastery) continue;
+            if (characterData.item.system.attributes.mastery === "none" && !item.system.refItems.includes(characterData.item.sourceId)) continue;
             relatedItems.push(item);
+        }
+
+        if (relatedItems.length === 0) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
+            return false;
         }
 
         // // Open dialogue if multiple related items
@@ -281,7 +287,10 @@ export class Pl1eAbility extends Pl1eItem {
             characterData.attributes.rangeResolutionType = "value";
             characterData.attributes.areaNumber = 1;
         }
+        characterData.attributes.mastery = characterData.linkedItem.system.attributes.mastery;
         Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
+
+        return true;
     }
 
     /** @inheritDoc */
@@ -318,6 +327,18 @@ export class Pl1eAbility extends Pl1eItem {
         }
         if (itemAttributes.activation === "instant" && actor.system.misc.instant <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreInstant"));
+            return false;
+        }
+        if (itemAttributes.weaponLink !== "none") {
+            for (const item of actor.items) {
+                if (item.type !== "weapon" || !item.isEnabled) continue;
+                if (itemAttributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
+                if (itemAttributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
+                if (itemAttributes.mastery !== "none" && item.system.attributes.mastery !== itemAttributes.mastery) continue;
+                if (itemAttributes.mastery === "none" && !item.system.refItems.includes(this.sourceId)) continue;
+                return true;
+            }
+            ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;
         }
         return true;

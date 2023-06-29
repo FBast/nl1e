@@ -130,8 +130,9 @@ export class AbilityTemplate extends MeasuredTemplate {
       targetGroups.push(aspect.targetGroup);
     }
 
-    const gridPositions = this._getGridHighlightPositions();
     const targets = [];
+    if (this.shape === undefined) return targets;
+    const gridPositions = this._getGridHighlightPositions();
 
     // Target current position
     for (let gridPosition of gridPositions) {
@@ -212,7 +213,7 @@ export class AbilityTemplate extends MeasuredTemplate {
     templateCenter.x -= offset;
     templateCenter.y -= offset;
     // Clamp with range
-    const range = this.item.system.attributes.range * game.system.gridDistance;
+    const range = this.attributes.range * game.system.gridDistance;
     templateCenter = this._clampVectorRadius(templateCenter, this.token, range * 100);
     // Snap position
     templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 1);
