@@ -163,7 +163,11 @@ export class Pl1eAspect {
                 });
             }
 
-            // Check for existing aspect related to same function
+            // Add label for Sequence
+            let label = PL1E[aspectCopy.dataGroup][aspectCopy.data].label;
+            aspectCopy.label = `${aspectCopy.value} ${game.i18n.localize(label)}`;
+
+                // Check for existing aspect related to same function
             targetData.activeAspects ??= [];
             let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
             existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;

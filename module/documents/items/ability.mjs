@@ -81,10 +81,12 @@ export class Pl1eAbility extends Pl1eItem {
             }
         }
 
-        // Execute activationMacro if found (pass for activation)
+        // Find activationMacro (pass for activation)
         const macroId = this.characterData.attributes.activationMacro;
         const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
         const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
+
+        // Execute activationMacro
         if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({characterData: this.characterData, active: true});
 
         // Display message
@@ -104,10 +106,12 @@ export class Pl1eAbility extends Pl1eItem {
                 break;
         }
 
-        // Execute activationMacro if found (pass for deactivation)
+        // Find activationMacro (pass for deactivation)
         const macroId = this.characterData.item.system.attributes.activationMacro;
         const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
         const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
+
+        // Execute activationMacro
         if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({characterData: this.characterData, active: false});
 
         // Destroy templates after fetching target with df-template
@@ -159,14 +163,13 @@ export class Pl1eAbility extends Pl1eItem {
             targetsData = await Pl1eAspect.applyActive(aspect, this.characterData, targetsData);
         }
 
-        // Execute launchMacro on templates
-        for (let template of this.characterData.templates) {
-            // Execute launchMacro if found
-            const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
-            const macroId = this.characterData.attributes.launchMacro;
-            const launchMacro = await Pl1eHelpers.getDocument("Macro", macroId);
-            if (enableVFXAndSFX && launchMacro !== undefined) launchMacro.execute({characterData: this.characterData, template: template});
-        }
+        // Find launchMacro
+        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
+        const macroId = this.characterData.attributes.launchMacro;
+        const launchMacro = await Pl1eHelpers.getDocument("Macro", macroId);
+
+        // Execute launchMacro
+        if (enableVFXAndSFX && launchMacro !== undefined) launchMacro.execute({characterData: this.characterData, targetsData: targetsData});
 
         // Display messages
         for (const targetData of targetsData) {
@@ -283,6 +286,7 @@ export class Pl1eAbility extends Pl1eItem {
             characterData.attributes.areaNumber = 1;
         }
         else if (characterData.attributes.weaponLink === "ranged") {
+            characterData.attributes.areaShape = "target";
             characterData.attributes.range = characterData.linkedItem.system.attributes.range;
             characterData.attributes.rangeResolutionType = "value";
             characterData.attributes.areaNumber = 1;

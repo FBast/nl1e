@@ -78,8 +78,13 @@ export class Pl1eItemSheet extends ItemSheet {
         // Use a safe clone of the item data for further operations.
         const itemData = context.item;
 
-        // Sheet editable if original and user is owner
-        this.options.editable = !this.item.isEmbedded && this.item.isOwner;
+        // Sheet editable if original or parent is token and user is owner
+        if (this.item.isEmbedded) {
+            this.options.editable = this.item.parent.isToken && this.item.isOwner;
+        }
+        else {
+            this.options.editable = this.item.isOwner;
+        }
 
         // Retrieve the roll data for TinyMCE editors.
         context.rollData = {};
