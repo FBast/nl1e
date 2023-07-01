@@ -348,6 +348,7 @@
       "isMemorized": false,
       "attributes": {
         "level": 1,
+        "masters": [],
         "healthCost": 0,
         "staminaCost": 0,
         "manaCost": 0,

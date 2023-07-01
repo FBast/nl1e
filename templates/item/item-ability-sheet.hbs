@@ -10,8 +10,8 @@
                            value="{{system.attributes.level}}" data-dtype="Number"/>
                 </div>
                 <div class="form-group box">
-                    <select name="system.attributes.mastery">
-                        {{selectOptions (config "masters") selected=system.attributes.mastery localize=true}}
+                    <select name="system.attributes.masters" multiple>
+                        {{selectOptions (config "masters") selected=system.attributes.masters localize=true}}
                     </select>
                 </div>
             </div>

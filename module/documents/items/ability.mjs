@@ -240,16 +240,11 @@ export class Pl1eAbility extends Pl1eItem {
         const relatedItems = [];
         for (const item of characterData.actor.items) {
             if (item.type !== "weapon" || !item.isEnabled) continue;
-            if (characterData.item.system.attributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
-            if (characterData.item.system.attributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
-            if (characterData.item.system.attributes.mastery !== "none" && item.system.attributes.mastery !== characterData.item.system.attributes.mastery) continue;
-            if (characterData.item.system.attributes.mastery === "none" && !item.system.refItems.includes(characterData.item.sourceId)) continue;
+            if (characterData.attributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
+            if (characterData.attributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
+            if (characterData.attributes.mastery.length > 0 && !characterData.attributes.mastery.includes(item.system.attributes.mastery)) continue;
+            if (characterData.attributes.mastery.length === 0 && !item.system.refItems.includes(characterData.item.sourceId)) continue;
             relatedItems.push(item);
-        }
-
-        if (relatedItems.length === 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
-            return false;
         }
 
         // // Open dialogue if multiple related items
@@ -280,16 +275,10 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Get linked attributes
         if (characterData.attributes.weaponLink === "melee") {
-            characterData.attributes.areaShape = "target";
             characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
-            characterData.attributes.rangeResolutionType = "value";
-            characterData.attributes.areaNumber = 1;
         }
         else if (characterData.attributes.weaponLink === "ranged") {
-            characterData.attributes.areaShape = "target";
             characterData.attributes.range = characterData.linkedItem.system.attributes.range;
-            characterData.attributes.rangeResolutionType = "value";
-            characterData.attributes.areaNumber = 1;
         }
         characterData.attributes.mastery = characterData.linkedItem.system.attributes.mastery;
         Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
@@ -338,8 +327,8 @@ export class Pl1eAbility extends Pl1eItem {
                 if (item.type !== "weapon" || !item.isEnabled) continue;
                 if (itemAttributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
                 if (itemAttributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
-                if (itemAttributes.mastery !== "none" && item.system.attributes.mastery !== itemAttributes.mastery) continue;
-                if (itemAttributes.mastery === "none" && !item.system.refItems.includes(this.sourceId)) continue;
+                if (itemAttributes.mastery.length > 0 && !itemAttributes.mastery.includes(item.system.attributes.mastery)) continue;
+                if (itemAttributes.mastery.length === 0 && !item.system.refItems.includes(this.sourceId)) continue;
                 return true;
             }
             ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));

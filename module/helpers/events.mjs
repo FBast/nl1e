@@ -23,9 +23,11 @@ export class Pl1eEvent {
      */
     static async onTokenEdit(event) {
         const tokenId = $(event.currentTarget).data("token-id");
-        const tokenDocument = await Pl1eHelpers.getDocument("Token", tokenId);
+        const token = await Pl1eHelpers.getDocument("Token", tokenId);
 
-        tokenDocument.sheet.renderOnTop();
+        if (token === undefined) throw new Error("PL1E | no token found");
+
+        token.actor.sheet.renderOnTop();
     }
 
     /**
@@ -45,12 +47,21 @@ export class Pl1eEvent {
      * @param {Actor|Item} document the document of the item
      */
     static async onItemEdit(event, document) {
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        let itemId = $(event.currentTarget).closest(".item").data("item-id");
+        if (itemId === undefined) itemId = $(event.currentTarget).data("item-id");
+        if (itemId === undefined) throw new Error("PL1E | no itemId found");
+
+        if (document === undefined) {
+            const tokenId = $(event.currentTarget).data("token-id");
+            const token = await Pl1eHelpers.getDocument("Token", tokenId);
+            if (token !== undefined) document = token.actor;
+        }
+        if (document === undefined) throw new Error("PL1E | no document found");
 
         let item;
-        if (itemId && document instanceof Pl1eActor)
+        if (document instanceof Pl1eActor)
             item = document.items.get(itemId);
-        else if (itemId) {
+        else if (document instanceof Pl1eItem) {
             item = await Pl1eHelpers.getDocument("Item", itemId);
         }
 
