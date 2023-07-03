@@ -4,6 +4,7 @@ import {Pl1eFormValidation} from "../helpers/formValidation.mjs";
 import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
 import {PL1E} from "../config/config.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
+import {TraitSelector} from "../apps/traitSelector.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -153,6 +154,7 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
         html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));
         html.find('.aspect-remove').on("click", ev => this._onAspectRemove(ev));
+        html.find(".trait-selector").on("click", ev => this._onTraitSelector(ev, this.item));
     }
 
     /**
@@ -272,6 +274,22 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null
         });
+    }
+
+    /**
+     * Handle spawning the TraitSelector application which allows a checkbox of multiple trait options.
+     * @param {Event} event The click event which originated the selection.
+     * @param document The document targeting the selector
+     * @returns {TraitSelector} Newly displayed application.
+     * @private
+     */
+    _onTraitSelector(event, document) {
+        event.preventDefault();
+        const trait = $(event.currentTarget).data("trait");
+        const traitLabel = $(event.currentTarget).data("trait-label");
+        const keyPath = $(event.currentTarget).data("key-path");
+
+        return new TraitSelector(document, trait, traitLabel, keyPath).render(true);
     }
 
     /**

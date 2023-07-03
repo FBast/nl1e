@@ -2,18 +2,28 @@
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">
-                {{localize "PL1E.HealthCost"}}
-                <input type="number" name="system.attributes.healthCost" value="{{system.attributes.healthCost}}" data-dtype="Number"/>
-            </label>
-            <label class="attribute-name">
-                {{localize "PL1E.StaminaCost"}}
-                <input type="number" name="system.attributes.staminaCost" value="{{system.attributes.staminaCost}}" data-dtype="Number"/>
-            </label>
-            <label class="attribute-name">
-                {{localize "PL1E.ManaCost"}}
-                <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}" data-dtype="Number"/>
-            </label>
+            <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
+            <ul class="attribute-name">
+                {{#each system.attributes.masters}}
+                    <li class="tag {{this}}">{{localize (configEntry "masters" this)}}</li>
+                {{/each}}
+            </ul>
+            <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masters"
+               data-tooltip="{{localize 'PL1E.MastersConfig'}}">
+                <i class="fas fa-edit"></i>
+            </a>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.HealthCost"}}</label>
+            <input type="number" name="system.attributes.healthCost" value="{{system.attributes.healthCost}}" data-dtype="Number"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.StaminaCost"}}</label>
+            <input type="number" name="system.attributes.staminaCost" value="{{system.attributes.staminaCost}}" data-dtype="Number"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.ManaCost"}}</label>
+            <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}" data-dtype="Number"/>
         </div>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Activation"}}</label>
@@ -30,9 +40,15 @@
         {{#if (ne system.attributes.characterRoll "none")}}
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.TargetRoll"}}</label>
-                <select name="system.attributes.targetRoll">
-                    {{selectOptions (config "abilityResistances") selected=system.attributes.targetRoll localize=true}}
-                </select>
+                <ul class="attribute-name">
+                    {{#each system.attributes.targetRoll}}
+                        <li class="tag {{this}}">{{localize (configEntry "abilityResistances" this)}}</li>
+                    {{/each}}
+                </ul>
+                <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.TargetRoll" data-key-path="attributes.targetRoll"
+                   data-tooltip="{{localize 'PL1E.TargetRollConfig'}}">
+                    <i class="fas fa-edit"></i>
+                </a>
             </div>
         {{/if}}
         <div class="item-attribute flexrow">

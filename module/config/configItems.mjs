@@ -353,7 +353,6 @@ export function getConfigItems() {
     }
     
     PL1E.abilityResistances = {
-        "none": "PL1E.None",
         "parry": "PL1E.Parry",
         "dodge": "PL1E.Dodge",
         "vigor": "PL1E.Vigor",

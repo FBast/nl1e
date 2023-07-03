@@ -1,0 +1,14 @@
+<form class="pl1e" autocomplete="off" onsubmit="event.preventDefault();">
+    <ol class="items-list">
+        {{#each choices}}
+            <li class="item">
+                <label class="checkbox">
+                    <input type="checkbox" name="{{@key}}" {{checked value}} data-dtype="Boolean">
+                    {{localize label}}
+                </label>
+            </li>
+        {{/each}}
+    </ol>
+
+    <button type="submit"><i class="far fa-save"></i> {{localize "PL1E.Save"}}</button>
+</form>

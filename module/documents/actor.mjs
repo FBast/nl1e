@@ -160,6 +160,8 @@ export class Pl1eActor extends Actor {
                 }
             }
             skill.numberMod = attributesSum + actorGeneral.bonuses;
+            if (id === "parry") skill.numberMod += actorMisc.parryBonuses;
+            if (id === "dodge") skill.numberMod += actorMisc.dodgeBonuses;
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
             skill.diceMod = actorGeneral.advantages;
@@ -180,16 +182,47 @@ export class Pl1eActor extends Actor {
     }
 
     /**
-     *
-     * @param skill
+     * Roll a skill and return the roll
+     * @param {string} skillName
      * @returns {Promise<Roll>}
      */
-    async rollSkill(skill) {
+    async rollSkill(skillName) {
+        const skill = this.system.skills[skillName];
         let formula = skill.number + "d" + skill.dice;
         formula += this.type === "character" ? "xo" + skill.dice : "";
         formula += "cs>=4";
         let roll = new Roll(formula, this.getRollData());
+        roll.skillName = skillName;
         return roll.evaluate({async: true});
+    }
+
+    /**
+     * Roll a skill based on rollBestSkill value and return the roll
+     * @param {string[]} skillNames
+     * @returns {Promise<Roll>}
+     */
+    async rollSkills(skillNames) {
+        if (skillNames.length > 1) {
+            if (this.system.general.rollBestSkill) {
+                let skillAvg = Number.NEGATIVE_INFINITY;
+                let bestSkillName = undefined;
+                for (let skillName of skillNames) {
+                    const skill = this.system.skills[skillName];
+                    const currentSkillAvg = (skill.dice + 1) / 2 * skill.number;
+                    if (skillAvg < currentSkillAvg) {
+                        skillAvg = currentSkillAvg;
+                        bestSkillName = skillName;
+                    }
+                }
+                return await this.rollSkill(bestSkillName);
+            }
+            else {
+                throw new Error("PL1E | not implemented yet");
+            }
+        }
+        else {
+            return await this.rollSkill(skillNames[0]);
+        }
     }
 
     /**

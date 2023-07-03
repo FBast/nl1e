@@ -3,16 +3,10 @@
         <img class="profile" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
             <h1 class="sheet-name"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-            <div class="resources grid grid-2col">
                 <div class="form-group box">
                     <label>{{localize "PL1E.Level"}}</label>
                     <input type="number" step="1" min="0" max="5" name="system.attributes.level"
                            value="{{system.attributes.level}}" data-dtype="Number"/>
-                </div>
-                <div class="form-group box">
-                    <select name="system.attributes.masters" multiple>
-                        {{selectOptions (config "masters") selected=system.attributes.masters localize=true}}
-                    </select>
                 </div>
             </div>
         </div>

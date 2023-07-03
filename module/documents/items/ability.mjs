@@ -53,8 +53,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Character rollData if exist
         if (this.characterData.attributes.characterRoll !== 'none') {
-            const skill = this.characterData.actor.system.skills[this.characterData.attributes.characterRoll];
-            this.characterData.rollData = await this.characterData.actor.rollSkill(skill);
+            this.characterData.rollData = await this.characterData.actor.rollSkill(this.characterData.attributes.characterRoll);
             this.characterData.result = this.characterData.rollData.total;
         }
         else {
@@ -142,9 +141,8 @@ export class Pl1eAbility extends Pl1eItem {
         for (let template of this.characterData.templates) {
             for (let token of template.getTargets()) {
                 const targetData = {};
-                if (this.characterData.attributes.targetRoll !== "none") {
-                    const skill = token.actor.system.skills[this.characterData.attributes.targetRoll];
-                    targetData.rollData = await token.actor.rollSkill(skill);
+                if (this.characterData.attributes.targetRoll.length > 0) {
+                    targetData.rollData = await token.actor.rollSkills(this.characterData.attributes.targetRoll);
                     targetData.result = this.characterData.result - targetData.rollData.total;
                 }
                 else {
@@ -237,15 +235,7 @@ export class Pl1eAbility extends Pl1eItem {
      */
     _linkItem(characterData) {
         // Get weapons using the same mastery
-        const relatedItems = [];
-        for (const item of characterData.actor.items) {
-            if (item.type !== "weapon" || !item.isEnabled) continue;
-            if (characterData.attributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
-            if (characterData.attributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
-            if (characterData.attributes.mastery.length > 0 && !characterData.attributes.mastery.includes(item.system.attributes.mastery)) continue;
-            if (characterData.attributes.mastery.length === 0 && !item.system.refItems.includes(characterData.item.sourceId)) continue;
-            relatedItems.push(item);
-        }
+        const relatedItems = this._getLinkableItems(characterData.attributes, characterData.actor.items);
 
         // // Open dialogue if multiple related items
         // new Dialog({
@@ -274,6 +264,11 @@ export class Pl1eAbility extends Pl1eItem {
         characterData.linkedItem = relatedItems[0];
 
         // Get linked attributes
+        if (characterData.attributes.weaponLink !== "special") {
+            characterData.attributes.areaShape = "target";
+            characterData.attributes.rangeResolutionType = "value";
+            characterData.attributes.areaNumber = 1;
+        }
         if (characterData.attributes.weaponLink === "melee") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
         }
@@ -284,6 +279,24 @@ export class Pl1eAbility extends Pl1eItem {
         Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
 
         return true;
+    }
+
+    /**
+     * Return the linkable items for this ability
+     * @param {Object} itemAttributes
+     * @param {Pl1eItem[]} items
+     * @returns {*[]}
+     */
+    _getLinkableItems(itemAttributes, items) {
+        const relatedItems = [];
+        for (const item of items) {
+            if (item.type !== "weapon" || !item.isEnabled) continue;
+            if (itemAttributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
+            if (itemAttributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
+            if (itemAttributes.masters.length > 0 && !itemAttributes.masters.includes(item.system.attributes.mastery)) continue;
+            relatedItems.push(item);
+        }
+        return relatedItems;
     }
 
     /** @inheritDoc */
@@ -322,15 +335,7 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreInstant"));
             return false;
         }
-        if (itemAttributes.weaponLink !== "none") {
-            for (const item of actor.items) {
-                if (item.type !== "weapon" || !item.isEnabled) continue;
-                if (itemAttributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
-                if (itemAttributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
-                if (itemAttributes.mastery.length > 0 && !itemAttributes.mastery.includes(item.system.attributes.mastery)) continue;
-                if (itemAttributes.mastery.length === 0 && !item.system.refItems.includes(this.sourceId)) continue;
-                return true;
-            }
+        if (itemAttributes.weaponLink !== "none" && this._getLinkableItems(itemAttributes, actor.items).length === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;
         }

@@ -1,3 +1,5 @@
+import {PL1E} from "../config/config.mjs";
+
 export class Pl1eChat {
 
     /**
@@ -13,12 +15,18 @@ export class Pl1eChat {
         const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-${template}.hbs`,
             {rollData: rollData, characterData: characterData, targetData: targetData});
 
+        let flavor = `[${game.i18n.localize("PL1E.Ability")}] ${characterData.item.name}`;
+        if (rollData !== undefined) {
+            const skillConfig = CONFIG.PL1E.skills[rollData.skillName];
+            flavor += ` [${game.i18n.localize("PL1E.Skill")}] ${game.i18n.localize(skillConfig.label)}`
+        }
+
         // Create the ChatMessage data object
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: characterData.actor}),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            flavor: '[' + game.i18n.localize("PL1E.Ability") + '] ' + characterData.item.name,
+            flavor: flavor,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {"core.canPopout": true}, // ?
             content: html
@@ -31,21 +39,19 @@ export class Pl1eChat {
     /**
      * Send a message for a skill roll
      * @param {Pl1eActor} actor
-     * @param {string} skillId
+     * @param {string} skillName
      * @returns {Promise<void>}
      */
-    static async skillRoll(actor, skillId) {
-        const skill = actor.system.skills[skillId];
-        const skillConfig = CONFIG.PL1E.skills[skillId];
-
-        let roll = await actor.rollSkill(skill)
+    static async skillRoll(actor, skillName) {
+        const skillConfig = CONFIG.PL1E.skills[skillName];
+        let roll = await actor.rollSkill(skillName)
 
         // Render message
         await roll.toMessage({
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: actor}),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            flavor: '[' + game.i18n.localize("PL1E.Skill") + '] ' + game.i18n.localize(skillConfig.label),
+            flavor: `[${game.i18n.localize("PL1E.Skill")}] ${game.i18n.localize(skillConfig.label)}`,
             rollMode: game.settings.get('core', 'rollMode'),
         });
     }
