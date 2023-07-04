@@ -26,10 +26,20 @@
             <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}" data-dtype="Number"/>
         </div>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Activation"}}</label>
-            <select name="system.attributes.activation">
-                {{selectOptions (config "activations") selected=system.attributes.activation localize=true}}
-            </select>
+            <label class="attribute-name">{{localize "PL1E.ActionCost"}}</label>
+            <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.ReactionCost"}}</label>
+            <input type="number" name="system.attributes.reactionCost" value="{{system.attributes.reactionCost}}" data-dtype="Number"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.InstantCost"}}</label>
+            <input type="number" name="system.attributes.instantCost" value="{{system.attributes.instantCost}}" data-dtype="Number"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.IsMajor"}}</label>
+            <input type="checkbox" name="system.attributes.isMajor" {{checked system.attributes.isMajor}} data-dtype="Boolean"/>
         </div>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>

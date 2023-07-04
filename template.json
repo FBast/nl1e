@@ -252,7 +252,8 @@
           "nightVision": 9,
           "action": 2,
           "reaction": 1,
-          "instant": 1
+          "instant": 1,
+          "actionInProgress": false
         },
         "reductions": {
           "slashing": 0,
@@ -353,6 +354,7 @@
         "healthCost": 0,
         "staminaCost": 0,
         "manaCost": 0,
+        "isMajor": false,
         "activation": "action",
         "characterRoll": "none",
         "targetRoll": [],
@@ -378,6 +380,7 @@
       "templates": ["base", "item"],
       "isEquippedMain": false,
       "isEquippedSecondary": false,
+      "isMajorAbilityUsed": false,
       "attributes": {
         "mastery": "none",
         "hands": 1,
@@ -392,6 +395,7 @@
     "wearable": {
       "templates": ["base", "item"],
       "isEquipped": false,
+      "isMajorAbilityUsed": false,
       "attributes": {
         "slot": "none"
       }

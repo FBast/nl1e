@@ -26,9 +26,12 @@ export class Pl1eAbility extends Pl1eItem {
     /** @inheritDoc */
     async activate() {
         const token = this.actor.bestToken;
-        if (token === null) return;
+        if (token === null)
+            ui.notifications.warn(game.i18n.localize(`PL1E.NoTokenFound`));
 
         if (!this._canActivate(token.actor)) return;
+
+        token.actor.system.misc.actionInProgress = true;
 
         /**
          * @type {CharacterData}
@@ -123,6 +126,9 @@ export class Pl1eAbility extends Pl1eItem {
             token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
         }
 
+        // Action is resolved
+        this.characterData.token.actor.system.misc.actionInProgress = false;
+
         // Empty ability data
         this.characterData = {};
     }
@@ -184,26 +190,29 @@ export class Pl1eAbility extends Pl1eItem {
     _calculateAttributes(characterData) {
         // Calculate character attributes
         let calculatedAttributes = {};
-        for (let [id, attribute] of Object.entries(characterData.attributes)) {
-            let calculatedAttribute = attribute;
-            const attributeConfig = CONFIG.PL1E.attributes[id];
+        for (let [key, value] of Object.entries(characterData.attributes)) {
+            let calculatedAttribute = value;
+            const attributeConfig = CONFIG.PL1E.attributes[key];
             if (attributeConfig !== undefined) {
-                if (attributeConfig.type === "number" && characterData.attributes[`${id}ResolutionType`] !== undefined) {
-                    const resolutionType = characterData.attributes[`${id}ResolutionType`];
-                    if (resolutionType === "multiplyBySuccess") {
-                        calculatedAttribute *= characterData.result > 0 ? characterData.result : 0;
+                if (attributeConfig.type === "number") {
+                    // Apply resolution type
+                    if (characterData.attributes[`${key}ResolutionType`] !== undefined) {
+                        const resolutionType = characterData.attributes[`${key}ResolutionType`];
+                        if (resolutionType === "multiplyBySuccess") {
+                            calculatedAttribute *= characterData.result > 0 ? characterData.result : 0;
+                        }
+                        if (resolutionType === "valueIfSuccess") {
+                            calculatedAttribute = characterData.result > 0 ? calculatedAttribute : 0;
+                        }
                     }
-                    if (resolutionType === "valueIfSuccess") {
-                        calculatedAttribute = characterData.result > 0 ? calculatedAttribute : 0;
-                    }
-                }
 
-                // Negate some attributes
-                if (attribute.value > 0 && attributeConfig.invertSign) {
-                    calculatedAttribute *= -1;
+                    // Negate some attributes
+                    if (value > 0 && attributeConfig.invertSign) {
+                        calculatedAttribute *= -1;
+                    }
                 }
             }
-            calculatedAttributes[id] = calculatedAttribute;
+            calculatedAttributes[key] = calculatedAttribute;
         }
         return calculatedAttributes;
     }
@@ -214,16 +223,40 @@ export class Pl1eAbility extends Pl1eItem {
      * @private
      */
     async _applyAttributes() {
-       for (const [key, attribute] of Object.entries(this.characterData.attributes)) {
+       for (const [key, value] of Object.entries(this.characterData.attributes)) {
             const attributeConfig = CONFIG.PL1E.attributes[key];
-            if (attributeConfig?.data === undefined || attribute === 0) continue;
+            if (attributeConfig?.data === undefined || value === 0) continue;
 
-            // Apply effects
+            // Retrieve document for attribute modification
+            let document = undefined;
+            switch (attributeConfig.document) {
+                case "actor":
+                    document = this.characterData.actor;
+                    break;
+                case "linkedItem":
+                    document = this.characterData.linkedItem;
+                    break;
+                default:
+                    throw new Error("PL1E | unknown document type : " + attributeConfig.document);
+            }
+            if (document === undefined)
+                throw new Error("PL1E | no document correspond to : " + attributeConfig.document);
+
+            // Calculate modification
             const attributeDataConfig = CONFIG.PL1E[attributeConfig.dataGroup][attributeConfig.data];
-            let actorValue = foundry.utils.getProperty(this.characterData.actor, attributeDataConfig.path);
-            actorValue += attribute;
-            await this.characterData.actor.update({
-                [attributeDataConfig.path]: actorValue
+            let currentValue = foundry.utils.getProperty(document, attributeDataConfig.path);
+            switch (attributeConfig.type) {
+                case "number":
+                    currentValue += value;
+                    break;
+                case "bool":
+                    currentValue = attributeConfig.applyIfTrue ? value : currentValue;
+                    break;
+            }
+
+           // Apply attribute modification
+            await document.update({
+                [attributeDataConfig.path]: currentValue
             });
         }
     }
@@ -290,7 +323,8 @@ export class Pl1eAbility extends Pl1eItem {
     _getLinkableItems(itemAttributes, items) {
         const relatedItems = [];
         for (const item of items) {
-            if (item.type !== "weapon" || !item.isEnabled) continue;
+            if (item.type !== "weapon" && item.type !== "wearable" && !item.isEnabled) continue;
+            if (itemAttributes.isMajor && item.system.isMajorAbilityUsed) continue;
             if (itemAttributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
             if (itemAttributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
             if (itemAttributes.masters.length > 0 && !itemAttributes.masters.includes(item.system.attributes.mastery)) continue;

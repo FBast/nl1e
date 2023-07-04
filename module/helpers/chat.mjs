@@ -28,7 +28,10 @@ export class Pl1eChat {
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             flavor: flavor,
             rollMode: game.settings.get('core', 'rollMode'),
-            flags: {"core.canPopout": true}, // ?
+            flags: {
+                "core.canPopout": true,
+                "pl1e.isResolved": false
+            },
             content: html
         };
 

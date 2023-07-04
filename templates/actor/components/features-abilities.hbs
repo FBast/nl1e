@@ -25,12 +25,23 @@
                                     <label>{{system.attributes.manaCost}}</label>
                                 </i>
                             {{/if}}
-                            {{#if (eq system.attributes.activation "action")}}
-                                <i class="item-info fas fa-clock hover-green" data-tooltip='{{localize "PL1E.Action"}}'></i>
-                            {{else if (eq system.attributes.activation "instant")}}
-                                <i class="item-info fas fa-bell hover-green" data-tooltip='{{localize "PL1E.Instant"}}'></i>
-                            {{else if (eq system.attributes.activation "reaction")}}
-                                <i class="item-info fas fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.Reaction"}}'></i>
+                            {{#if (ne system.attributes.actionCost 0)}}
+                                <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+                                    <label>{{system.attributes.actionCost}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (ne system.attributes.reactionCost 0)}}
+                                <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+                                    <label>{{system.attributes.reactionCost}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (ne system.attributes.instantCost 0)}}
+                                <i class="item-info far fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.InstantCost"}}'>
+                                    <label>{{system.attributes.instantCost}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if system.attributes.isMajor}}
+                                <i class="item-info fas fa-star hover-green" data-tooltip='{{localize "PL1E.IsMajor"}}'></i>
                             {{/if}}
                             {{#if (eq system.attributes.weaponLink "melee")}}
                                 <i class="item-info fas fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>

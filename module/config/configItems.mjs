@@ -22,6 +22,15 @@ export function getConfigItems() {
         }
     }
 
+    PL1E.itemBase = {
+        "isMajorAbilityUsed": {
+            "label": "PL1E.MajorAbility",
+            "icon": "fa-star",
+            "type": "bool",
+            "path": "system.isMajorAbilityUsed"
+        }
+    }
+
     PL1E.attributes = {
         // Common
         "description": {
@@ -38,11 +47,47 @@ export function getConfigItems() {
             "type": "number",
             "fallback": 0
         },
+
+        "actionCost": {
+            "label": "PL1E.ActionCost",
+            "type": "number",
+            "document": "actor",
+            "dataGroup": "misc",
+            "data": "action",
+            "invertSign": true
+        },
+        "reactionCost": {
+            "label": "PL1E.ReactionCost",
+            "type": "number",
+            "document": "actor",
+            "dataGroup": "misc",
+            "data": "reaction",
+            "invertSign": true
+        },
+        "instantCost": {
+            "label": "PL1E.InstantCost",
+            "type": "number",
+            "document": "actor",
+            "dataGroup": "misc",
+            "data": "instant",
+            "invertSign": true
+        },
+
+        "isMajor": {
+            "label": "PL1E.Major",
+            "type": "bool",
+            "document": "linkedItem",
+            "dataGroup": "itemBase",
+            "data": "isMajorAbilityUsed",
+            "applyIfTrue": true
+        },
+
         "activation": {
             "label": "PL1E.Activation",
             "type": "select",
             "select": "activations"
         },
+
         "activationMacro": {
             "label": "PL1E.ActivationMacro",
             "type": "text"
@@ -69,6 +114,7 @@ export function getConfigItems() {
         "healthCost": {
             "label": "PL1E.HealthCost",
             "type": "number",
+            "document": "actor",
             "dataGroup": "resources",
             "data": "health",
             "invertSign": true
@@ -76,6 +122,7 @@ export function getConfigItems() {
         "staminaCost": {
             "label": "PL1E.StaminaCost",
             "type": "number",
+            "document": "actor",
             "dataGroup": "resources",
             "data": "stamina",
             "invertSign": true
@@ -83,6 +130,7 @@ export function getConfigItems() {
         "manaCost": {
             "label": "PL1E.ManaCost",
             "type": "number",
+            "document": "actor",
             "dataGroup": "resources",
             "data": "mana",
             "invertSign": true
@@ -177,18 +225,21 @@ export function getConfigItems() {
         "action": {
             "label": "PL1E.Action",
             "type": "number",
+            "document": "actor",
             "dataGroup": "misc",
             "data": "action"
         },
         "reaction": {
             "label": "PL1E.Reaction",
             "type": "number",
+            "document": "actor",
             "dataGroup": "misc",
             "data": "reaction"
         },
         "instant": {
             "label": "PL1E.Activation",
             "type": "number",
+            "document": "actor",
             "dataGroup": "misc",
             "data": "instant"
         }

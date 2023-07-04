@@ -261,8 +261,8 @@ export class Pl1eEvent {
 
         // Extract card data
         let action = $(event.currentTarget).data("action");
-        let itemId = $(event.currentTarget).data("item-id");
-        let actorId = $(event.currentTarget).data("token-id");
+        let itemId = $(event.currentTarget).closest(".chat-card").data("item-id");
+        let actorId = $(event.currentTarget).closest(".chat-card").data("token-id");
 
         const token = await Pl1eHelpers.getDocument("Token", actorId);
         const item = token.actor.items.get(itemId);
@@ -271,6 +271,8 @@ export class Pl1eEvent {
             action: action
         }
         await item.apply(options);
+
+
 
         // Remove all buttons
         const cardButtons = $(event.currentTarget).closest(".card-buttons");

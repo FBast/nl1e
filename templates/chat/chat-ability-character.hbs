@@ -1,15 +1,25 @@
-<div class="chat-card item-card">
+<div class="chat-card item-card" data-item-id={{characterData.itemId}} data-token-id={{characterData.tokenId}}>
     <header class="card-header flexrow">
         <img class="left-image token-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
              title="{{characterData.token.name}}" width="36" height="36"/>
         <div class="item-effects-character">
             {{#each characterData.attributes}}
                 {{#with (configEntry "attributes" @key)}}
-                    {{#if (and (ne dataGroup undefined) (ne data undefined) (ne ../this 0))}}
+                    {{#if (and (ne dataGroup undefined) (ne data undefined))}}
                         {{#with (configEntry dataGroup data)}}
-                            <i class="{{#if (gt ../../value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
-                                <label>{{formatNumber ../../this signe=true}}</label>
-                            </i>
+                            {{log ../applyIfTrue}}
+                            {{log ../../this}}
+                            {{#if (and (eq type "number") (ne ../../this 0))}}
+                                <i class="{{#if (gt ../../this 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                    <label>{{formatNumber ../../this signe=true}}</label>
+                                </i>
+                            {{else if (eq type "bool")}}
+                                {{#if (and ../applyIfTrue ../../this)}}
+                                    <i class="fas {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
+                                {{else}}
+                                    <i class="{{#if ../../this}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
+                                {{/if}}
+                            {{/if}}
                         {{/with}}
                     {{/if}}
                 {{/with}}
@@ -55,9 +65,12 @@
             </div>
         {{/if}}
     </div>
-    <footer class="card-buttons">
-        <button data-action="launch" data-item-id={{characterData.itemId}} data-token-id={{characterData.tokenId}}>{{localize "PL1E.Launch"}}</button>
-        <button data-action="counter" data-item-id={{characterData.itemId}} data-token-id={{characterData.tokenId}}>{{localize "PL1E.Counter"}}</button>
-        <button data-action="cancel" data-item-id={{characterData.itemId}} data-token-id={{characterData.tokenId}}>{{localize "PL1E.Cancel"}}</button>
-    </footer>
+    {{log this}}
+    {{#if (ne characterData undefined)}}
+        <footer class="card-buttons">
+            <button data-action="launch">{{localize "PL1E.Launch"}}</button>
+            <button data-action="counter">{{localize "PL1E.Counter"}}</button>
+            <button data-action="cancel">{{localize "PL1E.Cancel"}}</button>
+        </footer>
+    {{/if}}
 </div>

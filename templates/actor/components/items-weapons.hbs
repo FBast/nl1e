@@ -32,6 +32,9 @@
                         {{/if}}
                     {{/unless}}
                     {{#if (eq @root.actor.type "character")}}
+                        {{#if system.isMajorAbilityUsed}}
+                            <i class="item-info far fa-star hover-green" data-tooltip='{{localize "PL1E.MajorAbilityUsed"}}'></i>
+                        {{/if}}
                         {{#if (gt system.price.gold 0)}}
                             <i class="item-info fas fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
                                 <label class="color-black">{{system.price.gold}}</label>

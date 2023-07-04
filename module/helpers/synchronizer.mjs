@@ -29,7 +29,7 @@ export class Pl1eSynchronizer {
 
         const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
         if (enableDebugUINotifications && notifyInfo)
-            ui.notifications.info(game.i18n.localize(`Number of clones updated : ${updateNumber}`));
+            ui.notifications.info(`${game.i18n.localize("NumberOfUpdateClones")} : ${updateNumber}`);
     }
 
     /**

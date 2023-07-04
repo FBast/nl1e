@@ -104,7 +104,7 @@ export class Pl1eItem extends Item {
         if (this.system.refItems.some(id => id === item._id)) {
             const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
             if (enableDebugUINotifications)
-                ui.notifications.warn(game.i18n.localize(`A child with the same id exist`));
+                ui.notifications.warn(game.i18n.localize("PL1E.ChildWithSameIdExist"));
             return;
         }
 
@@ -112,7 +112,7 @@ export class Pl1eItem extends Item {
         if (await Pl1eHelpers.createRecursiveLoop(this, item.id)) {
             const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
             if (enableDebugUINotifications)
-                ui.notifications.warn(game.i18n.localize(`This will create a recursive loop and is aborted`));
+                ui.notifications.warn(game.i18n.localize("PL1E.WillCreateRecursiveLoop"));
             return;
         }
 
@@ -203,6 +203,11 @@ export class Pl1eItem extends Item {
         // If is not in battle
         if (!actor.bestToken.inCombat) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotInBattle"));
+            return false;
+        }
+        // If action in progress
+        if (actor.system.misc.actionInProgress) {
+            ui.notifications.warn(game.i18n.localize("PL1E.ActionInProgress"));
             return false;
         }
         return true;

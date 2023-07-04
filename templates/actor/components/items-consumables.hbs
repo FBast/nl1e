@@ -9,12 +9,20 @@
                 <label class="item-name item-tooltip-activate">{{system.units}}x {{name}}</label>
                 <div class="item-icons">
                     {{#unless (eq @root.actor.type "npc")}}
-                        {{#if (eq system.attributes.activation "action")}}
-                            <i class="item-info fas fa-clock hover-green" data-tooltip='{{localize "PL1E.Action"}}'></i>
-                        {{else if (eq system.attributes.activation "instant")}}
-                            <i class="item-info fas fa-bell hover-green" data-tooltip='{{localize "PL1E.Instant"}}'></i>
-                        {{else if (eq system.attributes.activation "reaction")}}
-                            <i class="item-info fas fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.Reaction"}}'></i>
+                        {{#if (ne system.attributes.actionCost 0)}}
+                            <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+                                <label>{{system.attributes.actionCost}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.reactionCost 0)}}
+                            <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+                                <label>{{system.attributes.reactionCost}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.instantCost 0)}}
+                            <i class="item-info far fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.InstantCost"}}'>
+                                <label>{{system.attributes.instantCost}}</label>
+                            </i>
                         {{/if}}
                         {{#if (gt system.attributes.uses 1)}}
                             {{#if (eq system.removedUses 0)}}

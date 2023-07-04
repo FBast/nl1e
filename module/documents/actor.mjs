@@ -24,7 +24,7 @@ export class Pl1eActor extends Actor {
 
         // If there is still no token, and actor link is enabled, try to get the first linked token
         if (!token && this.prototypeToken.actorLink && this.getActiveTokens().length > 0) {
-            token = this.getActiveTokens()[0];
+            token = this.getActiveTokens()[0].document;
         }
 
         // If we have a token, try to find it in the canvas tokens
@@ -44,11 +44,14 @@ export class Pl1eActor extends Actor {
         const updateData = {};
         if (data.img === undefined) {
             const img = CONFIG.PL1E.defaultIcons[data.type];
-            if (img) updateData['img'] = img;
+            if (img) updateData["img"] = img;
         }
         if (data.name.includes("New Actor")) {
             const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
-            if (name) updateData['name'] = name;
+            if (name) updateData["name"] = name;
+        }
+        if (data.type === "character") {
+            updateData["prototypeToken.actorLink"] = true;
         }
 
         await this.updateSource( updateData );
