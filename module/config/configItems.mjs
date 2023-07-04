@@ -47,7 +47,6 @@ export function getConfigItems() {
             "type": "number",
             "fallback": 0
         },
-
         "actionCost": {
             "label": "PL1E.ActionCost",
             "type": "number",
@@ -72,7 +71,6 @@ export function getConfigItems() {
             "data": "instant",
             "invertSign": true
         },
-
         "isMajor": {
             "label": "PL1E.Major",
             "type": "bool",
@@ -81,13 +79,6 @@ export function getConfigItems() {
             "data": "isMajorAbilityUsed",
             "applyIfTrue": true
         },
-
-        "activation": {
-            "label": "PL1E.Activation",
-            "type": "select",
-            "select": "activations"
-        },
-
         "activationMacro": {
             "label": "PL1E.ActivationMacro",
             "type": "text"

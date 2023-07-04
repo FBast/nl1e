@@ -56,9 +56,19 @@ export class Pl1eChat {
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             flavor: `[${game.i18n.localize("PL1E.Skill")}] ${game.i18n.localize(skillConfig.label)}`,
             rollMode: game.settings.get('core', 'rollMode'),
+            flags: {"core.canPopout": true}
         });
     }
 
+    /**+
+     * Send a message for a trade of an item between two actors
+     * @param {Pl1eItem} item
+     * @param {Pl1eActor} sourceActor
+     * @param {Pl1eActor} targetActor
+     * @param {string} transaction
+     * @param {Object} price
+     * @returns {Promise<void>}
+     */
     static async tradeMessage(item, sourceActor, targetActor, transaction, price = undefined) {
         const html = await renderTemplate(`systems/pl1e/templates/chat/chat-trade.hbs`,
             {item: item, sourceActor: sourceActor, targetActor: targetActor, transaction: transaction, price: price});
@@ -73,10 +83,34 @@ export class Pl1eChat {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: sourceActor}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             flavor: `[${transactionTypes[transaction]}] ${item.name}`,
-            rollMode: game.settings.get('core', 'rollMode'),
-            flags: {"core.canPopout": true}, // ?
+            flags: {"core.canPopout": true},
+            content: html
+        };
+
+        // Render message
+        await ChatMessage.create(chatData);
+    }
+
+    /**
+     * Send a message for an equip action
+     * @param actor
+     * @param item
+     * @returns {Promise<void>}
+     */
+    static async equipMessage(actor, item) {
+        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-equip-item.hbs`,
+            {actor: actor, item: item});
+        let flavor = `[${game.i18n.localize("PL1E.Action")}] ${game.i18n.localize("PL1E.Equip")}`;
+
+        // Create the ChatMessage data object
+        const chatData = {
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({actor: actor}),
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            flavor: flavor,
+            flags: {"core.canPopout": true},
             content: html
         };
 

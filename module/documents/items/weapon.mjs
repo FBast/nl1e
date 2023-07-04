@@ -1,4 +1,5 @@
 import {Pl1eItem} from "../item.mjs";
+import {Pl1eChat} from "../../helpers/chat.mjs";
 
 export class Pl1eWeapon extends Pl1eItem {
 
@@ -68,10 +69,10 @@ export class Pl1eWeapon extends Pl1eItem {
         }
 
         // Remove action if in combat and more taken hands than before
-        if (takenHands < (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0))
+        if (takenHands < (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0)) {
             await this.actor.update({"system.misc.action": this.actor.system.misc.action - 1});
-
-        //TODO display a message when equipping weapon in combat
+            await Pl1eChat.equipMessage(this.parent, this);
+        }
 
         this.actor.sheet.render(false);
     }
