@@ -106,14 +106,13 @@ Hooks.once("ready", async function () {
                 const actorMisc = combatant.token.actor.system.misc;
                 await combatant.token.actor.update({
                     "system.misc.action": actorMisc.action + 2,
-                    "system.misc.reaction": actorMisc.reaction + 1,
-                    "system.misc.instant": actorMisc.instant + 1,
+                    "system.misc.reaction": actorMisc.reaction + 1
                 });
                 // Reset weapon and wearable major ability used as well
                 for (let item of combatant.token.actor.items) {
                     if (item.type === "weapon" || item.type === "wearable") {
                         await item.update({
-                            "system.isMajorAbilityUsed": false
+                            "system.isMajorActionUsed": false
                         });
                     }
                 }

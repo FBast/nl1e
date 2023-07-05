@@ -7,8 +7,6 @@
                 {{#with (configEntry "attributes" @key)}}
                     {{#if (and (ne dataGroup undefined) (ne data undefined))}}
                         {{#with (configEntry dataGroup data)}}
-                            {{log ../applyIfTrue}}
-                            {{log ../../this}}
                             {{#if (and (eq type "number") (ne ../../this 0))}}
                                 <i class="{{#if (gt ../../this 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
                                     <label>{{formatNumber ../../this signe=true}}</label>
@@ -65,9 +63,11 @@
             </div>
         {{/if}}
     </div>
-    <footer class="card-buttons">
-        <button data-action="launch">{{localize "PL1E.Launch"}}</button>
-        <button data-action="counter">{{localize "PL1E.Counter"}}</button>
-        <button data-action="cancel">{{localize "PL1E.Cancel"}}</button>
-    </footer>
+    {{#if (and (eq characterData.attributes.activation "action") characterData.attributes.triggerReactions)}}
+        <footer class="card-buttons">
+            <button data-action="launch">{{localize "PL1E.Launch"}}</button>
+            <button data-action="counter">{{localize "PL1E.Counter"}}</button>
+            <button data-action="cancel">{{localize "PL1E.Cancel"}}</button>
+        </footer>
+    {{/if}}
 </div>

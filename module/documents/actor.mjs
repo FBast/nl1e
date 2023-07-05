@@ -92,7 +92,6 @@ export class Pl1eActor extends Actor {
         // Clamp combat stats
         actorMisc.action = Math.min(actorMisc.action, 2);
         actorMisc.reaction = Math.min(actorMisc.reaction, 1);
-        actorMisc.instant = Math.min(actorMisc.instant, 1);
     }
 
     /** @inheritDoc */

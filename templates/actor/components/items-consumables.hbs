@@ -19,11 +19,6 @@
                                 <label>{{system.attributes.reactionCost}}</label>
                             </i>
                         {{/if}}
-                        {{#if (ne system.attributes.instantCost 0)}}
-                            <i class="item-info far fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.InstantCost"}}'>
-                                <label>{{system.attributes.instantCost}}</label>
-                            </i>
-                        {{/if}}
                         {{#if (gt system.attributes.uses 1)}}
                             {{#if (eq system.removedUses 0)}}
                                 <i class="item-info fas fa-hourglass-start hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>

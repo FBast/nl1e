@@ -26,21 +26,30 @@
             <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}" data-dtype="Number"/>
         </div>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.ActionCost"}}</label>
-            <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
+            <label class="attribute-name">{{localize "PL1E.Activation"}}</label>
+            <select name="system.attributes.activation">
+                {{selectOptions (config "activations") selected=system.attributes.activation localize=true}}
+            </select>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.ReactionCost"}}</label>
-            <input type="number" name="system.attributes.reactionCost" value="{{system.attributes.reactionCost}}" data-dtype="Number"/>
-        </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.InstantCost"}}</label>
-            <input type="number" name="system.attributes.instantCost" value="{{system.attributes.instantCost}}" data-dtype="Number"/>
-        </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.IsMajor"}}</label>
-            <input type="checkbox" name="system.attributes.isMajor" {{checked system.attributes.isMajor}} data-dtype="Boolean"/>
-        </div>
+        {{#if (eq system.attributes.activation "action")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.ActionCost"}}</label>
+                <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
+            </div>
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.IsMajorAction"}}</label>
+                <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
+            </div>
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.TriggerReactions"}}</label>
+                <input type="checkbox" name="system.attributes.triggerReactions" {{checked system.attributes.triggerReactions}} data-dtype="Boolean"/>
+            </div>
+        {{else if (eq system.attributes.activation "reaction")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.ReactionCost"}}</label>
+                <input type="number" name="system.attributes.reactionCost" value="1" data-dtype="Number" disabled/>
+            </div>
+        {{/if}}
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>
             <select name="system.attributes.characterRoll">

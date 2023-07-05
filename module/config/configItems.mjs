@@ -23,11 +23,11 @@ export function getConfigItems() {
     }
 
     PL1E.itemBase = {
-        "isMajorAbilityUsed": {
-            "label": "PL1E.MajorAbility",
+        "isMajorActionUsed": {
+            "label": "PL1E.MajorAction",
             "icon": "fa-star",
             "type": "bool",
-            "path": "system.isMajorAbilityUsed"
+            "path": "system.isMajorActionUsed"
         }
     }
 
@@ -63,20 +63,12 @@ export function getConfigItems() {
             "data": "reaction",
             "invertSign": true
         },
-        "instantCost": {
-            "label": "PL1E.InstantCost",
-            "type": "number",
-            "document": "actor",
-            "dataGroup": "misc",
-            "data": "instant",
-            "invertSign": true
-        },
-        "isMajor": {
+        "isMajorAction": {
             "label": "PL1E.Major",
             "type": "bool",
             "document": "linkedItem",
             "dataGroup": "itemBase",
-            "data": "isMajorAbilityUsed",
+            "data": "isMajorActionUsed",
             "applyIfTrue": true
         },
         "activationMacro": {
@@ -226,13 +218,6 @@ export function getConfigItems() {
             "document": "actor",
             "dataGroup": "misc",
             "data": "reaction"
-        },
-        "instant": {
-            "label": "PL1E.Activation",
-            "type": "number",
-            "document": "actor",
-            "dataGroup": "misc",
-            "data": "instant"
         }
     }
 

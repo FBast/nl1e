@@ -272,8 +272,6 @@ export class Pl1eEvent {
         }
         await item.apply(options);
 
-
-
         // Remove all buttons
         const cardButtons = $(event.currentTarget).closest(".card-buttons");
         cardButtons.remove();

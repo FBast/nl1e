@@ -92,7 +92,11 @@ export class Pl1eAbility extends Pl1eItem {
         if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({characterData: this.characterData, active: true});
 
         // Display message
-        await Pl1eChat.abilityRoll(this.characterData);
+        const chatMessage = await Pl1eChat.abilityRoll(this.characterData);
+
+        // If the ability don't trigger reaction then apply
+        if (!this.characterData.attributes.triggerReactions)
+            await this.apply({action: "launch"});
     }
 
     /** @inheritDoc */
@@ -125,6 +129,10 @@ export class Pl1eAbility extends Pl1eItem {
         for (let token of game.user.targets) {
             token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
         }
+
+        // Remove all buttons
+        const cardButtons = $(event.currentTarget).closest(".card-buttons");
+        cardButtons.remove();
 
         // Action is resolved
         this.characterData.token.actor.system.misc.actionInProgress = false;
@@ -324,7 +332,7 @@ export class Pl1eAbility extends Pl1eItem {
         const relatedItems = [];
         for (const item of items) {
             if (item.type !== "weapon" && item.type !== "wearable" && !item.isEnabled) continue;
-            if (itemAttributes.isMajor && item.system.isMajorAbilityUsed) continue;
+            if (itemAttributes.isMajorAction && item.system.isMajorActionUsed) continue;
             if (itemAttributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
             if (itemAttributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
             if (itemAttributes.masters.length > 0 && !itemAttributes.masters.includes(item.system.attributes.mastery)) continue;
@@ -357,16 +365,12 @@ export class Pl1eAbility extends Pl1eItem {
             return false;
         }
         // If not enough actions points
-        if (itemAttributes.activation === "action" && actor.system.misc.action <= 0) {
+        if (itemAttributes.activation === "action" && actor.system.misc.action < itemAttributes.actionCost) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
         }
         if (itemAttributes.activation === "reaction" && actor.system.misc.reaction <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
-            return false;
-        }
-        if (itemAttributes.activation === "instant" && actor.system.misc.instant <= 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreInstant"));
             return false;
         }
         if (itemAttributes.weaponLink !== "none" && this._getLinkableItems(itemAttributes, actor.items).length === 0) {

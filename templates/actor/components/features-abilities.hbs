@@ -35,13 +35,11 @@
                                     <label>{{system.attributes.reactionCost}}</label>
                                 </i>
                             {{/if}}
-                            {{#if (ne system.attributes.instantCost 0)}}
-                                <i class="item-info far fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.InstantCost"}}'>
-                                    <label>{{system.attributes.instantCost}}</label>
-                                </i>
+                            {{#if system.attributes.isMajorAction}}
+                                <i class="item-info fas fa-star hover-green" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
                             {{/if}}
-                            {{#if system.attributes.isMajor}}
-                                <i class="item-info fas fa-star hover-green" data-tooltip='{{localize "PL1E.IsMajor"}}'></i>
+                            {{#if system.attributes.triggerReactions}}
+                                <i class="item-info fas fa-skull hover-green" data-tooltip='{{localize "PL1E.TriggerReactions"}}'></i>
                             {{/if}}
                             {{#if (eq system.attributes.weaponLink "melee")}}
                                 <i class="item-info fas fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>

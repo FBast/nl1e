@@ -456,12 +456,6 @@ export function getConfigActor() {
             "icon": "fa-reply-clock",
             "type": "number",
             "path": "system.misc.reaction"
-        },
-        "instant": {
-            "label": "PL1E.Instant",
-            "icon": "fa-bell",
-            "type": "number",
-            "path": "system.misc.instant"
         }
     }
 

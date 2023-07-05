@@ -292,7 +292,7 @@ export class AbilityTemplate extends MeasuredTemplate {
    */
   async _onCancelPlacement(event) {
     await this._finishPlacement(event);
-    this.#events.reject();
+    // this.#events.reject();
   }
 
   /**
