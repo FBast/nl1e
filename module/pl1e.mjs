@@ -174,6 +174,7 @@ Hooks.once("ready", async function () {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
             return false;
         }
+
         if (token.actor.system.misc.action === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
