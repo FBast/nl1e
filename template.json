@@ -244,8 +244,13 @@
         },
         "misc": {
           "size": "medium",
+          "sizeMultiplier": 1,
+          "tokenSize": 1,
           "speed": "medium",
+          "movement": 4,
+          "baseInitiative": 5,
           "initiative": 0,
+          "remainingMovement": 0,
           "movementPenalty": 0,
           "parryBonuses": 0,
           "dodgeBonuses": 0,

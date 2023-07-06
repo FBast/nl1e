@@ -89,9 +89,9 @@ export class Pl1eActor extends Actor {
         super.prepareBaseData();
         const actorMisc = this.system.misc;
 
-        // Clamp combat stats
-        actorMisc.action = Math.min(actorMisc.action, 2);
-        actorMisc.reaction = Math.min(actorMisc.reaction, 1);
+        // // Clamp combat stats
+        // actorMisc.action = Math.min(actorMisc.action, 2);
+        // actorMisc.reaction = Math.min(actorMisc.reaction, 1);
     }
 
     /** @inheritDoc */

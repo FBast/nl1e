@@ -16,8 +16,7 @@ import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
 import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
-import {Pl1eChat} from "./helpers/chat.mjs";
-import {Pl1eHelpers} from "./helpers/helpers.mjs";
+import {Pl1eCombat} from "./apps/combat.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -48,6 +47,7 @@ Hooks.once('init', async function () {
     // Define custom Document classes
     CONFIG.Actor.documentClass = Pl1eActorProxy;
     CONFIG.Item.documentClass = Pl1eItemProxy;
+    CONFIG.Combat.documentClass = Pl1eCombat;
     // CONFIG.ActiveEffect.documentClass = Pl1eActiveEffect;
 
     // Register sheet application classes
@@ -99,30 +99,6 @@ Hooks.once("ready", async function () {
         }
     });
 
-    let previousRound = null;
-    Hooks.on("updateCombat", async (combat, changed) => {
-        if (combat.round !== previousRound) {
-            // The round has ended, so reset the combat stats on all actors
-            for (let combatant of combat.turns) {
-                const actorMisc = combatant.token.actor.system.misc;
-                await combatant.token.actor.update({
-                    "system.misc.action": actorMisc.action + 2,
-                    "system.misc.reaction": actorMisc.reaction + 1,
-                    "system.misc.remainingMovement": 10
-                });
-                // Reset weapon and wearable major ability used as well
-                for (let item of combatant.token.actor.items) {
-                    if (item.type === "weapon" || item.type === "wearable") {
-                        await item.update({
-                            "system.isMajorActionUsed": false
-                        });
-                    }
-                }
-            }
-            previousRound = combat.round;
-        }
-    });
-
     // Restore tooltip expanded state
     Hooks.on("renderItemSheet", handleTooltipState);
     Hooks.on("renderActorSheet", handleTooltipState);
@@ -162,52 +138,7 @@ Hooks.once("ready", async function () {
     });
 
     Hooks.on("preUpdateToken", (scene, tokenData, updateData) => {
-        // Check if the scene is in combat
-        const combat = game.combat;
-        if (!combat || !combat.started) return;
-
-        // Check if the token is part of the current turn
-        const currentTokenId = combat.current?.tokenId;
-        const token = game.scenes.viewed.tokens.get(currentTokenId);
-
-        if (currentTokenId !== tokenData._id) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
-            return false;
-        }
-
-        if (token.actor.system.misc.action === 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
-            return false;
-        }
-
-        // Movement restriction for token based on remainingMovement
-        if (tokenData.x || tokenData.y) {
-            const initialPosition = { x: token.x, y: token.y };
-            const newPosition = { x: tokenData.x ?? token.x, y: tokenData.y ?? token.y };
-            const distanceLimit = token.actor.system.misc.remainingMovement; // Adjust this value to your desired limit
-            const deltaX = newPosition.x - initialPosition.x;
-            const deltaY = newPosition.y - initialPosition.y;
-            let distance = canvas.grid.measureDistance(initialPosition, newPosition);
-            distance = Math.floor(distance);
-
-            // If the distance exceeds the limit, restrict the token's movement
-            if (distance > distanceLimit) {
-                const directionX = deltaX / distance;
-                const directionY = deltaY / distance;
-                const restrictedPosition = {
-                    x: initialPosition.x + directionX * distanceLimit,
-                    y: initialPosition.y + directionY * distanceLimit
-                };
-
-                // Update the token's position to the restricted position
-                tokenData.x = restrictedPosition.x;
-                tokenData.y = restrictedPosition.y;
-
-                distance = canvas.grid.measureDistance(initialPosition, restrictedPosition);
-            }
-
-            token.actor.system.misc.remainingMovement -= distance;
-        }
+        return Pl1eCombat.restrictMovement(scene, tokenData, updateData);
     });
 });
 

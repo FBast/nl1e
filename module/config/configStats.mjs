@@ -408,6 +408,18 @@ export function getConfigActor() {
             "path": "system.misc.size",
             "select": "sizes"
         },
+        "sizeMultiplier": {
+            "label": "PL1E.SizeMultiplier",
+            "icon": "fa-person-running",
+            "type": "number",
+            "path": "system.misc.sizeMultiplier"
+        },
+        "tokenSize": {
+            "label": "PL1E.TokenSize",
+            "icon": "fa-person-running",
+            "type": "number",
+            "path": "system.misc.tokenSize"
+        },
         "speed": {
             "label": "PL1E.Speed",
             "icon": "fa-person-running",
@@ -415,11 +427,29 @@ export function getConfigActor() {
             "path": "system.misc.speed",
             "select": "speeds"
         },
+        "movement": {
+            "label": "PL1E.Movement",
+            "icon": "fa-person-running",
+            "type": "number",
+            "path": "system.misc.movement"
+        },
+        "baseInitiative": {
+            "label": "PL1E.BaseInitiative",
+            "icon": "fa-person-running",
+            "type": "number",
+            "path": "system.misc.baseInitiative"
+        },
         "initiative": {
             "label": "PL1E.Initiative",
             "icon": "fa-person-running",
             "type": "number",
             "path": "system.misc.initiative"
+        },
+        "remainingMovement": {
+            "label": "PL1E.RemainingMovement",
+            "icon": "fa-person-running",
+            "type": "number",
+            "path": "system.misc.remainingMovement"
         },
         "movementPenalty": {
             "label": "PL1E.MovementPenalty",
