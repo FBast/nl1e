@@ -87,6 +87,7 @@ export class Pl1eActor extends Actor {
     /** @inheritDoc */
     async prepareBaseData() {
         super.prepareBaseData();
+
         const actorMisc = this.system.misc;
 
         // // Clamp combat stats
@@ -118,6 +119,7 @@ export class Pl1eActor extends Actor {
      */
     prepareDerivedData() {
         super.prepareDerivedData();
+
         const systemData = this.system;
         const actorResources = systemData.resources;
         const actorMisc = systemData.misc;
@@ -156,14 +158,12 @@ export class Pl1eActor extends Actor {
                 characteristicsSum += actorCharacteristics[characteristic].value;
             }
             let attributesSum = 0;
-            if (skillConfig.weights.actorMisc !== undefined) {
-                for (let misc of skillConfig.weights.actorMisc) {
+            if (skillConfig.weights.misc !== undefined) {
+                for (let misc of skillConfig.weights.misc) {
                     attributesSum += actorMisc[misc];
                 }
             }
             skill.numberMod = attributesSum + actorGeneral.bonuses;
-            if (id === "parry") skill.numberMod += actorMisc.parryBonuses;
-            if (id === "dodge") skill.numberMod += actorMisc.dodgeBonuses;
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
             skill.diceMod = actorGeneral.advantages;

@@ -71,7 +71,7 @@ export class Pl1eWeapon extends Pl1eItem {
         // Remove action if in combat and more taken hands than before
         if (takenHands < (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0)) {
             await this.actor.update({"system.misc.action": this.actor.system.misc.action - 1});
-            await Pl1eChat.equipMessage(this.parent, this);
+            await Pl1eChat.actionMessage(this.parent, "PL1E.Equip", 1, { item: this });
         }
 
         this.actor.sheet.render(false);

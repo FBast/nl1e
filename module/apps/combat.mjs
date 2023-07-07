@@ -1,39 +1,18 @@
+import {Pl1eChat} from "../helpers/chat.mjs";
+
 export class Pl1eCombat extends Combat {
 
     /** @inheritDoc */
-    startCombat() {
-        for (let combatant of this.combatants) {
-            this.resetCombatStats(combatant.token.actor);
-        }
-        return super.startCombat();
-    }
-
-    /** @inheritDoc */
-    nextRound() {
-        for (let combatant of this.combatants) {
-            this.resetCombatStats(combatant.token.actor);
-        }
+    async nextRound() {
+        await this.resetCombatStats(this.combatant.actor);
         return super.nextRound();
     }
 
-    /** @inheritDoc */
-    endCombat() {
-        for (let combatant of this.combatants) {
-            this.resetCombatStats(combatant.token.actor);
-        }
-        return super.endCombat();
-    }
-
-    resetCombatStats(actor) {
-        // if (!actor.isOwner) return;
-        actor.system.misc.action = 2;
-        actor.system.misc.reaction = 1;
-        actor.system.misc.remainingMovement = actor.system.misc.movement;
-        for (let item of actor.items) {
-            if (item.type === "weapon" || item.type === "wearable") {
-                item.system.isMajorActionUsed = false;
-            }
-        }
+    async resetCombatStats(actor) {
+        await actor.update({
+            "system.misc.action": 2,
+            "system.misc.reaction": 1
+        });
     }
 
     /**
@@ -43,39 +22,49 @@ export class Pl1eCombat extends Combat {
      * @param updateData
      * @returns {boolean}
      */
-    static restrictMovement(scene, tokenData, updateData) {
+    static async restrictMovement(scene, tokenData, updateData) {
         // Check if the scene is in combat
         const combat = game.combat;
-        if (!combat || !combat.started) return false;
+        if (!combat || !combat.started) return;
 
         // Check if the token is part of the current turn
         const currentTokenId = combat.current?.tokenId;
         const token = game.scenes.viewed.tokens.get(currentTokenId);
+        const actorMisc = token.actor.system.misc;
 
         if (currentTokenId !== tokenData._id) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
-            return false;
+            delete tokenData.x;
+            delete tokenData.y;
+            return;
         }
 
-        if (token.actor.system.misc.action === 0) {
+        if (actorMisc.action === 0 && actorMisc.remainingMovement === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
-            return false;
+            delete tokenData.x;
+            delete tokenData.y;
+            return;
         }
 
         // Movement restriction for token based on remainingMovement
         if (tokenData.x || tokenData.y) {
-            const actorMisc = token.actor.system.misc;
-            if (actorMisc.remainingMovement === actorMisc.movement) actorMisc.action--;
-
-            const initialPosition = { x: token.x, y: token.y };
-            const newPosition = { x: tokenData.x ?? token.x, y: tokenData.y ?? token.y };
-            let distanceLimit = actorMisc.remainingMovement;
+            const initialPosition = {x: token.x, y: token.y};
+            const newPosition = {x: tokenData.x ?? token.x, y: tokenData.y ?? token.y};
             const deltaX = newPosition.x - initialPosition.x;
             const deltaY = newPosition.y - initialPosition.y;
-            let distance = canvas.grid.measureDistance(initialPosition, newPosition);
-            distance = Math.floor(distance);
+            let distance = canvas.grid.measureDistance(initialPosition, newPosition, {gridSpaces: true});
+
+            let missingDistance = distance - actorMisc.remainingMovement;
+            if (missingDistance > 0) {
+                let requiredActions = Math.ceil(missingDistance / actorMisc.movement);
+                requiredActions = Math.min(requiredActions, actorMisc.action);
+                actorMisc.action -= requiredActions;
+                actorMisc.remainingMovement += requiredActions * actorMisc.movement;
+                await Pl1eChat.actionMessage(token.actor, "PL1E.Movement", requiredActions)
+            }
 
             // If the distance exceeds the limit, restrict the token's movement
+            let distanceLimit = actorMisc.remainingMovement;
             if (distance > distanceLimit) {
                 const directionX = deltaX / distance;
                 const directionY = deltaY / distance;
@@ -88,13 +77,14 @@ export class Pl1eCombat extends Combat {
                 tokenData.x = restrictedPosition.x;
                 tokenData.y = restrictedPosition.y;
 
-                distance = canvas.grid.measureDistance(initialPosition, restrictedPosition);
+                distance = distanceLimit;
             }
 
             actorMisc.remainingMovement -= distance;
-            if (actorMisc.remainingMovement === 0 && actorMisc.action > 0)
-                actorMisc.remainingMovement = actorMisc.movement;
-            token.actor.system.misc = actorMisc;
+
+            await token.actor.update({
+                "system.misc": actorMisc
+            })
         }
     }
 

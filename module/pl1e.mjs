@@ -17,6 +17,7 @@ import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
 import {Pl1eCombat} from "./apps/combat.mjs";
+import {Pl1eToken} from "./documents/token.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -48,6 +49,8 @@ Hooks.once('init', async function () {
     CONFIG.Actor.documentClass = Pl1eActorProxy;
     CONFIG.Item.documentClass = Pl1eItemProxy;
     CONFIG.Combat.documentClass = Pl1eCombat;
+    // CONFIG.Token.documentClass = Pl1eToken;
+    // CONFIG.Combatant.documentClass = Pl1eCombatant;
     // CONFIG.ActiveEffect.documentClass = Pl1eActiveEffect;
 
     // Register sheet application classes
@@ -138,7 +141,7 @@ Hooks.once("ready", async function () {
     });
 
     Hooks.on("preUpdateToken", (scene, tokenData, updateData) => {
-        return Pl1eCombat.restrictMovement(scene, tokenData, updateData);
+        // return Pl1eCombat.restrictMovement(scene, tokenData, updateData);
     });
 });
 
@@ -168,7 +171,7 @@ Hooks.once("socketlib.ready", () => {
     PL1E.socket.register("sendContenant", async function (data) {
         await Pl1eSocket.sendContenant(data.sourceActorId, data.targetActorId, data.itemId);
     })
-})
+});
 
 /* -------------------------------------------- */
 /*  Handlebars Helpers                          */

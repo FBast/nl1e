@@ -154,7 +154,7 @@ export function getConfigActor() {
             "divider": 2,
             "weights": {
                 "characteristics": ["agility", "perception"],
-                "misc": ["dodgeBonuses", "movementPenalty"]
+                "misc": ["dodgeBonuses", "flexibility"]
             }
         },
         "vigor": {
@@ -171,7 +171,7 @@ export function getConfigActor() {
             "divider": 2,
             "weights": {
                 "characteristics": ["agility", "perception"],
-                "misc": ["movementPenalty"]
+                "misc": ["flexibility"]
             }
         },
         "resilience": {
@@ -217,7 +217,7 @@ export function getConfigActor() {
             "magicPenalty": false,
             "weights": {
                 "characteristics": ["strength", "constitution"],
-                "misc": ["movementPenalty"]
+                "misc": ["flexibility"]
             }
         },
         "acrobatics": {
@@ -227,7 +227,7 @@ export function getConfigActor() {
             "magicPenalty": false,
             "weights": {
                 "characteristics": ["agility", "perception"],
-                "misc": ["movementPenalty"]
+                "misc": ["flexibility"]
             }
         },
         "accuracy": {
@@ -237,7 +237,7 @@ export function getConfigActor() {
             "magicPenalty": false,
             "weights": {
                 "characteristics": ["agility", "perception"],
-                "misc": ["movementPenalty"]
+                "misc": ["flexibility"]
             }
         },
         "search": {
@@ -265,7 +265,7 @@ export function getConfigActor() {
             "magicPenalty": false,
             "weights": {
                 "characteristics": ["agility", "perception"],
-                "misc": ["movementPenalty"]
+                "misc": ["flexibility"]
             }
         },
         "performance": {
@@ -329,7 +329,7 @@ export function getConfigActor() {
             "magicPenalty": true,
             "weights": {
                 "characteristics": ["intellect", "wisdom"],
-                "misc": ["movementPenalty"]
+                "misc": ["flexibility"]
             }
         },
         "magic": {
@@ -339,7 +339,7 @@ export function getConfigActor() {
             "magicPenalty": true,
             "weights": {
                 "characteristics": ["cunning", "will"],
-                "misc": ["movementPenalty"]
+                "misc": ["flexibility"]
             }
         }
     }
@@ -451,11 +451,11 @@ export function getConfigActor() {
             "type": "number",
             "path": "system.misc.remainingMovement"
         },
-        "movementPenalty": {
-            "label": "PL1E.MovementPenalty",
+        "flexibility": {
+            "label": "PL1E.Flexibility",
             "icon": "fa-weight-hanging",
             "type": "number",
-            "path": "system.misc.movementPenalty"
+            "path": "system.misc.flexibility"
         },
         "parryBonuses": {
             "label": "PL1E.ParryBonuses",

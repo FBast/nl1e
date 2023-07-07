@@ -1,4 +1,5 @@
 import {PL1E} from "../config/config.mjs";
+import {Pl1eItem} from "../documents/item.mjs";
 
 export class Pl1eChat {
 
@@ -94,15 +95,18 @@ export class Pl1eChat {
     }
 
     /**
-     * Send a message for an equip action
-     * @param actor
-     * @param item
+     * Send a message for an action
+     * @param {Actor} actor
+     * @param {string} label
+     * @param {number} actionCost
+     * @param {Object} options
+     * @param {Pl1eItem} options.item
      * @returns {Promise<void>}
      */
-    static async equipMessage(actor, item) {
-        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-equip-item.hbs`,
-            {actor: actor, item: item});
-        let flavor = `[${game.i18n.localize("PL1E.Action")}] ${game.i18n.localize("PL1E.Equip")}`;
+    static async actionMessage(actor, label, actionCost, options = {}) {
+        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-action.hbs`,
+            {actor: actor, actionCost: actionCost, options: options});
+        let flavor = `[${game.i18n.localize("PL1E.Action")}] ${game.i18n.localize(label)}`;
 
         // Create the ChatMessage data object
         const chatData = {

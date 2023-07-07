@@ -251,7 +251,7 @@
           "baseInitiative": 5,
           "initiative": 0,
           "remainingMovement": 0,
-          "movementPenalty": 0,
+          "flexibility": 0,
           "parryBonuses": 0,
           "dodgeBonuses": 0,
           "nightVision": 9,
