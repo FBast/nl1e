@@ -37,8 +37,8 @@ export function getConfigItems() {
             "label": "PL1E.Description",
             "type": "text"
         },
-        "mastery": {
-            "label": "PL1E.Mastery",
+        "masters": {
+            "label": "PL1E.Masters",
             "type": "select",
             "select": "masters"
         },

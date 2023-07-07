@@ -3,7 +3,7 @@ import {Pl1eChat} from "../helpers/chat.mjs";
 export class Pl1eTokenDocument extends TokenDocument {
 
     async _preUpdate(data, options, user) {
-        if (data.x || data.y && this.combatant !== null) {
+        if ((data.x || data.y) && this.combatant !== null) {
             const currentTokenId = game.combat.current?.tokenId;
             const actorMisc = this.actor.system.misc;
             if (currentTokenId !== this.id) {

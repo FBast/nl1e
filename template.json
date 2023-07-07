@@ -387,7 +387,7 @@
       "isEquippedSecondary": false,
       "isMajorActionUsed": false,
       "attributes": {
-        "mastery": "none",
+        "masters": [],
         "hands": 1,
         "melee": false,
         "reach": 1,
@@ -402,6 +402,7 @@
       "isEquipped": false,
       "isMajorActionUsed": false,
       "attributes": {
+        "masters": [],
         "slot": "none"
       }
     },

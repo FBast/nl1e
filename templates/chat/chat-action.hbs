@@ -9,9 +9,10 @@
                 </i>
             {{/if}}
         </div>
-        {{#if options.item}}
-            <img class="right-image item-edit" src="{{item.img}}" data-item-id="{{item._id}}"
-                 data-actor-id="{{actor._id}}" title="{{item.name}}" width="36" height="36"/>
+        {{log this}}
+        {{#if (ne options.item undefined)}}
+            <img class="right-image item-edit" src="{{options.item.img}}" data-item-id="{{options.item._id}}"
+                 data-actor-id="{{actor._id}}" title="{{options.item.name}}" width="36" height="36"/>
         {{/if}}
     </header>
 </div>

@@ -51,7 +51,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Get linked attributes
         if (this.characterData.attributes.weaponLink !== "none") {
-            if (!this._linkItem(this.characterData)) return;
+            if (!await this._linkItem(this.characterData)) return;
         }
 
         // Character rollData if exist
@@ -274,35 +274,16 @@ export class Pl1eAbility extends Pl1eItem {
      * @param {CharacterData} characterData
      * @private
      */
-    _linkItem(characterData) {
+    async _linkItem(characterData) {
         // Get weapons using the same mastery
         const relatedItems = this._getLinkableItems(characterData.attributes, characterData.actor.items);
-
-        // // Open dialogue if multiple related items
-        // new Dialog({
-        //     title: "Image Buttons",
-        //     content: `<div>
-        //                 <button data-action="button1">
-        //                     <img src="image1.png" alt="Button 1">
-        //                 </button>
-        //                 <button data-action="button2">
-        //                     <img src="image2.png" alt="Button 2">
-        //                 </button>
-        //                 <button data-action="button3">
-        //                     <img src="image3.png" alt="Button 3">
-        //                 </button>
-        //             </div>`,
-        //     buttons: {},
-        //     close: () => {},
-        //     render: () => {},
-        //     default: "",
-        //     closeOnSubmit: false,
-        //     submitOnClose: false,
-        //     jQuery: false,
-        //     resizable: true
-        // }).render(true);
-
-        characterData.linkedItem = relatedItems[0];
+        if (relatedItems.length === 1) {
+            characterData.linkedItem = relatedItems[0];
+        }
+        else {
+            characterData.linkedItem = await this._itemsDialog(relatedItems);
+            if (characterData.linkedItem === null) return false;
+        }
 
         // Get linked attributes
         if (characterData.attributes.weaponLink !== "special") {
@@ -312,14 +293,53 @@ export class Pl1eAbility extends Pl1eItem {
         }
         if (characterData.attributes.weaponLink === "melee") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
-        }
-        else if (characterData.attributes.weaponLink === "ranged") {
+        } else if (characterData.attributes.weaponLink === "ranged") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.range;
         }
-        characterData.attributes.mastery = characterData.linkedItem.system.attributes.mastery;
+        characterData.attributes.masters = characterData.linkedItem.system.attributes.masters;
         Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
 
         return true;
+    }
+
+    /**
+     * @param items
+     * @return {Pl1eItem}
+     * @private
+     */
+    _itemsDialog(items) {
+        // Generate the HTML for the buttons dynamically based on the item data
+        let buttonsHTML = "";
+        for (const key in items) {
+            const item = items[key];
+            const imageSrc = item.img; // Replace with your item image source getter
+            const altText = `Button ${key}`;
+            buttonsHTML += `<button style="width: 100px; height: 100px; margin-right: 10px;" data-action="${key}">
+                    <img style="width: 100%; height: 100%;" src="${imageSrc}" alt="${altText}">
+                </button>`;
+        }
+
+        return new Promise((resolve) => {
+            const dialog = new Dialog({
+                title: `${this.name} : ${game.i18n.localize("PL1E.SelectAnItem")}`,
+                content: `<div style="display: flex;">${buttonsHTML}</div>`,
+                buttons: {},
+                close: (html) => resolve(null),
+                render: (html) => {
+                    html.find("button[data-action]").on("click", (event) => {
+                        const button = event.currentTarget;
+                        const action = button.dataset.action;
+                        resolve(items[Number(action)]);
+                        dialog.close();
+                    });
+                },
+                default: "",
+                closeOnSubmit: false,
+                submitOnClose: false,
+                jQuery: false,
+                resizable: false
+            }).render(true);
+        });
     }
 
     /**
@@ -335,7 +355,7 @@ export class Pl1eAbility extends Pl1eItem {
             if (itemAttributes.isMajorAction && item.system.isMajorActionUsed) continue;
             if (itemAttributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
             if (itemAttributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
-            if (itemAttributes.masters.length > 0 && !itemAttributes.masters.includes(item.system.attributes.mastery)) continue;
+            if (!itemAttributes.masters.some(mastery => item.system.attributes.masters.includes(mastery))) continue;
             relatedItems.push(item);
         }
         return relatedItems;

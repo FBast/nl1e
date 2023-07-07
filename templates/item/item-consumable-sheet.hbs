@@ -4,12 +4,7 @@
         <img class="profile" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
             <h1 class="sheet-name"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-            <div class="resources grid grid-5col">
-                <div class="form-group resource box grid-span-2">
-                    <select name="system.attributes.mastery">
-                        {{selectOptions (config "masters") selected=system.attributes.mastery localize=true}}
-                    </select>
-                </div>
+            <div class="resources">
                 <div class="grid-span-3">
                     {{> "systems/pl1e/templates/item/components/price.hbs"}}
                 </div>

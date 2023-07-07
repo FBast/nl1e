@@ -29,7 +29,8 @@ export function getConfigGeneral() {
         "race": "PL1E.Race",
         "class": "PL1E.Class",
         "mastery": "PL1E.Mastery",
-        "faith": "PL1E.Faith"
+        "faith": "PL1E.Faith",
+        "trait": "PL1E.Trait"
     }
 
     PL1E.money = {
@@ -39,7 +40,8 @@ export function getConfigGeneral() {
     }
 
     PL1E.masters = {
-        "none": "PL1E.None",
+        "hands": "PL1E.Hands",
+        "mouth": "PL1E.Mouth",
         "crossbows": "PL1E.Crossbows",
         "bows": "PL1E.Bows",
         "poleArms": "PL1E.PoleArms",

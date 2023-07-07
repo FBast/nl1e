@@ -13,6 +13,13 @@ export class Pl1eCombat extends Combat {
             "system.misc.action": 2,
             "system.misc.reaction": 1
         });
+        for (let item of actor.items) {
+            if (item.type === "weapon" || item.type === "wearable") {
+                await item.update({
+                    "system.isMajorActionUsed": false
+                });
+            }
+        }
     }
 
 }

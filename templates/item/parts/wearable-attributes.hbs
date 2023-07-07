@@ -1,4 +1,19 @@
 <section class="scroll-auto">
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
+            <ul class="attribute-name">
+                {{#each system.attributes.masters}}
+                    <li class="tag {{this}}">{{localize (configEntry "masters" this)}}</li>
+                {{/each}}
+            </ul>
+            <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masters"
+               data-tooltip="{{localize 'PL1E.MastersConfig'}}">
+                <i class="fas fa-edit"></i>
+            </a>
+        </div>
+    </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
     {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
 </section>
