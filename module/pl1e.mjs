@@ -17,7 +17,7 @@ import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
 import {Pl1eCombat} from "./apps/combat.mjs";
-import {Pl1eToken} from "./documents/token.mjs";
+import {Pl1eTokenDocument} from "./documents/token.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -49,9 +49,7 @@ Hooks.once('init', async function () {
     CONFIG.Actor.documentClass = Pl1eActorProxy;
     CONFIG.Item.documentClass = Pl1eItemProxy;
     CONFIG.Combat.documentClass = Pl1eCombat;
-    // CONFIG.Token.documentClass = Pl1eToken;
-    // CONFIG.Combatant.documentClass = Pl1eCombatant;
-    // CONFIG.ActiveEffect.documentClass = Pl1eActiveEffect;
+    CONFIG.Token.documentClass = Pl1eTokenDocument;
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
@@ -139,23 +137,7 @@ Hooks.once("ready", async function () {
             }
         }
     });
-
-    Hooks.on("preUpdateToken", (scene, tokenData, updateData) => {
-        // return Pl1eCombat.restrictMovement(scene, tokenData, updateData);
-    });
 });
-
-// Hooks.on("renderChatLog", (app, html, data) => {
-//     html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
-//     html.on("click", ".token-edit", Pl1eEvent.onTokenEdit.bind(this));
-//     html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
-// });
-//
-// Hooks.on("renderChatPopout", (app, html, data) => {
-//     html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
-//     html.on("click", ".token-edit", Pl1eEvent.onTokenEdit.bind(this));
-//     html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
-// });
 
 Hooks.on("renderChatMessage", (app, html, data) => {
     html.on("click", ".token-edit", Pl1eEvent.onTokenEdit.bind(this));
