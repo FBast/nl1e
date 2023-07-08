@@ -141,7 +141,7 @@ export class Pl1eAspect {
             }
 
             // Modify aspect value by damage type
-            if (aspect.damageType !== "raw") {
+            if (aspect.damageType && aspect.damageType !== "raw") {
                 const damageTypeData = PL1E.reductions[aspect.damageType];
                 aspectCopy.value -= getProperty(targetData.actor, damageTypeData.path);
                 aspectCopy.value = Math.max(aspectCopy.value, 0);

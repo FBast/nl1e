@@ -256,8 +256,7 @@
           "dodgeBonuses": 0,
           "nightVision": 9,
           "action": 2,
-          "reaction": 1,
-          "actionInProgress": false
+          "reaction": 1
         },
         "reductions": {
           "slashing": 0,
@@ -414,7 +413,7 @@
       "attributes": {
         "uses": 1,
         "isReloadable": false,
-        "usageContext": "inCombat",
+        "outCombatOnly": false,
         "activation": "action",
         "actionCost": 0,
         "reactionCost": 0,

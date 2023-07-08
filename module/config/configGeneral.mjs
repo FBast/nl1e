@@ -76,12 +76,6 @@ export function getConfigGeneral() {
         "reaction": "PL1E.Reaction"
     }
 
-    PL1E.usageContexts = {
-        "inCombat": "PL1E.InCombat",
-        "outCombat": "PL1E.OutCombat",
-        "anyTime": "PL1E.AnyTime"
-    }
-
     PL1E.activationLink = {
         "passive": "PL1E.Passive",
         "child": "PL1E.Child"

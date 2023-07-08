@@ -53,7 +53,8 @@ export function getConfigItems() {
             "document": "actor",
             "dataGroup": "misc",
             "data": "action",
-            "invertSign": true
+            "invertSign": true,
+            "combatOnly": true
         },
         "reactionCost": {
             "label": "PL1E.ReactionCost",
@@ -61,7 +62,8 @@ export function getConfigItems() {
             "document": "actor",
             "dataGroup": "misc",
             "data": "reaction",
-            "invertSign": true
+            "invertSign": true,
+            "combatOnly": true
         },
         "isMajorAction": {
             "label": "PL1E.Major",
@@ -69,7 +71,8 @@ export function getConfigItems() {
             "document": "linkedItem",
             "dataGroup": "itemBase",
             "data": "isMajorActionUsed",
-            "applyIfTrue": true
+            "applyIfTrue": true,
+            "combatOnly": true
         },
         "activationMacro": {
             "label": "PL1E.ActivationMacro",
@@ -203,21 +206,6 @@ export function getConfigItems() {
             "label": "PL1E.CommonType",
             "type": "select",
             "select": "commonTypes"
-        },
-        // Select generated
-        "action": {
-            "label": "PL1E.Action",
-            "type": "number",
-            "document": "actor",
-            "dataGroup": "misc",
-            "data": "action"
-        },
-        "reaction": {
-            "label": "PL1E.Reaction",
-            "type": "number",
-            "document": "actor",
-            "dataGroup": "misc",
-            "data": "reaction"
         }
     }
 

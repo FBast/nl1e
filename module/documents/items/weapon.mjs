@@ -87,6 +87,7 @@ export class Pl1eWeapon extends Pl1eItem {
     _canToggle() {
         let isValid = true;
         const token = this.actor.bestToken;
+
         if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
             isValid = false;

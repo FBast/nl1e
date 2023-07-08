@@ -98,7 +98,7 @@
                             <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.statusDuration" value="{{../statusDuration}}" data-dtype="Number"/>
                         </div>
                     {{/if}}
-                    {{#if ../resolutionType}}
+                    {{#if (and ../resolutionType (ne @root.system.attributes.characterRoll "none"))}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
                             <select name="system.activeAspects.{{@key}}.resolutionType">

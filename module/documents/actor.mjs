@@ -88,11 +88,6 @@ export class Pl1eActor extends Actor {
     async prepareBaseData() {
         super.prepareBaseData();
 
-        const actorMisc = this.system.misc;
-
-        // // Clamp combat stats
-        // actorMisc.action = Math.min(actorMisc.action, 2);
-        // actorMisc.reaction = Math.min(actorMisc.reaction, 1);
     }
 
     /** @inheritDoc */
@@ -146,7 +141,7 @@ export class Pl1eActor extends Actor {
             for(let characteristic of resourceConfig.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
             }
-            resource.max *= resourceConfig.multiplier * actorGeneral.sizeMultiplier;
+            resource.max *= resourceConfig.multiplier * actorMisc.sizeMultiplier;
             if (resource.value > resource.max) resource.value = resource.max;
         }
 
