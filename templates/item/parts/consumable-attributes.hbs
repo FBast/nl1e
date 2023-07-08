@@ -2,14 +2,6 @@
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.ActionCost"}}</label>
-            <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
-        </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.ReactionCost"}}</label>
-            <input type="number" name="system.attributes.reactionCost" value="{{system.attributes.reactionCost}}" data-dtype="Number"/>
-        </div>
-        <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Uses"}}</label>
             <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
         </div>
@@ -17,6 +9,144 @@
             <label class="attribute-name">{{localize "PL1E.Reloadable"}}</label>
             <input type="checkbox" name="system.attributes.isReloadable" {{checked system.attributes.isReloadable}} data-dtype="Boolean"/>
         </div>
+        <hr>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.UsageContext"}}</label>
+            <select name="system.attributes.usageContext">
+                {{selectOptions (config "usageContexts") selected=system.attributes.usageContext localize=true}}
+            </select>
+        </div>
+        {{#unless (eq system.attributes.usageContext "outCombat")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.Activation"}}</label>
+                <select name="system.attributes.activation">
+                    {{selectOptions (config "activations") selected=system.attributes.activation localize=true}}
+                </select>
+            </div>
+            {{#if (eq system.attributes.activation "action")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.ActionCost"}}</label>
+                    <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
+                </div>
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.TriggerReactions"}}</label>
+                    <input type="checkbox" name="system.attributes.triggerReactions" {{checked system.attributes.triggerReactions}} data-dtype="Boolean"/>
+                </div>
+            {{else if (eq system.attributes.activation "reaction")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.ReactionCost"}}</label>
+                    <input type="number" name="system.attributes.reactionCost" value="1" data-dtype="Number" disabled/>
+                </div>
+            {{/if}}
+        {{/unless}}
+        <hr>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>
+            <select name="system.attributes.characterRoll">
+                {{selectOptions (config "abilitySkills") selected=system.attributes.characterRoll localize=true}}
+            </select>
+        </div>
+        {{#unless (eq system.attributes.usageContext "outCombat")}}
+            {{#if (ne system.attributes.characterRoll "none")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.TargetRoll"}}</label>
+                    <ul class="attribute-name">
+                        {{#each system.attributes.targetRoll}}
+                            <li class="tag {{this}}">{{localize (configEntry "abilityResistances" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.TargetRoll" data-key-path="attributes.targetRoll"
+                       data-tooltip="{{localize 'PL1E.TargetRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            {{/if}}
+            {{#if (ne system.attributes.areaShape "self")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.ExcludeSelf"}}</label>
+                    <input type="checkbox" name="system.attributes.excludeSelf" {{checked system.attributes.excludeSelf}} data-dtype="Boolean"/>
+                </div>
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                    <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+                </div>
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
+                    <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
+                    <select name="system.attributes.areaNumberResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                    </select>
+                </div>
+            {{/if}}
+            {{#if (eq system.attributes.areaShape "circle")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.CircleRadius"}}</label>
+                    <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
+                    <select name="system.attributes.circleRadiusResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.circleRadiusResolutionType localize=true}}
+                    </select>
+                </div>
+            {{else if (eq system.attributes.areaShape "cone")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.ConeLength"}}</label>
+                    <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
+                    <select name="system.attributes.coneLengthResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.coneLengthResolutionType localize=true}}
+                    </select>
+                </div>
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.ConeAngle"}}</label>
+                    <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
+                    <select name="system.attributes.coneAngleResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.coneAngleResolutionType localize=true}}
+                    </select>
+                </div>
+            {{else if (eq system.attributes.areaShape "square")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.SquareLength"}}</label>
+                    <input type="number" name="system.attributes.squareLength" value="{{system.attributes.squareLength}}" data-dtype="Number"/>
+                    <select name="system.attributes.squareLengthResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.squareLengthResolutionType localize=true}}
+                    </select>
+                </div>
+            {{else if (eq system.attributes.areaShape "ray")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.RayLength"}}</label>
+                    <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
+                    <select name="system.attributes.rayLengthResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.rayLengthResolutionType localize=true}}
+                    </select>
+                </div>
+            {{/if}}
+            <hr>
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.CustomMacros"}}</label>
+                <input type="checkbox" name="system.attributes.customMacro" {{checked system.attributes.customMacro}} data-dtype="Boolean"/>
+            </div>
+            {{#if system.attributes.customMacro}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.ActivationMacro"}}</label>
+                    <input type="text" name="system.attributes.activationMacro" value="{{system.attributes.activationMacro}}" data-dtype="String"/>
+                </div>
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.LaunchMacro"}}</label>
+                    <input type="text" name="system.attributes.launchMacro" value="{{system.attributes.launchMacro}}" data-dtype="String"/>
+                </div>
+            {{else}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.ActivationMacro"}}</label>
+                    <select name="system.attributes.activationMacro">
+                        {{selectOptions itemMacros selected=system.attributes.activationMacro localize=true}}
+                    </select>
+                </div>
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.LaunchMacro"}}</label>
+                    <select name="system.attributes.launchMacro">
+                        {{selectOptions itemMacros selected=system.attributes.launchMacro localize=true}}
+                    </select>
+                </div>
+            {{/if}}
+        {{/unless}}
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
 </section>

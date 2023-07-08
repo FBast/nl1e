@@ -5,6 +5,9 @@ export class Pl1eConsumable extends Pl1eItem {
 
     /** @override */
     async activate() {
+        const token = this.actor.bestToken;
+        if (!this._canActivate(token, token.actor)) return;
+
         const attributes = PL1E.attributes;
 
         // Removed one use
@@ -42,6 +45,22 @@ export class Pl1eConsumable extends Pl1eItem {
         await this.update({
             ["system.removedUses"]: 0
         });
+    }
+
+    /** @inheritDoc */
+    _canActivate(token, actor) {
+        if (!super._canActivate(token, actor)) return false;
+
+        const itemAttributes = this.system.attributes;
+        if (itemAttributes.usageContext === "inCombat" && !token.inCombat) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotInCombat"));
+            return false;
+        }
+        if (itemAttributes.usageContext === "outCombat" && token.inCombat) {
+            ui.notifications.warn(game.i18n.localize("PL1E.InCombatOnly"));
+            return false;
+        }
+        return true;
     }
 
 }

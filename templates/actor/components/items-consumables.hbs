@@ -9,16 +9,6 @@
                 <label class="item-name item-tooltip-activate">{{system.units}}x {{name}}</label>
                 <div class="item-icons">
                     {{#unless (eq @root.actor.type "npc")}}
-                        {{#if (ne system.attributes.actionCost 0)}}
-                            <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
-                                <label>{{system.attributes.actionCost}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (ne system.attributes.reactionCost 0)}}
-                            <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
-                                <label>{{system.attributes.reactionCost}}</label>
-                            </i>
-                        {{/if}}
                         {{#if (gt system.attributes.uses 1)}}
                             {{#if (eq system.removedUses 0)}}
                                 <i class="item-info fas fa-hourglass-start hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
@@ -33,9 +23,55 @@
                                     <label>{{minus system.attributes.uses system.removedUses}}</label>
                                 </i>
                             {{/if}}
+                            {{#if system.attributes.isReloadable}}
+                                <i class="item-info fas fa-repeat hover-green" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
+                            {{/if}}
                         {{/if}}
-                        {{#if system.attributes.isReloadable}}
-                            <i class="item-info fas fa-repeat hover-green" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
+                        {{#if (ne system.attributes.actionCost 0)}}
+                            <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+                                <label>{{system.attributes.actionCost}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.reactionCost 0)}}
+                            <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+                                <label>{{system.attributes.reactionCost}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if system.attributes.triggerReactions}}
+                            <i class="item-info fas fa-skull hover-green" data-tooltip='{{localize "PL1E.TriggerReactions"}}'></i>
+                        {{/if}}
+                        {{#if (ne system.attributes.range 0)}}
+                            <i class="item-info fas fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
+                                <label>{{system.attributes.range}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (eq system.attributes.areaShape "self")}}
+                            <i class="item-info fas fa-person hover-green" data-tooltip='{{localize "PL1E.Self"}}'></i>
+                        {{else if (eq system.attributes.areaShape "target")}}
+                            <i class="item-info fas fa-crosshairs-simple hover-green" data-tooltip='{{localize "PL1E.Target"}}'>
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
+                                    {{system.attributes.areaNumber}}</label>
+                            </i>
+                        {{else if (eq system.attributes.areaShape "circle")}}
+                            <i class="item-info fas fa-circle-xmark hover-green" data-tooltip='{{localize "PL1E.Circle"}}'>
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
+                                    {{system.attributes.areaNumber}}</label>
+                            </i>
+                        {{else if (eq system.attributes.areaShape "cone")}}
+                            <i class="item-info fas fa-triangle hover-green" data-tooltip='{{localize "PL1E.Cone"}}'>
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
+                                    {{system.attributes.areaNumber}}</label>
+                            </i>
+                        {{else if (eq system.attributes.areaShape "square")}}
+                            <i class="item-info fas fa-square hover-green" data-tooltip='{{localize "PL1E.Square"}}'>
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
+                                    {{system.attributes.areaNumber}}</label>
+                            </i>
+                        {{else if (eq system.attributes.areaShape "ray")}}
+                            <i class="item-info fas fa-rectangle-vertical hover-green" data-tooltip='{{localize "PL1E.Ray"}}'>
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}x{{/if}}
+                                    {{system.attributes.areaNumber}}</label>
+                            </i>
                         {{/if}}
                     {{/unless}}
                     {{#if (eq @root.actor.type "character")}}

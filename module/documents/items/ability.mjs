@@ -26,10 +26,7 @@ export class Pl1eAbility extends Pl1eItem {
     /** @inheritDoc */
     async activate() {
         const token = this.actor.bestToken;
-        if (token === null)
-            ui.notifications.warn(game.i18n.localize(`PL1E.NoTokenFound`));
-
-        if (!this._canActivate(token.actor)) return;
+        if (!this._canActivate(token, token.actor)) return;
 
         token.actor.system.misc.actionInProgress = true;
 
@@ -362,35 +359,16 @@ export class Pl1eAbility extends Pl1eItem {
     }
 
     /** @inheritDoc */
-    _canActivate(actor) {
-        if (!super._canActivate(actor)) return false;
+    _canActivate(token, actor) {
+        if (!super._canActivate(token, actor)) return false;
 
         const itemAttributes = this.system.attributes;
-        // If is not memorized
-        if (!this.system.isMemorized) {
+        if (this.system.isMemorized) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             return false;
         }
-        // If cost is not affordable
-        if (itemAttributes.staminaCost > actor.system.resources.stamina) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughStamina"));
-            return false;
-        }
-        if (itemAttributes.manaCost > actor.system.resources.mana) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
-            return false;
-        }
-        if (itemAttributes.manaCost > actor.system.resources.mana) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
-            return false;
-        }
-        // If not enough actions points
-        if (itemAttributes.activation === "action" && actor.system.misc.action < itemAttributes.actionCost) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
-            return false;
-        }
-        if (itemAttributes.activation === "reaction" && actor.system.misc.reaction <= 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
+        if (!token.inCombat) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotInCombat"));
             return false;
         }
         if (itemAttributes.weaponLink !== "none" && this._getLinkableItems(itemAttributes, actor.items).length === 0) {

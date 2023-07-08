@@ -191,23 +191,27 @@ export class Pl1eItem extends Item {
 
     /**
      * Check if the item activation is valid
-     * @param actor
+     * @param {Token} token
+     * @param {Pl1eActor} actor
      * @protected
      */
-    _canActivate(actor) {
-        // If no token found
-        if (!actor.bestToken) {
+    _canActivate(token, actor) {
+        const itemAttributes = this.system.attributes;
+
+        if (!token) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoToken"));
             return false;
         }
-        // If is not in battle
-        if (!actor.bestToken.inCombat) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotInBattle"));
-            return false;
-        }
-        // If action in progress
         if (actor.system.misc.actionInProgress) {
             ui.notifications.warn(game.i18n.localize("PL1E.ActionInProgress"));
+            return false;
+        }
+        if (itemAttributes.activation === "action" && actor.system.misc.action < itemAttributes.actionCost) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            return false;
+        }
+        if (itemAttributes.activation === "reaction" && actor.system.misc.reaction <= 0) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
             return false;
         }
         return true;

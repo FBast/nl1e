@@ -76,6 +76,7 @@ export class Pl1eActorSheet extends ActorSheet {
         context.system = actorData.system;
         context.flags = actorData.flags;
         context.items = actorData.items;
+        context.inCombat = this.actor.bestToken !== null && this.actor.bestToken.inCombat;
 
         this._prepareItems(context);
         this._prepareEffects(context);

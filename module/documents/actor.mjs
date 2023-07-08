@@ -13,7 +13,7 @@ export class Pl1eActor extends Actor {
 
     /**
      * Seek for any token which represent this actor
-     * @returns {Token}
+     * @returns {Token | null}
      */
     get bestToken() {
         // Try to get the token associated with the sheet
