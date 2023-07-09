@@ -3,9 +3,14 @@ import {Pl1eItem} from "../item.mjs";
 export class Pl1eConsumable extends Pl1eItem {
 
     /** @override */
-    async activate() {
-        if (!await super.activate()) return false;
+    async reload(options) {
+        await this.update({
+            ["system.removedUses"]: 0
+        });
+    }
 
+    /** @inheritDoc */
+    async _postActivate(characterData) {
         // Update item use
         await this.update({
             "system.attributes.uses": this.system.attributes.uses - 1
@@ -17,19 +22,11 @@ export class Pl1eConsumable extends Pl1eItem {
         }
     }
 
-    /** @override */
-    async reload(options) {
-        await this.update({
-            ["system.removedUses"]: 0
-        });
-    }
-
     /** @inheritDoc */
-    _canActivate(actor, token) {
-        if (!super._canActivate(actor, token)) return false;
-        const itemAttributes = this.system.attributes;
+    _canActivate(characterData) {
+        if (!super._canActivate(characterData)) return false;
 
-        if (itemAttributes.outCombatOnly && token.inCombat) {
+        if (characterData.attributes.outCombatOnly && characterData.token && characterData.token.inCombat) {
             ui.notifications.warn(game.i18n.localize("PL1E.OutCombatOnly"));
             return false;
         }

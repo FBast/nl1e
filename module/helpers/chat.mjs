@@ -1,22 +1,21 @@
-import {PL1E} from "../config/config.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 
 export class Pl1eChat {
 
     /**
-     * Send a message for an ability roll
+     * Send a message for an action roll
      * @param {CharacterData} characterData
      * @param {TargetData} targetData
      * @returns {Promise<void>}
      */
-    static async abilityRoll(characterData, targetData = undefined) {
+    static async actionRoll(characterData, targetData = undefined) {
         const rollData = targetData === undefined ? characterData.rollData : targetData.rollData;
         const template = targetData === undefined ? "character" : "target";
         // Render the chat card template
         const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-${template}.hbs`,
             {rollData: rollData, characterData: characterData, targetData: targetData});
 
-        let flavor = `[${game.i18n.localize("PL1E.Ability")}] ${characterData.item.name}`;
+        let flavor = `[${game.i18n.localize("PL1E.Action")}] ${characterData.item.name}`;
         if (rollData !== undefined) {
             const skillConfig = CONFIG.PL1E.skills[rollData.skillName];
             flavor += ` [${game.i18n.localize("PL1E.Skill")}] ${game.i18n.localize(skillConfig.label)}`

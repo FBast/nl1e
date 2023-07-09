@@ -2,6 +2,7 @@ import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/item.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
 import {Pl1eChat} from "./chat.mjs";
+import {TraitSelector} from "../apps/traitSelector.mjs";
 
 export class Pl1eEvent {
 
@@ -27,7 +28,8 @@ export class Pl1eEvent {
 
         if (token === undefined) throw new Error("PL1E | no token found");
 
-        token.actor.sheet.renderOnTop();
+        if (token.actor.sheet.rendered) token.actor.sheet.bringToTop();
+        else token.actor.sheet.render(true);
     }
 
     /**
@@ -38,7 +40,8 @@ export class Pl1eEvent {
         const actorId = $(event.currentTarget).closest(".item").data("actor-id");
         const actor = await Pl1eHelpers.getDocument("Actor", actorId);
 
-        actor.sheet.renderOnTop();
+        if (actor.sheet.rendered) actor.sheet.bringToTop();
+        else actor.sheet.render(true);
     }
 
     /**
@@ -65,7 +68,8 @@ export class Pl1eEvent {
             item = await Pl1eHelpers.getDocument("Item", itemId);
         }
 
-        item.sheet.renderOnTop();
+        if (item.sheet.rendered) item.sheet.bringToTop();
+        else item.sheet.render(true);
     }
 
     /**
@@ -265,12 +269,13 @@ export class Pl1eEvent {
         let actorId = $(event.currentTarget).closest(".chat-card").data("token-id");
 
         const token = await Pl1eHelpers.getDocument("Token", actorId);
+        /** @type {Pl1eItem} */
         const item = token.actor.items.get(itemId);
 
         const options = {
             action: action
         }
-        await item.apply(options);
+        await item.resolve(options);
 
         // Remove all buttons
         const cardButtons = $(event.currentTarget).closest(".card-buttons");
@@ -298,6 +303,21 @@ export class Pl1eEvent {
         const itemId = item.data("item-id");
         const tooltipState = $(tooltip).hasClass('expanded') ? 'open' : 'closed';
         localStorage.setItem(`tooltipState_${itemId}`, tooltipState);
+    }
+
+    /**
+     * Handle spawning the TraitSelector application which allows a checkbox of multiple trait options.
+     * @param {Event} event The click event which originated the selection.
+     * @param document The document targeting the selector
+     * @returns {TraitSelector} Newly displayed application.
+     */
+    static onTraitSelector(event, document) {
+        event.preventDefault();
+        const trait = $(event.currentTarget).data("trait");
+        const traitLabel = $(event.currentTarget).data("trait-label");
+        const keyPath = $(event.currentTarget).data("key-path");
+
+        return new TraitSelector(document, trait, traitLabel, keyPath).render(true);
     }
 
 }

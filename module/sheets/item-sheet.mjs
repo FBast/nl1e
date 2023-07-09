@@ -47,7 +47,8 @@ export class Pl1eItemSheet extends ItemSheet {
                     onclick: async () => {
                         const item = await Pl1eHelpers.getDocument("Item", this.item.sourceId);
                         await this.close();
-                        item.sheet.renderOnTop();
+                        if (item.sheet.rendered) item.sheet.bringToTop();
+                        else item.sheet.render(true);
                     }
                 });
             }
@@ -152,9 +153,9 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
+        html.find(".trait-selector").on("click", ev => Pl1eEvent.onTraitSelector(ev, this.item));
         html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));
         html.find('.aspect-remove').on("click", ev => this._onAspectRemove(ev));
-        html.find(".trait-selector").on("click", ev => this._onTraitSelector(ev, this.item));
     }
 
     /**
@@ -274,30 +275,6 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null
         });
-    }
-
-    /**
-     * Handle spawning the TraitSelector application which allows a checkbox of multiple trait options.
-     * @param {Event} event The click event which originated the selection.
-     * @param document The document targeting the selector
-     * @returns {TraitSelector} Newly displayed application.
-     * @private
-     */
-    _onTraitSelector(event, document) {
-        event.preventDefault();
-        const trait = $(event.currentTarget).data("trait");
-        const traitLabel = $(event.currentTarget).data("trait-label");
-        const keyPath = $(event.currentTarget).data("key-path");
-
-        return new TraitSelector(document, trait, traitLabel, keyPath).render(true);
-    }
-
-    /**
-     * Short method to render if not or bring on top
-     */
-    renderOnTop() {
-        if (this.rendered) this.bringToTop();
-        else this.render(true);
     }
 
 }

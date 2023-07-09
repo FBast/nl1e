@@ -4,17 +4,19 @@
         <img class="profile" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
             <h1 class="sheet-name"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-            <div class="resources grid grid-2col">
+            <div class="resources flexrow">
                 <div class="form-group box">
                     <select name="system.attributes.featureType">
                         {{selectOptions (config "featureTypes") selected=system.attributes.featureType localize=true}}
                     </select>
                 </div>
-                <div class="form-group box">
-                    <label>{{localize "PL1E.Cost"}}</label>
-                    <input type="number" step="1" min="-5" max="5" name="system.attributes.cost"
-                           value="{{system.attributes.cost}}" data-dtype="Number"/>
-                </div>
+                {{#if (eq system.attributes.featureType "trait")}}
+                    <div class="form-group box">
+                        <label>{{localize "PL1E.Cost"}}</label>
+                        <input type="number" step="1" min="-5" max="5" name="system.attributes.cost"
+                               value="{{system.attributes.cost}}" data-dtype="Number"/>
+                    </div>
+                {{/if}}
             </div>
         </div>
     </header>

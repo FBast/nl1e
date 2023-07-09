@@ -295,14 +295,10 @@ export class Pl1eActorSheet extends ActorSheet {
     async onItemUse(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = this.actor.items.get(itemId);
 
-        try {
-            await item.activate();
-        }
-        catch (e) {
-            console.error(e);
-        }
+        /** @type {Pl1eItem} */
+        const item = this.actor.items.get(itemId);
+        await item.activate();
     }
 
     /**
@@ -433,14 +429,6 @@ export class Pl1eActorSheet extends ActorSheet {
         return effect.sheet.render(true, {
             editable: game.user.isGM
         });
-    }
-
-    /**
-     * Short method to render if not or bring on top
-     */
-    renderOnTop() {
-        if (this.rendered) this.bringToTop();
-        else this.render(true);
     }
 
 }

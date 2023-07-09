@@ -159,8 +159,12 @@ export class Pl1eItem extends Item {
         }
     }
 
+    /* -------------------------------------------- */
+    /*  Item actions                                */
+    /* -------------------------------------------- */
+
     /**
-     * Toggle the item state
+     * Toggle the item state (ability, weapon or wearable)
      * @param options
      * @returns {Promise<void>}
      */
@@ -178,37 +182,18 @@ export class Pl1eItem extends Item {
         }
     }
 
+    /** @type {CharacterData} */
+    characterData;
+
     /**
      * Activate the item (ability or consumable)
      * @returns {Promise<boolean>}
      */
     async activate() {
-        const token = this.actor.bestToken;
-        // If the token is null then the request come from a non-token sheet
-        const actor = token ? token.actor : this.actor;
-
-        if (!this._canActivate(actor, token)) return false;
-
-        /**
-         * @type {CharacterData}
-         */
-        this.characterData = {
-            actor: actor,
-            actorId: actor._id,
-            token: token,
-            tokenId: token?.document._id,
-            item: this,
-            itemId: this._id,
-            attributes: {...this.system.attributes},
-            activeAspects: {...this.system.activeAspects},
-            linkedItem: null,
-            templates: []
-        }
-
-        // Get linked attributes
-        if (this.characterData.attributes.weaponLink && this.characterData.attributes.weaponLink !== "none") {
-            if (!await this._linkItem(this.characterData)) return false;
-        }
+        // Preparation of characterData
+        this.characterData = await this._getCharacterData();
+        if (!this._canActivate(this.characterData)) return false;
+        if (!await this._preActivate(this.characterData)) return false;
 
         // Character rollData if exist
         if (this.characterData.attributes.characterRoll !== 'none') {
@@ -220,13 +205,13 @@ export class Pl1eItem extends Item {
         }
 
         // Calculate attributes
-        this.characterData.attributes = await this._calculateAttributes(this.characterData);
+        this.characterData.attributes = await this._calculateAttributes();
 
         // If we have a token then we can process further and apply the effects
-        if (token) {
+        if (this.characterData.token) {
             // Target character if areaShape is self
             if (this.characterData.attributes.areaShape === "self") {
-                token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
+                this.characterData.token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
             }
             // Else create target selection templates
             else {
@@ -250,7 +235,7 @@ export class Pl1eItem extends Item {
             if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({characterData: this.characterData, active: true});
 
             // Display message
-            await Pl1eChat.abilityRoll(this.characterData);
+            await Pl1eChat.actionRoll(this.characterData);
 
             // Apply the effect on the character
             await this._applyAttributes();
@@ -262,7 +247,7 @@ export class Pl1eItem extends Item {
         // If we have a no token then we only apply attributes to the character
         else {
             // Display message
-            await Pl1eChat.abilityRoll(this.characterData);
+            await Pl1eChat.actionRoll(this.characterData);
 
             // Apply the effect on the character
             await this._applyAttributes();
@@ -271,6 +256,9 @@ export class Pl1eItem extends Item {
             if (this.characterData.attributes.areaShape === "self")
                 await this.resolve({action: "launch"});
         }
+
+        await this._postActivate(this.characterData);
+        return true;
     }
 
     /**
@@ -305,7 +293,70 @@ export class Pl1eItem extends Item {
         cardButtons.remove();
 
         // Empty ability data
-        this.characterData = {};
+        this.characterData = undefined;
+    }
+
+    /**
+     * Override method before activation launched (returning false prevent activation)
+     * @param characterData
+     * @return {Promise<boolean>}
+     * @protected
+     */
+    async _preActivate(characterData) {
+        return true;
+    }
+
+    /**
+     * Override method after activation launched
+     * @param characterData
+     * @return {Promise<void>}
+     * @protected
+     */
+    async _postActivate(characterData) {}
+
+    /**
+     * Check if the item activation is valid
+     * @param {CharacterData} characterData
+     * @returns {boolean}
+     * @protected
+     */
+    _canActivate(characterData) {
+        const itemAttributes = characterData.attributes;
+
+        if (characterData.token !== null && characterData.token.inCombat) {
+            if (itemAttributes.activation === "action" && characterData.actor.system.misc.action < itemAttributes.actionCost) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+                return false;
+            }
+            if (itemAttributes.activation === "reaction" && characterData.actor.system.misc.reaction <= 0) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Get the characterData
+     * @return {Promise<CharacterData>}
+     * @private
+     */
+    async _getCharacterData() {
+        const token = this.actor.bestToken;
+        // If the token is null then the request come from a non-token sheet
+        const actor = token ? token.actor : this.actor;
+
+        return {
+            actor: actor,
+            actorId: actor._id,
+            token: token,
+            tokenId: token?.document._id,
+            item: this,
+            itemId: this._id,
+            attributes: {...this.system.attributes},
+            activeAspects: {...this.system.activeAspects},
+            templates: []
+        }
     }
 
     /**
@@ -348,7 +399,7 @@ export class Pl1eItem extends Item {
 
         // Display messages
         for (const targetData of targetsData) {
-            await Pl1eChat.abilityRoll(this.characterData, targetData);
+            await Pl1eChat.actionRoll(this.characterData, targetData);
         }
     }
 
@@ -376,27 +427,26 @@ export class Pl1eItem extends Item {
 
     /**
      * Calculate the attributes (also filter before display)
-     * @param characterData
      * @returns {Promise<void>}
      * @private
      */
-    _calculateAttributes(characterData) {
+    _calculateAttributes() {
         // Calculate character attributes
         let calculatedAttributes = {};
-        for (let [key, value] of Object.entries(characterData.attributes)) {
+        for (let [key, value] of Object.entries(this.characterData.attributes)) {
             let calculatedAttribute = value;
             const attributeConfig = CONFIG.PL1E.attributes[key];
             if (attributeConfig !== undefined) {
-                if (attributeConfig.combatOnly && (!characterData.token || !characterData.token.inCombat)) continue;
+                if (attributeConfig.combatOnly && (!this.characterData.token || !this.characterData.token.inCombat)) continue;
                 if (attributeConfig.type === "number") {
                     // Apply resolution type
-                    if (characterData.attributes[`${key}ResolutionType`] !== undefined) {
-                        const resolutionType = characterData.attributes[`${key}ResolutionType`];
+                    if (this.characterData.attributes[`${key}ResolutionType`] !== undefined) {
+                        const resolutionType = this.characterData.attributes[`${key}ResolutionType`];
                         if (resolutionType === "multiplyBySuccess") {
-                            calculatedAttribute *= characterData.result > 0 ? characterData.result : 0;
+                            calculatedAttribute *= this.characterData.result > 0 ? this.characterData.result : 0;
                         }
                         if (resolutionType === "valueIfSuccess") {
-                            calculatedAttribute = characterData.result > 0 ? calculatedAttribute : 0;
+                            calculatedAttribute = this.characterData.result > 0 ? calculatedAttribute : 0;
                         }
                     }
 
@@ -453,121 +503,6 @@ export class Pl1eItem extends Item {
                 [attributeDataConfig.path]: currentValue
             });
         }
-    }
-
-    /**
-     * Add item attributes and dynamic attributes if ability link defined
-     * @param {CharacterData} characterData
-     * @private
-     */
-    async _linkItem(characterData) {
-        // Get weapons using the same mastery
-        const relatedItems = this._getLinkableItems(characterData.attributes, characterData.actor.items);
-        if (relatedItems.length === 1) {
-            characterData.linkedItem = relatedItems[0];
-        }
-        else {
-            characterData.linkedItem = await this._itemsDialog(relatedItems);
-            if (characterData.linkedItem === null) return false;
-        }
-
-        // Get linked attributes
-        if (characterData.attributes.weaponLink !== "special") {
-            characterData.attributes.areaShape = "target";
-            characterData.attributes.rangeResolutionType = "value";
-            characterData.attributes.areaNumber = 1;
-        }
-        if (characterData.attributes.weaponLink === "melee") {
-            characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
-        } else if (characterData.attributes.weaponLink === "ranged") {
-            characterData.attributes.range = characterData.linkedItem.system.attributes.range;
-        }
-        characterData.attributes.masters = characterData.linkedItem.system.attributes.masters;
-        Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
-
-        return true;
-    }
-
-    /**
-     * @param items
-     * @return {Pl1eItem}
-     * @private
-     */
-    _itemsDialog(items) {
-        // Generate the HTML for the buttons dynamically based on the item data
-        let buttonsHTML = "";
-        for (const key in items) {
-            const item = items[key];
-            const imageSrc = item.img; // Replace with your item image source getter
-            const altText = `Button ${key}`;
-            buttonsHTML += `<button style="width: 100px; height: 100px; margin-right: 10px;" data-action="${key}">
-                    <img style="width: 100%; height: 100%;" src="${imageSrc}" alt="${altText}">
-                </button>`;
-        }
-
-        return new Promise((resolve) => {
-            const dialog = new Dialog({
-                title: `${this.name} : ${game.i18n.localize("PL1E.SelectAnItem")}`,
-                content: `<div style="display: flex;">${buttonsHTML}</div>`,
-                buttons: {},
-                close: (html) => resolve(null),
-                render: (html) => {
-                    html.find("button[data-action]").on("click", (event) => {
-                        const button = event.currentTarget;
-                        const action = button.dataset.action;
-                        resolve(items[Number(action)]);
-                        dialog.close();
-                    });
-                },
-                default: "",
-                closeOnSubmit: false,
-                submitOnClose: false,
-                jQuery: false,
-                resizable: false
-            }).render(true);
-        });
-    }
-
-    /**
-     * Return the linkable items for this ability
-     * @param {Object} itemAttributes
-     * @param {Pl1eItem[]} items
-     * @returns {*[]}
-     */
-    _getLinkableItems(itemAttributes, items) {
-        const relatedItems = [];
-        for (const item of items) {
-            if (item.type !== "weapon" && item.type !== "wearable") continue;
-            if (!item.isEnabled) continue;
-            if (itemAttributes.isMajorAction && item.system.isMajorActionUsed) continue;
-            if (itemAttributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
-            if (itemAttributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
-            if (!itemAttributes.masters.some(mastery => item.system.attributes.masters.includes(mastery))) continue;
-            relatedItems.push(item);
-        }
-        return relatedItems;
-    }
-
-    /**
-     * Check if the item activation is valid
-     * @param {Pl1eActor} actor parent of the item
-     * @param {Token | null} token linked token of the actor
-     * @protected
-     */
-    _canActivate(actor, token) {
-        const itemAttributes = this.system.attributes;
-
-        if (token !== null && token.inCombat) {
-            if (itemAttributes.activation === "action" && actor.system.misc.action < itemAttributes.actionCost) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
-                return false;
-            }
-            if (itemAttributes.activation === "reaction" && actor.system.misc.reaction <= 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
-                return false;
-            }
-        }
-        return true;
     }
 
 }

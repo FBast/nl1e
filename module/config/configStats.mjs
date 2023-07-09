@@ -328,8 +328,7 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": true,
             "weights": {
-                "characteristics": ["intellect", "wisdom"],
-                "misc": ["flexibility"]
+                "characteristics": ["intellect", "wisdom"]
             }
         },
         "magic": {

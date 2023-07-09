@@ -77,7 +77,7 @@ export class Pl1eWeapon extends Pl1eItem {
             await Pl1eChat.actionMessage(this.parent, "PL1E.Equip", 1, { item: this });
         }
 
-        this.actor.sheet.render(false);
+        await super.toggle(options);
     }
 
     /**
@@ -92,7 +92,8 @@ export class Pl1eWeapon extends Pl1eItem {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
             isValid = false;
         }
-        if (token !== null && token.inCombat && token.id === game.combat.current.tokenId && this.actor.system.misc.action <= 0) {
+        if (token !== null && token.inCombat && token.id === game.combat.current.tokenId
+            && this.actor.system.misc.action <= 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
             isValid = false;
         }
