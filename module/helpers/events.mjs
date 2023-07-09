@@ -264,9 +264,10 @@ export class Pl1eEvent {
         event.preventDefault();
 
         // Extract card data
-        let action = $(event.currentTarget).data("action");
-        let itemId = $(event.currentTarget).closest(".chat-card").data("item-id");
-        let actorId = $(event.currentTarget).closest(".chat-card").data("token-id");
+        const action = $(event.currentTarget).data("action");
+        const chatCard = $(event.currentTarget).closest(".chat-card");
+        const itemId = chatCard.data("item-id");
+        const actorId = chatCard.data("token-id");
 
         const token = await Pl1eHelpers.getDocument("Token", actorId);
         /** @type {Pl1eItem} */
@@ -277,9 +278,16 @@ export class Pl1eEvent {
         }
         await item.resolve(options);
 
-        // Remove all buttons
-        const cardButtons = $(event.currentTarget).closest(".card-buttons");
-        cardButtons.remove();
+        // Notify as resolved
+        const messageId = $(event.currentTarget).closest(".message").attr("data-message-id");
+        const message = game.messages.get(messageId);
+        await message.setFlag("pl1e", "isResolved", true);
+
+        // Remove all buttons from message content
+        const updatedContent = $(message.content).find(".card-buttons").remove().end();
+        await message.update({
+            content: updatedContent[0].outerHTML
+        });
     }
 
     /**

@@ -269,6 +269,7 @@ export class Pl1eItem extends Item {
     async resolve(options) {
         // Handle launch action
         if (options.action === "launch") await this._launch();
+        if (options.action === "cancel") return;
 
         // Find activationMacro (pass for deactivation)
         const macroId = this.characterData.item.system.attributes.activationMacro;
@@ -287,10 +288,6 @@ export class Pl1eItem extends Item {
         for (let token of game.user.targets) {
             token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
         }
-
-        // Remove all buttons
-        const cardButtons = $(event.currentTarget).closest(".card-buttons");
-        cardButtons.remove();
 
         // Empty ability data
         this.characterData = undefined;
