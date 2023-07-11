@@ -65,25 +65,19 @@
                     {{selectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
                 </select>
             </div>
-            {{#if (ne system.attributes.areaShape "self")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.ExcludeSelf"}}</label>
-                    <input type="checkbox" name="system.attributes.excludeSelf" {{checked system.attributes.excludeSelf}} data-dtype="Boolean"/>
-                </div>
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.Range"}}</label>
-                    <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
-                </div>
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
-                    <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
-                    {{#if (ne system.attributes.characterRoll "none")}}
-                        <select name="system.attributes.areaNumberResolutionType">
-                            {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
-                        </select>
-                    {{/if}}
-                </div>
-            {{/if}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+            </div>
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
+                <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
+                {{#if (ne system.attributes.characterRoll "none")}}
+                    <select name="system.attributes.areaNumberResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                    </select>
+                {{/if}}
+            </div>
             {{#if (eq system.attributes.areaShape "circle")}}
                 <div class="item-attribute flexrow">
                     <label class="attribute-name">{{localize "PL1E.CircleRadius"}}</label>

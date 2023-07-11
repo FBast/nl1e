@@ -377,7 +377,6 @@ export function getConfigItems() {
     }
 
     PL1E.areaShapes = {
-        "self": "PL1E.Self",
         "target": "PL1E.Target",
         "circle": "PL1E.Circle",
         "cone": "PL1E.Cone",
@@ -409,8 +408,7 @@ export function getConfigItems() {
         "multiplyBySuccess": "PL1E.MultiplyBySuccess"
     }
 
-    PL1E.weaponLinks = {
-        "none": "PL1E.None",
+    PL1E.masteryLinks = {
         "melee": "PL1E.Melee",
         "ranged": "PL1E.Ranged",
         "special": "PL1E.Special"

@@ -63,7 +63,7 @@
             </div>
         {{/if}}
     </div>
-    {{#if (and (eq characterData.attributes.activation "action") characterData.attributes.triggerReactions)}}
+    {{#if (and characterData.attributes.triggerReactions characterData.token)}}
         <footer class="card-buttons">
             <button data-action="launch">{{localize "PL1E.Launch"}}</button>
             <button data-action="counter">{{localize "PL1E.Counter"}}</button>

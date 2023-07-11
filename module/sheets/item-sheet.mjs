@@ -110,6 +110,7 @@ export class Pl1eItemSheet extends ItemSheet {
         return context;
     }
 
+    /** @inheritDoc */
     _updateObject(event, formData) {
         // Set the passive aspects default data and default value
         const deepenFormData = Pl1eHelpers.deepen(formData)

@@ -1,5 +1,3 @@
-import {Pl1eHelpers} from "./helpers.mjs";
-
 export class AbilityTemplate extends MeasuredTemplate {
 
     /**
@@ -79,6 +77,16 @@ export class AbilityTemplate extends MeasuredTemplate {
         // const template = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [templateData])
         const cls = CONFIG.MeasuredTemplate.documentClass;
         const template = new cls(templateData, {parent: canvas.scene});
+        const token = item.actor.bestToken;
+        template.actionData = {
+            "item": item,
+            "itemId": item.id,
+            "token": token,
+            "tokenId": token.id,
+            "attributes": attributes,
+            "activeAspects": activeAspects
+        };
+
         //TODO-fred change the controlIcon sprite
 
         // object.controlIcon = new ControlIcon({
@@ -92,17 +100,7 @@ export class AbilityTemplate extends MeasuredTemplate {
         //   layer: "myLayer" // replace myLayer with the name of your desired layer
         // });
 
-        const object = new this(template);
-        const token = item.actor.bestToken;
-        object.actionData = {
-            "item": item,
-            "itemId": item.id,
-            "token": token,
-            "tokenId": token.id,
-            "attributes": attributes,
-            "activeAspects": activeAspects
-        };
-        return object;
+        return new this(template);
     }
 
     /**
@@ -177,15 +175,15 @@ export class AbilityTemplate extends MeasuredTemplate {
         templateCenter.x -= offset;
         templateCenter.y -= offset;
         // Clamp with range
-        const range = this.actionData.attributes.range * game.system.gridDistance;
-        templateCenter = this._clampVectorRadius(templateCenter, this.actionData.token, range * 100);
+        const range = this.document.actionData.attributes.range * game.system.gridDistance;
+        templateCenter = this._clampVectorRadius(templateCenter, this.document.actionData.token, range * 100);
         // Snap position
         templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 1);
         // Move position
         this.document.updateSource({x: templateCenter.x + offset, y: templateCenter.y + offset});
         this.refresh();
         // Target tokens
-        const targets = AbilityTemplate.getTemplateTargets(this);
+        const targets = AbilityTemplate.getTemplateTargets(this.document);
         for (const token of canvas.tokens.placeables) {
             // Target the current token and group with others
             token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
@@ -246,10 +244,10 @@ export class AbilityTemplate extends MeasuredTemplate {
         this.document.updateSource(destination);
         this.template = (await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]))[0];
         await this.template.setFlag("pl1e", "actionData", {
-            "itemId": this.actionData.itemId,
-            "tokenId": this.actionData.tokenId,
-            "attributes": this.actionData.attributes,
-            "activeAspects": this.actionData.activeAspects
+            "itemId": this.document.actionData.itemId,
+            "tokenId": this.document.actionData.tokenId,
+            "attributes": this.document.actionData.attributes,
+            "activeAspects": this.document.actionData.activeAspects
         })
         this.#events.resolve(this.template);
     }
@@ -267,9 +265,8 @@ export class AbilityTemplate extends MeasuredTemplate {
 
     /**
      * Get targets currently inside the template
-     * @param {MeasuredTemplate} template
-     * @returns {Token[]}
-     */
+     * @param {MeasuredTemplateDocument} template
+     * @returns {Token[]}     */
     static getTemplateTargets(template) {
         const actionData = template.actionData;
 
@@ -281,7 +278,7 @@ export class AbilityTemplate extends MeasuredTemplate {
         }
 
         const targets = [];
-        if (template.shape === undefined) return targets;
+        if (template.object.shape === undefined) return targets;
         const gridPositions = this._getGridHighlightPositions(template);
 
         // Target current position
@@ -295,9 +292,6 @@ export class AbilityTemplate extends MeasuredTemplate {
                         if (!targetGroups.includes("allies") && token.document.disposition === actionData.token.disposition) continue;
                         if (!targetGroups.includes("opponents") && token.document.disposition !== actionData.token.disposition) continue;
                     }
-
-                    // Filter exclude self
-                    if (actionData.attributes.excludeSelf && !targetGroups.includes("self") && token === actionData.token) continue;
 
                     // Add to targets array
                     targets.push(token);
@@ -316,7 +310,7 @@ export class AbilityTemplate extends MeasuredTemplate {
     static _getGridHighlightPositions(template) {
         const grid = canvas.grid.grid;
         const d = canvas.dimensions;
-        const {x, y, distance} = template.document;
+        const {x, y, distance} = template;
 
         // Get number of rows and columns
         const [maxRow, maxCol] = grid.getGridPositionFromPixels(d.width, d.height);
@@ -336,7 +330,7 @@ export class AbilityTemplate extends MeasuredTemplate {
             for (let c = -nCols; c < nCols; c++) {
                 const [gx, gy] = grid.getPixelsFromGridPosition(row0 + r, col0 + c);
                 const [testX, testY] = [(gx + hx) - x, (gy + hy) - y];
-                const contains = ((r === 0) && (c === 0) && isCenter) || grid._testShape(testX, testY, template.shape);
+                const contains = ((r === 0) && (c === 0) && isCenter) || grid._testShape(testX, testY, template.object.shape);
                 if (!contains) continue;
                 positions.push({x: gx, y: gy});
             }

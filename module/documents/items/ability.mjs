@@ -17,7 +17,7 @@ export class Pl1eAbility extends Pl1eItem {
     /** @inheritDoc */
     async _preActivate(characterData) {
         // Get linked attributes
-        if (characterData.attributes.weaponLink !== "none") {
+        if (characterData.attributes.masters.length > 0) {
             if (!await this._linkItem(characterData)) return false;
         }
         return true;
@@ -32,7 +32,7 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             return false;
         }
-        if (itemAttributes.weaponLink !== "none" && this._getLinkableItems(characterData).length === 0) {
+        if (itemAttributes.masteryLink !== "none" && this._getLinkableItems(characterData).length === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;
         }
@@ -56,14 +56,10 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Get linked attributes
-        if (characterData.attributes.weaponLink !== "special") {
-            characterData.attributes.areaShape = "target";
-            characterData.attributes.rangeResolutionType = "value";
-            characterData.attributes.areaNumber = 1;
-        }
-        if (characterData.attributes.weaponLink === "melee") {
+        if (characterData.attributes.masteryLink === "melee") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
-        } else if (characterData.attributes.weaponLink === "ranged") {
+        }
+        else if (characterData.attributes.masteryLink === "ranged") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.range;
         }
         characterData.attributes.mastery = Pl1eHelpers.findFirstCommonElement(characterData.attributes.masters,
@@ -124,8 +120,8 @@ export class Pl1eAbility extends Pl1eItem {
             if (item.type !== "weapon" && item.type !== "wearable") continue;
             if (!item.isEnabled) continue;
             if (characterData.attributes.isMajorAction && item.system.isMajorActionUsed) continue;
-            if (characterData.attributes.weaponLink === "melee" && !item.system.attributes.melee) continue;
-            if (characterData.attributes.weaponLink === "ranged" && !item.system.attributes.ranged) continue;
+            if (characterData.attributes.masteryLink === "melee" && !item.system.attributes.melee) continue;
+            if (characterData.attributes.masteryLink === "ranged" && !item.system.attributes.ranged) continue;
             if (!characterData.attributes.masters.some(mastery => item.system.attributes.masters.includes(mastery))) continue;
             relatedItems.push(item);
         }

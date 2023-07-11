@@ -7,7 +7,7 @@
             <li class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">
                 <div class="flexrow">
                     <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
-                    <label class="item-name item-tooltip-activate">{{system.units}}x {{name}}</label>
+                    <label class="item-name item-tooltip-activate">{{name}}</label>
                     <div class="item-icons grid-span-2">
                         {{#unless (eq @root.actor.type "npc")}}
                             {{#if (ne system.attributes.healthCost 0)}}
@@ -41,22 +41,18 @@
                             {{#if system.attributes.triggerReactions}}
                                 <i class="item-info fas fa-skull hover-green" data-tooltip='{{localize "PL1E.TriggerReactions"}}'></i>
                             {{/if}}
-                            {{#if (eq system.attributes.weaponLink "melee")}}
+                            {{#if (eq system.attributes.masteryLink "melee")}}
                                 <i class="item-info fas fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>
-                            {{else if (eq system.attributes.weaponLink "ranged")}}
+                            {{else if (eq system.attributes.masteryLink "ranged")}}
                                 <i class="item-info fas fa-bow-arrow hover-green" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
-                            {{else if (eq system.attributes.weaponLink "special")}}
-                                <i class="item-info fas wand-sparkles hover-green" data-tooltip='{{localize "PL1E.Special"}}'></i>
                             {{/if}}
-                            {{#if (or (eq system.attributes.weaponLink "none") (eq system.attributes.weaponLink "special"))}}
+                            {{#if (or (eq system.attributes.masteryLink "none") (eq system.attributes.masteryLink "special"))}}
                                 {{#if (ne system.attributes.range 0)}}
                                     <i class="item-info fas fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
                                         <label>{{system.attributes.range}}</label>
                                     </i>
                                 {{/if}}
-                                {{#if (eq system.attributes.areaShape "self")}}
-                                    <i class="item-info fas fa-person hover-green" data-tooltip='{{localize "PL1E.Self"}}'></i>
-                                {{else if (eq system.attributes.areaShape "target")}}
+                                {{#if (eq system.attributes.areaShape "target")}}
                                     <i class="item-info fas fa-crosshairs-simple hover-green" data-tooltip='{{localize "PL1E.Target"}}'>
                                         <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
                                             {{system.attributes.areaNumber}}</label>

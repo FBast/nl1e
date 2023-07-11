@@ -75,6 +75,35 @@ export class Pl1eItem extends Item {
         return super._preDelete(options, user);
     }
 
+    /** @inheritDoc */
+    _preUpdate(changed, options, user) {
+        if (!this.isEmbedded) {
+            // Reset default values in case of changes
+            if (changed.system?.attributes?.masters?.length === 0) changed.system.attributes.masteryLink = "special";
+            if (changed.system?.attributes?.activation === "action") changed.system.attributes.reactionCost = 0;
+            if (changed.system?.attributes?.activation === "reaction") {
+                changed.system.attributes.actionCost = 0;
+                changed.system.attributes.isMajorAction = false;
+                changed.system.attributes.triggerReactions = false;
+            }
+            if (changed.system?.attributes?.characterRoll === "none") changed.system.attributes.targetRoll = [];
+            if (changed.system?.attributes?.masteryLink === "melee" || changed.system?.attributes?.masteryLink === "ranged") {
+                changed.system.attributes.areaShape = "target";
+                changed.system.attributes.range = 0;
+                changed.system.attributes.areaNumber = 1;
+                changed.system.attributes.areaNumberResolutionType = "value";
+            }
+            if (changed.system?.attributes?.melee === false) changed.system.attributes.reach = 0;
+            if (changed.system?.attributes?.ranged === false) {
+                changed.system.attributes.range = 0;
+                changed.system.attributes.ammo = 0;
+            }
+        }
+
+        return super._preUpdate(changed, options, user);
+    }
+
+    /** @inheritDoc */
     async _onUpdate(changed, options, userId) {
         super._onUpdate(changed, options, userId);
 
@@ -207,27 +236,20 @@ export class Pl1eItem extends Item {
         let chatMessage = null;
         // If we have a token then we can process further and apply the effects
         if (characterData.token) {
-            // Target character if areaShape is self
-            if (characterData.attributes.areaShape === "self") {
-                characterData.token.setTarget(true, { user: game.user, releaseOthers: false, groupSelection: false });
-            }
-            // Else create target selection templates
-            else {
-                if (characterData.attributes.areaNumber !== 0 && characterData.attributes.areaShape !== "self") {
-                    await characterData.actor.sheet?.minimize();
-                    const previewTemplates = [];
-                    for (let i = 0; i < characterData.attributes.areaNumber; i++) {
-                        const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
-                        previewTemplates.push(template);
-                        await template?.drawPreview();
-                    }
-                    // Retrieve template data for future uses
-                    for (let previewTemplate of previewTemplates) {
-                        characterData.templates.push(previewTemplate.template);
-                        characterData.templatesIds.push(previewTemplate.template.id);
-                    }
-                    await characterData.actor.sheet?.maximize();
+            if (characterData.attributes.areaNumber !== 0) {
+                await characterData.actor.sheet?.minimize();
+                const previewTemplates = [];
+                for (let i = 0; i < characterData.attributes.areaNumber; i++) {
+                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
+                    previewTemplates.push(template);
+                    await template?.drawPreview();
                 }
+                // Retrieve template data for future uses
+                for (let previewTemplate of previewTemplates) {
+                    characterData.templates.push(previewTemplate.template);
+                    characterData.templatesIds.push(previewTemplate.template.id);
+                }
+                await characterData.actor.sheet?.maximize();
             }
 
             // Find activationMacro (pass for activation)
@@ -255,10 +277,6 @@ export class Pl1eItem extends Item {
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
-
-            // If the ability trigger self then we can apply it without need of a token
-            if (characterData.attributes.areaShape === "self")
-                await this.resolve(characterData, {action: "launch"});
         }
 
         await this._postActivate(characterData);
@@ -287,7 +305,7 @@ export class Pl1eItem extends Item {
 
         // Destroy templates after fetching target with df-template
         for (const template of characterData.templates) {
-            await template.document.delete();
+            await template.delete();
         }
 
         // Release all targets
@@ -323,12 +341,18 @@ export class Pl1eItem extends Item {
     _canActivate(characterData) {
         const itemAttributes = characterData.attributes;
 
-        if (characterData.token !== null && characterData.token.inCombat) {
-            if (itemAttributes.activation === "action" && characterData.actor.system.misc.action < itemAttributes.actionCost) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
-                return false;
+        if (characterData.token && characterData.token.inCombat) {
+            if (itemAttributes.activation === "action") {
+                if (characterData.tokenId !== game.combat.current.tokenId) {
+                    ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
+                    return false;
+                }
+                if (characterData.actor.system.misc.action < itemAttributes.actionCost) {
+                    ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+                    return false;
+                }
             }
-            if (itemAttributes.activation === "reaction" && characterData.actor.system.misc.reaction <= 0) {
+            else if (itemAttributes.activation === "reaction" && characterData.actor.system.misc.reaction <= 0) {
                 ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
                 return false;
             }
@@ -373,21 +397,21 @@ export class Pl1eItem extends Item {
 
         // Reconstruct templates based on actionData flag
         for (const template of characterData.templates) {
-            const actionData = template.document.getFlag("pl1e", "actionData");
+            const actionData = template.getFlag("pl1e", "actionData");
             actionData.token = await Pl1eHelpers.getDocument("Token", actionData.tokenId);
             actionData.item = await actionData.token.actor.items.get(actionData.itemId);
             template.actionData = actionData;
         }
 
         // In case of self target
-        if (characterData.attributes.areaShape === "self") {
-            const targetData = await this._getTargetData(characterData.actor, characterData.token);
+        if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
+            const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
             targetsData.push(targetData);
         }
         else {
             // Populate targetsData
             for (let template of characterData.templates) {
-                for (let token of await AbilityTemplate.getTemplateTargets(template)) {
+                for (let token of AbilityTemplate.getTemplateTargets(template)) {
                     const targetData = await this._getTargetData(characterData, token.actor, token);
                     targetsData.push(targetData);
                 }
@@ -424,7 +448,9 @@ export class Pl1eItem extends Item {
     async _getTargetData(characterData, actor, token = null) {
         const targetData = {};
         if (characterData.attributes.targetRoll.length > 0) {
-            targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll);
+            targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll, {
+                "rangedAttack": characterData.item.system.attributes.masteryLink === "ranged"
+            });
             targetData.result = characterData.result - targetData.rollData.total;
         } else {
             targetData.result = characterData.result;

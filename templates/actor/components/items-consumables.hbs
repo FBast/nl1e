@@ -45,9 +45,7 @@
                                 <label>{{system.attributes.range}}</label>
                             </i>
                         {{/if}}
-                        {{#if (eq system.attributes.areaShape "self")}}
-                            <i class="item-info fas fa-person hover-green" data-tooltip='{{localize "PL1E.Self"}}'></i>
-                        {{else if (eq system.attributes.areaShape "target")}}
+                        {{#if (eq system.attributes.areaShape "target")}}
                             <i class="item-info fas fa-crosshairs-simple hover-green" data-tooltip='{{localize "PL1E.Target"}}'>
                                 <label>{{#if (eq system.attributes.areaNumberResolutionType "multiplyBySuccess")}}X{{/if}}
                                     {{system.attributes.areaNumber}}</label>

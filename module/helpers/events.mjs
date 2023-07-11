@@ -289,7 +289,8 @@ export class Pl1eEvent {
         characterData.linkedItem = characterData.linkedItem ?? await Pl1eHelpers.getDocument("Item", characterData.linkedItem.id);
         let templates = [];
         for (const templateId of characterData.templatesIds) {
-            templates.push(await Pl1eHelpers.getDocument("MeasuredTemplate", templateId));
+            let template = await Pl1eHelpers.getDocument("MeasuredTemplate", templateId);
+            templates.push(template.document);
         }
         characterData.templates = templates;
 

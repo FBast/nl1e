@@ -72,38 +72,34 @@
                 </a>
             </div>
         {{/if}}
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.WeaponLink"}}</label>
-            <select name="system.attributes.weaponLink">
-                {{selectOptions (config "weaponLinks") selected=system.attributes.weaponLink localize=true}}
-            </select>
-        </div>
-        {{#if (or (eq system.attributes.weaponLink "none") (eq system.attributes.weaponLink "special"))}}
+        {{#if (gt (length system.attributes.masters) 0)}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.MasteryLink"}}</label>
+                <select name="system.attributes.masteryLink">
+                    {{selectOptions (config "masteryLinks") selected=system.attributes.masteryLink localize=true}}
+                </select>
+            </div>
+        {{/if}}
+        {{#if (or (gt (length system.attributes.masters 0)) (eq system.attributes.masteryLink "special"))}}
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.AreaShape"}}</label>
                 <select name="system.attributes.areaShape">
                     {{selectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
                 </select>
             </div>
-            {{#if (ne system.attributes.areaShape "self")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.ExcludeSelf"}}</label>
-                    <input type="checkbox" name="system.attributes.excludeSelf" {{checked system.attributes.excludeSelf}} data-dtype="Boolean"/>
-                </div>
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.Range"}}</label>
-                    <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
-                </div>
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
-                    <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
-                    {{#if (ne system.attributes.characterRoll "none")}}
-                        <select name="system.attributes.areaNumberResolutionType">
-                            {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
-                        </select>
-                    {{/if}}
-                </div>
-            {{/if}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+            </div>
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
+                <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
+                {{#if (ne system.attributes.characterRoll "none")}}
+                    <select name="system.attributes.areaNumberResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                    </select>
+                {{/if}}
+            </div>
             {{#if (eq system.attributes.areaShape "circle")}}
                 <div class="item-attribute flexrow">
                     <label class="attribute-name">{{localize "PL1E.CircleRadius"}}</label>

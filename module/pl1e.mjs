@@ -196,10 +196,6 @@ Handlebars.registerHelper('concat', function () {
     return outStr;
 });
 
-Handlebars.registerHelper('toLowerCase', function (str) {
-    return str.toLowerCase();
-});
-
 Handlebars.registerHelper('minus', function(a, b) {
     return a - b;
 });
@@ -246,10 +242,6 @@ Handlebars.registerHelper('join', function(arr, separator) {
     return arr.join(separator);
 });
 
-Handlebars.registerHelper( 'eachInMap', function ( map, block ) {
-    var out = '';
-    Object.keys( map ).map(function( prop ) {
-        out += block.fn( {key: prop, value: map[ prop ]} );
-    });
-    return out;
-} );
+Handlebars.registerHelper('length', function(arr) {
+    return arr.length;
+});
