@@ -182,6 +182,9 @@ export class Pl1eHelpers {
                 case "Macro":
                     document = game.macros.get(id);
                     break;
+                case "MeasuredTemplate":
+                    document = canvas.templates.get(id);
+                    break;
             }
         }
 
@@ -233,6 +236,22 @@ export class Pl1eHelpers {
             }
         }
         return null; // No common element found
+    }
+
+    static stringifyWithCircular(obj) {
+        const seen = new Set();
+
+        function replacer(key, value) {
+            if (value !== null && typeof value === 'object') {
+                if (seen.has(value)) {
+                    return '[Circular Reference]';
+                }
+                seen.add(value);
+            }
+            return value;
+        }
+
+        return JSON.stringify(obj, replacer);
     }
 
 }

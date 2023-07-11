@@ -20,6 +20,8 @@
  * @property {object} attributes The attributes of the item
  * @property {object} activeAspects The active aspects of the item
  * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
+ * @property {Object[]} templates The templates of the action
+ * @property {string[]} templatesIds The templates ids
  * @property {object} templatePosition The template position
  */
 

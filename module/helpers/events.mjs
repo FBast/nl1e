@@ -276,15 +276,29 @@ export class Pl1eEvent {
         const options = {
             action: action
         }
-        await item.resolve(options);
 
         // Notify as resolved
         const messageId = $(event.currentTarget).closest(".message").attr("data-message-id");
         const message = game.messages.get(messageId);
-        await message.setFlag("pl1e", "isResolved", true);
+
+        // Retrieve character data on message
+        const characterData = JSON.parse(message.getFlag("pl1e", "characterData"));
+        characterData.actor = token.actor;
+        characterData.token = token;
+        characterData.item = item;
+        characterData.linkedItem = characterData.linkedItem ?? await Pl1eHelpers.getDocument("Item", characterData.linkedItem.id);
+        let templates = [];
+        for (const templateId of characterData.templatesIds) {
+            templates.push(await Pl1eHelpers.getDocument("MeasuredTemplate", templateId));
+        }
+        characterData.templates = templates;
+
+        // Launch resolution
+        await item.resolve(characterData, options);
 
         // Remove all buttons from message content
         const updatedContent = $(message.content).find(".card-buttons").remove().end();
+        await message.unsetFlag("pl1e", "characterData");
         await message.update({
             content: updatedContent[0].outerHTML
         });

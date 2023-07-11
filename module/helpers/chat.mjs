@@ -6,7 +6,7 @@ export class Pl1eChat {
      * Send a message for an action roll
      * @param {CharacterData} characterData
      * @param {TargetData} targetData
-     * @returns {Promise<void>}
+     * @returns {Promise<ChatMessage>}
      */
     static async actionRoll(characterData, targetData = undefined) {
         const rollData = targetData === undefined ? characterData.rollData : targetData.rollData;
@@ -36,7 +36,7 @@ export class Pl1eChat {
         };
 
         // Render message
-        await ChatMessage.create(chatData);
+        return await ChatMessage.create(chatData);
     }
 
     /**

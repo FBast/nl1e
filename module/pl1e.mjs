@@ -93,31 +93,31 @@ Hooks.once('init', async function () {
 
 Hooks.once("ready", async function () {
     // Hide old buttons in existing chat messages
-    for (const message of game.messages) {
-        let isResolved = message.getFlag("pl1e", "isResolved");
-        if (isResolved === undefined || isResolved) continue;
-
-        // Extract card data
-        let action = "cancel";
-        let itemId = $(message.content).closest(".chat-card").data("item-id");
-        let actorId = $(message.content).closest(".chat-card").data("token-id");
-
-        const token = await Pl1eHelpers.getDocument("Token", actorId);
-        /** @type {Pl1eItem} */
-        const item = token.actor.items.get(itemId);
-
-        const options = {
-            action: action,
-            message: message
-        }
-        await item.resolve(options);
-
-        // Remove all buttons from message content
-        const updatedContent = $(message.content).find(".card-buttons").remove().end();
-        await message.update({
-            content: updatedContent[0].outerHTML
-        });
-    }
+    // for (const message of game.messages) {
+    //     let isResolved = message.getFlag("pl1e", "isResolved");
+    //     if (isResolved === undefined || isResolved) continue;
+    //
+    //     // Extract card data
+    //     let action = "cancel";
+    //     let itemId = $(message.content).closest(".chat-card").data("item-id");
+    //     let actorId = $(message.content).closest(".chat-card").data("token-id");
+    //
+    //     const token = await Pl1eHelpers.getDocument("Token", actorId);
+    //     /** @type {Pl1eItem} */
+    //     const item = token.actor.items.get(itemId);
+    //
+    //     const options = {
+    //         action: action,
+    //         message: message
+    //     }
+    //     await item.resolve(options);
+    //
+    //     // Remove all buttons from message content
+    //     const updatedContent = $(message.content).find(".card-buttons").remove().end();
+    //     await message.update({
+    //         content: updatedContent[0].outerHTML
+    //     });
+    // }
 
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on("hotbarDrop", (bar, data, slot) => {

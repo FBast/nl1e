@@ -32,7 +32,7 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             return false;
         }
-        if (itemAttributes.weaponLink !== "none" && this._getLinkableItems(this.characterData).length === 0) {
+        if (itemAttributes.weaponLink !== "none" && this._getLinkableItems(characterData).length === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;
         }
@@ -115,6 +115,7 @@ export class Pl1eAbility extends Pl1eItem {
 
     /**
      * Return the linkable items for this ability
+     * @param {CharacterData} characterData
      * @returns {Pl1eItem[]}
      */
     _getLinkableItems(characterData) {
