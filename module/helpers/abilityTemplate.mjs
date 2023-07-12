@@ -225,7 +225,7 @@ export class AbilityTemplate extends MeasuredTemplate {
         this.document.updateSource(update);
         this.refresh();
         // Target tokens
-        const targets = this.getTargets();
+        const targets = AbilityTemplate.getTemplateTargets(this.document);
         for (const token of canvas.tokens.placeables) {
             // Target the current token and group with others
             token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
