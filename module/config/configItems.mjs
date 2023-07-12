@@ -408,10 +408,10 @@ export function getConfigItems() {
         "multiplyBySuccess": "PL1E.MultiplyBySuccess"
     }
 
-    PL1E.masteryLinks = {
+    PL1E.rangeOverrides = {
+        "none": "PL1E.None",
         "melee": "PL1E.Melee",
-        "ranged": "PL1E.Ranged",
-        "special": "PL1E.Special"
+        "ranged": "PL1E.Ranged"
     }
 
     PL1E.statusTypes = {

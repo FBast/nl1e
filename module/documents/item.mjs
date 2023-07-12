@@ -79,7 +79,6 @@ export class Pl1eItem extends Item {
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {
             // Reset default values in case of changes
-            if (changed.system?.attributes?.masters?.length === 0) changed.system.attributes.masteryLink = "special";
             if (changed.system?.attributes?.activation === "action") changed.system.attributes.reactionCost = 0;
             if (changed.system?.attributes?.activation === "reaction") {
                 changed.system.attributes.actionCost = 0;
@@ -87,7 +86,7 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.triggerReactions = false;
             }
             if (changed.system?.attributes?.characterRoll === "none") changed.system.attributes.targetRoll = [];
-            if (changed.system?.attributes?.masteryLink === "melee" || changed.system?.attributes?.masteryLink === "ranged") {
+            if (changed.system?.attributes?.rangeOverride === "melee" || changed.system?.attributes?.rangeOverride === "ranged") {
                 changed.system.attributes.areaShape = "target";
                 changed.system.attributes.range = 0;
                 changed.system.attributes.areaNumber = 1;
@@ -128,8 +127,7 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async addRefItem(item) {
-        if (this.isEmbedded)
-            throw new Error("PL1E | Cannot add ref item on embedded " + this.name);
+        if (this.isEmbedded) throw new Error("PL1E | Cannot add ref item on embedded " + this.name);
 
         // Return if item with same id exist
         if (this.system.refItems.some(id => id === item._id)) {
@@ -277,6 +275,10 @@ export class Pl1eItem extends Item {
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
+
+            // In case of self target
+            if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0)
+                await this.resolve(characterData, {action: "launch"});
         }
 
         await this._postActivate(characterData);
@@ -403,8 +405,8 @@ export class Pl1eItem extends Item {
             template.actionData = actionData;
         }
 
-        // In case of self target
-        if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
+        // In case of self target with no token
+        if (!characterData.token && characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
             const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
             targetsData.push(targetData);
         }
@@ -449,7 +451,7 @@ export class Pl1eItem extends Item {
         const targetData = {};
         if (characterData.attributes.targetRoll.length > 0) {
             targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll, {
-                "rangedAttack": characterData.item.system.attributes.masteryLink === "ranged"
+                "rangedAttack": characterData.item.system.attributes.rangeOverride === "ranged"
             });
             targetData.result = characterData.result - targetData.rollData.total;
         } else {

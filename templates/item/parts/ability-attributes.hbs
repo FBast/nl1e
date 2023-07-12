@@ -2,17 +2,58 @@
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
-            <ul class="attribute-name">
-                {{#each system.attributes.masters}}
-                    <li class="tag {{this}}">{{localize (configEntry "masters" this)}}</li>
-                {{/each}}
-            </ul>
-            <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masters"
-               data-tooltip="{{localize 'PL1E.MastersConfig'}}">
-                <i class="fas fa-edit"></i>
-            </a>
+            <label class="attribute-name">{{localize "PL1E.ItemLink"}}
+                <i class="item-info fas fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipItemLink"}}'></i>
+            </label>
+            <select name="system.attributes.itemLink">
+                {{selectOptions (config "itemLinks") selected=system.attributes.itemLink localize=true}}
+            </select>
         </div>
+        {{#if (or (eq system.attributes.itemLink "mastery") (eq system.attributes.itemLink "multiple"))}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.MasteryLink"}}</label>
+                <ul class="attribute-name">
+                    {{#each system.attributes.masteryLink}}
+                        <li class="tag {{this}}">{{localize (configEntry "masters" this)}}</li>
+                    {{/each}}
+                </ul>
+                <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masteryLink"
+                   data-tooltip="{{localize 'PL1E.MastersConfig'}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
+        {{/if}}
+        {{#if (ne system.attributes.itemLink "none")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.RangeOverride"}}
+                    <i class="item-info fas fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipRangeOverride"}}'></i>
+                </label>
+                <select name="system.attributes.rangeOverride">
+                    {{selectOptions (config "rangeOverrides") selected=system.attributes.rangeOverride localize=true}}
+                </select>
+            </div>
+        {{/if}}
+        <hr>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>
+            <select name="system.attributes.characterRoll">
+                {{selectOptions (config "abilitySkills") selected=system.attributes.characterRoll localize=true}}
+            </select>
+        </div>
+        {{#if (ne system.attributes.characterRoll "none")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.TargetRoll"}}</label>
+                <ul class="attribute-name">
+                    {{#each system.attributes.targetRoll}}
+                        <li class="tag {{this}}">{{localize (configEntry "abilityResistances" this)}}</li>
+                    {{/each}}
+                </ul>
+                <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.TargetRoll" data-key-path="attributes.targetRoll"
+                   data-tooltip="{{localize 'PL1E.TargetRollConfig'}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
+        {{/if}}
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.HealthCost"}}</label>
             <input type="number" name="system.attributes.healthCost" value="{{system.attributes.healthCost}}" data-dtype="Number"/>
@@ -51,45 +92,17 @@
                 <input type="number" name="system.attributes.reactionCost" value="1" data-dtype="Number" disabled/>
             </div>
         {{/if}}
-        <hr>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>
-            <select name="system.attributes.characterRoll">
-                {{selectOptions (config "abilitySkills") selected=system.attributes.characterRoll localize=true}}
-            </select>
-        </div>
-        {{#if (ne system.attributes.characterRoll "none")}}
+        {{#if (eq system.attributes.rangeOverride "none")}}
+            <hr>
             <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.TargetRoll"}}</label>
-                <ul class="attribute-name">
-                    {{#each system.attributes.targetRoll}}
-                        <li class="tag {{this}}">{{localize (configEntry "abilityResistances" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.TargetRoll" data-key-path="attributes.targetRoll"
-                   data-tooltip="{{localize 'PL1E.TargetRollConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
+                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
             </div>
-        {{/if}}
-        {{#if (gt (length system.attributes.masters) 0)}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.MasteryLink"}}</label>
-                <select name="system.attributes.masteryLink">
-                    {{selectOptions (config "masteryLinks") selected=system.attributes.masteryLink localize=true}}
-                </select>
-            </div>
-        {{/if}}
-        {{#if (or (gt (length system.attributes.masters 0)) (eq system.attributes.masteryLink "special"))}}
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.AreaShape"}}</label>
                 <select name="system.attributes.areaShape">
                     {{selectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
                 </select>
-            </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
-                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
             </div>
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>

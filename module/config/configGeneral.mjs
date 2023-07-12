@@ -39,6 +39,13 @@ export function getConfigGeneral() {
         "copper": "PL1E.Copper"
     }
 
+    PL1E.itemLinks = {
+        "none": "PL1E.None",
+        "parent": "PL1E.Parent",
+        "mastery": "PL1E.Mastery",
+        "multiple": "PL1E.Multiple"
+    }
+
     PL1E.masters = {
         "hands": "PL1E.Hands",
         "mouth": "PL1E.Mouth",

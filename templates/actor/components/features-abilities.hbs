@@ -41,12 +41,12 @@
                             {{#if system.attributes.triggerReactions}}
                                 <i class="item-info fas fa-skull hover-green" data-tooltip='{{localize "PL1E.TriggerReactions"}}'></i>
                             {{/if}}
-                            {{#if (eq system.attributes.masteryLink "melee")}}
+                            {{#if (eq system.attributes.rangeOverride "melee")}}
                                 <i class="item-info fas fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>
-                            {{else if (eq system.attributes.masteryLink "ranged")}}
+                            {{else if (eq system.attributes.rangeOverride "ranged")}}
                                 <i class="item-info fas fa-bow-arrow hover-green" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
                             {{/if}}
-                            {{#if (or (eq system.attributes.masteryLink "none") (eq system.attributes.masteryLink "special"))}}
+                            {{#if (eq system.attributes.rangeOverride "none")}}
                                 {{#if (ne system.attributes.range 0)}}
                                     <i class="item-info fas fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
                                         <label>{{system.attributes.range}}</label>

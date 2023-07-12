@@ -17,7 +17,7 @@ export class Pl1eAbility extends Pl1eItem {
     /** @inheritDoc */
     async _preActivate(characterData) {
         // Get linked attributes
-        if (characterData.attributes.masters.length > 0) {
+        if (characterData.attributes.itemLink !== "none") {
             if (!await this._linkItem(characterData)) return false;
         }
         return true;
@@ -32,7 +32,7 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             return false;
         }
-        if (itemAttributes.masteryLink !== "none" && this._getLinkableItems(characterData).length === 0) {
+        if (itemAttributes.itemLink !== "none" && this._getLinkableItems(characterData).length === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;
         }
@@ -56,13 +56,13 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Get linked attributes
-        if (characterData.attributes.masteryLink === "melee") {
+        if (characterData.attributes.rangeOverride === "melee") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
         }
-        else if (characterData.attributes.masteryLink === "ranged") {
+        else if (characterData.attributes.rangeOverride === "ranged") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.range;
         }
-        characterData.attributes.mastery = Pl1eHelpers.findFirstCommonElement(characterData.attributes.masters,
+        characterData.attributes.mastery = Pl1eHelpers.findFirstCommonElement(characterData.attributes.masteryLink,
             characterData.linkedItem.system.attributes.masters)
         Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
 
@@ -117,12 +117,19 @@ export class Pl1eAbility extends Pl1eItem {
     _getLinkableItems(characterData) {
         const relatedItems = [];
         for (const item of characterData.actor.items) {
-            if (item.type !== "weapon" && item.type !== "wearable") continue;
+            if (!["weapon", "wearable"].includes(item.type)) continue;
             if (!item.isEnabled) continue;
             if (characterData.attributes.isMajorAction && item.system.isMajorActionUsed) continue;
-            if (characterData.attributes.masteryLink === "melee" && !item.system.attributes.melee) continue;
-            if (characterData.attributes.masteryLink === "ranged" && !item.system.attributes.ranged) continue;
-            if (!characterData.attributes.masters.some(mastery => item.system.attributes.masters.includes(mastery))) continue;
+            if (characterData.attributes.rangeOverride === "melee" && !item.system.attributes.melee) continue;
+            if (characterData.attributes.rangeOverride === "ranged" && !item.system.attributes.ranged) continue;
+            // Item link is mastery and item mastery does not match
+            if (characterData.attributes.itemLink === "mastery" && !characterData.attributes.masteryLink
+                .some(mastery => item.system.attributes.masters.includes(mastery))) continue;
+            // Item link is parent and parent id and child id does not match
+            else if (characterData.attributes.itemLink === "parent" && item.parentId !== this.childId) continue;
+            // Item link is multiple and item mastery does not match and parent id and child id does not match
+            else if (characterData.attributes.itemLink === "multiple" && !characterData.attributes.masteryLink
+                .some(mastery => item.system.attributes.masters.includes(mastery)) && item.parentId !== this.childId) continue;
             relatedItems.push(item);
         }
         return relatedItems;
