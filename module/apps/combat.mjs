@@ -4,17 +4,25 @@ export class Pl1eCombat extends Combat {
     async nextRound() {
         for (const combatant of this.combatants) {
             await this.resetCombatStats(combatant.actor);
+            await this.updateActiveEffects(combatant.actor);
         }
         return super.nextRound();
     }
 
+    /** @inheritDoc */
     async endCombat() {
         for (const combatant of this.combatants) {
             await this.resetCombatStats(combatant.actor);
+            await this.deleteActiveEffects(combatant.actor);
         }
         return super.endCombat();
     }
 
+    /**
+     * Reset all the combat stats of the actor
+     * @param {Pl1eActor} actor
+     * @return {Promise<void>}
+     */
     async resetCombatStats(actor) {
         await actor.update({
             "system.misc.action": 2,
@@ -29,4 +37,38 @@ export class Pl1eCombat extends Combat {
         }
     }
 
+    /**
+     * Update all the active effect decreasing their duration
+     * @param {Pl1eActor} actor
+     * @return {Promise<void>}
+     */
+    async updateActiveEffects(actor) {
+        for (const effect of actor.effects) {
+            if (effect.getFlag("pl1e", "permanent")) continue;
+            const duration = effect.data.duration;
+            if (duration.rounds > 0) {
+                duration.rounds -= 1;
+
+                // If the rounds reach 0, remove the effect
+                if (duration.rounds === 0) {
+                    await effect.delete();
+                } else {
+                    // Update the duration of the effect
+                    await effect.update({duration});
+                }
+            }
+        }
+    }
+
+    /**
+     * Remove all active effects
+     * @param {Pl1eActor} actor
+     * @return {Promise<void>}
+     */
+    async deleteActiveEffects(actor) {
+        for (const effect of actor.effects) {
+            if (effect.getFlag("pl1e", "permanent")) continue;
+            await effect.delete();
+        }
+    }
 }

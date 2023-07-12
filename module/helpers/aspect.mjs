@@ -59,10 +59,11 @@ export class Pl1eAspect {
         const value = aspect.name === "decrease" ? -aspect.value : aspect.value;
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
-        const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
+        const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
         await actor.createEmbeddedDocuments("ActiveEffect", [{
-            label: label,
-            icon: aspectConfig.img,
+            name: name,
+            icon: aspect.effectIcon,
+            tint: aspect.effectIconTint,
             changes: [{
                 key: dataConfig.path,
                 mode: aspect.name === "set" ? 5 : 2,
@@ -71,7 +72,8 @@ export class Pl1eAspect {
             flags: {
                 pl1e: {
                     itemId: item._id,
-                    aspectId: aspectId
+                    aspectId: aspectId,
+                    permanent: true
                 }
             }
         }]);
@@ -152,7 +154,7 @@ export class Pl1eAspect {
 
             if (aspectCopy.createEffect) {
                 // Create the effect
-                await this._createActiveEffect(targetData.actor, characterData.item, aspectCopy._id, aspectCopy);
+                await this._createActiveEffect(aspectCopy, aspectCopy._id, targetData.actor, characterData.item, characterData.result);
             }
             else {
                 // Apply the aspect
@@ -267,25 +269,42 @@ export class Pl1eAspect {
 
     /**
      * Create an active effect
-     * @param actor
-     * @param item
-     * @param aspectId
-     * @param aspect
+     * @param {Object} aspect
+     * @param {string} aspectId
+     * @param {Pl1eActor} actor
+     * @param {Pl1eItem} item
+     * @param {number} result
      * @returns {Promise<void>}
      * @private
      */
-    static async _createActiveEffect(actor, item, aspectId, aspect) {
+    static async _createActiveEffect(aspect, aspectId, actor, item, result) {
+        // Calculate duration
+        let effectDuration = aspect.effectDuration;
+        if (aspect.effectDurationResolutionType === "valueIfSuccess" && result <= 0) effectDuration = 0;
+        else if (aspect.effectDurationResolutionType === "multiplyBySuccess") effectDuration *= result;
+        aspect.effectDuration = effectDuration;
+
+        // Abort if the duration is null
+        if (aspect.effectDuration <= 0) return;
+
+        // Get configuration data
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
-        const label = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
+        const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`
+
+        // Create effect
         await actor.createEmbeddedDocuments("ActiveEffect", [{
-            label: label,
-            icon: aspectConfig.img,
+            name: name,
+            icon: aspect.effectIcon,
+            tint: aspect.effectIconTint,
             changes: [{
                 key: dataConfig.path,
                 mode: aspect.name === "set" ? 5 : 2,
                 value: aspect.value
             }],
+            duration: {
+                rounds: effectDuration
+            },
             flags: {
                 pl1e: {
                     itemId: item._id,

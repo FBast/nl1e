@@ -313,7 +313,7 @@
   "PL1E.ShortHammers": "Marteaux Courts",
   "PL1E.Silver": "Argent",
   "PL1E.TooltipItemLink": "<p align=\"justify\">Garantit qu'un élément lié est équipé pour permettre le lancement de cette capacité.</p>\n<ul><li><p align=\"left\">Aucun : aucun élément ne doit être équipé.</p></li><li><p align=\"left\">Parent : le parent de cet élément doit être équipé.</p></li><li><p align=\"left\">Maîtrise : un objet avec l'un des liens de maîtrise doit être équipé.</p></li><li><p align=\"left\" >Multiple : un objet parent ou de maîtrise doit être équipé.</p></li></ul>",
-  "PL1E.TooltipRangeOverride": "<p align=\"justify\">Remplace la plage, la forme de la zone et le nombre de zone par les paramètres de l'objet liée.</p>\n<ul><li><p align=\"left\">Aucun : aucun remplacement.</p></li><li><p align=\"left\">Mêlée : la portée sera définie par l'allonge de l'objet avec une cible unique.</p> </li><li><p align=\"left\">Distance : la portée sera définie par la portée de l'objet avec une cible unique.</p>",
+  "PL1E.TooltipRangeOverride": "<p align=\"justify\">Remplace la portée, la forme de la zone et le nombre de zone par les paramètres de l'objet liée.</p>\n<ul><li><p align=\"left\">Aucun : aucun remplacement.</p></li><li><p align=\"left\">Mêlée : la portée sera définie par l'allonge de l'objet avec une cible unique.</p> </li><li><p align=\"left\">Distance : la portée sera définie par la portée de l'objet avec une cible unique.</p>",
   "PL1E.Size.": "Taille",
   "PL1E.Skill": "Compétence",
   "PL1E.Skills": "Compétences",

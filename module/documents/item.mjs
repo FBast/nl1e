@@ -97,6 +97,11 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.range = 0;
                 changed.system.attributes.ammo = 0;
             }
+            if (changed.system?.attributes?.itemLink === "none") {
+                changed.system.attributes.rangeOverride = "none";
+                changed.system.attributes.masteryLink = [];
+            }
+            if (changed.system?.attributes?.itemLink === "parent") changed.system.attributes.masteryLink = [];
         }
 
         return super._preUpdate(changed, options, user);

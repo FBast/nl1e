@@ -61,6 +61,12 @@
                                 {{filePicker target=(concat "system.passiveAspects." @key ".effectIcon") type="image"}}
                             </div>
                         </div>
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.EffectIconTint"}}</label>
+                            <div class="flexrow">
+                                {{colorPicker name=(concat "system.passiveAspects." @key ".effectIconTint") value=../effectIconTint}}
+                            </div>
+                        </div>
                     {{/if}}
                 </div>
             </li>

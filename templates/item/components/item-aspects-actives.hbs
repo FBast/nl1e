@@ -84,18 +84,18 @@
                             </select>
                         </div>
                     {{/if}}
-                    {{#if ../statusType}}
+                    {{#if ../effectType}}
                         <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.StatusType"}}</label>
-                            <select name="system.activeAspects.{{@key}}.statusType">
-                                {{selectOptions (config "statusTypes") selected=../statusType localize=true}}
+                            <label class="attribute-name">{{localize "PL1E.EffectType"}}</label>
+                            <select name="system.activeAspects.{{@key}}.effectType">
+                                {{selectOptions (config "statusTypes") selected=../effectType localize=true}}
                             </select>
                         </div>
                     {{/if}}
-                    {{#if (eq ../statusType "durationIfSuccess")}}
+                    {{#if (eq ../effectType "durationIfSuccess")}}
                         <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.StatusDuration"}}</label>
-                            <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.statusDuration" value="{{../statusDuration}}" data-dtype="Number"/>
+                            <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
+                            <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{../effectDuration}}" data-dtype="Number"/>
                         </div>
                     {{/if}}
                     {{#if (and ../resolutionType (ne @root.system.attributes.characterRoll "none"))}}
@@ -116,6 +116,9 @@
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
                             <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{../effectDuration}}" data-dtype="Number"/>
+                            <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=../effectDurationResolutionType localize=true}}
+                            </select>
                         </div>
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.EachTurnEffect"}}</label>
@@ -126,6 +129,12 @@
                             <div class="flexrow">
                                 <input name="system.activeAspects.{{@key}}.effectIcon" type="text" value="{{../effectIcon}}"/>
                                 {{filePicker target=(concat "system.activeAspects." @key ".effectIcon") type="image"}}
+                            </div>
+                        </div>
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.EffectIconTint"}}</label>
+                            <div class="flexrow">
+                                {{colorPicker name=(concat "system.activeAspects." @key ".effectIconTint") value=../effectIconTint}}
                             </div>
                         </div>
                     {{/if}}

@@ -490,43 +490,43 @@ export function getConfigActor() {
 
     PL1E.reductions = {
         "slashing": {
-            "label": "PL1E.Slashing",
+            "label": "PL1E.SlashingReduction",
             "icon": "fa-axe-battle",
             "type": "number",
             "path": "system.reductions.slashing"
         },
         "crushing": {
-            "label": "PL1E.Crushing",
+            "label": "PL1E.CrushingReduction",
             "icon": "fa-hammer-war",
             "type": "number",
             "path": "system.reductions.crushing"
         },
         "piercing": {
-            "label": "PL1E.Piercing",
+            "label": "PL1E.PiercingReduction",
             "icon": "fa-dagger",
             "type": "number",
             "path": "system.reductions.piercing"
         },
         "burn": {
-            "label": "PL1E.Burn",
+            "label": "PL1E.BurnReduction",
             "icon": "fa-fire",
             "type": "number",
             "path": "system.reductions.burn"
         },
         "cold": {
-            "label": "PL1E.Cold",
+            "label": "PL1E.ColdReduction",
             "icon": "fa-snowflake",
             "type": "number",
             "path": "system.reductions.cold"
         },
         "acid": {
-            "label": "PL1E.Acid",
+            "label": "PL1E.AcidReduction",
             "icon": "fa-droplet",
             "type": "number",
             "path": "system.reductions.acid"
         },
         "shock": {
-            "label": "PL1E.Shock",
+            "label": "PL1E.ShockReduction",
             "icon": "fa-bolt",
             "type": "number",
             "path": "system.reductions.shock"

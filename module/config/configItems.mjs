@@ -246,8 +246,10 @@ export function getConfigItems() {
             "resolutionType": "value",
             "createEffect": false,
             "effectDuration": 1,
+            "effectDurationResolutionType": "value",
             "eachTurnEffect": false,
-            "effectIcon": "icons/svg/upgrade.svg"
+            "effectIcon": "icons/svg/upgrade.svg",
+            "effectIconTint": "#00ff00"
         },
         {
             "name": "decrease",
@@ -259,8 +261,10 @@ export function getConfigItems() {
             "damageType": "raw",
             "createEffect": false,
             "effectDuration": 1,
+            "effectDurationResolutionType": "value",
             "eachTurnEffect": false,
-            "effectIcon": "icons/svg/downgrade.svg"
+            "effectIcon": "icons/svg/downgrade.svg",
+            "effectIconTint": "#ff0000"
         },
         {
             "name": "set",
@@ -271,7 +275,9 @@ export function getConfigItems() {
             "resolutionType": "value",
             "createEffect": false,
             "effectDuration": 1,
-            "effectIcon": "icons/svg/target.svg"
+            "effectDurationResolutionType": "value",
+            "effectIcon": "icons/svg/target.svg",
+            "effectIconTint": "#000000"
         },
         {
             "name": "transfer",
@@ -291,8 +297,9 @@ export function getConfigItems() {
             "dataGroup": "status",
             "data": "dead",
             "targetGroup": "all",
-            "statusType": "permanent",
-            "statusDuration": 1,
+            "effectType": "permanent",
+            "effectDuration": 1,
+            "effectDurationResolutionType": "value",
             "effectIcon": "icons/svg/aura.svg"
         }
     ]
