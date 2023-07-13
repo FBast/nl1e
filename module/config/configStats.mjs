@@ -70,7 +70,7 @@ export function getConfigActor() {
             "label": "PL1E.Agility",
             "weights": {
                 "resources": [],
-                "skills": ["dodge", "reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
+                "skills": ["dodge", "handling", "acrobatics", "accuracy", "discretion", "craft"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -80,7 +80,7 @@ export function getConfigActor() {
             "label": "PL1E.Perception",
             "weights": {
                 "resources": [],
-                "skills": ["dodge", "reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
+                "skills": ["dodge", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -139,6 +139,15 @@ export function getConfigActor() {
     }
 
     PL1E.skills = {
+        "cover": {
+            "label": "PL1E.Cover",
+            "fixedRank": true,
+            "divider": 1,
+            "weights": {
+                "characteristics": [],
+                "misc": ["coverBonuses"]
+            }
+        },
         "parry": {
             "label": "PL1E.Parry",
             "fixedRank": true,
@@ -162,16 +171,8 @@ export function getConfigActor() {
             "fixedRank": true,
             "divider": 2,
             "weights": {
-                "characteristics": ["strength", "constitution"]
-            }
-        },
-        "reflex": {
-            "label": "PL1E.Reflex",
-            "fixedRank": true,
-            "divider": 2,
-            "weights": {
-                "characteristics": ["agility", "perception"],
-                "misc": ["flexibility"]
+                "characteristics": ["strength", "constitution"],
+                "misc": []
             }
         },
         "resilience": {
@@ -180,7 +181,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["intellect", "will"]
+                "characteristics": ["intellect", "will"],
+                "misc": []
             }
         },
         "intuition": {
@@ -189,7 +191,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["cunning", "wisdom"]
+                "characteristics": ["cunning", "wisdom"],
+                "misc": []
             }
         },
         "handling": {
@@ -198,7 +201,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["strength", "agility"]
+                "characteristics": ["strength", "agility"],
+                "misc": []
             }
         },
         "throwing": {
@@ -207,7 +211,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["strength", "perception"]
+                "characteristics": ["strength", "perception"],
+                "misc": []
             }
         },
         "athletics": {
@@ -246,7 +251,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["cunning", "wisdom"]
+                "characteristics": ["cunning", "wisdom"],
+                "misc": []
             }
         },
         "vigilance": {
@@ -255,7 +261,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["perception", "wisdom"]
+                "characteristics": ["perception", "wisdom"],
+                "misc": []
             }
         },
         "discretion": {
@@ -274,7 +281,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["wisdom", "will"]
+                "characteristics": ["wisdom", "will"],
+                "misc": []
             }
         },
         "diplomacy": {
@@ -283,7 +291,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["intellect", "wisdom"]
+                "characteristics": ["intellect", "wisdom"],
+                "misc": []
             }
         },
         "intimidation": {
@@ -292,7 +301,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["cunning", "wisdom"]
+                "characteristics": ["cunning", "wisdom"],
+                "misc": []
             }
         },
         "bluff": {
@@ -301,7 +311,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["intellect", "cunning"]
+                "characteristics": ["intellect", "cunning"],
+                "misc": []
             }
         },
         "craft": {
@@ -310,7 +321,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["agility", "cunning"]
+                "characteristics": ["agility", "cunning"],
+                "misc": []
             }
         },
         "erudition": {
@@ -319,7 +331,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": false,
             "weights": {
-                "characteristics": ["intellect", "cunning"]
+                "characteristics": ["intellect", "cunning"],
+                "misc": []
             }
         },
         "nature": {
@@ -328,7 +341,8 @@ export function getConfigActor() {
             "divider": 2,
             "magicPenalty": true,
             "weights": {
-                "characteristics": ["intellect", "wisdom"]
+                "characteristics": ["intellect", "wisdom"],
+                "misc": []
             }
         },
         "magic": {
@@ -456,9 +470,15 @@ export function getConfigActor() {
             "type": "number",
             "path": "system.misc.flexibility"
         },
+        "coverBonuses": {
+            "label": "PL1E.CoverBonuses",
+            "icon": "fa-shield",
+            "type": "number",
+            "path": "system.misc.coverBonuses"
+        },
         "parryBonuses": {
             "label": "PL1E.ParryBonuses",
-            "icon": "fa-shield",
+            "icon": "fa-swords",
             "type": "number",
             "path": "system.misc.parryBonuses"
         },

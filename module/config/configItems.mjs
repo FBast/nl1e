@@ -174,10 +174,6 @@ export function getConfigItems() {
             "fallback": "none"
         },
         // Weapons
-        "parryProjectiles": {
-            "label": "PL1E.ParryProjectiles",
-            "type": "bool"
-        },
         "hands": {
             "label": "PL1E.Hands",
             "type": "number"
@@ -375,10 +371,10 @@ export function getConfigItems() {
     }
     
     PL1E.abilityResistances = {
+        "cover": "PL1E.Cover",
         "parry": "PL1E.Parry",
         "dodge": "PL1E.Dodge",
         "vigor": "PL1E.Vigor",
-        "reflex": "PL1E.Reflex",
         "resilience": "PL1E.Resilience",
         "intuition": "PL1E.Intuition"
     }

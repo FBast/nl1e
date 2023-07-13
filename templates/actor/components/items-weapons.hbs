@@ -27,9 +27,6 @@
                                 <label>{{system.attributes.ammo}}</label>
                             </i>
                         {{/if}}
-                        {{#if (ne system.attributes.parryProjectiles false)}}
-                            <i class="item-info fas fa-shield-halved hover-green" data-tooltip="{{localize "PL1E.ParryProjectiles"}}"></i>
-                        {{/if}}
                     {{/unless}}
                     {{#if (eq @root.actor.type "character")}}
                         {{#if system.isMajorActionUsed}}

@@ -455,9 +455,7 @@ export class Pl1eItem extends Item {
     async _getTargetData(characterData, actor, token = null) {
         const targetData = {};
         if (characterData.attributes.targetRoll.length > 0) {
-            targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll, {
-                "rangedAttack": characterData.item.system.attributes.rangeOverride === "ranged"
-            });
+            targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll);
             targetData.result = characterData.result - targetData.rollData.total;
         } else {
             targetData.result = characterData.result;

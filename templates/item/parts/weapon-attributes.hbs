@@ -41,10 +41,6 @@
                 <input type="number" name="system.attributes.ammo" value="{{system.attributes.ammo}}" data-dtype="Number"/>
             </div>
         {{/if}}
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.ParryProjectiles"}}</label>
-            <input type="checkbox" name="system.attributes.parryProjectiles" {{checked system.attributes.parryProjectiles}} data-dtype="Boolean"/>
-        </div>
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
     {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}

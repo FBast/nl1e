@@ -153,10 +153,8 @@ export class Pl1eActor extends Actor {
                 characteristicsSum += actorCharacteristics[characteristic].value;
             }
             let attributesSum = 0;
-            if (skillConfig.weights.misc !== undefined) {
-                for (let misc of skillConfig.weights.misc) {
-                    attributesSum += actorMisc[misc];
-                }
+            for (let misc of skillConfig.weights.misc) {
+                attributesSum += actorMisc[misc];
             }
             skill.numberMod = attributesSum + actorGeneral.bonuses;
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
@@ -196,25 +194,15 @@ export class Pl1eActor extends Actor {
     /**
      * Roll a skill based on rollBestSkill value and return the roll
      * @param {string[]} skillNames
-     * @param {Object} options
      * @returns {Promise<Roll>}
      */
-    async rollSkills(skillNames, options = {}) {
-        // Check if character has item which can parry projectiles
-        let parryProjectiles = false;
-        for (const item of this.items) {
-            if (item.isEnabled && item.system.attributes.parryProjectiles) {
-                parryProjectiles = true;
-                break;
-            }
-        }
+    async rollSkills(skillNames) {
         if (skillNames.length > 1) {
             if (this.system.general.rollBestSkill) {
                 let skillAvg = Number.NEGATIVE_INFINITY;
                 let bestSkillName = undefined;
                 for (let skillName of skillNames) {
                     const skill = this.system.skills[skillName];
-                    if (skillName === "parry" && options.rangedAttack && !parryProjectiles) continue;
                     const currentSkillAvg = (skill.dice + 1) / 2 * skill.number;
                     if (skillAvg < currentSkillAvg) {
                         skillAvg = currentSkillAvg;
