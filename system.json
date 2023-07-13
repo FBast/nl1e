@@ -2,7 +2,7 @@
   "id": "pl1e",
   "title": "Pl1e",
   "description": "The Pl1e system for FoundryVTT!",
-  "version": "1.2.0",
+  "version": "0.8.0",
   "compatibility": {
     "minimum": 10,
     "verified": "10.291",
@@ -70,8 +70,8 @@
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stamina",
   "tertiaryTokenAttribute": "mana",
-  "url": "",
-  "manifest": "",
+  "url": "https://github.com/FBast/pl1e/",
+  "manifest": "https://raw.githubusercontent.com/FBast/pl1e/main/system.json",
   "download": "",
   "license": "LICENSE.txt",
   "changelog": "CHANGELOG.md"

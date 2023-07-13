@@ -1,43 +1,29 @@
-# Pl1e System
+# Prophetic Legacy V1 System
 
-![Foundry v10](https://img.shields.io/badge/foundry-v10-green)
+![Foundry v11](https://img.shields.io/badge/foundry-v11-green)
 
-This system is a pl1e system that you can use as a starting point for building your own custom systems. It's similar to Simple World-building, but has examples of creating attributes in code rather than dynamically through the UI.
+This system is an implementation of Prophetic Legacy, a medieval fantastic world human centered with multiple others races.
 
-## Usage
+## Features
 
-Before installing this system, you should rename any files that have `pl1e` in their filename to use whatever machine-safe name your system needs, such as `adnd2e` if you were building a system for 2nd edition Advanced Dungeons & Dragons. In addition, you should search through the files for `pl1e` and `Pl1e` and do the same for those, replacing them with appropriate names for your system.
+Currently in Beta, this is system is not supposed to be production ready and is in debug/fixes state.
 
-### System Generator
+### Lore
 
-This project is also available as generator that can be run with npm: https://www.npmjs.com/package/generator-foundry
+A map of Ekzandia, the main continent of this universe, and multiple cities scenes and journal are here to provide all the lore you need to get a ready to play experience.
 
-### Vue 3 Pl1e
+### Items
 
-Alternatively, there's another build of this system that supports using Vue 3 components (ES module build target) for character sheet templates.
+Multiple items in form of features, abilities, weapons, wearables and consumables are provided to allow players to create unique and customizable characters and for the GM to create interesting NPCs.
 
-Head over to the [Vue3Pl1e System](https://gitlab.com/asacolips-projects/foundry-mods/vue3pl1e) repo if you're interested in using Vue!
+### Combat
 
-### Tutorial
+The combat system implement an extensive automated abilities system with visual and sound effects. Numerous abilities possibilities are available for you to create your owns.
 
-For much more information on how to use this system as a starting point for making your own, see the [full tutorial on the Foundry Wiki](https://foundryvtt.wiki/en/development/guides/SD-tutorial)!
+### Translation
 
-## Sheet Layout
+For know all the system is translated into English and French, but the items description and names are French only. With Babele implementation all will be translated to English in the future.
 
-This system includes a handful of helper CSS classes to help you lay out your sheets if you're not comfortable diving into CSS fully. Those are:
+## Community
 
-* `flexcol`: Included by Foundry itself, this lays out the child elements of whatever element you place this on vertically.
-* `flexrow`: Included by Foundry itself, this lays out the child elements of whatever element you place this on horizontally.
-* `flex-center`: When used on something that's using flexrow or flexcol, this will center the items and text.
-* `flex-between`: When used on something that's using flexrow or flexcol, this will attempt to place space between the items. Similar to "justify" in word processors.
-* `flex-group-center`: Add a border, padding, and center all items.
-* `flex-group-left`: Add a border, padding, and left align all items.
-* `flex-group-right`: Add a border, padding, and right align all items.
-* `grid`: When combined with the `grid-Ncol` classes, this will lay out child elements in a grid.
-* `grid-Ncol`: Replace `N` with any number from 1-12, such as `grid-3col`. When combined with `grid`, this will layout child elements in a grid with a number of columns equal to the number specified.
-
-## Compiling the CSS
-
-This repo includes both CSS for the theme and SCSS source files. If you're new to CSS, it's probably easier to just work in those files directly and delete the SCSS directory. If you're interested in using a CSS preprocessor to add support for nesting, variables, and more, you can run `npm install` in this directory to install the dependencies for the scss compiler. After that, just run `npm run gulp` to compile the SCSS and start a process that watches for new changes.
-
-![image](http://mattsmith.in/images/pl1e.png)
+A discord link and more will be provided in the future tout allow people tout extend the system capabilities and the lore content.
