@@ -72,7 +72,7 @@
   "tertiaryTokenAttribute": "mana",
   "url": "https://github.com/FBast/pl1e/",
   "manifest": "https://raw.githubusercontent.com/FBast/pl1e/main/system.json",
-  "download": "",
+  "download": "https://github.com/FBast/pl1e/archive/refs/tags/0.8.0.zip",
   "license": "LICENSE.txt",
   "changelog": "CHANGELOG.md"
 }
