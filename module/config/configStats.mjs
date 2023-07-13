@@ -70,7 +70,7 @@ export function getConfigActor() {
             "label": "PL1E.Agility",
             "weights": {
                 "resources": [],
-                "skills": ["dodge", "handling", "acrobatics", "accuracy", "discretion", "craft"]
+                "skills": ["reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -80,7 +80,7 @@ export function getConfigActor() {
             "label": "PL1E.Perception",
             "weights": {
                 "resources": [],
-                "skills": ["dodge", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
+                "skills": ["reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -157,13 +157,13 @@ export function getConfigActor() {
                 "misc": ["parryBonuses"]
             }
         },
-        "dodge": {
-            "label": "PL1E.Dodge",
+        "reflex": {
+            "label": "PL1E.Reflex",
             "fixedRank": true,
             "divider": 2,
             "weights": {
                 "characteristics": ["agility", "perception"],
-                "misc": ["dodgeBonuses", "flexibility"]
+                "misc": ["reflexBonuses", "flexibility"]
             }
         },
         "vigor": {
@@ -482,11 +482,11 @@ export function getConfigActor() {
             "type": "number",
             "path": "system.misc.parryBonuses"
         },
-        "dodgeBonuses": {
-            "label": "PL1E.DodgeBonuses",
+        "reflexBonuses": {
+            "label": "PL1E.ReflexBonuses",
             "icon": "fa-eye",
             "type": "number",
-            "path": "system.misc.dodgeBonuses"
+            "path": "system.misc.reflexBonuses"
         },
         "nightVision": {
             "label": "PL1E.NightVision",

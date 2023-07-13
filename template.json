@@ -88,7 +88,7 @@
             "dice": 8,
             "diceMod": 0
           },
-          "dodge": {
+          "reflex": {
             "number": 2,
             "numberMod": 0,
             "rank": 3,
@@ -254,7 +254,7 @@
           "flexibility": 0,
           "coverBonuses": 0,
           "parryBonuses": 0,
-          "dodgeBonuses": 0,
+          "reflexBonuses": 0,
           "nightVision": 9,
           "action": 2,
           "reaction": 1

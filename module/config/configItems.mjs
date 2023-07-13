@@ -373,7 +373,7 @@ export function getConfigItems() {
     PL1E.abilityResistances = {
         "cover": "PL1E.Cover",
         "parry": "PL1E.Parry",
-        "dodge": "PL1E.Dodge",
+        "reflex": "PL1E.Reflex",
         "vigor": "PL1E.Vigor",
         "resilience": "PL1E.Resilience",
         "intuition": "PL1E.Intuition"
