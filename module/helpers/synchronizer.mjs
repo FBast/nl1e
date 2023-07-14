@@ -11,21 +11,23 @@ export class Pl1eSynchronizer {
         let updateNumber = 0;
         const actors = await Pl1eHelpers.getDocuments("Actor");
         for (const actor of actors) {
+            let renderActor = false;
             for (let item of actor.items) {
                 if (item.sourceId !== sourceItem._id) continue
 
                 // Update the item
                 await this._resetItem(item, sourceItem);
 
+                // Render item if rendered
+                item.sheet.render(item.sheet.rendered);
+                renderActor = true;
+
                 // Log and update count
                 console.log(`PL1E | ${item.name} of ${actor.name} is reset`);
                 updateNumber++;
             }
+            if (renderActor) actor.sheet.render(actor.sheet.rendered);
         }
-
-        // Render all visible sheets
-        const sheets = Object.values(ui.windows).filter(sheet => sheet.rendered);
-        sheets.forEach(sheet => sheet.render(true));
 
         const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
         if (enableDebugUINotifications && notifyInfo)

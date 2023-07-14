@@ -257,7 +257,8 @@
           "reflexBonuses": 0,
           "nightVision": 9,
           "action": 2,
-          "reaction": 1
+          "reaction": 1,
+          "faithPower": false
         },
         "reductions": {
           "slashing": 0,

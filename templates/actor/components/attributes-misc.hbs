@@ -11,6 +11,9 @@
                     {{#if (eq type "number")}}
                         <label class="align-right">{{../this}}</label>
                     {{/if}}
+                    {{#if (eq type "bool")}}
+                        <label class="align-right">{{#if ../this}}{{localize "PL1E.Yes"}}{{else}}{{localize "PL1E.No"}}{{/if}}</label>
+                    {{/if}}
                 </div>
             </div>
         {{/with}}

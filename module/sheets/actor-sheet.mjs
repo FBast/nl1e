@@ -244,6 +244,16 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             // Append to abilities.
             else if (item.type === 'ability') {
+                // Filter item with faith parent
+                let parentItem = null;
+                for (const otherItem of this.actor.items) {
+                    if (otherItem.parentId === item.childId) {
+                        parentItem = otherItem;
+                        break;
+                    }
+                }
+                if (parentItem && parentItem.system.attributes.featureType === "faith" && !this.actor.system.misc.faithPower) continue;
+
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
                     const sameItem = abilities[item.system.attributes.level].find(item => item.flags.core.sourceId === sourceIdFlag);

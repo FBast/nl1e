@@ -505,6 +505,12 @@ export function getConfigActor() {
             "icon": "fa-reply-clock",
             "type": "number",
             "path": "system.misc.reaction"
+        },
+        "faithPower": {
+            "label": "PL1E.FaithPower",
+            "icon": "fa-reply-clock",
+            "type": "bool",
+            "path": "system.misc.faithPower"
         }
     }
 
