@@ -26,7 +26,7 @@ export class Pl1eItem extends Item {
             case "feature":
                 return true;
             case "weapon":
-                return this.system.isEquippedMain || this.system.isEquippedSecondary;
+                return this.system.attributes.hands >= 0 ? this.system.isEquippedMain || this.system.isEquippedSecondary : true;
             case "wearable":
                 return this.system.isEquipped;
             case "ability":
@@ -135,7 +135,7 @@ export class Pl1eItem extends Item {
         if (this.isEmbedded) throw new Error("PL1E | Cannot add ref item on embedded " + this.name);
 
         // Return if item with same id exist
-        if (this.system.refItems.some(id => id === item._id)) {
+        if (this.system.refItems.some(id => id === item._id) && !CONFIG.PL1E.items[this.type].stackable.includes(item.type)) {
             const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
             if (enableDebugUINotifications)
                 ui.notifications.warn(game.i18n.localize("PL1E.ChildWithSameIdExist"));
