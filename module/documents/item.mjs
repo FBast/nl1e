@@ -143,7 +143,7 @@ export class Pl1eItem extends Item {
         }
 
         // Return against recursive loop
-        if (await Pl1eHelpers.createRecursiveLoop(this, item.id)) {
+        if (await Pl1eHelpers.createRecursiveLoop(this, item)) {
             const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
             if (enableDebugUINotifications)
                 ui.notifications.warn(game.i18n.localize("PL1E.WillCreateRecursiveLoop"));

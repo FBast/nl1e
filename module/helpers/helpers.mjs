@@ -127,7 +127,6 @@ export class Pl1eHelpers {
      * @returns {{x: number, y: number}}
      */
     static screenCenter() {
-        // const canvas = document.getElementById("board");
         return {
             x: window.innerWidth / 4,
             y: window.innerHeight / 4
@@ -135,19 +134,17 @@ export class Pl1eHelpers {
     }
 
     /**
-     * Check recursive loop for items
-     * @param item
-     * @param newUuid
+     * Check recursive loop between parent item and child item or its sub items
+     * @param parentItem
+     * @param childItem
      * @returns {Promise<boolean>}
      */
-    static async createRecursiveLoop(item, newId) {
-        // if (item._id === newId) return true;
-        // for (const id of item.system.refItemsParents) {
-        //     const subItem = await Pl1eHelpers.getDocument("Item", id);
-        //     if (await this.createRecursiveLoop(subItem, newId)) {
-        //         return true;
-        //     }
-        // }
+    static async createRecursiveLoop(parentItem, childItem) {
+        if (parentItem.id === childItem.id) return true;
+        for (const id of childItem.system.refItems) {
+            const subItem = await Pl1eHelpers.getDocument("Item", id);
+            if (await this.createRecursiveLoop(parentItem, subItem)) return true;
+        }
         return false;
     }
 
