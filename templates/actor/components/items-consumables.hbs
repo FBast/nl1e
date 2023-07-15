@@ -6,7 +6,7 @@
         <li class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">
             <div class="flexrow">
                 <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
-                <label class="item-name item-tooltip-activate">{{system.units}}x {{name}}</label>
+                <label class="item-name item-tooltip-activate">{{#unless ../system.general.unlimitedItems}}{{system.units}}x {{/unless}}{{name}}</label>
                 <div class="item-icons">
                     {{#unless (eq @root.actor.type "npc")}}
                         {{#if (gt system.attributes.uses 1)}}

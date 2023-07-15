@@ -30,7 +30,7 @@ export class Pl1eTrade {
             ["system.money.silver"]: sellerActor.system.money.silver + priceMoney.silver,
             ["system.money.copper"]: sellerActor.system.money.copper + priceMoney.copper,
         });
-        await buyerActor.addItem(item);
+        if (!buyerActor.system.general.unlimitedItems) await buyerActor.addItem(item);
         await sellerActor.removeItem(item);
         // Send message for historic
         await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "sale", priceMoney);
@@ -53,9 +53,9 @@ export class Pl1eTrade {
             ["system.money.gold"]: money.gold,
             ["system.money.silver"]: money.silver,
             ["system.money.copper"]: money.copper,
-        })
+        });
         await buyerActor.addItem(item);
-        await sellerActor.removeItem(item);
+        if (!buyerActor.system.general.unlimitedItems) await sellerActor.removeItem(item);
         // Send message for historic
         await Pl1eChat.tradeMessage(item, buyerActor, sellerActor, "purchase", priceMoney);
     }

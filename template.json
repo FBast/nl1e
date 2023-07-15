@@ -316,7 +316,8 @@
       "templates": ["base"],
       "general": {
         "sellModifier": -100,
-        "buyModifier": 0
+        "buyModifier": 0,
+        "unlimitedItems": false
       }
     }
   },

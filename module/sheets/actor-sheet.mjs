@@ -35,11 +35,11 @@ export class Pl1eActorSheet extends ActorSheet {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            if (this.actor.type === 'character') {
+            if (this.actor.type === "character") {
                 buttons.unshift({
-                    label: 'PL1E.CreationMod',
-                    class: 'button-creation-mod',
-                    icon: this.actor.system.general.creationMod ? 'fas fa-toggle-on' : 'fas fa-toggle-off',
+                    label: "PL1E.CreationMod",
+                    class: "button-creation-mod",
+                    icon: this.actor.system.general.creationMod ? "fas fa-toggle-on" : "fas fa-toggle-off",
                     onclick: async () => {
                         const appRestingForm = Object.values(ui.windows)
                             .find(w => w instanceof Pl1eResting);
@@ -51,12 +51,6 @@ export class Pl1eActorSheet extends ActorSheet {
                     }
                 });
             }
-            buttons.unshift({
-                label: 'PL1E.Debug',
-                class: 'button-debug',
-                icon: 'fas fa-ban-bug',
-                onclick: () => console.log(this)
-            });
         }
         return buttons;
     }
@@ -186,6 +180,29 @@ export class Pl1eActorSheet extends ActorSheet {
         }
     }
 
+    // /** @inheritDoc */
+    // async _onDropFolder(event, data) {
+    //     let folder = null;
+    //     if (data.data) folder = data.data;
+    //     else folder = await Folder.implementation.fromDropData(data);
+    //
+    //     if (folder.type === "Item") {
+    //         for (const item of folder.contents) {
+    //             const modifiedData = {
+    //                 type: "Item",
+    //                 uuid: item.uuid,
+    //                 data: item
+    //             };
+    //             await this._onDropItem(event, modifiedData);
+    //         }
+    //         for (const child of folder.children) {
+    //             await this._onDropFolder(event, {
+    //                 data: child.folder
+    //             })
+    //         }
+    //     }
+    // }
+
     /**
      * Organize and classify Items for Character sheets.
      * @param {Object} context The actor to prepare.
@@ -193,10 +210,10 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     _prepareItems(context) {
         // Initialize containers.
-        const weapons = [];
-        const wearables = [];
+        let weapons = [];
+        let wearables = [];
         const consumables = [];
-        const commons = [];
+        let commons = [];
         const features = [];
         const abilities = {
             0: [],
@@ -266,6 +283,12 @@ export class Pl1eActorSheet extends ActorSheet {
             // Push sourceId flag to handle duplicates
             if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
         }
+
+        // Sorting arrays by name
+        weapons = weapons.sort((a, b) => a.name.localeCompare(b.name));
+        wearables = wearables.sort((a, b) => a.name.localeCompare(b.name));
+        wearables = wearables.sort((a, b) => a.name.localeCompare(b.name));
+        commons = commons.sort((a, b) => a.name.localeCompare(b.name));
 
         // Assign and return
         context.weapons = weapons;

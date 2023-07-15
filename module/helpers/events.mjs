@@ -103,6 +103,10 @@ export class Pl1eEvent {
             ui.notifications.warn(game.i18n.localize("PL1E.NoGMConnected"));
             return;
         }
+        if (!game.user.character) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoCharacterAssociated"));
+            return;
+        }
 
         // Player transfer item to a not owned actor
         CONFIG.PL1E.socket.executeAsGM('sendItem', {
