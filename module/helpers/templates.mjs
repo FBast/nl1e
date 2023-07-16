@@ -11,6 +11,8 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/parts/character-features.hbs",
         "systems/pl1e/templates/actor/parts/character-items.hbs",
         "systems/pl1e/templates/actor/parts/merchant-items.hbs",
+        "systems/pl1e/templates/actor/parts/merchant-features.hbs",
+        "systems/pl1e/templates/actor/parts/merchant-config.hbs",
         "systems/pl1e/templates/actor/parts/npc-stats.hbs",
 
         // Actor components
@@ -27,6 +29,7 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/components/features-features.hbs",
         "systems/pl1e/templates/actor/components/features-abilities.hbs",
         "systems/pl1e/templates/actor/components/features-effects.hbs",
+        "systems/pl1e/templates/actor/components/roll-tables.hbs",
 
         // Item partials
         "systems/pl1e/templates/item/parts/ability-attributes.hbs",

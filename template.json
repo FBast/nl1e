@@ -314,6 +314,7 @@
     },
     "merchant": {
       "templates": ["base"],
+      "refRollTables": [],
       "general": {
         "sellModifier": -100,
         "buyModifier": 0,

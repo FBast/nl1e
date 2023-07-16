@@ -1,6 +1,8 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eResting} from "../apps/resting.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eActor} from "../documents/actor.mjs";
+import {Pl1eItem} from "../documents/item.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -56,7 +58,7 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /** @inheritDoc */
-    getData() {
+    async getData() {
         // Retrieve the data structure from the base sheet. You can inspect or log
         // the context variable to see the structure, but some key properties for
         // sheets are the actor object, the data object, whether or not it's
@@ -73,6 +75,7 @@ export class Pl1eActorSheet extends ActorSheet {
         context.inCombat = this.actor.bestToken !== null && this.actor.bestToken.inCombat;
 
         this._prepareItems(context);
+        await this._prepareRollTables(context);
         this._prepareEffects(context);
 
         // Add roll data for TinyMCE editors.
@@ -92,40 +95,46 @@ export class Pl1eActorSheet extends ActorSheet {
         super.activateListeners(html);
 
         // Render the item sheet for viewing/editing prior to the editable check.
-        html.find('.item-edit').on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
-        html.find('.item-buy').on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
-        html.find('.effect-edit').on("click", ev => this.onEffectEdit(ev));
-        html.find('.item-link').on("click", ev => this.onItemLink(ev));
-        html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
+        html.find(".item-buy").on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
+        html.find(".effect-edit").on("click", ev => this.onEffectEdit(ev));
+        html.find(".item-link").on("click", ev => this.onItemLink(ev));
+        html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
 
         // Highlights indications
-        html.find('.highlight-link').on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
-        html.find('.highlight-link').on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
+        html.find(".highlight-link").on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
+        html.find(".highlight-link").on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
 
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
         // Item management
-        html.find('.item-create').on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
-        html.find('.item-remove').on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
+        html.find(".item-create").on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
+        html.find(".item-remove").on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
+
+        // RollTable management
+        html.find(".roll-table-edit").on("click", ev => this.onRollTableEdit(ev, this.actor));
+        html.find(".roll-table-remove").on("click", ev => this.onRollTableRemove(ev, this.actor));
 
         // Chat messages
-        html.find('.skill-roll').on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
+        html.find(".skill-roll").on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
 
         // Currency
-        html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.actor));
-        html.find('.currency-convert').on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
+        html.find(".currency-control").on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.actor));
+        html.find(".currency-convert").on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
 
         // Custom controls
-        html.find('.characteristic-control').on("click", ev => this.onCharacteristicChange(ev));
-        html.find('.rank-control').on("click", ev => this.onRankChange(ev));
+        html.find(".characteristic-control").on("click", ev => this.onCharacteristicChange(ev));
+        html.find(".rank-control").on("click", ev => this.onRankChange(ev));
         html.find(".item-toggle").on("click", ev => Pl1eEvent.onItemToggle(ev, this.actor));
         html.find(".item-use").on("click", ev => this.onItemUse(ev));
         html.find(".consumable-reload").on("click", ev => this.onReloadConsumable(ev));
 
         // Button actions
         html.find(".button-camping").on("click", ev => this.onCampingClick(ev));
+        html.find(".button-remove-items").on("click", ev => this.onRemoveItemsClick(ev));
+        html.find(".button-generate-item").on("click", ev => this.onGenerateItemClick(ev));
 
         // Drag events for macros.
         if (this.actor.isOwner) {
@@ -143,13 +152,29 @@ export class Pl1eActorSheet extends ActorSheet {
         }
     }
 
-    /**
-     * Handle drop of items and refItems
-     * @param event
-     * @param data
-     * @returns {Promise<unknown>}
-     * @private
-     */
+    /** @inheritDoc */
+    async _onDrop(event) {
+        // Everything below here is only needed if the sheet is editable
+        if (!this.isEditable) return;
+
+        // Check item type and subtype
+        const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
+
+        // Roll table for merchant only
+        if (this.actor.type === "merchant" && data.type === "RollTable") {
+            const uuidArray = data.uuid.split(".");
+            const id = uuidArray[uuidArray.length - 1];
+            const rollTable = await Pl1eHelpers.getDocument("RollTable", id);
+            if (!rollTable) throw new Error(`PL1E | No roll table found with UUID ${data.uuid}`);
+
+            await this.actor.addRefRollTable(rollTable);
+            this.render();
+        }
+
+        super._onDrop(event);
+    }
+
+    /** @inheritDoc */
     async _onDropItem(event, data) {
         const item = await Item.implementation.fromDropData(data);
 
@@ -179,29 +204,6 @@ export class Pl1eActorSheet extends ActorSheet {
             if (item.isOwned) await item.parent.deleteItem(item);
         }
     }
-
-    // /** @inheritDoc */
-    // async _onDropFolder(event, data) {
-    //     let folder = null;
-    //     if (data.data) folder = data.data;
-    //     else folder = await Folder.implementation.fromDropData(data);
-    //
-    //     if (folder.type === "Item") {
-    //         for (const item of folder.contents) {
-    //             const modifiedData = {
-    //                 type: "Item",
-    //                 uuid: item.uuid,
-    //                 data: item
-    //             };
-    //             await this._onDropItem(event, modifiedData);
-    //         }
-    //         for (const child of folder.children) {
-    //             await this._onDropFolder(event, {
-    //                 data: child.folder
-    //             })
-    //         }
-    //     }
-    // }
 
     /**
      * Organize and classify Items for Character sheets.
@@ -299,6 +301,29 @@ export class Pl1eActorSheet extends ActorSheet {
         context.abilities = abilities;
     }
 
+    async _prepareRollTables(context) {
+        if (this.actor.type !== "merchant") return;
+
+        // Initialize container.
+        let rollTables = [];
+
+        for (let i = 0; i < this.actor.system.refRollTables.length; i++) {
+            const id = this.actor.system.refRollTables[i];
+            let rollTable = await Pl1eHelpers.getDocument("RollTable", id);
+            if (!rollTable) {
+                // Create an unknown rollTable for display
+                rollTable = {
+                    type: "unknown",
+                    id: id
+                }
+            }
+            rollTables[i] = rollTable;
+        }
+
+        // Assign and return
+        context.rollTables = rollTables;
+    }
+
     /**
      * Organize and classify Effects for Character sheets.
      * @param {Object} context The actor to prepare.
@@ -351,6 +376,11 @@ export class Pl1eActorSheet extends ActorSheet {
         }
     }
 
+    /**
+     * Open the rest application
+     * @param event
+     * @return {Promise<void>}
+     */
     async onCampingClick(event) {
         const formApp = Object.values(ui.windows)
             .find(w => w instanceof Pl1eResting);
@@ -365,6 +395,37 @@ export class Pl1eActorSheet extends ActorSheet {
             title: `${game.i18n.localize("PL1E.Camping")} : ${this.actor.name}`,
         });
         app.render(true);
+    }
+
+    /**
+     * Remove all the items from the merchant
+     * @param event
+     */
+    onRemoveItemsClick(event) {
+        for (const item of this.actor.items) {
+            item.delete();
+        }
+    }
+
+    /**
+     * Trigger the reset and generation of the items of the merchant based on roll tables
+     * @param event
+     * @return {Promise<void>}
+     */
+    async onGenerateItemClick(event) {
+        let addedItemsNumber = 0;
+        for (const refRollTable of this.actor.system.refRollTables) {
+            const rollTable = await Pl1eHelpers.getDocument("RollTable", refRollTable);
+            const defaultResults = await rollTable.roll();
+            for (const tableResult of defaultResults.results) {
+                const item = await Pl1eHelpers.getDocument("Item", tableResult.documentId);
+                if (item) {
+                    await this.actor.addItem(item);
+                    addedItemsNumber++;
+                }
+            }
+        }
+        ui.notifications.info(`${game.i18n.localize("NumberOfAddedItems")} : ${addedItemsNumber}`);
     }
 
     /**
@@ -397,6 +458,35 @@ export class Pl1eActorSheet extends ActorSheet {
                 }
             }
         }
+    }
+
+    /**
+     * Open roll table sheet
+     * @param event The originating click event
+     * @param {Actor} actor the actor of the roll table
+     */
+    async onRollTableEdit(event, actor) {
+        let rollTableId = $(event.currentTarget).closest(".item").data("roll-table-id");
+        const rollTable = await Pl1eHelpers.getDocument("RollTable", rollTableId);
+
+        if (rollTable.sheet.rendered) rollTable.sheet.bringToTop();
+        else rollTable.sheet.render(true);
+    }
+
+    /**
+     * Handle remove of roll table
+     * @param {Event} event The originating click event
+     * @param {Pl1eActor} actor the actor where the roll table is removed
+     */
+    async onRollTableRemove(event, actor) {
+        const rollTableId = $(event.currentTarget).closest(".item").data("roll-table-id");
+
+        if (rollTableId) {
+            const rollTable = await Pl1eHelpers.getDocument("RollTable", rollTableId);
+            if (rollTable) await actor.removeRefRollTable(rollTable);
+        }
+
+        actor.sheet.render(actor.sheet.rendered);
     }
 
     /**

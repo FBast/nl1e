@@ -153,7 +153,7 @@ export class Pl1eHelpers {
      * @param {string} type
      * @param {string} id
      * @param {Object} options
-     * @returns {Promise<Pl1eItem | Pl1eActor | Macro>}
+     * @returns {Promise<Pl1eItem | Pl1eActor | Token | Macro | MeasuredTemplate | RollTable>}
      */
     static async getDocument(type, id, options = {}) {
         let document = undefined;
@@ -167,20 +167,23 @@ export class Pl1eHelpers {
         if (document === undefined || document === null) {
             // Search inside current game
             switch (type) {
+                case "Item":
+                    document = game.items.get(id);
+                    break;
                 case "Actor":
                     document = game.actors.get(id);
                     break;
                 case "Token":
                     document = game.scenes.viewed.tokens.get(id);
                     break;
-                case "Item":
-                    document = game.items.get(id);
-                    break;
                 case "Macro":
                     document = game.macros.get(id);
                     break;
                 case "MeasuredTemplate":
                     document = canvas.templates.get(id);
+                    break;
+                case "RollTable":
+                    document = game.tables.get(id);
                     break;
             }
         }

@@ -20,10 +20,26 @@
             </div>
         </div>
     </header>
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        {{!-- Default tab is specified in actor-sheet.mjs --}}
+        <a class="item" data-tab="items">{{localize "PL1E.Items"}}</a>
+        <a class="item" data-tab="features">{{localize "PL1E.Features"}}</a>
+        {{#if game.user.isGM}}<a class="item" data-tab="config">{{localize "PL1E.Configuration"}}</a>{{/if}}
+    </nav>
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-        <div class="tab flexcol">
+        {{!-- Items Tab --}}
+        <div class="tab items flexcol" data-group="primary" data-tab="items">
             {{> "systems/pl1e/templates/actor/parts/merchant-items.hbs"}}
+        </div>
+        {{!-- Features Tab --}}
+        <div class="tab features flexcol" data-group="primary" data-tab="features">
+            {{> "systems/pl1e/templates/actor/parts/merchant-features.hbs"}}
+        </div>
+        {{!-- Stats Tab --}}
+        <div class="tab stats flexcol" data-group="primary" data-tab="config">
+            {{> "systems/pl1e/templates/actor/parts/merchant-config.hbs"}}
         </div>
     </section>
 </form>

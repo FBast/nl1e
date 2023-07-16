@@ -34,6 +34,15 @@
       "flags": {}
     },
     {
+      "name": "legacy-roll-tables",
+      "label": "Legacy Roll Tables",
+      "system": "pl1e",
+      "path": "packs/legacy-roll-tables.db",
+      "type": "RollTable",
+      "private": true,
+      "flags": {}
+    },
+    {
       "name": "legacy-macros",
       "label": "Legacy Macros",
       "system": "pl1e",

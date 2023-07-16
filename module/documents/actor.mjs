@@ -254,11 +254,37 @@ export class Pl1eActor extends Actor {
         if (item === undefined) throw new Error("Cannot find item to remove");
 
         // Remove item children
-        for (const otherItem of this.items) {
-            if (item.parentId === otherItem.childId) await this.removeItem(otherItem);
+        if (item.parentId) {
+            for (const otherItem of this.items) {
+                if (item.parentId === otherItem.childId) await this.removeItem(otherItem);
+            }
         }
 
         await this.deleteEmbeddedDocuments("Item", [item._id]);
+    }
+
+    /**
+     * Add a new ref RollTable
+     * @param {RollTable} rollTable
+     * @returns {Promise<void>}
+     */
+    async addRefRollTable(rollTable) {
+        this.system.refRollTables.push(rollTable._id);
+        await this.update({
+            "system.refRollTables": this.system.refRollTables
+        });
+    }
+
+    /**
+     * Remove a ref RollTable
+     * @param {RollTable} rollTable)
+     * @returns {Promise<void>}
+     */
+    async removeRefRollTable(rollTable) {
+        this.system.refRollTables.splice(this.system.refRollTables.indexOf(rollTable._id), 1);
+        await this.update({
+            "system.refRollTables": this.system.refRollTables
+        });
     }
 
 }

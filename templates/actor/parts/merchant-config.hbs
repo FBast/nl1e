@@ -1,0 +1,18 @@
+<section class="scroll-auto">
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Parameters"}}</legend>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.UnlimitedItems"}}</label>
+            <input type="checkbox" name="system.general.unlimitedItems" {{checked system.general.unlimitedItems}} data-dtype="Boolean"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.RemoveAllItems"}}</label>
+            <button class="button-remove-items">{{localize "PL1E.Remove"}}</button>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.GenerateItemsFromRollTables"}}</label>
+            <button class="button-generate-item">{{localize "PL1E.Generate"}}</button>
+        </div>
+    </fieldset>
+    {{> "systems/pl1e/templates/actor/components/roll-tables.hbs" }}
+</section>
