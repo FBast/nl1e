@@ -224,7 +224,7 @@ export class Pl1eActor extends Actor {
      * Add an item and all child items as embedded documents
      * @param {Pl1eItem} item
      * @param {string} childId
-     * @returns {Promise<Pl1eItem>}
+     * @returns {Promise<void>}
      */
     async addItem(item, childId = undefined) {
         let newItem = await this.createEmbeddedDocuments("Item", [item]);
@@ -235,6 +235,9 @@ export class Pl1eActor extends Actor {
         const parentId = randomID();
         await newItem.setFlag("pl1e", "parentId", parentId);
         await newItem.setFlag("core", "sourceId", item.uuid);
+
+        // In case of merchant when don't add children items
+        if (this.type === "merchant") return;
 
         // Add new item children
         if (newItem.system.refItems && newItem.system.refItems.length > 0) {

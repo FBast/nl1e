@@ -53,6 +53,12 @@ export class Pl1eActorSheet extends ActorSheet {
                     }
                 });
             }
+            buttons.unshift({
+                label: 'PL1E.Debug',
+                class: 'button-debug',
+                icon: 'fas fa-ban-bug',
+                onclick: () => console.log(this)
+            });
         }
         return buttons;
     }
@@ -75,8 +81,10 @@ export class Pl1eActorSheet extends ActorSheet {
         context.inCombat = this.actor.bestToken !== null && this.actor.bestToken.inCombat;
 
         this._prepareItems(context);
-        await this._prepareRollTables(context);
         this._prepareEffects(context);
+
+        if (this.actor.type === "merchant")
+            await this._prepareRollTables(context);
 
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
@@ -174,10 +182,35 @@ export class Pl1eActorSheet extends ActorSheet {
         super._onDrop(event);
     }
 
+    async _onDropFolder(event, data) {
+        const folder = await Folder.implementation.fromDropData(data);
+
+        // Check if the folder actually contains items
+        if (folder?.type === "Item") {
+            // Loop through each item in the folder and call _onDropItem for each item
+            for (const itemData of folder.contents) {
+                const item = await Pl1eHelpers.getDocument("Item", itemData._id);
+                await this._addItem(item);
+            }
+        }
+        else {
+            return super._onDropFolder(event, data);
+        }
+    }
+
     /** @inheritDoc */
     async _onDropItem(event, data) {
         const item = await Item.implementation.fromDropData(data);
+        await this._addItem(item);
+    }
 
+    /**
+     * Add a new item to the actor
+     * @param item
+     * @return {Promise<void>}
+     * @private
+     */
+    async _addItem(item) {
         // Return if same actor
         if (item.parent === this.actor) return;
 
@@ -302,8 +335,6 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     async _prepareRollTables(context) {
-        if (this.actor.type !== "merchant") return;
-
         // Initialize container.
         let rollTables = [];
 
@@ -402,9 +433,13 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      */
     onRemoveItemsClick(event) {
+        let removedItemsNumber = 0;
         for (const item of this.actor.items) {
+            if (!["weapon", "wearable", "consumable", "common"].includes(item.type)) continue;
             item.delete();
+            removedItemsNumber++;
         }
+        ui.notifications.info(`${game.i18n.localize("NumberOfRemovedItems")} : ${removedItemsNumber}`);
     }
 
     /**

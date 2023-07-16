@@ -27,6 +27,7 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/components/items-consumables.hbs",
         "systems/pl1e/templates/actor/components/items-commons.hbs",
         "systems/pl1e/templates/actor/components/features-features.hbs",
+        "systems/pl1e/templates/actor/components/features-restricted.hbs",
         "systems/pl1e/templates/actor/components/features-abilities.hbs",
         "systems/pl1e/templates/actor/components/features-effects.hbs",
         "systems/pl1e/templates/actor/components/roll-tables.hbs",

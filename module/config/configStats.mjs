@@ -9,7 +9,7 @@ export function getConfigActor() {
             "droppable": ["feature", "ability", "weapon", "wearable", "consumable", "common"]
         },
         "merchant": {
-            "droppable": ["weapon", "wearable", "consumable", "common"]
+            "droppable": ["feature", "ability", "weapon", "wearable", "consumable", "common"]
         }
     }
 
