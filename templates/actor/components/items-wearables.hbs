@@ -9,7 +9,13 @@
                 <label class="item-name item-tooltip-activate">{{name}}</label>
                 <div class="item-icons grid-span-2">
                     {{#unless (eq @root.actor.type "npc")}}
-
+                        {{#each system.passiveAspects}}
+                            {{#with (configEntry dataGroup data)}}
+                                <i class="item-info fas {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                    <label>{{../value}}</label>
+                                </i>
+                            {{/with}}
+                        {{/each}}
                     {{/unless}}
                     {{#if (eq @root.actor.type "character")}}
                         {{#if system.isMajorActionUsed}}

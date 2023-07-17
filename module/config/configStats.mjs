@@ -556,7 +556,7 @@ export function getConfigActor() {
             "icon": "fa-bolt",
             "type": "number",
             "path": "system.reductions.shock"
-        },
+        }
     }
 
     PL1E.status = {
