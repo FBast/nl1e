@@ -28,7 +28,7 @@ export class Pl1eAbility extends Pl1eItem {
         if (!super._canActivate(characterData)) return false;
         const itemAttributes = characterData.attributes;
 
-        if (!this.system.isMemorized) {
+        if (this.system.attributes.level > 0 && !this.system.isMemorized) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             return false;
         }

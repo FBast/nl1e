@@ -30,7 +30,13 @@
                             {{/if}}
                         {{/if}}
                         {{#each system.activeAspects}}
-                            {{#if (ne damageType "raw")}}
+                            {{#if (eq damageType "raw")}}
+                                {{#with (configEntry dataGroup data)}}
+                                    <i class="item-info fas {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                        <label>{{../value}}</label>
+                                    </i>
+                                {{/with}}
+                            {{else}}
                                 {{#with (configEntry "reductions" damageType)}}
                                     <i class="item-info fas {{icon}} hover-green" data-tooltip="{{localize (configEntry "damageTypes" ../damageType)}}">
                                         <label>{{../value}}</label>

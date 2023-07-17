@@ -26,7 +26,9 @@ export class Pl1eItem extends Item {
             case "feature":
                 return true;
             case "weapon":
-                return this.system.attributes.hands >= 0 ? this.system.isEquippedMain || this.system.isEquippedSecondary : true;
+                if (this.system.attributes.hands > 0 && this.system.attributes.level > 0)
+                    return this.system.isEquippedMain || this.system.isEquippedSecondary;
+                return true;
             case "wearable":
                 return this.system.isEquipped;
             case "ability":

@@ -83,10 +83,10 @@
                     </div>
                     <div class="item-controls">
                         {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                            {{#if (and system.isMemorized)}}
+                            {{#if (or system.isMemorized (eq system.attributes.level 0))}}
                                 <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
                             {{/if}}
-                            {{#if @root.system.general.creationMod}}
+                            {{#if (and (gt system.attributes.level 0) @root.system.general.creationMod)}}
                                 <a class="item-control {{#unless system.isMemorized}}color-grey{{/unless}} item-toggle" data-tooltip='{{localize "PL1E.Memorize"}}'>
                                     <i class="fas fa-book"></i>
                                 </a>
