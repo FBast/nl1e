@@ -41,9 +41,9 @@
                             {{#if system.attributes.triggerReactions}}
                                 <i class="item-info fas fa-skull hover-green" data-tooltip='{{localize "PL1E.TriggerReactions"}}'></i>
                             {{/if}}
-                            {{#if (eq system.attributes.rangeOverride "melee")}}
+                            {{#if (eq system.attributes.rangeOverride "reach")}}
                                 <i class="item-info fas fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>
-                            {{else if (eq system.attributes.rangeOverride "ranged")}}
+                            {{else if (eq system.attributes.rangeOverride "range")}}
                                 <i class="item-info fas fa-bow-arrow hover-green" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
                             {{/if}}
                             {{#if (eq system.attributes.rangeOverride "none")}}

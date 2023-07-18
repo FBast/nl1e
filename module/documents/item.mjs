@@ -26,7 +26,7 @@ export class Pl1eItem extends Item {
             case "feature":
                 return true;
             case "weapon":
-                if (this.system.attributes.hands > 0 && this.system.attributes.level > 0)
+                if (this.system.attributes.hands > 0 || this.system.attributes.level > 0)
                     return this.system.isEquippedMain || this.system.isEquippedSecondary;
                 return true;
             case "wearable":
@@ -88,17 +88,6 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.triggerReactions = false;
             }
             if (changed.system?.attributes?.characterRoll === "none") changed.system.attributes.targetRoll = [];
-            if (changed.system?.attributes?.rangeOverride === "melee" || changed.system?.attributes?.rangeOverride === "ranged") {
-                changed.system.attributes.areaShape = "target";
-                changed.system.attributes.range = 0;
-                changed.system.attributes.areaNumber = 1;
-                changed.system.attributes.areaNumberResolutionType = "value";
-            }
-            if (changed.system?.attributes?.melee === false) changed.system.attributes.reach = 0;
-            if (changed.system?.attributes?.ranged === false) {
-                changed.system.attributes.range = 0;
-                changed.system.attributes.ammo = 0;
-            }
             if (changed.system?.attributes?.itemLink === "none") {
                 changed.system.attributes.rangeOverride = "none";
                 changed.system.attributes.masteryLink = [];
@@ -198,11 +187,22 @@ export class Pl1eItem extends Item {
     /* -------------------------------------------- */
 
     /**
+     * Reload an item uses (consumable)
+     * @param options
+     * @return {Promise<void>}
+     */
+    async reload(options= {}) {
+        await this.update({
+            ["system.removedUses"]: 0
+        });
+    }
+
+    /**
      * Toggle the item state (ability, weapon or wearable)
      * @param options
      * @returns {Promise<void>}
      */
-    async toggle(options) {
+    async toggle(options = {}) {
         if (this.isEnabled) {
             for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
                 if (!aspect.createEffect) continue;
@@ -242,19 +242,26 @@ export class Pl1eItem extends Item {
         // If we have a token then we can process further and apply the effects
         if (characterData.token) {
             if (characterData.attributes.areaNumber !== 0) {
+                // Minimize the actor sheet to facilitate templates creation
                 await characterData.actor.sheet?.minimize();
-                const previewTemplates = [];
+
+                // Create templates
                 for (let i = 0; i < characterData.attributes.areaNumber; i++) {
-                    const template = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
-                    previewTemplates.push(template);
-                    await template?.drawPreview();
+                    const templatePreview = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
+                    const template = await templatePreview?.drawPreview();
+
+                    // If we have no template then break
+                    if (!template) break;
+
+                    characterData.templates.push(template);
+                    characterData.templatesIds.push(template.id);
                 }
-                // Retrieve template data for future uses
-                for (let previewTemplate of previewTemplates) {
-                    characterData.templates.push(previewTemplate.template);
-                    characterData.templatesIds.push(previewTemplate.template.id);
-                }
+
+                // Maximize the actor sheet
                 await characterData.actor.sheet?.maximize();
+
+                // Abort if no templates defined
+                if (characterData.templates.length === 0) return false;
             }
 
             // Find activationMacro (pass for activation)

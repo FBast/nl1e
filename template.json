@@ -394,10 +394,8 @@
       "attributes": {
         "masters": [],
         "hands": 1,
-        "melee": false,
-        "reach": 1,
-        "ranged": false,
-        "range": 1,
+        "reach": 0,
+        "range": 0,
         "ammo": 1
       }
     },

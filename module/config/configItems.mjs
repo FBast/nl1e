@@ -417,10 +417,10 @@ export function getConfigItems() {
         "multiplyBySuccess": "PL1E.MultiplyBySuccess"
     }
 
-    PL1E.rangeOverrides = {
+    PL1E.linkOverrides = {
         "none": "PL1E.None",
-        "melee": "PL1E.Melee",
-        "ranged": "PL1E.Ranged"
+        "reach": "PL1E.Reach",
+        "range": "PL1E.Range"
     }
 
     PL1E.statusTypes = {

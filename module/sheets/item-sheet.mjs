@@ -177,6 +177,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
             await this.item.addRefItem(item);
+            this.render();
         }
     }
 

@@ -55,17 +55,39 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.linkedItem === null) return false;
         }
 
-        // Get linked attributes
-        if (characterData.attributes.rangeOverride === "melee") {
+        // Override range attribute
+        if (characterData.attributes.rangeOverride === "reach") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
         }
-        else if (characterData.attributes.rangeOverride === "ranged") {
+        else if (characterData.attributes.rangeOverride === "range") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.range;
         }
+
+        // Override length attribute
+        if (characterData.attributes.lengthOverride !== "none") {
+            let lengthOverride = null;
+            if (characterData.attributes.lengthOverride === "reach")
+                lengthOverride = characterData.linkedItem.system.attributes.reach;
+            if (characterData.attributes.lengthOverride === "range")
+                lengthOverride = characterData.linkedItem.system.attributes.range;
+            switch (characterData.attributes.areaShape) {
+                case "cone":
+                    characterData.attributes.coneLength = lengthOverride;
+                    break;
+                case "square":
+                    characterData.attributes.squareLength = lengthOverride;
+                    break;
+                case "ray":
+                    characterData.attributes.rayLength = lengthOverride;
+                    break;
+            }
+        }
+
+        // Set mastery attribute
         characterData.attributes.mastery = Pl1eHelpers.findFirstCommonElement(characterData.attributes.masteryLink,
             characterData.linkedItem.system.attributes.masters)
-        Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
 
+        Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
         return true;
     }
 
@@ -120,8 +142,10 @@ export class Pl1eAbility extends Pl1eItem {
             if (!["weapon", "wearable"].includes(item.type)) continue;
             if (!item.isEnabled) continue;
             if (characterData.attributes.isMajorAction && item.system.isMajorActionUsed) continue;
-            if (characterData.attributes.rangeOverride === "melee" && !item.system.attributes.melee) continue;
-            if (characterData.attributes.rangeOverride === "ranged" && !item.system.attributes.ranged) continue;
+            if (characterData.attributes.rangeOverride === "reach" && item.system.attributes.reach === 0) continue;
+            if (characterData.attributes.rangeOverride === "range" && item.system.attributes.range === 0) continue;
+            if (characterData.attributes.lengthOverride === "reach" && item.system.attributes.reach === 0) continue;
+            if (characterData.attributes.lengthOverride === "range" && item.system.attributes.range === 0) continue;
             // Item link is mastery and item mastery does not match
             if (characterData.attributes.itemLink === "mastery" && !characterData.attributes.masteryLink
                 .some(mastery => item.system.attributes.masters.includes(mastery))) continue;

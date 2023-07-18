@@ -260,6 +260,8 @@ export class AbilityTemplate extends MeasuredTemplate {
      */
     async _onCancelPlacement(event) {
         await this._finishPlacement(event);
+        this.template = null;
+        this.#events.resolve(this.template);
         // this.#events.reject();
     }
 

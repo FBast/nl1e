@@ -2,13 +2,6 @@ import {Pl1eItem} from "../item.mjs";
 
 export class Pl1eConsumable extends Pl1eItem {
 
-    /** @override */
-    async reload(options) {
-        await this.update({
-            ["system.removedUses"]: 0
-        });
-    }
-
     /** @inheritDoc */
     async _postActivate(characterData) {
         // Update item use

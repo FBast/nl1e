@@ -384,10 +384,15 @@ export class Pl1eActorSheet extends ActorSheet {
     async onItemUse(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-
         /** @type {Pl1eItem} */
         const item = this.actor.items.get(itemId);
-        await item.activate();
+
+        try {
+            await item.activate();
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
 
     /**
@@ -397,6 +402,7 @@ export class Pl1eActorSheet extends ActorSheet {
     async onReloadConsumable(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
+            /** @type {Pl1eItem} */
         const item = this.actor.items.get(itemId);
 
         try {

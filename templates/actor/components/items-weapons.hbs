@@ -14,12 +14,12 @@
                                 <label>{{system.attributes.hands}}</label>
                             </i>
                         {{/if}}
-                        {{#if system.attributes.melee}}
+                        {{#if (gt system.attributes.reach 0)}}
                             <i class="item-info fas fa-sword hover-green" data-tooltip="{{localize "PL1E.Reach"}}">
                                 <label>{{system.attributes.reach}}</label>
                             </i>
                         {{/if}}
-                        {{#if system.attributes.ranged}}
+                        {{#if (gt system.attributes.range 0)}}
                             <i class="item-info fas fa-bow-arrow hover-green" data-tooltip="{{localize "PL1E.Range"}}">
                                 <label>{{system.attributes.range}}</label>
                             </i>
