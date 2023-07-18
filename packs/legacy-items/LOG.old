@@ -1,14 +1,17 @@
-2023/07/18-13:43:41.748 2f04 Recovering log #636
-2023/07/18-13:43:41.753 2f04 Delete type=0 #636
-2023/07/18-13:43:41.753 2f04 Delete type=3 #635
-2023/07/18-15:23:27.906 2948 Level-0 table #640: started
-2023/07/18-15:23:27.907 2948 Level-0 table #640: 4286 bytes OK
-2023/07/18-15:23:27.909 2948 Delete type=0 #638
-2023/07/18-15:23:27.912 2948 Manual compaction at level-0 from '!folders!0clfQpWURFe7w9jg' @ 72057594037927935 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at '!items!qpV0TO0paxxfO5O4' @ 2372 : 1
-2023/07/18-15:23:27.912 2948 Compacting 1@0 + 1@1 files
-2023/07/18-15:23:27.917 2948 Generated table #641@0: 451 keys, 191281 bytes
-2023/07/18-15:23:27.918 2948 Compacted 1@0 + 1@1 files => 191281 bytes
-2023/07/18-15:23:27.920 2948 compacted to: files[ 0 1 0 0 0 0 0 ]
-2023/07/18-15:23:27.920 2948 Delete type=2 #634
-2023/07/18-15:23:27.920 2948 Delete type=2 #640
-2023/07/18-15:23:27.932 2948 Manual compaction at level-0 from '!items!qpV0TO0paxxfO5O4' @ 2372 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at (end)
+2023/07/18-19:40:35.899 3070 Recovering log #643
+2023/07/18-19:40:35.900 3070 Level-0 table #645: started
+2023/07/18-19:40:35.903 3070 Level-0 table #645: 98705 bytes OK
+2023/07/18-19:40:35.909 3070 Delete type=0 #643
+2023/07/18-19:40:35.909 3070 Delete type=3 #642
+2023/07/18-20:06:26.849 24b4 Level-0 table #648: started
+2023/07/18-20:06:26.852 24b4 Level-0 table #648: 4922 bytes OK
+2023/07/18-20:06:26.852 24b4 Delete type=0 #646
+2023/07/18-20:06:26.855 24b4 Manual compaction at level-0 from '!folders!0clfQpWURFe7w9jg' @ 72057594037927935 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at '!items!qpV0TO0paxxfO5O4' @ 2632 : 1
+2023/07/18-20:06:26.855 24b4 Compacting 2@0 + 1@1 files
+2023/07/18-20:06:26.860 24b4 Generated table #649@0: 451 keys, 192254 bytes
+2023/07/18-20:06:26.860 24b4 Compacted 2@0 + 1@1 files => 192254 bytes
+2023/07/18-20:06:26.861 24b4 compacted to: files[ 0 1 0 0 0 0 0 ]
+2023/07/18-20:06:26.861 24b4 Delete type=2 #641
+2023/07/18-20:06:26.862 24b4 Delete type=2 #645
+2023/07/18-20:06:26.862 24b4 Delete type=2 #648
+2023/07/18-20:06:26.870 24b4 Manual compaction at level-0 from '!items!qpV0TO0paxxfO5O4' @ 2632 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at (end)

@@ -150,7 +150,7 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.attributes.itemLink === "mastery" && !characterData.attributes.masteryLink
                 .some(mastery => item.system.attributes.masters.includes(mastery))) continue;
             // Item link is parent and parent id and child id does not match
-            else if (characterData.attributes.itemLink === "parent" && item.parentId !== this.childId) continue;
+            else if (characterData.attributes.itemLink === "parent" && !item.system.refItems.includes(characterData.item.sourceId)) continue;
             // Item link is multiple and item mastery does not match and parent id and child id does not match
             else if (characterData.attributes.itemLink === "multiple" && !characterData.attributes.masteryLink
                 .some(mastery => item.system.attributes.masters.includes(mastery)) && item.parentId !== this.childId) continue;
