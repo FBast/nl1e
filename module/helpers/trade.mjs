@@ -4,6 +4,47 @@ import {Pl1eChat} from "./chat.mjs";
 export class Pl1eTrade {
 
     /**
+     * Send item from sourceActor to target targetActor
+     * @param {string} sourceActorId the source actor
+     * @param {string} targetActorId the target actor
+     * @param {string} itemId the send item
+     */
+    static async sendItem(sourceActorId, targetActorId, itemId) {
+        // Object are loose in transit, so we need to get them from this client using id
+        const sourceActor = game.actors.get(sourceActorId);
+        const targetActor = game.actors.get(targetActorId);
+        const item = sourceActor.items.get(itemId);
+
+        if (sourceActor.type === "character" && targetActor.type === "character") {
+            await Pl1eTrade.giftItem(sourceActor, targetActor, item);
+        }
+        else if (targetActor.type === "merchant") {
+            await Pl1eTrade.sellItem(sourceActor, targetActor, item);
+        }
+        else if (sourceActor.type === "merchant") {
+            await Pl1eTrade.buyItem(targetActor, sourceActor, item);
+        }
+    }
+
+    /**
+     * Send item from sourceActor to target targetActor
+     * @param {string} sourceActorId the source actor
+     * @param {string} targetActorId the target actor
+     * @param {string} folderId the send folder
+     */
+    static async sendContenant(sourceActorId, targetActorId, folderId) {
+        // if (game.user.isGM) {
+        //     const actor = data.message.speaker.actor;
+        //     const combatant = game.combat.data.combatants.find(c => c.actor.id === actor);
+        //     const update = {
+        //         id: combatant.id,
+        //         initiative: data.update.content
+        //     }
+        //     await combatant.update(update);
+        // }
+    }
+
+    /**
      * Give an item to another player
      * @param {Pl1eActor} sourceActor
      * @param {Pl1eActor} targetActor

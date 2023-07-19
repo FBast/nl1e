@@ -260,6 +260,7 @@
   "PL1E.OutCombatOnly": "Out combat only",
   "PL1E.Parent": "Parent",
   "PL1E.ParentLink": "Parent link",
+  "PL1E.ExcludeSelf": "Exclude self",
   "PL1E.Parents": "Parents",
   "PL1E.Parry": "Parry",
   "PL1E.CoverBonuses": "Cover Bonuses",

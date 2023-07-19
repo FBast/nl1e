@@ -89,10 +89,12 @@
                 <label class="attribute-name">{{localize "PL1E.ActionCost"}}</label>
                 <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
             </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.IsMajorAction"}}</label>
-                <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
-            </div>
+            {{#if (ne system.attributes.itemLink "none")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.IsMajorAction"}}</label>
+                    <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
+                </div>
+            {{/if}}
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.TriggerReactions"}}</label>
                 <input type="checkbox" name="system.attributes.triggerReactions" {{checked system.attributes.triggerReactions}} data-dtype="Boolean"/>
@@ -179,6 +181,10 @@
                 </div>
             {{/if}}
         {{/if}}
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.ExcludeSelf"}}</label>
+            <input type="checkbox" name="system.attributes.excludeSelf" {{checked system.attributes.excludeSelf}} data-dtype="Boolean"/>
+        </div>
         <hr>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.CustomMacros"}}</label>

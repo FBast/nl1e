@@ -295,6 +295,9 @@ export class AbilityTemplate extends MeasuredTemplate {
                         if (!targetGroups.includes("opponents") && token.document.disposition !== actionData.token.disposition) continue;
                     }
 
+                    // Filter if excludeSelf
+                    if (actionData.attributes.excludeSelf && token.document === actionData.token) continue;
+
                     // Add to targets array
                     targets.push(token);
                 }

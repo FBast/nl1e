@@ -1,23 +1,8 @@
-2023/07/18-19:40:35.913 2a7c Recovering log #607
-2023/07/18-19:40:35.913 2a7c Level-0 table #609: started
-2023/07/18-19:40:35.914 2a7c Level-0 table #609: 1352 bytes OK
-2023/07/18-19:40:35.919 2a7c Delete type=0 #607
-2023/07/18-19:40:35.919 2a7c Delete type=3 #606
-2023/07/18-20:06:26.853 24b4 Level-0 table #612: started
-2023/07/18-20:06:26.853 24b4 Level-0 table #612: 0 bytes OK
-2023/07/18-20:06:26.855 24b4 Delete type=0 #610
-2023/07/18-20:06:26.864 24b4 Manual compaction at level-0 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at '!macros!ZFcpYY92jffdm6Yt' @ 103 : 1
-2023/07/18-20:06:26.864 24b4 Compacting 1@0 + 0@1 files
-2023/07/18-20:06:26.866 24b4 Generated table #613@0: 1 keys, 1352 bytes
-2023/07/18-20:06:26.867 24b4 Compacted 1@0 + 0@1 files => 1352 bytes
-2023/07/18-20:06:26.870 24b4 compacted to: files[ 0 1 1 0 0 0 0 ]
-2023/07/18-20:06:26.870 24b4 Delete type=2 #609
-2023/07/18-20:06:26.870 24b4 Manual compaction at level-0 from '!macros!ZFcpYY92jffdm6Yt' @ 103 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)
-2023/07/18-20:06:26.870 24b4 Manual compaction at level-1 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at '!macros!ZFcpYY92jffdm6Yt' @ 103 : 1
-2023/07/18-20:06:26.870 24b4 Compacting 1@1 + 1@2 files
-2023/07/18-20:06:26.876 24b4 Generated table #614@1: 9 keys, 5721 bytes
-2023/07/18-20:06:26.876 24b4 Compacted 1@1 + 1@2 files => 5721 bytes
-2023/07/18-20:06:26.878 24b4 compacted to: files[ 0 0 1 0 0 0 0 ]
-2023/07/18-20:06:26.878 24b4 Delete type=2 #511
-2023/07/18-20:06:26.878 24b4 Delete type=2 #613
-2023/07/18-20:06:26.882 24b4 Manual compaction at level-1 from '!macros!ZFcpYY92jffdm6Yt' @ 103 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)
+2023/07/19-19:52:10.415 4398 Recovering log #616
+2023/07/19-19:52:10.420 4398 Delete type=0 #616
+2023/07/19-19:52:10.420 4398 Delete type=3 #615
+2023/07/19-19:53:16.987 f98 Level-0 table #620: started
+2023/07/19-19:53:16.987 f98 Level-0 table #620: 0 bytes OK
+2023/07/19-19:53:16.988 f98 Delete type=0 #618
+2023/07/19-19:53:16.992 f98 Manual compaction at level-0 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)
+2023/07/19-19:53:16.992 f98 Manual compaction at level-1 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)

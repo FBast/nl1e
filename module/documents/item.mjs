@@ -38,6 +38,30 @@ export class Pl1eItem extends Item {
         }
     }
 
+    /**
+     * Get the characterData
+     * @return {Promise<CharacterData>}
+     * @private
+     */
+    async _getCharacterData() {
+        const token = this.actor.bestToken;
+        // If the token is null then the request come from a non-token sheet
+        const actor = token ? token.actor : this.actor;
+
+        return {
+            actor: actor,
+            actorId: actor._id,
+            token: token,
+            tokenId: token?.document._id,
+            item: this,
+            itemId: this._id,
+            attributes: {...this.system.attributes},
+            activeAspects: {...this.system.activeAspects},
+            templates: [],
+            templatesIds: []
+        }
+    }
+
     /** @inheritDoc */
     async _preCreate(data, options, userId) {
         const updateData = {};
@@ -91,6 +115,7 @@ export class Pl1eItem extends Item {
             if (changed.system?.attributes?.itemLink === "none") {
                 changed.system.attributes.rangeOverride = "none";
                 changed.system.attributes.masteryLink = [];
+                changed.system.attributes.isMajorAction = false;
             }
             if (changed.system?.attributes?.itemLink === "parent") changed.system.attributes.masteryLink = [];
         }
@@ -184,6 +209,7 @@ export class Pl1eItem extends Item {
 
     /* -------------------------------------------- */
     /*  Item actions                                */
+
     /* -------------------------------------------- */
 
     /**
@@ -191,7 +217,7 @@ export class Pl1eItem extends Item {
      * @param options
      * @return {Promise<void>}
      */
-    async reload(options= {}) {
+    async reload(options = {}) {
         await this.update({
             ["system.removedUses"]: 0
         });
@@ -208,12 +234,21 @@ export class Pl1eItem extends Item {
                 if (!aspect.createEffect) continue;
                 await Pl1eAspect.applyPassiveEffect(aspect, id, this.actor, this);
             }
-        }
-        else {
+        } else {
             for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
                 await Pl1eAspect.removePassiveEffect(aspect, id, this.actor);
             }
         }
+    }
+
+    /**
+     * Override method before activation launched (returning false prevent activation)
+     * @param characterData
+     * @return {Promise<boolean>}
+     * @protected
+     */
+    async _preActivate(characterData) {
+        return true;
     }
 
     /**
@@ -230,8 +265,7 @@ export class Pl1eItem extends Item {
         if (characterData.attributes.characterRoll !== 'none') {
             characterData.rollData = await characterData.actor.rollSkill(characterData.attributes.characterRoll);
             characterData.result = characterData.rollData.total;
-        }
-        else {
+        } else {
             characterData.result = 1;
         }
 
@@ -270,7 +304,10 @@ export class Pl1eItem extends Item {
             const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
 
             // Execute activationMacro
-            if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({characterData: characterData, active: true});
+            if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({
+                characterData: characterData,
+                active: true
+            });
 
             // Display message
             chatMessage = await Pl1eChat.actionRoll(characterData);
@@ -279,8 +316,12 @@ export class Pl1eItem extends Item {
             await this._applyAttributes(characterData);
 
             // If the ability don't trigger reaction then apply immediately
-            if (!characterData.attributes.triggerReactions)
-                await this.resolve(characterData, {action: "launch"});
+            if (!characterData.attributes.triggerReactions) {
+                CONFIG.PL1E.socket.executeAsGM('resolveAction', {
+                    characterData: characterData,
+                    action: "launch"
+                });
+            }
         }
         // If we have a no token
         else {
@@ -291,62 +332,18 @@ export class Pl1eItem extends Item {
             await this._applyAttributes(characterData);
 
             // In case of self target
-            if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0)
-                await this.resolve(characterData, {action: "launch"});
+            if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
+                CONFIG.PL1E.socket.executeAsGM('resolveAction', {
+                    characterData: characterData,
+                    action: "launch"
+                });
+            }
         }
 
         await this._postActivate(characterData);
         await chatMessage.setFlag("pl1e", "characterData", Pl1eHelpers.stringifyWithCircular(characterData));
         return true;
     }
-
-    /**
-     * Resolve the item effect with an action (ability or consumable)
-     * @param {CharacterData} characterData
-     * @param options
-     * @returns {Promise<void>}
-     */
-    async resolve(characterData, options) {
-        // Handle launch action
-        if (options.action === "launch") await this._launch(characterData);
-        if (options.action === "cancel") return;
-
-        // Find activationMacro (pass for deactivation)
-        const macroId = characterData.item.system.attributes.activationMacro;
-        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
-        const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
-
-        // Execute activationMacro
-        if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({characterData: characterData, active: false});
-
-        // Destroy templates after fetching target with df-template
-        for (const template of characterData.templates) {
-            await template.delete();
-        }
-
-        // Release all targets
-        for (let token of game.user.targets) {
-            token.setTarget(false, { user: game.user, releaseOthers: false, groupSelection: false });
-        }
-    }
-
-    /**
-     * Override method before activation launched (returning false prevent activation)
-     * @param characterData
-     * @return {Promise<boolean>}
-     * @protected
-     */
-    async _preActivate(characterData) {
-        return true;
-    }
-
-    /**
-     * Override method after activation launched
-     * @param characterData
-     * @return {Promise<void>}
-     * @protected
-     */
-    async _postActivate(characterData) {}
 
     /**
      * Check if the item activation is valid
@@ -367,113 +364,12 @@ export class Pl1eItem extends Item {
                     ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
                     return false;
                 }
-            }
-            else if (itemAttributes.activation === "reaction" && characterData.actor.system.misc.reaction <= 0) {
+            } else if (itemAttributes.activation === "reaction" && characterData.actor.system.misc.reaction <= 0) {
                 ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
                 return false;
             }
         }
         return true;
-    }
-
-    /**
-     * Get the characterData
-     * @return {Promise<CharacterData>}
-     * @private
-     */
-    async _getCharacterData() {
-        const token = this.actor.bestToken;
-        // If the token is null then the request come from a non-token sheet
-        const actor = token ? token.actor : this.actor;
-
-        return {
-            actor: actor,
-            actorId: actor._id,
-            token: token,
-            tokenId: token?.document._id,
-            item: this,
-            itemId: this._id,
-            attributes: {...this.system.attributes},
-            activeAspects: {...this.system.activeAspects},
-            templates: [],
-            templatesIds : []
-        }
-    }
-
-    /**
-     * Launch the item effects
-     * @param {CharacterData} characterData
-     * @returns {Promise<void>}
-     * @private
-     */
-    async _launch(characterData) {
-        // Roll data for every targets
-        /** @type {TargetData[]} */
-        let targetsData = []
-
-        // Reconstruct templates based on actionData flag
-        for (const template of characterData.templates) {
-            const actionData = template.getFlag("pl1e", "actionData");
-            actionData.token = await Pl1eHelpers.getDocument("Token", actionData.tokenId);
-            actionData.item = await actionData.token.actor.items.get(actionData.itemId);
-            template.actionData = actionData;
-        }
-
-        // In case of self target with no token
-        if (!characterData.token && characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
-            const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
-            targetsData.push(targetData);
-        }
-        else {
-            // Populate targetsData
-            for (let template of characterData.templates) {
-                for (let token of AbilityTemplate.getTemplateTargets(template)) {
-                    const targetData = await this._getTargetData(characterData, token.actor, token);
-                    targetsData.push(targetData);
-                }
-            }
-        }
-
-        // Apply aspects, here we calculate each aspect for all targets
-        for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
-            targetsData = await Pl1eAspect.applyActive(aspect, characterData, targetsData);
-        }
-
-        // Find launchMacro
-        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
-        const macroId = characterData.attributes.launchMacro;
-        const launchMacro = await Pl1eHelpers.getDocument("Macro", macroId);
-
-        // Execute launchMacro
-        if (enableVFXAndSFX && launchMacro !== undefined) launchMacro.execute({characterData: characterData, targetsData: targetsData});
-
-        // Display messages
-        for (const targetData of targetsData) {
-            await Pl1eChat.actionRoll(characterData, targetData);
-        }
-    }
-
-    /**
-     * Get the targetData from a token and its related actor
-     * @param {CharacterData} characterData
-     * @param {Pl1eActor} actor
-     * @param {Token | null} token
-     * @return {Promise<TargetData>}
-     * @private
-     */
-    async _getTargetData(characterData, actor, token = null) {
-        const targetData = {};
-        if (characterData.attributes.targetRoll.length > 0) {
-            targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll);
-            targetData.result = characterData.result - targetData.rollData.total;
-        } else {
-            targetData.result = characterData.result;
-        }
-        targetData.actor = actor;
-        targetData.actorId = actor._id;
-        targetData.token = token;
-        targetData.tokenId = token?.document._id;
-        return targetData;
     }
 
     /**
@@ -536,8 +432,9 @@ export class Pl1eItem extends Item {
                 default:
                     throw new Error("PL1E | unknown document type : " + attributeConfig.document);
             }
-            if (document === undefined)
-                throw new Error("PL1E | no document correspond to : " + attributeConfig.document);
+
+            // If document not found then continue
+            if (document === undefined) continue;
 
             // Calculate modification
             const attributeDataConfig = CONFIG.PL1E[attributeConfig.dataGroup][attributeConfig.data];
@@ -556,6 +453,130 @@ export class Pl1eItem extends Item {
                 [attributeDataConfig.path]: currentValue
             });
         }
+    }
+
+    /**
+     * Override method after activation launched
+     * @param characterData
+     * @return {Promise<void>}
+     * @protected
+     */
+    async _postActivate(characterData) {
+    }
+
+    /* -------------------------------------------- */
+    /*  GM handled actions                                */
+
+    /* -------------------------------------------- */
+
+    /**
+     * Resolve the item effect with an action (ability or consumable)
+     * @param {CharacterData} characterData
+     * @param options
+     * @returns {Promise<void>}
+     */
+    async resolve(characterData, options) {
+        // Handle launch action
+        if (options.action === "launch") await this.launch(characterData);
+        if (options.action === "cancel") return;
+
+        // Find activationMacro (pass for deactivation)
+        const macroId = characterData.item.system.attributes.activationMacro;
+        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
+        const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
+
+        // Execute activationMacro
+        if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({
+            characterData: characterData,
+            active: false
+        });
+
+        // Destroy templates after fetching target with df-template
+        for (const template of characterData.templates) {
+            await template.delete();
+        }
+
+        // Release all targets
+        for (let token of game.user.targets) {
+            token.setTarget(false, {user: game.user, releaseOthers: false, groupSelection: false});
+        }
+    }
+
+    /**
+     * Launch the item effects
+     * @param {CharacterData} characterData
+     * @returns {Promise<void>}
+     */
+    async launch(characterData) {
+        // Roll data for every targets
+        /** @type {TargetData[]} */
+        let targetsData = []
+
+        // Reconstruct templates based on actionData flag
+        for (const template of characterData.templates) {
+            const actionData = template.getFlag("pl1e", "actionData");
+            actionData.token = await Pl1eHelpers.getDocument("Token", actionData.tokenId);
+            actionData.item = await actionData.token.actor.items.get(actionData.itemId);
+            template.actionData = actionData;
+        }
+
+        // In case of self target with no token
+        if (!characterData.token && characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
+            const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
+            targetsData.push(targetData);
+        } else {
+            // Populate targetsData
+            for (let template of characterData.templates) {
+                for (let token of AbilityTemplate.getTemplateTargets(template)) {
+                    const targetData = await this._getTargetData(characterData, token.actor, token);
+                    targetsData.push(targetData);
+                }
+            }
+        }
+
+        // Apply aspects, here we calculate each aspect for all targets
+        for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
+            targetsData = await Pl1eAspect.applyActive(aspect, characterData, targetsData);
+        }
+
+        // Find launchMacro
+        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
+        const macroId = characterData.attributes.launchMacro;
+        const launchMacro = await Pl1eHelpers.getDocument("Macro", macroId);
+
+        // Execute launchMacro
+        if (enableVFXAndSFX && launchMacro !== undefined) launchMacro.execute({
+            characterData: characterData,
+            targetsData: targetsData
+        });
+
+        // Display messages
+        for (const targetData of targetsData) {
+            await Pl1eChat.actionRoll(characterData, targetData);
+        }
+    }
+
+    /**
+     * Get the targetData from a token and its related actor
+     * @param {CharacterData} characterData
+     * @param {Pl1eActor} actor
+     * @param {Token | null} token
+     * @return {Promise<TargetData>}
+     * @private
+     */
+    async _getTargetData(characterData, actor, token = null) {
+        const targetData = {};
+        if (characterData.attributes.targetRoll.length > 0) {
+            targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll);
+            targetData.result = characterData.result - targetData.rollData.total;
+        } else {
+            targetData.result = characterData.result;
+        }
+        targetData.actor = actor;
+        targetData.actorId = actor._id;
+        targetData.token = token;
+        targetData.tokenId = token?.document._id;
+        return targetData;
     }
 
 }

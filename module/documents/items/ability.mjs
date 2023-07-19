@@ -84,8 +84,14 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Set mastery attribute
-        characterData.attributes.mastery = Pl1eHelpers.findFirstCommonElement(characterData.attributes.masteryLink,
-            characterData.linkedItem.system.attributes.masters)
+        if (characterData.attributes.itemLink === "mastery") {
+            characterData.attributes.mastery = Pl1eHelpers.findFirstCommonElement(characterData.attributes.masteryLink,
+                characterData.linkedItem.system.attributes.masters)
+        }
+        else if (characterData.attributes.itemLink === "parent") {
+            const masters = characterData.linkedItem.system.attributes.masters;
+            characterData.attributes.mastery = masters[Math.floor(Math.random() * masters.length)];
+        }
 
         Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
         return true;

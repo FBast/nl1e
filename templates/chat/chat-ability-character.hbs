@@ -14,8 +14,6 @@
                             {{else if (eq type "bool")}}
                                 {{#if (and ../applyIfTrue ../../this)}}
                                     <i class="fas {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
-                                {{else}}
-                                    <i class="{{#if ../../this}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
                                 {{/if}}
                             {{/if}}
                         {{/with}}
@@ -25,7 +23,7 @@
         </div>
         <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
              data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
-        {{#if (ne characterData.linkedItem null)}}
+        {{#if characterData.linkedItem}}
             <img class="right-image item-edit" src="{{characterData.linkedItem.img}}" data-item-id="{{characterData.linkedItem._id}}"
                  data-token-id="{{characterData.tokenId}}" title="{{characterData.linkedItem.name}}" width="36" height="36"/>
         {{/if}}

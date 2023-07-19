@@ -13,12 +13,12 @@ import {Pl1eJournalPageSheet} from "./sheets/journal-sheet.mjs";
 import {Pl1eResting} from "./apps/resting.mjs";
 // Import helper/utility classes and constants.
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
-import Pl1eSocket from "./helpers/socket.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
 import {Pl1eCombat} from "./apps/combat.mjs";
 import {Pl1eTokenDocument} from "./documents/token.mjs";
 import {Pl1eHelpers} from "./helpers/helpers.mjs";
+import {Pl1eTrade} from "./helpers/trade.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -92,33 +92,6 @@ Hooks.once('init', async function () {
 });
 
 Hooks.once("ready", async function () {
-    // Hide old buttons in existing chat messages
-    // for (const message of game.messages) {
-    //     let isResolved = message.getFlag("pl1e", "isResolved");
-    //     if (isResolved === undefined || isResolved) continue;
-    //
-    //     // Extract card data
-    //     let action = "cancel";
-    //     let itemId = $(message.content).closest(".chat-card").data("item-id");
-    //     let actorId = $(message.content).closest(".chat-card").data("token-id");
-    //
-    //     const token = await Pl1eHelpers.getDocument("Token", actorId);
-    //     /** @type {Pl1eItem} */
-    //     const item = token.actor.items.get(itemId);
-    //
-    //     const options = {
-    //         action: action,
-    //         message: message
-    //     }
-    //     await item.resolve(options);
-    //
-    //     // Remove all buttons from message content
-    //     const updatedContent = $(message.content).find(".card-buttons").remove().end();
-    //     await message.update({
-    //         content: updatedContent[0].outerHTML
-    //     });
-    // }
-
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on("hotbarDrop", (bar, data, slot) => {
         if (["Item", "ActiveEffect"].includes(data.type) ) {
@@ -175,10 +148,16 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 Hooks.once("socketlib.ready", () => {
     PL1E.socket = socketlib.registerSystem("pl1e");
     PL1E.socket.register("sendItem", async function (data) {
-        await Pl1eSocket.sendItem(data.sourceActorId, data.targetActorId, data.itemId)
+        await Pl1eTrade.sendItem(data.sourceActorId, data.targetActorId, data.itemId)
     })
     PL1E.socket.register("sendContenant", async function (data) {
-        await Pl1eSocket.sendContenant(data.sourceActorId, data.targetActorId, data.itemId);
+        await Pl1eTrade.sendContenant(data.sourceActorId, data.targetActorId, data.itemId);
+    })
+    PL1E.socket.register("resolveAction", async function (data) {
+        const item = data.characterData.actor.items.get(data.characterData.itemId);
+        await item.resolve(data.characterData, {
+            action: data.action
+        });
     })
 });
 
