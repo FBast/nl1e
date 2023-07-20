@@ -12,9 +12,9 @@
                                     <label>{{formatNumber ../../this signe=true}}</label>
                                 </i>
                             {{else if (eq type "bool")}}
-                                {{#if (and ../applyIfTrue ../../this)}}
+                                {{#unless (and ../applyIfTrue (not ../../this))}}
                                     <i class="fas {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
-                                {{/if}}
+                                {{/unless}}
                             {{/if}}
                         {{/with}}
                     {{/if}}

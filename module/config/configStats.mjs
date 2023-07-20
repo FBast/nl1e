@@ -388,7 +388,7 @@ export function getConfigActor() {
     PL1E.speeds = {
         "verySlow": {
             "label": "PL1E.VerySlow",
-            "movement": 2,
+            "movement": 1.5,
             "baseInitiative": 0
         },
         "slow": {
@@ -398,17 +398,17 @@ export function getConfigActor() {
         },
         "medium": {
             "label": "PL1E.Medium",
-            "movement": 4,
+            "movement": 4.5,
             "baseInitiative": 10
         },
         "fast": {
             "label": "PL1E.Fast",
-            "movement": 5,
+            "movement": 6,
             "baseInitiative": 15
         },
         "veryFast": {
             "label": "PL1E.VeryFast",
-            "movement": 6,
+            "movement": 7.5,
             "baseInitiative": 20
         }
     }
@@ -419,98 +419,121 @@ export function getConfigActor() {
             "icon": "fa-arrow-up-big-small",
             "type": "select",
             "path": "system.misc.size",
-            "select": "sizes"
+            "select": "sizes",
+            "hidden": false
         },
         "sizeMultiplier": {
             "label": "PL1E.SizeMultiplier",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.sizeMultiplier"
+            "path": "system.misc.sizeMultiplier",
+            "hidden": false
         },
         "tokenSize": {
             "label": "PL1E.TokenSize",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.tokenSize"
+            "path": "system.misc.tokenSize",
+            "hidden": false
         },
         "speed": {
             "label": "PL1E.Speed",
             "icon": "fa-person-running",
             "type": "select",
             "path": "system.misc.speed",
-            "select": "speeds"
+            "select": "speeds",
+            "hidden": false
         },
         "movement": {
             "label": "PL1E.Movement",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.movement"
+            "path": "system.misc.movement",
+            "hidden": false
         },
         "baseInitiative": {
             "label": "PL1E.BaseInitiative",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.baseInitiative"
+            "path": "system.misc.baseInitiative",
+            "hidden": false
         },
         "initiative": {
             "label": "PL1E.Initiative",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.initiative"
+            "path": "system.misc.initiative",
+            "hidden": false
         },
         "remainingMovement": {
             "label": "PL1E.RemainingMovement",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.remainingMovement"
+            "path": "system.misc.remainingMovement",
+            "hidden": false
         },
         "flexibility": {
             "label": "PL1E.Flexibility",
             "icon": "fa-weight-hanging",
             "type": "number",
-            "path": "system.misc.flexibility"
+            "path": "system.misc.flexibility",
+            "hidden": false
         },
         "coverBonuses": {
             "label": "PL1E.CoverBonuses",
             "icon": "fa-shield",
             "type": "number",
-            "path": "system.misc.coverBonuses"
+            "path": "system.misc.coverBonuses",
+            "hidden": false
         },
         "parryBonuses": {
             "label": "PL1E.ParryBonuses",
             "icon": "fa-swords",
             "type": "number",
-            "path": "system.misc.parryBonuses"
+            "path": "system.misc.parryBonuses",
+            "hidden": false
         },
         "reflexBonuses": {
             "label": "PL1E.ReflexBonuses",
             "icon": "fa-eye",
             "type": "number",
-            "path": "system.misc.reflexBonuses"
+            "path": "system.misc.reflexBonuses",
+            "hidden": false
         },
-        "nightVision": {
-            "label": "PL1E.NightVision",
+        "nightVisionRange": {
+            "label": "PL1E.NightVisionRange",
             "icon": "fa-eye",
             "type": "number",
-            "path": "system.misc.nightVision"
+            "path": "system.misc.nightVisionRange",
+            "hidden": false
         },
+        // "feelTremorRange": {
+        //     "label": "PL1E.FeelTremor",
+        //     "icon": "fa-eye",
+        //     "type": "number",
+        //     "path": "system.misc.feelTremorRange",
+        //     "hidden": false
+        // },
         "action": {
             "label": "PL1E.Action",
             "icon": "fa-clock",
             "type": "number",
-            "path": "system.misc.action"
+            "path": "system.misc.action",
+            "hidden": false
         },
         "reaction": {
             "label": "PL1E.Reaction",
             "icon": "fa-reply-clock",
             "type": "number",
-            "path": "system.misc.reaction"
+            "path": "system.misc.reaction",
+            "hidden": false
         },
         "faithPower": {
             "label": "PL1E.FaithPower",
             "icon": "fa-reply-clock",
             "type": "bool",
-            "path": "system.misc.faithPower"
+            "path": "system.misc.faithPower",
+            "hidden": true
         }
     }
 

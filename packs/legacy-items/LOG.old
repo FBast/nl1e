@@ -1,16 +1,14 @@
-2023/07/19-19:52:10.402 bdc Recovering log #651
-2023/07/19-19:52:10.402 bdc Level-0 table #653: started
-2023/07/19-19:52:10.405 bdc Level-0 table #653: 8469 bytes OK
-2023/07/19-19:52:10.410 bdc Delete type=0 #651
-2023/07/19-19:52:10.410 bdc Delete type=3 #650
-2023/07/19-19:53:16.974 f98 Level-0 table #656: started
-2023/07/19-19:53:16.974 f98 Level-0 table #656: 0 bytes OK
-2023/07/19-19:53:16.976 f98 Delete type=0 #654
-2023/07/19-19:53:16.976 f98 Manual compaction at level-0 from '!folders!0clfQpWURFe7w9jg' @ 72057594037927935 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at '!items!vgI8XZ4ybuh5JwBb' @ 2643 : 1
-2023/07/19-19:53:16.976 f98 Compacting 1@0 + 1@1 files
-2023/07/19-19:53:16.981 f98 Generated table #657@0: 451 keys, 192407 bytes
-2023/07/19-19:53:16.981 f98 Compacted 1@0 + 1@1 files => 192407 bytes
-2023/07/19-19:53:16.983 f98 compacted to: files[ 0 1 0 0 0 0 0 ]
-2023/07/19-19:53:16.983 f98 Delete type=2 #649
-2023/07/19-19:53:16.983 f98 Delete type=2 #653
-2023/07/19-19:53:16.988 f98 Manual compaction at level-0 from '!items!vgI8XZ4ybuh5JwBb' @ 2643 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at (end)
+2023/07/20-20:30:10.488 4518 Recovering log #674
+2023/07/20-20:30:10.493 4518 Delete type=0 #674
+2023/07/20-20:30:10.493 4518 Delete type=3 #672
+2023/07/20-21:12:01.083 5dc Level-0 table #680: started
+2023/07/20-21:12:01.085 5dc Level-0 table #680: 4959 bytes OK
+2023/07/20-21:12:01.086 5dc Delete type=0 #678
+2023/07/20-21:12:01.088 5dc Manual compaction at level-0 from '!folders!0clfQpWURFe7w9jg' @ 72057594037927935 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at '!items!5IlxBNLZqgpMFQ1y' @ 2698 : 1
+2023/07/20-21:12:01.088 5dc Compacting 1@0 + 1@1 files
+2023/07/20-21:12:01.092 5dc Generated table #681@0: 453 keys, 195275 bytes
+2023/07/20-21:12:01.092 5dc Compacted 1@0 + 1@1 files => 195275 bytes
+2023/07/20-21:12:01.093 5dc compacted to: files[ 0 1 0 0 0 0 0 ]
+2023/07/20-21:12:01.093 5dc Delete type=2 #676
+2023/07/20-21:12:01.094 5dc Delete type=2 #680
+2023/07/20-21:12:01.097 5dc Manual compaction at level-0 from '!items!5IlxBNLZqgpMFQ1y' @ 2698 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at (end)

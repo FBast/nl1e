@@ -7,9 +7,15 @@
         <div class="item-effects-target">
             {{#each targetData.activeAspects}}
                 {{#with (configEntry dataGroup data)}}
-                    <i class="{{#if (gt ../value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
-                        <label>{{formatNumber ../value signe=true}}</label>
-                    </i>
+                    {{#if (and (eq type "number") (ne ../../this 0))}}
+                        <i class="{{#if (gt ../value 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
+                            <label>{{formatNumber ../value signe=true}}</label>
+                        </i>
+                    {{else if (eq type "bool")}}
+                        {{#unless (and ../applyIfTrue (not ../value))}}
+                            <i class="fas {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
+                        {{/unless}}
+                    {{/if}}
                 {{/with}}
             {{/each}}
         </div>

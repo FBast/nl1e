@@ -228,7 +228,7 @@
   "PL1E.NewNPC": "Nouveau PNJ",
   "PL1E.NewWeapon": "Nouvelle Arme",
   "PL1E.NewWearable": "Nouveau Vêtement",
-  "PL1E.NightVision": "Vision Nocturne",
+  "PL1E.NightVisionRange": "Portée de vision nocturne",
   "PL1E.No": "Non",
   "PL1E.NoActorSelected": "Vous devez selectionner un Token",
   "PL1E.NoEquippedParent": "Aucun parent n'est équippé",

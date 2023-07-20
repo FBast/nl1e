@@ -255,7 +255,8 @@
           "coverBonuses": 0,
           "parryBonuses": 0,
           "reflexBonuses": 0,
-          "nightVision": 9,
+          "nightVisionRange": 0,
+          "feelTremorRange": 0,
           "action": 2,
           "reaction": 1,
           "faithPower": false

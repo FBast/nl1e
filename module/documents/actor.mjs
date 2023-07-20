@@ -38,23 +38,51 @@ export class Pl1eActor extends Actor {
     //region Data management
 
     /** @inheritDoc */
-    async _preCreate(data, options, userId) {
-        await super._preCreate(data, options, userId);
-
-        const updateData = {};
-        if (data.img === undefined) {
-            const img = CONFIG.PL1E.defaultIcons[data.type];
-            if (img) updateData["img"] = img;
-        }
-        if (data.name.includes("New Actor")) {
-            const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
-            if (name) updateData["name"] = name;
-        }
-        if (data.type === "character") {
-            updateData["prototypeToken.actorLink"] = true;
+    static async create(docData, options = {}) {
+        // Replace default image
+        if (docData.img === undefined) {
+            docData.img = `systems/pl1e/assets/icons/${docData.type}.svg`;
         }
 
-        await this.updateSource( updateData );
+        // Some tweak on actors prototypeToken
+        docData.prototypeToken = docData.prototypeToken || {};
+
+        switch (docData.type) {
+            case "character":
+                foundry.utils.mergeObject(
+                    docData.prototypeToken,
+                    {
+                        actorLink: true,
+                        vision: true,
+                        disposition: 1, // friendly
+                    },
+                    { overwrite: false }
+                );
+                break;
+            case "npc":
+                foundry.utils.mergeObject(
+                    docData.prototypeToken,
+                    {
+                        actorLink: false,
+                        vision: true,
+                        disposition: -1, // hostile
+                    },
+                    { overwrite: false }
+                );
+                break;
+            case "merchant":
+                foundry.utils.mergeObject(
+                    docData.prototypeToken,
+                    {
+                        actorLink: true,
+                        vision: true,
+                        disposition: 0, // neutral
+                    },
+                    { overwrite: false }
+                );
+                break;
+        }
+        await super.create(docData, options);
     }
 
     /** @inheritDoc */
@@ -163,6 +191,16 @@ export class Pl1eActor extends Actor {
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
             if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
+
+        // TODO Handle vision
+        // this.prototypeToken.sight.range = actorMisc.nightVisionRange;
+        // this.prototypeToken.detectionModes = [
+        //     {
+        //         enabled: actorMisc.feelTremorRange > 0,
+        //         id: "feelTremor",
+        //         range: actorMisc.feelTremorRange
+        //     }
+        // ]
 
         // Calculate initiative
         actorMisc.initiative = actorMisc.baseInitiative + actorCharacteristics.agility.value +

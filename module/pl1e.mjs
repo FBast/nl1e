@@ -17,7 +17,6 @@ import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eEvent} from "./helpers/events.mjs";
 import {Pl1eCombat} from "./apps/combat.mjs";
 import {Pl1eTokenDocument} from "./documents/token.mjs";
-import {Pl1eHelpers} from "./helpers/helpers.mjs";
 import {Pl1eTrade} from "./helpers/trade.mjs";
 
 /* -------------------------------------------- */
@@ -160,6 +159,43 @@ Hooks.once("socketlib.ready", () => {
         });
     })
 });
+
+/* -------------------------------------------- */
+/*  Modules                                     */
+/* -------------------------------------------- */
+
+Hooks.once("dragRuler.ready", (SpeedProvider) => {
+    class Pl1eSpeedProvider extends SpeedProvider {
+        get colors() {
+            return [
+                {id: "remainingMovement", default: 0xFFFFFF, name: "PL1E.RemainingMovement"},
+                {id: "oneActionMove", default: 0x00FF00, name: "PL1E.OneActionMove"},
+                {id: "twoActionMove", default: 0xFFFF00, name: "PL1E.TwoActionMove"},
+                {id: "threeActionMove", default: 0xFF8000, name: "PL1E.ThreeActionMove"},
+            ]
+        }
+
+        getRanges(token) {
+            const action = token.actor.system.misc.action;
+            const movement = token.actor.system.misc.movement;
+
+            const remainingMovement = token.actor.system.misc.remainingMovement;
+            const oneActionMove = remainingMovement + (action >= 1 ? movement : 0);
+            const twoActionMove = remainingMovement + (action >= 2 ? movement * 2 : 0);
+            const threeActionMove = remainingMovement + (action >= 3 ? movement * 3 : 0);
+
+            // A character can always walk it's base speed and dash twice it's base speed
+            return [
+                {range: remainingMovement, color: "remainingMovement"},
+                {range: oneActionMove, color: "oneActionMove"},
+                {range: twoActionMove, color: "twoActionMove"},
+                {range: threeActionMove, color: "threeActionMove"}
+            ];
+        }
+    }
+
+    dragRuler.registerSystem("pl1e", Pl1eSpeedProvider);
+})
 
 /* -------------------------------------------- */
 /*  Handlebars Helpers                          */

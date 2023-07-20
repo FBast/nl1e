@@ -63,19 +63,12 @@ export class Pl1eItem extends Item {
     }
 
     /** @inheritDoc */
-    async _preCreate(data, options, userId) {
-        const updateData = {};
-        if (data.img === undefined) {
-            const img = CONFIG.PL1E.defaultIcons[data.type];
-            if (img) updateData['img'] = img;
+    static async create(docData, options = {}) {
+        // Replace default image
+        if (docData.img === undefined) {
+            docData.img = `systems/pl1e/assets/icons/${docData.type}.svg`;
         }
-        if (data.name.includes("New Item")) {
-            const name = game.i18n.localize(CONFIG.PL1E.defaultNames[data.type]);
-            if (name) updateData['name'] = name;
-        }
-
-        await this.updateSource(updateData);
-        await super._preCreate(data, options, userId);
+        await super.create(docData, options);
     }
 
     /** @inheritDoc */
@@ -275,7 +268,8 @@ export class Pl1eItem extends Item {
         let chatMessage = null;
         // If we have a token then we can process further and apply the effects
         if (characterData.token) {
-            if (characterData.attributes.areaNumber !== 0) {
+            // If shape is target and range equal to 0 then self effect don't need template
+            if (characterData.attributes.areaShape !== "target" || characterData.attributes.range !== 0) {
                 // Minimize the actor sheet to facilitate templates creation
                 await characterData.actor.sheet?.minimize();
 
@@ -317,7 +311,7 @@ export class Pl1eItem extends Item {
 
             // If the ability don't trigger reaction then apply immediately
             if (!characterData.attributes.triggerReactions) {
-                CONFIG.PL1E.socket.executeAsGM('resolveAction', {
+                await CONFIG.PL1E.socket.executeAsGM('resolveAction', {
                     characterData: characterData,
                     action: "launch"
                 });
@@ -333,7 +327,7 @@ export class Pl1eItem extends Item {
 
             // In case of self target
             if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
-                CONFIG.PL1E.socket.executeAsGM('resolveAction', {
+                await CONFIG.PL1E.socket.executeAsGM('resolveAction', {
                     characterData: characterData,
                     action: "launch"
                 });
@@ -520,8 +514,8 @@ export class Pl1eItem extends Item {
             template.actionData = actionData;
         }
 
-        // In case of self target with no token
-        if (!characterData.token && characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
+        // In case of self target
+        if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
             const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
             targetsData.push(targetData);
         } else {
@@ -575,7 +569,7 @@ export class Pl1eItem extends Item {
         targetData.actor = actor;
         targetData.actorId = actor._id;
         targetData.token = token;
-        targetData.tokenId = token?.document._id;
+        targetData.tokenId = token?._id;
         return targetData;
     }
 

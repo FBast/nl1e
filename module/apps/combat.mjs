@@ -26,7 +26,8 @@ export class Pl1eCombat extends Combat {
     async resetCombatStats(actor) {
         await actor.update({
             "system.misc.action": 2,
-            "system.misc.reaction": 1
+            "system.misc.reaction": 1,
+            "system.misc.remainingMovement": 0
         });
         for (let item of actor.items) {
             if (item.type === "weapon" || item.type === "wearable") {
