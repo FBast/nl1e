@@ -240,7 +240,7 @@ export class GmToolbox extends FormApplication {
 
         const actor = game.user.character;
         const app = new Pl1eResting(actor, {
-            title: `${game.i18n.localize("PL1E.Camping")} : ${actor.name}`,
+            title: `${game.i18n.localize("PL1E.Sleeping")} : ${actor.name}`,
         });
         app.render(true);
     }

@@ -311,8 +311,7 @@ export class Pl1eItem extends Item {
 
             // If the ability don't trigger reaction then apply immediately
             if (!characterData.attributes.triggerReactions) {
-                CONFIG.PL1E.socket.executeAsGM('resolveAction', {
-                    characterData: characterData,
+                await this.resolve(characterData, {
                     action: "launch"
                 });
             }
@@ -327,8 +326,7 @@ export class Pl1eItem extends Item {
 
             // In case of self target
             if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
-                CONFIG.PL1E.socket.executeAsGM('resolveAction', {
-                    characterData: characterData,
+                await this.resolve(characterData, {
                     action: "launch"
                 });
             }
@@ -455,8 +453,7 @@ export class Pl1eItem extends Item {
      * @return {Promise<void>}
      * @protected
      */
-    async _postActivate(characterData) {
-    }
+    async _postActivate(characterData) {}
 
     /* -------------------------------------------- */
     /*  GM handled actions                                */
@@ -569,7 +566,7 @@ export class Pl1eItem extends Item {
         targetData.actor = actor;
         targetData.actorId = actor._id;
         targetData.token = token;
-        targetData.tokenId = token?._id;
+        targetData.tokenId = token?.id;
         return targetData;
     }
 

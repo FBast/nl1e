@@ -160,8 +160,12 @@ export class Pl1eAspect {
                 // Apply the aspect
                 const dataConfig = CONFIG.PL1E[aspectCopy.dataGroup][aspectCopy.data];
                 let currentValue = getProperty(targetData.actor, dataConfig.path);
-                await targetData.actor.update({
-                    [dataConfig.path]: aspectCopy.name === "set" ? aspectCopy.value : currentValue += aspectCopy.value
+
+                CONFIG.PL1E.socket.executeAsGM('updateActor', {
+                    actor: targetData.actor,
+                    updateData: {
+                        [dataConfig.path]: aspectCopy.name === "set" ? aspectCopy.value : currentValue += aspectCopy.value
+                    }
                 });
             }
 

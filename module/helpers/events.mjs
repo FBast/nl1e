@@ -304,9 +304,8 @@ export class Pl1eEvent {
         });
 
         // Launch resolution
-        CONFIG.PL1E.socket.executeAsGM('resolveAction', {
-            characterData: characterData,
-            action: action
+        await item.resolve(characterData, {
+            action: "launch"
         });
     }
 

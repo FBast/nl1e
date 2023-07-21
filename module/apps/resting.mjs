@@ -43,7 +43,7 @@ export class Pl1eResting extends FormApplication {
         // Container filters
         const foods = [];
         const drinks = [];
-        const abilities = {0: [], 1: [], 2: [], 3: [], 4: [], 5: []};
+        const abilities = {1: [], 2: [], 3: [], 4: [], 5: []};
         const sourceIdFlags = [];
         for (let item of this.items) {
             const sourceIdFlag = item.flags.pl1e ? item.flags.core.sourceId : null;
@@ -54,6 +54,8 @@ export class Pl1eResting extends FormApplication {
             }
             // Append to abilities.
             else if (item.type === "ability" && !sourceIdFlags.includes(sourceIdFlag)) {
+                // Level 0 abilities are skipped
+                if (item.system.attributes.level === 0) continue;
                 abilities[item.system.attributes.level].push(item);
             }
             // Push sourceId flag to handle duplicates

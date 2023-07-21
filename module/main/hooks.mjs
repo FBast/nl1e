@@ -79,13 +79,11 @@ export default class Pl1eHooks {
         PL1E.socket.register("sendContenant", async function (data) {
             await Pl1eTrade.sendContenant(data.sourceActorId, data.targetActorId, data.itemId);
         });
-        PL1E.socket.register("resolveAction", async function (data) {
-            const item = data.characterData.actor.items.get(data.characterData.itemId);
-            await item.resolve(data.characterData, {
-                action: data.action
-            });
-        });
         PL1E.socket.register("displaySleeping", GmToolbox.displaySleeping);
+        PL1E.socket.register("updateActor", async function (data) {
+            const actor = await Pl1eHelpers.getDocument("Actor", data.actor._id);
+            await actor.update(data.updateData);
+        });
     }
 
     static dragRulerReady(SpeedProvider) {
