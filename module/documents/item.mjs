@@ -311,7 +311,7 @@ export class Pl1eItem extends Item {
 
             // If the ability don't trigger reaction then apply immediately
             if (!characterData.attributes.triggerReactions) {
-                await CONFIG.PL1E.socket.executeAsGM('resolveAction', {
+                CONFIG.PL1E.socket.executeAsGM('resolveAction', {
                     characterData: characterData,
                     action: "launch"
                 });
@@ -327,7 +327,7 @@ export class Pl1eItem extends Item {
 
             // In case of self target
             if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
-                await CONFIG.PL1E.socket.executeAsGM('resolveAction', {
+                CONFIG.PL1E.socket.executeAsGM('resolveAction', {
                     characterData: characterData,
                     action: "launch"
                 });

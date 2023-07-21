@@ -40,7 +40,7 @@ export class AbilityTemplate extends MeasuredTemplate {
             direction: 0,
             x: 0,
             y: 0,
-            fillColor: game.user.color
+            fillColor: game.user.color,
         };
 
         // Additional type-specific data
@@ -87,20 +87,21 @@ export class AbilityTemplate extends MeasuredTemplate {
             "activeAspects": activeAspects
         };
 
+        return new this(template);
+
         //TODO-fred change the controlIcon sprite
 
+        // Create the controlIcon with the correct width and height
         // object.controlIcon = new ControlIcon({
-        //   texture: item.img,
-        //   size: 50,
-        //   icon: item.img,
-        //   title: item.name,
-        //   onClick: () => {
-        //     //Handle click event here
-        //   },
-        //   layer: "myLayer" // replace myLayer with the name of your desired layer
+        //     texture: item.img,
+        //     size: Math.max(template.width, template.height), // Use the larger dimension as the size
+        //     icon: item.img,
+        //     title: item.name,
+        //     onClick: () => {
+        //         //Handle click event here
+        //     },
+        //     layer: "myLayer" // replace myLayer with the name of your desired layer
         // });
-
-        return new this(template);
     }
 
     /**
@@ -171,7 +172,7 @@ export class AbilityTemplate extends MeasuredTemplate {
         let now = Date.now(); // Apply a 20ms throttle
         if (now - this.#moveTime <= 20) return;
         let templateCenter = event.data.getLocalPosition(this.layer);
-        const offset = 50;
+        const offset = canvas.dimensions.size / 2;
         templateCenter.x -= offset;
         templateCenter.y -= offset;
         // Clamp with range
