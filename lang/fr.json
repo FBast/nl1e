@@ -226,6 +226,8 @@
   "PL1E.GMToolbox": "Boite à outils du MJ",
   "PL1E.Sleep": "Dormir",
   "PL1E.Fight": "Combattre",
+  "PL1E.PlayerHasNoCharacter": "Joueur n'as pas de personnage",
+  "PL1E.CharacterInCreationMode": "Personnage en mode de création",
   "PL1E.NewFeature": "Nouveau Trait",
   "PL1E.NewMerchant": "Nouveau Marchand",
   "PL1E.NewNPC": "Nouveau PNJ",

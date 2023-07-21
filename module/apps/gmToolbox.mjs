@@ -129,6 +129,23 @@ export class GmToolbox extends FormApplication {
             ev.stopPropagation();
             const players = game.users.filter(user => user.active && !user.isGM);
             const playerIds = players.map(player => player.id);
+
+            let abort = false;
+            for (const player of players) {
+                // Return if the player has no associated character
+                if (!player.character) {
+                    ui.notifications.warn(`${game.i18n.localize("PL1E.PlayerHasNoCharacter")} : ${player.name}`);
+                    abort = true;
+                }
+                // Return if the character is in creation mod
+                if (player.character.system.general.creationMod) {
+                    ui.notifications.warn(`${game.i18n.localize("PL1E.CharacterInCreationMode")} : ${player.character.name}`);
+                    abort = true;
+                }
+            }
+            if (abort) return;
+
+            // Execute the socket
             CONFIG.PL1E.socket.executeForUsers('displaySleeping', playerIds);
         });
         html.find(`.toolbox-fight`).on("click", async (event) => {
@@ -221,16 +238,7 @@ export class GmToolbox extends FormApplication {
             .find(w => w instanceof Pl1eResting);
         if (formApp) return;
 
-        // Return if the current user has no associated character
-        if (!game.user.character) return;
         const actor = game.user.character;
-
-        // Return if the character is in creation mod
-        if (actor.system.general.creationMod) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoCampingInCreationMod"));
-            return;
-        }
-
         const app = new Pl1eResting(actor, {
             title: `${game.i18n.localize("PL1E.Camping")} : ${actor.name}`,
         });

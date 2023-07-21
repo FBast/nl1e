@@ -43,7 +43,7 @@ export class Pl1eResting extends FormApplication {
         // Container filters
         const foods = [];
         const drinks = [];
-        const abilities = {1: [], 2: [], 3: [], 4: [], 5: []};
+        const abilities = {0: [], 1: [], 2: [], 3: [], 4: [], 5: []};
         const sourceIdFlags = [];
         for (let item of this.items) {
             const sourceIdFlag = item.flags.pl1e ? item.flags.core.sourceId : null;
