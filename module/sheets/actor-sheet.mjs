@@ -140,7 +140,6 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".consumable-reload").on("click", ev => this.onReloadConsumable(ev));
 
         // Button actions
-        html.find(".button-camping").on("click", ev => this.onCampingClick(ev));
         html.find(".button-remove-items").on("click", ev => this.onRemoveItemsClick(ev));
         html.find(".button-generate-item").on("click", ev => this.onGenerateItemClick(ev));
 
@@ -411,27 +410,6 @@ export class Pl1eActorSheet extends ActorSheet {
         catch (e) {
             console.error(e);
         }
-    }
-
-    /**
-     * Open the rest application
-     * @param event
-     * @return {Promise<void>}
-     */
-    async onCampingClick(event) {
-        const formApp = Object.values(ui.windows)
-            .find(w => w instanceof Pl1eResting);
-        if (formApp) return;
-
-        if (this.actor.system.general.creationMod) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoCampingInCreationMod"));
-            return;
-        }
-
-        const app = new Pl1eResting(this.actor, {
-            title: `${game.i18n.localize("PL1E.Camping")} : ${this.actor.name}`,
-        });
-        app.render(true);
     }
 
     /**

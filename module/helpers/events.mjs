@@ -3,6 +3,7 @@ import {Pl1eItem} from "../documents/item.mjs";
 import {Pl1eActor} from "../documents/actor.mjs";
 import {Pl1eChat} from "./chat.mjs";
 import {TraitSelector} from "../apps/traitSelector.mjs";
+import {Pl1eResting} from "../apps/resting.mjs";
 
 export class Pl1eEvent {
 
