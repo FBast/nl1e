@@ -6,7 +6,7 @@ export class Pl1eConsumable extends Pl1eItem {
     async _postActivate(characterData) {
         // Update item use
         await this.update({
-            "system.attributes.uses": this.system.attributes.uses - 1
+            "system.removedUses": this.system.attributes.removedUses + 1
         })
 
         // The item have no more uses and is not reloadable

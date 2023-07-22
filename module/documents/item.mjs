@@ -109,6 +109,7 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.rangeOverride = "none";
                 changed.system.attributes.masteryLink = [];
                 changed.system.attributes.isMajorAction = false;
+                changed.system.attributes.usageCost = 0;
             }
             if (changed.system?.attributes?.itemLink === "parent") changed.system.attributes.masteryLink = [];
         }
@@ -202,7 +203,6 @@ export class Pl1eItem extends Item {
 
     /* -------------------------------------------- */
     /*  Item actions                                */
-
     /* -------------------------------------------- */
 
     /**
@@ -211,9 +211,15 @@ export class Pl1eItem extends Item {
      * @return {Promise<void>}
      */
     async reload(options = {}) {
+        // Reload the item
         await this.update({
             ["system.removedUses"]: 0
         });
+        // Remove the action
+        await this.actor.update({
+            ["system.misc.action"]: this.actor.system.misc.action - 1
+        });
+        await Pl1eChat.actionMessage(this.actor, "PL1E.Reload", 1, { item: this });
     }
 
     /**

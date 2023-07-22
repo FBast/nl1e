@@ -388,7 +388,7 @@ export function getConfigActor() {
     PL1E.speeds = {
         "verySlow": {
             "label": "PL1E.VerySlow",
-            "movement": 1.5,
+            "movement": 2,
             "baseInitiative": 0
         },
         "slow": {
@@ -398,17 +398,17 @@ export function getConfigActor() {
         },
         "medium": {
             "label": "PL1E.Medium",
-            "movement": 4.5,
+            "movement": 4,
             "baseInitiative": 10
         },
         "fast": {
             "label": "PL1E.Fast",
-            "movement": 6,
+            "movement": 5,
             "baseInitiative": 15
         },
         "veryFast": {
             "label": "PL1E.VeryFast",
-            "movement": 7.5,
+            "movement": 6,
             "baseInitiative": 20
         }
     }

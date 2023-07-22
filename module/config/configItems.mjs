@@ -34,7 +34,13 @@ export function getConfigItems() {
             "icon": "fa-star",
             "type": "bool",
             "path": "system.isMajorActionUsed"
-        }
+        },
+        "removedUses": {
+            "label": "PL1E.RemovedUses",
+            "icon": "fa-tally",
+            "type": "number",
+            "path": "system.removedUses"
+        },
     }
 
     PL1E.attributes = {
@@ -52,6 +58,10 @@ export function getConfigItems() {
             "label": "PL1E.Range",
             "type": "number",
             "fallback": 0
+        },
+        "uses": {
+            "label": "PL1E.Uses",
+            "type": "number"
         },
         "actionCost": {
             "label": "PL1E.ActionCost",
@@ -127,6 +137,14 @@ export function getConfigItems() {
             "data": "mana",
             "invertSign": true
         },
+        "usageCost": {
+            "label": "PL1E.UsageCost",
+            "type": "number",
+            "document": "linkedItem",
+            "dataGroup": "itemBase",
+            "data": "removedUses",
+            "invertSign": false
+        },
         "abilityLink": {
             "label": "PL1E.AbilityLink",
             "type": "select",
@@ -184,10 +202,6 @@ export function getConfigItems() {
             "label": "PL1E.Hands",
             "type": "number"
         },
-        "ammo": {
-            "label": "PL1E.Ammo",
-            "type": "number"
-        },
         // Wearables
         "slot": {
             "label": "PL1E.Slot",
@@ -199,11 +213,7 @@ export function getConfigItems() {
             "label": "PL1E.Reloadable",
             "type": "bool"
         },
-        "uses": {
-            "label": "PL1E.Uses",
-            "type": "number"
-        },
-        // Common
+        // Common Objects
         "commonType": {
             "label": "PL1E.CommonType",
             "type": "select",

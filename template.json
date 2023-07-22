@@ -343,6 +343,10 @@
         }
       },
       "item": {
+        "removedUses": 0,
+        "attributes": {
+          "uses": 0
+        },
         "price": {
           "gold": 0,
           "silver": 0,
@@ -370,6 +374,7 @@
         "healthCost": 0,
         "staminaCost": 0,
         "manaCost": 0,
+        "usageCost": 0,
         "activation": "action",
         "actionCost": 0,
         "reactionCost": 0,
@@ -401,8 +406,7 @@
         "masters": [],
         "hands": 1,
         "reach": 0,
-        "range": 0,
-        "ammo": 1
+        "range": 0
       }
     },
     "wearable": {
@@ -416,12 +420,10 @@
     },
     "consumable": {
       "templates": ["base", "item"],
-      "removedUses": 0,
       "attributes": {
-        "uses": 1,
+        "activation": "action",
         "isReloadable": false,
         "outCombatOnly": false,
-        "activation": "action",
         "actionCost": 0,
         "reactionCost": 0,
         "triggerReactions": false,

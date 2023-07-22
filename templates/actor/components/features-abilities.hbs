@@ -25,6 +25,11 @@
                                     <label>{{system.attributes.manaCost}}</label>
                                 </i>
                             {{/if}}
+                            {{#if (ne system.attributes.usageCost 0)}}
+                                <i class="item-info far fa-tally hover-green" data-tooltip='{{localize "PL1E.UsageCost"}}'>
+                                    <label>{{system.attributes.usageCost}}</label>
+                                </i>
+                            {{/if}}
                             {{#if (ne system.attributes.actionCost 0)}}
                                 <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
                                     <label>{{system.attributes.actionCost}}</label>

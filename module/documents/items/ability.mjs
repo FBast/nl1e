@@ -24,6 +24,16 @@ export class Pl1eAbility extends Pl1eItem {
     }
 
     /** @inheritDoc */
+    async _postActivate(characterData) {
+        // If a linked item has no usage limit then reset it's removedUses
+        if (characterData.linkedItem && characterData.linkedItem.system.attributes.uses === 0) {
+            await characterData.linkedItem.update({
+                "system.removedUses": 0
+            })
+        }
+    }
+
+    /** @inheritDoc */
     _canActivate(characterData) {
         if (!super._canActivate(characterData)) return false;
         const itemAttributes = characterData.attributes;
@@ -152,6 +162,9 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.attributes.rangeOverride === "range" && item.system.attributes.range === 0) continue;
             if (characterData.attributes.lengthOverride === "reach" && item.system.attributes.reach === 0) continue;
             if (characterData.attributes.lengthOverride === "range" && item.system.attributes.range === 0) continue;
+            // Item usages are not enough
+            if (characterData.attributes.usageCost > 0 && item.system.attributes.uses > 0 &&
+                characterData.attributes.usageCost > item.system.attributes.uses - item.system.removedUses) continue;
             // Item link is mastery and item mastery does not match
             if (characterData.attributes.itemLink === "mastery" && !characterData.attributes.masteryLink
                 .some(mastery => item.system.attributes.masters.includes(mastery))) continue;

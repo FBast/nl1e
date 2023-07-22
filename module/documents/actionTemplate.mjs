@@ -177,7 +177,7 @@ export class ActionTemplate extends MeasuredTemplate {
         templateCenter.y -= offset;
         // Clamp with range
         const range = this.document.actionData.attributes.range * game.system.gridDistance;
-        templateCenter = this._clampVectorRadius(templateCenter, this.document.actionData.token, range * 100);
+        templateCenter = this._clampVectorRadius(templateCenter, this.document.actionData.token, range * canvas.dimensions.size);
         // Snap position
         templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 1);
         // Move position

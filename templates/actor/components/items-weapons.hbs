@@ -23,11 +23,11 @@
                             <i class="item-info fas fa-bow-arrow hover-green" data-tooltip="{{localize "PL1E.Range"}}">
                                 <label>{{system.attributes.range}}</label>
                             </i>
-                            {{#if (gt system.attributes.ammo 0)}}
-                                <i class="item-info fas fa-tally hover-green" data-tooltip="{{localize "PL1E.Ammo"}}">
-                                    <label>{{system.attributes.ammo}}</label>
-                                </i>
-                            {{/if}}
+                        {{/if}}
+                        {{#if (gt system.attributes.uses 0)}}
+                            <i class="item-info fas fa-tally hover-green" data-tooltip="{{localize "PL1E.Uses"}}">
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
+                            </i>
                         {{/if}}
                         {{#each system.activeAspects}}
                             {{#if (eq damageType "raw")}}
@@ -90,6 +90,11 @@
                             <i class="fas fa-coins"></i>
                         </a>
                     {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                        {{#if (ne system.removedUses 0)}}
+                            <a class="item-control consumable-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
+                                <i class="fas fa-repeat"></i>
+                            </a>
+                        {{/if}}
                         {{#if (gt system.attributes.hands 0)}}
                             <a class="item-control item-toggle" data-main='false' data-tooltip='{{localize "PL1E.EquipSecondary"}}'>
                                 <i class="fas fa-hand icon-flipped {{#unless system.isEquippedSecondary}}color-grey{{/unless}}"></i>
