@@ -90,28 +90,36 @@ export default class Pl1eHooks {
         class Pl1eSpeedProvider extends SpeedProvider {
             get colors() {
                 return [
-                    {id: "remainingMovement", default: 0xFFFFFF, name: "PL1E.RemainingMovement"},
-                    {id: "oneActionMove", default: 0x00FF00, name: "PL1E.OneActionMove"},
-                    {id: "twoActionMove", default: 0xFFFF00, name: "PL1E.TwoActionMove"},
-                    {id: "threeActionMove", default: 0xFF8000, name: "PL1E.ThreeActionMove"},
+                    {id: "walk", default: 0x00FF00, name: "PL1E.Walk"},
+                    {id: "run", default: 0xFFFF00, name: "PL1E.Run"},
+                    {id: "extraMovement", default: 0xFF8000, name: "PL1E.ExtraMovement"},
                 ]
             }
 
             getRanges(token) {
-                const action = token.actor.system.misc.action;
                 const movement = token.actor.system.misc.movement;
+                const action = token.actor.system.misc.action;
+                const remainingMovement = token.actor.system.variables.remainingMovement;
+                const usedMovement = token.actor.system.variables.usedMovement;
+                const movementAction = token.actor.system.variables.movementAction;
 
-                const remainingMovement = token.actor.system.misc.remainingMovement;
-                const oneActionMove = remainingMovement + (action >= 1 ? movement : 0);
-                const twoActionMove = remainingMovement + (action >= 2 ? movement * 2 : 0);
-                const threeActionMove = remainingMovement + (action >= 3 ? movement * 3 : 0);
+                // const walk = 0;
+                // const run = 0;
+                // const extraMovement = 0;
+                // if (movementAction + action >= 2)
+                //     walk = remainingMovement
+
+                const totalMovement = remainingMovement + usedMovement;
+                const totalAction = action + movementAction;
+                const walk = totalAction >= 1 ? totalMovement + movement * (1 - movementAction) : 0;
+                const run = totalAction >= 2 ? totalMovement + movement * (2 - movementAction) : 0;
+                const extraMovement = totalAction >= 3 ? totalMovement + movement * (3 - movementAction) : 0;
 
                 // A character can always walk it's base speed and dash twice it's base speed
                 return [
-                    {range: remainingMovement, color: "remainingMovement"},
-                    {range: oneActionMove, color: "oneActionMove"},
-                    {range: twoActionMove, color: "twoActionMove"},
-                    {range: threeActionMove, color: "threeActionMove"}
+                    {range: walk, color: "walk"},
+                    {range: run, color: "run"},
+                    {range: extraMovement, color: "extraMovement"}
                 ];
             }
         }

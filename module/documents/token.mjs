@@ -6,12 +6,13 @@ export class Pl1eTokenDocument extends TokenDocument {
         if ((data.x || data.y) && this.combatant !== null) {
             const currentTokenId = game.combat.current?.tokenId;
             const actorMisc = this.actor.system.misc;
+            const actorVariables = this.actor.system.variables;
             if (currentTokenId !== this.id) {
                 ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
                 delete data.x;
                 delete data.y;
             }
-            else if (actorMisc.action === 0 && actorMisc.remainingMovement === 0) {
+            else if (actorMisc.action === 0 && actorVariables.remainingMovement === 0) {
                 ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
                 delete data.x;
                 delete data.y;
@@ -31,6 +32,7 @@ export class Pl1eTokenDocument extends TokenDocument {
      */
     async restrictMovement(data) {
         const actorMisc = this.actor.system.misc;
+        const actorVariables = this.actor.system.variables;
         const initialPosition = {x: this.x, y: this.y};
 
         const newPosition = {
@@ -38,23 +40,33 @@ export class Pl1eTokenDocument extends TokenDocument {
             y: data.y === undefined ? this.y : data.y
         }
 
-        const deltaX = newPosition.x - initialPosition.x;
-        const deltaY = newPosition.y - initialPosition.y;
         let distance = canvas.grid.measureDistance(initialPosition, newPosition, {gridSpaces: true});
 
         // Use an action if needed and possible
-        let missingDistance = distance - actorMisc.remainingMovement;
+        let missingDistance = distance - actorVariables.remainingMovement;
         if (missingDistance > 0) {
             let requiredActions = Math.ceil(missingDistance / actorMisc.movement);
-            requiredActions = Math.min(requiredActions, actorMisc.action);
+
+            // Return if not enough action to do this movement
+            if (requiredActions > actorMisc.action) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughActions"));
+                delete data.x;
+                delete data.y;
+                return;
+            }
+
+            // Retrieve action and add remaining movement
             actorMisc.action -= requiredActions;
-            actorMisc.remainingMovement += requiredActions * actorMisc.movement;
+            actorVariables.remainingMovement += requiredActions * actorMisc.movement;
+            actorVariables.movementAction += requiredActions;
             await Pl1eChat.actionMessage(this.actor, "PL1E.Movement", requiredActions)
         }
 
         // If the distance exceeds the limit, restrict the token's movement
-        let distanceLimit = actorMisc.remainingMovement;
+        let distanceLimit = actorVariables.remainingMovement;
         if (distance > distanceLimit) {
+            const deltaX = newPosition.x - initialPosition.x;
+            const deltaY = newPosition.y - initialPosition.y;
             const directionX = deltaX / distance;
             const directionY = deltaY / distance;
             data.x = initialPosition.x + directionX * distanceLimit;
@@ -62,10 +74,13 @@ export class Pl1eTokenDocument extends TokenDocument {
             distance = distanceLimit;
         }
 
-        actorMisc.remainingMovement -= distance;
+        actorVariables.remainingMovement -= distance;
+        actorVariables.usedMovement += distance;
         await this.actor.update({
             "system.misc.action": actorMisc.action,
-            "system.misc.remainingMovement": actorMisc.remainingMovement
+            "system.variables.remainingMovement": actorVariables.remainingMovement,
+            "system.variables.usedMovement": actorVariables.usedMovement,
+            "system.variables.movementAction": actorVariables.movementAction
         })
     }
 

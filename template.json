@@ -250,7 +250,6 @@
           "movement": 4,
           "baseInitiative": 5,
           "initiative": 0,
-          "remainingMovement": 0,
           "flexibility": 0,
           "coverBonuses": 0,
           "parryBonuses": 0,
@@ -260,6 +259,11 @@
           "action": 2,
           "reaction": 1,
           "faithPower": false
+        },
+        "variables": {
+          "remainingMovement": 0,
+          "usedMovement": 0,
+          "movementAction": 0
         },
         "reductions": {
           "slashing": 0,

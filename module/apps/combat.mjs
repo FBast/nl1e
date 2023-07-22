@@ -27,7 +27,9 @@ export class Pl1eCombat extends Combat {
         await actor.update({
             "system.misc.action": 2,
             "system.misc.reaction": 1,
-            "system.misc.remainingMovement": 0
+            "system.variables.usedMovement": 0,
+            "system.variables.remainingMovement": 0,
+            "system.variables.movementAction": 0
         });
         for (let item of actor.items) {
             if (item.type === "weapon" || item.type === "wearable") {

@@ -465,13 +465,6 @@ export function getConfigActor() {
             "path": "system.misc.initiative",
             "hidden": false
         },
-        "remainingMovement": {
-            "label": "PL1E.RemainingMovement",
-            "icon": "fa-person-running",
-            "type": "number",
-            "path": "system.misc.remainingMovement",
-            "hidden": false
-        },
         "flexibility": {
             "label": "PL1E.Flexibility",
             "icon": "fa-weight-hanging",

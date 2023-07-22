@@ -1,4 +1,4 @@
-export class AbilityTemplate extends MeasuredTemplate {
+export class ActionTemplate extends MeasuredTemplate {
 
     /**
      * Track the timestamp when the last mouse move event was captured.
@@ -23,11 +23,11 @@ export class AbilityTemplate extends MeasuredTemplate {
     /* -------------------------------------------- */
 
     /**
-     * A factory method to create an AbilityTemplate instance using provided data from an Pl1eItem instance
+     * A factory method to create an ActionTemplate instance using provided data from an Pl1eItem instance
      * @param {Pl1eItem} item               The Item object for which to construct the template
      * @param {object} attributes
      * @param {object} activeAspects
-     * @returns {AbilityTemplate|null}    The template object, or null if the item does not produce a template
+     * @returns {ActionTemplate|null}    The template object, or null if the item does not produce a template
      */
     static async fromItem(item, attributes, activeAspects) {
         const areaShape = attributes.areaShape;
@@ -184,7 +184,7 @@ export class AbilityTemplate extends MeasuredTemplate {
         this.document.updateSource({x: templateCenter.x + offset, y: templateCenter.y + offset});
         this.refresh();
         // Target tokens
-        const targets = AbilityTemplate.getTemplateTargets(this.document);
+        const targets = ActionTemplate.getTemplateTargets(this.document);
         for (const token of canvas.tokens.placeables) {
             // Target the current token and group with others
             token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
@@ -226,7 +226,7 @@ export class AbilityTemplate extends MeasuredTemplate {
         this.document.updateSource(update);
         this.refresh();
         // Target tokens
-        const targets = AbilityTemplate.getTemplateTargets(this.document);
+        const targets = ActionTemplate.getTemplateTargets(this.document);
         for (const token of canvas.tokens.placeables) {
             // Target the current token and group with others
             token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});

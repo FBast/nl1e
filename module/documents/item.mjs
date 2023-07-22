@@ -1,7 +1,7 @@
 import {Pl1eAspect} from "../helpers/aspect.mjs";
 import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
-import {AbilityTemplate} from "../helpers/abilityTemplate.mjs";
+import {ActionTemplate} from "./actionTemplate.mjs";
 import {Pl1eChat} from "../helpers/chat.mjs";
 
 export class Pl1eItem extends Item {
@@ -275,7 +275,7 @@ export class Pl1eItem extends Item {
 
                 // Create templates
                 for (let i = 0; i < characterData.attributes.areaNumber; i++) {
-                    const templatePreview = await AbilityTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
+                    const templatePreview = await ActionTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
                     const template = await templatePreview?.drawPreview();
 
                     // If we have no template then break
@@ -518,7 +518,7 @@ export class Pl1eItem extends Item {
         } else {
             // Populate targetsData
             for (let template of characterData.templates) {
-                for (let token of AbilityTemplate.getTemplateTargets(template)) {
+                for (let token of ActionTemplate.getTemplateTargets(template)) {
                     const targetData = await this._getTargetData(characterData, token.actor, token);
                     targetsData.push(targetData);
                 }
