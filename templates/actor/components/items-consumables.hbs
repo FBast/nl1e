@@ -28,12 +28,12 @@
                             {{/if}}
                         {{/if}}
                         {{#if (ne system.attributes.actionCost 0)}}
-                            <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+                            <i class="item-info fas fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
                                 <label>{{system.attributes.actionCost}}</label>
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.reactionCost 0)}}
-                            <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+                            <i class="item-info fas fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
                                 <label>{{system.attributes.reactionCost}}</label>
                             </i>
                         {{/if}}
@@ -115,7 +115,7 @@
                         </a>
                     {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
                         {{#if (and (ne system.removedUses 0) system.attributes.isReloadable)}}
-                            <a class="item-control consumable-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
+                            <a class="item-control item-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
                                 <i class="fas fa-repeat"></i>
                             </a>
                         {{/if}}

@@ -3,9 +3,25 @@ import {Pl1eChat} from "../../helpers/chat.mjs";
 
 export class Pl1eWeapon extends Pl1eItem {
 
-    /** @override */
+    /** @inheritDoc */
+    canToggle() {
+        if (!super.canToggle()) return false;
+        const token = this.actor.bestToken;
+        if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
+            return false;
+        }
+        if (token !== null && token.inCombat && token.id === game.combat.current.tokenId
+            && this.actor.system.misc.action <= 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            return false;
+        }
+        return true;
+    }
+
+    /** @inheritDoc */
     async toggle(options) {
-        if (!this._canToggle()) return;
+        if (!this.canToggle()) return;
 
         const hands = this.system.attributes.hands;
         const takenHands = (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0);
@@ -78,26 +94,6 @@ export class Pl1eWeapon extends Pl1eItem {
         }
 
         await super.toggle(options);
-    }
-
-    /**
-     * Check if the toggle is valid
-     * @private
-     */
-    _canToggle() {
-        let isValid = true;
-        const token = this.actor.bestToken;
-
-        if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
-            isValid = false;
-        }
-        if (token !== null && token.inCombat && token.id === game.combat.current.tokenId
-            && this.actor.system.misc.action <= 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
-            isValid = false;
-        }
-        return isValid;
     }
 
 }

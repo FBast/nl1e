@@ -206,6 +206,23 @@ export class Pl1eItem extends Item {
     /* -------------------------------------------- */
 
     /**
+     * Check if the reload is valid
+     * @return {boolean}
+     */
+    canReload() {
+        const token = this.actor.bestToken;
+        if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
+            return false;
+        }
+        if (token !== null && token.inCombat && token.id === game.combat.current.tokenId && this.actor.system.misc.action <= 0) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Reload an item uses (consumable)
      * @param options
      * @return {Promise<void>}
@@ -223,6 +240,14 @@ export class Pl1eItem extends Item {
     }
 
     /**
+     * Check if the toggle is valid
+     * @return {boolean}
+     */
+    canToggle() {
+        return true;
+    }
+
+    /**
      * Toggle the item state (ability, weapon or wearable)
      * @param options
      * @returns {Promise<void>}
@@ -233,7 +258,8 @@ export class Pl1eItem extends Item {
                 if (!aspect.createEffect) continue;
                 await Pl1eAspect.applyPassiveEffect(aspect, id, this.actor, this);
             }
-        } else {
+        }
+        else {
             for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
                 await Pl1eAspect.removePassiveEffect(aspect, id, this.actor);
             }
@@ -264,7 +290,8 @@ export class Pl1eItem extends Item {
         if (characterData.attributes.characterRoll !== 'none') {
             characterData.rollData = await characterData.actor.rollSkill(characterData.attributes.characterRoll);
             characterData.result = characterData.rollData.total;
-        } else {
+        }
+        else {
             characterData.result = 1;
         }
 
@@ -321,11 +348,26 @@ export class Pl1eItem extends Item {
                     action: "launch"
                 });
             }
+            // Else we need action button to process further
+            else {
+                // Add the data to the message
+                await chatMessage.setFlag("pl1e", "characterData", Pl1eHelpers.stringifyWithCircular(characterData));
+
+                // Show the footer by setting its display property to "block"
+                const $content = $(chatMessage.content);
+                const footer = $content.find(".card-buttons");
+                footer.addClass("show-footer");
+
+                // Update the chat message with the modified content
+                await chatMessage.update({
+                    content: $content[0].outerHTML
+                });
+            }
         }
         // If we have a no token
         else {
             // Display message
-            chatMessage = await Pl1eChat.actionRoll(characterData);
+            await Pl1eChat.actionRoll(characterData);
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
@@ -339,7 +381,6 @@ export class Pl1eItem extends Item {
         }
 
         await this._postActivate(characterData);
-        await chatMessage.setFlag("pl1e", "characterData", Pl1eHelpers.stringifyWithCircular(characterData));
         return true;
     }
 
@@ -460,11 +501,6 @@ export class Pl1eItem extends Item {
      * @protected
      */
     async _postActivate(characterData) {}
-
-    /* -------------------------------------------- */
-    /*  GM handled actions                                */
-
-    /* -------------------------------------------- */
 
     /**
      * Resolve the item effect with an action (ability or consumable)

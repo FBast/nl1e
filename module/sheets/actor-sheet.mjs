@@ -137,7 +137,7 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".rank-control").on("click", ev => this.onRankChange(ev));
         html.find(".item-toggle").on("click", ev => Pl1eEvent.onItemToggle(ev, this.actor));
         html.find(".item-use").on("click", ev => this.onItemUse(ev));
-        html.find(".consumable-reload").on("click", ev => this.onReloadConsumable(ev));
+        html.find(".item-reload").on("click", ev => this.onItemReload(ev));
 
         // Button actions
         html.find(".button-remove-items").on("click", ev => this.onRemoveItemsClick(ev));
@@ -398,18 +398,13 @@ export class Pl1eActorSheet extends ActorSheet {
      * Handle reload of an Owned Consumable within the Actor.
      * @param {Event} event The triggering click event.
      */
-    async onReloadConsumable(event) {
+    async onItemReload(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
             /** @type {Pl1eItem} */
         const item = this.actor.items.get(itemId);
 
-        try {
-            await item.reload();
-        }
-        catch (e) {
-            console.error(e);
-        }
+        if (item.canReload()) await item.reload();
     }
 
     /**

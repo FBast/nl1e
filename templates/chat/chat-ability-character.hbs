@@ -8,7 +8,7 @@
                     {{#if (and (ne dataGroup undefined) (ne data undefined))}}
                         {{#with (configEntry dataGroup data)}}
                             {{#if (and (eq type "number") (ne ../../this 0))}}
-                                <i class="{{#if (gt ../../this 0)}}fas{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                <i class="{{#if (gt ../../this 0)}}fas{{else}}fas{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
                                     <label>{{formatNumber ../../this signe=true}}</label>
                                 </i>
                             {{else if (eq type "bool")}}

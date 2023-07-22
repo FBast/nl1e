@@ -240,7 +240,7 @@
   "PL1E.No": "Non",
   "PL1E.NoActorSelected": "Vous devez selectionner un Token",
   "PL1E.NoEquippedParent": "Aucun parent n'est équippé",
-  "PL1E.NoLinkedItemMatch": "Aucune correspondance d'élément lié",
+  "PL1E.NoLinkedItemMatch": "Aucune correspondance d'objet lié",
   "PL1E.NoTarget": "Vous devez selectionner une cible",
   "PL1E.NoTokenFound": "Aucun token n'as été trouvé",
   "PL1E.None": "Aucun",

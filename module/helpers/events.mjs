@@ -88,7 +88,7 @@ export class Pl1eEvent {
         const main = $(event.currentTarget).data("main");
         if (main) options["main"] = main;
 
-        await item.toggle(options);
+        if (item.canToggle()) await item.toggle(options);
     }
 
     /**
@@ -305,7 +305,7 @@ export class Pl1eEvent {
 
         // Launch resolution
         await item.resolve(characterData, {
-            action: "launch"
+            action: action
         });
     }
 

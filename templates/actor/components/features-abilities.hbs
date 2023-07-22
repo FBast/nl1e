@@ -11,32 +11,32 @@
                     {{#unless (eq @root.actor.type "npc")}}
                         <div class="item-icons grid-span-2">
                             {{#if (ne system.attributes.healthCost 0)}}
-                                <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthCost"}}'>
+                                <i class="item-info fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthCost"}}'>
                                     <label>{{system.attributes.healthCost}}</label>
                                 </i>
                             {{/if}}
                             {{#if (ne system.attributes.staminaCost 0)}}
-                                <i class="item-info far fa-wave-pulse hover-green" data-tooltip="{{localize "PL1E.StaminaCost"}}">
+                                <i class="item-info fas fa-wave-pulse hover-green" data-tooltip="{{localize "PL1E.StaminaCost"}}">
                                     <label>{{system.attributes.staminaCost}}</label>
                                 </i>
                             {{/if}}
                             {{#if (ne system.attributes.manaCost 0)}}
-                                <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaCost"}}'>
+                                <i class="item-info fas fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaCost"}}'>
                                     <label>{{system.attributes.manaCost}}</label>
                                 </i>
                             {{/if}}
                             {{#if (ne system.attributes.usageCost 0)}}
-                                <i class="item-info far fa-tally hover-green" data-tooltip='{{localize "PL1E.UsageCost"}}'>
+                                <i class="item-info fas fa-tally hover-green" data-tooltip='{{localize "PL1E.UsageCost"}}'>
                                     <label>{{system.attributes.usageCost}}</label>
                                 </i>
                             {{/if}}
                             {{#if (ne system.attributes.actionCost 0)}}
-                                <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+                                <i class="item-info fas fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
                                     <label>{{system.attributes.actionCost}}</label>
                                 </i>
                             {{/if}}
                             {{#if (ne system.attributes.reactionCost 0)}}
-                                <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+                                <i class="item-info fas fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
                                     <label>{{system.attributes.reactionCost}}</label>
                                 </i>
                             {{/if}}

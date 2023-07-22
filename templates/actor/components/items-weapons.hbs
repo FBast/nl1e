@@ -46,7 +46,7 @@
                         {{/each}}
                         {{#if (eq @root.actor.type "character")}}
                             {{#if system.isMajorActionUsed}}
-                                <i class="item-info far fa-star hover-green" data-tooltip="{{localize "PL1E.MajorActionUsed"}}"></i>
+                                <i class="item-info fas fa-star hover-green" data-tooltip="{{localize "PL1E.MajorActionUsed"}}"></i>
                             {{/if}}
                             {{#if (gt system.price.gold 0)}}
                                 <i class="item-info fas fa-coins color-gold hover-green" data-tooltip="{{localize "PL1E.Gold"}}">
@@ -91,7 +91,7 @@
                         </a>
                     {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
                         {{#if (ne system.removedUses 0)}}
-                            <a class="item-control consumable-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
+                            <a class="item-control item-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
                                 <i class="fas fa-repeat"></i>
                             </a>
                         {{/if}}

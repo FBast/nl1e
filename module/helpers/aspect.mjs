@@ -15,9 +15,9 @@ export class Pl1eAspect {
             case "set":
                 return await this._numeric(aspect, characterData, targetsData);
             case "transfer":
-                return this._transfer(aspect, characterData, targetsData);
+                return await this._transfer(aspect, characterData, targetsData);
             case "status":
-                return this._status(aspect, characterData, targetsData);
+                return await this._status(aspect, characterData, targetsData);
             default:
                 throw new Error("PL1E | unknown aspect : " + aspect.name);
         }
@@ -127,7 +127,7 @@ export class Pl1eAspect {
     static async _numeric(aspect, characterData, targetsData) {
         for (const targetData of targetsData) {
             // Check targetGroup validation for aspect
-            if (!this.isTargetValid(aspect.targetGroup, targetData.token, characterData.token)) continue;
+            if (!this._isTargetValid(aspect.targetGroup, targetData.token, characterData.token)) continue;
 
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
@@ -158,22 +158,14 @@ export class Pl1eAspect {
             }
             else {
                 // Apply the aspect
-                const dataConfig = CONFIG.PL1E[aspectCopy.dataGroup][aspectCopy.data];
-                let currentValue = getProperty(targetData.actor, dataConfig.path);
-
-                CONFIG.PL1E.socket.executeAsGM('updateActor', {
-                    actor: targetData.actor,
-                    updateData: {
-                        [dataConfig.path]: aspectCopy.name === "set" ? aspectCopy.value : currentValue += aspectCopy.value
-                    }
-                });
+                await this._applyTargetAspect(aspectCopy, targetData);
             }
 
             // Add label for Sequence
             let label = PL1E[aspectCopy.dataGroup][aspectCopy.data].label;
             aspectCopy.label = `${aspectCopy.value} ${game.i18n.localize(label)}`;
 
-                // Check for existing aspect related to same function
+            // Check for existing aspect related to same function
             targetData.activeAspects ??= [];
             let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
             existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
@@ -196,7 +188,7 @@ export class Pl1eAspect {
         // First pass for source
         for (const targetData of targetsData) {
             // Check transferSource validation for aspect
-            if (!this.isTargetValid(aspect.transferSource, targetData.token, characterData.token)) continue;
+            if (!this._isTargetValid(aspect.transferSource, targetData.token, characterData.token)) continue;
 
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
@@ -232,7 +224,7 @@ export class Pl1eAspect {
 
         // Count destination targets
         const destinationNumber = targetsData.filter(target => {
-            return this.isTargetValid(aspect.transferDestination, target.token, characterData.token);
+            return this._isTargetValid(aspect.transferDestination, target.token, characterData.token);
         }).length;
 
         // Split sum into destination number
@@ -242,7 +234,7 @@ export class Pl1eAspect {
         // Second pass for destination
         for (const targetData of targetsData) {
             // Check transferSource validation for aspect
-            if (!this.isTargetValid(aspect.transferDestination, targetData.token, characterData.token)) continue;
+            if (!this._isTargetValid(aspect.transferDestination, targetData.token, characterData.token)) continue;
 
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
@@ -267,7 +259,6 @@ export class Pl1eAspect {
      * @private
      */
     static async _status(aspect, characterData, targetsData) {
-
         throw new Error("Not implemented yet");
     }
 
@@ -318,7 +309,26 @@ export class Pl1eAspect {
         }]);
     }
 
-    static isTargetValid(group, targetToken, characterToken) {
+    static async _applyTargetAspect(aspect, targetData) {
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        let currentValue = getProperty(targetData.actor, dataConfig.path);
+        currentValue = aspect.name === "set" ? aspect.value : currentValue + aspect.value;
+        if (game.user.isGM) {
+            await targetData.actor.update({
+                [dataConfig.path]: currentValue
+            });
+        }
+        else {
+            CONFIG.PL1E.socket.executeAsGM('updateActor', {
+                actor: targetData.actor,
+                updateData: {
+                    [dataConfig.path]: currentValue
+                }
+            });
+        }
+    }
+
+    static _isTargetValid(group, targetToken, characterToken) {
         if (group === "self" && targetToken !== characterToken) return false;
         if (group === "allies" && targetToken.document.disposition !== characterToken.document.disposition) return false;
         if (group === "opponents" && targetToken.document.disposition === characterToken.document.disposition) return false;

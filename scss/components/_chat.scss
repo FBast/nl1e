@@ -79,6 +79,7 @@
   }
 
   .card-buttons {
+    display: none;
     margin: 5px 0 0 0;
     border-top: 2px groove #FFF;
 
@@ -88,6 +89,10 @@
       line-height: 20px;
       margin: 2px 0;
     }
+  }
+
+  .show-footer {
+    display: block !important;
   }
 
   .dice-total {
