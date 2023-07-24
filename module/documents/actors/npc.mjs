@@ -1,4 +1,4 @@
-import {Pl1eActor} from "../actor.mjs";
+import {Pl1eActor} from "./actor.mjs";
 
 export class Pl1eNPC extends Pl1eActor {
 

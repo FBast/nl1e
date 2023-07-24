@@ -148,34 +148,6 @@ export class GmToolbox extends FormApplication {
             // Execute the socket
             CONFIG.PL1E.socket.executeForUsers('displaySleeping', playerIds);
         });
-        html.find(`.toolbox-fight`).on("click", async (event) => {
-            // Check if there is already an active combat
-            const currentCombat = game.combat;
-            if (currentCombat && currentCombat.started) {
-                await currentCombat.endCombat();
-            }
-            else {
-                // If there is no active combat, get all tokens in the current scene
-                const scene = game.scenes.viewed;
-                const tokens = scene.tokens;
-
-                // Create a new combat and add tokens to it
-                const newCombat = await game.combats.documentClass.create({scene: scene._id});
-
-                // Add tokens to the combat
-                for (const token of tokens) {
-                    const combatantData = {
-                        tokenId: token.id,
-                        hidden: false, // Set to true if you want to hide the token in the combat tracker
-                        initiative: token.actor.system.misc.initiative, // Set the initiative value here
-                    };
-                    await newCombat.createEmbeddedDocuments("Combatant", [combatantData]);
-                }
-
-                // Start the new combat
-                await newCombat.startCombat();
-            }
-        });
         html.find(`.toolbox-bonuses`).on("mousedown", (event) => {
             event.preventDefault();
             event.stopPropagation();

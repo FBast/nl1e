@@ -1,11 +1,11 @@
-import {Pl1eCharacter} from "./actors/character.mjs";
-import {Pl1eNPC} from "./actors/npc.mjs";
-import {Pl1eMerchant} from "./actors/merchant.mjs";
+import {Pl1eCharacter} from "./character.mjs";
+import {Pl1eNPC} from "./npc.mjs";
+import {Pl1eMerchant} from "./merchant.mjs";
 import {Pl1eActor} from "./actor.mjs";
 
 const handler = {
     /**
-     * @param {typeof import("./actor").Pl1eActor} _
+     * @param {typeof import("./actor.mjs").Pl1eActor} _
      * @param {unknown[]} args
      */
     construct(_, args) {
@@ -22,5 +22,5 @@ const handler = {
     }
 };
 
-/** @type {typeof import("./actor").Pl1eActor} */
+/** @type {typeof import("./actor.mjs").Pl1eActor} */
 export const Pl1eActorProxy = new Proxy(Pl1eActor, handler);

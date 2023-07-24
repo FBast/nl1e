@@ -1,5 +1,5 @@
-import {Pl1eAspect} from "../helpers/aspect.mjs";
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eAspect} from "../../helpers/aspect.mjs";
+import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -116,33 +116,6 @@ export class Pl1eActor extends Actor {
     async prepareBaseData() {
         super.prepareBaseData();
 
-    }
-
-    /** @inheritDoc */
-    async prepareEmbeddedDocuments() {
-        super.prepareEmbeddedDocuments();
-
-        // Apply passive values
-        for (const item of this.items) {
-            for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
-                if (aspect.createEffect || !item.isEnabled) continue;
-                Pl1eAspect.applyPassiveValue(aspect, id, this);
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     * Augment the basic actor data with additional dynamic data. Typically,
-     * you'll want to handle most of your calculated/derived data in this step.
-     * Data calculated in this step should generally not exist in template.json
-     * (such as ability modifiers rather than ability scores) and should be
-     * available both inside and outside of character sheets (such as if an actor
-     * is queried and has a roll executed directly from it).
-     */
-    prepareDerivedData() {
-        super.prepareDerivedData();
-
         const systemData = this.system;
         const actorResources = systemData.resources;
         const actorMisc = systemData.misc;
@@ -192,19 +165,36 @@ export class Pl1eActor extends Actor {
             if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
 
-        // TODO Handle vision
-        // this.prototypeToken.sight.range = actorMisc.nightVisionRange;
-        // this.prototypeToken.detectionModes = [
-        //     {
-        //         enabled: actorMisc.feelTremorRange > 0,
-        //         id: "feelTremor",
-        //         range: actorMisc.feelTremorRange
-        //     }
-        // ]
-
         // Calculate initiative
         actorMisc.initiative = actorMisc.baseInitiative + actorCharacteristics.agility.value +
             actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
+    }
+
+    /** @inheritDoc */
+    async prepareEmbeddedDocuments() {
+        super.prepareEmbeddedDocuments();
+
+        // Apply passive values
+        for (const item of this.items) {
+            for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
+                if (aspect.createEffect || !item.isEnabled) continue;
+                Pl1eAspect.applyPassiveValue(aspect, id, this);
+            }
+        }
+    }
+
+    /**
+     * @inheritDoc
+     * Augment the basic actor data with additional dynamic data. Typically,
+     * you'll want to handle most of your calculated/derived data in this step.
+     * Data calculated in this step should generally not exist in template.json
+     * (such as ability modifiers rather than ability scores) and should be
+     * available both inside and outside of character sheets (such as if an actor
+     * is queried and has a roll executed directly from it).
+     */
+    prepareDerivedData() {
+        super.prepareDerivedData();
+
     }
 
     /** @inheritDoc */

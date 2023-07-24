@@ -252,6 +252,8 @@
   "PL1E.NotEnoughActions": "Not enough actions",
   "PL1E.UsageCost": "Usage cost",
   "PL1E.RemovedUses": "Removed uses",
+  "PL1E.UnconsciousnessDoor": "Unconsciousness door",
+  "PL1E.DeathDoor": "Death door",
   "PL1E.NotEnoughMana": "Not enough mana",
   "PL1E.NotEnoughMoney": "Not enough money",
   "PL1E.NotEnoughStamina": "Not enough stamina",

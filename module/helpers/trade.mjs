@@ -35,12 +35,12 @@ export class Pl1eTrade {
     static async sendContenant(sourceActorId, targetActorId, folderId) {
         // if (game.user.isGM) {
         //     const actor = data.message.speaker.actor;
-        //     const combatant = game.combat.data.combatants.find(c => c.actor.id === actor);
+        //     const combatant.mjs = game.combat.data.combatants.find(c => c.actor.id === actor);
         //     const update = {
-        //         id: combatant.id,
+        //         id: combatant.mjs.id,
         //         initiative: data.update.content
         //     }
-        //     await combatant.update(update);
+        //     await combatant.mjs.update(update);
         // }
     }
 

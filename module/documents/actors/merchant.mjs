@@ -1,4 +1,4 @@
-import {Pl1eActor} from "../actor.mjs";
+import {Pl1eActor} from "./actor.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 
 export class Pl1eMerchant extends Pl1eActor {

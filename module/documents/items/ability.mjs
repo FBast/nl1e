@@ -1,4 +1,4 @@
-import {Pl1eItem} from "../item.mjs";
+import {Pl1eItem} from "./item.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 
 export class Pl1eAbility extends Pl1eItem {

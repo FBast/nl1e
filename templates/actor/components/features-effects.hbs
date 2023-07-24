@@ -9,6 +9,9 @@
                 <label class="item-name item-tooltip-activate">{{label}}</label>
                 <div class="item-controls">
                     <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                    {{#if @root.game.user.isGM}}
+                        <a class="item-control effect-remove" data-tooltip="{{localize "PL1E.Delete"}}"><i class="fas fa-trash"></i></a>
+                    {{/if}}
                 </div>
             </div>
             <div class="item-tooltip"></div>
@@ -31,6 +34,9 @@
                 </div>
                 <div class="item-controls">
                     <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                    {{#if @root.game.user.isGM}}
+                        <a class="item-control effect-remove" data-tooltip="{{localize "PL1E.Delete"}}"><i class="fas fa-trash"></i></a>
+                    {{/if}}
                 </div>
             </div>
             <div class="item-tooltip"></div>
@@ -48,6 +54,9 @@
                 <label class="item-name item-tooltip-activate">{{label}}</label>
                 <div class="item-controls">
                     <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                    {{#if @root.game.user.isGM}}
+                        <a class="item-control effect-remove" data-tooltip="{{localize "PL1E.Delete"}}"><i class="fas fa-trash"></i></a>
+                    {{/if}}
                 </div>
             </div>
             <div class="item-tooltip"></div>

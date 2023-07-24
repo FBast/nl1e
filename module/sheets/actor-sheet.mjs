@@ -1,8 +1,8 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eResting} from "../apps/resting.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
-import {Pl1eActor} from "../documents/actor.mjs";
-import {Pl1eItem} from "../documents/item.mjs";
+import {Pl1eActor} from "../documents/actors/actor.mjs";
+import {Pl1eItem} from "../documents/items/item.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -106,6 +106,7 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
         html.find(".item-buy").on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
         html.find(".effect-edit").on("click", ev => this.onEffectEdit(ev));
+        html.find(".effect-remove").on("click", ev => this.onEffectRemove(ev));
         html.find(".item-link").on("click", ev => this.onItemLink(ev));
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
 
@@ -554,7 +555,7 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Open aspect sheet
+     * Open effect sheet
      * @param {Event} event
      */
     onEffectEdit(event) {
@@ -566,6 +567,19 @@ export class Pl1eActorSheet extends ActorSheet {
         return effect.sheet.render(true, {
             editable: game.user.isGM
         });
+    }
+
+    /**
+     * Remove effect
+     * @param {Event} event
+     */
+    onEffectRemove(event) {
+        event.preventDefault();
+
+        const effectId = $(event.currentTarget).closest(".item").data("effect-id");
+        const effect = this.actor.effects.get(effectId);
+
+        effect.delete();
     }
 
 }

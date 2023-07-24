@@ -1,5 +1,9 @@
 export class Pl1eCombat extends Combat {
 
+    _onCreate(data, options, userId) {
+        super._onCreate(data, options, userId);
+    }
+
     /** @inheritDoc */
     async nextRound() {
         for (const combatant of this.combatants) {
@@ -40,6 +44,8 @@ export class Pl1eCombat extends Combat {
         }
     }
 
+
+
     /**
      * Update all the active effect decreasing their duration
      * @param {Pl1eActor} actor
@@ -74,4 +80,5 @@ export class Pl1eCombat extends Combat {
             await effect.delete();
         }
     }
+
 }

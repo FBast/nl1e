@@ -1,10 +1,10 @@
 import {PL1E} from "./config/config.mjs";
 // Import document classes.
-import {Pl1eActor} from "./documents/actor.mjs";
-import {Pl1eItem} from "./documents/item.mjs";
+import {Pl1eActor} from "./documents/actors/actor.mjs";
+import {Pl1eItem} from "./documents/items/item.mjs";
 // Import subDocument classes
-import {Pl1eActorProxy} from "./documents/actorProxy.mjs";
-import {Pl1eItemProxy} from "./documents/itemProxy.mjs";
+import {Pl1eActorProxy} from "./documents/actors/actorProxy.mjs";
+import {Pl1eItemProxy} from "./documents/items/itemProxy.mjs";
 // Import sheet classes.
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
@@ -18,6 +18,7 @@ import Pl1eHooks from "./main/hooks.mjs";
 import {RegisterSettings} from "./main/settings.mjs";
 import {RegisterHandlebars} from "./main/handlebars.mjs";
 import {GmToolbox} from "./apps/gmToolbox.mjs";
+import {Pl1eCombatant} from "./documents/combatant.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -50,6 +51,7 @@ Hooks.once('init', async function () {
     CONFIG.Item.documentClass = Pl1eItemProxy;
     CONFIG.Combat.documentClass = Pl1eCombat;
     CONFIG.Token.documentClass = Pl1eTokenDocument;
+    CONFIG.Combatant.documentClass = Pl1eCombatant;
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);

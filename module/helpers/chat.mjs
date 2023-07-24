@@ -1,4 +1,4 @@
-import {Pl1eItem} from "../documents/item.mjs";
+import {Pl1eItem} from "../documents/items/item.mjs";
 
 export class Pl1eChat {
 

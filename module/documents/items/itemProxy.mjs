@@ -1,13 +1,13 @@
-import {Pl1eAbility} from "./items/ability.mjs";
-import {Pl1eWeapon} from "./items/weapon.mjs";
-import {Pl1eWearable} from "./items/wearable.mjs";
-import {Pl1eConsumable} from "./items/consumable.mjs";
+import {Pl1eAbility} from "./ability.mjs";
+import {Pl1eWeapon} from "./weapon.mjs";
+import {Pl1eWearable} from "./wearable.mjs";
+import {Pl1eConsumable} from "./consumable.mjs";
 import {Pl1eItem} from "./item.mjs";
-import {Pl1eFeature} from "./items/feature.mjs";
+import {Pl1eFeature} from "./feature.mjs";
 
 const handler = {
     /**
-     * @param {typeof import("./item").Pl1eItem} _
+     * @param {typeof import("./item.mjs").Pl1eItem} _
      * @param {unknown[]} args
      */
     construct(_, args) {
@@ -28,5 +28,5 @@ const handler = {
     }
 };
 
-/** @type {typeof import("./item").Pl1eItem} */
+/** @type {typeof import("./item.mjs").Pl1eItem} */
 export const Pl1eItemProxy = new Proxy(Pl1eItem, handler);

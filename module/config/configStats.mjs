@@ -465,6 +465,20 @@ export function getConfigActor() {
             "path": "system.misc.initiative",
             "hidden": false
         },
+        "unconsciousnessDoor": {
+            "label": "PL1E.UnconsciousnessDoor",
+            "icon": "fa-face-sleeping",
+            "type": "number",
+            "path": "system.misc.unconsciousnessDoor",
+            "hidden": false
+        },
+        "deathDoor": {
+            "label": "PL1E.DeathDoor",
+            "icon": "fa-skull",
+            "type": "number",
+            "path": "system.misc.deathDoor",
+            "hidden": false
+        },
         "flexibility": {
             "label": "PL1E.Flexibility",
             "icon": "fa-weight-hanging",

@@ -2,7 +2,18 @@ import {Pl1eChat} from "../helpers/chat.mjs";
 
 export class Pl1eTokenDocument extends TokenDocument {
 
+    /** @inheritDoc */
+    get isDefeated() {
+        return this.actor.system.resources.health.value <= -this.actor.system.misc.unconsciousnessDoor;
+    }
+
+    get isDead() {
+        return this.actor.system.resources.health.value <= -this.actor.system.misc.deathDoor;
+    }
+
+    /** @inheritDoc */
     async _preUpdate(data, options, user) {
+        // Restrict the token movement
         if ((data.x || data.y) && this.combatant !== null) {
             const currentTokenId = game.combat.current?.tokenId;
             const actorMisc = this.actor.system.misc;
@@ -18,19 +29,32 @@ export class Pl1eTokenDocument extends TokenDocument {
                 delete data.y;
             }
             else {
-                await this.restrictMovement(data);
+                await this._restrictMovement(data);
             }
         }
 
         await super._preUpdate(data, options, user);
     }
 
+    /** @inheritDoc */
+    async _onUpdateBaseActor(update, options) {
+        await this.updateStatusEffects();
+        super._onUpdateBaseActor(update, options);
+    }
+
+    /** @inheritDoc */
+    async _onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
+        await this.updateStatusEffects();
+        super._onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId);
+    }
+
     /**
      * Restrict the movement for the token in combat
      * @param data
      * @return {void}
+     * @private
      */
-    async restrictMovement(data) {
+    async _restrictMovement(data) {
         const actorMisc = this.actor.system.misc;
         const actorVariables = this.actor.system.variables;
         const initialPosition = {x: this.x, y: this.y};
@@ -81,7 +105,33 @@ export class Pl1eTokenDocument extends TokenDocument {
             "system.variables.remainingMovement": actorVariables.remainingMovement,
             "system.variables.usedMovement": actorVariables.usedMovement,
             "system.variables.movementAction": actorVariables.movementAction
-        })
+        });
+    }
+
+    /**
+     * Update the status effects
+     * @return {Promise<void>}
+     * @private
+     */
+    async updateStatusEffects() {
+        // Dead status
+        const deadEffect = CONFIG.statusEffects.find(status => status.id === "dead");
+        const existingDeadEffect = this.actor.effects.find(effect => effect.statuses.has(deadEffect.id));
+        if (!existingDeadEffect && this.isDead) {
+            await this.toggleActiveEffect(deadEffect, { overlay: true, active: true });
+        }
+        else if (existingDeadEffect && !this.isDead) {
+            existingDeadEffect.delete();
+        }
+        // Unconscious status
+        const unconsciousEffect = CONFIG.statusEffects.find(status => status.id === "unconscious");
+        const existingUnconsciousEffect = this.actor.effects.find(effect => effect.statuses.has(unconsciousEffect.id));
+        if (!existingUnconsciousEffect && this.isDefeated) {
+            await this.toggleActiveEffect(unconsciousEffect, { overlay: true, active: true });
+        }
+        else if (existingUnconsciousEffect && !this.isDefeated) {
+            existingUnconsciousEffect.delete();
+        }
     }
 
 }

@@ -1,8 +1,8 @@
-import {Pl1eAspect} from "../helpers/aspect.mjs";
-import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
-import {ActionTemplate} from "./actionTemplate.mjs";
-import {Pl1eChat} from "../helpers/chat.mjs";
+import {Pl1eAspect} from "../../helpers/aspect.mjs";
+import {Pl1eSynchronizer} from "../../helpers/synchronizer.mjs";
+import {Pl1eHelpers} from "../../helpers/helpers.mjs";
+import {ActionTemplate} from "../actionTemplate.mjs";
+import {Pl1eChat} from "../../helpers/chat.mjs";
 
 export class Pl1eItem extends Item {
 
