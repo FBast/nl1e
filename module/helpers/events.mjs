@@ -25,7 +25,10 @@ export class Pl1eEvent {
      */
     static async onTokenEdit(event) {
         const tokenId = $(event.currentTarget).data("token-id");
-        const token = await Pl1eHelpers.getDocument("Token", tokenId);
+        const sceneId = $(event.currentTarget).data("scene-id");
+        const token = await Pl1eHelpers.getDocument("Token", tokenId, {
+            scene: await Pl1eHelpers.getDocument("Scene", sceneId)
+        });
 
         if (token === undefined) throw new Error("PL1E | no token found");
 
@@ -55,11 +58,13 @@ export class Pl1eEvent {
         if (itemId === undefined) itemId = $(event.currentTarget).data("item-id");
         if (itemId === undefined) throw new Error("PL1E | no itemId found");
 
-        if (document === undefined) {
-            const tokenId = $(event.currentTarget).data("token-id");
-            const token = await Pl1eHelpers.getDocument("Token", tokenId);
-            if (token !== undefined) document = token.actor;
-        }
+        //TODO Need a scene to retrieve a token
+
+        // if (document === undefined) {
+        //     const tokenId = $(event.currentTarget).data("token-id");
+        //     const token = await Pl1eHelpers.getDocument("Token", tokenId);
+        //     if (token !== undefined) document = token.actor;
+        // }
         if (document === undefined) throw new Error("PL1E | no document found");
 
         let item;
@@ -268,13 +273,18 @@ export class Pl1eEvent {
     static async onChatCardAction(event) {
         event.preventDefault();
 
+        if (!game.user.isGM) return;
+
         // Extract card data
         const action = $(event.currentTarget).data("action");
         const chatCard = $(event.currentTarget).closest(".chat-card");
         const itemId = chatCard.data("item-id");
         const actorId = chatCard.data("token-id");
+        const sceneId = chatCard.data("scene-id");
 
-        const token = await Pl1eHelpers.getDocument("Token", actorId);
+        const token = await Pl1eHelpers.getDocument("Token", actorId, {
+            "scene": await Pl1eHelpers.getDocument("Scene", sceneId)
+        });
         /** @type {Pl1eItem} */
         const item = token.actor.items.get(itemId);
 

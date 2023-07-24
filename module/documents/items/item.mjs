@@ -53,6 +53,8 @@ export class Pl1eItem extends Item {
             actorId: actor._id,
             token: token,
             tokenId: token?.document._id,
+            scene: token.scene,
+            sceneId: token.scene.id,
             item: this,
             itemId: this._id,
             attributes: {...this.system.attributes},
@@ -548,7 +550,9 @@ export class Pl1eItem extends Item {
         // Reconstruct templates based on actionData flag
         for (const template of characterData.templates) {
             const actionData = template.getFlag("pl1e", "actionData");
-            actionData.token = await Pl1eHelpers.getDocument("Token", actionData.tokenId);
+            actionData.token = await Pl1eHelpers.getDocument("Token", actionData.tokenId, {
+                scene: await Pl1eHelpers.getDocument("Scene", actionData.sceneId)
+            });
             actionData.item = await actionData.token.actor.items.get(actionData.itemId);
             template.actionData = actionData;
         }
@@ -607,6 +611,8 @@ export class Pl1eItem extends Item {
         }
         targetData.actor = actor;
         targetData.actorId = actor._id;
+        targetData.scene = token.scene;
+        targetData.sceneId = token.scene.id;
         targetData.token = token;
         targetData.tokenId = token?.id;
         return targetData;

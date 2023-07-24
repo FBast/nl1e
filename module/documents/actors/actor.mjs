@@ -139,6 +139,7 @@ export class Pl1eActor extends Actor {
         // Handle actorResources scores.
         for (let [id, resource] of Object.entries(actorResources)) {
             const resourceConfig = CONFIG.PL1E.resources[id];
+            resource.max = 0;
             for(let characteristic of resourceConfig.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
             }

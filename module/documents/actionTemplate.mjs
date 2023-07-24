@@ -81,6 +81,8 @@ export class ActionTemplate extends MeasuredTemplate {
         template.actionData = {
             "item": item,
             "itemId": item.id,
+            "scene": token.scene,
+            "sceneId": token.scene.id,
             "token": token,
             "tokenId": token.id,
             "attributes": attributes,
@@ -246,6 +248,7 @@ export class ActionTemplate extends MeasuredTemplate {
         this.template = (await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]))[0];
         await this.template.setFlag("pl1e", "actionData", {
             "itemId": this.document.actionData.itemId,
+            "sceneId": this.document.actionData.sceneId,
             "tokenId": this.document.actionData.tokenId,
             "attributes": this.document.actionData.attributes,
             "activeAspects": this.document.actionData.activeAspects

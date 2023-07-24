@@ -1,4 +1,5 @@
 import {PL1E} from "../config/config.mjs";
+import {Pl1eHelpers} from "./helpers.mjs";
 
 export class Pl1eAspect {
 
@@ -162,13 +163,13 @@ export class Pl1eAspect {
             }
 
             // Add label for Sequence
-            let label = PL1E[aspectCopy.dataGroup][aspectCopy.data].label;
-            aspectCopy.label = `${aspectCopy.value} ${game.i18n.localize(label)}`;
+            aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);
 
-            // Check for existing aspect related to same function
+            // Push the aspect
             targetData.activeAspects ??= [];
-            let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
-            existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
+            // let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
+            // existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
+            targetData.activeAspects.push(aspectCopy)
         }
         return targetsData;
     }
@@ -313,18 +314,25 @@ export class Pl1eAspect {
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         let currentValue = getProperty(targetData.actor, dataConfig.path);
         currentValue = aspect.name === "set" ? aspect.value : currentValue + aspect.value;
+        console.log("Value on apply target aspect : " + currentValue);
         if (game.user.isGM) {
             await targetData.actor.update({
                 [dataConfig.path]: currentValue
             });
         }
         else {
-            CONFIG.PL1E.socket.executeAsGM('updateActor', {
-                actor: targetData.actor,
-                updateData: {
-                    [dataConfig.path]: currentValue
-                }
-            });
+            if (Pl1eHelpers.isGMConnected()) {
+                CONFIG.PL1E.socket.executeAsGM('tokenUpdate', {
+                    tokenId: targetData.tokenId,
+                    sceneId: targetData.sceneId,
+                    updateData: {
+                        [dataConfig.path]: currentValue
+                    }
+                });
+            }
+            else {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoGMConnected"));
+            }
         }
     }
 

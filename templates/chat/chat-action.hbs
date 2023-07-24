@@ -1,7 +1,7 @@
 <div class="chat-card item-card">
     <header class="card-header flexrow">
         <img class="left-image token-edit" src="{{actor.img}}" data-actor-id="{{actor._id}}"
-             title="{{actor.name}}" width="36" height="36"/>
+             data-scene-id="{{characterData.sceneId}}" title="{{actor.name}}" width="36" height="36"/>
         <div class="item-effects-character">
             {{#if (gt actionCost 0)}}
                 <i class="fas fa-clock hover-green" data-tooltip="{{localize "PL1E.ActionCost"}}">

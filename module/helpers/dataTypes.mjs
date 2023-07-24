@@ -13,6 +13,8 @@
  * @property {string} actorId The actor id of the character
  * @property {Token} token The token of the character
  * @property {string} tokenId The token id of the character
+ * @property {Scene} scene The scene where the token is
+ * @property {string} sceneId The id of the scene where the token is
  * @property {Pl1eItem} item The ability itself
  * @property {string} itemId The ability id
  * @property {RollData} rollData The roll data of the character
@@ -30,6 +32,8 @@
  * @typedef {Object} TargetData
  * @property {Actor} actor The actor of the target
  * @property {string} actorId The actor id of the target
+ * @property {Scene} scene The scene where the token is
+ * @property {string} sceneId The id of the scene where the token is
  * @property {Token} token The token of the target
  * @property {string} tokenId The token id of the target
  * @property {object} template The template where this target is in

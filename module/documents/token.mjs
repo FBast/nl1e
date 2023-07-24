@@ -114,6 +114,8 @@ export class Pl1eTokenDocument extends TokenDocument {
      * @private
      */
     async updateStatusEffects() {
+        if (!this.isOwner) return;
+
         // Dead status
         const deadEffect = CONFIG.statusEffects.find(status => status.id === "dead");
         const existingDeadEffect = this.actor.effects.find(effect => effect.statuses.has(deadEffect.id));

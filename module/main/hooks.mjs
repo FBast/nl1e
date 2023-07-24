@@ -80,9 +80,11 @@ export default class Pl1eHooks {
             await Pl1eTrade.sendContenant(data.sourceActorId, data.targetActorId, data.itemId);
         });
         PL1E.socket.register("displaySleeping", GmToolbox.displaySleeping);
-        PL1E.socket.register("updateActor", async function (data) {
-            const actor = await Pl1eHelpers.getDocument("Actor", data.actor._id);
-            await actor.update(data.updateData);
+        PL1E.socket.register("tokenUpdate", async function (data) {
+            const token = await Pl1eHelpers.getDocument("Token", data.tokenId, {
+                scene: await Pl1eHelpers.getDocument("Scene", data.sceneId)
+            });
+            await token.actor.update(data.updateData);
         });
     }
 

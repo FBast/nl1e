@@ -1,4 +1,3 @@
-import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eResting} from "./resting.mjs";
 
 /**
@@ -124,70 +123,110 @@ export class GmToolbox extends FormApplication {
         super.activateListeners(html);
         if (!game.user.isGM) return;
 
-        html.find(`.toolbox-sleep`).on("click", ev => {
-            ev.preventDefault();
-            ev.stopPropagation();
-            const players = game.users.filter(user => user.active && !user.isGM);
-            const playerIds = players.map(player => player.id);
+        html.find(`.toolbox-reset-resources`).on("click", event => this._resetResources(event));
+        html.find(`.toolbox-sleep`).on("click", event => this._sleep(event));
+        html.find(`.toolbox-bonuses`).on("mousedown", event => this._handleBonuses(event));
+        html.find(`.toolbox-advantages`).on("mousedown", event => this._handleAdvantages(event));
+    }
 
-            let abort = false;
-            for (const player of players) {
-                // Return if the player has no associated character
-                if (!player.character) {
-                    ui.notifications.warn(`${game.i18n.localize("PL1E.PlayerHasNoCharacter")} : ${player.name}`);
-                    abort = true;
-                }
-                // Return if the character is in creation mod
-                if (player.character.system.general.creationMod) {
-                    ui.notifications.warn(`${game.i18n.localize("PL1E.CharacterInCreationMode")} : ${player.character.name}`);
-                    abort = true;
-                }
-            }
-            if (abort) return;
+    /**
+     * Reset all resources of the characters of the players
+     * @param event
+     * @private
+     */
+    async _resetResources(event) {
+        const loggedInPlayers = game.users.filter(user => user.active);
 
-            // Execute the socket
-            CONFIG.PL1E.socket.executeForUsers('displaySleeping', playerIds);
-        });
-        html.find(`.toolbox-bonuses`).on("mousedown", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            switch (event.which) {
-                case 1:
-                    // left clic - add 1
-                    this.object.bonuses = Math.min(this.object.bonuses + 1, 2);
-                    break;
-                case 2:
-                    // middle clic - reset to 0
-                    this.object.bonuses = 0;
-                    break;
-                case 3:
-                    // right clic - minus 1
-                    this.object.bonuses = Math.max(this.object.bonuses - 1, -2);
-                    break;
+        for (const player of loggedInPlayers) {
+            const playerCharacters = player.character ? [player.character] : [];
+            for (const actor of playerCharacters) {
+                await actor.update({
+                    "system.resources.health.value": actor.system.resources.health.max,
+                    "system.resources.stamina.value": actor.system.resources.stamina.max,
+                    "system.resources.mana.value": actor.system.resources.mana.max,
+                });
             }
-            game.settings.set("pl1e", "globalBonuses", this.object.bonuses).then(() => this.submit());
-            // this.render(true);
-        });
-        html.find(`.toolbox-advantages`).on("mousedown", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            switch (event.which) {
-                case 1:
-                    // left clic - add 1
-                    this.object.advantages = Math.min(this.object.advantages + 1, 2);
-                    break;
-                case 2:
-                    // middle clic - reset to 0
-                    this.object.advantages = 0;
-                    break;
-                case 3:
-                    // right clic - minus 1
-                    this.object.advantages = Math.max(this.object.advantages - 1, -2);
-                    break;
+        }
+    }
+
+    /**
+     * Execute a socket to display the sleeping app on players
+     * @param event
+     * @private
+     */
+    _sleep(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const players = game.users.filter(user => user.active && !user.isGM);
+        const playerIds = players.map(player => player.id);
+
+        let abort = false;
+        for (const player of players) {
+            // Return if the player has no associated character
+            if (!player.character) {
+                ui.notifications.warn(`${game.i18n.localize("PL1E.PlayerHasNoCharacter")} : ${player.name}`);
+                abort = true;
             }
-            game.settings.set("pl1e", "globalAdvantages", this.object.advantages).then(() => this.submit());
-            // this.render(true);
-        });
+            // Return if the character is in creation mod
+            if (player.character.system.general.creationMod) {
+                ui.notifications.warn(`${game.i18n.localize("PL1E.CharacterInCreationMode")} : ${player.character.name}`);
+                abort = true;
+            }
+        }
+        if (abort) return;
+
+        // Execute the socket
+        CONFIG.PL1E.socket.executeForUsers('displaySleeping', playerIds);
+    }
+
+    /**
+     * Handle the players global bonuses
+     * @param event
+     * @private
+     */
+    _handleBonuses(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        switch (event.which) {
+            case 1:
+                // left clic - add 1
+                this.object.bonuses = Math.min(this.object.bonuses + 1, 2);
+                break;
+            case 2:
+                // middle clic - reset to 0
+                this.object.bonuses = 0;
+                break;
+            case 3:
+                // right clic - minus 1
+                this.object.bonuses = Math.max(this.object.bonuses - 1, -2);
+                break;
+        }
+        game.settings.set("pl1e", "globalBonuses", this.object.bonuses).then(() => this.submit());
+    }
+
+    /**
+     * Handle the players global advantages
+     * @param event
+     * @private
+     */
+    _handleAdvantages(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        switch (event.which) {
+            case 1:
+                // left clic - add 1
+                this.object.advantages = Math.min(this.object.advantages + 1, 2);
+                break;
+            case 2:
+                // middle clic - reset to 0
+                this.object.advantages = 0;
+                break;
+            case 3:
+                // right clic - minus 1
+                this.object.advantages = Math.max(this.object.advantages - 1, -2);
+                break;
+        }
+        game.settings.set("pl1e", "globalAdvantages", this.object.advantages).then(() => this.submit());
     }
 
     /**
@@ -216,4 +255,6 @@ export class GmToolbox extends FormApplication {
         });
         app.render(true);
     }
+
+
 }

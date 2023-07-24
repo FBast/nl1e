@@ -174,7 +174,8 @@ export class Pl1eHelpers {
                     document = game.actors.get(id);
                     break;
                 case "Token":
-                    document = game.scenes.viewed.tokens.get(id);
+                    if (!options.scene) throw new Error("PL1E | getDocument with Token type need a scene as options")
+                    document = options.scene.tokens.get(id)
                     break;
                 case "Macro":
                     document = game.macros.get(id);
@@ -184,6 +185,9 @@ export class Pl1eHelpers {
                     break;
                 case "RollTable":
                     document = game.tables.get(id);
+                    break;
+                case "Scene":
+                    document = game.scenes.get(id);
                     break;
             }
         }
