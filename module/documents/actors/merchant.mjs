@@ -24,8 +24,7 @@ export class Pl1eMerchant extends Pl1eActor {
         systemData.merchantPrices = {};
         for (let item of this.items) {
             if (!["weapon", "wearable", "consumable", "common"].includes(item.type)) continue;
-            let value = Pl1eHelpers.moneyToUnits(item.system.price);
-            value += Math.round(value * (systemData.general.buyModifier / 100));
+            let value = Math.round(Pl1eHelpers.moneyToUnits(item.system.price) * (systemData.general.buyMultiplier / 100));
             systemData.merchantPrices[item._id] = Pl1eHelpers.unitsToMoney(value);
         }
     }

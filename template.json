@@ -323,9 +323,10 @@
       "templates": ["base"],
       "refRollTables": [],
       "general": {
-        "sellModifier": -100,
-        "buyModifier": 0,
-        "unlimitedItems": false
+        "sellMultiplier": -100,
+        "buyMultiplier": 0,
+        "unlimitedItems": false,
+        "hideJunk": false
       }
     }
   },
