@@ -232,9 +232,11 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Other cases
         else {
-            await this.actor.addItem(item);
+            const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
+            await this.actor.addItem(originalItem);
+
             // Delete the source item if it is embedded
-            if (item.isOwned) await item.parent.deleteItem(item);
+            if (item.isOwned) await item.actor.removeItem(item);
         }
     }
 

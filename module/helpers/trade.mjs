@@ -54,6 +54,7 @@ export class Pl1eTrade {
         const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
         await targetActor.addItem(originalItem);
         await sourceActor.removeItem(item);
+
         // Send message for historic
         await Pl1eChat.tradeMessage(item, sourceActor, targetActor, "gift");
     }
@@ -72,9 +73,11 @@ export class Pl1eTrade {
             ["system.money.silver"]: sellerActor.system.money.silver + priceMoney.silver,
             ["system.money.copper"]: sellerActor.system.money.copper + priceMoney.copper,
         });
+
         const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
         if (!buyerActor.system.general.unlimitedItems) await buyerActor.addItem(originalItem);
         await sellerActor.removeItem(item);
+
         // Send message for historic
         await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "sale", priceMoney);
     }
@@ -97,10 +100,11 @@ export class Pl1eTrade {
             ["system.money.silver"]: money.silver,
             ["system.money.copper"]: money.copper,
         });
-        //TODO item.sourceId is null, it seems that merchant item dooes not have sourceId
+
         const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
         await buyerActor.addItem(originalItem);
         if (!sellerActor.system.general.unlimitedItems) await sellerActor.removeItem(item);
+
         // Send message for historic
         await Pl1eChat.tradeMessage(item, buyerActor, sellerActor, "purchase", priceMoney);
     }
