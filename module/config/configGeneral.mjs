@@ -51,7 +51,7 @@ export function getConfigGeneral() {
         "clothes": "PL1E.Clothes",
         "armor": "PL1E.Armor",
         "ring": "PL1E.Ring",
-        "amulet": "PL1E.Amulet"
+        "necklace": "PL1E.Necklace"
     }
 
     PL1E.activations = {

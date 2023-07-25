@@ -14,7 +14,7 @@ export class Pl1eWearable extends Pl1eItem {
         });
 
         // Ignore if not using a slot
-        if (!['clothes', 'armor', 'ring', 'amulet'].includes(slot)) return;
+        if (!['clothes', 'armor', 'ring', 'necklace'].includes(slot)) return;
 
         // If the item is now equipped
         if (this.system.isEquipped) {
@@ -27,8 +27,8 @@ export class Pl1eWearable extends Pl1eItem {
                 if (otherItem === this) continue;
                 // Count same subItems slot
                 if (otherItem.system.isEquipped && otherItem.system.attributes.slot === slot) {
-                    // Unequipped immediately if clothes, armor or amulet
-                    if (['clothes', 'armor', 'amulet'].includes(slot)) {
+                    // Unequipped immediately if clothes, armor or necklace
+                    if (['clothes', 'armor', 'necklace'].includes(slot)) {
                         await otherItem.update({
                             ["system.isEquipped"]: false
                         });

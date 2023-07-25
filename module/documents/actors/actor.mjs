@@ -116,6 +116,33 @@ export class Pl1eActor extends Actor {
     async prepareBaseData() {
         super.prepareBaseData();
 
+    }
+
+    /** @inheritDoc */
+    async prepareEmbeddedDocuments() {
+        super.prepareEmbeddedDocuments();
+
+        // Apply passive values
+        for (const item of this.items) {
+            for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
+                if (aspect.createEffect || !item.isEnabled) continue;
+                Pl1eAspect.applyPassiveValue(aspect, id, this);
+            }
+        }
+    }
+
+    /**
+     * @inheritDoc
+     * Augment the basic actor data with additional dynamic data. Typically,
+     * you'll want to handle most of your calculated/derived data in this step.
+     * Data calculated in this step should generally not exist in template.json
+     * (such as ability modifiers rather than ability scores) and should be
+     * available both inside and outside of character sheets (such as if an actor
+     * is queried and has a roll executed directly from it).
+     */
+    prepareDerivedData() {
+        super.prepareDerivedData();
+
         const systemData = this.system;
         const actorResources = systemData.resources;
         const actorMisc = systemData.misc;
@@ -169,33 +196,6 @@ export class Pl1eActor extends Actor {
         // Calculate initiative
         actorMisc.initiative = actorMisc.baseInitiative + actorCharacteristics.agility.value +
             actorCharacteristics.perception.value + actorCharacteristics.cunning.value + actorCharacteristics.wisdom.value;
-    }
-
-    /** @inheritDoc */
-    async prepareEmbeddedDocuments() {
-        super.prepareEmbeddedDocuments();
-
-        // Apply passive values
-        for (const item of this.items) {
-            for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
-                if (aspect.createEffect || !item.isEnabled) continue;
-                Pl1eAspect.applyPassiveValue(aspect, id, this);
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     * Augment the basic actor data with additional dynamic data. Typically,
-     * you'll want to handle most of your calculated/derived data in this step.
-     * Data calculated in this step should generally not exist in template.json
-     * (such as ability modifiers rather than ability scores) and should be
-     * available both inside and outside of character sheets (such as if an actor
-     * is queried and has a roll executed directly from it).
-     */
-    prepareDerivedData() {
-        super.prepareDerivedData();
-
     }
 
     /** @inheritDoc */

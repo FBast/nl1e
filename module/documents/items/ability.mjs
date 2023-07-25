@@ -38,12 +38,24 @@ export class Pl1eAbility extends Pl1eItem {
         if (!super._canActivate(characterData)) return false;
         const itemAttributes = characterData.attributes;
 
-        if (this.system.attributes.level > 0 && !this.system.isMemorized) {
+        if (itemAttributes.level > 0 && !this.system.isMemorized) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             return false;
         }
         if (itemAttributes.itemLink !== "none" && this._getLinkableItems(characterData).length === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
+            return false;
+        }
+        if (itemAttributes.healthCost > characterData.actor.system.resources.health.value) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughHealth"));
+            return false;
+        }
+        if (itemAttributes.staminaCost > characterData.actor.system.resources.stamina.value) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughStamina"));
+            return false;
+        }
+        if (itemAttributes.manaCost > characterData.actor.system.resources.mana.value) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMana"));
             return false;
         }
         return true;
