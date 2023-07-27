@@ -76,7 +76,8 @@ export class Pl1eChat {
         const transactionTypes = {
             'purchase': game.i18n.localize("PL1E.Purchase"),
             'sale': game.i18n.localize("PL1E.Sale"),
-            'gift': game.i18n.localize("PL1E.Gift")
+            'gift': game.i18n.localize("PL1E.Gift"),
+            'take': game.i18n.localize("PL1E.Take")
         };
 
         // Create the ChatMessage data object

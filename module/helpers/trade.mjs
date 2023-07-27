@@ -79,7 +79,10 @@ export class Pl1eTrade {
         await sellerActor.removeItem(item);
 
         // Send message for historic
-        await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "sale", priceMoney);
+        if (buyerActor.system.general.sellMultiplier === 0)
+            await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "gift");
+        else
+            await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "sale", priceMoney);
     }
 
     /**
@@ -106,7 +109,10 @@ export class Pl1eTrade {
         if (!sellerActor.system.general.unlimitedItems) await sellerActor.removeItem(item);
 
         // Send message for historic
-        await Pl1eChat.tradeMessage(item, buyerActor, sellerActor, "purchase", priceMoney);
+        if (sellerActor.system.general.buyMultiplier === 0)
+            await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "take");
+        else
+            await Pl1eChat.tradeMessage(item, buyerActor, sellerActor, "purchase", priceMoney);
     }
 
 }

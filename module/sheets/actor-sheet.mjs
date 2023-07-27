@@ -224,7 +224,7 @@ export class Pl1eActorSheet extends ActorSheet {
                 return;
             }
             // Player transfer item to a not owned actor
-            CONFIG.PL1E.socket.executeAsGM('sendItem', {
+            CONFIG.PL1E.socket.executeAsGM("sendItem", {
                 sourceActorId: game.user.character._id,
                 targetActorId: this.actor._id,
                 itemId: item._id

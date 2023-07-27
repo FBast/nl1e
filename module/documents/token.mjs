@@ -4,11 +4,11 @@ export class Pl1eTokenDocument extends TokenDocument {
 
     /** @inheritDoc */
     get isDefeated() {
-        return this.actor.system.resources.health.value <= -this.actor.system.misc.unconsciousnessDoor;
+        return this.actor.system.resources.health.value <= -this.actor.system.misc.deathDoor;
     }
 
-    get isDead() {
-        return this.actor.system.resources.health.value <= -this.actor.system.misc.deathDoor;
+    get isUnconscious() {
+        return this.actor.system.resources.health.value <= -this.actor.system.misc.unconsciousnessDoor;
     }
 
     /** @inheritDoc */
@@ -116,24 +116,22 @@ export class Pl1eTokenDocument extends TokenDocument {
     async updateStatusEffects() {
         if (!this.isOwner) return;
 
-        // Dead status
-        const deadEffect = CONFIG.statusEffects.find(status => status.id === "dead");
-        const existingDeadEffect = this.actor.effects.find(effect => effect.statuses.has(deadEffect.id));
-        if (!existingDeadEffect && this.isDead) {
-            await this.toggleActiveEffect(deadEffect, { overlay: true, active: true });
-        }
-        else if (existingDeadEffect && !this.isDead) {
-            existingDeadEffect.delete();
-        }
-        // Unconscious status
-        const unconsciousEffect = CONFIG.statusEffects.find(status => status.id === "unconscious");
-        const existingUnconsciousEffect = this.actor.effects.find(effect => effect.statuses.has(unconsciousEffect.id));
-        if (!existingUnconsciousEffect && this.isDefeated) {
-            await this.toggleActiveEffect(unconsciousEffect, { overlay: true, active: true });
-        }
-        else if (existingUnconsciousEffect && !this.isDefeated) {
-            existingUnconsciousEffect.delete();
-        }
+        // Helper function to handle toggling status effects
+        const toggleStatusEffect = async (statusEffectId, isActive) => {
+            const activeEffect = this.actor.effects.find(effect => effect.statuses.has(statusEffectId));
+            const statusEffect = CONFIG.statusEffects.find(status => status.id === statusEffectId);
+            if (!activeEffect && isActive) {
+                // await this.actor.createEmbeddedDocuments("ActiveEffect", [statusEffect])
+                await this.toggleActiveEffect(statusEffect, {overlay: true, active: true});
+            }
+            else if (activeEffect && !isActive) {
+                // await this.actor.deleteEmbeddedDocuments("ActiveEffect", [activeEffect.id])
+                await this.toggleActiveEffect(statusEffect, { overlay: false, active: false });
+            }
+        };
+
+        // await toggleStatusEffect("unconscious", this.isUnconscious);
+        await toggleStatusEffect("dead", this.isDefeated);
     }
 
 }
