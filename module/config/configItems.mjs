@@ -306,12 +306,11 @@ export function getConfigItems() {
         {
             "name": "status",
             "value": 0,
-            "dataGroup": "status",
+            "dataGroup": "statuses",
             "data": "dead",
             "targetGroup": "all",
-            "effectType": "permanent",
+            "statusType": "permanent",
             "effectDuration": 1,
-            "effectDurationResolutionType": "value",
             "effectIcon": "icons/svg/aura.svg"
         }
     ]
@@ -361,7 +360,7 @@ export function getConfigItems() {
             "label": "PL1E.Status",
             "img": "icons/svg/aura.svg",
             "dataGroups": {
-                "status": "PL1E.Status"
+                "statuses": "PL1E.Statuses"
             }
         }
     }

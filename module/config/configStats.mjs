@@ -589,50 +589,43 @@ export function getConfigActor() {
         }
     }
 
-    PL1E.status = {
+    PL1E.statuses = {
         "dead": {
             "label": "PL1E.Dead",
             "img": "icons/svg/skull.svg",
-            "type": "bool",
-            "path": "system.status.dead"
+            "type": "bool"
         },
         "unconscious": {
             "label": "PL1E.Unconscious",
             "img": "icons/svg/unconscious.svg",
-            "type": "bool",
-            "path": "system.status.unconscious"
+            "type": "bool"
         },
-        "asleep": {
+        "sleep": {
             "label": "PL1E.Asleep",
             "img": "icons/svg/sleep.svg",
-            "type": "bool",
-            "path": "system.status.asleep"
+            "type": "bool"
         },
-        "stunned": {
+        "stun": {
             "label": "PL1E.Stunned",
             "img": "icons/svg/daze.svg",
-            "type": "bool",
-            "path": "system.status.stunned"
+            "type": "bool"
         },
         "prone": {
             "label": "PL1E.Prone",
             "img": "icons/svg/falling.svg",
-            "type": "bool",
-            "path": "system.status.prone"
+            "type": "bool"
         },
-        "restrained": {
+        "restrain": {
             "label": "PL1E.Restrained",
             "img": "icons/svg/net.svg",
-            "type": "bool",
-            "path": "system.status.restrained"
+            "type": "bool"
         },
-        "paralysed": {
+        "paralysis": {
             "label": "PL1E.Paralysed",
             "img": "icons/svg/paralysis.svg",
-            "type": "bool",
-            "path": "system.status.paralysed"
+            "type": "bool"
         },
-        "flying": {
+        "fly": {
             "label": "PL1E.Flying",
             "img": "icons/svg/wing.svg",
             "type": "bool",
@@ -641,56 +634,65 @@ export function getConfigActor() {
         "blind": {
             "label": "PL1E.Blind",
             "img": "icons/svg/blind.svg",
-            "type": "bool",
-            "path": "system.status.blind"
+            "type": "bool"
         },
         "deaf": {
             "label": "PL1E.Deaf",
             "img": "icons/svg/deaf.svg",
-            "type": "bool",
-            "path": "system.status.deaf"
+            "type": "bool"
         },
-        "silenced": {
+        "silence": {
             "label": "PL1E.Silenced",
             "img": "icons/svg/silenced.svg",
-            "type": "bool",
-            "path": "system.status.silenced"
+            "type": "bool"
         },
-        "frightened": {
+        "fear": {
             "label": "PL1E.Frightened",
             "img": "icons/svg/terror.svg",
-            "type": "bool",
-            "path": "system.status.frightened"
+            "type": "bool"
         },
-        "cursed": {
-            "label": "PL1E.Cursed",
-            "img": "icons/svg/sun.svg",
-            "type": "bool",
-            "path": "system.status.cursed"
+        "disease": {
+            "label": "PL1E.Disease",
+            "img": "icons/svg/terror.svg",
+            "type": "bool"
         },
-        "invisible": {
-            "label": "PL1E.Invisible",
-            "img": "icons/svg/invisible.svg",
-            "type": "bool",
-            "path": "system.status.invisible"
+        "upgrade": {
+            "label": "PL1E.Upgrade",
+            "img": "icons/svg/target.svg",
+            "type": "bool"
         },
-        "targeted": {
+        "downgrade": {
+            "label": "PL1E.Downgrade",
+            "img": "icons/svg/target.svg",
+            "type": "bool"
+        },
+        "target": {
             "label": "PL1E.Targeted",
             "img": "icons/svg/target.svg",
-            "type": "bool",
-            "path": "system.status.targeted"
+            "type": "bool"
         },
-        "marked": {
+        "eye": {
             "label": "PL1E.Marked",
             "img": "icons/svg/eye.svg",
             "type": "bool",
             "path": "system.status.marked"
         },
-        "blessed": {
+        "curse": {
+            "label": "PL1E.Cursed",
+            "img": "icons/svg/sun.svg",
+            "type": "bool",
+            "path": "system.status.cursed"
+        },
+        "bless": {
             "label": "PL1E.Blessed",
             "img": "icons/svg/angel.svg",
             "type": "bool",
             "path": "system.status.blessed"
+        },
+        "invisible": {
+            "label": "PL1E.Invisible",
+            "img": "icons/svg/invisible.svg",
+            "type": "bool"
         },
         "slashingImmunity": {
             "label": "PL1E.SlashingImmunity",

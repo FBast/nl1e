@@ -260,7 +260,56 @@ export class Pl1eAspect {
      * @private
      */
     static async _status(aspect, characterData, targetsData) {
-        throw new Error("Not implemented yet");
+        for (const targetData of targetsData) {
+            // Check targetGroup validation for aspect
+            if (!this._isTargetValid(aspect.targetGroup, targetData.token, characterData.token)) continue;
+
+            // Copy the aspect to calculate the new values
+            let aspectCopy = JSON.parse(JSON.stringify(aspect));
+
+            // Modify duration or skip based on statusType
+            switch (aspectCopy.statusType) {
+                case "permanentIfSuccess":
+                    if (targetData.result <= 0) continue;
+                    break;
+                case "durationFromSuccess":
+                    if (targetData.result <= 0) continue;
+                    aspectCopy.duration = targetData.result;
+                    break;
+                case "durationIfSuccess":
+                    if (targetData.result <= 0) continue;
+                    break;
+            }
+
+            // Create the status
+            const statusEffect = CONFIG.statusEffects.find(status => status.id === aspectCopy.data);
+            if (!statusEffect) throw new Error("PL1E | no status corresponding to " + aspectCopy.data);
+            const activeEffect = targetData.actor.effects.find(effect => effect.statuses.has(aspectCopy.data));
+            if (!activeEffect) {
+                const effectData = {
+                    label: statusEffect.label, // You can customize other properties here if needed
+                    icon: statusEffect.icon,
+                    changes: [], // This should be an array of changes the effect applies, leave empty for a visual/status effect only
+                    duration: {
+                        rounds: aspectCopy.effectDuration,
+                    },
+                    flags: {
+                        core: {
+                            statusId: statusEffect.id // Store the status effect ID in the flags
+                        }
+                    }
+                };
+                await targetData.actor.createEmbeddedDocuments("ActiveEffect", [effectData])
+            }
+
+            // Add label for Sequence
+            aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);
+
+            // Push the aspect
+            targetData.activeAspects ??= [];
+            targetData.activeAspects.push(aspectCopy)
+        }
+        return targetsData;
     }
 
     /**
