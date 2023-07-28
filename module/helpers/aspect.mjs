@@ -155,7 +155,7 @@ export class Pl1eAspect {
 
             if (aspectCopy.createEffect) {
                 // Create the effect
-                await this._createActiveEffect(aspectCopy, aspectCopy._id, targetData.actor, characterData.item, characterData.result);
+                await this._createActiveEffect(aspectCopy, characterData, targetData);
             }
             else {
                 // Apply the aspect
@@ -274,7 +274,7 @@ export class Pl1eAspect {
                     break;
                 case "durationFromSuccess":
                     if (targetData.result <= 0) continue;
-                    aspectCopy.duration = targetData.result;
+                    aspectCopy.effectDuration = targetData.result;
                     break;
                 case "durationIfSuccess":
                     if (targetData.result <= 0) continue;
@@ -287,15 +287,16 @@ export class Pl1eAspect {
             const activeEffect = targetData.actor.effects.find(effect => effect.statuses.has(aspectCopy.data));
             if (!activeEffect) {
                 const effectData = {
-                    label: statusEffect.label, // You can customize other properties here if needed
+                    label: statusEffect.label,
                     icon: statusEffect.icon,
-                    changes: [], // This should be an array of changes the effect applies, leave empty for a visual/status effect only
+                    changes: [],
                     duration: {
                         rounds: aspectCopy.effectDuration,
                     },
                     flags: {
                         core: {
-                            statusId: statusEffect.id // Store the status effect ID in the flags
+                            sourceId: characterData.actorId,
+                            statusId: statusEffect.id
                         }
                     }
                 };
@@ -315,18 +316,16 @@ export class Pl1eAspect {
     /**
      * Create an active effect
      * @param {Object} aspect
-     * @param {string} aspectId
-     * @param {Pl1eActor} actor
-     * @param {Pl1eItem} item
-     * @param {number} result
+     * @param {CharacterData} characterData
+     * @param {TargetData} targetData
      * @returns {Promise<void>}
      * @private
      */
-    static async _createActiveEffect(aspect, aspectId, actor, item, result) {
+    static async _createActiveEffect(aspect, characterData, targetData) {
         // Calculate duration
         let effectDuration = aspect.effectDuration;
-        if (aspect.effectDurationResolutionType === "valueIfSuccess" && result <= 0) effectDuration = 0;
-        else if (aspect.effectDurationResolutionType === "multiplyBySuccess") effectDuration *= result;
+        if (aspect.effectDurationResolutionType === "valueIfSuccess" && characterData.result <= 0) effectDuration = 0;
+        else if (aspect.effectDurationResolutionType === "multiplyBySuccess") effectDuration *= characterData.result;
         aspect.effectDuration = effectDuration;
 
         // Abort if the duration is null
@@ -338,7 +337,7 @@ export class Pl1eAspect {
         const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`
 
         // Create effect
-        await actor.createEmbeddedDocuments("ActiveEffect", [{
+        await targetData.actor.createEmbeddedDocuments("ActiveEffect", [{
             name: name,
             icon: aspect.effectIcon,
             tint: aspect.effectIconTint,
@@ -352,8 +351,9 @@ export class Pl1eAspect {
             },
             flags: {
                 pl1e: {
-                    itemId: item._id,
-                    aspectId: aspectId
+                    sourceId: characterData.actorId,
+                    itemId: characterData.item._id,
+                    aspectId: aspect._id
                 }
             }
         }]);

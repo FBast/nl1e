@@ -18,7 +18,7 @@ import Pl1eHooks from "./main/hooks.mjs";
 import {RegisterSettings} from "./main/settings.mjs";
 import {RegisterHandlebars} from "./main/handlebars.mjs";
 import {GmToolbox} from "./apps/gmToolbox.mjs";
-import {Pl1eCombatant} from "./documents/combatant.mjs";
+import {RegisterStatuses} from "./main/statuses.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -51,7 +51,6 @@ Hooks.once('init', async function () {
     CONFIG.Item.documentClass = Pl1eItemProxy;
     CONFIG.Combat.documentClass = Pl1eCombat;
     CONFIG.Token.documentClass = Pl1eTokenDocument;
-    CONFIG.Combatant.documentClass = Pl1eCombatant;
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
@@ -61,6 +60,9 @@ Hooks.once('init', async function () {
     DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", Pl1eJournalPageSheet, {
         types: ["location", "organization"]
     })
+
+    // Register custom statuses
+    RegisterStatuses();
 
     // Register custom system settings
     RegisterSettings();

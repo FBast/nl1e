@@ -4,11 +4,11 @@ export class Pl1eTokenDocument extends TokenDocument {
 
     /** @inheritDoc */
     get isDefeated() {
-        return this.actor.system.resources.health.value <= -this.actor.system.misc.deathDoor;
+        return this.actor.isDead;
     }
 
-    get isUnconscious() {
-        return this.actor.system.resources.health.value <= -this.actor.system.misc.unconsciousnessDoor;
+    get isInComa() {
+        return this.actor.isInComa;
     }
 
     /** @inheritDoc */
@@ -20,6 +20,16 @@ export class Pl1eTokenDocument extends TokenDocument {
             const actorVariables = this.actor.system.variables;
             if (currentTokenId !== this.id) {
                 ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
+                delete data.x;
+                delete data.y;
+            }
+            else if (this.actor.effects.find(effect => effect.statuses.has("paralysis"))) {
+                ui.notifications.warn(game.i18n.localize("PL1E.YouAreParalysed"));
+                delete data.x;
+                delete data.y;
+            }
+            else if (this.actor.effects.find(effect => effect.statuses.has("restrain"))) {
+                ui.notifications.warn(game.i18n.localize("PL1E.YouAreRestrained"));
                 delete data.x;
                 delete data.y;
             }
@@ -38,13 +48,13 @@ export class Pl1eTokenDocument extends TokenDocument {
 
     /** @inheritDoc */
     async _onUpdateBaseActor(update, options) {
-        await this.updateStatusEffects();
+        // await this.updateStatusEffects();
         super._onUpdateBaseActor(update, options);
     }
 
     /** @inheritDoc */
     async _onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
-        await this.updateStatusEffects();
+        // await this.updateStatusEffects();
         super._onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId);
     }
 
@@ -106,32 +116,6 @@ export class Pl1eTokenDocument extends TokenDocument {
             "system.variables.usedMovement": actorVariables.usedMovement,
             "system.variables.movementAction": actorVariables.movementAction
         });
-    }
-
-    /**
-     * Update the status effects
-     * @return {Promise<void>}
-     * @private
-     */
-    async updateStatusEffects() {
-        if (!this.isOwner) return;
-
-        // Helper function to handle toggling status effects
-        const toggleStatusEffect = async (statusEffectId, isActive) => {
-            const activeEffect = this.actor.effects.find(effect => effect.statuses.has(statusEffectId));
-            const statusEffect = CONFIG.statusEffects.find(status => status.id === statusEffectId);
-            if (!activeEffect && isActive) {
-                // await this.actor.createEmbeddedDocuments("ActiveEffect", [statusEffect])
-                await this.toggleActiveEffect(statusEffect, {overlay: true, active: true});
-            }
-            else if (activeEffect && !isActive) {
-                // await this.actor.deleteEmbeddedDocuments("ActiveEffect", [activeEffect.id])
-                await this.toggleActiveEffect(statusEffect, { overlay: false, active: false });
-            }
-        };
-
-        // await toggleStatusEffect("unconscious", this.isUnconscious);
-        await toggleStatusEffect("dead", this.isDefeated);
     }
 
 }

@@ -7,17 +7,26 @@ export class Pl1eCombat extends Combat {
     /** @inheritDoc */
     async nextRound() {
         for (const combatant of this.combatants) {
-            await this.resetCombatStats(combatant.actor);
-            await this.updateActiveEffects(combatant.actor);
+            await this._resetCombatStats(combatant.actor);
         }
         return super.nextRound();
     }
 
     /** @inheritDoc */
+    async nextTurn() {
+        /** @type {Combat} */
+        const combat = await super.nextTurn();
+        for (const combatant of this.combatants) {
+            await this._decreaseEffectsDuration(combat.combatant, combatant.actor);
+        }
+        return combat;
+    }
+
+    /** @inheritDoc */
     async endCombat() {
         for (const combatant of this.combatants) {
-            await this.resetCombatStats(combatant.actor);
-            await this.deleteActiveEffects(combatant.actor);
+            await this._resetCombatStats(combatant.actor);
+            await this._deleteActiveEffects(combatant.actor);
         }
         return super.endCombat();
     }
@@ -26,8 +35,9 @@ export class Pl1eCombat extends Combat {
      * Reset all the combat stats of the actor
      * @param {Pl1eActor} actor
      * @return {Promise<void>}
+     * @private
      */
-    async resetCombatStats(actor) {
+    async _resetCombatStats(actor) {
         await actor.update({
             "system.misc.action": 2,
             "system.misc.reaction": 1,
@@ -44,16 +54,17 @@ export class Pl1eCombat extends Combat {
         }
     }
 
-
-
     /**
-     * Update all the active effect decreasing their duration
-     * @param {Pl1eActor} actor
+     * Decrease the duration of the effects linked to this combatant
+     * @param {Combatant} combatant the related combatant
+     * @param {Actor} actor the actor of the effects
      * @return {Promise<void>}
+     * @private
      */
-    async updateActiveEffects(actor) {
+    async _decreaseEffectsDuration(combatant, actor) {
         for (const effect of actor.effects) {
             if (effect.getFlag("pl1e", "permanent")) continue;
+            if (effect.getFlag("core", "sourceId") !== combatant.actor.id) continue;
             const duration = effect.data.duration;
             if (duration.rounds > 0) {
                 duration.rounds -= 1;
@@ -61,7 +72,8 @@ export class Pl1eCombat extends Combat {
                 // If the rounds reach 0, remove the effect
                 if (duration.rounds === 0) {
                     await effect.delete();
-                } else {
+                }
+                else {
                     // Update the duration of the effect
                     await effect.update({duration});
                 }
@@ -73,8 +85,9 @@ export class Pl1eCombat extends Combat {
      * Remove all active effects
      * @param {Pl1eActor} actor
      * @return {Promise<void>}
+     * @private
      */
-    async deleteActiveEffects(actor) {
+    async _deleteActiveEffects(actor) {
         for (const effect of actor.effects) {
             if (effect.getFlag("pl1e", "permanent")) continue;
             await effect.delete();

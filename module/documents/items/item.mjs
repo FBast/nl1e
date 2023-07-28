@@ -198,7 +198,7 @@ export class Pl1eItem extends Item {
                 if (actorItem.sourceId !== this._id) continue;
                 const itemToRemove = actor.items.find(otherItem => otherItem.sourceId === item._id &&
                     otherItem.childId === actorItem.parentId)
-                await actor.removeItem(itemToRemove);
+                if (itemToRemove) await actor.removeItem(itemToRemove);
             }
         }
     }

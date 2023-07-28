@@ -11,6 +11,14 @@ export class Pl1eActor extends Actor {
         return this.getFlag("pl1e", "sourceId");
     }
 
+    get isDead() {
+        return this.system.resources.health.value <= -this.system.misc.deathDoor;
+    }
+
+    get isInComa() {
+        return this.system.resources.health.value <= -this.system.misc.comaDoor;
+    }
+
     /**
      * Seek for any token which represent this actor
      * @returns {Token | null}
@@ -129,6 +137,29 @@ export class Pl1eActor extends Actor {
                 Pl1eAspect.applyPassiveValue(aspect, id, this);
             }
         }
+
+        // Add effect based on conditions
+        const toggleStatusEffect = async (statusEffectId, isActive) => {
+            const activeEffect = this.effects.find(effect => effect.statuses.has(statusEffectId));
+            const statusEffect = CONFIG.statusEffects.find(status => status.id === statusEffectId);
+            if (!activeEffect && isActive) {
+                await this.createEmbeddedDocuments("ActiveEffect", [{
+                    label: statusEffect.label,
+                    icon: statusEffect.icon,
+                    changes: [],
+                    flags: {
+                        core: {
+                            statusId: statusEffect.id
+                        }
+                    }
+                }]);
+            }
+            else if (activeEffect && !isActive) {
+                await this.deleteEmbeddedDocuments("ActiveEffect", [activeEffect._id]);
+            }
+        };
+        await toggleStatusEffect("dead", this.isDead);
+        await toggleStatusEffect("coma", this.isInComa);
     }
 
     /**

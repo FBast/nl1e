@@ -176,9 +176,9 @@ export class Pl1eActorSheet extends ActorSheet {
             if (!rollTable) throw new Error(`PL1E | No roll table found with UUID ${data.uuid}`);
 
             await this.actor.addRefRollTable(rollTable);
-            this.render();
         }
 
+        this.render();
         super._onDrop(event);
     }
 

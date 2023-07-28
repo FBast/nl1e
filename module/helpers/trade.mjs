@@ -27,24 +27,6 @@ export class Pl1eTrade {
     }
 
     /**
-     * Send item from sourceActor to target targetActor
-     * @param {string} sourceActorId the source actor
-     * @param {string} targetActorId the target actor
-     * @param {string} folderId the send folder
-     */
-    static async sendContenant(sourceActorId, targetActorId, folderId) {
-        // if (game.user.isGM) {
-        //     const actor = data.message.speaker.actor;
-        //     const combatant.mjs = game.combat.data.combatants.find(c => c.actor.id === actor);
-        //     const update = {
-        //         id: combatant.mjs.id,
-        //         initiative: data.update.content
-        //     }
-        //     await combatant.mjs.update(update);
-        // }
-    }
-
-    /**
      * Give an item to another player
      * @param {Pl1eActor} sourceActor
      * @param {Pl1eActor} targetActor
