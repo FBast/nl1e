@@ -1,5 +1,6 @@
 import {PL1E} from "../config/config.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
+import {Pl1eEffect} from "./activeEffect.mjs";
 
 export class Pl1eAspect {
 
@@ -155,7 +156,7 @@ export class Pl1eAspect {
 
             if (aspectCopy.createEffect) {
                 // Create the effect
-                await this._createActiveEffect(aspectCopy, characterData, targetData);
+                await Pl1eEffect.createActiveEffect(aspectCopy, characterData, targetData);
             }
             else {
                 // Apply the aspect
@@ -282,26 +283,16 @@ export class Pl1eAspect {
             }
 
             // Create the status
-            const statusEffect = CONFIG.statusEffects.find(status => status.id === aspectCopy.data);
-            if (!statusEffect) throw new Error("PL1E | no status corresponding to " + aspectCopy.data);
-            const activeEffect = targetData.actor.effects.find(effect => effect.statuses.has(aspectCopy.data));
-            if (!activeEffect) {
-                const effectData = {
-                    label: statusEffect.label,
-                    icon: statusEffect.icon,
-                    changes: [],
-                    duration: {
-                        rounds: aspectCopy.effectDuration,
-                    },
-                    flags: {
-                        core: {
-                            sourceId: characterData.actorId,
-                            statusId: statusEffect.id
-                        }
+            await Pl1eEffect.createStatusEffect(targetData.actor, aspectCopy.data, {
+                duration: {
+                    rounds: aspectCopy.effectDuration
+                },
+                flags: {
+                    core: {
+                        sourceId: characterData.actorId
                     }
-                };
-                await targetData.actor.createEmbeddedDocuments("ActiveEffect", [effectData])
-            }
+                }
+            });
 
             // Add label for Sequence
             aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);
@@ -311,52 +302,6 @@ export class Pl1eAspect {
             targetData.activeAspects.push(aspectCopy)
         }
         return targetsData;
-    }
-
-    /**
-     * Create an active effect
-     * @param {Object} aspect
-     * @param {CharacterData} characterData
-     * @param {TargetData} targetData
-     * @returns {Promise<void>}
-     * @private
-     */
-    static async _createActiveEffect(aspect, characterData, targetData) {
-        // Calculate duration
-        let effectDuration = aspect.effectDuration;
-        if (aspect.effectDurationResolutionType === "valueIfSuccess" && characterData.result <= 0) effectDuration = 0;
-        else if (aspect.effectDurationResolutionType === "multiplyBySuccess") effectDuration *= characterData.result;
-        aspect.effectDuration = effectDuration;
-
-        // Abort if the duration is null
-        if (aspect.effectDuration <= 0) return;
-
-        // Get configuration data
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-        const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
-        const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`
-
-        // Create effect
-        await targetData.actor.createEmbeddedDocuments("ActiveEffect", [{
-            name: name,
-            icon: aspect.effectIcon,
-            tint: aspect.effectIconTint,
-            changes: [{
-                key: dataConfig.path,
-                mode: aspect.name === "set" ? 5 : 2,
-                value: aspect.value
-            }],
-            duration: {
-                rounds: effectDuration
-            },
-            flags: {
-                pl1e: {
-                    sourceId: characterData.actorId,
-                    itemId: characterData.item._id,
-                    aspectId: aspect._id
-                }
-            }
-        }]);
     }
 
     static async _applyTargetAspect(aspect, targetData) {

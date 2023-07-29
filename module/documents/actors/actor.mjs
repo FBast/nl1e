@@ -1,5 +1,6 @@
 import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
+import {Pl1eEffect} from "../../helpers/activeEffect.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -139,27 +140,8 @@ export class Pl1eActor extends Actor {
         }
 
         // Add effect based on conditions
-        const toggleStatusEffect = async (statusEffectId, isActive) => {
-            const activeEffect = this.effects.find(effect => effect.statuses.has(statusEffectId));
-            const statusEffect = CONFIG.statusEffects.find(status => status.id === statusEffectId);
-            if (!activeEffect && isActive) {
-                await this.createEmbeddedDocuments("ActiveEffect", [{
-                    label: statusEffect.label,
-                    icon: statusEffect.icon,
-                    changes: [],
-                    flags: {
-                        core: {
-                            statusId: statusEffect.id
-                        }
-                    }
-                }]);
-            }
-            else if (activeEffect && !isActive) {
-                await this.deleteEmbeddedDocuments("ActiveEffect", [activeEffect._id]);
-            }
-        };
-        await toggleStatusEffect("dead", this.isDead);
-        await toggleStatusEffect("coma", this.isInComa);
+        await Pl1eEffect.toggleStatusEffect(this, "dead", this.isDead);
+        await Pl1eEffect.toggleStatusEffect(this, "coma", this.isInComa);
     }
 
     /**

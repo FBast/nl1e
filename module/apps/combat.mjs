@@ -16,6 +16,7 @@ export class Pl1eCombat extends Combat {
     async nextTurn() {
         /** @type {Combat} */
         const combat = await super.nextTurn();
+        await this._applyContinuousEffects(combat.combatant.actor);
         for (const combatant of this.combatants) {
             await this._decreaseEffectsDuration(combat.combatant, combatant.actor);
         }
@@ -50,6 +51,21 @@ export class Pl1eCombat extends Combat {
                 await item.update({
                     "system.isMajorActionUsed": false
                 });
+            }
+        }
+    }
+
+    /**
+     * Apply the continuous effects of the actor
+     * @param {Actor} actor
+     * @return {Promise<void>}
+     * @private
+     */
+    async _applyContinuousEffects(actor) {
+        for (const effect of actor.effects) {
+            if (!effect.getFlag("pl1e", "continuous")) continue;
+            for (const change of effect.changes) {
+
             }
         }
     }
