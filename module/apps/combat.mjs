@@ -62,10 +62,16 @@ export class Pl1eCombat extends Combat {
      * @private
      */
     async _applyContinuousEffects(actor) {
-        // Coma status decrease health
+        // Coma status
         if (actor.statuses.has("coma")) {
             await actor.update({
                 "system.resources.health.value": actor.system.resources.health.value - 1
+            });
+        }
+        // Prone status
+        if (actor.statuses.has("prone")) {
+            await actor.update({
+                "system.misc.action": actor.system.misc.action - 1
             });
         }
         // Continuous active effects
@@ -87,7 +93,11 @@ export class Pl1eCombat extends Combat {
     async _decreaseEffectsDuration(combatant, actor) {
         for (const effect of actor.effects) {
             if (effect.getFlag("pl1e", "permanent")) continue;
-            if (effect.getFlag("core", "sourceId") !== combatant.actor.id) continue;
+            const sourceId = effect.getFlag("core", "sourceId");
+            // With a source id the effect decrease on the source actor turn
+            if (sourceId && sourceId !== combatant.actor.id) continue;
+            // Without source id the effect decrease on the actor turn
+            if (!sourceId && combatant.actor !== actor) continue;
             const duration = effect.data.duration;
             if (duration.rounds > 0) {
                 duration.rounds -= 1;

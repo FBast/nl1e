@@ -447,8 +447,11 @@
   "PL1E.StatusMarked": "Marked",
   "PL1E.StatusBlessed": "Blessed",
   "PL1E.StatusCursed": "Cursed",
-  "PL1E.StatusFireShield": "FireShield",
-  "PL1E.StatusIceShield": "IceShield",
-  "PL1E.StatusShockShield": "ShockShield",
-  "PL1E.StatusAcidShield": "AcidShield"
+  "PL1E.StatusSlashingImmunity": "Slashing immunity",
+  "PL1E.StatusCrushingImmunity": "Crushing immunity",
+  "PL1E.StatusPiercingImmunity": "Piercing immunity",
+  "PL1E.StatusFireImmunity": "Fire immunity",
+  "PL1E.StatusColdImmunity": "Cold immunity",
+  "PL1E.StatusShockImmunity": "Shock immunity",
+  "PL1E.StatusAcidImmunity": "Acid immunity"
 }

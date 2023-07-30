@@ -6,6 +6,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusDead",
             icon: "icons/svg/skull.svg",
             changes: [],
+            duration: {},
             flags: {
                 pl1e: {
                     permanent: true
@@ -18,6 +19,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusComa",
             icon: "systems/pl1e/assets/icons/coma.svg",
             changes: [], // Coma health decrease is handled from Combat class
+            duration: {},
             flags: {
                 pl1e: {
                     permanent: true
@@ -30,6 +32,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusUnconscious",
             icon: "icons/svg/unconscious.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
@@ -38,6 +41,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusAsleep",
             icon: "icons/svg/sleep.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
@@ -55,6 +59,7 @@ export const registerStatuses = function () {
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
+            duration: {},
             flags: {}
         },
         {
@@ -63,6 +68,9 @@ export const registerStatuses = function () {
             label: "PL1E.StatusProne",
             icon: "icons/svg/falling.svg",
             changes: [],
+            duration: {
+                rounds: 1
+            },
             flags: {}
         },
         {
@@ -71,14 +79,16 @@ export const registerStatuses = function () {
             label: "PL1E.StatusRestrained",
             icon: "icons/svg/net.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
-            // No effects
+            //
             id: "paralysis",
             label: "PL1E.StatusParalysis",
             icon: "icons/svg/paralysis.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
@@ -87,6 +97,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusFlying",
             icon: "icons/svg/wing.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
@@ -95,6 +106,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusBlind",
             icon: "icons/svg/blind.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
@@ -103,6 +115,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusDeaf",
             icon: "icons/svg/deaf.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
@@ -111,22 +124,63 @@ export const registerStatuses = function () {
             label: "PL1E.StatusSilenced",
             icon: "icons/svg/silenced.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
-            // No effects
+            // Reduce mind characteristics by one
             id: "fear",
             label: "PL1E.StatusFear",
             icon: "icons/svg/terror.svg",
-            changes: [],
+            changes: [{
+                key: "system.characteristics.intellect.mods",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            },
+            {
+                key: "system.characteristics.cunning.mods",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            },
+            {
+                key: "system.characteristics.wisdom.mods",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            },
+            {
+                key: "system.characteristics.will.mods",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            }],
+            duration: {},
             flags: {}
         },
         {
-            // No effects
+            // Reduce body characteristics by one
             id: "disease",
             label: "PL1E.StatusDisease",
             icon: "icons/svg/biohazard.svg",
-            changes: [],
+            changes: [{
+                key: "system.characteristics.strength.mods",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            },
+            {
+                key: "system.characteristics.agility.mods",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            },
+            {
+                key: "system.characteristics.perception.mods",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            },
+            {
+                key: "system.characteristics.constitution.mods",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            }],
+            duration: {},
             flags: {}
         },
         {
@@ -139,6 +193,7 @@ export const registerStatuses = function () {
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
+            duration: {},
             flags: {}
         },
         {
@@ -151,6 +206,7 @@ export const registerStatuses = function () {
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
+            duration: {},
             flags: {}
         },
         {
@@ -159,6 +215,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusInvisible",
             icon: "icons/svg/invisible.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
@@ -167,6 +224,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusTarget",
             icon: "icons/svg/target.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
@@ -175,6 +233,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusMarked",
             icon: "icons/svg/eye.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
@@ -187,6 +246,7 @@ export const registerStatuses = function () {
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
+            duration: {},
             flags: {}
         },
         {
@@ -199,38 +259,70 @@ export const registerStatuses = function () {
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
+            duration: {},
             flags: {}
         },
         {
-            // No effects (will grant fire immunity)
-            id: "fireShield",
-            label: "PL1E.StatusFireShield",
+            // Grant immunity to related damage type
+            id: "slashingImmunity",
+            label: "PL1E.StatusSlashingImmunity",
+            icon: "systems/pl1e/assets/icons/slashing-shield.svg",
+            changes: [],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Grant immunity to related damage type
+            id: "crushingImmunity",
+            label: "PL1E.StatusCrushingImmunity",
+            icon: "systems/pl1e/assets/icons/crushing-shield.svg",
+            changes: [],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Grant immunity to related damage type
+            id: "piercingImmunity",
+            label: "PL1E.StatusPiercingImmunity",
+            icon: "systems/pl1e/assets/icons/piercing-shield.svg",
+            changes: [],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Grant immunity to related damage type
+            id: "fireImmunity",
+            label: "PL1E.StatusFireImmunity",
             icon: "icons/svg/fire-shield.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
-            // No effects (will grant cold immunity)
-            id: "coldShield",
-            label: "PL1E.StatusIceShield",
+            // Grant immunity to related damage type
+            id: "coldImmunity",
+            label: "PL1E.StatusColdImmunity",
             icon: "icons/svg/ice-shield.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
-            // No effects (will grant shock immunity)
-            id: "shockShield",
-            label: "PL1E.StatusShockShield",
+            // Grant immunity to related damage type
+            id: "shockImmunity",
+            label: "PL1E.StatusShockImmunity",
             icon: "systems/pl1e/assets/icons/lightning-shield.svg",
             changes: [],
+            duration: {},
             flags: {}
         },
         {
-            // No effects (will grant acid immunity)
-            id: "acidShield",
-            label: "PL1E.StatusAcidShield",
+            // Grant immunity to related damage type
+            id: "acidImmunity",
+            label: "PL1E.StatusAcidImmunity",
             icon: "systems/pl1e/assets/icons/acid-shield.svg",
             changes: [],
+            duration: {},
             flags: {}
         }
     ];

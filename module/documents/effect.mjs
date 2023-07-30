@@ -73,6 +73,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
             label: statusEffect.label,
             icon: statusEffect.icon,
             changes: statusEffect.changes,
+            duration: statusEffect.duration,
             statuses: [statusEffect.id],
             flags: statusEffect.flags
         }, options);

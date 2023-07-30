@@ -444,8 +444,11 @@
   "PL1E.StatusMarked": "Marqué",
   "PL1E.StatusBlessed": "Béni",
   "PL1E.StatusCursed": "Maudit",
-  "PL1E.StatusFireShield": "Bouclier de Feu",
-  "PL1E.StatusIceShield": "Bouclier de Glace",
-  "PL1E.StatusShockShield": "Bouclier d'Electricité",
-  "PL1E.StatusAcidShield": "Bouclier d'Acide"
+  "PL1E.StatusSlashingImmunity": "Immunité au tranchant",
+  "PL1E.StatusCrushingImmunity": "Immunité au contondant",
+  "PL1E.StatusPiercingImmunity": "Immunité au perforant",
+  "PL1E.StatusFireImmunity": "Immunité au feu",
+  "PL1E.StatusColdImmunity": "Immunité au froid",
+  "PL1E.StatusShockImmunity": "Immunité à l'éléctricité",
+  "PL1E.StatusAcidImmunity": "Immunité à l'acide"
 }
