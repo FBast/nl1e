@@ -1,24 +1,26 @@
 import {PL1E} from "./config/config.mjs";
-// Import document classes.
+// Import document classes
 import {Pl1eActor} from "./documents/actors/actor.mjs";
 import {Pl1eItem} from "./documents/items/item.mjs";
-// Import subDocument classes
+import {Pl1eTokenDocument} from "./documents/token.mjs";
+import {Pl1eActiveEffect} from "./documents/effect.mjs";
 import {Pl1eActorProxy} from "./documents/actors/actorProxy.mjs";
 import {Pl1eItemProxy} from "./documents/items/itemProxy.mjs";
-// Import sheet classes.
+// Import sheet classes
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 import {Pl1eJournalPageSheet} from "./sheets/journal-sheet.mjs";
-// Import helper/utility classes and constants.
-import {preloadHandlebarsTemplates} from "./main/templates.mjs";
-import {Pl1eMacro} from "./helpers/macro.mjs";
+// Import app classes
 import {Pl1eCombat} from "./apps/combat.mjs";
-import {Pl1eTokenDocument} from "./documents/token.mjs";
-import Pl1eHooks from "./main/hooks.mjs";
-import {RegisterSettings} from "./main/settings.mjs";
-import {RegisterHandlebars} from "./main/handlebars.mjs";
 import {GmToolbox} from "./apps/gmToolbox.mjs";
-import {RegisterStatuses} from "./main/statuses.mjs";
+// Import main classes and functions
+import Pl1eHooks from "./main/hooks.mjs";
+import {preloadHandlebarsTemplates} from "./main/templates.mjs";
+import {registerSettings} from "./main/settings.mjs";
+import {registerHandlebars} from "./main/handlebars.mjs";
+import {registerStatuses} from "./main/statuses.mjs";
+// Import helper/utility classes and constants
+import {Pl1eMacro} from "./helpers/macro.mjs";
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -51,6 +53,7 @@ Hooks.once('init', async function () {
     CONFIG.Item.documentClass = Pl1eItemProxy;
     CONFIG.Combat.documentClass = Pl1eCombat;
     CONFIG.Token.documentClass = Pl1eTokenDocument;
+    CONFIG.ActiveEffect.documentClass = Pl1eActiveEffect;
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
@@ -62,13 +65,13 @@ Hooks.once('init', async function () {
     })
 
     // Register custom statuses
-    RegisterStatuses();
+    registerStatuses();
 
     // Register custom system settings
-    RegisterSettings();
+    registerSettings();
 
     // Register custom Handlebars Helpers
-    RegisterHandlebars();
+    registerHandlebars();
 
     // Preload Handlebars templates.
     return preloadHandlebarsTemplates();

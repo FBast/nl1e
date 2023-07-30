@@ -1,4 +1,16 @@
-export class Pl1eEffect {
+export class Pl1eActiveEffect extends ActiveEffect {
+
+    /**
+     * Is this active effect currently suppressed?
+     * @type {boolean}
+     */
+    isSuppressed = false;
+
+    /** @inheritdoc */
+    apply(actor, change) {
+        if ( this.isSuppressed ) return null;
+        return super.apply(actor, change);
+    }
 
     /**
      * Create an active effect
@@ -57,32 +69,23 @@ export class Pl1eEffect {
     static async createStatusEffect(actor, statusEffectId, options = {}) {
         const statusEffect = CONFIG.statusEffects.find(status => status.id === statusEffectId);
         if (!statusEffect) throw new Error("PL1E | no status corresponding to " + statusEffectId);
-        const activeEffect = actor.effects.find(effect => effect.getFlag("core", "statusId") === statusEffectId);
-        if (!activeEffect) {
-            const effectData = foundry.utils.mergeObject({
-                label: statusEffect.label,
-                icon: statusEffect.icon,
-                changes: statusEffect.changes,
-                flags: {
-                    core: {
-                        statusId: statusEffect.id
-                    },
-                    pl1e: {
-                        continuous: statusEffect.flags?.pl1e?.continuous ?? false
-                    }
-                }
-            }, options);
-            await actor.createEmbeddedDocuments("ActiveEffect", [effectData])
-        }
+        const effectData = foundry.utils.mergeObject({
+            label: statusEffect.label,
+            icon: statusEffect.icon,
+            changes: statusEffect.changes,
+            statuses: [statusEffect.id],
+            flags: statusEffect.flags
+        }, options);
+        await actor.createEmbeddedDocuments("ActiveEffect", [effectData])
     }
 
     /**
-     * Remove an effect based on a status
+     * Remove an active effect base on the id
      * @param {Actor} actor
      * @param {string} activeEffectId
      * @return {Promise<void>}
      */
-    static async removeStatusEffect(actor, activeEffectId) {
+    static async removeActiveEffect(actor, activeEffectId) {
         await actor.deleteEmbeddedDocuments("ActiveEffect", [activeEffectId]);
     }
 
@@ -94,14 +97,12 @@ export class Pl1eEffect {
      * @return {Promise<void>}
      */
     static async toggleStatusEffect(actor, statusEffectId, isActive) {
-        const activeEffect = actor.effects.find(effect => effect.getFlag("core", "statusId") === statusEffectId);
+        const activeEffect = actor.effects.find(effect => effect.statuses.has(statusEffectId));
         if (!activeEffect && isActive) {
-            await this.createStatusEffect(actor, statusEffectId, {
-                changes: []
-            });
+            await this.createStatusEffect(actor, statusEffectId);
         }
         else if (activeEffect && !isActive) {
-            await this.removeStatusEffect(actor, activeEffect._id);
+            await this.removeActiveEffect(actor, activeEffect._id);
         }
     }
 

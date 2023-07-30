@@ -1,7 +1,7 @@
 /**
  * Custom system settings register
  */
-export const RegisterSettings = function () {
+export const registerSettings = function () {
     game.settings.register("pl1e", "enableAutoResetActorsItems", {
         name: "Enable auto reset actors items",
         hint: "Enable this to automatically reset all actors items when their source item is modified.",

@@ -7,10 +7,6 @@ export class Pl1eTokenDocument extends TokenDocument {
         return this.actor.isDead;
     }
 
-    get isInComa() {
-        return this.actor.isInComa;
-    }
-
     /** @inheritDoc */
     async _preUpdate(data, options, user) {
         // Restrict the token movement
@@ -23,12 +19,12 @@ export class Pl1eTokenDocument extends TokenDocument {
                 delete data.x;
                 delete data.y;
             }
-            else if (this.actor.effects.find(effect => effect.statuses.has("paralysis"))) {
+            else if (this.actor.statuses.has("paralysis")) {
                 ui.notifications.warn(game.i18n.localize("PL1E.YouAreParalysed"));
                 delete data.x;
                 delete data.y;
             }
-            else if (this.actor.effects.find(effect => effect.statuses.has("restrain"))) {
+            else if (this.actor.statuses.has("restrain")) {
                 ui.notifications.warn(game.i18n.localize("PL1E.YouAreRestrained"));
                 delete data.x;
                 delete data.y;
@@ -44,18 +40,6 @@ export class Pl1eTokenDocument extends TokenDocument {
         }
 
         await super._preUpdate(data, options, user);
-    }
-
-    /** @inheritDoc */
-    async _onUpdateBaseActor(update, options) {
-        // await this.updateStatusEffects();
-        super._onUpdateBaseActor(update, options);
-    }
-
-    /** @inheritDoc */
-    async _onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
-        // await this.updateStatusEffects();
-        super._onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId);
     }
 
     /**

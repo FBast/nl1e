@@ -1,6 +1,6 @@
 import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
-import {Pl1eEffect} from "../../helpers/activeEffect.mjs";
+import {Pl1eActiveEffect} from "../effect.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -17,7 +17,7 @@ export class Pl1eActor extends Actor {
     }
 
     get isInComa() {
-        return this.system.resources.health.value <= -this.system.misc.comaDoor;
+        return !this.isDead && this.system.resources.health.value <= -this.system.misc.comaDoor;
     }
 
     /**
@@ -95,9 +95,12 @@ export class Pl1eActor extends Actor {
     }
 
     /** @inheritDoc */
-    async _onCreate(data, options, userId) {
-        super._onCreate(data, options, userId);
+    async _onUpdate(changed, options, user) {
+        await super._onUpdate(changed, options, user);
 
+        // Add effect based on conditions
+        await Pl1eActiveEffect.toggleStatusEffect(this, "dead", this.isDead);
+        await Pl1eActiveEffect.toggleStatusEffect(this, "coma", this.isInComa);
     }
 
     /** @inheritDoc */
@@ -138,10 +141,6 @@ export class Pl1eActor extends Actor {
                 Pl1eAspect.applyPassiveValue(aspect, id, this);
             }
         }
-
-        // Add effect based on conditions
-        await Pl1eEffect.toggleStatusEffect(this, "dead", this.isDead);
-        await Pl1eEffect.toggleStatusEffect(this, "coma", this.isInComa);
     }
 
     /**
@@ -153,7 +152,7 @@ export class Pl1eActor extends Actor {
      * available both inside and outside of character sheets (such as if an actor
      * is queried and has a roll executed directly from it).
      */
-    prepareDerivedData() {
+    async prepareDerivedData() {
         super.prepareDerivedData();
 
         const systemData = this.system;
@@ -180,7 +179,7 @@ export class Pl1eActor extends Actor {
         for (let [id, resource] of Object.entries(actorResources)) {
             const resourceConfig = CONFIG.PL1E.resources[id];
             resource.max = 0;
-            for(let characteristic of resourceConfig.weights.characteristics) {
+            for (let characteristic of resourceConfig.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
             }
             resource.max *= resourceConfig.multiplier * actorMisc.sizeMultiplier;

@@ -62,6 +62,13 @@ export class Pl1eCombat extends Combat {
      * @private
      */
     async _applyContinuousEffects(actor) {
+        // Coma status decrease health
+        if (actor.statuses.has("coma")) {
+            await actor.update({
+                "system.resources.health.value": actor.system.resources.health.value - 1
+            });
+        }
+        // Continuous active effects
         for (const effect of actor.effects) {
             if (!effect.getFlag("pl1e", "continuous")) continue;
             for (const change of effect.changes) {

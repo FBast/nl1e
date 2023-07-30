@@ -1,6 +1,6 @@
 import {PL1E} from "../config/config.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
-import {Pl1eEffect} from "./activeEffect.mjs";
+import {Pl1eActiveEffect} from "../documents/effect.mjs";
 
 export class Pl1eAspect {
 
@@ -156,7 +156,7 @@ export class Pl1eAspect {
 
             if (aspectCopy.createEffect) {
                 // Create the effect
-                await Pl1eEffect.createActiveEffect(aspectCopy, characterData, targetData);
+                await Pl1eActiveEffect.createActiveEffect(aspectCopy, characterData, targetData);
             }
             else {
                 // Apply the aspect

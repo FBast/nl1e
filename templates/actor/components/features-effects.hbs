@@ -5,8 +5,8 @@
     {{#each passiveEffects}}
         <li class="item" data-effect-id="{{_id}}" data-item-link-id="{{flags.pl1e.itemId}}">
             <div class="flexrow">
-                <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{label}}" width="24" height="24"/>
-                <label class="item-name item-tooltip-activate">{{label}}</label>
+                <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
+                <label class="item-name item-tooltip-activate">{{localize name}}</label>
                 <div class="item-controls">
                     <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
                     {{#if @root.game.user.isGM}}
@@ -25,8 +25,8 @@
     {{#each temporaryEffects}}
         <li class="item" data-effect-id="{{_id}}" data-item-link-id="{{flags.pl1e.itemId}}">
             <div class="flexrow">
-                <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{label}}" width="24" height="24"/>
-                <label class="item-name item-tooltip-activate">{{label}}</label>
+                <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
+                <label class="item-name item-tooltip-activate">{{localize name}}</label>
                 <div class="item-icons grid-span-2">
                     <i class="item-info fas fa-clock hover-green" data-tooltip="{{localize "PL1E.Action"}}">
                         <label>{{duration.label}}</label>
@@ -50,8 +50,8 @@
     {{#each inactiveEffects}}
         <li class="item" data-effect-id="{{_id}}" data-item-link-id="{{flags.pl1e.itemId}}">
             <div class="flexrow">
-                <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{label}}" width="24" height="24"/>
-                <label class="item-name item-tooltip-activate">{{label}}</label>
+                <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
+                <label class="item-name item-tooltip-activate">{{localize name}}</label>
                 <div class="item-controls">
                     <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
                     {{#if @root.game.user.isGM}}

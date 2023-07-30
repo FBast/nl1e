@@ -1,46 +1,49 @@
-export const RegisterStatuses = function () {
+export const registerStatuses = function () {
     CONFIG.statusEffects = [
         {
             // Resolve when equal or below deathDoor (default -10)
             id: "dead",
-            label: "EFFECT.StatusDead",
+            label: "PL1E.StatusDead",
             icon: "icons/svg/skull.svg",
-            changes: []
+            changes: [],
+            flags: {
+                pl1e: {
+                    permanent: true
+                }
+            }
         },
         {
             // Resolve when equal or below comaDoor (default 0)
             id: "coma",
-            label: "EFFECT.StatusComa",
+            label: "PL1E.StatusComa",
             icon: "systems/pl1e/assets/icons/coma.svg",
-            changes: [{
-                key: "system.resources.health",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: -1
-            }],
+            changes: [], // Coma health decrease is handled from Combat class
             flags: {
                 pl1e: {
-                    continuous: true
+                    permanent: true
                 }
             }
         },
         {
             // No effects
             id: "unconscious",
-            label: "EFFECT.StatusUnconscious",
+            label: "PL1E.StatusUnconscious",
             icon: "icons/svg/unconscious.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects
             id: "sleep",
-            label: "EFFECT.StatusAsleep",
+            label: "PL1E.StatusAsleep",
             icon: "icons/svg/sleep.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // Remove one action and one reaction
             id: "stun",
-            label: "EFFECT.StatusStunned",
+            label: "PL1E.StatusStunned",
             icon: "icons/svg/daze.svg",
             changes: [{
                 key: "system.misc.action",
@@ -51,163 +54,184 @@ export const RegisterStatuses = function () {
                 key: "system.misc.reaction",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
-            }]
+            }],
+            flags: {}
         },
         {
             // No effects
             id: "prone",
-            label: "EFFECT.StatusProne",
+            label: "PL1E.StatusProne",
             icon: "icons/svg/falling.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // Prevent movement
             id: "restrain",
-            label: "EFFECT.StatusRestrained",
+            label: "PL1E.StatusRestrained",
             icon: "icons/svg/net.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects
             id: "paralysis",
-            label: "EFFECT.StatusParalysis",
+            label: "PL1E.StatusParalysis",
             icon: "icons/svg/paralysis.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects
             id: "fly",
-            label: "EFFECT.StatusFlying",
+            label: "PL1E.StatusFlying",
             icon: "icons/svg/wing.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // Prevent token sight
             id: "blind",
-            label: "EFFECT.StatusBlind",
+            label: "PL1E.StatusBlind",
             icon: "icons/svg/blind.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects
             id: "deaf",
-            label: "EFFECT.StatusDeaf",
+            label: "PL1E.StatusDeaf",
             icon: "icons/svg/deaf.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects
             id: "silence",
-            label: "EFFECT.StatusSilenced",
+            label: "PL1E.StatusSilenced",
             icon: "icons/svg/silenced.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects
             id: "fear",
-            label: "EFFECT.StatusFear",
+            label: "PL1E.StatusFear",
             icon: "icons/svg/terror.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects
             id: "disease",
-            label: "EFFECT.StatusDisease",
+            label: "PL1E.StatusDisease",
             icon: "icons/svg/biohazard.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // Add one advantage
             id: "upgrade",
-            label: "EFFECT.StatusUpgrade",
+            label: "PL1E.StatusUpgrade",
             icon: "icons/svg/upgrade.svg",
             changes: [{
                 key: "system.general.advantages",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
-            }]
+            }],
+            flags: {}
         },
         {
             // Add one disadvantage
             id: "downgrade",
-            label: "EFFECT.StatusDowngrade",
+            label: "PL1E.StatusDowngrade",
             icon: "icons/svg/downgrade.svg",
             changes: [{
                 key: "system.general.advantages",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
-            }]
+            }],
+            flags: {}
         },
         {
             // Remove token from normal sight
             id: "invisible",
-            label: "EFFECT.StatusInvisible",
+            label: "PL1E.StatusInvisible",
             icon: "icons/svg/invisible.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects
             id: "target",
-            label: "EFFECT.StatusTarget",
+            label: "PL1E.StatusTarget",
             icon: "icons/svg/target.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects
             id: "eye",
-            label: "EFFECT.StatusMarked",
+            label: "PL1E.StatusMarked",
             icon: "icons/svg/eye.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // Add one bonus
             id: "bless",
-            label: "EFFECT.StatusBlessed",
+            label: "PL1E.StatusBlessed",
             icon: "icons/svg/angel.svg",
             changes: [{
                 key: "system.general.bonuses",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
-            }]
+            }],
+            flags: {}
         },
         {
             // Add one malus
             id: "curse",
-            label: "EFFECT.StatusCursed",
+            label: "PL1E.StatusCursed",
             icon: "icons/svg/sun.svg",
             changes: [{
                 key: "system.general.bonuses",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
-            }]
+            }],
+            flags: {}
         },
         {
             // No effects (will grant fire immunity)
             id: "fireShield",
-            label: "EFFECT.StatusFireShield",
+            label: "PL1E.StatusFireShield",
             icon: "icons/svg/fire-shield.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects (will grant cold immunity)
             id: "coldShield",
-            label: "EFFECT.StatusIceShield",
+            label: "PL1E.StatusIceShield",
             icon: "icons/svg/ice-shield.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects (will grant shock immunity)
             id: "shockShield",
-            label: "EFFECT.StatusShockShield",
+            label: "PL1E.StatusShockShield",
             icon: "systems/pl1e/assets/icons/lightning-shield.svg",
-            changes: []
+            changes: [],
+            flags: {}
         },
         {
             // No effects (will grant acid immunity)
             id: "acidShield",
-            label: "EFFECT.StatusAcidShield",
+            label: "PL1E.StatusAcidShield",
             icon: "systems/pl1e/assets/icons/acid-shield.svg",
-            changes: []
+            changes: [],
+            flags: {}
         }
     ];
 }

@@ -1,7 +1,7 @@
 /**
  * Custom Handlebars for Pl1e
  */
-export const RegisterHandlebars = function () {
+export const registerHandlebars = function () {
     Handlebars.registerHelper('concat', function () {
         var outStr = '';
         for (var arg in arguments) {
