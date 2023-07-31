@@ -695,4 +695,13 @@ export function getConfigActor() {
             "img": "icons/svg/skull.svg"
         }
     }
+
+    PL1E.movements = {
+        "standard": {
+            "label": "PL1E.Standard"
+        },
+        "teleportation": {
+            "label": "PL1E.Teleportation"
+        }
+    }
 }

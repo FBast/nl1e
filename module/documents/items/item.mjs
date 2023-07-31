@@ -573,11 +573,12 @@ export class Pl1eItem extends Item {
         if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
             const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
             targetsData.push(targetData);
-        } else {
+        }
+        else {
             // Populate targetsData
             for (let template of characterData.templates) {
                 for (let token of ActionTemplate.getTemplateTargets(template)) {
-                    const targetData = await this._getTargetData(characterData, token.actor, token);
+                    const targetData = await this._getTargetData(characterData, token.actor, template, token);
                     targetsData.push(targetData);
                 }
             }
@@ -608,12 +609,13 @@ export class Pl1eItem extends Item {
     /**
      * Get the targetData from a token and its related actor
      * @param {CharacterData} characterData
-     * @param {Pl1eActor} actor
+     * @param {Actor} actor
      * @param {Token | null} token
+     * @param {ActionTemplate} template
      * @return {Promise<TargetData>}
      * @private
      */
-    async _getTargetData(characterData, actor, token = null) {
+    async _getTargetData(characterData, actor, template = null, token = null) {
         const targetData = {};
         if (characterData.attributes.targetRoll.length > 0) {
             targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll);
@@ -627,6 +629,7 @@ export class Pl1eItem extends Item {
         targetData.sceneId = token.scene.id;
         targetData.token = token;
         targetData.tokenId = token?.id;
+        targetData.template = template;
         return targetData;
     }
 

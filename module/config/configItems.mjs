@@ -311,7 +311,13 @@ export function getConfigItems() {
             "targetGroup": "all",
             "statusType": "permanent",
             "effectDuration": 1,
-            "effectIcon": "icons/svg/aura.svg"
+        },
+        {
+            "name": "movement",
+            "value": 0,
+            "dataGroup": "movements",
+            "data": "standard",
+            "targetGroup": "all"
         }
     ]
 
@@ -361,6 +367,13 @@ export function getConfigItems() {
             "img": "icons/svg/aura.svg",
             "dataGroups": {
                 "statuses": "PL1E.Statuses"
+            }
+        },
+        "movement": {
+            "label": "PL1E.Movement",
+            "img": "icons/svg/thrust.svg",
+            "dataGroups": {
+                "movements": "PL1E.Movements"
             }
         }
     }

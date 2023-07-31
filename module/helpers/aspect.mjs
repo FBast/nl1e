@@ -20,6 +20,8 @@ export class Pl1eAspect {
                 return await this._transfer(aspect, characterData, targetsData);
             case "status":
                 return await this._status(aspect, characterData, targetsData);
+            case "movement":
+                return await this._movement(aspect, characterData, targetsData);
             default:
                 throw new Error("PL1E | unknown aspect : " + aspect.name);
         }
@@ -257,7 +259,7 @@ export class Pl1eAspect {
     }
 
     /**
-     *
+     * Apply status aspect
      * @param aspect
      * @param characterData
      * @param targetsData
@@ -297,6 +299,57 @@ export class Pl1eAspect {
                     }
                 }
             });
+
+            // Add label for Sequence
+            aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);
+
+            // Push the aspect
+            targetData.activeAspects ??= [];
+            targetData.activeAspects.push(aspectCopy)
+        }
+        return targetsData;
+    }
+
+    /**
+     * Apply movement aspect
+     * @param aspect
+     * @param characterData
+     * @param targetsData
+     * @returns {Promise<TargetData[]>}
+     * @private
+     */
+    static async _movement(aspect, characterData, targetsData) {
+        for (const targetData of targetsData) {
+            // Check targetGroup validation for aspect
+            if (!this._isTargetValid(aspect.targetGroup, targetData.token, characterData.token)) continue;
+
+            // Copy the aspect to calculate the new values
+            let aspectCopy = JSON.parse(JSON.stringify(aspect));
+
+            // Get all template except this target template
+            const otherTemplates = characterData.templates.filter(template => template._id !== targetData.template._id);
+
+            // Fallback on this target template
+            let randomTemplate = targetData.template;
+
+            // Take a template at random
+            if (otherTemplates.length > 0)
+                randomTemplate = otherTemplates[Math.floor(Math.random() * otherTemplates.length)];
+
+            // Move the target on this template
+            const offset = canvas.dimensions.size / 2;
+            if (aspect.data === "standard") {
+                await targetData.token.document.update({
+                    x: randomTemplate.x - offset,
+                    y: randomTemplate.y - offset
+                });
+            }
+            if (aspect.data === "teleportation") {
+                await targetData.token.document.update({
+                    x: randomTemplate.x - offset,
+                    y: randomTemplate.y - offset
+                }, {animate: false});
+            }
 
             // Add label for Sequence
             aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);

@@ -174,7 +174,7 @@ export class ActionTemplate extends MeasuredTemplate {
         let now = Date.now(); // Apply a 20ms throttle
         if (now - this.#moveTime <= 20) return;
         let templateCenter = event.data.getLocalPosition(this.layer);
-        const offset = canvas.dimensions.size / 2;
+                    const offset = canvas.dimensions.size / 2;
         templateCenter.x -= offset;
         templateCenter.y -= offset;
         // Clamp with range
@@ -271,7 +271,7 @@ export class ActionTemplate extends MeasuredTemplate {
 
     /**
      * Get targets currently inside the template
-     * @param {MeasuredTemplateDocument} template
+     * @param {ActionTemplate} template
      * @returns {Token[]}     */
     static getTemplateTargets(template) {
         const actionData = template.actionData;

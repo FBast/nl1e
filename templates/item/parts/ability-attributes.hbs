@@ -112,18 +112,23 @@
             </div>
         {{/if}}
         <hr>
-        {{#if (eq system.attributes.rangeOverride "none")}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
-                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
-            </div>
-        {{/if}}
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.AreaShape"}}</label>
             <select name="system.attributes.areaShape">
                 {{selectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
             </select>
         </div>
+        {{#if (eq system.attributes.rangeOverride "none")}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+                {{#if (ne system.attributes.characterRoll "none")}}
+                    <select name="system.attributes.rangeResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.rangeResolutionType localize=true}}
+                    </select>
+                {{/if}}
+            </div>
+        {{/if}}
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
             <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
