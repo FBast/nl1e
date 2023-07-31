@@ -3,11 +3,6 @@ import {Pl1eChat} from "../helpers/chat.mjs";
 export class Pl1eTokenDocument extends TokenDocument {
 
     /** @inheritDoc */
-    get isDefeated() {
-        return this.actor.isDead;
-    }
-
-    /** @inheritDoc */
     async _preUpdate(data, options, user) {
         // Restrict the token movement
         if ((data.x || data.y) && this.combatant !== null) {

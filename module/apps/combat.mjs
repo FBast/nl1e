@@ -20,6 +20,7 @@ export class Pl1eCombat extends Combat {
         for (const combatant of this.combatants) {
             await this._decreaseEffectsDuration(combat.combatant, combatant.actor);
         }
+
         return combat;
     }
 

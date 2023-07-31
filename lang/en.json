@@ -406,6 +406,8 @@
   "PL1E.Unknown": "Unknown",
   "PL1E.Unowned": "You don't own this item",
   "PL1E.UsageContext": "Usage context",
+  "PL1E.YouAreParalysed": "You are paralysed",
+  "PL1E.YouAreRestrained": "You are restrained",
   "PL1E.Use": "Use",
   "PL1E.Uses": "Uses",
   "PL1E.Value": "Value",

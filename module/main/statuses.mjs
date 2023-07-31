@@ -26,24 +26,24 @@ export const registerStatuses = function () {
                 }
             }
         },
-        {
-            // No effects
-            id: "unconscious",
-            label: "PL1E.StatusUnconscious",
-            icon: "icons/svg/unconscious.svg",
-            changes: [],
-            duration: {},
-            flags: {}
-        },
-        {
-            // No effects
-            id: "sleep",
-            label: "PL1E.StatusAsleep",
-            icon: "icons/svg/sleep.svg",
-            changes: [],
-            duration: {},
-            flags: {}
-        },
+        // {
+        //     // No effects
+        //     id: "unconscious",
+        //     label: "PL1E.StatusUnconscious",
+        //     icon: "icons/svg/unconscious.svg",
+        //     changes: [],
+        //     duration: {},
+        //     flags: {}
+        // },
+        // {
+        //     // No effects
+        //     id: "sleep",
+        //     label: "PL1E.StatusAsleep",
+        //     icon: "icons/svg/sleep.svg",
+        //     changes: [],
+        //     duration: {},
+        //     flags: {}
+        // },
         {
             // Remove one action and one reaction
             id: "stun",
@@ -63,7 +63,7 @@ export const registerStatuses = function () {
             flags: {}
         },
         {
-            // No effects
+            // Remove one action
             id: "prone",
             label: "PL1E.StatusProne",
             icon: "icons/svg/falling.svg",
@@ -83,7 +83,7 @@ export const registerStatuses = function () {
             flags: {}
         },
         {
-            //
+            // Skip turn
             id: "paralysis",
             label: "PL1E.StatusParalysis",
             icon: "icons/svg/paralysis.svg",
@@ -91,15 +91,15 @@ export const registerStatuses = function () {
             duration: {},
             flags: {}
         },
-        {
-            // No effects
-            id: "fly",
-            label: "PL1E.StatusFlying",
-            icon: "icons/svg/wing.svg",
-            changes: [],
-            duration: {},
-            flags: {}
-        },
+        // {
+        //     // No effects
+        //     id: "fly",
+        //     label: "PL1E.StatusFlying",
+        //     icon: "icons/svg/wing.svg",
+        //     changes: [],
+        //     duration: {},
+        //     flags: {}
+        // },
         {
             // Prevent token sight
             id: "blind",
@@ -109,24 +109,24 @@ export const registerStatuses = function () {
             duration: {},
             flags: {}
         },
-        {
-            // No effects
-            id: "deaf",
-            label: "PL1E.StatusDeaf",
-            icon: "icons/svg/deaf.svg",
-            changes: [],
-            duration: {},
-            flags: {}
-        },
-        {
-            // No effects
-            id: "silence",
-            label: "PL1E.StatusSilenced",
-            icon: "icons/svg/silenced.svg",
-            changes: [],
-            duration: {},
-            flags: {}
-        },
+        // {
+        //     // No effects
+        //     id: "deaf",
+        //     label: "PL1E.StatusDeaf",
+        //     icon: "icons/svg/deaf.svg",
+        //     changes: [],
+        //     duration: {},
+        //     flags: {}
+        // },
+        // {
+        //     // No effects
+        //     id: "silence",
+        //     label: "PL1E.StatusSilenced",
+        //     icon: "icons/svg/silenced.svg",
+        //     changes: [],
+        //     duration: {},
+        //     flags: {}
+        // },
         {
             // Reduce mind characteristics by one
             id: "fear",
@@ -218,24 +218,24 @@ export const registerStatuses = function () {
             duration: {},
             flags: {}
         },
-        {
-            // No effects
-            id: "target",
-            label: "PL1E.StatusTarget",
-            icon: "icons/svg/target.svg",
-            changes: [],
-            duration: {},
-            flags: {}
-        },
-        {
-            // No effects
-            id: "eye",
-            label: "PL1E.StatusMarked",
-            icon: "icons/svg/eye.svg",
-            changes: [],
-            duration: {},
-            flags: {}
-        },
+        // {
+        //     // No effects
+        //     id: "target",
+        //     label: "PL1E.StatusTarget",
+        //     icon: "icons/svg/target.svg",
+        //     changes: [],
+        //     duration: {},
+        //     flags: {}
+        // },
+        // {
+        //     // No effects
+        //     id: "eye",
+        //     label: "PL1E.StatusMarked",
+        //     icon: "icons/svg/eye.svg",
+        //     changes: [],
+        //     duration: {},
+        //     flags: {}
+        // },
         {
             // Add one bonus
             id: "bless",
@@ -266,7 +266,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "slashingImmunity",
             label: "PL1E.StatusSlashingImmunity",
-            icon: "systems/pl1e/assets/icons/slashing-shield.svg",
+            icon: "systems/pl1e/assets/icons/crossed-axes.svg",
             changes: [],
             duration: {},
             flags: {}
@@ -275,7 +275,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "crushingImmunity",
             label: "PL1E.StatusCrushingImmunity",
-            icon: "systems/pl1e/assets/icons/crushing-shield.svg",
+            icon: "systems/pl1e/assets/icons/trample.svg",
             changes: [],
             duration: {},
             flags: {}
@@ -284,7 +284,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "piercingImmunity",
             label: "PL1E.StatusPiercingImmunity",
-            icon: "systems/pl1e/assets/icons/piercing-shield.svg",
+            icon: "systems/pl1e/assets/icons/arrow-cluster.svg",
             changes: [],
             duration: {},
             flags: {}
@@ -320,7 +320,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "acidImmunity",
             label: "PL1E.StatusAcidImmunity",
-            icon: "systems/pl1e/assets/icons/acid-shield.svg",
+            icon: "systems/pl1e/assets/icons/rosa-shield.svg",
             changes: [],
             duration: {},
             flags: {}

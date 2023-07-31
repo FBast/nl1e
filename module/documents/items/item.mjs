@@ -213,6 +213,10 @@ export class Pl1eItem extends Item {
      */
     canReload() {
         const token = this.actor.bestToken;
+        if (this.actor.statuses.has("paralysis")) {
+            ui.notifications.warn(game.i18n.localize("PL1E.YouAreParalysed"));
+            return false;
+        }
         if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
             return false;
@@ -246,6 +250,10 @@ export class Pl1eItem extends Item {
      * @return {boolean}
      */
     canToggle() {
+        if (this.actor.statuses.has("paralysis")) {
+            ui.notifications.warn(game.i18n.localize("PL1E.YouAreParalysed"));
+            return false;
+        }
         return true;
     }
 
@@ -395,6 +403,10 @@ export class Pl1eItem extends Item {
     _canActivate(characterData) {
         const itemAttributes = characterData.attributes;
 
+        if (this.actor.statuses.has("paralysis")) {
+            ui.notifications.warn(game.i18n.localize("PL1E.YouAreParalysed"));
+            return false;
+        }
         if (characterData.token && characterData.token.inCombat) {
             if (itemAttributes.activation === "action") {
                 if (characterData.tokenId !== game.combat.current.tokenId) {
