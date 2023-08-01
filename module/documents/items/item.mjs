@@ -384,8 +384,8 @@ export class Pl1eItem extends Item {
             // Apply the effect on the character
             await this._applyAttributes(characterData);
 
-            // In case of self target
-            if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
+            // In case of self area shape
+            if (characterData.attributes.areaShape === "self") {
                 await this.resolve(characterData, {
                     action: "launch"
                 });

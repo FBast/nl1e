@@ -422,7 +422,9 @@
         "squareLength": 1,
         "squareLengthResolutionType": "value",
         "rayLength": 1,
-        "rayLengthResolutionType": "value"
+        "rayLengthResolutionType": "value",
+        "excludeSelf": false,
+        "includeSelf": false
       }
     },
     "common": {

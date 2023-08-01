@@ -65,65 +65,79 @@
                     {{selectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
                 </select>
             </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
-                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
-            </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
-                <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
-                {{#if (ne system.attributes.characterRoll "none")}}
-                    <select name="system.attributes.areaNumberResolutionType">
-                        {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
-                    </select>
+            {{#if (ne system.attributes.areaShape "self")}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                    <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+                </div>
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
+                    <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
+                    {{#if (ne system.attributes.characterRoll "none")}}
+                        <select name="system.attributes.areaNumberResolutionType">
+                            {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                        </select>
+                    {{/if}}
+                </div>
+                {{#if (eq system.attributes.areaShape "circle")}}
+                    <div class="item-attribute flexrow">
+                        <label class="attribute-name">{{localize "PL1E.CircleRadius"}}</label>
+                        <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
+                        {{#if (ne system.attributes.characterRoll "none")}}
+                            <select name="system.attributes.circleRadiusResolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=system.attributes.circleRadiusResolutionType localize=true}}
+                            </select>
+                        {{/if}}
+                    </div>
+                {{else if (eq system.attributes.areaShape "cone")}}
+                    <div class="item-attribute flexrow">
+                        <label class="attribute-name">{{localize "PL1E.ConeLength"}}</label>
+                        <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
+                        {{#if (ne system.attributes.characterRoll "none")}}
+                            <select name="system.attributes.coneLengthResolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=system.attributes.coneLengthResolutionType localize=true}}
+                            </select>
+                        {{/if}}
+                    </div>
+                    <div class="item-attribute flexrow">
+                        <label class="attribute-name">{{localize "PL1E.ConeAngle"}}</label>
+                        <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
+                        <select name="system.attributes.coneAngleResolutionType">
+                            {{selectOptions (config "resolutionTypes") selected=system.attributes.coneAngleResolutionType localize=true}}
+                        </select>
+                    </div>
+                {{else if (eq system.attributes.areaShape "square")}}
+                    <div class="item-attribute flexrow">
+                        <label class="attribute-name">{{localize "PL1E.SquareLength"}}</label>
+                        <input type="number" name="system.attributes.squareLength" value="{{system.attributes.squareLength}}" data-dtype="Number"/>
+                        {{#if (ne system.attributes.characterRoll "none")}}
+                            <select name="system.attributes.squareLengthResolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=system.attributes.squareLengthResolutionType localize=true}}
+                            </select>
+                        {{/if}}
+                    </div>
+                {{else if (eq system.attributes.areaShape "ray")}}
+                    <div class="item-attribute flexrow">
+                        <label class="attribute-name">{{localize "PL1E.RayLength"}}</label>
+                        <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
+                        {{#if (ne system.attributes.characterRoll "none")}}
+                            <select name="system.attributes.rayLengthResolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=system.attributes.rayLengthResolutionType localize=true}}
+                            </select>
+                        {{/if}}
+                    </div>
                 {{/if}}
-            </div>
-            {{#if (eq system.attributes.areaShape "circle")}}
+                {{#if (and (ne system.attributes.areaShape "target") (ne system.attributes.areaShape "self"))}}
+                    <div class="item-attribute flexrow">
+                        <label class="attribute-name">{{localize "PL1E.ExcludeSelf"}}</label>
+                        <input type="checkbox" name="system.attributes.excludeSelf" {{checked system.attributes.excludeSelf}} data-dtype="Boolean"/>
+                    </div>
+                {{/if}}
+            {{/if}}
+            {{#if (ne system.attributes.areaShape "self")}}
                 <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.CircleRadius"}}</label>
-                    <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
-                    {{#if (ne system.attributes.characterRoll "none")}}
-                        <select name="system.attributes.circleRadiusResolutionType">
-                            {{selectOptions (config "resolutionTypes") selected=system.attributes.circleRadiusResolutionType localize=true}}
-                        </select>
-                    {{/if}}
-                </div>
-            {{else if (eq system.attributes.areaShape "cone")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.ConeLength"}}</label>
-                    <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
-                    {{#if (ne system.attributes.characterRoll "none")}}
-                        <select name="system.attributes.coneLengthResolutionType">
-                            {{selectOptions (config "resolutionTypes") selected=system.attributes.coneLengthResolutionType localize=true}}
-                        </select>
-                    {{/if}}
-                </div>
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.ConeAngle"}}</label>
-                    <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
-                    <select name="system.attributes.coneAngleResolutionType">
-                        {{selectOptions (config "resolutionTypes") selected=system.attributes.coneAngleResolutionType localize=true}}
-                    </select>
-                </div>
-            {{else if (eq system.attributes.areaShape "square")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.SquareLength"}}</label>
-                    <input type="number" name="system.attributes.squareLength" value="{{system.attributes.squareLength}}" data-dtype="Number"/>
-                    {{#if (ne system.attributes.characterRoll "none")}}
-                        <select name="system.attributes.squareLengthResolutionType">
-                            {{selectOptions (config "resolutionTypes") selected=system.attributes.squareLengthResolutionType localize=true}}
-                        </select>
-                    {{/if}}
-                </div>
-            {{else if (eq system.attributes.areaShape "ray")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.RayLength"}}</label>
-                    <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
-                    {{#if (ne system.attributes.characterRoll "none")}}
-                        <select name="system.attributes.rayLengthResolutionType">
-                            {{selectOptions (config "resolutionTypes") selected=system.attributes.rayLengthResolutionType localize=true}}
-                        </select>
-                    {{/if}}
+                    <label class="attribute-name">{{localize "PL1E.IncludeSelf"}}</label>
+                    <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}} data-dtype="Boolean"/>
                 </div>
             {{/if}}
             <hr>
