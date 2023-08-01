@@ -94,8 +94,12 @@ export function getConfigItems() {
             "label": "PL1E.ActivationMacro",
             "type": "text"
         },
-        "launchMacro": {
-            "label": "PL1E.LaunchMacro",
+        "preLaunchMacro": {
+            "label": "PL1E.PreLaunchMacro",
+            "type": "text"
+        },
+        "postLaunchMacro": {
+            "label": "PL1E.PostLaunchMacro",
             "type": "text"
         },
         // Features
@@ -408,6 +412,7 @@ export function getConfigItems() {
     }
 
     PL1E.areaShapes = {
+        "self": "PL1E.Self",
         "target": "PL1E.Target",
         "circle": "PL1E.Circle",
         "cone": "PL1E.Cone",

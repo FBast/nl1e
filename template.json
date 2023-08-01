@@ -316,7 +316,8 @@
         "attributes": {
           "customMacro": false,
           "activationMacro":  "",
-          "launchMacro": ""
+          "preLaunchMacro": "",
+          "postLaunchMacro": ""
         }
       },
       "item": {
@@ -372,7 +373,8 @@
         "squareLengthResolutionType": "value",
         "rayLength": 1,
         "rayLengthResolutionType": "value",
-        "excludeSelf": false
+        "excludeSelf": false,
+        "includeSelf": false
       }
     },
     "weapon": {

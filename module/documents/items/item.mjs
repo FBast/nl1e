@@ -114,6 +114,8 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.usageCost = 0;
             }
             if (changed.system?.attributes?.itemLink === "parent") changed.system.attributes.masteryLink = [];
+            if (["target", "self"].includes(changed.system?.attributes?.areaShape)) changed.system.attributes.excludeSelf = false;
+            if (changed.system?.attributes?.areaShape === "self") changed.system.attributes.includeSelf = true;
         }
 
         return super._preUpdate(changed, options, user);
@@ -569,33 +571,43 @@ export class Pl1eItem extends Item {
             template.actionData = actionData;
         }
 
-        // In case of self target
-        if (characterData.attributes.areaShape === "target" && characterData.attributes.range === 0) {
+        // In case of include self
+        if (characterData.attributes.includeSelf) {
             const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
             targetsData.push(targetData);
         }
-        else {
+        if (characterData.attributes.areaShape !== "none") {
             // Populate targetsData
             for (let template of characterData.templates) {
                 for (let token of ActionTemplate.getTemplateTargets(template)) {
-                    const targetData = await this._getTargetData(characterData, token.actor, template, token);
+                    const targetData = await this._getTargetData(characterData, token.actor, token, template);
                     targetsData.push(targetData);
                 }
             }
         }
+
+        // Find pre-launch macro
+        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
+        const preLaunchMacroId = characterData.attributes.preLaunchMacro;
+        const preLaunchMacro = await Pl1eHelpers.getDocument("Macro", preLaunchMacroId);
+
+        // Execute pre-launch macro
+        if (enableVFXAndSFX && preLaunchMacro !== undefined) await preLaunchMacro.execute({
+            characterData: characterData,
+            targetsData: targetsData
+        });
 
         // Apply aspects, here we calculate each aspect for all targets
         for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
             targetsData = await Pl1eAspect.applyActive(aspect, characterData, targetsData);
         }
 
-        // Find launchMacro
-        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
-        const macroId = characterData.attributes.launchMacro;
-        const launchMacro = await Pl1eHelpers.getDocument("Macro", macroId);
+        // Find post-launch macro
+        const postLaunchMacroId = characterData.attributes.postLaunchMacro;
+        const postLaunchMacro = await Pl1eHelpers.getDocument("Macro", postLaunchMacroId);
 
-        // Execute launchMacro
-        if (enableVFXAndSFX && launchMacro !== undefined) launchMacro.execute({
+        // Execute post-launch macro
+        if (enableVFXAndSFX && postLaunchMacro !== undefined) await postLaunchMacro.execute({
             characterData: characterData,
             targetsData: targetsData
         });
@@ -615,7 +627,7 @@ export class Pl1eItem extends Item {
      * @return {Promise<TargetData>}
      * @private
      */
-    async _getTargetData(characterData, actor, template = null, token = null) {
+    async _getTargetData(characterData, actor, token = null, template = null) {
         const targetData = {};
         if (characterData.attributes.targetRoll.length > 0) {
             targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll);

@@ -137,8 +137,12 @@
                     <input type="text" name="system.attributes.activationMacro" value="{{system.attributes.activationMacro}}" data-dtype="String"/>
                 </div>
                 <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.LaunchMacro"}}</label>
-                    <input type="text" name="system.attributes.launchMacro" value="{{system.attributes.launchMacro}}" data-dtype="String"/>
+                    <label class="attribute-name">{{localize "PL1E.PreLaunchMacro"}}</label>
+                    <input type="text" name="system.attributes.preLaunchMacro" value="{{system.attributes.preLaunchMacro}}" data-dtype="String"/>
+                </div>
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.PostLaunchMacro"}}</label>
+                    <input type="text" name="system.attributes.postLaunchMacro" value="{{system.attributes.postLaunchMacro}}" data-dtype="String"/>
                 </div>
             {{else}}
                 <div class="item-attribute flexrow">
@@ -148,9 +152,15 @@
                     </select>
                 </div>
                 <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.LaunchMacro"}}</label>
-                    <select name="system.attributes.launchMacro">
-                        {{selectOptions itemMacros selected=system.attributes.launchMacro localize=true}}
+                    <label class="attribute-name">{{localize "PL1E.PreLaunchMacro"}}</label>
+                    <select name="system.attributes.preLaunchMacro">
+                        {{selectOptions itemMacros selected=system.attributes.preLaunchMacro localize=true}}
+                    </select>
+                </div>
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.PostLaunchMacro"}}</label>
+                    <select name="system.attributes.postLaunchMacro">
+                        {{selectOptions itemMacros selected=system.attributes.postLaunchMacro localize=true}}
                     </select>
                 </div>
             {{/if}}

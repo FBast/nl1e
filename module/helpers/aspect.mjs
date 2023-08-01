@@ -289,7 +289,7 @@ export class Pl1eAspect {
             }
 
             // Create the status
-            await Pl1eEffect.createStatusEffect(targetData.actor, aspectCopy.data, {
+            await Pl1eActiveEffect.createStatusEffect(targetData.actor, aspectCopy.data, {
                 duration: {
                     rounds: aspectCopy.effectDuration
                 },
@@ -326,15 +326,19 @@ export class Pl1eAspect {
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
 
-            // Get all template except this target template
-            const otherTemplates = characterData.templates.filter(template => template._id !== targetData.template._id);
+            // Get all template except this target template or template if this target has no template
+            const otherTemplates = targetData.template ? characterData.templates
+                .filter(template => template._id !== targetData.template._id) : characterData.templates;
 
-            // Fallback on this target template
+            // Fallback on this target template (could be undefined)
             let randomTemplate = targetData.template;
 
             // Take a template at random
             if (otherTemplates.length > 0)
                 randomTemplate = otherTemplates[Math.floor(Math.random() * otherTemplates.length)];
+
+            // If no random template then skip
+            if (!randomTemplate) continue;
 
             // Move the target on this template
             const offset = canvas.dimensions.size / 2;
