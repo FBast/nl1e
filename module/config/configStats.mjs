@@ -590,109 +590,101 @@ export function getConfigActor() {
     }
 
     PL1E.statuses = {
-        "unconscious": {
-            "label": "PL1E.Unconscious",
-            "img": "icons/svg/unconscious.svg",
-        },
-        "sleep": {
-            "label": "PL1E.Asleep",
-            "img": "icons/svg/sleep.svg",
-        },
         "stun": {
-            "label": "PL1E.Stunned",
+            "label": "PL1E.StatusStunned",
             "img": "icons/svg/daze.svg"
         },
         "prone": {
-            "label": "PL1E.Prone",
+            "label": "PL1E.StatusProne",
             "img": "icons/svg/falling.svg",
         },
         "restrain": {
-            "label": "PL1E.Restrained",
+            "label": "PL1E.StatusRestrained",
             "img": "icons/svg/net.svg",
         },
         "paralysis": {
-            "label": "PL1E.Paralysed",
+            "label": "PL1E.StatusParalysis",
             "img": "icons/svg/paralysis.svg",
         },
-        "fly": {
-            "label": "PL1E.Flying",
-            "img": "icons/svg/wing.svg",
-        },
+        // "fly": {
+        //     "label": "PL1E.StatusFlying",
+        //     "img": "icons/svg/wing.svg",
+        // },
         "blind": {
-            "label": "PL1E.Blind",
+            "label": "PL1E.StatusBlind",
             "img": "icons/svg/blind.svg",
         },
-        "deaf": {
-            "label": "PL1E.Deaf",
-            "img": "icons/svg/deaf.svg",
-        },
-        "silence": {
-            "label": "PL1E.Silenced",
-            "img": "icons/svg/silenced.svg",
-        },
+        // "deaf": {
+        //     "label": "PL1E.StatusDeaf",
+        //     "img": "icons/svg/deaf.svg",
+        // },
+        // "silence": {
+        //     "label": "PL1E.StatusSilenced",
+        //     "img": "icons/svg/silenced.svg",
+        // },
         "fear": {
-            "label": "PL1E.Frightened",
+            "label": "PL1E.StatusFear",
             "img": "icons/svg/terror.svg",
         },
         "disease": {
-            "label": "PL1E.Disease",
-            "img": "icons/svg/terror.svg",
+            "label": "PL1E.StatusDisease",
+            "img": "icons/svg/biohazard.svg",
         },
         "upgrade": {
-            "label": "PL1E.Upgrade",
+            "label": "PL1E.StatusUpgrade",
             "img": "icons/svg/target.svg"
         },
         "downgrade": {
-            "label": "PL1E.Downgrade",
-            "img": "icons/svg/target.svg"
+            "label": "PL1E.StatusDowngrade",
+            "img": "icons/svg/downgrade.svg"
         },
-        "target": {
-            "label": "PL1E.Targeted",
-            "img": "icons/svg/target.svg",
+        "invisible": {
+            "label": "PL1E.StatusInvisible",
+            "img": "icons/svg/invisible.svg",
         },
-        "eye": {
-            "label": "PL1E.Marked",
-            "img": "icons/svg/eye.svg",
-        },
+        // "target": {
+        //     "label": "PL1E.StatusTarget",
+        //     "img": "icons/svg/target.svg",
+        // },
+        // "eye": {
+        //     "label": "PL1E.StatusMarked",
+        //     "img": "icons/svg/eye.svg",
+        // },
         "bless": {
-            "label": "PL1E.Blessed",
+            "label": "PL1E.StatusBlessed",
             "img": "icons/svg/angel.svg"
         },
         "curse": {
-            "label": "PL1E.Cursed",
+            "label": "PL1E.StatusCursed",
             "img": "icons/svg/sun.svg"
         },
-        "invisible": {
-            "label": "PL1E.Invisible",
-            "img": "icons/svg/invisible.svg"
-        },
         "slashingImmunity": {
-            "label": "PL1E.SlashingImmunity",
-            "img": "icons/svg/skull.svg"
-        },
-        "piercingImmunity": {
-            "label": "PL1E.PiercingImmunity",
-            "img": "icons/svg/skull.svg"
+            "label": "PL1E.StatusSlashingImmunity",
+            "img": "systems/pl1e/assets/icons/crossed-axes.svg"
         },
         "crushingImmunity": {
-            "label": "PL1E.CrushingImmunity",
-            "img": "icons/svg/skull.svg"
+            "label": "PL1E.StatusCrushingImmunity",
+            "img": "systems/pl1e/assets/icons/trample.svg"
         },
-        "burnImmunity": {
-            "label": "PL1E.BurnImmunity",
-            "img": "icons/svg/skull.svg"
+        "piercingImmunity": {
+            "label": "PL1E.StatusPiercingImmunity",
+            "img": "systems/pl1e/assets/icons/arrow-cluster.svg"
+        },
+        "fireImmunity": {
+            "label": "PL1E.StatusFireImmunity",
+            "img": "icons/svg/fire-shield.svg"
         },
         "coldImmunity": {
-            "label": "PL1E.ColdImmunity",
-            "img": "icons/svg/skull.svg"
-        },
-        "acidImmunity": {
-            "label": "PL1E.AcidImmunity",
-            "img": "icons/svg/skull.svg"
+            "label": "PL1E.StatusColdImmunity",
+            "img": "icons/svg/ice-shield.svg"
         },
         "shockImmunity": {
-            "label": "PL1E.ShockImmunity",
-            "img": "icons/svg/skull.svg"
+            "label": "PL1E.StatusShockImmunity",
+            "img": "systems/pl1e/assets/icons/lightning-shield.svg"
+        },
+        "acidImmunity": {
+            "label": "PL1E.StatusAcidImmunity",
+            "img": "systems/pl1e/assets/icons/rosa-shield.svg"
         }
     }
 
@@ -702,6 +694,12 @@ export function getConfigActor() {
         },
         "teleportation": {
             "label": "PL1E.Teleportation"
+        }
+    }
+
+    PL1E.invocations = {
+        "standard": {
+            "label": "PL1E.Standard"
         }
     }
 }

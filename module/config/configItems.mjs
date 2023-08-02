@@ -258,8 +258,8 @@ export function getConfigItems() {
             "value": 0,
             "dataGroup": "resources",
             "data": "mana",
-            "targetGroup": "all",
             "resolutionType": "value",
+            "targetGroup": "all",
             "createEffect": false,
             "effectDuration": 1,
             "effectDurationResolutionType": "value",
@@ -272,8 +272,8 @@ export function getConfigItems() {
             "value": 0,
             "dataGroup": "resources",
             "data": "stamina",
-            "targetGroup": "all",
             "resolutionType": "value",
+            "targetGroup": "all",
             "damageType": "raw",
             "createEffect": false,
             "effectDuration": 1,
@@ -287,8 +287,8 @@ export function getConfigItems() {
             "value": 0,
             "dataGroup": "resources",
             "data": "health",
-            "targetGroup": "all",
             "resolutionType": "value",
+            "targetGroup": "all",
             "createEffect": false,
             "effectDuration": 1,
             "effectDurationResolutionType": "value",
@@ -300,10 +300,10 @@ export function getConfigItems() {
             "value": 0,
             "dataGroup": "resources",
             "data": "health",
+            "resolutionType": "value",
             "targetGroup": "all",
             "transferSource": "all",
             "transferDestination": "all",
-            "resolutionType": "value",
             "damageType": "raw",
             "effectIcon": "icons/svg/stoned.svg"
         },
@@ -311,7 +311,7 @@ export function getConfigItems() {
             "name": "status",
             "value": 0,
             "dataGroup": "statuses",
-            "data": "dead",
+            "data": "stun",
             "targetGroup": "all",
             "statusType": "permanent",
             "effectDuration": 1,
@@ -322,6 +322,14 @@ export function getConfigItems() {
             "dataGroup": "movements",
             "data": "standard",
             "targetGroup": "all"
+        },
+        {
+            "name": "invocation",
+            "value": 0,
+            "dataGroup": "invocations",
+            "data": "standard",
+            "resolutionType": "value",
+            "invocation": ""
         }
     ]
 
@@ -378,6 +386,13 @@ export function getConfigItems() {
             "img": "icons/svg/thrust.svg",
             "dataGroups": {
                 "movements": "PL1E.Movements"
+            }
+        },
+        "invocation": {
+            "label": "PL1E.Invocation",
+            "img": "icons/svg/mystery-man.svg",
+            "dataGroups": {
+                "invocations": "PL1E.Invocations"
             }
         }
     }

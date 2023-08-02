@@ -106,6 +106,14 @@
                             </select>
                         </div>
                     {{/if}}
+                    {{#if (eq ../name "invocation")}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.Invocation"}}</label>
+                            <select name="system.activeAspects.{{@key}}.invocation">
+                                {{selectOptions @root.invocations selected=../invocation localize=true}}
+                            </select>
+                        </div>
+                    {{/if}}
                     {{#if (ne ../name "status")}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.CreateEffect"}}</label>

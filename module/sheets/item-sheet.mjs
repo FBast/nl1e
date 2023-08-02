@@ -101,6 +101,9 @@ export class Pl1eItemSheet extends ItemSheet {
         // Prepare macros
         await this._prepareMacros(context);
 
+        // Prepare invocations
+        await this._prepareInvocations(context);
+
         // Add the actor's data to context.data for easier access
         context.system = itemData.system;
         context.flags = itemData.flags;
@@ -216,6 +219,17 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         context.itemMacros = itemMacros;
+    }
+
+    async _prepareInvocations(context) {
+        const invocations = {};
+
+        const characterPack = game.packs.find(pack => pack.metadata.name === "legacy-characters");
+        for (const actor of await characterPack.getDocuments()) {
+            invocations[actor._id] = actor.name;
+        }
+
+        context.invocations = invocations;
     }
 
     /**

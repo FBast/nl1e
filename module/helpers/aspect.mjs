@@ -22,6 +22,8 @@ export class Pl1eAspect {
                 return await this._status(aspect, characterData, targetsData);
             case "movement":
                 return await this._movement(aspect, characterData, targetsData);
+            case "invocation":
+                return await this._invocation(aspect, characterData, targetsData);
             default:
                 throw new Error("PL1E | unknown aspect : " + aspect.name);
         }
@@ -362,6 +364,55 @@ export class Pl1eAspect {
             targetData.activeAspects ??= [];
             targetData.activeAspects.push(aspectCopy)
         }
+        return targetsData;
+    }
+
+    /**
+     * Apply invocation aspect
+     * @param aspect
+     * @param characterData
+     * @param targetsData
+     * @returns {Promise<TargetData[]>}
+     * @private
+     */
+    static async _invocation(aspect, characterData, targetsData) {
+        const offset = canvas.dimensions.size / 2;
+
+        for (const template of characterData.templates) {
+            // Copy the aspect to calculate the new values
+            let aspectCopy = JSON.parse(JSON.stringify(aspect));
+
+            // Retrieve the actor
+            let actor = game.actors.get(aspectCopy.invocation);
+
+            // If the actor is not found, import it from the compendium
+            if (!actor) {
+                actor = await Pl1eHelpers.getDocument("Actor", aspectCopy.invocation);
+                if (actor) actor = await Actor.create(actor, {keepId: true});
+            }
+
+            const tokenData = await actor.getTokenData({
+                x: template.x - offset,
+                y: template.y - offset,
+                width: 1,
+                height: 1,
+                disposition: characterData.actor.disposition
+            });
+
+            // Create the token
+            const createdTokens = await characterData.scene.createEmbeddedDocuments("Token", [tokenData]);
+
+            // Add the combatant
+            // this.createEmbeddedDocuments('Combatant', [
+            //     {
+            //         tokenId: token.id,
+            //         sceneId: scene.id,
+            //         actorId: token.actorId,
+            //         hidden: token.hidden,
+            //     },
+            // ]);
+        }
+
         return targetsData;
     }
 
