@@ -1,21 +1,8 @@
-2023/08/02-19:53:31.530 e48 Recovering log #864
-2023/08/02-19:53:31.535 e48 Delete type=0 #864
-2023/08/02-19:53:31.535 e48 Delete type=3 #863
-2023/08/02-20:17:39.527 4458 Level-0 table #868: started
-2023/08/02-20:17:39.527 4458 Level-0 table #868: 0 bytes OK
-2023/08/02-20:17:39.527 4458 Delete type=0 #866
-2023/08/02-20:17:39.528 4458 Manual compaction at level-0 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at '!macros!SgzIQvzC3Vm5LcVD' @ 185 : 1
-2023/08/02-20:17:39.528 4458 Compacting 1@0 + 0@1 files
-2023/08/02-20:17:39.532 4458 Generated table #869@0: 2 keys, 1761 bytes
-2023/08/02-20:17:39.532 4458 Compacted 1@0 + 0@1 files => 1761 bytes
-2023/08/02-20:17:39.535 4458 compacted to: files[ 0 1 1 0 0 0 0 ]
-2023/08/02-20:17:39.536 4458 Delete type=2 #861
-2023/08/02-20:17:39.536 4458 Manual compaction at level-0 from '!macros!SgzIQvzC3Vm5LcVD' @ 185 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)
-2023/08/02-20:17:39.536 4458 Manual compaction at level-1 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at '!macros!SgzIQvzC3Vm5LcVD' @ 185 : 1
-2023/08/02-20:17:39.536 4458 Compacting 1@1 + 1@2 files
-2023/08/02-20:17:39.543 4458 Generated table #870@1: 11 keys, 6236 bytes
-2023/08/02-20:17:39.543 4458 Compacted 1@1 + 1@2 files => 6236 bytes
-2023/08/02-20:17:39.547 4458 compacted to: files[ 0 0 1 0 0 0 0 ]
-2023/08/02-20:17:39.547 4458 Delete type=2 #857
-2023/08/02-20:17:39.547 4458 Delete type=2 #869
-2023/08/02-20:17:39.547 4458 Manual compaction at level-1 from '!macros!SgzIQvzC3Vm5LcVD' @ 185 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)
+2023/08/02-23:38:34.079 4a98 Recovering log #872
+2023/08/02-23:38:34.086 4a98 Delete type=0 #872
+2023/08/02-23:38:34.086 4a98 Delete type=3 #871
+2023/08/03-01:00:37.050 244c Level-0 table #876: started
+2023/08/03-01:00:37.050 244c Level-0 table #876: 0 bytes OK
+2023/08/03-01:00:37.052 244c Delete type=0 #874
+2023/08/03-01:00:37.057 244c Manual compaction at level-0 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)
+2023/08/03-01:00:37.057 244c Manual compaction at level-1 from '!folders!l6EnyxmRUHeKUcbx' @ 72057594037927935 : 1 .. '!macros!ZFcpYY92jffdm6Yt' @ 0 : 0; will stop at (end)

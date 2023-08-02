@@ -70,6 +70,10 @@ export class Pl1eItem extends Item {
         if (docData.img === undefined) {
             docData.img = `systems/pl1e/assets/icons/${docData.type}.svg`;
         }
+
+        // Keep id if coming from compendium
+        if (options.fromCompendium) options["keepId"] = true;
+
         await super.create(docData, options);
     }
 

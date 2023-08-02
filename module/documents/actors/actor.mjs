@@ -53,9 +53,11 @@ export class Pl1eActor extends Actor {
             docData.img = `systems/pl1e/assets/icons/${docData.type}.svg`;
         }
 
+        // Keep id if coming from compendium
+        if (options.fromCompendium) options["keepId"] = true;
+
         // Some tweak on actors prototypeToken
         docData.prototypeToken = docData.prototypeToken || {};
-
         switch (docData.type) {
             case "character":
                 foundry.utils.mergeObject(

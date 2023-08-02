@@ -85,8 +85,8 @@ export class Pl1eCombat extends Combat {
     }
 
     /**
-     * Decrease the duration of the effects linked to this combatant
-     * @param {Combatant} combatant the related combatant
+     * Decrease the duration of the effects linked to this combatant.mjs
+     * @param {Combatant} combatant the related combatant.mjs
      * @param {Actor} actor the actor of the effects
      * @return {Promise<void>}
      * @private

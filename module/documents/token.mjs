@@ -5,7 +5,7 @@ export class Pl1eTokenDocument extends TokenDocument {
     /** @inheritDoc */
     async _preUpdate(data, options, user) {
         // Restrict the token movement
-        if ((data.x || data.y) && this.combatant !== null) {
+        if (!options.noRestriction && (data.x || data.y) && this.combatant !== null) {
             const currentTokenId = game.combat.current?.tokenId;
             const actorMisc = this.actor.system.misc;
             const actorVariables = this.actor.system.variables;

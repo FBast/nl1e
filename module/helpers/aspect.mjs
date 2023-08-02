@@ -347,14 +347,14 @@ export class Pl1eAspect {
             if (aspect.data === "standard") {
                 await targetData.token.document.update({
                     x: randomTemplate.x - offset,
-                    y: randomTemplate.y - offset
-                });
+                    y: randomTemplate.y - offset,
+                }, {animate: true, noRestriction: true});
             }
             if (aspect.data === "teleportation") {
                 await targetData.token.document.update({
                     x: randomTemplate.x - offset,
-                    y: randomTemplate.y - offset
-                }, {animate: false});
+                    y: randomTemplate.y - offset,
+                }, {animate: false, noRestriction: true});
             }
 
             // Add label for Sequence
@@ -400,17 +400,16 @@ export class Pl1eAspect {
             });
 
             // Create the token
-            const createdTokens = await characterData.scene.createEmbeddedDocuments("Token", [tokenData]);
+            const token = await characterData.scene.createEmbeddedDocuments("Token", [tokenData]);
 
-            // Add the combatant
-            // this.createEmbeddedDocuments('Combatant', [
-            //     {
-            //         tokenId: token.id,
-            //         sceneId: scene.id,
-            //         actorId: token.actorId,
-            //         hidden: token.hidden,
-            //     },
-            // ]);
+            // Add the combatant.mjs if in combat
+            if (game.combat) {
+                await game.combat.createEmbeddedDocuments('Combatant', [{
+                    tokenId: token.id,
+                    sceneId: characterData.scene.id,
+                    actorId: actor.id
+                }]);
+            }
         }
 
         return targetsData;
