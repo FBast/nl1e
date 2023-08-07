@@ -402,7 +402,7 @@ export class Pl1eAspect {
             // Create the token
             const token = await characterData.scene.createEmbeddedDocuments("Token", [tokenData]);
 
-            // Add the combatant.mjs if in combat
+            // Add the combatant if in combat
             if (game.combat) {
                 await game.combat.createEmbeddedDocuments('Combatant', [{
                     tokenId: token.id,

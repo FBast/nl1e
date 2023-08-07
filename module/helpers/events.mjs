@@ -282,8 +282,9 @@ export class Pl1eEvent {
         const actorId = chatCard.data("token-id");
         const sceneId = chatCard.data("scene-id");
 
+        const scene = await Pl1eHelpers.getDocument("Scene", sceneId);
         const token = await Pl1eHelpers.getDocument("Token", actorId, {
-            "scene": await Pl1eHelpers.getDocument("Scene", sceneId)
+            scene: scene
         });
         /** @type {Pl1eItem} */
         const item = token.actor.items.get(itemId);
@@ -297,6 +298,7 @@ export class Pl1eEvent {
         characterData.actor = token.actor;
         characterData.token = token;
         characterData.item = item;
+        characterData.scene = scene;
         if (characterData.linkedItem)
             characterData.linkedItem = await Pl1eHelpers.getDocument("Item", characterData.linkedItem.id);
         let templates = [];
