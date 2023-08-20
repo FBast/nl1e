@@ -27,6 +27,10 @@
                                 <select name="system.passiveAspects.{{@key}}.value">
                                     {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
                                 </select>
+                            {{else if (eq type "array")}}
+                                <select name="system.passiveAspects.{{@key}}.value">
+                                    {{selectOptions (config select) selected=../../value localize=true}}
+                                </select>
                             {{/if}}
                         </div>
                     {{/with}}

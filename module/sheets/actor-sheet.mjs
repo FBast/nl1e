@@ -214,8 +214,20 @@ export class Pl1eActorSheet extends ActorSheet {
         // Return if same actor
         if (item.parent === this.actor) return;
 
-        // filter item to actor droppable
+        // Filter item to actor droppable
         if (!CONFIG.PL1E.actors[this.actor.type].droppable.includes(item.type)) return;
+
+        // Only one body class
+        if (item.system.attributes.featureType === "bodyClass" && this.actor.items.find(item => item.system.attributes.featureType === "bodyClass")) {
+            ui.notifications.warn(game.i18n.localize("PL1E.OnlyOneBodyClass"));
+            return;
+        }
+
+        // Only one mind class
+        if (item.system.attributes.featureType === "mindClass" && this.actor.items.find(item => item.system.attributes.featureType === "mindClass")) {
+            ui.notifications.warn(game.i18n.localize("PL1E.OnlyOneMindClass"));
+            return;
+        }
 
         // Player to other actor transfer
         if (!this.actor.isOwner) {
@@ -310,6 +322,9 @@ export class Pl1eActorSheet extends ActorSheet {
                     }
                 }
                 if (parentItem && parentItem.system.attributes.featureType === "faith" && !this.actor.system.misc.faithPower) continue;
+
+                // Search if the character has a mastery listed in item masters
+                if (item.system.attributes.masteryLink.length > 0 && !this.actor.system.misc.masters.some(mastery => item.system.attributes.masteryLink.includes(mastery))) continue;
 
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {

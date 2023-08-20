@@ -6,18 +6,6 @@
             <input type="checkbox" name="system.attributes.junk" {{checked system.attributes.junk}} data-dtype="Boolean"/>
         </div>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
-            <ul class="attribute-name">
-                {{#each system.attributes.masters}}
-                    <li class="tag {{this}}">{{localize (configEntry "masters" this)}}</li>
-                {{/each}}
-            </ul>
-            <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masters"
-               data-tooltip="{{localize 'PL1E.MastersConfig'}}">
-                <i class="fas fa-edit"></i>
-            </a>
-        </div>
-        <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Hands"}}</label>
             <input type="number" name="system.attributes.hands" value="{{system.attributes.hands}}" data-dtype="Number"/>
         </div>
@@ -25,10 +13,66 @@
             <label class="attribute-name">{{localize "PL1E.Reach"}}</label>
             <input type="number" name="system.attributes.reach" value="{{system.attributes.reach}}" data-dtype="Number"/>
         </div>
+        {{#if (gt system.attributes.reach 0)}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.MeleeRoll"}}</label>
+                <ul class="attribute-name">
+                    {{#each system.attributes.meleeRoll}}
+                        <li class="tag {{this}}">{{localize (configEntry "abilitySkills" this)}}</li>
+                    {{/each}}
+                </ul>
+                <a class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.MeleeRoll" data-key-path="attributes.meleeRoll"
+                   data-tooltip="{{localize 'PL1E.MeleeRollConfig'}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
+            {{#if (gt system.attributes.meleeRoll.length 0)}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.MeleeOppositeRoll"}}</label>
+                    <ul class="attribute-name">
+                        {{#each system.attributes.meleeOppositeRoll}}
+                            <li class="tag {{this}}">{{localize (configEntry "abilityResistances" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.MeleeOppositeRoll" data-key-path="attributes.meleeOppositeRoll"
+                       data-tooltip="{{localize 'PL1E.MeleeOppositeRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            {{/if}}
+        {{/if}}
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Range"}}</label>
             <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
         </div>
+        {{#if (gt system.attributes.range 0)}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.RangeRoll"}}</label>
+                <ul class="attribute-name">
+                    {{#each system.attributes.rangeRoll}}
+                        <li class="tag {{this}}">{{localize (configEntry "abilitySkills" this)}}</li>
+                    {{/each}}
+                </ul>
+                <a class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.RangeRoll" data-key-path="attributes.rangeRoll"
+                   data-tooltip="{{localize 'PL1E.RangeRollConfig'}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
+            {{#if (gt system.attributes.rangeRoll.length 0)}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.RangeOppositeRoll"}}</label>
+                    <ul class="attribute-name">
+                        {{#each system.attributes.rangeOppositeRoll}}
+                            <li class="tag {{this}}">{{localize (configEntry "abilityResistances" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.RangeOppositeRoll" data-key-path="attributes.rangeOppositeRoll"
+                       data-tooltip="{{localize 'PL1E.RangeOppositeRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            {{/if}}
+        {{/if}}
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Uses"}}</label>
             <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>

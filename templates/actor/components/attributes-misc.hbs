@@ -6,13 +6,17 @@
                 <div class="form-group">
                     <label>{{localize label}}</label>
                     <div class="form-fields">
-                        {{#if (eq type "select")}}
+                        {{#if (eq type "array")}}
+                            <ul class="align-right">
+                                {{#each ../this}}
+                                    <li class="tag {{this}}">{{localize (configEntry ../select this)}}</li>
+                                {{/each}}
+                            </ul>
+                        {{else if (eq type "select")}}
                             <label class="align-right">{{localize (configEntryLabel select ../this)}}</label>
-                        {{/if}}
-                        {{#if (eq type "number")}}
+                        {{else if (eq type "number")}}
                             <label class="align-right">{{../this}}</label>
-                        {{/if}}
-                        {{#if (eq type "bool")}}
+                        {{else if (eq type "bool")}}
                             <label class="align-right">{{#if ../this}}{{localize "PL1E.Yes"}}{{else}}{{localize "PL1E.No"}}{{/if}}</label>
                         {{/if}}
                     </div>

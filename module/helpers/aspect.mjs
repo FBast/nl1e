@@ -419,7 +419,6 @@ export class Pl1eAspect {
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         let currentValue = getProperty(targetData.actor, dataConfig.path);
         currentValue = aspect.name === "set" ? aspect.value : currentValue + aspect.value;
-        console.log("Value on apply target aspect : " + currentValue);
         if (game.user.isGM) {
             await targetData.actor.update({
                 [dataConfig.path]: currentValue

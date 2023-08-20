@@ -78,14 +78,14 @@ export class Pl1eItem extends Item {
     }
 
     /** @inheritDoc */
-    async _preDelete(options, user) {
+    async _onDelete(options, userId) {
         // If the item is not embedded and is the last then update refs
         const documents = await Pl1eHelpers.getDocuments("Item", this._id);
-        if (!this.isEmbedded && documents.length === 1) {
+        if (!this.isEmbedded && documents.length === 0) {
             // Remove item from items
             for (const item of await Pl1eHelpers.getDocuments("Item")) {
                 if (item.system.refItems.includes(this._id))
-                    await item.removeRefItem(this);
+                    await item.removeRefItem(this._id);
             }
 
             // Remove embedded from actors
@@ -97,7 +97,7 @@ export class Pl1eItem extends Item {
             }
         }
 
-        return super._preDelete(options, user);
+        super._onDelete(options, userId);
     }
 
     /** @inheritDoc */
@@ -112,12 +112,9 @@ export class Pl1eItem extends Item {
             }
             if (changed.system?.attributes?.characterRoll === "none") changed.system.attributes.targetRoll = [];
             if (changed.system?.attributes?.itemLink === "none") {
-                changed.system.attributes.rangeOverride = "none";
-                changed.system.attributes.masteryLink = [];
                 changed.system.attributes.isMajorAction = false;
                 changed.system.attributes.usageCost = 0;
             }
-            if (changed.system?.attributes?.itemLink === "parent") changed.system.attributes.masteryLink = [];
             if (["target", "self"].includes(changed.system?.attributes?.areaShape)) changed.system.attributes.excludeSelf = false;
             if (changed.system?.attributes?.areaShape === "self") changed.system.attributes.includeSelf = true;
         }
@@ -145,7 +142,7 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Add a new ref Item
+     * Add a ref Item
      * @param item
      * @returns {Promise<void>}
      */
@@ -184,16 +181,15 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Remove a new ref Item
-     * @param item
+     * Remove a ref Item
+     * @param {string} itemId
      * @returns {Promise<void>}
      */
-    async removeRefItem(item) {
-        if (this.isEmbedded)
-            throw new Error("PL1E | Cannot remove ref item on embedded " + this.name);
+    async removeRefItem(itemId) {
+        if (this.isEmbedded) throw new Error("PL1E | Cannot remove ref item on embedded " + this.name);
 
         // Remove item as child id from this
-        this.system.refItems.splice(this.system.refItems.indexOf(item._id), 1);
+        this.system.refItems.splice(this.system.refItems.indexOf(itemId), 1);
         await this.update({
             "system.refItems": this.system.refItems
         });
@@ -202,7 +198,7 @@ export class Pl1eItem extends Item {
         for (const actor of game.actors) {
             for (const actorItem of actor.items) {
                 if (actorItem.sourceId !== this._id) continue;
-                const itemToRemove = actor.items.find(otherItem => otherItem.sourceId === item._id &&
+                const itemToRemove = actor.items.find(otherItem => otherItem.sourceId === itemId &&
                     otherItem.childId === actorItem.parentId)
                 if (itemToRemove) await actor.removeItem(itemToRemove);
             }
@@ -625,7 +621,7 @@ export class Pl1eItem extends Item {
     /**
      * Get the targetData from a token and its related actor
      * @param {CharacterData} characterData
-     * @param {Actor} actor
+     * @param {Pl1eActor} actor
      * @param {Token | null} token
      * @param {ActionTemplate} template
      * @return {Promise<TargetData>}

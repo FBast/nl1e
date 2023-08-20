@@ -2,7 +2,7 @@
     <ol class="items-list">
         {{#each items}}
             {{#if (eq type "unknown")}}
-                <li class="item">
+                <li class="item" data-item-id="{{id}}">
                     <div class="flexrow">
                         <img class="item-image hover-red" src="icons/svg/hazard.svg" width="24" height="24"/>
                         <label class="item-name">{{id}}</label>

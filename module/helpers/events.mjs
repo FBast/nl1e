@@ -164,8 +164,7 @@ export class Pl1eEvent {
         }
         // Remove refItem from item
         else if (document instanceof Pl1eItem && itemId) {
-            const item = await Pl1eHelpers.getDocument("Item", itemId);
-            if (item) await document.removeRefItem(item);
+            await document.removeRefItem(itemId);
         }
 
         document.sheet.render(document.sheet.rendered);

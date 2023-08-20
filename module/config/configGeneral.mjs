@@ -3,8 +3,8 @@ import {PL1E} from "./config.mjs";
 export function getConfigGeneral() {
     PL1E.featureTypes = {
         "race": "PL1E.Race",
-        "class": "PL1E.Class",
-        "mastery": "PL1E.Mastery",
+        "bodyClass": "PL1E.BodyClass",
+        "mindClass": "PL1E.MindClass",
         "faith": "PL1E.Faith",
         "trait": "PL1E.Trait"
     }
@@ -17,9 +17,8 @@ export function getConfigGeneral() {
 
     PL1E.itemLinks = {
         "none": "PL1E.None",
-        "parent": "PL1E.Parent",
-        "mastery": "PL1E.Mastery",
-        "multiple": "PL1E.Multiple"
+        "melee": "PL1E.Melee",
+        "range": "PL1E.Range"
     }
 
     PL1E.masters = {

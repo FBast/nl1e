@@ -10,40 +10,18 @@
                 {{selectOptions (config "itemLinks") selected=system.attributes.itemLink localize=true}}
             </select>
         </div>
-        {{#if (or (eq system.attributes.itemLink "mastery") (eq system.attributes.itemLink "multiple"))}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.MasteryLink"}}</label>
-                <ul class="attribute-name">
-                    {{#each system.attributes.masteryLink}}
-                        <li class="tag {{this}}">{{localize (configEntry "masters" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masteryLink"
-                   data-tooltip="{{localize 'PL1E.MastersConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </div>
-        {{/if}}
-        {{#if (ne system.attributes.itemLink "none")}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">
-                    <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipRangeOverride"}}'></i>
-                    {{localize "PL1E.RangeOverride"}}
-                </label>
-                <select name="system.attributes.rangeOverride">
-                    {{selectOptions (config "linkOverrides") selected=system.attributes.rangeOverride localize=true}}
-                </select>
-            </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">
-                    <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipLengthOverride"}}'></i>
-                    {{localize "PL1E.LengthOverride"}}
-                </label>
-                <select name="system.attributes.lengthOverride">
-                    {{selectOptions (config "linkOverrides") selected=system.attributes.lengthOverride localize=true}}
-                </select>
-            </div>
-        {{/if}}
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.MasteryLink"}}</label>
+            <ul class="attribute-name">
+                {{#each system.attributes.masteryLink}}
+                    <li class="tag {{this}}">{{localize (configEntry "masters" this)}}</li>
+                {{/each}}
+            </ul>
+            <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masteryLink"
+               data-tooltip="{{localize 'PL1E.MastersConfig'}}">
+                <i class="fas fa-edit"></i>
+            </a>
+        </div>
         <hr>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>
@@ -77,12 +55,10 @@
             <label class="attribute-name">{{localize "PL1E.ManaCost"}}</label>
             <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}" data-dtype="Number"/>
         </div>
-        {{#if (ne system.attributes.itemLink "none")}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.UsageCost"}}</label>
-                <input type="number" name="system.attributes.usageCost" value="{{system.attributes.usageCost}}" data-dtype="Number"/>
-            </div>
-        {{/if}}
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.UsageCost"}}</label>
+            <input type="number" name="system.attributes.usageCost" value="{{system.attributes.usageCost}}" data-dtype="Number"/>
+        </div>
         <hr>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Activation"}}</label>
@@ -95,12 +71,10 @@
                 <label class="attribute-name">{{localize "PL1E.ActionCost"}}</label>
                 <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
             </div>
-            {{#if (ne system.attributes.itemLink "none")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.IsMajorAction"}}</label>
-                    <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
-                </div>
-            {{/if}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.IsMajorAction"}}</label>
+                <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
+            </div>
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.TriggerReactions"}}</label>
                 <input type="checkbox" name="system.attributes.triggerReactions" {{checked system.attributes.triggerReactions}} data-dtype="Boolean"/>
@@ -119,17 +93,15 @@
             </select>
         </div>
         {{#if (ne system.attributes.areaShape "self")}}
-            {{#if (eq system.attributes.rangeOverride "none")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.Range"}}</label>
-                    <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
-                    {{#if (ne system.attributes.characterRoll "none")}}
-                        <select name="system.attributes.rangeResolutionType">
-                            {{selectOptions (config "resolutionTypes") selected=system.attributes.rangeResolutionType localize=true}}
-                        </select>
-                    {{/if}}
-                </div>
-            {{/if}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+                {{#if (ne system.attributes.characterRoll "none")}}
+                    <select name="system.attributes.rangeResolutionType">
+                        {{selectOptions (config "resolutionTypes") selected=system.attributes.rangeResolutionType localize=true}}
+                    </select>
+                {{/if}}
+            </div>
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
                 <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
@@ -150,17 +122,15 @@
                     {{/if}}
                 </div>
             {{else if (eq system.attributes.areaShape "cone")}}
-                {{#if (eq system.attributes.lengthOverride "none")}}
-                    <div class="item-attribute flexrow">
-                        <label class="attribute-name">{{localize "PL1E.ConeLength"}}</label>
-                        <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
-                        {{#if (ne system.attributes.characterRoll "none")}}
-                            <select name="system.attributes.coneLengthResolutionType">
-                                {{selectOptions (config "resolutionTypes") selected=system.attributes.coneLengthResolutionType localize=true}}
-                            </select>
-                        {{/if}}
-                    </div>
-                {{/if}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.ConeLength"}}</label>
+                    <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
+                    {{#if (ne system.attributes.characterRoll "none")}}
+                        <select name="system.attributes.coneLengthResolutionType">
+                            {{selectOptions (config "resolutionTypes") selected=system.attributes.coneLengthResolutionType localize=true}}
+                        </select>
+                    {{/if}}
+                </div>
                 <div class="item-attribute flexrow">
                     <label class="attribute-name">{{localize "PL1E.ConeAngle"}}</label>
                     <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
@@ -169,7 +139,6 @@
                     </select>
                 </div>
             {{else if (eq system.attributes.areaShape "square")}}
-                {{#if (eq system.attributes.lengthOverride "none")}}
                     <div class="item-attribute flexrow">
                         <label class="attribute-name">{{localize "PL1E.SquareLength"}}</label>
                         <input type="number" name="system.attributes.squareLength" value="{{system.attributes.squareLength}}" data-dtype="Number"/>
@@ -179,19 +148,16 @@
                             </select>
                         {{/if}}
                     </div>
-                {{/if}}
             {{else if (eq system.attributes.areaShape "ray")}}
-                {{#if (eq system.attributes.lengthOverride "none")}}
-                    <div class="item-attribute flexrow">
-                        <label class="attribute-name">{{localize "PL1E.RayLength"}}</label>
-                        <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
-                        {{#if (ne system.attributes.characterRoll "none")}}
-                            <select name="system.attributes.rayLengthResolutionType">
-                                {{selectOptions (config "resolutionTypes") selected=system.attributes.rayLengthResolutionType localize=true}}
-                            </select>
-                        {{/if}}
-                    </div>
-                {{/if}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.RayLength"}}</label>
+                    <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
+                    {{#if (ne system.attributes.characterRoll "none")}}
+                        <select name="system.attributes.rayLengthResolutionType">
+                            {{selectOptions (config "resolutionTypes") selected=system.attributes.rayLengthResolutionType localize=true}}
+                        </select>
+                    {{/if}}
+                </div>
             {{/if}}
             {{#if (and (ne system.attributes.areaShape "target") (ne system.attributes.areaShape "self"))}}
                 <div class="item-attribute flexrow">

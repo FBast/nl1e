@@ -17,10 +17,7 @@ export class Pl1eAbility extends Pl1eItem {
     /** @inheritDoc */
     async _preActivate(characterData) {
         // Get linked attributes
-        if (characterData.attributes.itemLink !== "none") {
-            if (!await this._linkItem(characterData)) return false;
-        }
-        return true;
+        return await this._linkItem(characterData);
     }
 
     /** @inheritDoc */
@@ -42,7 +39,7 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             return false;
         }
-        if (itemAttributes.itemLink !== "none" && this._getLinkableItems(characterData).length === 0) {
+        if (this._getLinkableItems(characterData).length === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;
         }
@@ -78,42 +75,17 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Override range attribute
-        if (characterData.attributes.rangeOverride === "reach") {
+        if (characterData.attributes.itemLink === "melee") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
         }
-        else if (characterData.attributes.rangeOverride === "range") {
+        else if (characterData.attributes.itemLink === "range") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.range;
         }
 
-        // Override length attribute
-        if (characterData.attributes.lengthOverride !== "none") {
-            let lengthOverride = null;
-            if (characterData.attributes.lengthOverride === "reach")
-                lengthOverride = characterData.linkedItem.system.attributes.reach;
-            if (characterData.attributes.lengthOverride === "range")
-                lengthOverride = characterData.linkedItem.system.attributes.range;
-            switch (characterData.attributes.areaShape) {
-                case "cone":
-                    characterData.attributes.coneLength = lengthOverride;
-                    break;
-                case "square":
-                    characterData.attributes.squareLength = lengthOverride;
-                    break;
-                case "ray":
-                    characterData.attributes.rayLength = lengthOverride;
-                    break;
-            }
-        }
-
+        //TODO for now random but it should take the correct mastery for the macro effect
         // Set mastery attribute
-        if (characterData.attributes.itemLink === "mastery") {
-            characterData.attributes.mastery = Pl1eHelpers.findFirstCommonElement(characterData.attributes.masteryLink,
-                characterData.linkedItem.system.attributes.masters)
-        }
-        else if (characterData.attributes.itemLink === "parent") {
-            const masters = characterData.linkedItem.system.attributes.masters;
-            characterData.attributes.mastery = masters[Math.floor(Math.random() * masters.length)];
-        }
+        const masters = characterData.linkedItem.system.attributes.masters;
+        characterData.attributes.mastery = masters[Math.floor(Math.random() * masters.length)];
 
         Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
         return true;
@@ -170,21 +142,13 @@ export class Pl1eAbility extends Pl1eItem {
             if (!["weapon", "wearable"].includes(item.type)) continue;
             if (!item.isEnabled) continue;
             if (characterData.attributes.isMajorAction && item.system.isMajorActionUsed) continue;
-            if (characterData.attributes.rangeOverride === "reach" && item.system.attributes.reach === 0) continue;
-            if (characterData.attributes.rangeOverride === "range" && item.system.attributes.range === 0) continue;
-            if (characterData.attributes.lengthOverride === "reach" && item.system.attributes.reach === 0) continue;
-            if (characterData.attributes.lengthOverride === "range" && item.system.attributes.range === 0) continue;
+            if (characterData.attributes.linkedItem === "melee" && item.system.attributes.reach === 0) continue;
+            if (characterData.attributes.linkedItem === "range" && item.system.attributes.range === 0) continue;
             // Item usages are not enough
             if (characterData.attributes.usageCost > 0 && item.system.attributes.uses > 0 &&
                 characterData.attributes.usageCost > item.system.attributes.uses - item.system.removedUses) continue;
-            // Item link is mastery and item mastery does not match
-            if (characterData.attributes.itemLink === "mastery" && !characterData.attributes.masteryLink
-                .some(mastery => item.system.attributes.masters.includes(mastery))) continue;
-            // Item link is parent and parent id and child id does not match
-            else if (characterData.attributes.itemLink === "parent" && !item.system.refItems.includes(characterData.item.sourceId)) continue;
-            // Item link is multiple and item mastery does not match and parent id and child id does not match
-            else if (characterData.attributes.itemLink === "multiple" && !characterData.attributes.masteryLink
-                .some(mastery => item.system.attributes.masters.includes(mastery)) && item.parentId !== this.childId) continue;
+            // Item parent id and child id does not match
+            else if (characterData.item.sourceId && !item.system.refItems.includes(characterData.item.sourceId)) continue;
             relatedItems.push(item);
         }
         return relatedItems;

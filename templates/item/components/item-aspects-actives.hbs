@@ -29,8 +29,12 @@
                             {{else if (eq type "bool")}}
                                 <input type="checkbox" name="system.activeAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
                             {{else if (eq type "select")}}
+                                    <select name="system.activeAspects.{{@key}}.value">
+                                        {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
+                                    </select>
+                            {{else if (eq type "array")}}
                                 <select name="system.activeAspects.{{@key}}.value">
-                                    {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
+                                    {{selectOptions (config select) selected=../../value localize=true}}
                                 </select>
                             {{/if}}
                         </div>

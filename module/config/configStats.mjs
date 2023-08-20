@@ -179,7 +179,6 @@ export function getConfigActor() {
             "label": "PL1E.Resilience",
             "fixedRank": true,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["intellect", "will"],
                 "misc": []
@@ -189,7 +188,6 @@ export function getConfigActor() {
             "label": "PL1E.Intuition",
             "fixedRank": true,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["cunning", "wisdom"],
                 "misc": []
@@ -199,7 +197,6 @@ export function getConfigActor() {
             "label": "PL1E.Handling",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["strength", "agility"],
                 "misc": []
@@ -209,7 +206,6 @@ export function getConfigActor() {
             "label": "PL1E.Throwing",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["strength", "perception"],
                 "misc": []
@@ -219,7 +215,6 @@ export function getConfigActor() {
             "label": "PL1E.Athletics",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["strength", "constitution"],
                 "misc": ["flexibility"]
@@ -229,7 +224,6 @@ export function getConfigActor() {
             "label": "PL1E.Acrobatics",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["agility", "perception"],
                 "misc": ["flexibility"]
@@ -239,7 +233,6 @@ export function getConfigActor() {
             "label": "PL1E.Accuracy",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["agility", "perception"],
                 "misc": ["flexibility"]
@@ -249,7 +242,6 @@ export function getConfigActor() {
             "label": "PL1E.Search",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["cunning", "wisdom"],
                 "misc": []
@@ -259,7 +251,6 @@ export function getConfigActor() {
             "label": "PL1E.Vigilance",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["perception", "wisdom"],
                 "misc": []
@@ -269,7 +260,6 @@ export function getConfigActor() {
             "label": "PL1E.Discretion",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["agility", "perception"],
                 "misc": ["flexibility"]
@@ -279,7 +269,6 @@ export function getConfigActor() {
             "label": "PL1E.Performance",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["wisdom", "will"],
                 "misc": []
@@ -289,7 +278,6 @@ export function getConfigActor() {
             "label": "PL1E.Diplomacy",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["intellect", "wisdom"],
                 "misc": []
@@ -299,7 +287,6 @@ export function getConfigActor() {
             "label": "PL1E.Intimidation",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["cunning", "wisdom"],
                 "misc": []
@@ -309,7 +296,6 @@ export function getConfigActor() {
             "label": "PL1E.Bluff",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["intellect", "cunning"],
                 "misc": []
@@ -319,7 +305,6 @@ export function getConfigActor() {
             "label": "PL1E.Craft",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["agility", "cunning"],
                 "misc": []
@@ -329,7 +314,6 @@ export function getConfigActor() {
             "label": "PL1E.Erudition",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": false,
             "weights": {
                 "characteristics": ["intellect", "cunning"],
                 "misc": []
@@ -339,7 +323,6 @@ export function getConfigActor() {
             "label": "PL1E.Nature",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": true,
             "weights": {
                 "characteristics": ["intellect", "wisdom"],
                 "misc": []
@@ -349,10 +332,9 @@ export function getConfigActor() {
             "label": "PL1E.Magic",
             "fixedRank": false,
             "divider": 2,
-            "magicPenalty": true,
             "weights": {
                 "characteristics": ["cunning", "will"],
-                "misc": ["flexibility"]
+                "misc": []
             }
         }
     }
@@ -414,6 +396,14 @@ export function getConfigActor() {
     }
 
     PL1E.misc = {
+        "masters": {
+            "label": "PL1E.Masters",
+            "icon": "fa-swords",
+            "type": "array",
+            "path": "system.misc.masters",
+            "select": "masters",
+            "hidden": false
+        },
         "size": {
             "label": "PL1E.Size",
             "icon": "fa-arrow-up-big-small",
@@ -540,7 +530,21 @@ export function getConfigActor() {
             "icon": "fa-reply-clock",
             "type": "bool",
             "path": "system.misc.faithPower",
-            "hidden": true
+            "hidden": false
+        },
+        "gesturalMagic": {
+            "label": "PL1E.GesturalMagic",
+            "icon": "fa-reply-clock",
+            "type": "bool",
+            "path": "system.misc.gesturalMagic",
+            "hidden": false
+        },
+        "vocalMagic": {
+            "label": "PL1E.VocalMagic",
+            "icon": "fa-reply-clock",
+            "type": "bool",
+            "path": "system.misc.vocalMagic",
+            "hidden": false
         }
     }
 

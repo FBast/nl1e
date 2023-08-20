@@ -238,11 +238,10 @@
           "maxRank": 0,
           "rollBestSkill": true,
           "bonuses": 0,
-          "advantages": 0,
-          "sizeMultiplier": 0,
-          "sizeToken": 1
+          "advantages": 0
         },
         "misc": {
+          "masters": [],
           "size": "medium",
           "sizeMultiplier": 1,
           "tokenSize": 1,
@@ -260,7 +259,9 @@
           "feelTremorRange": 0,
           "action": 2,
           "reaction": 1,
-          "faithPower": false
+          "faithPower": false,
+          "gesturalMagic": false,
+          "vocalMagic": false
         },
         "variables": {
           "remainingMovement": 0,
@@ -347,7 +348,6 @@
         "level": 1,
         "parentLink": false,
         "masteryLink": [],
-        "rangeOverride": "none",
         "characterRoll": "none",
         "targetRoll": [],
         "healthCost": 0,
@@ -383,10 +383,13 @@
       "isEquippedSecondary": false,
       "isMajorActionUsed": false,
       "attributes": {
-        "masters": [],
         "hands": 1,
         "reach": 0,
-        "range": 0
+        "meleeRoll": [],
+        "meleeOppositeRoll": [],
+        "range": 0,
+        "rangeRoll": [],
+        "rangeOppositeRoll": []
       }
     },
     "wearable": {
@@ -394,7 +397,6 @@
       "isEquipped": false,
       "isMajorActionUsed": false,
       "attributes": {
-        "masters": [],
         "slot": "none"
       }
     },

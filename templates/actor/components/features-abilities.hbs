@@ -1,6 +1,6 @@
 <ol class="items-list">
     {{#each abilities as |abilities level|}}
-        <li class="item items-header flexrow">
+        <li class="items-header flexrow">
             <div class="item-name">{{localize "PL1E.AbilitiesLevel"}} {{level}}</div>
         </li>
         {{#each abilities}}
@@ -46,12 +46,12 @@
                             {{#if system.attributes.triggerReactions}}
                                 <i class="item-info fas fa-skull hover-green" data-tooltip='{{localize "PL1E.TriggerReactions"}}'></i>
                             {{/if}}
-                            {{#if (eq system.attributes.rangeOverride "reach")}}
+                            {{#if (eq system.attributes.linkedItem "melee")}}
                                 <i class="item-info fas fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>
-                            {{else if (eq system.attributes.rangeOverride "range")}}
+                            {{else if (eq system.attributes.linkedItem "range")}}
                                 <i class="item-info fas fa-bow-arrow hover-green" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
                             {{/if}}
-                            {{#if (eq system.attributes.rangeOverride "none")}}
+                            {{#if (eq system.attributes.linkedItem "none")}}
                                 {{#if (ne system.attributes.range 0)}}
                                     <i class="item-info fas fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
                                         <label>{{system.attributes.range}}</label>
