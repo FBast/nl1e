@@ -1,6 +1,6 @@
 <section class="scroll-auto">
     <fieldset>
-        <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+        <legend class="section-header">{{localize "PL1E.Link"}}</legend>
         <div class="item-attribute flexrow">
             <label class="attribute-name">
                 <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipItemLink"}}'></i>
@@ -22,7 +22,9 @@
                 <i class="fas fa-edit"></i>
             </a>
         </div>
-        <hr>
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Usage"}}</legend>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>
             <select name="system.attributes.characterRoll">
@@ -59,7 +61,9 @@
             <label class="attribute-name">{{localize "PL1E.UsageCost"}}</label>
             <input type="number" name="system.attributes.usageCost" value="{{system.attributes.usageCost}}" data-dtype="Number"/>
         </div>
-        <hr>
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Activation"}}</legend>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Activation"}}</label>
             <select name="system.attributes.activation">
@@ -85,7 +89,9 @@
                 <input type="number" name="system.attributes.reactionCost" value="1" data-dtype="Number" disabled/>
             </div>
         {{/if}}
-        <hr>
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Target"}}</legend>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.AreaShape"}}</label>
             <select name="system.attributes.areaShape">
@@ -172,44 +178,36 @@
                 <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}} data-dtype="Boolean"/>
             </div>
         {{/if}}
-        <hr>
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.ModificationMacros"}}</legend>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.CustomMacros"}}</label>
-            <input type="checkbox" name="system.attributes.customMacro" {{checked system.attributes.customMacro}} data-dtype="Boolean"/>
+            <label class="attribute-name">{{localize "PL1E.ActorUpdateMacro"}}</label>
+            <select name="system.attributes.actorUpdateMacro">
+                {{selectOptions modificationMacros selected=system.attributes.actorUpdateMacro localize=true}}
+            </select>
         </div>
-        {{#if system.attributes.customMacro}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.ActivationMacro"}}</label>
-                <input type="text" name="system.attributes.activationMacro" value="{{system.attributes.activationMacro}}" data-dtype="String"/>
-            </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.PreLaunchMacro"}}</label>
-                <input type="text" name="system.attributes.preLaunchMacro" value="{{system.attributes.preLaunchMacro}}" data-dtype="String"/>
-            </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.PostLaunchMacro"}}</label>
-                <input type="text" name="system.attributes.postLaunchMacro" value="{{system.attributes.postLaunchMacro}}" data-dtype="String"/>
-            </div>
-        {{else}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.ActivationMacro"}}</label>
-                <select name="system.attributes.activationMacro">
-                    {{selectOptions itemMacros selected=system.attributes.activationMacro localize=true}}
-                </select>
-            </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.PreLaunchMacro"}}</label>
-                <select name="system.attributes.preLaunchMacro">
-                    {{selectOptions itemMacros selected=system.attributes.preLaunchMacro localize=true}}
-                </select>
-            </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.PostLaunchMacro"}}</label>
-                <select name="system.attributes.postLaunchMacro">
-                    {{selectOptions itemMacros selected=system.attributes.postLaunchMacro localize=true}}
-                </select>
-            </div>
-        {{/if}}
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.SequencerMacros"}}</legend>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.ActivationMacro"}}</label>
+            <select name="system.attributes.activationMacro">
+                {{selectOptions sequencerMacros selected=system.attributes.activationMacro localize=true}}
+            </select>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.PreLaunchMacro"}}</label>
+            <select name="system.attributes.preLaunchMacro">
+                {{selectOptions sequencerMacros selected=system.attributes.preLaunchMacro localize=true}}
+            </select>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.PostLaunchMacro"}}</label>
+            <select name="system.attributes.postLaunchMacro">
+                {{selectOptions sequencerMacros selected=system.attributes.postLaunchMacro localize=true}}
+            </select>
+        </div>
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
     {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}

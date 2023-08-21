@@ -61,4 +61,5 @@ export const registerHandlebars = function () {
     Handlebars.registerHelper('length', function(arr) {
         return arr.length;
     });
+
 }

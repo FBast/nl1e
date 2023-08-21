@@ -98,11 +98,10 @@ export class Pl1eItemSheet extends ItemSheet {
         // Prepare refItems
         await this._prepareItems(context);
 
-        // Prepare macros
-        await this._prepareMacros(context);
-
-        // Prepare invocations
-        await this._prepareInvocations(context);
+        // Retrieve some documents from packs
+        context.sequencerMacros = await this._listDocuments("legacy-sequencer-macros", true);
+        context.modificationMacros = await this._listDocuments("legacy-modification-macros", true);
+        context.invocations = await this._listDocuments("legacy-characters");
 
         // Add the actor's data to context.data for easier access
         context.system = itemData.system;
@@ -208,28 +207,23 @@ export class Pl1eItemSheet extends ItemSheet {
         context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
     }
 
-    async _prepareMacros(context) {
-        const itemMacros = {
-            "": "PL1E.None"
-        };
+    /**
+     * Retrieve a document list for dropdown selection
+     * @param packName
+     * @param includeNone
+     * @return {Promise<{}>}
+     * @private
+     */
+    async _listDocuments(packName, includeNone = false) {
+        const documents = {};
+        if (includeNone) documents[""] = "PL1E.None";
 
-        const itemMacrosPack = game.packs.find(pack => pack.metadata.name === "legacy-macros");
-        for (const macro of await itemMacrosPack.getDocuments()) {
-            itemMacros[macro._id] = macro.name;
+        const pack = game.packs.find(pack => pack.metadata.name === packName);
+        for (const document of await pack.getDocuments()) {
+            documents[document._id] = document.name;
         }
 
-        context.itemMacros = itemMacros;
-    }
-
-    async _prepareInvocations(context) {
-        const invocations = {};
-
-        const characterPack = game.packs.find(pack => pack.metadata.name === "legacy-characters");
-        for (const actor of await characterPack.getDocuments()) {
-            invocations[actor._id] = actor.name;
-        }
-
-        context.invocations = invocations;
+        return documents;
     }
 
     /**

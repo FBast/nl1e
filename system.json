@@ -43,10 +43,19 @@
       "flags": {}
     },
     {
-      "name": "legacy-macros",
-      "label": "Legacy Macros",
+      "name": "legacy-sequencer-macros",
+      "label": "Legacy Sequencer Macros",
       "system": "pl1e",
-      "path": "packs/legacy-macros.db",
+      "path": "packs/legacy-sequencer-macros.db",
+      "type": "Macro",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "legacy-modification-macros",
+      "label": "Legacy Modification Macros",
+      "system": "pl1e",
+      "path": "packs/legacy-modification-macros.db",
       "type": "Macro",
       "private": true,
       "flags": {}

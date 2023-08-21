@@ -106,6 +106,26 @@ export class Pl1eActor extends Actor {
     }
 
     /** @inheritDoc */
+    async _preUpdate(changed, options, user) {
+        for (const item of this.items) {
+            if (item.type !== "ability") continue;
+            if (!item.isEnabled) continue;
+
+            const macroId = item.system.attributes.actorUpdateMacro;
+            const actorUpdateMacro = await Pl1eHelpers.getDocument("Macro", macroId);
+
+            // Execute post-launch macro
+            if (actorUpdateMacro) actorUpdateMacro.execute({
+                actor: this,
+                changed: changed,
+                options: options,
+                user: user
+            });
+        }
+        return super._preUpdate(changed, options, user);
+    }
+
+    /** @inheritDoc */
     async _preDelete(options, user) {
         // If the actor is the last then update refs
         for (const item of this.items) {
