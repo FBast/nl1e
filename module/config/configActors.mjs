@@ -395,6 +395,44 @@ export function getConfigActor() {
         }
     }
 
+    PL1E.general = {
+        "bonuses": {
+            "label": "PL1E.Bonuses",
+            "icon": "fa-cubes",
+            "type": "number",
+            "path": "system.general.bonuses",
+            "hidden": false
+        },
+        "advantages": {
+            "label": "PL1E.Advantages",
+            "icon": "fa-cube",
+            "type": "number",
+            "path": "system.general.advantages",
+            "hidden": false
+        },
+        "action": {
+            "label": "PL1E.Action",
+            "icon": "fa-clock",
+            "type": "number",
+            "path": "system.misc.action",
+            "hidden": false
+        },
+        "reaction": {
+            "label": "PL1E.Reaction",
+            "icon": "fa-reply-clock",
+            "type": "number",
+            "path": "system.misc.reaction",
+            "hidden": false
+        },
+        "quickAction": {
+            "label": "PL1E.QuickAction",
+            "icon": "fa-bell",
+            "type": "number",
+            "path": "system.misc.quickAction",
+            "hidden": false
+        }
+    }
+
     PL1E.misc = {
         "masters": {
             "label": "PL1E.Masters",
@@ -511,20 +549,6 @@ export function getConfigActor() {
         //     "path": "system.misc.feelTremorRange",
         //     "hidden": false
         // },
-        "action": {
-            "label": "PL1E.Action",
-            "icon": "fa-clock",
-            "type": "number",
-            "path": "system.misc.action",
-            "hidden": false
-        },
-        "reaction": {
-            "label": "PL1E.Reaction",
-            "icon": "fa-reply-clock",
-            "type": "number",
-            "path": "system.misc.reaction",
-            "hidden": false
-        },
         "faithPower": {
             "label": "PL1E.FaithPower",
             "icon": "fa-reply-clock",
@@ -692,18 +716,4 @@ export function getConfigActor() {
         }
     }
 
-    PL1E.movements = {
-        "standard": {
-            "label": "PL1E.Standard"
-        },
-        "teleportation": {
-            "label": "PL1E.Teleportation"
-        }
-    }
-
-    PL1E.invocations = {
-        "standard": {
-            "label": "PL1E.Standard"
-        }
-    }
 }

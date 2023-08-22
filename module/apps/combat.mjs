@@ -41,7 +41,7 @@ export class Pl1eCombat extends Combat {
      */
     async _resetCombatStats(actor) {
         await actor.update({
-            "system.misc.action": 2,
+            "system.general.action": 2,
             "system.misc.reaction": 1,
             "system.variables.usedMovement": 0,
             "system.variables.remainingMovement": 0,
@@ -72,7 +72,7 @@ export class Pl1eCombat extends Combat {
         // Prone status
         if (actor.statuses.has("prone")) {
             await actor.update({
-                "system.misc.action": actor.system.misc.action - 1
+                "system.general.action": actor.system.general.action - 1
             });
         }
         // Continuous active effects

@@ -50,7 +50,7 @@ export const registerStatuses = function () {
             label: "PL1E.StatusStunned",
             icon: "icons/svg/daze.svg",
             changes: [{
-                key: "system.misc.action",
+                key: "system.general.action",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
@@ -63,7 +63,25 @@ export const registerStatuses = function () {
             flags: {}
         },
         {
-            // Remove one action
+            // Add one action and increase movement by two
+            id: "hast",
+            label: "PL1E.StatusHast",
+            icon: "icons/svg/wing.svg",
+            changes: [{
+                key: "system.general.action",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: 1
+            },
+            {
+                key: "system.misc.movement",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: 2
+            }],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Remove one action for the next round
             id: "prone",
             label: "PL1E.StatusProne",
             icon: "icons/svg/falling.svg",
@@ -78,7 +96,11 @@ export const registerStatuses = function () {
             id: "restrain",
             label: "PL1E.StatusRestrained",
             icon: "icons/svg/net.svg",
-            changes: [],
+            changes: [{
+                key: "system.misc.movement",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
+            }],
             duration: {},
             flags: {}
         },
@@ -87,7 +109,21 @@ export const registerStatuses = function () {
             id: "paralysis",
             label: "PL1E.StatusParalysis",
             icon: "icons/svg/paralysis.svg",
-            changes: [],
+            changes: [{
+                key: "system.misc.movement",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
+            },
+            {
+                key: "system.general.action",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
+            },
+            {
+                key: "system.misc.reaction",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
+            }],
             duration: {},
             flags: {}
         },

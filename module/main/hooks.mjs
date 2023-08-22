@@ -100,7 +100,7 @@ export default class Pl1eHooks {
 
             getRanges(token) {
                 const movement = token.actor.system.misc.movement;
-                const action = token.actor.system.misc.action;
+                const action = token.actor.system.general.action;
                 const remainingMovement = token.actor.system.variables.remainingMovement;
                 const usedMovement = token.actor.system.variables.usedMovement;
                 const movementAction = token.actor.system.variables.movementAction;

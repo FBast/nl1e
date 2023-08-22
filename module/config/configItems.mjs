@@ -340,6 +340,7 @@ export function getConfigItems() {
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
+                "general": "PL1E.General",
                 "misc": "PL1E.Misc",
                 "reductions": "PL1E.Reductions"
             }
@@ -350,6 +351,7 @@ export function getConfigItems() {
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
+                "general": "PL1E.General",
                 "misc": "PL1E.Misc",
                 "reductions": "PL1E.Reductions"
             }
@@ -360,6 +362,7 @@ export function getConfigItems() {
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
+                "general": "PL1E.General",
                 "misc": "PL1E.Misc",
                 "reductions": "PL1E.Reductions"
             }
@@ -469,6 +472,21 @@ export function getConfigItems() {
         "permanentIfSuccess": "PL1E.PermanentIfSuccess",
         "durationFromSuccess": "PL1E.DurationFromSuccess",
         "durationIfSuccess": "PL1E.DurationIfSuccess"
+    }
+
+    PL1E.movements = {
+        "standard": {
+            "label": "PL1E.Standard"
+        },
+        "teleportation": {
+            "label": "PL1E.Teleportation"
+        }
+    }
+
+    PL1E.invocations = {
+        "standard": {
+            "label": "PL1E.Standard"
+        }
     }
 
 }

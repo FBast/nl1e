@@ -104,19 +104,23 @@ export class Pl1eItem extends Item {
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {
             // Reset default values in case of changes
-            if (changed.system?.attributes?.activation === "action") changed.system.attributes.reactionCost = 0;
-            if (changed.system?.attributes?.activation === "reaction") {
-                changed.system.attributes.actionCost = 0;
-                changed.system.attributes.isMajorAction = false;
-                changed.system.attributes.triggerReactions = false;
+            if (changed.system?.attributes?.activation !== "reaction")
+                changed["system.attributes.reactionCost"] = 0;
+            if (changed.system?.attributes?.activation !== "action") {
+                changed["system.attributes.actionCost"] = 0;
+                changed["system.attributes.isMajorAction"] = false;
+                changed["system.attributes.triggerReactions"] = false;
             }
-            if (changed.system?.attributes?.characterRoll === "none") changed.system.attributes.targetRoll = [];
+            if (changed.system?.attributes?.characterRoll === "none")
+                changed["system.attributes.targetRoll"] = [];
             if (changed.system?.attributes?.itemLink === "none") {
-                changed.system.attributes.isMajorAction = false;
-                changed.system.attributes.usageCost = 0;
+                changed["system.attributes.isMajorAction"] = false;
+                changed["system.attributes.usageCost"] = 0;
             }
-            if (["target", "self"].includes(changed.system?.attributes?.areaShape)) changed.system.attributes.excludeSelf = false;
-            if (changed.system?.attributes?.areaShape === "self") changed.system.attributes.includeSelf = true;
+            if (["target", "self"].includes(changed.system?.attributes?.areaShape))
+                changed["system.attributes.excludeSelf"] = false;
+            if (changed.system?.attributes?.areaShape === "self")
+                changed["system.attributes.includeSelf"] = true;
         }
 
         return super._preUpdate(changed, options, user);
@@ -215,15 +219,12 @@ export class Pl1eItem extends Item {
      */
     canReload() {
         const token = this.actor.bestToken;
-        if (this.actor.statuses.has("paralysis")) {
-            ui.notifications.warn(game.i18n.localize("PL1E.YouAreParalysed"));
-            return false;
-        }
+
         if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
             return false;
         }
-        if (token !== null && token.inCombat && token.id === game.combat.current.tokenId && this.actor.system.misc.action <= 0) {
+        if (token !== null && this.actor.system.general.action <= 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
         }
@@ -242,7 +243,7 @@ export class Pl1eItem extends Item {
         });
         // Remove the action
         await this.actor.update({
-            ["system.misc.action"]: this.actor.system.misc.action - 1
+            ["system.general.action"]: this.actor.system.general.action - 1
         });
         await Pl1eChat.actionMessage(this.actor, "PL1E.Reload", 1, { item: this });
     }
@@ -405,24 +406,23 @@ export class Pl1eItem extends Item {
     _canActivate(characterData) {
         const itemAttributes = characterData.attributes;
 
-        if (this.actor.statuses.has("paralysis")) {
-            ui.notifications.warn(game.i18n.localize("PL1E.YouAreParalysed"));
-            return false;
-        }
-        if (characterData.token && characterData.token.inCombat) {
-            if (itemAttributes.activation === "action") {
-                if (characterData.tokenId !== game.combat.current.tokenId) {
-                    ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
-                    return false;
-                }
-                if (characterData.actor.system.misc.action < itemAttributes.actionCost) {
-                    ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
-                    return false;
-                }
-            } else if (itemAttributes.activation === "reaction" && characterData.actor.system.misc.reaction <= 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
+        if (itemAttributes.activation === "action") {
+            if (characterData.token.inCombat && characterData.tokenId !== game.combat.current.tokenId) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
                 return false;
             }
+            if (characterData.actor.system.general.action < itemAttributes.actionCost) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+                return false;
+            }
+        }
+        else if (itemAttributes.activation === "reaction" && characterData.actor.system.misc.reaction <= 0) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
+            return false;
+        }
+        else if (itemAttributes.activation === "quickAction" && characterData.actor.system.misc.quickAction <= 0) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreQuick"));
+            return false;
         }
         return true;
     }

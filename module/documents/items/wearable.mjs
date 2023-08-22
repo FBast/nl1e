@@ -49,7 +49,7 @@ export class Pl1eWearable extends Pl1eItem {
             // Remove action if in combat
             if (this.parent.bestToken !== null && this.parent.bestToken.inCombat) {
                 await this.actor.update({
-                    "system.misc.action": this.actor.system.misc.action - 1
+                    "system.general.action": this.actor.system.general.action - 1
                 });
                 await Pl1eChat.actionMessage(this.parent, "PL1E.Equip", 1, { item: this });
             }
@@ -63,7 +63,6 @@ export class Pl1eWearable extends Pl1eItem {
      * @private
      */
     _canToggle() {
-        let isValid = true;
         const token = this.actor.bestToken;
 
         if ((this.system.attributes.slot === "armor" || this.system.attributes.slot === "clothes")
@@ -73,14 +72,13 @@ export class Pl1eWearable extends Pl1eItem {
         }
         if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
-            isValid = false;
+            return false;
         }
-        if (token !== null && token.inCombat && token.id === game.combat.current.tokenId
-            && this.actor.system.misc.action <= 0 && !this.system.isEquipped) {
+        if (token !== null && this.actor.system.general.action <= 0 && !this.system.isEquipped) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
-            isValid = false;
+            return false;
         }
-        return isValid;
+        return true;
     }
 
 }

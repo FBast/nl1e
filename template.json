@@ -238,7 +238,10 @@
           "maxRank": 0,
           "rollBestSkill": true,
           "bonuses": 0,
-          "advantages": 0
+          "advantages": 0,
+          "action": 2,
+          "reaction": 1,
+          "quickAction": 1
         },
         "misc": {
           "masters": [],
@@ -257,8 +260,6 @@
           "reflexBonuses": 0,
           "nightVisionRange": 0,
           "feelTremorRange": 0,
-          "action": 2,
-          "reaction": 1,
           "faithPower": false,
           "gesturalMagic": false,
           "vocalMagic": false

@@ -7,24 +7,21 @@ export class Pl1eTokenDocument extends TokenDocument {
         // Restrict the token movement
         if (!options.noRestriction && (data.x || data.y) && this.combatant !== null) {
             const currentTokenId = game.combat.current?.tokenId;
+            const actorGeneral = this.actor.system.general;
             const actorMisc = this.actor.system.misc;
             const actorVariables = this.actor.system.variables;
+
             if (currentTokenId !== this.id) {
                 ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
                 delete data.x;
                 delete data.y;
             }
-            else if (this.actor.statuses.has("paralysis")) {
-                ui.notifications.warn(game.i18n.localize("PL1E.YouAreParalysed"));
+            else if (actorMisc.movement === 0) {
+                ui.notifications.warn(game.i18n.localize("PL1E.NoMovement"));
                 delete data.x;
                 delete data.y;
             }
-            else if (this.actor.statuses.has("restrain")) {
-                ui.notifications.warn(game.i18n.localize("PL1E.YouAreRestrained"));
-                delete data.x;
-                delete data.y;
-            }
-            else if (actorMisc.action === 0 && actorVariables.remainingMovement === 0) {
+            else if (actorGeneral.action === 0 && actorVariables.remainingMovement === 0) {
                 ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
                 delete data.x;
                 delete data.y;
@@ -44,6 +41,7 @@ export class Pl1eTokenDocument extends TokenDocument {
      * @private
      */
     async _restrictMovement(data) {
+        const actorGeneral = this.actor.system.general;
         const actorMisc = this.actor.system.misc;
         const actorVariables = this.actor.system.variables;
         const initialPosition = {x: this.x, y: this.y};
@@ -61,7 +59,7 @@ export class Pl1eTokenDocument extends TokenDocument {
             let requiredActions = Math.ceil(missingDistance / actorMisc.movement);
 
             // Return if not enough action to do this movement
-            if (requiredActions > actorMisc.action) {
+            if (requiredActions > actorGeneral.action) {
                 ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughActions"));
                 delete data.x;
                 delete data.y;
@@ -69,7 +67,7 @@ export class Pl1eTokenDocument extends TokenDocument {
             }
 
             // Retrieve action and add remaining movement
-            actorMisc.action -= requiredActions;
+            actorGeneral.action -= requiredActions;
             actorVariables.remainingMovement += requiredActions * actorMisc.movement;
             actorVariables.movementAction += requiredActions;
             await Pl1eChat.actionMessage(this.actor, "PL1E.Movement", requiredActions)
@@ -90,7 +88,7 @@ export class Pl1eTokenDocument extends TokenDocument {
         actorVariables.remainingMovement -= distance;
         actorVariables.usedMovement += distance;
         await this.actor.update({
-            "system.misc.action": actorMisc.action,
+            "system.general.action": actorGeneral.action,
             "system.variables.remainingMovement": actorVariables.remainingMovement,
             "system.variables.usedMovement": actorVariables.usedMovement,
             "system.variables.movementAction": actorVariables.movementAction

@@ -1,6 +1,6 @@
 import {PL1E} from "./config.mjs";
 
-export function getConfigGeneral() {
+export function getConfigBase() {
     PL1E.featureTypes = {
         "race": "PL1E.Race",
         "bodyClass": "PL1E.BodyClass",
@@ -55,7 +55,8 @@ export function getConfigGeneral() {
 
     PL1E.activations = {
         "action": "PL1E.Action",
-        "reaction": "PL1E.Reaction"
+        "reaction": "PL1E.Reaction",
+        "quickAction": "PL1E.QuickAction"
     }
 
     PL1E.activationLink = {
@@ -72,4 +73,5 @@ export function getConfigGeneral() {
     PL1E.visionMode = {
 
     }
+
 }

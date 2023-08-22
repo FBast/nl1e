@@ -1,12 +1,12 @@
 import {getConfigItems} from "./configItems.mjs";
-import {getConfigGeneral} from "./configGeneral.mjs";
-import {getConfigActor} from "./configStats.mjs";
+import {getConfigBase} from "./configBase.mjs";
+import {getConfigActor} from "./configActors.mjs";
 import {getConfigTemplates} from "./configTemplates.mjs";
 import {getConfigJournals} from "./configJournals.mjs";
 
 export const PL1E = {};
 
-getConfigGeneral();
+getConfigBase();
 getConfigActor();
 getConfigItems();
 getConfigTemplates();

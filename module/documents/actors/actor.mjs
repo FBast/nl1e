@@ -149,7 +149,14 @@ export class Pl1eActor extends Actor {
     /** @inheritDoc */
     async prepareBaseData() {
         super.prepareBaseData();
+        const systemData = this.system;
+        const actorMisc = systemData.misc;
 
+        // Selection based values
+        actorMisc.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
+        actorMisc.tokenSize = CONFIG.PL1E.sizes[actorMisc.size].token;
+        actorMisc.movement = CONFIG.PL1E.speeds[actorMisc.speed].movement;
+        actorMisc.baseInitiative = CONFIG.PL1E.speeds[actorMisc.speed].baseInitiative;
     }
 
     /** @inheritDoc */
@@ -183,12 +190,6 @@ export class Pl1eActor extends Actor {
         const actorGeneral = systemData.general;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
-
-        // Selection based values
-        actorMisc.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
-        actorMisc.tokenSize = CONFIG.PL1E.sizes[actorMisc.size].token;
-        actorMisc.movement = CONFIG.PL1E.speeds[actorMisc.speed].movement;
-        actorMisc.baseInitiative = CONFIG.PL1E.speeds[actorMisc.speed].baseInitiative;
 
         // Handle actorCharacteristics scores.
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {

@@ -7,12 +7,12 @@ export class Pl1eWeapon extends Pl1eItem {
     canToggle() {
         if (!super.canToggle()) return false;
         const token = this.actor.bestToken;
+
         if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
             return false;
         }
-        if (token !== null && token.inCombat && token.id === game.combat.current.tokenId
-            && this.actor.system.misc.action <= 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) {
+        if (token !== null && this.actor.system.general.action <= 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
         }
@@ -84,11 +84,11 @@ export class Pl1eWeapon extends Pl1eItem {
             }
         }
 
-        // Remove action if in combat and more taken hands than before
+        // Remove quick action if in combat and more taken hands than before
         if (this.parent.bestToken !== null && this.parent.bestToken.inCombat &&
             takenHands < (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0)) {
             await this.actor.update({
-                "system.misc.action": this.actor.system.misc.action - 1
+                "system.general.quickAction": this.actor.system.general.quickAction - 1
             });
             await Pl1eChat.actionMessage(this.parent, "PL1E.Equip", 1, { item: this });
         }
