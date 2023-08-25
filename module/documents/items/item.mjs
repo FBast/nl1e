@@ -421,7 +421,7 @@ export class Pl1eItem extends Item {
             return false;
         }
         else if (itemAttributes.activation === "quickAction" && characterData.actor.system.misc.quickAction <= 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreQuick"));
+            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreQuickAction"));
             return false;
         }
         return true;

@@ -63,16 +63,10 @@ export class Pl1eCombat extends Combat {
      * @private
      */
     async _applyContinuousEffects(actor) {
-        // Coma status
-        if (actor.statuses.has("coma")) {
+        // Unconscious status
+        if (actor.statuses.has("unconscious")) {
             await actor.update({
                 "system.resources.health.value": actor.system.resources.health.value - 1
-            });
-        }
-        // Prone status
-        if (actor.statuses.has("prone")) {
-            await actor.update({
-                "system.general.action": actor.system.general.action - 1
             });
         }
         // Continuous active effects

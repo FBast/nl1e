@@ -4,7 +4,8 @@ export const registerStatuses = function () {
             // Resolve when equal or below deathDoor (default -10)
             id: "dead",
             label: "PL1E.StatusDead",
-            icon: "icons/svg/skull.svg",
+            icon: "systems/pl1e/assets/icons/dead.svg",
+            tint: "#ff0000",
             changes: [],
             duration: {},
             flags: {
@@ -14,11 +15,12 @@ export const registerStatuses = function () {
             }
         },
         {
-            // Resolve when equal or below comaDoor (default 0)
-            id: "coma",
-            label: "PL1E.StatusComa",
-            icon: "systems/pl1e/assets/icons/coma.svg",
-            changes: [], // Coma health decrease is handled from Combat class
+            // Resolve when equal or below unconsciousDoor (default 0)
+            id: "unconscious",
+            label: "PL1E.StatusUnconscious",
+            icon: "systems/pl1e/assets/icons/unconscious.svg",
+            tint: "#ff0000",
+            changes: [], // Unconscious health decrease is handled from Combat class
             duration: {},
             flags: {
                 pl1e: {
@@ -26,76 +28,84 @@ export const registerStatuses = function () {
                 }
             }
         },
-        // {
-        //     // No effects
-        //     id: "unconscious",
-        //     label: "PL1E.StatusUnconscious",
-        //     icon: "icons/svg/unconscious.svg",
-        //     changes: [],
-        //     duration: {},
-        //     flags: {}
-        // },
-        // {
-        //     // No effects
-        //     id: "sleep",
-        //     label: "PL1E.StatusAsleep",
-        //     icon: "icons/svg/sleep.svg",
-        //     changes: [],
-        //     duration: {},
-        //     flags: {}
-        // },
         {
-            // Remove one action and one reaction
-            id: "stun",
-            label: "PL1E.StatusStunned",
-            icon: "icons/svg/daze.svg",
+            // Resolve when equal or below unconsciousDoor (default 0)
+            id: "charmed",
+            label: "PL1E.StatusCharmed",
+            icon: "systems/pl1e/assets/icons/charmed.svg",
+            tint: "#ff0000",
+            changes: [], // Token disposition is updated in actor
+            duration: {},
+            flags: {
+                pl1e: {
+                    permanent: true
+                }
+            }
+        },
+        {
+            // Skip turn
+            id: "paralysis",
+            label: "PL1E.StatusParalysis",
+            icon: "systems/pl1e/assets/icons/paralysis.svg",
+            tint: "#ff0000",
             changes: [{
+                key: "system.misc.movement",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
+            },
+            {
+                key: "system.general.quickAction",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
+            },
+            {
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: -1
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
             },
             {
                 key: "system.misc.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: -1
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
             }],
             duration: {},
             flags: {}
         },
         {
-            // Add one action and increase movement by two
-            id: "hast",
-            label: "PL1E.StatusHast",
-            icon: "icons/svg/wing.svg",
+            // Skip turn, removed if the character take damage and is replaced by stun for one turn
+            id: "asleep",
+            label: "PL1E.StatusAsleep",
+            icon: "systems/pl1e/assets/icons/asleep.svg",
+            tint: "#ff0000",
             changes: [{
-                key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: 1
+                key: "system.misc.movement",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
             },
             {
-                key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: 2
+                key: "system.general.quickAction",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
+            },
+            {
+                key: "system.general.action",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
+            },
+            {
+                key: "system.misc.reaction",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: 0
             }],
             duration: {},
-            flags: {}
-        },
-        {
-            // Remove one action for the next round
-            id: "prone",
-            label: "PL1E.StatusProne",
-            icon: "icons/svg/falling.svg",
-            changes: [],
-            duration: {
-                rounds: 1
-            },
             flags: {}
         },
         {
             // Prevent movement
             id: "restrain",
             label: "PL1E.StatusRestrained",
-            icon: "icons/svg/net.svg",
+            icon: "systems/pl1e/assets/icons/restrained.svg",
+            tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -105,86 +115,85 @@ export const registerStatuses = function () {
             flags: {}
         },
         {
-            // Skip turn
-            id: "paralysis",
-            label: "PL1E.StatusParalysis",
-            icon: "icons/svg/paralysis.svg",
+            // Remove one action, one reaction and decrease movement by two
+            id: "slow",
+            label: "PL1E.StatusSlow",
+            icon: "systems/pl1e/assets/icons/slow.svg",
+            tint: "#ff0000",
             changes: [{
-                key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-                value: 0
+                key: "system.general.action",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
             },
             {
+                key: "system.general.reaction",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            },
+            {
+                key: "system.misc.movement",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -2
+            }],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Add one action and increase movement by two
+            id: "fast",
+            label: "PL1E.StatusFast",
+            icon: "systems/pl1e/assets/icons/fast.svg",
+            tint: "#00ff00",
+            changes: [{
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-                value: 0
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: 1
+            },
+                {
+                    key: "system.general.reaction",
+                    mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                    value: 1
+                },
+                {
+                    key: "system.misc.movement",
+                    mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                    value: 2
+                }],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Remove one action and one reaction
+            id: "stun",
+            label: "PL1E.StatusStunned",
+            icon: "systems/pl1e/assets/icons/stun.svg",
+            tint: "#ff0000",
+            changes: [{
+                key: "system.general.action",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
             },
             {
                 key: "system.misc.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-                value: 0
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
             }],
             duration: {},
             flags: {}
         },
-        // {
-        //     // No effects
-        //     id: "fly",
-        //     label: "PL1E.StatusFlying",
-        //     icon: "icons/svg/wing.svg",
-        //     changes: [],
-        //     duration: {},
-        //     flags: {}
-        // },
         {
-            // Prevent token sight
-            id: "blind",
-            label: "PL1E.StatusBlind",
-            icon: "icons/svg/blind.svg",
-            changes: [],
-            duration: {},
-            flags: {}
-        },
-        // {
-        //     // No effects
-        //     id: "deaf",
-        //     label: "PL1E.StatusDeaf",
-        //     icon: "icons/svg/deaf.svg",
-        //     changes: [],
-        //     duration: {},
-        //     flags: {}
-        // },
-        // {
-        //     // No effects
-        //     id: "silence",
-        //     label: "PL1E.StatusSilenced",
-        //     icon: "icons/svg/silenced.svg",
-        //     changes: [],
-        //     duration: {},
-        //     flags: {}
-        // },
-        {
-            // Reduce mind characteristics by one
-            id: "fear",
-            label: "PL1E.StatusFear",
-            icon: "icons/svg/terror.svg",
+            // Disadvantage on resilience and intuition
+            id: "confused",
+            label: "PL1E.StatusConfused",
+            icon: "systems/pl1e/assets/icons/confused.svg",
+            tint: "#ff0000",
             changes: [{
-                key: "system.characteristics.intellect.mods",
+                key: "skills.resilience.diceMod",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
             {
-                key: "system.characteristics.cunning.mods",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: -1
-            },
-            {
-                key: "system.characteristics.wisdom.mods",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: -1
-            },
-            {
-                key: "system.characteristics.will.mods",
+                key: "skills.intuition.diceMod",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
@@ -192,27 +201,37 @@ export const registerStatuses = function () {
             flags: {}
         },
         {
-            // Reduce body characteristics by one
-            id: "disease",
-            label: "PL1E.StatusDisease",
-            icon: "icons/svg/biohazard.svg",
+            // Advantage on resilience and intuition
+            id: "composed",
+            label: "PL1E.StatusComposed",
+            icon: "systems/pl1e/assets/icons/composed.svg",
+            tint: "#00ff00",
             changes: [{
-                key: "system.characteristics.strength.mods",
+                key: "skills.resilience.diceMod",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: 1
+            },
+                {
+                    key: "skills.intuition.diceMod",
+                    mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                    value: 1
+                }],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Disadvantage on reflex and vigor
+            id: "sick",
+            label: "PL1E.StatusSick",
+            icon: "systems/pl1e/assets/icons/sick.svg",
+            tint: "#ff0000",
+            changes: [{
+                key: "skills.reflex.diceMod",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
             {
-                key: "system.characteristics.agility.mods",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: -1
-            },
-            {
-                key: "system.characteristics.perception.mods",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: -1
-            },
-            {
-                key: "system.characteristics.constitution.mods",
+                key: "skills.vigor.diceMod",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
@@ -220,65 +239,86 @@ export const registerStatuses = function () {
             flags: {}
         },
         {
-            // Add one advantage
-            id: "upgrade",
-            label: "PL1E.StatusUpgrade",
-            icon: "icons/svg/upgrade.svg",
+            // Advantage on reflex and vigor
+            id: "healthy",
+            label: "PL1E.StatusHealthy",
+            icon: "systems/pl1e/assets/icons/healthy.svg",
+            tint: "#00ff00",
+            changes: [{
+                key: "skills.reflex.diceMod",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: 1
+            },
+                {
+                    key: "skills.vigor.diceMod",
+                    mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                    value: 1
+                }],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Add 1/2 of slashing, crushing and piercing damage
+            id: "bleeding",
+            label: "PL1E.StatusBleeding",
+            icon: "systems/pl1e/assets/icons/bleeding.svg",
+            tint: "#ff0000",
+            changes: [], // Handled on actor update
+            duration: {},
+            flags: {}
+        },
+        {
+            // Remove 1/2 of slashing, crushing and piercing damage
+            id: "regeneration",
+            label: "PL1E.StatusRegeneration",
+            icon: "systems/pl1e/assets/icons/regeneration.svg",
+            tint: "#00ff00",
+            changes: [], // Handled on actor update
+            duration: {},
+            flags: {}
+        },
+        {
+            // Add 1/2 of fire, cold, acid and electricity damage
+            id: "cursed",
+            label: "PL1E.StatusCursed",
+            icon: "systems/pl1e/assets/icons/cursed.svg",
+            tint: "#ff0000",
+            changes: [], // Handled on actor update
+            duration: {},
+            flags: {}
+        },
+        {
+            // Remove 1/2 of fire, cold, acid and electricity damage
+            id: "blessed",
+            label: "PL1E.StatusBlessed",
+            icon: "systems/pl1e/assets/icons/blessed.svg",
+            tint: "#00ff00",
+            changes: [], // Handled on actor update
+            duration: {},
+            flags: {}
+        },
+        {
+            // Add one disadvantage
+            id: "downgraded",
+            label: "PL1E.StatusDowngraded",
+            icon: "systems/pl1e/assets/icons/downgraded.svg",
+            tint: "#ff0000",
             changes: [{
                 key: "system.general.advantages",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: 1
+                value: -1
             }],
             duration: {},
             flags: {}
         },
         {
             // Add one disadvantage
-            id: "downgrade",
-            label: "PL1E.StatusDowngrade",
-            icon: "icons/svg/downgrade.svg",
+            id: "upgraded",
+            label: "PL1E.StatusUpgraded",
+            icon: "systems/pl1e/assets/icons/upgraded.svg",
+            tint: "#00ff00",
             changes: [{
                 key: "system.general.advantages",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: -1
-            }],
-            duration: {},
-            flags: {}
-        },
-        {
-            // Remove token from normal sight
-            id: "invisible",
-            label: "PL1E.StatusInvisible",
-            icon: "icons/svg/invisible.svg",
-            changes: [],
-            duration: {},
-            flags: {}
-        },
-        // {
-        //     // No effects
-        //     id: "target",
-        //     label: "PL1E.StatusTarget",
-        //     icon: "icons/svg/target.svg",
-        //     changes: [],
-        //     duration: {},
-        //     flags: {}
-        // },
-        // {
-        //     // No effects
-        //     id: "eye",
-        //     label: "PL1E.StatusMarked",
-        //     icon: "icons/svg/eye.svg",
-        //     changes: [],
-        //     duration: {},
-        //     flags: {}
-        // },
-        {
-            // Add one bonus
-            id: "bless",
-            label: "PL1E.StatusBlessed",
-            icon: "icons/svg/angel.svg",
-            changes: [{
-                key: "system.general.bonuses",
                 mode: CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
@@ -286,15 +326,61 @@ export const registerStatuses = function () {
             flags: {}
         },
         {
-            // Add one malus
-            id: "curse",
-            label: "PL1E.StatusCursed",
-            icon: "icons/svg/sun.svg",
-            changes: [{
-                key: "system.general.bonuses",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-                value: -1
-            }],
+            // Prevent token sight
+            id: "blind",
+            label: "PL1E.StatusBlind",
+            icon: "systems/pl1e/assets/icons/blind.svg",
+            tint: "#ff0000",
+            changes: [],
+            duration: {},
+            flags: {}
+        },
+        // {
+        //     // Should prevent vocal spell to be launched
+        //     id: "deaf",
+        //     label: "PL1E.StatusDeaf",
+        //     icon: "systems/pl1e/assets/icons/deaf.svg",
+        //     tint: "#ff0000",
+        //     changes: [],
+        //     duration: {},
+        //     flags: {}
+        // },
+        {
+            // Remove token from normal sight
+            id: "invisible",
+            label: "PL1E.StatusInvisible",
+            icon: "systems/pl1e/assets/icons/invisible.svg",
+            tint: "#00ff00",
+            changes: [], // Automatic legacy status
+            duration: {},
+            flags: {}
+        },
+        {
+            // Allow token to see invisible
+            id: "clairvoyant",
+            label: "PL1E.StatusClairvoyant",
+            icon: "systems/pl1e/assets/icons/clairvoyant.svg",
+            tint: "#00ff00",
+            changes: [], // Automatic legacy status
+            duration: {},
+            flags: {}
+        },
+        {
+            // Grant token tremorsense
+            id: "tremorsense",
+            label: "PL1E.StatusTremorsense",
+            icon: "systems/pl1e/assets/icons/tremorsense.svg",
+            tint: "#00ff00",
+            changes: [], // Automatic legacy status
+            duration: {},
+            flags: {}
+        },
+        {
+            // The character focus on a spell
+            id: "focus",
+            label: "PL1E.StatusFocus",
+            icon: "systems/pl1e/assets/icons/focus.svg",
+            changes: [], // Automatic legacy status
             duration: {},
             flags: {}
         },
@@ -302,8 +388,12 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "slashingImmunity",
             label: "PL1E.StatusSlashingImmunity",
-            icon: "systems/pl1e/assets/icons/crossed-axes.svg",
-            changes: [],
+            icon: "systems/pl1e/assets/icons/slashingImmunity.svg",
+            changes: [{
+                key: "system.reductions.slashing",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
             duration: {},
             flags: {}
         },
@@ -311,8 +401,12 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "crushingImmunity",
             label: "PL1E.StatusCrushingImmunity",
-            icon: "systems/pl1e/assets/icons/trample.svg",
-            changes: [],
+            icon: "systems/pl1e/assets/icons/crushingImmunity.svg",
+            changes: [{
+                key: "system.reductions.crushing",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
             duration: {},
             flags: {}
         },
@@ -320,8 +414,12 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "piercingImmunity",
             label: "PL1E.StatusPiercingImmunity",
-            icon: "systems/pl1e/assets/icons/arrow-cluster.svg",
-            changes: [],
+            icon: "systems/pl1e/assets/icons/piercingImmunity.svg",
+            changes: [{
+                key: "system.reductions.piercing",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
             duration: {},
             flags: {}
         },
@@ -329,8 +427,12 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "fireImmunity",
             label: "PL1E.StatusFireImmunity",
-            icon: "icons/svg/fire-shield.svg",
-            changes: [],
+            icon: "systems/pl1e/assets/icons/fireImmunity.svg",
+            changes: [{
+                key: "system.reductions.burn",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
             duration: {},
             flags: {}
         },
@@ -338,8 +440,12 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "coldImmunity",
             label: "PL1E.StatusColdImmunity",
-            icon: "icons/svg/ice-shield.svg",
-            changes: [],
+            icon: "systems/pl1e/assets/icons/coldImmunity.svg",
+            changes: [{
+                key: "system.reductions.cold",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
             duration: {},
             flags: {}
         },
@@ -347,8 +453,12 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "shockImmunity",
             label: "PL1E.StatusShockImmunity",
-            icon: "systems/pl1e/assets/icons/lightning-shield.svg",
-            changes: [],
+            icon: "systems/pl1e/assets/icons/shockImmunity.svg",
+            changes: [{
+                key: "system.reductions.acid",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
             duration: {},
             flags: {}
         },
@@ -356,8 +466,55 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "acidImmunity",
             label: "PL1E.StatusAcidImmunity",
-            icon: "systems/pl1e/assets/icons/rosa-shield.svg",
-            changes: [],
+            icon: "systems/pl1e/assets/icons/acidImmunity.svg",
+            changes: [{
+                key: "system.reductions.shock",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Grant all immunities
+            id: "immortal",
+            label: "PL1E.StatusImmortal",
+            icon: "systems/pl1e/assets/icons/immortal.svg",
+            changes: [{
+                key: "system.reductions.slashing",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            },
+            {
+                key: "system.reductions.crushing",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            },
+            {
+                key: "system.reductions.piercing",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            },
+            {
+                key: "system.reductions.burn",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            },
+            {
+                key: "system.reductions.cold",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            },
+            {
+                key: "system.reductions.acid",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            },
+            {
+                key: "system.reductions.shock",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
             duration: {},
             flags: {}
         }

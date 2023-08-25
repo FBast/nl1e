@@ -62,7 +62,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
     /**
      * Create an effect based on a status
      * @param {Actor} actor the actor where the effect is created
-     * @param {string} statusEffectId id of the status (dead, coma...)
+     * @param {string} statusEffectId id of the status (dead, unconscious...)
      * @param {Object} options
      * @return {Promise<void>}
      */

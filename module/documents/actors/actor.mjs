@@ -16,8 +16,8 @@ export class Pl1eActor extends Actor {
         return this.system.resources.health.value <= -this.system.misc.deathDoor;
     }
 
-    get isInComa() {
-        return !this.isDead && this.system.resources.health.value <= -this.system.misc.comaDoor;
+    get IsUnconscious() {
+        return !this.isDead && this.system.resources.health.value <= -this.system.misc.unconsciousDoor;
     }
 
     /**
@@ -102,7 +102,7 @@ export class Pl1eActor extends Actor {
 
         // Add effect based on conditions
         await Pl1eActiveEffect.toggleStatusEffect(this, "dead", this.isDead);
-        await Pl1eActiveEffect.toggleStatusEffect(this, "coma", this.isInComa);
+        await Pl1eActiveEffect.toggleStatusEffect(this, "unconscious", this.IsUnconscious);
     }
 
     /** @inheritDoc */
@@ -161,7 +161,17 @@ export class Pl1eActor extends Actor {
 
     /** @inheritDoc */
     async prepareEmbeddedDocuments() {
+        // Status effects before update
+        if (this.statuses && this.statuses.has("charmed") && this.bestToken) {
+            this.bestToken.document.disposition = -this.bestToken.document.disposition;
+        }
+
         super.prepareEmbeddedDocuments();
+
+        // Status effects after update
+        if (this.statuses && this.statuses.has("charmed") && this.bestToken) {
+            this.bestToken.document.disposition = -this.bestToken.document.disposition;
+        }
 
         // Apply passive values
         for (const item of this.items) {

@@ -232,7 +232,7 @@ export function getConfigItems() {
             "dataGroup": "resources",
             "data": "health",
             "createEffect": false,
-            "effectIcon": "icons/svg/upgrade.svg"
+            "effectIcon": "systems/pl1e/assets/icons/upgrade.svg"
         },
         {
             "name": "decrease",
@@ -240,7 +240,7 @@ export function getConfigItems() {
             "dataGroup": "resources",
             "data": "health",
             "createEffect": false,
-            "effectIcon": "icons/svg/downgrade.svg"
+            "effectIcon": "systems/pl1e/assets/icons/downgrade.svg"
         },
         {
             "name": "set",
@@ -248,7 +248,7 @@ export function getConfigItems() {
             "dataGroup": "resources",
             "data": "health",
             "createEffect": false,
-            "effectIcon": "icons/svg/target.svg"
+            "effectIcon": "systems/pl1e/assets/icons/target.svg"
         }
     ]
 
@@ -264,7 +264,7 @@ export function getConfigItems() {
             "effectDuration": 1,
             "effectDurationResolutionType": "value",
             "eachTurnEffect": false,
-            "effectIcon": "icons/svg/upgrade.svg",
+            "effectIcon": "systems/pl1e/assets/icons/upgrade.svg",
             "effectIconTint": "#00ff00"
         },
         {
@@ -279,7 +279,7 @@ export function getConfigItems() {
             "effectDuration": 1,
             "effectDurationResolutionType": "value",
             "eachTurnEffect": false,
-            "effectIcon": "icons/svg/downgrade.svg",
+            "effectIcon": "systems/pl1e/assets/icons/downgrade.svg",
             "effectIconTint": "#ff0000"
         },
         {
@@ -292,7 +292,7 @@ export function getConfigItems() {
             "createEffect": false,
             "effectDuration": 1,
             "effectDurationResolutionType": "value",
-            "effectIcon": "icons/svg/target.svg",
+            "effectIcon": "systems/pl1e/assets/icons/target.svg",
             "effectIconTint": "#000000"
         },
         {
@@ -305,7 +305,7 @@ export function getConfigItems() {
             "transferSource": "all",
             "transferDestination": "all",
             "damageType": "raw",
-            "effectIcon": "icons/svg/stoned.svg"
+            "effectIcon": "systems/pl1e/assets/icons/stoned.svg"
         },
         {
             "name": "status",
@@ -336,7 +336,7 @@ export function getConfigItems() {
     PL1E.aspects = {
         "increase": {
             "label": "PL1E.Increase",
-            "img": "icons/svg/upgrade.svg",
+            "img": "systems/pl1e/assets/icons/upgrade.svg",
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -347,7 +347,7 @@ export function getConfigItems() {
         },
         "decrease": {
             "label": "PL1E.Decrease",
-            "img": "icons/svg/downgrade.svg",
+            "img": "systems/pl1e/assets/icons/downgrade.svg",
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -358,7 +358,7 @@ export function getConfigItems() {
         },
         "set": {
             "label": "PL1E.Set",
-            "img": "icons/svg/target.svg",
+            "img": "systems/pl1e/assets/icons/target.svg",
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -369,7 +369,7 @@ export function getConfigItems() {
         },
         "transfer": {
             "label": "PL1E.Transfer",
-            "img": "icons/svg/stoned.svg",
+            "img": "systems/pl1e/assets/icons/stoned.svg",
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -379,21 +379,21 @@ export function getConfigItems() {
         },
         "status": {
             "label": "PL1E.Status",
-            "img": "icons/svg/aura.svg",
+            "img": "systems/pl1e/assets/icons/aura.svg",
             "dataGroups": {
                 "statuses": "PL1E.Statuses"
             }
         },
         "movement": {
             "label": "PL1E.Movement",
-            "img": "icons/svg/thrust.svg",
+            "img": "systems/pl1e/assets/icons/thrust.svg",
             "dataGroups": {
                 "movements": "PL1E.Movements"
             }
         },
         "invocation": {
             "label": "PL1E.Invocation",
-            "img": "icons/svg/mystery-man.svg",
+            "img": "systems/pl1e/assets/icons/mystery-man.svg",
             "dataGroups": {
                 "invocations": "PL1E.Invocations"
             }
@@ -475,11 +475,14 @@ export function getConfigItems() {
     }
 
     PL1E.movements = {
-        "standard": {
-            "label": "PL1E.Standard"
+        "walk": {
+            "label": "PL1E.Walk"
         },
-        "teleportation": {
-            "label": "PL1E.Teleportation"
+        "push": {
+            "label": "PL1E.Push"
+        },
+        "teleport": {
+            "label": "PL1E.Teleport"
         }
     }
 

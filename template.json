@@ -252,7 +252,7 @@
           "movement": 4,
           "baseInitiative": 5,
           "initiative": 0,
-          "comaDoor": 0,
+          "unconsciousDoor": 0,
           "deathDoor": 10,
           "flexibility": 0,
           "coverBonuses": 0,

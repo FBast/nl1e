@@ -88,7 +88,7 @@ export class Pl1eWeapon extends Pl1eItem {
         if (this.parent.bestToken !== null && this.parent.bestToken.inCombat &&
             takenHands < (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0)) {
             await this.actor.update({
-                "system.general.quickAction": this.actor.system.general.quickAction - 1
+                "system.general.action": this.actor.system.general.action - 1
             });
             await Pl1eChat.actionMessage(this.parent, "PL1E.Equip", 1, { item: this });
         }

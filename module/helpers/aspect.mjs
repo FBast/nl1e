@@ -148,12 +148,8 @@ export class Pl1eAspect {
                     break;
             }
 
-            // Nullify damage if immunity
-            if (targetData.actor.statuses.has(`${aspect.damageType}Immunity`)) {
-                aspectCopy.value = 0;
-            }
             // Modify aspect value by damage type
-            else if (aspect.damageType && aspect.damageType !== "raw") {
+            if (aspect.damageType && aspect.damageType !== "raw") {
                 const damageTypeData = PL1E.reductions[aspect.damageType];
                 aspectCopy.value -= getProperty(targetData.actor, damageTypeData.path);
                 aspectCopy.value = Math.max(aspectCopy.value, 0);
@@ -344,13 +340,19 @@ export class Pl1eAspect {
 
             // Move the target on this template
             const offset = canvas.dimensions.size / 2;
-            if (aspect.data === "standard") {
+            if (aspect.data === "walk") {
+                await targetData.token.document.update({
+                    x: randomTemplate.x - offset,
+                    y: randomTemplate.y - offset,
+                }, {animate: true, noRestriction: false});
+            }
+            if (aspect.data === "push") {
                 await targetData.token.document.update({
                     x: randomTemplate.x - offset,
                     y: randomTemplate.y - offset,
                 }, {animate: true, noRestriction: true});
             }
-            if (aspect.data === "teleportation") {
+            if (aspect.data === "teleport") {
                 await targetData.token.document.update({
                     x: randomTemplate.x - offset,
                     y: randomTemplate.y - offset,
