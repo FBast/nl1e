@@ -433,7 +433,60 @@ export function getConfigActor() {
         }
     }
 
+    PL1E.reductions = {
+        "slashing": {
+            "label": "PL1E.SlashingReduction",
+            "icon": "fa-axe-battle",
+            "type": "number",
+            "path": "system.reductions.slashing"
+        },
+        "crushing": {
+            "label": "PL1E.CrushingReduction",
+            "icon": "fa-hammer-war",
+            "type": "number",
+            "path": "system.reductions.crushing"
+        },
+        "piercing": {
+            "label": "PL1E.PiercingReduction",
+            "icon": "fa-dagger",
+            "type": "number",
+            "path": "system.reductions.piercing"
+        },
+        "burn": {
+            "label": "PL1E.BurnReduction",
+            "icon": "fa-fire",
+            "type": "number",
+            "path": "system.reductions.burn"
+        },
+        "cold": {
+            "label": "PL1E.ColdReduction",
+            "icon": "fa-snowflake",
+            "type": "number",
+            "path": "system.reductions.cold"
+        },
+        "acid": {
+            "label": "PL1E.AcidReduction",
+            "icon": "fa-droplet",
+            "type": "number",
+            "path": "system.reductions.acid"
+        },
+        "shock": {
+            "label": "PL1E.ShockReduction",
+            "icon": "fa-bolt",
+            "type": "number",
+            "path": "system.reductions.shock"
+        }
+    }
+
     PL1E.misc = {
+        "statusImmunities": {
+            "label": "PL1E.StatusImmunities",
+            "icon": "fa-swords",
+            "type": "array",
+            "path": "system.misc.statusImmunities",
+            "select": "statuses",
+            "hidden": false
+        },
         "masters": {
             "label": "PL1E.Masters",
             "icon": "fa-swords",
@@ -572,116 +625,95 @@ export function getConfigActor() {
         }
     }
 
-    PL1E.reductions = {
-        "slashing": {
-            "label": "PL1E.SlashingReduction",
-            "icon": "fa-axe-battle",
-            "type": "number",
-            "path": "system.reductions.slashing"
-        },
-        "crushing": {
-            "label": "PL1E.CrushingReduction",
-            "icon": "fa-hammer-war",
-            "type": "number",
-            "path": "system.reductions.crushing"
-        },
-        "piercing": {
-            "label": "PL1E.PiercingReduction",
-            "icon": "fa-dagger",
-            "type": "number",
-            "path": "system.reductions.piercing"
-        },
-        "burn": {
-            "label": "PL1E.BurnReduction",
-            "icon": "fa-fire",
-            "type": "number",
-            "path": "system.reductions.burn"
-        },
-        "cold": {
-            "label": "PL1E.ColdReduction",
-            "icon": "fa-snowflake",
-            "type": "number",
-            "path": "system.reductions.cold"
-        },
-        "acid": {
-            "label": "PL1E.AcidReduction",
-            "icon": "fa-droplet",
-            "type": "number",
-            "path": "system.reductions.acid"
-        },
-        "shock": {
-            "label": "PL1E.ShockReduction",
-            "icon": "fa-bolt",
-            "type": "number",
-            "path": "system.reductions.shock"
-        }
-    }
-
     PL1E.statuses = {
-        "stun": {
-            "label": "PL1E.StatusStunned",
-            "img": "systems/pl1e/assets/icons/daze.svg"
-        },
-        "restrain": {
-            "label": "PL1E.StatusRestrained",
-            "img": "systems/pl1e/assets/icons/net.svg",
+        "charmed": {
+            "label": "PL1E.StatusCharmed",
+            "img": "systems/pl1e/assets/icons/charmed.svg"
         },
         "paralysis": {
             "label": "PL1E.StatusParalysis",
             "img": "systems/pl1e/assets/icons/paralysis.svg",
         },
-        // "fly": {
-        //     "label": "PL1E.StatusFlying",
-        //     "img": "systems/pl1e/assets/icons/wing.svg",
-        // },
+        "asleep": {
+            "label": "PL1E.StatusAsleep",
+            "img": "systems/pl1e/assets/icons/asleep.svg",
+        },
+        "restrained": {
+            "label": "PL1E.StatusRestrained",
+            "img": "systems/pl1e/assets/icons/restrained.svg",
+        },
+        "slow": {
+            "label": "PL1E.StatusSlow",
+            "img": "systems/pl1e/assets/icons/slow.svg",
+        },
+        "fast": {
+            "label": "PL1E.StatusFast",
+            "img": "systems/pl1e/assets/icons/fast.svg",
+        },
+        "stunned": {
+            "label": "PL1E.StatusStunned",
+            "img": "systems/pl1e/assets/icons/stunned.svg",
+        },
+        "invigorated": {
+            "label": "PL1E.StatusInvigorated",
+            "img": "systems/pl1e/assets/icons/invigorated.svg",
+        },
+        "sick": {
+            "label": "PL1E.StatusSick",
+            "img": "systems/pl1e/assets/icons/sick.svg",
+        },
+        "healthy": {
+            "label": "PL1E.StatusHealthy",
+            "img": "systems/pl1e/assets/icons/healthy.svg",
+        },
+        "confused": {
+            "label": "PL1E.StatusConfused",
+            "img": "systems/pl1e/assets/icons/confused.svg",
+        },
+        "composed": {
+            "label": "PL1E.StatusComposed",
+            "img": "systems/pl1e/assets/icons/composed.svg",
+        },
+        "bleeding": {
+            "label": "PL1E.StatusBleed",
+            "img": "systems/pl1e/assets/icons/bleeding.svg",
+        },
+        "regenerate": {
+            "label": "PL1E.StatusRegenerate",
+            "img": "systems/pl1e/assets/icons/regenerate.svg",
+        },
+        "downgraded": {
+            "label": "PL1E.StatusDowngraded",
+            "img": "systems/pl1e/assets/icons/downgraded.svg",
+        },
+        "upgraded": {
+            "label": "PL1E.StatusUpgraded",
+            "img": "systems/pl1e/assets/icons/upgraded.svg",
+        },
         "blind": {
             "label": "PL1E.StatusBlind",
             "img": "systems/pl1e/assets/icons/blind.svg",
         },
-        // "deaf": {
-        //     "label": "PL1E.StatusDeaf",
-        //     "img": "systems/pl1e/assets/icons/deaf.svg",
-        // },
-        // "silence": {
-        //     "label": "PL1E.StatusSilenced",
-        //     "img": "systems/pl1e/assets/icons/silenced.svg",
-        // },
-        "fear": {
-            "label": "PL1E.StatusFear",
-            "img": "systems/pl1e/assets/icons/terror.svg",
-        },
-        "disease": {
-            "label": "PL1E.StatusDisease",
-            "img": "systems/pl1e/assets/icons/biohazard.svg",
-        },
-        "upgrade": {
-            "label": "PL1E.StatusUpgraded",
-            "img": "systems/pl1e/assets/icons/target.svg"
-        },
-        "downgrade": {
-            "label": "PL1E.StatusDowngrade",
-            "img": "systems/pl1e/assets/icons/downgrade.svg"
+        "deaf": {
+            "label": "PL1E.StatusDeaf",
+            "img": "systems/pl1e/assets/icons/deaf.svg",
         },
         "invisible": {
             "label": "PL1E.StatusInvisible",
             "img": "systems/pl1e/assets/icons/invisible.svg",
         },
-        // "target": {
-        //     "label": "PL1E.StatusTarget",
-        //     "img": "systems/pl1e/assets/icons/target.svg",
-        // },
-        // "eye": {
-        //     "label": "PL1E.StatusMarked",
-        //     "img": "systems/pl1e/assets/icons/eye.svg",
-        // },
-        // "bless": {
-        //     "label": "PL1E.StatusBlessed",
-        //     "img": "systems/pl1e/assets/icons/angel.svg"
-        // },
-        // "curse": {
-        //     "label": "PL1E.StatusCursed",
-        //     "img": "systems/pl1e/assets/icons/sun.svg"
-        // },
+        "clairvoyant": {
+            "label": "PL1E.StatusClairvoyant",
+            "img": "systems/pl1e/assets/icons/clairvoyant.svg",
+        },
+        "tremorsense": {
+            "label": "PL1E.StatusTremorsense",
+            "img": "systems/pl1e/assets/icons/tremorsense.svg",
+        },
+        "focus": {
+            "label": "PL1E.StatusFocus",
+            "img": "systems/pl1e/assets/icons/focus.svg",
+        },
         "slashingImmunity": {
             "label": "PL1E.StatusSlashingImmunity",
             "img": "systems/pl1e/assets/icons/slashingImmunity.svg"
@@ -709,6 +741,10 @@ export function getConfigActor() {
         "acidImmunity": {
             "label": "PL1E.StatusAcidImmunity",
             "img": "systems/pl1e/assets/icons/acidImmunity.svg"
+        },
+        "immortal": {
+            "label": "PL1E.StatusImmortal",
+            "img": "systems/pl1e/assets/icons/immortal.svg"
         }
     }
 

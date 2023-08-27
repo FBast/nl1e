@@ -59,7 +59,8 @@ export const registerHandlebars = function () {
     });
 
     Handlebars.registerHelper('length', function(arr) {
-        return arr.length;
+        if (Array.isArray(arr) || typeof(arr) === "string") return arr.length;
+        else return Object.keys(arr).length;
     });
 
 }

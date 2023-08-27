@@ -8,6 +8,7 @@ export class Pl1eCombat extends Combat {
     async nextRound() {
         for (const combatant of this.combatants) {
             await this._resetCombatStats(combatant.actor);
+            await this._deleteCompletedActiveEffects(combatant.actor);
         }
         return super.nextRound();
     }
@@ -17,9 +18,7 @@ export class Pl1eCombat extends Combat {
         /** @type {Combat} */
         const combat = await super.nextTurn();
         await this._applyContinuousEffects(combat.combatant.actor);
-        for (const combatant of this.combatants) {
-            await this._decreaseEffectsDuration(combat.combatant, combatant.actor);
-        }
+        await this._decreaseEffectsDuration(combat.combatant.actor);
 
         return combat;
     }
@@ -28,7 +27,7 @@ export class Pl1eCombat extends Combat {
     async endCombat() {
         for (const combatant of this.combatants) {
             await this._resetCombatStats(combatant.actor);
-            await this._deleteActiveEffects(combatant.actor);
+            await this._deleteTemporaryActiveEffects(combatant.actor);
         }
         return super.endCombat();
     }
@@ -63,59 +62,63 @@ export class Pl1eCombat extends Combat {
      * @private
      */
     async _applyContinuousEffects(actor) {
-        // Unconscious status
+        if (actor.statuses.has("bleeding") && !actor.statuses.has("dead")) {
+            await actor.update({
+                "system.resources.health.value": actor.system.resources.health.value - 5
+            });
+        }
+        if (actor.statuses.has("regenerate") && !actor.statuses.has("dead")) {
+            await actor.update({
+                "system.resources.health.value": actor.system.resources.health.value + 5
+            });
+        }
         if (actor.statuses.has("unconscious")) {
             await actor.update({
                 "system.resources.health.value": actor.system.resources.health.value - 1
             });
         }
-        // Continuous active effects
-        for (const effect of actor.effects) {
-            if (!effect.getFlag("pl1e", "continuous")) continue;
-            for (const change of effect.changes) {
-
-            }
-        }
     }
 
     /**
-     * Decrease the duration of the effects linked to this combatant.mjs
-     * @param {Combatant} combatant the related combatant.mjs
-     * @param {Actor} actor the actor of the effects
+     * Decrease the duration of the effects linked to this actor
+     * @param {Actor} actor
      * @return {Promise<void>}
      * @private
      */
-    async _decreaseEffectsDuration(combatant, actor) {
+    async _decreaseEffectsDuration(actor) {
         for (const effect of actor.effects) {
             if (effect.getFlag("pl1e", "permanent")) continue;
-            const sourceId = effect.getFlag("core", "sourceId");
-            // With a source id the effect decrease on the source actor turn
-            if (sourceId && sourceId !== combatant.actor.id) continue;
-            // Without source id the effect decrease on the actor turn
-            if (!sourceId && combatant.actor !== actor) continue;
-            const duration = effect.data.duration;
-            if (duration.rounds > 0) {
-                duration.rounds -= 1;
+            const duration = effect.duration;
+            duration.rounds--;
 
-                // If the rounds reach 0, remove the effect
-                if (duration.rounds === 0) {
-                    await effect.delete();
-                }
-                else {
-                    // Update the duration of the effect
-                    await effect.update({duration});
-                }
-            }
+            // Update the duration of the effect
+            await effect.update({
+                duration: duration
+            });
         }
     }
 
     /**
-     * Remove all active effects
+     * Remove all completed active effects
      * @param {Pl1eActor} actor
      * @return {Promise<void>}
      * @private
      */
-    async _deleteActiveEffects(actor) {
+    async _deleteCompletedActiveEffects(actor) {
+        for (const effect of actor.effects) {
+            if (effect.getFlag("pl1e", "permanent")) continue;
+            if (effect.duration.rounds > 0) continue;
+            await effect.delete();
+        }
+    }
+
+    /**
+     * Remove all temporary active effects
+     * @param {Pl1eActor} actor
+     * @return {Promise<void>}
+     * @private
+     */
+    async _deleteTemporaryActiveEffects(actor) {
         for (const effect of actor.effects) {
             if (effect.getFlag("pl1e", "permanent")) continue;
             await effect.delete();

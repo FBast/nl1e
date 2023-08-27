@@ -107,6 +107,7 @@ export class Pl1eActor extends Actor {
 
     /** @inheritDoc */
     async _preUpdate(changed, options, user) {
+        // Items macros
         for (const item of this.items) {
             if (item.type !== "ability") continue;
             if (!item.isEnabled) continue;
@@ -172,7 +173,14 @@ export class Pl1eActor extends Actor {
         if (this.statuses && this.statuses.has("charmed") && this.bestToken) {
             this.bestToken.document.disposition = -this.bestToken.document.disposition;
         }
-
+        if (this.statuses && this.statuses.has("clairvoyant") && this.bestToken) {
+            //TODO not working
+            this.bestToken.document.detectionModes.push({
+                enabled: true,
+                id: "seeInvisibility",
+                range: 20
+            });
+        }
         // Apply passive values
         for (const item of this.items) {
             for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
@@ -237,7 +245,7 @@ export class Pl1eActor extends Actor {
             skill.numberMod = attributesSum + actorGeneral.bonuses;
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
-            skill.diceMod = actorGeneral.advantages;
+            skill.diceMod += actorGeneral.advantages;
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
             if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }

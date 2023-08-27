@@ -243,7 +243,17 @@
           "reaction": 1,
           "quickAction": 1
         },
+        "reductions": {
+          "slashing": 0,
+          "crushing": 0,
+          "piercing": 0,
+          "burn": 0,
+          "cold": 0,
+          "acid": 0,
+          "shock": 0
+        },
         "misc": {
+          "statusImmunities": [],
           "masters": [],
           "size": "medium",
           "sizeMultiplier": 1,
@@ -268,15 +278,6 @@
           "remainingMovement": 0,
           "usedMovement": 0,
           "movementAction": 0
-        },
-        "reductions": {
-          "slashing": 0,
-          "crushing": 0,
-          "piercing": 0,
-          "burn": 0,
-          "cold": 0,
-          "acid": 0,
-          "shock": 0
         },
         "money": {
           "gold": 0,
