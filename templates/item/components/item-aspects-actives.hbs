@@ -3,7 +3,7 @@
         <div class="item-name">{{localize "PL1E.ActiveAspects"}}</div>
         <div class="item-controls">
             {{#each activeAspectsObjects}}
-                {{#with (configEntry "aspects" name)}}
+                {{#with (config "aspects" name)}}
                     <input type="image" class="item-control aspect-add hover-red" src="{{img}}" data-aspect-id="{{@key}}"
                            data-aspect-type="active" data-tooltip='{{localize label}}' width="20" height="20"/>
                 {{/with}}
@@ -11,13 +11,13 @@
         </div>
     </li>
     {{#each activeAspects}}
-        {{#with (configEntry "aspects" name)}}
+        {{#with (config "aspects" name)}}
             <li class="item" data-aspect-id="{{@key}}" data-aspect-type="active"  data-item-id="{{@key}}">
                 <div class="item-attribute flexrow">
                     <img class="item-image" src="{{#if ../createEffect}}
                         {{../effectIcon}}
                     {{else if (eq ../name "status")}}
-                        {{#with (configEntry ../dataGroup ../data)}}{{img}}{{/with}}
+                        {{#with (config ../dataGroup ../data)}}{{img}}{{/with}}
                     {{else}}
                         {{img}}
                     {{/if}}" title="{{localize label}}" width="24" height="24"/>
@@ -39,7 +39,7 @@
                             {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
                         </select>
                     </div>
-                    {{#with (configEntry ../dataGroup ../data)}}
+                    {{#with (config ../dataGroup ../data)}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.SubData"}}</label>
                             <select name="system.activeAspects.{{@key}}.subData">

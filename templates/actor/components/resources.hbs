@@ -1,6 +1,6 @@
 <div class="resources grid grid-3col">
     {{#each resources}}
-        {{#with (configEntry "resources" @key)}}
+        {{#with (config "resources" @key)}}
             <div class="resource box flex-group-center" data-resource-id="{{@key}}">
                 <label class="resource-label highlight-link hover-green" data-characteristics="{{weights.characteristics}}">
                     {{localize label}}

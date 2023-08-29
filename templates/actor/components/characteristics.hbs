@@ -1,5 +1,5 @@
 {{#each system.characteristics}}
-    {{#with (configEntry "characteristics" @key)}}
+    {{#with (config "characteristics" @key)}}
         <div class="characteristic flex-group-center" data-characteristic-id="{{@key}}">
             <h3 class="characteristic-label highlight-link hover-green align-left" data-resources="{{weights.resources}}" data-skills="{{weights.skills}}">
                 {{localize label}}

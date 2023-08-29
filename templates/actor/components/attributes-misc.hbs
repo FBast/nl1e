@@ -1,7 +1,7 @@
 <fieldset>
     <legend class="section-header">{{localize "PL1E.Misc"}}</legend>
     {{#each system.misc}}
-        {{#with (configEntry "misc" @key)}}
+        {{#with (config "misc" @key)}}
             {{#unless hidden}}
                 <div class="form-group">
                     <label>{{localize label}}</label>
@@ -9,11 +9,11 @@
                         {{#if (eq type "array")}}
                             <ul class="align-right">
                                 {{#each ../this}}
-                                    <li class="tag {{this}}">{{localize (configEntry ../select this)}}</li>
+                                    <li class="tag {{this}}">{{localize (config ../select this)}}</li>
                                 {{/each}}
                             </ul>
                         {{else if (eq type "select")}}
-                            <label class="align-right">{{localize (configEntryLabel select ../this)}}</label>
+                            <label class="align-right">{{localize (config select ../this "label")}}</label>
                         {{else if (eq type "number")}}
                             <label class="align-right">{{../this}}</label>
                         {{else if (eq type "bool")}}

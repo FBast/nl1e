@@ -2,7 +2,7 @@
     {{#each system.price}}
         <div class="form-group flex-group-center">
             <div class="input-spin currency">
-                {{#with (configEntry "money" @key)}}
+                {{#with (config "money" @key)}}
                     <i class="currency-icon fas fa-coins color-{{@key}} hover-green" data-tooltip='{{localize this}}'></i>
                 {{/with}}
                 <input name="system.price.{{@key}}" type="number" value="{{this}}" data-dtype="Number" min="0" placeholder="0"/>

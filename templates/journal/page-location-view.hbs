@@ -14,12 +14,12 @@
         {{/if}}
         <tr>
             <td><strong>{{localize "PL1E.Type"}}</strong></td>
-            <td><p>{{localize (configEntry "locationTypes" system.type)}}</p></td>
+            <td><p>{{localize (config "locationTypes" system.type)}}</p></td>
         </tr>
         {{#if (ne system.subType undefined)}}
             <tr>
                 <td><strong>{{localize "PL1E.SubType"}}</strong></td>
-                <td><p>{{localize (configEntry (concat system.type "Types") system.subType)}}</p></td>
+                <td><p>{{localize (config (concat system.type "Types") system.subType)}}</p></td>
             </tr>
         {{/if}}
         {{#if (ne system.type "area")}}
@@ -37,7 +37,7 @@
         {{#if (ne system.type "building")}}
             <tr>
                 <td><strong>{{localize "PL1E.Climate"}}</strong></td>
-                <td><p>{{localize (configEntry "climates" system.climate)}}</p></td>
+                <td><p>{{localize (config "climates" system.climate)}}</p></td>
             </tr>
         {{/if}}
     </table>

@@ -4,7 +4,7 @@
         <div class="item-effects-character">
             {{#unless (eq price undefined)}}
                 {{#each price}}
-                    {{#with (configEntry "money" @key)}}
+                    {{#with (config "money" @key)}}
                         <i class="currency-icon fas fa-coins color-{{@key}} hover-green" data-tooltip='{{localize this}}'>
                             <label class="color-black">{{#if (eq @root.transaction "purchase")}}-{{/if}}{{../this}}</label>
                         </i>

@@ -121,7 +121,7 @@
                 <ul class="skills">
                     <!-- Listing defenses, resistances and skills -->
                     {{#each skills}}
-                        {{#with (configEntry "skills" @key)}}
+                        {{#with (config "skills" @key)}}
                             <li class="skill grid grid-8col" data-skill-id={{@key}}>
                                 <i class="align-left fas fa-dice-d{{../dice}}">
                                     <label>{{../number}}</label>

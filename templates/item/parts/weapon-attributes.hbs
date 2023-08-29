@@ -18,7 +18,7 @@
                 <label class="attribute-name">{{localize "PL1E.MeleeRoll"}}</label>
                 <ul class="attribute-name">
                     {{#each system.attributes.meleeRoll}}
-                        <li class="tag {{this}}">{{localize (configEntry "abilitySkills" this)}}</li>
+                        <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
                     {{/each}}
                 </ul>
                 <a class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.MeleeRoll" data-key-path="attributes.meleeRoll"
@@ -31,7 +31,7 @@
                     <label class="attribute-name">{{localize "PL1E.MeleeOppositeRoll"}}</label>
                     <ul class="attribute-name">
                         {{#each system.attributes.meleeOppositeRoll}}
-                            <li class="tag {{this}}">{{localize (configEntry "abilityResistances" this)}}</li>
+                            <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                         {{/each}}
                     </ul>
                     <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.MeleeOppositeRoll" data-key-path="attributes.meleeOppositeRoll"
@@ -50,7 +50,7 @@
                 <label class="attribute-name">{{localize "PL1E.RangeRoll"}}</label>
                 <ul class="attribute-name">
                     {{#each system.attributes.rangeRoll}}
-                        <li class="tag {{this}}">{{localize (configEntry "abilitySkills" this)}}</li>
+                        <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
                     {{/each}}
                 </ul>
                 <a class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.RangeRoll" data-key-path="attributes.rangeRoll"
@@ -63,7 +63,7 @@
                     <label class="attribute-name">{{localize "PL1E.RangeOppositeRoll"}}</label>
                     <ul class="attribute-name">
                         {{#each system.attributes.rangeOppositeRoll}}
-                            <li class="tag {{this}}">{{localize (configEntry "abilityResistances" this)}}</li>
+                            <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                         {{/each}}
                     </ul>
                     <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.RangeOppositeRoll" data-key-path="attributes.rangeOppositeRoll"

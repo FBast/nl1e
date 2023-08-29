@@ -5,7 +5,7 @@
             <i class="convert-icon currency-icon fas fa-money-bill-transfer currency-convert hover-red" data-tooltip='{{localize "PL1E.ConvertCurrency"}}'></i>
             {{#each system.money}}
                 <div class="input-spin currency">
-                    {{#with (configEntry "money" @key)}}
+                    {{#with (config "money" @key)}}
                         <i class="currency-icon fas fa-coins color-{{@key}} hover-green" data-tooltip='{{localize this}}'></i>
                     {{/with}}
                     <input name="system.money.{{@key}}.value" type="number" value="{{this}}" data-dtype="Number" min="0" placeholder="0" disabled/>

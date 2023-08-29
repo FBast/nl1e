@@ -24,23 +24,8 @@ export function getConfigActor() {
                 ]
             },
             "icon": "fa-heart",
-            "subData": {
-                "value": {
-                    "label": "PL1E.Value",
-                    "type": "number",
-                    "path": "system.resources.health.value"
-                },
-                "max": {
-                    "label": "PL1E.Max",
-                    "type": "number",
-                    "path": "system.resources.health.max"
-                },
-                "temp": {
-                    "label": "PL1E.Temp",
-                    "type": "number",
-                    "path": "system.resources.health.temp"
-                }
-            }
+            "type": "number",
+            "path": "system.resources.health.value"
         },
         "stamina": {
             "label": "PL1E.Stamina",
@@ -52,23 +37,8 @@ export function getConfigActor() {
                 ]
             },
             "icon": "fa-wave-pulse",
-            "subData": {
-                "value": {
-                    "label": "PL1E.Value",
-                    "type": "number",
-                    "path": "system.resources.stamina.value"
-                },
-                "max": {
-                    "label": "PL1E.Max",
-                    "type": "number",
-                    "path": "system.resources.stamina.max"
-                },
-                "temp": {
-                    "label": "PL1E.Temp",
-                    "type": "number",
-                    "path": "system.resources.stamina.temp"
-                }
-            }
+            "type": "number",
+            "path": "system.resources.stamina.value"
         },
         "mana": {
             "label": "PL1E.Mana",
@@ -80,23 +50,23 @@ export function getConfigActor() {
                 ]
             },
             "icon": "fa-sparkles",
-            "subData": {
-                "value": {
-                    "label": "PL1E.Value",
-                    "type": "number",
-                    "path": "system.resources.mana.value"
-                },
-                "max": {
-                    "label": "PL1E.Max",
-                    "type": "number",
-                    "path": "system.resources.mana.max"
-                },
-                "temp": {
-                    "label": "PL1E.Temp",
-                    "type": "number",
-                    "path": "system.resources.mana.temp"
-                }
-            }
+            "type": "number",
+            "path": "system.resources.mana.value"
+        }
+    }
+
+    PL1E.resourcesAttributes = {
+        "value": {
+            "label": "PL1E.Value",
+            "type": "number"
+        },
+        "max": {
+            "label": "PL1E.Max",
+            "type": "number"
+        },
+        "temp": {
+            "label": "PL1E.Temp",
+            "type": "number"
         }
     }
 
@@ -381,6 +351,21 @@ export function getConfigActor() {
                 "characteristics": ["cunning", "will"],
                 "misc": []
             }
+        }
+    }
+
+    PL1E.skillsAttributes = {
+        "numberMod": {
+            "label": "PL1E.NumberMod",
+            "type": "number"
+        },
+        "diceMod": {
+            "label": "PL1E.DiceMod",
+            "type": "number"
+        },
+        "explode": {
+            "label": "PL1E.Explode",
+            "type": "bool"
         }
     }
 

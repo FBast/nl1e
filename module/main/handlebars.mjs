@@ -26,33 +26,15 @@ export const registerHandlebars = function () {
 
     Handlebars.registerHelper('config', function (...args) {
         let data = CONFIG.PL1E;
-        for (let arg of args) {
+        for (let arg of args){
+            // Ignore if not string
+            if (typeof arg !== "string") continue;
+
             data = data[arg];
             if (data === undefined)
-                throw new Error(`PL1E | config return is undefined with arg ${arg}`);
+                throw new Error(`PL1E | config return is undefined with args ${args}`);
         }
         return data;
-    });
-
-    Handlebars.registerHelper('config', function (key) {
-        if (key === undefined) {
-            throw new Error(`PL1E | config key is undefined`);
-        }
-        return CONFIG.PL1E[key];
-    });
-
-    Handlebars.registerHelper('configEntry', function (key, entry) {
-        if (key === undefined) {
-            throw new Error(`PL1E | configEntry key is undefined`);
-        }
-        if (entry === undefined) {
-            throw new Error(`PL1E | configEntry entry is undefined with key ${key}`);
-        }
-        return CONFIG.PL1E[key][entry];
-    });
-
-    Handlebars.registerHelper('configEntryLabel', function (key, entry) {
-        return CONFIG.PL1E[key][entry].label;
     });
 
     Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {

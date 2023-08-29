@@ -1,7 +1,7 @@
 <fieldset>
     <legend class="section-header">{{localize "PL1E.Reductions"}}</legend>
     {{#each system.reductions}}
-        {{#with (configEntry "reductions" @key)}}
+        {{#with (config "reductions" @key)}}
             <div class="form-group">
                 <label>{{localize label}}</label>
                 <div class="form-fields">

@@ -37,12 +37,12 @@ export class Pl1eAspect {
      * @param {Pl1eActor} actor
      */
     static applyPassiveValue(aspect, aspectId, actor) {
-        const value = aspect.name === "decrease" ? -aspect.value : aspect.value;
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data].subData[aspect.subData];
         let currentValue = getProperty(actor, dataConfig.path);
-        switch (aspect.name) {
-            case "increase":
-            case "decrease":
+        switch (aspect.operator) {
+            case "add":
+            case "remove":
                 if (Array.isArray(currentValue)) currentValue.push(value);
                 else currentValue += value;
                 break;
@@ -63,7 +63,7 @@ export class Pl1eAspect {
      * @returns {Promise<void>}
      */
     static async applyPassiveEffect(aspect, aspectId, actor, item) {
-        const value = aspect.name === "decrease" ? -aspect.value : aspect.value;
+        const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
         const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
@@ -73,7 +73,7 @@ export class Pl1eAspect {
             tint: aspect.effectIconTint,
             changes: [{
                 key: dataConfig.path,
-                mode: aspect.name === "set" ? 5 : 2,
+                mode: aspect.operator === "set" ? 5 : 2,
                 value: value
             }],
             flags: {

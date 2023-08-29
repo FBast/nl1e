@@ -14,7 +14,7 @@
             <label class="attribute-name">{{localize "PL1E.MasteryLink"}}</label>
             <ul class="attribute-name">
                 {{#each system.attributes.masteryLink}}
-                    <li class="tag {{this}}">{{localize (configEntry "masters" this)}}</li>
+                    <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
                 {{/each}}
             </ul>
             <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masteryLink"
@@ -36,7 +36,7 @@
                 <label class="attribute-name">{{localize "PL1E.TargetRoll"}}</label>
                 <ul class="attribute-name">
                     {{#each system.attributes.targetRoll}}
-                        <li class="tag {{this}}">{{localize (configEntry "abilityResistances" this)}}</li>
+                        <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                     {{/each}}
                 </ul>
                 <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.TargetRoll" data-key-path="attributes.targetRoll"
