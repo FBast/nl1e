@@ -74,4 +74,60 @@ export function getConfigBase() {
 
     }
 
+    PL1E.sizes = {
+        "small": {
+            "label": "PL1E.Small",
+            "multiplier": 0.5,
+            "token": 1
+        },
+        "medium": {
+            "label": "PL1E.Medium",
+            "multiplier": 1,
+            "token": 1
+        },
+        "large": {
+            "label": "PL1E.Large",
+            "multiplier": 2,
+            "token": 2,
+        },
+        "huge": {
+            "label": "PL1E.Huge",
+            "multiplier": 3,
+            "token": 3
+        },
+        "gargantuan": {
+            "label": "PL1E.Gargantuan",
+            "multiplier": 4,
+            "token": 4
+        }
+    }
+
+    PL1E.speeds = {
+        "verySlow": {
+            "label": "PL1E.VerySlow",
+            "movement": 2,
+            "baseInitiative": 0
+        },
+        "slow": {
+            "label": "PL1E.Slow",
+            "movement": 3,
+            "baseInitiative": 5
+        },
+        "medium": {
+            "label": "PL1E.Medium",
+            "movement": 4,
+            "baseInitiative": 10
+        },
+        "fast": {
+            "label": "PL1E.Fast",
+            "movement": 5,
+            "baseInitiative": 15
+        },
+        "veryFast": {
+            "label": "PL1E.VeryFast",
+            "movement": 6,
+            "baseInitiative": 20
+        }
+    }
+
 }

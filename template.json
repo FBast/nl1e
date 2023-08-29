@@ -7,20 +7,17 @@
           "health": {
             "value": 0,
             "max": 0,
-            "temp": 0,
-            "tempMax": 0
+            "temp": 0
           },
           "stamina": {
             "value": 0,
             "max": 0,
-            "temp": 0,
-            "tempMax": 0
+            "temp": 0
           },
           "mana": {
             "value": 0,
             "max": 0,
-            "temp": 0,
-            "tempMax": 0
+            "temp": 0
           }
         },
         "characteristics": {
@@ -79,154 +76,176 @@
             "numberMod": 0,
             "rank": 3,
             "dice": 8,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "parry": {
             "number": 2,
             "numberMod": 0,
             "rank": 3,
             "dice": 8,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "reflex": {
             "number": 2,
             "numberMod": 0,
             "rank": 3,
             "dice": 8,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "vigor": {
             "number": 2,
             "numberMod": 0,
             "rank": 3,
             "dice": 8,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "resilience": {
             "number": 2,
             "numberMod": 0,
             "rank": 3,
             "dice": 8,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "intuition": {
             "number": 2,
             "numberMod": 0,
             "rank": 3,
             "dice": 8,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "handling": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "throwing": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "athletics": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "acrobatics": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "accuracy": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "search": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "vigilance": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "discretion": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "performance": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "diplomacy": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "intimidation": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "bluff": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "craft": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "erudition": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "nature": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           },
           "magic": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
             "dice": 4,
-            "diceMod": 0
+            "diceMod": 0,
+            "explode": false
           }
         },
         "general": {
@@ -237,7 +256,6 @@
           "ranks": 0,
           "maxRank": 0,
           "rollBestSkill": true,
-          "bonuses": 0,
           "advantages": 0,
           "action": 2,
           "reaction": 1,

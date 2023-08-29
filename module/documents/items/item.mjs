@@ -445,7 +445,7 @@ export class Pl1eItem extends Item {
                     // Apply resolution type
                     if (characterData.attributes[`${key}ResolutionType`] !== undefined) {
                         const resolutionType = characterData.attributes[`${key}ResolutionType`];
-                        if (resolutionType === "multiplyBySuccess") {
+                        if (resolutionType === "valueMultipliedBySuccess") {
                             calculatedAttribute *= characterData.result > 0 ? characterData.result : 0;
                         }
                         if (resolutionType === "valueIfSuccess") {

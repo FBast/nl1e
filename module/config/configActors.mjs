@@ -24,8 +24,23 @@ export function getConfigActor() {
                 ]
             },
             "icon": "fa-heart",
-            "type": "number",
-            "path": "system.resources.health.value"
+            "subData": {
+                "value": {
+                    "label": "PL1E.Value",
+                    "type": "number",
+                    "path": "system.resources.health.value"
+                },
+                "max": {
+                    "label": "PL1E.Max",
+                    "type": "number",
+                    "path": "system.resources.health.max"
+                },
+                "temp": {
+                    "label": "PL1E.Temp",
+                    "type": "number",
+                    "path": "system.resources.health.temp"
+                }
+            }
         },
         "stamina": {
             "label": "PL1E.Stamina",
@@ -37,8 +52,23 @@ export function getConfigActor() {
                 ]
             },
             "icon": "fa-wave-pulse",
-            "type": "number",
-            "path": "system.resources.stamina.value"
+            "subData": {
+                "value": {
+                    "label": "PL1E.Value",
+                    "type": "number",
+                    "path": "system.resources.stamina.value"
+                },
+                "max": {
+                    "label": "PL1E.Max",
+                    "type": "number",
+                    "path": "system.resources.stamina.max"
+                },
+                "temp": {
+                    "label": "PL1E.Temp",
+                    "type": "number",
+                    "path": "system.resources.stamina.temp"
+                }
+            }
         },
         "mana": {
             "label": "PL1E.Mana",
@@ -50,8 +80,23 @@ export function getConfigActor() {
                 ]
             },
             "icon": "fa-sparkles",
-            "type": "number",
-            "path": "system.resources.mana.value"
+            "subData": {
+                "value": {
+                    "label": "PL1E.Value",
+                    "type": "number",
+                    "path": "system.resources.mana.value"
+                },
+                "max": {
+                    "label": "PL1E.Max",
+                    "type": "number",
+                    "path": "system.resources.mana.max"
+                },
+                "temp": {
+                    "label": "PL1E.Temp",
+                    "type": "number",
+                    "path": "system.resources.mana.temp"
+                }
+            }
         }
     }
 
@@ -339,70 +384,7 @@ export function getConfigActor() {
         }
     }
 
-    PL1E.sizes = {
-        "small": {
-            "label": "PL1E.Small",
-            "multiplier": 0.5,
-            "token": 1
-        },
-        "medium": {
-            "label": "PL1E.Medium",
-            "multiplier": 1,
-            "token": 1
-        },
-        "large": {
-            "label": "PL1E.Large",
-            "multiplier": 2,
-            "token": 2,
-        },
-        "huge": {
-            "label": "PL1E.Huge",
-            "multiplier": 3,
-            "token": 3
-        },
-        "gargantuan": {
-            "label": "PL1E.Gargantuan",
-            "multiplier": 4,
-            "token": 4
-        }
-    }
-
-    PL1E.speeds = {
-        "verySlow": {
-            "label": "PL1E.VerySlow",
-            "movement": 2,
-            "baseInitiative": 0
-        },
-        "slow": {
-            "label": "PL1E.Slow",
-            "movement": 3,
-            "baseInitiative": 5
-        },
-        "medium": {
-            "label": "PL1E.Medium",
-            "movement": 4,
-            "baseInitiative": 10
-        },
-        "fast": {
-            "label": "PL1E.Fast",
-            "movement": 5,
-            "baseInitiative": 15
-        },
-        "veryFast": {
-            "label": "PL1E.VeryFast",
-            "movement": 6,
-            "baseInitiative": 20
-        }
-    }
-
     PL1E.general = {
-        "bonuses": {
-            "label": "PL1E.Bonuses",
-            "icon": "fa-cubes",
-            "type": "number",
-            "path": "system.general.bonuses",
-            "hidden": false
-        },
         "advantages": {
             "label": "PL1E.Advantages",
             "icon": "fa-cube",
@@ -484,7 +466,7 @@ export function getConfigActor() {
             "icon": "fa-swords",
             "type": "array",
             "path": "system.misc.statusImmunities",
-            "select": "statuses",
+            "select": "statusImmunities",
             "hidden": false
         },
         "masters": {
@@ -595,13 +577,6 @@ export function getConfigActor() {
             "path": "system.misc.nightVisionRange",
             "hidden": false
         },
-        // "feelTremorRange": {
-        //     "label": "PL1E.FeelTremor",
-        //     "icon": "fa-eye",
-        //     "type": "number",
-        //     "path": "system.misc.feelTremorRange",
-        //     "hidden": false
-        // },
         "faithPower": {
             "label": "PL1E.FaithPower",
             "icon": "fa-reply-clock",
@@ -675,7 +650,7 @@ export function getConfigActor() {
             "img": "systems/pl1e/assets/icons/composed.svg",
         },
         "bleeding": {
-            "label": "PL1E.StatusBleed",
+            "label": "PL1E.StatusBleeding",
             "img": "systems/pl1e/assets/icons/bleeding.svg",
         },
         "regenerate": {

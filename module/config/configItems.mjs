@@ -249,7 +249,15 @@ export function getConfigItems() {
             "data": "health",
             "createEffect": false,
             "effectIcon": "systems/pl1e/assets/icons/set.svg"
-        }
+        },
+        {
+            "name": "modify",
+            "dataGroup": "resources",
+            "data": "health",
+            "value": 0,
+            "createEffect": false,
+            "effectIcon": "systems/pl1e/assets/icons/increase.svg"
+        },
     ]
 
     PL1E.activeAspectsObjects = [
@@ -285,6 +293,21 @@ export function getConfigItems() {
             "value": 0,
             "dataGroup": "resources",
             "data": "health",
+            "resolutionType": "value",
+            "targetGroup": "all",
+            "createEffect": false,
+            "effectDuration": 1,
+            "effectDurationResolutionType": "value",
+            "effectIcon": "systems/pl1e/assets/icons/set.svg",
+            "effectIconTint": "#000000"
+        },
+        {
+            "name": "modify",
+            "dataGroup": "resources",
+            "data": "health",
+            "operator": "add",
+            "damageType": "raw",
+            "value": 0,
             "resolutionType": "value",
             "targetGroup": "all",
             "createEffect": false,
@@ -339,8 +362,8 @@ export function getConfigItems() {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
                 "general": "PL1E.General",
-                "misc": "PL1E.Misc",
-                "reductions": "PL1E.Reductions"
+                "reductions": "PL1E.Reductions",
+                "misc": "PL1E.Misc"
             }
         },
         "decrease": {
@@ -350,8 +373,8 @@ export function getConfigItems() {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
                 "general": "PL1E.General",
-                "misc": "PL1E.Misc",
-                "reductions": "PL1E.Reductions"
+                "reductions": "PL1E.Reductions",
+                "misc": "PL1E.Misc"
             }
         },
         "set": {
@@ -361,8 +384,19 @@ export function getConfigItems() {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
                 "general": "PL1E.General",
-                "misc": "PL1E.Misc",
-                "reductions": "PL1E.Reductions"
+                "reductions": "PL1E.Reductions",
+                "misc": "PL1E.Misc"
+            }
+        },
+        "modify": {
+            "label": "PL1E.Modify",
+            "img": "systems/pl1e/assets/icons/set.svg",
+            "dataGroups": {
+                "resources": "PL1E.Resources",
+                "characteristics": "PL1E.Characteristics",
+                "general": "PL1E.General",
+                "reductions": "PL1E.Reductions",
+                "misc": "PL1E.Misc"
             }
         },
         "transfer": {
@@ -371,7 +405,6 @@ export function getConfigItems() {
             "dataGroups": {
                 "resources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
-                "misc": "PL1E.Misc",
                 "reductions": "PL1E.Reductions"
             }
         },
@@ -457,7 +490,7 @@ export function getConfigItems() {
     PL1E.resolutionTypes = {
         "value": "PL1E.Value",
         "valueIfSuccess" : "PL1E.ValueIfSuccess",
-        "multiplyBySuccess": "PL1E.MultiplyBySuccess"
+        "valueMultipliedBySuccess": "PL1E.ValueMultipliedBySuccess"
     }
 
     PL1E.linkOverrides = {
@@ -470,6 +503,30 @@ export function getConfigItems() {
         "permanentIfSuccess": "PL1E.PermanentIfSuccess",
         "durationFromSuccess": "PL1E.DurationFromSuccess",
         "durationIfSuccess": "PL1E.DurationIfSuccess"
+    }
+
+    PL1E.statusImmunities = {
+        "charmed": "PL1E.StatusCharmed",
+        "paralysis": "PL1E.StatusParalysis",
+        "asleep": "PL1E.StatusAsleep",
+        "restrained": "PL1E.StatusRestrained",
+        "slow": "PL1E.StatusSlow",
+        "fast": "PL1E.StatusFast",
+        "stunned": "PL1E.StatusStunned",
+        "invigorated": "PL1E.StatusInvigorated",
+        "sick": "PL1E.StatusSick",
+        "healthy": "PL1E.StatusHealthy",
+        "confused": "PL1E.StatusConfused",
+        "composed": "PL1E.StatusComposed",
+        "bleeding": "PL1E.StatusBleeding",
+        "regenerate": "PL1E.StatusRegenerate",
+        "downgraded": "PL1E.StatusDowngraded",
+        "upgraded": "PL1E.StatusUpgraded",
+        "blind": "PL1E.StatusBlind",
+        "deaf": "PL1E.StatusDeaf",
+        "invisible": "PL1E.StatusInvisible",
+        "clairvoyant": "PL1E.StatusClairvoyant",
+        "tremorsense": "PL1E.StatusTremorsense"
     }
 
     PL1E.movements = {
@@ -488,6 +545,12 @@ export function getConfigItems() {
         "standard": {
             "label": "PL1E.Standard"
         }
+    }
+
+    PL1E.numberOperators = {
+        "add": "PL1E.Add",
+        "remove": "PL1E.Remove",
+        "set": "PL1E.Set"
     }
 
 }

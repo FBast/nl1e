@@ -23,7 +23,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
         // Calculate duration
         let effectDuration = aspect.effectDuration;
         if (aspect.effectDurationResolutionType === "valueIfSuccess" && characterData.result <= 0) effectDuration = 0;
-        else if (aspect.effectDurationResolutionType === "multiplyBySuccess") effectDuration *= characterData.result;
+        else if (aspect.effectDurationResolutionType === "valueMultipliedBySuccess") effectDuration *= characterData.result;
         aspect.effectDuration = effectDuration;
 
         // Abort if the duration is null
@@ -41,7 +41,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
             tint: aspect.effectIconTint,
             changes: [{
                 key: dataConfig.path,
-                mode: aspect.name === "set" ? 5 : 2,
+                mode: aspect.operator === "set" ? 5 : 2,
                 value: aspect.value
             }],
             duration: {

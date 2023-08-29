@@ -125,7 +125,6 @@ export class GmToolbox extends FormApplication {
 
         html.find(`.toolbox-reset-resources`).on("click", event => this._resetResources(event));
         html.find(`.toolbox-sleep`).on("click", event => this._sleep(event));
-        html.find(`.toolbox-bonuses`).on("mousedown", event => this._handleBonuses(event));
         html.find(`.toolbox-advantages`).on("mousedown", event => this._handleAdvantages(event));
     }
 
@@ -177,31 +176,6 @@ export class GmToolbox extends FormApplication {
 
         // Execute the socket
         CONFIG.PL1E.socket.executeForUsers('displaySleeping', playerIds);
-    }
-
-    /**
-     * Handle the players global bonuses
-     * @param event
-     * @private
-     */
-    _handleBonuses(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        switch (event.which) {
-            case 1:
-                // left clic - add 1
-                this.object.bonuses = Math.min(this.object.bonuses + 1, 2);
-                break;
-            case 2:
-                // middle clic - reset to 0
-                this.object.bonuses = 0;
-                break;
-            case 3:
-                // right clic - minus 1
-                this.object.bonuses = Math.max(this.object.bonuses - 1, -2);
-                break;
-        }
-        game.settings.set("pl1e", "globalBonuses", this.object.bonuses).then(() => this.submit());
     }
 
     /**

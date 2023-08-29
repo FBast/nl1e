@@ -15,7 +15,8 @@ export class Pl1eAspect {
             case "increase":
             case "decrease":
             case "set":
-                return await this._numeric(aspect, characterData, targetsData);
+            case "modify":
+                return await this._modify(aspect, characterData, targetsData);
             case "transfer":
                 return await this._transfer(aspect, characterData, targetsData);
             case "status":
@@ -115,6 +116,7 @@ export class Pl1eAspect {
         switch (data.type) {
             case "number":
                 return 0;
+            case "array":
             case "select":
                 return Object.keys(PL1E[data.select])[0];
             case "bool":
@@ -123,14 +125,14 @@ export class Pl1eAspect {
     }
 
     /**
-     * Apply numeric aspect (such as increase, decrease or set)
+     * Apply modify aspect
      * @param aspect
      * @param characterData
      * @param targetsData
      * @returns {Promise<TargetData[]>}
      * @private
      */
-    static async _numeric(aspect, characterData, targetsData) {
+    static async _modify(aspect, characterData, targetsData) {
         for (const targetData of targetsData) {
             // Check targetGroup validation for aspect
             if (!this._isTargetValid(aspect.targetGroup, targetData.token, characterData.token)) continue;
@@ -140,7 +142,7 @@ export class Pl1eAspect {
 
             // Modify aspect value by resolution type
             switch (aspect.resolutionType) {
-                case "multiplyBySuccess":
+                case "valueMultipliedBySuccess":
                     aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
                     break;
                 case "valueIfSuccess":
@@ -156,7 +158,7 @@ export class Pl1eAspect {
             }
 
             // Negate the value
-            aspectCopy.value = aspect.name === "decrease" ? -aspectCopy.value : aspectCopy.value
+            aspectCopy.value = aspect.operator === "remove" ? -aspectCopy.value : aspectCopy.value
 
             if (aspectCopy.createEffect) {
                 // Create the effect
@@ -201,7 +203,7 @@ export class Pl1eAspect {
 
             // Modify aspect value by resolution type
             switch (aspect.resolutionType) {
-                case "multiplyBySuccess":
+                case "valueMultipliedBySuccess":
                     aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
                     break;
                 case "valueIfSuccess":
@@ -420,7 +422,7 @@ export class Pl1eAspect {
     static async _applyTargetAspect(aspect, targetData) {
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         let currentValue = getProperty(targetData.actor, dataConfig.path);
-        currentValue = aspect.name === "set" ? aspect.value : currentValue + aspect.value;
+        currentValue = aspect.operator === "set" ? aspect.value : currentValue + aspect.value;
         if (game.user.isGM) {
             await targetData.actor.update({
                 [dataConfig.path]: currentValue

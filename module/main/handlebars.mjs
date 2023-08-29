@@ -24,6 +24,16 @@ export const registerHandlebars = function () {
         return a * b;
     });
 
+    Handlebars.registerHelper('config', function (...args) {
+        let data = CONFIG.PL1E;
+        for (let arg of args) {
+            data = data[arg];
+            if (data === undefined)
+                throw new Error(`PL1E | config return is undefined with arg ${arg}`);
+        }
+        return data;
+    });
+
     Handlebars.registerHelper('config', function (key) {
         if (key === undefined) {
             throw new Error(`PL1E | config key is undefined`);

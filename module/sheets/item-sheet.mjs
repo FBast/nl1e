@@ -98,6 +98,9 @@ export class Pl1eItemSheet extends ItemSheet {
         // Prepare refItems
         await this._prepareItems(context);
 
+        // Prepare aspects
+        await this._prepareAspects(context);
+
         // Retrieve some documents from packs
         context.sequencerMacros = await this._listDocuments("legacy-sequencer-macros", true);
         context.modificationMacros = await this._listDocuments("legacy-modification-macros", true);
@@ -114,22 +117,26 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @inheritDoc */
     _updateObject(event, formData) {
-        // Set the passive aspects default data and default value
         const deepenFormData = Pl1eHelpers.deepen(formData)
         if (deepenFormData.system.passiveAspects !== undefined) {
             for (const [id, aspect] of Object.entries(deepenFormData.system.passiveAspects)) {
+                // Set passive aspect default data
                 if (PL1E[aspect.dataGroup][aspect.data] === undefined)
                     aspect.data = Pl1eAspect.getDefaultData(aspect);
+
+                // Set passive aspect default value
                 if (aspect.data !== this.item.system.passiveAspects[id].data)
                     aspect.value = Pl1eAspect.getDefaultValue(aspect);
             }
         }
 
-        // Set the active aspects default data and default value
         if (deepenFormData.system.activeAspects !== undefined) {
             for (const [id, aspect] of Object.entries(deepenFormData.system.activeAspects)) {
+                // Set passive aspect default value
                 if (PL1E[aspect.dataGroup][aspect.data] === undefined)
                     aspect.data = Pl1eAspect.getDefaultData(aspect);
+
+                // Set passive aspect default value
                 if (aspect.data !== this.item.system.activeAspects[id].data)
                     aspect.value = Pl1eAspect.getDefaultValue(aspect);
             }
@@ -205,6 +212,10 @@ export class Pl1eItemSheet extends ItemSheet {
         context.activeAspects = this.item.system.activeAspects;
         context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
         context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+    }
+
+    async _prepareAspects(context) {
+
     }
 
     /**
