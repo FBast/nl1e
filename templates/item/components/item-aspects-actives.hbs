@@ -40,56 +40,46 @@
                         </select>
                     </div>
                     {{#with (config ../dataGroup ../data)}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.SubData"}}</label>
-                            <select name="system.activeAspects.{{@key}}.subData">
-                                {{selectOptionsWithLabel subData selected=../../subData localize=true}}
-                            </select>
-                        </div>
-                        {{#with ../../subData}}
-
-                        {{/with}}
-                        {{else}}
-                            {{#if (eq type "number")}}
-                                <div class="item-attribute flexrow">
-                                    <label class="attribute-name">{{localize "PL1E.Operator"}}</label>
-                                    <select name="system.activeAspects.{{@key}}.operator">
-                                        {{selectOptions (config "numberOperators") selected=../../operator localize=true}}
-                                    </select>
-                                </div>
-                            {{/if}}
-                            {{#if (and (eq ../../operator "remove") (eq type "number"))}}
-                                <div class="item-attribute flexrow">
-                                    <label class="attribute-name">{{localize "PL1E.DamageType"}}</label>
-                                    <select name="system.activeAspects.{{@key}}.damageType">
-                                        {{selectOptions (config "damageTypes") selected=../../damageType localize=true}}
-                                    </select>
-                                </div>
-                            {{/if}}
+                        {{#if (eq type "number")}}
                             <div class="item-attribute flexrow">
-                                <label class="attribute-name">{{localize "PL1E.Value"}}</label>
-                                {{#if (eq type "number")}}
-                                    <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
-                                {{else if (eq type "bool")}}
-                                    <input type="checkbox" name="system.activeAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
-                                {{else if (eq type "select")}}
-                                    <select name="system.activeAspects.{{@key}}.value">
-                                        {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
-                                    </select>
-                                {{else if (eq type "array")}}
-                                    <select name="system.activeAspects.{{@key}}.value">
-                                        {{selectOptions (config select) selected=../../value localize=true}}
-                                    </select>
-                                {{/if}}
+                                <label class="attribute-name">{{localize "PL1E.Operator"}}</label>
+                                <select name="system.activeAspects.{{@key}}.operator">
+                                    {{selectOptions (config "numberOperators") selected=../../operator localize=true}}
+                                </select>
                             </div>
-                            {{#if (and (eq type "number") (ne @root.system.attributes.characterRoll "none"))}}
-                                <div class="item-attribute flexrow">
-                                    <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
-                                    <select name="system.activeAspects.{{@key}}.resolutionType">
-                                        {{selectOptions (config "resolutionTypes") selected=../../resolutionType localize=true}}
-                                    </select>
-                                </div>
+                        {{/if}}
+                        {{#if (and (eq ../../operator "remove") (eq type "number"))}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.DamageType"}}</label>
+                                <select name="system.activeAspects.{{@key}}.damageType">
+                                    {{selectOptions (config "damageTypes") selected=../../damageType localize=true}}
+                                </select>
+                            </div>
+                        {{/if}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.Value"}}</label>
+                            {{#if (eq type "number")}}
+                                <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
+                            {{else if (eq type "bool")}}
+                                <input type="checkbox" name="system.activeAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
+                            {{else if (eq type "select")}}
+                                <select name="system.activeAspects.{{@key}}.value">
+                                    {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
+                                </select>
+                            {{else if (eq type "array")}}
+                                <select name="system.activeAspects.{{@key}}.value">
+                                    {{selectOptions (config select) selected=../../value localize=true}}
+                                </select>
                             {{/if}}
+                        </div>
+                        {{#if (and (eq type "number") (ne @root.system.attributes.characterRoll "none"))}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
+                                <select name="system.activeAspects.{{@key}}.resolutionType">
+                                    {{selectOptions (config "resolutionTypes") selected=../../resolutionType localize=true}}
+                                </select>
+                            </div>
+                        {{/if}}
                     {{/with}}
                     {{#if (and ../targetGroup (ne ../name "transfer"))}}
                         <div class="item-attribute flexrow">

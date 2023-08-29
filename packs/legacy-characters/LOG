@@ -1,3 +1,12 @@
-2023/08/29-18:18:38.009 45d0 Recovering log #1002
-2023/08/29-18:18:38.015 45d0 Delete type=0 #1002
-2023/08/29-18:18:38.015 45d0 Delete type=3 #1001
+2023/08/29-22:36:33.765 1cec Recovering log #1004
+2023/08/29-22:36:33.765 1cec Level-0 table #1006: started
+2023/08/29-22:36:33.771 1cec Level-0 table #1006: 150636 bytes OK
+2023/08/29-22:36:33.777 1cec Delete type=0 #1004
+2023/08/29-22:36:33.777 1cec Delete type=3 #1003
+2023/08/29-23:13:16.639 9e0 Moved #1006 to level-1 150636 bytes OK: files[ 0 1 1 0 0 0 0 ]
+2023/08/29-23:13:17.179 9e0 Compacting 1@1 + 1@2 files
+2023/08/29-23:13:17.184 9e0 Generated table #1008@1: 297 keys, 182183 bytes
+2023/08/29-23:13:17.185 9e0 Compacted 1@1 + 1@2 files => 182183 bytes
+2023/08/29-23:13:17.186 9e0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/08/29-23:13:17.186 9e0 Delete type=2 #998
+2023/08/29-23:13:17.187 9e0 Delete type=2 #1006

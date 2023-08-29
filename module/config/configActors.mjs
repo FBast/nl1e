@@ -55,21 +55,6 @@ export function getConfigActor() {
         }
     }
 
-    PL1E.resourcesAttributes = {
-        "value": {
-            "label": "PL1E.Value",
-            "type": "number"
-        },
-        "max": {
-            "label": "PL1E.Max",
-            "type": "number"
-        },
-        "temp": {
-            "label": "PL1E.Temp",
-            "type": "number"
-        }
-    }
-
     PL1E.characteristics = {
         "strength": {
             "label": "PL1E.Strength",
@@ -451,137 +436,100 @@ export function getConfigActor() {
             "icon": "fa-swords",
             "type": "array",
             "path": "system.misc.statusImmunities",
-            "select": "statusImmunities",
-            "hidden": false
+            "select": "statusImmunities"
         },
         "masters": {
             "label": "PL1E.Masters",
             "icon": "fa-swords",
             "type": "array",
             "path": "system.misc.masters",
-            "select": "masters",
-            "hidden": false
+            "select": "masters"
         },
         "size": {
             "label": "PL1E.Size",
             "icon": "fa-arrow-up-big-small",
             "type": "select",
             "path": "system.misc.size",
-            "select": "sizes",
-            "hidden": false
+            "select": "sizes"
         },
         "sizeMultiplier": {
             "label": "PL1E.SizeMultiplier",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.sizeMultiplier",
-            "hidden": false
+            "path": "system.misc.sizeMultiplier"
         },
         "tokenSize": {
             "label": "PL1E.TokenSize",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.tokenSize",
-            "hidden": false
+            "path": "system.misc.tokenSize"
         },
         "speed": {
             "label": "PL1E.Speed",
             "icon": "fa-person-running",
             "type": "select",
             "path": "system.misc.speed",
-            "select": "speeds",
-            "hidden": false
+            "select": "speeds"
         },
         "movement": {
             "label": "PL1E.Movement",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.movement",
-            "hidden": false
+            "path": "system.misc.movement"
         },
         "baseInitiative": {
             "label": "PL1E.BaseInitiative",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.baseInitiative",
-            "hidden": false
+            "path": "system.misc.baseInitiative"
         },
         "initiative": {
             "label": "PL1E.Initiative",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.initiative",
-            "hidden": false
+            "path": "system.misc.initiative"
         },
         "unconsciousDoor": {
             "label": "PL1E.UnconsciousDoor",
             "icon": "fa-face-sleeping",
             "type": "number",
-            "path": "system.misc.unconsciousDoor",
-            "hidden": false
+            "path": "system.misc.unconsciousDoor"
         },
         "deathDoor": {
             "label": "PL1E.DeathDoor",
             "icon": "fa-skull",
             "type": "number",
-            "path": "system.misc.deathDoor",
-            "hidden": false
+            "path": "system.misc.deathDoor"
         },
         "flexibility": {
             "label": "PL1E.Flexibility",
             "icon": "fa-weight-hanging",
             "type": "number",
-            "path": "system.misc.flexibility",
-            "hidden": false
-        },
-        "coverBonuses": {
-            "label": "PL1E.CoverBonuses",
-            "icon": "fa-shield",
-            "type": "number",
-            "path": "system.misc.coverBonuses",
-            "hidden": false
-        },
-        "parryBonuses": {
-            "label": "PL1E.ParryBonuses",
-            "icon": "fa-swords",
-            "type": "number",
-            "path": "system.misc.parryBonuses",
-            "hidden": false
-        },
-        "reflexBonuses": {
-            "label": "PL1E.ReflexBonuses",
-            "icon": "fa-eye",
-            "type": "number",
-            "path": "system.misc.reflexBonuses",
-            "hidden": false
+            "path": "system.misc.flexibility"
         },
         "nightVisionRange": {
             "label": "PL1E.NightVisionRange",
             "icon": "fa-eye",
             "type": "number",
-            "path": "system.misc.nightVisionRange",
-            "hidden": false
+            "path": "system.misc.nightVisionRange"
         },
         "faithPower": {
             "label": "PL1E.FaithPower",
             "icon": "fa-reply-clock",
             "type": "bool",
-            "path": "system.misc.faithPower",
-            "hidden": false
+            "path": "system.misc.faithPower"
         },
         "gesturalMagic": {
             "label": "PL1E.GesturalMagic",
             "icon": "fa-reply-clock",
             "type": "bool",
-            "path": "system.misc.gesturalMagic",
-            "hidden": false
+            "path": "system.misc.gesturalMagic"
         },
         "vocalMagic": {
             "label": "PL1E.VocalMagic",
             "icon": "fa-reply-clock",
             "type": "bool",
-            "path": "system.misc.vocalMagic",
-            "hidden": false
+            "path": "system.misc.vocalMagic"
         }
     }
 

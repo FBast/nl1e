@@ -38,7 +38,7 @@ export class Pl1eAspect {
      */
     static applyPassiveValue(aspect, aspectId, actor) {
         const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data].subData[aspect.subData];
+        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         let currentValue = getProperty(actor, dataConfig.path);
         switch (aspect.operator) {
             case "add":

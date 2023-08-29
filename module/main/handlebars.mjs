@@ -32,7 +32,7 @@ export const registerHandlebars = function () {
 
             data = data[arg];
             if (data === undefined)
-                throw new Error(`PL1E | config return is undefined with args ${args}`);
+                console.warn(`PL1E | config return is undefined with args ${args}`);
         }
         return data;
     });
