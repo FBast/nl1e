@@ -35,7 +35,7 @@ export const registerStatuses = function () {
         {
             // Resolve when equal or below unconsciousDoor (default 0)
             id: "unconscious",
-            label: "PL1E.Status.Unconscious",
+            label: "PL1E.StatusUnconscious",
             icon: "systems/pl1e/assets/icons/unconscious.svg",
             changes: [{ // Unconscious health decrease is handled from Combat class
                 key: "system.misc.movement",

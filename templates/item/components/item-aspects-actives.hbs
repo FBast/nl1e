@@ -72,7 +72,7 @@
                                 </select>
                             {{/if}}
                         </div>
-                        {{#if (and (eq type "number") (ne @root.system.attributes.characterRoll "none"))}}
+                        {{#if (and (eq type "number") (ne (length @root.system.attributes.characterRoll) 0))}}
                             <div class="item-attribute flexrow">
                                 <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
                                 <select name="system.activeAspects.{{@key}}.resolutionType">

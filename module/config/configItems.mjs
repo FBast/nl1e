@@ -226,7 +226,6 @@ export function getConfigItems() {
     }
 
     PL1E.abilitySkills = {
-        "none": "PL1E.None",
         "handling": "PL1E.Handling",
         "throwing": "PL1E.Throwing",
         "athletics": "PL1E.Athletics",

@@ -7,6 +7,7 @@ export function getConfigAspects() {
             "name": "modify",
             "dataGroup": "aspectsResources",
             "data": "health",
+            "operator": "add",
             "value": 0,
             "createEffect": false,
             "effectIcon": "systems/pl1e/assets/icons/increase.svg"
@@ -26,7 +27,7 @@ export function getConfigAspects() {
             "createEffect": false,
             "effectDuration": 1,
             "effectDurationResolutionType": "value",
-            "effectIcon": "systems/pl1e/assets/icons/set.svg",
+            "effectIcon": "systems/pl1e/assets/icons/modify.svg",
             "effectIconTint": "#000000"
         },
         {
@@ -70,7 +71,7 @@ export function getConfigAspects() {
     PL1E.aspects = {
         "modify": {
             "label": "PL1E.Modify",
-            "img": "systems/pl1e/assets/icons/set.svg",
+            "img": "systems/pl1e/assets/icons/modify.svg",
             "dataGroups": {
                 "aspectsResources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -162,333 +163,333 @@ export function getConfigAspects() {
 
     PL1E.aspectsSkills = {
         "coverNumber": {
-            "label": "PL1E.CoverNumber",
+            "label": "PL1E.CoverBonus",
             "path": "system.skills.cover.numberMod",
             "type": "number"
         },
-        "coverDice": {
-            "label": "PL1E.CoverDice",
-            "path": "system.skills.cover.numberMod",
-            "type": "number"
-        },
-        "coverExplode": {
-            "label": "PL1E.CoverExploding",
-            "path": "system.skills.cover.exploding",
+        // "coverDice": {
+        //     "label": "PL1E.CoverDice",
+        //     "path": "system.skills.cover.numberMod",
+        //     "type": "number"
+        // },
+        "coverExplosion": {
+            "label": "PL1E.CoverExplosion",
+            "path": "system.skills.cover.explosion",
             "type": "bool"
         },
         "parryNumber": {
-            "label": "PL1E.ParryNumber",
+            "label": "PL1E.ParryBonus",
             "path": "system.skills.parry.numberMod",
             "type": "number"
         },
-        "parryDice": {
-            "label": "PL1E.ParryDice",
-            "path": "system.skills.parry.numberMod",
-            "type": "number"
-        },
-        "parryExplode": {
-            "label": "PL1E.ParryExploding",
-            "path": "system.skills.parry.exploding",
+        // "parryDice": {
+        //     "label": "PL1E.ParryDice",
+        //     "path": "system.skills.parry.numberMod",
+        //     "type": "number"
+        // },
+        "parryExplosion": {
+            "label": "PL1E.ParryExplosion",
+            "path": "system.skills.parry.explosion",
             "type": "bool"
         },
         "reflexNumber": {
-            "label": "PL1E.ReflexNumber",
+            "label": "PL1E.ReflexBonus",
             "path": "system.skills.reflex.numberMod",
             "type": "number"
         },
-        "reflexDice": {
-            "label": "PL1E.ReflexDice",
-            "path": "system.skills.reflex.numberMod",
-            "type": "number"
-        },
-        "reflexExplode": {
-            "label": "PL1E.ReflexExploding",
-            "path": "system.skills.reflex.exploding",
+        // "reflexDice": {
+        //     "label": "PL1E.ReflexDice",
+        //     "path": "system.skills.reflex.numberMod",
+        //     "type": "number"
+        // },
+        "reflexExplosion": {
+            "label": "PL1E.ReflexExplosion",
+            "path": "system.skills.reflex.explosion",
             "type": "bool"
         },
         "vigorNumber": {
-            "label": "PL1E.VigorNumber",
+            "label": "PL1E.VigorBonus",
             "path": "system.skills.vigor.numberMod",
             "type": "number"
         },
-        "vigorDice": {
-            "label": "PL1E.VigorDice",
-            "path": "system.skills.vigor.numberMod",
-            "type": "number"
-        },
-        "vigorExplode": {
-            "label": "PL1E.VigorExploding",
-            "path": "system.skills.vigor.exploding",
+        // "vigorDice": {
+        //     "label": "PL1E.VigorDice",
+        //     "path": "system.skills.vigor.numberMod",
+        //     "type": "number"
+        // },
+        "vigorExplosion": {
+            "label": "PL1E.VigorExplosion",
+            "path": "system.skills.vigor.explosion",
             "type": "bool"
         },
         "resilienceNumber": {
-            "label": "PL1E.ResilienceNumber",
+            "label": "PL1E.ResilienceBonus",
             "path": "system.skills.resilience.numberMod",
             "type": "number"
         },
-        "resilienceDice": {
-            "label": "PL1E.ResilienceDice",
-            "path": "system.skills.resilience.numberMod",
-            "type": "number"
-        },
-        "resilienceExplode": {
-            "label": "PL1E.ResilienceExploding",
-            "path": "system.skills.resilience.exploding",
+        // "resilienceDice": {
+        //     "label": "PL1E.ResilienceDice",
+        //     "path": "system.skills.resilience.numberMod",
+        //     "type": "number"
+        // },
+        "resilienceExplosion": {
+            "label": "PL1E.ResilienceExplosion",
+            "path": "system.skills.resilience.explosion",
             "type": "bool"
         },
         "intuitionNumber": {
-            "label": "PL1E.IntuitionNumber",
+            "label": "PL1E.IntuitionBonus",
             "path": "system.skills.intuition.numberMod",
             "type": "number"
         },
-        "intuitionDice": {
-            "label": "PL1E.IntuitionDice",
-            "path": "system.skills.intuition.numberMod",
-            "type": "number"
-        },
-        "intuitionExplode": {
-            "label": "PL1E.IntuitionExploding",
-            "path": "system.skills.intuition.exploding",
+        // "intuitionDice": {
+        //     "label": "PL1E.IntuitionDice",
+        //     "path": "system.skills.intuition.numberMod",
+        //     "type": "number"
+        // },
+        "intuitionExplosion": {
+            "label": "PL1E.IntuitionExplosion",
+            "path": "system.skills.intuition.explosion",
             "type": "bool"
         },
         "handlingNumber": {
-            "label": "PL1E.HandlingNumber",
+            "label": "PL1E.HandlingBonus",
             "path": "system.skills.handling.numberMod",
             "type": "number"
         },
-        "handlingDice": {
-            "label": "PL1E.HandlingDice",
-            "path": "system.skills.handling.numberMod",
-            "type": "number"
-        },
-        "handlingExplode": {
-            "label": "PL1E.HandlingExploding",
-            "path": "system.skills.handling.exploding",
+        // "handlingDice": {
+        //     "label": "PL1E.HandlingDice",
+        //     "path": "system.skills.handling.numberMod",
+        //     "type": "number"
+        // },
+        "handlingExplosion": {
+            "label": "PL1E.HandlingExplosion",
+            "path": "system.skills.handling.explosion",
             "type": "bool"
         },
         "throwingNumber": {
-            "label": "PL1E.ThrowingNumber",
+            "label": "PL1E.ThrowingBonus",
             "path": "system.skills.throwing.numberMod",
             "type": "number"
         },
-        "throwingDice": {
-            "label": "PL1E.ThrowingDice",
-            "path": "system.skills.throwing.numberMod",
-            "type": "number"
-        },
-        "throwingExplode": {
-            "label": "PL1E.ThrowingExploding",
-            "path": "system.skills.throwing.exploding",
+        // "throwingDice": {
+        //     "label": "PL1E.ThrowingDice",
+        //     "path": "system.skills.throwing.numberMod",
+        //     "type": "number"
+        // },
+        "throwingExplosion": {
+            "label": "PL1E.ThrowingExplosion",
+            "path": "system.skills.throwing.explosion",
             "type": "bool"
         },
         "athleticsNumber": {
-            "label": "PL1E.AthleticsNumber",
+            "label": "PL1E.AthleticsBonus",
             "path": "system.skills.athletics.numberMod",
             "type": "number"
         },
-        "athleticsDice": {
-            "label": "PL1E.AthleticsDice",
-            "path": "system.skills.athletics.numberMod",
-            "type": "number"
-        },
-        "athleticsExplode": {
-            "label": "PL1E.AthleticsExploding",
-            "path": "system.skills.athletics.exploding",
+        // "athleticsDice": {
+        //     "label": "PL1E.AthleticsDice",
+        //     "path": "system.skills.athletics.numberMod",
+        //     "type": "number"
+        // },
+        "athleticsExplosion": {
+            "label": "PL1E.AthleticsExplosion",
+            "path": "system.skills.athletics.explosion",
             "type": "bool"
         },
         "acrobaticsNumber": {
-            "label": "PL1E.AcrobaticsNumber",
+            "label": "PL1E.AcrobaticsBonus",
             "path": "system.skills.acrobatics.numberMod",
             "type": "number"
         },
-        "acrobaticsDice": {
-            "label": "PL1E.AcrobaticsDice",
-            "path": "system.skills.acrobatics.numberMod",
-            "type": "number"
-        },
-        "acrobaticsExplode": {
-            "label": "PL1E.AcrobaticsExploding",
-            "path": "system.skills.acrobatics.exploding",
+        // "acrobaticsDice": {
+        //     "label": "PL1E.AcrobaticsDice",
+        //     "path": "system.skills.acrobatics.numberMod",
+        //     "type": "number"
+        // },
+        "acrobaticsExplosion": {
+            "label": "PL1E.AcrobaticsExplosion",
+            "path": "system.skills.acrobatics.explosion",
             "type": "bool"
         },
         "accuracyNumber": {
-            "label": "PL1E.AccuracyNumber",
+            "label": "PL1E.AccuracyBonus",
             "path": "system.skills.accuracy.numberMod",
             "type": "number"
         },
-        "accuracyDice": {
-            "label": "PL1E.AccuracyDice",
-            "path": "system.skills.accuracy.numberMod",
-            "type": "number"
-        },
-        "accuracyExplode": {
-            "label": "PL1E.AccuracyExploding",
-            "path": "system.skills.accuracy.exploding",
+        // "accuracyDice": {
+        //     "label": "PL1E.AccuracyDice",
+        //     "path": "system.skills.accuracy.numberMod",
+        //     "type": "number"
+        // },
+        "accuracyExplosion": {
+            "label": "PL1E.AccuracyExplosion",
+            "path": "system.skills.accuracy.explosion",
             "type": "bool"
         },
         "searchNumber": {
-            "label": "PL1E.SearchNumber",
+            "label": "PL1E.SearchBonus",
             "path": "system.skills.search.numberMod",
             "type": "number"
         },
-        "searchDice": {
-            "label": "PL1E.SearchDice",
-            "path": "system.skills.search.numberMod",
-            "type": "number"
-        },
-        "searchExplode": {
-            "label": "PL1E.SearchExploding",
-            "path": "system.skills.search.exploding",
+        // "searchDice": {
+        //     "label": "PL1E.SearchDice",
+        //     "path": "system.skills.search.numberMod",
+        //     "type": "number"
+        // },
+        "searchExplosion": {
+            "label": "PL1E.SearchExplosion",
+            "path": "system.skills.search.explosion",
             "type": "bool"
         },
         "vigilanceNumber": {
-            "label": "PL1E.VigilanceNumber",
+            "label": "PL1E.VigilanceBonus",
             "path": "system.skills.vigilance.numberMod",
             "type": "number"
         },
-        "vigilanceDice": {
-            "label": "PL1E.VigilanceDice",
-            "path": "system.skills.vigilance.numberMod",
-            "type": "number"
-        },
-        "vigilanceExplode": {
-            "label": "PL1E.VigilanceExploding",
-            "path": "system.skills.vigilance.exploding",
+        // "vigilanceDice": {
+        //     "label": "PL1E.VigilanceDice",
+        //     "path": "system.skills.vigilance.numberMod",
+        //     "type": "number"
+        // },
+        "vigilanceExplosion": {
+            "label": "PL1E.VigilanceExplosion",
+            "path": "system.skills.vigilance.explosion",
             "type": "bool"
         },
         "discretionNumber": {
-            "label": "PL1E.DiscretionNumber",
+            "label": "PL1E.DiscretionBonus",
             "path": "system.skills.discretion.numberMod",
             "type": "number"
         },
-        "discretionDice": {
-            "label": "PL1E.DiscretionDice",
-            "path": "system.skills.discretion.numberMod",
-            "type": "number"
-        },
-        "discretionExplode": {
-            "label": "PL1E.DiscretionExploding",
-            "path": "system.skills.discretion.exploding",
+        // "discretionDice": {
+        //     "label": "PL1E.DiscretionDice",
+        //     "path": "system.skills.discretion.numberMod",
+        //     "type": "number"
+        // },
+        "discretionExplosion": {
+            "label": "PL1E.DiscretionExplosion",
+            "path": "system.skills.discretion.explosion",
             "type": "bool"
         },
         "performanceNumber": {
-            "label": "PL1E.PerformanceNumber",
+            "label": "PL1E.PerformanceBonus",
             "path": "system.skills.performance.numberMod",
             "type": "number"
         },
-        "performanceDice": {
-            "label": "PL1E.PerformanceDice",
-            "path": "system.skills.performance.numberMod",
-            "type": "number"
-        },
-        "performanceExplode": {
-            "label": "PL1E.PerformanceExploding",
-            "path": "system.skills.performance.exploding",
+        // "performanceDice": {
+        //     "label": "PL1E.PerformanceDice",
+        //     "path": "system.skills.performance.numberMod",
+        //     "type": "number"
+        // },
+        "performanceExplosion": {
+            "label": "PL1E.PerformanceExplosion",
+            "path": "system.skills.performance.explosion",
             "type": "bool"
         },
         "diplomacyNumber": {
-            "label": "PL1E.DiplomacyNumber",
+            "label": "PL1E.DiplomacyBonus",
             "path": "system.skills.diplomacy.numberMod",
             "type": "number"
         },
-        "diplomacyDice": {
-            "label": "PL1E.DiplomacyDice",
-            "path": "system.skills.diplomacy.numberMod",
-            "type": "number"
-        },
-        "diplomacyExplode": {
-            "label": "PL1E.DiplomacyExploding",
-            "path": "system.skills.diplomacy.exploding",
+        // "diplomacyDice": {
+        //     "label": "PL1E.DiplomacyDice",
+        //     "path": "system.skills.diplomacy.numberMod",
+        //     "type": "number"
+        // },
+        "diplomacyExplosion": {
+            "label": "PL1E.DiplomacyExplosion",
+            "path": "system.skills.diplomacy.explosion",
             "type": "bool"
         },
         "intimidationNumber": {
-            "label": "PL1E.IntimidationNumber",
+            "label": "PL1E.IntimidationBonus",
             "path": "system.skills.intimidation.numberMod",
             "type": "number"
         },
-        "intimidationDice": {
-            "label": "PL1E.IntimidationDice",
-            "path": "system.skills.intimidation.numberMod",
-            "type": "number"
-        },
-        "intimidationExplode": {
-            "label": "PL1E.IntimidationExploding",
-            "path": "system.skills.intimidation.exploding",
+        // "intimidationDice": {
+        //     "label": "PL1E.IntimidationDice",
+        //     "path": "system.skills.intimidation.numberMod",
+        //     "type": "number"
+        // },
+        "intimidationExplosion": {
+            "label": "PL1E.IntimidationExplosion",
+            "path": "system.skills.intimidation.explosion",
             "type": "bool"
         },
         "bluffNumber": {
-            "label": "PL1E.BluffNumber",
+            "label": "PL1E.BluffBonus",
             "path": "system.skills.bluff.numberMod",
             "type": "number"
         },
-        "bluffDice": {
-            "label": "PL1E.BluffDice",
-            "path": "system.skills.bluff.numberMod",
-            "type": "number"
-        },
-        "bluffExplode": {
-            "label": "PL1E.BluffExploding",
-            "path": "system.skills.bluff.exploding",
+        // "bluffDice": {
+        //     "label": "PL1E.BluffDice",
+        //     "path": "system.skills.bluff.numberMod",
+        //     "type": "number"
+        // },
+        "bluffExplosion": {
+            "label": "PL1E.BluffExplosion",
+            "path": "system.skills.bluff.explosion",
             "type": "bool"
         },
         "craftNumber": {
-            "label": "PL1E.CraftNumber",
+            "label": "PL1E.CraftBonus",
             "path": "system.skills.craft.numberMod",
             "type": "number"
         },
-        "craftDice": {
-            "label": "PL1E.CraftDice",
-            "path": "system.skills.craft.numberMod",
-            "type": "number"
-        },
-        "craftExplode": {
-            "label": "PL1E.CraftExploding",
-            "path": "system.skills.craft.exploding",
+        // "craftDice": {
+        //     "label": "PL1E.CraftDice",
+        //     "path": "system.skills.craft.numberMod",
+        //     "type": "number"
+        // },
+        "craftExplosion": {
+            "label": "PL1E.CraftExplosion",
+            "path": "system.skills.craft.explosion",
             "type": "bool"
         },
         "eruditionNumber": {
-            "label": "PL1E.EruditionNumber",
+            "label": "PL1E.EruditionBonus",
             "path": "system.skills.erudition.numberMod",
             "type": "number"
         },
-        "eruditionDice": {
-            "label": "PL1E.EruditionDice",
-            "path": "system.skills.erudition.numberMod",
-            "type": "number"
-        },
-        "eruditionExplode": {
-            "label": "PL1E.EruditionExploding",
-            "path": "system.skills.erudition.exploding",
+        // "eruditionDice": {
+        //     "label": "PL1E.EruditionDice",
+        //     "path": "system.skills.erudition.numberMod",
+        //     "type": "number"
+        // },
+        "eruditionExplosion": {
+            "label": "PL1E.EruditionExplosion",
+            "path": "system.skills.erudition.explosion",
             "type": "bool"
         },
         "natureNumber": {
-            "label": "PL1E.NatureNumber",
+            "label": "PL1E.NatureBonus",
             "path": "system.skills.nature.numberMod",
             "type": "number"
         },
-        "natureDice": {
-            "label": "PL1E.NatureDice",
-            "path": "system.skills.nature.numberMod",
-            "type": "number"
-        },
-        "natureExplode": {
-            "label": "PL1E.NatureExploding",
-            "path": "system.skills.nature.exploding",
+        // "natureDice": {
+        //     "label": "PL1E.NatureDice",
+        //     "path": "system.skills.nature.numberMod",
+        //     "type": "number"
+        // },
+        "natureExplosion": {
+            "label": "PL1E.NatureExplosion",
+            "path": "system.skills.nature.explosion",
             "type": "bool"
         },
         "magicNumber": {
-            "label": "PL1E.MagicNumber",
+            "label": "PL1E.MagicBonus",
             "path": "system.skills.magic.numberMod",
             "type": "number"
         },
-        "magicDice": {
-            "label": "PL1E.MagicDice",
-            "path": "system.skills.magic.numberMod",
-            "type": "number"
-        },
-        "magicExplode": {
-            "label": "PL1E.MagicExploding",
-            "path": "system.skills.magic.exploding",
+        // "magicDice": {
+        //     "label": "PL1E.MagicDice",
+        //     "path": "system.skills.magic.numberMod",
+        //     "type": "number"
+        // },
+        "magicExplosion": {
+            "label": "PL1E.MagicExplosion",
+            "path": "system.skills.magic.explosion",
             "type": "bool"
         }
     }

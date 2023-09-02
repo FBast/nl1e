@@ -15,6 +15,9 @@
                         {{localize label}}
                     </label>
                     <div class="skill-rank align-right">
+                        {{#if ../explosion}}
+                            <i class="fas fa-burst fa-lg"></i>
+                        {{/if}}
                         {{#if (and (not fixedRank) @root.system.general.creationMod (ne @root.type "character"))}}
                             <i class="rank-control fas fa-circle-{{../rank}} fa-lg hover-red" data-skill="{{@key}}"></i>
                         {{else}}

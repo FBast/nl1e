@@ -111,7 +111,7 @@ export class Pl1eItem extends Item {
                 changed["system.attributes.isMajorAction"] = false;
                 changed["system.attributes.triggerReactions"] = false;
             }
-            if (changed.system?.attributes?.characterRoll === "none")
+            if (changed.system?.attributes?.characterRoll?.length === 0)
                 changed["system.attributes.targetRoll"] = [];
             if (changed.system?.attributes?.itemLink === "none") {
                 changed["system.attributes.isMajorAction"] = false;
@@ -300,8 +300,8 @@ export class Pl1eItem extends Item {
         if (!await this._preActivate(characterData)) return false;
 
         // Character rollData if exist
-        if (characterData.attributes.characterRoll !== 'none') {
-            characterData.rollData = await characterData.actor.rollSkill(characterData.attributes.characterRoll);
+        if (characterData.attributes.characterRoll.length === 0) {
+            characterData.rollData = await characterData.actor.rollSkills(characterData.attributes.characterRoll);
             characterData.result = characterData.rollData.total;
         }
         else {

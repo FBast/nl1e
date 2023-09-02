@@ -145,7 +145,7 @@ export function getConfigActor() {
             "divider": 1,
             "weights": {
                 "characteristics": [],
-                "misc": ["coverBonuses"]
+                "misc": []
             }
         },
         "parry": {
@@ -154,7 +154,7 @@ export function getConfigActor() {
             "divider": 3,
             "weights": {
                 "characteristics": ["strength", "constitution"],
-                "misc": ["parryBonuses"]
+                "misc": []
             }
         },
         "reflex": {
@@ -163,7 +163,7 @@ export function getConfigActor() {
             "divider": 2,
             "weights": {
                 "characteristics": ["agility", "perception"],
-                "misc": ["reflexBonuses", "flexibility"]
+                "misc": ["flexibility"]
             }
         },
         "vigor": {
@@ -336,21 +336,6 @@ export function getConfigActor() {
                 "characteristics": ["cunning", "will"],
                 "misc": []
             }
-        }
-    }
-
-    PL1E.skillsAttributes = {
-        "numberMod": {
-            "label": "PL1E.NumberMod",
-            "type": "number"
-        },
-        "diceMod": {
-            "label": "PL1E.DiceMod",
-            "type": "number"
-        },
-        "explode": {
-            "label": "PL1E.Explode",
-            "type": "bool"
         }
     }
 

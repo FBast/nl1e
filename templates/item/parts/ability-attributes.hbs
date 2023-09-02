@@ -27,11 +27,21 @@
         <legend class="section-header">{{localize "PL1E.Usage"}}</legend>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>
-            <select name="system.attributes.characterRoll">
-                {{selectOptions (config "abilitySkills") selected=system.attributes.characterRoll localize=true}}
-            </select>
+            <ul class="attribute-name">
+                {{#each system.attributes.characterRoll}}
+                    <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                {{/each}}
+            </ul>
+            <a class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.CharacterRoll" data-key-path="attributes.characterRoll"
+               data-tooltip="{{localize 'PL1E.CharacterRollConfig'}}">
+                <i class="fas fa-edit"></i>
+            </a>
         </div>
-        {{#if (ne system.attributes.characterRoll "none")}}
+        {{#if (gt (length system.attributes.characterRoll) 0)}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{localize "PL1E.CharacterRollAdvantages"}}</label>
+                <input type="number" name="system.attributes.characterRollAdvantages" value="{{system.attributes.characterRollAdvantages}}" data-dtype="Number"/>
+            </div>
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.TargetRoll"}}</label>
                 <ul class="attribute-name">
@@ -44,6 +54,12 @@
                     <i class="fas fa-edit"></i>
                 </a>
             </div>
+            {{#if (gt (length system.attributes.targetRoll) 0)}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{localize "PL1E.TargetRollAdvantages"}}</label>
+                    <input type="number" name="system.attributes.targetRollAdvantages" value="{{system.attributes.targetRollAdvantages}}" data-dtype="Number"/>
+                </div>
+            {{/if}}
         {{/if}}
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.HealthCost"}}</label>
@@ -102,7 +118,7 @@
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.Range"}}</label>
                 <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
-                {{#if (ne system.attributes.characterRoll "none")}}
+                {{#if (ne (length system.attributes.characterRoll) 0)}}
                     <select name="system.attributes.rangeResolutionType">
                         {{selectOptions (config "resolutionTypes") selected=system.attributes.rangeResolutionType localize=true}}
                     </select>

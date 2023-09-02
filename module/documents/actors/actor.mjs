@@ -270,7 +270,7 @@ export class Pl1eActor extends Actor {
     async rollSkill(skillName) {
         const skill = this.system.skills[skillName];
         let formula = skill.number + "d" + skill.dice;
-        formula += this.type === "character" ? "xo" + skill.dice : "";
+        formula += skill.explosion ? "xo" + skill.dice : "";
         formula += "cs>=4";
         let roll = new Roll(formula, this.getRollData());
         roll.skillName = skillName;
