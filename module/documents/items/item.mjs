@@ -120,7 +120,7 @@ export class Pl1eItem extends Item {
             }
             if (changed.system?.attributes?.characterRoll?.length === 0)
                 changed["system.attributes.targetRoll"] = [];
-            if (changed.system?.attributes?.itemLink === "none") {
+            if (changed.system?.attributes?.rangeOverride === "none") {
                 changed["system.attributes.isMajorAction"] = false;
                 changed["system.attributes.usageCost"] = 0;
             }

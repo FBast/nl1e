@@ -27,7 +27,12 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @inheritDoc */
     get template() {
-        return `systems/pl1e/templates/item/item-${this.item.type}-sheet.hbs`;
+        if (["weapon", "wearable", "consumable", "common"].includes(this.item.type)) {
+            return `systems/pl1e/templates/item/item-base-sheet.hbs`;
+        }
+        else {
+            return `systems/pl1e/templates/item/item-${this.item.type}-sheet.hbs`;
+        }
     }
 
     /**

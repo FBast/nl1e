@@ -347,6 +347,20 @@ export function getConfigActor() {
             "path": "system.general.advantages",
             "hidden": false
         },
+        "masters": {
+            "label": "PL1E.Masters",
+            "icon": "fa-swords",
+            "type": "array",
+            "path": "system.general.masters",
+            "select": "masters"
+        },
+        "statusImmunities": {
+            "label": "PL1E.StatusImmunities",
+            "icon": "fa-swords",
+            "type": "array",
+            "path": "system.misc.statusImmunities",
+            "select": "statusImmunities"
+        },
         "action": {
             "label": "PL1E.Action",
             "icon": "fa-clock",
@@ -416,20 +430,6 @@ export function getConfigActor() {
     }
 
     PL1E.misc = {
-        "statusImmunities": {
-            "label": "PL1E.StatusImmunities",
-            "icon": "fa-swords",
-            "type": "array",
-            "path": "system.misc.statusImmunities",
-            "select": "statusImmunities"
-        },
-        "masters": {
-            "label": "PL1E.Masters",
-            "icon": "fa-swords",
-            "type": "array",
-            "path": "system.misc.masters",
-            "select": "masters"
-        },
         "size": {
             "label": "PL1E.Size",
             "icon": "fa-arrow-up-big-small",

@@ -497,20 +497,6 @@ export function getConfigAspects() {
     }
 
     PL1E.aspectsMisc = {
-        "statusImmunities": {
-            "label": "PL1E.StatusImmunities",
-            "icon": "fa-swords",
-            "type": "array",
-            "path": "system.misc.statusImmunities",
-            "select": "statusImmunities"
-        },
-        "masters": {
-            "label": "PL1E.Masters",
-            "icon": "fa-swords",
-            "type": "array",
-            "path": "system.misc.masters",
-            "select": "masters"
-        },
         "size": {
             "label": "PL1E.Size",
             "icon": "fa-arrow-up-big-small",

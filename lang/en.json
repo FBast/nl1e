@@ -185,7 +185,6 @@
   "PL1E.Intuition": "Intuition",
   "PL1E.IsMajorAction": "Is major action",
   "PL1E.Island": "Island",
-  "PL1E.ItemLink": "Item link",
   "PL1E.Items": "Items",
   "PL1E.ItemsChildren": "Items Children",
   "PL1E.ItemsParents": "Items Parents",
@@ -469,7 +468,7 @@
   "PL1E.TokenSize": "Token size",
   "PL1E.EffectIconTint": "Effect icon tint",
   "PL1E.TooMuchTarget": "You have selected too much target",
-  "PL1E.TooltipItemLink": "<p align=\"justify\">Replace the range with the parent item setting.</p>\n<ul><li><p align=\"left\">None : no override.</p></li><li><p align=\"left\">Melee : the range will be define with the item reach.</p></li><li><p align=\"left\">Ranged : the range will be define with the item range.</p>",
+  "PL1E.TooltipRangeOverride": "<p align=\"justify\">Replace the range with the parent item setting.</p>\n<ul><li><p align=\"left\">None : no override.</p></li><li><p align=\"left\">Melee : the range will be define with the item reach.</p></li><li><p align=\"left\">Ranged : the range will be define with the item range.</p></li></ul>",
   "PL1E.TooltipCreateEffect": "If you do not create an effect the changes will be permanent !",
   "PL1E.Town": "Town",
   "PL1E.Trait": "Trait",
@@ -532,6 +531,7 @@
   "PL1E.StatusDowngraded": "Downgraded",
   "PL1E.StatusUpgraded": "Upgraded",
   "PL1E.StatusBlind": "Blind",
+  "PL1E.LaunchParentActiveAspects": "Launch parent active aspects",
   "PL1E.StatusDeaf": "Deaf",
   "PL1E.StatusInvisible": "Invisible",
   "PL1E.StatusClairvoyant": "Clairvoyant",
@@ -543,5 +543,7 @@
   "PL1E.StatusFireImmunity": "Fire immunity",
   "PL1E.StatusColdImmunity": "Cold immunity",
   "PL1E.StatusShockImmunity": "Shock immunity",
-  "PL1E.StatusAcidImmunity": "Acid immunity"
+  "PL1E.StatusAcidImmunity": "Acid immunity",
+  "PL1E.TooltipLegendParent": "This part contains the parameters allowing the object to be linked to its parent, in the case where the object does not have a parent then these parameters will be ignored",
+  "PL1E.RequireParentMastery": "Require parent mastery"
 }

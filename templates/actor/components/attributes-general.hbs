@@ -55,6 +55,26 @@
         </div>
     </div>
     <div class="form-group">
+        <label>{{localize "PL1E.Masters"}}</label>
+        <div class="form-fields">
+            <ul class="align-right">
+                {{#each system.general.masters}}
+                    <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "PL1E.StatusImmunities"}}</label>
+        <div class="form-fields">
+            <ul class="align-right">
+                {{#each system.general.statusImmunities}}
+                    <li class="tag {{this}}">{{localize (config "statusImmunities" this)}}</li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
         <label>{{localize "PL1E.Action"}}</label>
         <div class="form-fields">
             <label class="align-right">{{system.general.action}}</label>
@@ -72,5 +92,4 @@
             <label class="align-right">{{system.general.quickAction}}</label>
         </div>
     </div>
-
 </fieldset>

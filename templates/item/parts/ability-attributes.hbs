@@ -1,26 +1,31 @@
 <section class="scroll-auto">
     <fieldset>
-        <legend class="section-header">{{localize "PL1E.Link"}}</legend>
+        <legend class="section-header">
+            <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipLegendParent"}}'></i>
+            {{localize "PL1E.Parent"}}
+        </legend>
         <div class="item-attribute flexrow">
             <label class="attribute-name">
-                <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipItemLink"}}'></i>
-                {{localize "PL1E.ItemLink"}}
+                <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipRequireParentMastery"}}'></i>
+                {{localize "PL1E.RequireParentMastery"}}
             </label>
-            <select name="system.attributes.itemLink">
-                {{selectOptions (config "itemLinks") selected=system.attributes.itemLink localize=true}}
-            </select>
+            <input type="checkbox" name="system.attributes.requireParentMastery" {{checked system.attributes.requireParentMastery}} data-dtype="Boolean"/>
         </div>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.MasteryLink"}}</label>
-            <ul class="attribute-name">
-                {{#each system.attributes.masteryLink}}
-                    <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
-                {{/each}}
-            </ul>
-            <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masteryLink"
-               data-tooltip="{{localize 'PL1E.MastersConfig'}}">
-                <i class="fas fa-edit"></i>
-            </a>
+            <label class="attribute-name">
+                <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipLaunchParentActiveAspects"}}'></i>
+                {{localize "PL1E.LaunchParentActiveAspects"}}
+            </label>
+            <input type="checkbox" name="system.attributes.launchParentActiveAspects" {{checked system.attributes.launchParentActiveAspects}} data-dtype="Boolean"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">
+                <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipRangeOverride"}}'></i>
+                {{localize "PL1E.RangeOverride"}}
+            </label>
+            <select name="system.attributes.rangeOverride">
+                {{selectOptions (config "rangeOverrides") selected=system.attributes.rangeOverride localize=true}}
+            </select>
         </div>
     </fieldset>
     <fieldset>

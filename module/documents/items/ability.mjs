@@ -17,9 +17,7 @@ export class Pl1eAbility extends Pl1eItem {
     /** @inheritDoc */
     async _preActivate(characterData) {
         // Get linked attributes
-        if (characterData.item.system.attributes.masteryLink.length > 0)
-            return await this._linkItem(characterData);
-        return true;
+        return await this._linkItem(characterData);
     }
 
     /** @inheritDoc */
@@ -41,7 +39,7 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             return false;
         }
-        if (itemAttributes.masteryLink.length > 0 && this._getLinkableItems(characterData).length === 0) {
+        if (this._getLinkableItems(characterData).length === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;
         }
@@ -68,7 +66,10 @@ export class Pl1eAbility extends Pl1eItem {
     async _linkItem(characterData) {
         // Get weapons using the same mastery
         const relatedItems = this._getLinkableItems(characterData);
-        if (relatedItems.length === 1) {
+        if (relatedItems.length === 0) {
+            return true;
+        }
+        else if (relatedItems.length === 1) {
             characterData.linkedItem = relatedItems[0];
         }
         else {
@@ -77,20 +78,17 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Override range attribute
-        if (characterData.attributes.itemLink === "melee") {
+        if (characterData.attributes.rangeOverride === "melee") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
         }
-        else if (characterData.attributes.itemLink === "range") {
+        else if (characterData.attributes.rangeOverride === "range") {
             characterData.attributes.range = characterData.linkedItem.system.attributes.range;
         }
 
-        //TODO for now random but it should take the correct mastery for the macro effect
-
-        // Set mastery attribute
-        const masters = characterData.linkedItem.system.attributes.masters;
-        characterData.attributes.mastery = masters[Math.floor(Math.random() * masters.length)];
-
-        Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
+        // Use the parent active aspects when launching the ability
+        if (characterData.attributes.launchParentActiveAspects) {
+            Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
+        }
         return true;
     }
 

@@ -257,6 +257,8 @@
           "maxRank": 0,
           "rollBestSkill": true,
           "advantages": 0,
+          "masters": [],
+          "statusImmunities": [],
           "action": 2,
           "reaction": 1,
           "quickAction": 1
@@ -271,8 +273,6 @@
           "shock": 0
         },
         "misc": {
-          "statusImmunities": [],
-          "masters": [],
           "size": "medium",
           "sizeMultiplier": 1,
           "tokenSize": 1,
@@ -362,8 +362,9 @@
       "isMemorized": false,
       "attributes": {
         "level": 1,
-        "parentLink": false,
-        "masteryLink": [],
+        "requireParentMastery": true,
+        "launchParentActiveAspects": true,
+        "rangeOverride": "none",
         "characterRoll": [],
         "characterRollAdvantages": 0,
         "targetRoll": [],
@@ -401,6 +402,7 @@
       "isEquippedSecondary": false,
       "isMajorActionUsed": false,
       "attributes": {
+        "masters": [],
         "hands": 1,
         "reach": 0,
         "meleeRoll": [],
@@ -415,6 +417,7 @@
       "isEquipped": false,
       "isMajorActionUsed": false,
       "attributes": {
+        "masters": [],
         "slot": "none"
       }
     },

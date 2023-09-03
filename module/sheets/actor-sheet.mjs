@@ -72,12 +72,12 @@ export class Pl1eActorSheet extends ActorSheet {
         const context = super.getData();
 
         // Use a safe clone of the actor data for further operations.
-        const actorData = this.actor.toObject(false);
+        // const actorData = this.actor.toObject(false);
 
         // Add the actor's data to context.data for easier access, as well as flags.
-        context.system = actorData.system;
-        context.flags = actorData.flags;
-        context.items = actorData.items;
+        context.system = this.actor.system;
+        context.flags = this.actor.flags;
+        context.items = this.actor.items;
         context.inCombat = this.actor.bestToken !== null && this.actor.bestToken.inCombat;
 
         this._prepareItems(context);
@@ -280,7 +280,7 @@ export class Pl1eActorSheet extends ActorSheet {
             if (item.system.attributes.junk && this.actor.system.general.hideJunk) continue;
 
             // Append to item categories
-            const sourceIdFlag = item.flags.core ? item.flags.core.sourceId : null;
+            const sourceIdFlag = item.flags.core ? item.sourceId : null;
             if (item.type === 'weapon') {
                 weapons.push(item);
             }
@@ -290,7 +290,7 @@ export class Pl1eActorSheet extends ActorSheet {
             else if (item.type === 'consumable') {
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = consumables.find(item => item.flags.core.sourceId === sourceIdFlag);
+                    const sameItem = consumables.find(item => item.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -300,7 +300,7 @@ export class Pl1eActorSheet extends ActorSheet {
             else if (item.type === 'common') {
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = commons.find(item => item.flags.core.sourceId === sourceIdFlag);
+                    const sameItem = commons.find(item => item.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 }
                 else {
@@ -316,7 +316,7 @@ export class Pl1eActorSheet extends ActorSheet {
                 // Filter item with faith parent
                 let parentItem = null;
                 for (const otherItem of this.actor.items) {
-                    if (otherItem.parentId === item.childId) {
+                    if (otherItem.parentId && otherItem.parentId === item.childId) {
                         parentItem = otherItem;
                         break;
                     }
@@ -324,7 +324,8 @@ export class Pl1eActorSheet extends ActorSheet {
                 if (parentItem && parentItem.system.attributes.featureType === "faith" && !this.actor.system.misc.faithPower) continue;
 
                 // Search if the character has a mastery listed in item masters
-                if (item.system.attributes.masteryLink.length > 0 && !this.actor.system.misc.masters.some(mastery => item.system.attributes.masteryLink.includes(mastery))) continue;
+                if (item.system.attributes.requireParentMastery && parentItem && parentItem.system.attributes.masters.length > 0
+                    && !this.actor.system.general.masters.some(mastery => parentItem.system.attributes.masters.includes(mastery))) continue;
 
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {

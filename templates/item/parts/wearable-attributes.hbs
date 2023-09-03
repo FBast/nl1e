@@ -5,6 +5,24 @@
             <label class="attribute-name">{{localize "PL1E.Junk"}}</label>
             <input type="checkbox" name="system.attributes.junk" {{checked system.attributes.junk}} data-dtype="Boolean"/>
         </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
+            <ul class="attribute-name">
+                {{#each system.attributes.masters}}
+                    <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
+                {{/each}}
+            </ul>
+            <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masters"
+               data-tooltip="{{localize 'PL1E.MastersConfig'}}">
+                <i class="fas fa-edit"></i>
+            </a>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.Slot"}}</label>
+            <select name="system.attributes.slot">
+                {{selectOptions (config "slots") selected=system.attributes.slot localize=true}}
+            </select>
+        </div>
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
 </section>

@@ -15,7 +15,7 @@ export function getConfigBase() {
         "copper": "PL1E.Copper"
     }
 
-    PL1E.itemLinks = {
+    PL1E.rangeOverrides = {
         "none": "PL1E.None",
         "melee": "PL1E.Melee",
         "range": "PL1E.Range"
