@@ -4,7 +4,6 @@ import {Pl1eFormValidation} from "../main/formValidation.mjs";
 import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
 import {PL1E} from "../config/config.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
-import {TraitSelector} from "../apps/traitSelector.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications

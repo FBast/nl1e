@@ -47,27 +47,27 @@
                         {{/if}}
                         {{#if (eq system.attributes.areaShape "target")}}
                             <i class="item-info fas fa-crosshairs-simple hover-green" data-tooltip='{{localize "PL1E.Target"}}'>
-                                <label>{{#if (eq system.attributes.areaNumberResolutionType "valueMultipliedBySuccess")}}X{{/if}}
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multipliedBySuccess")}}X{{/if}}
                                     {{system.attributes.areaNumber}}</label>
                             </i>
                         {{else if (eq system.attributes.areaShape "circle")}}
                             <i class="item-info fas fa-circle-xmark hover-green" data-tooltip='{{localize "PL1E.Circle"}}'>
-                                <label>{{#if (eq system.attributes.areaNumberResolutionType "valueMultipliedBySuccess")}}X{{/if}}
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multipliedBySuccess")}}X{{/if}}
                                     {{system.attributes.areaNumber}}</label>
                             </i>
                         {{else if (eq system.attributes.areaShape "cone")}}
                             <i class="item-info fas fa-triangle hover-green" data-tooltip='{{localize "PL1E.Cone"}}'>
-                                <label>{{#if (eq system.attributes.areaNumberResolutionType "valueMultipliedBySuccess")}}X{{/if}}
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multipliedBySuccess")}}X{{/if}}
                                     {{system.attributes.areaNumber}}</label>
                             </i>
                         {{else if (eq system.attributes.areaShape "square")}}
                             <i class="item-info fas fa-square hover-green" data-tooltip='{{localize "PL1E.Square"}}'>
-                                <label>{{#if (eq system.attributes.areaNumberResolutionType "valueMultipliedBySuccess")}}X{{/if}}
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multipliedBySuccess")}}X{{/if}}
                                     {{system.attributes.areaNumber}}</label>
                             </i>
                         {{else if (eq system.attributes.areaShape "ray")}}
                             <i class="item-info fas fa-rectangle-vertical hover-green" data-tooltip='{{localize "PL1E.Ray"}}'>
-                                <label>{{#if (eq system.attributes.areaNumberResolutionType "valueMultipliedBySuccess")}}x{{/if}}
+                                <label>{{#if (eq system.attributes.areaNumberResolutionType "multipliedBySuccess")}}x{{/if}}
                                     {{system.attributes.areaNumber}}</label>
                             </i>
                         {{/if}}

@@ -142,10 +142,10 @@ export class Pl1eAspect {
 
             // Modify aspect value by resolution type
             switch (aspect.resolutionType) {
-                case "valueMultipliedBySuccess":
+                case "multipliedBySuccess":
                     aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
                     break;
-                case "valueIfSuccess":
+                case "ifSuccess":
                     aspectCopy.value = targetData.result > 0 ? aspectCopy.value : 0;
                     break;
             }
@@ -203,10 +203,10 @@ export class Pl1eAspect {
 
             // Modify aspect value by resolution type
             switch (aspect.resolutionType) {
-                case "valueMultipliedBySuccess":
+                case "multipliedBySuccess":
                     aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
                     break;
-                case "valueIfSuccess":
+                case "ifSuccess":
                     aspectCopy.value = targetData.result > 0 ? aspectCopy.value : 0;
                     break;
             }

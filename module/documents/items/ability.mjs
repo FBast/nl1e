@@ -17,7 +17,9 @@ export class Pl1eAbility extends Pl1eItem {
     /** @inheritDoc */
     async _preActivate(characterData) {
         // Get linked attributes
-        return await this._linkItem(characterData);
+        if (characterData.item.system.attributes.masteryLink.length > 0)
+            return await this._linkItem(characterData);
+        return true;
     }
 
     /** @inheritDoc */
@@ -39,7 +41,7 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.warn(game.i18n.localize("PL1E.NotMemorized"));
             return false;
         }
-        if (this._getLinkableItems(characterData).length === 0) {
+        if (itemAttributes.masteryLink.length > 0 && this._getLinkableItems(characterData).length === 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;
         }
@@ -83,6 +85,7 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         //TODO for now random but it should take the correct mastery for the macro effect
+
         // Set mastery attribute
         const masters = characterData.linkedItem.system.attributes.masters;
         characterData.attributes.mastery = masters[Math.floor(Math.random() * masters.length)];

@@ -104,9 +104,16 @@ export class Pl1eItem extends Item {
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {
             // Reset default values in case of changes
-            if (changed.system?.attributes?.activation !== "reaction")
+            if (changed.system?.attributes?.activation === "action") {
                 changed["system.attributes.reactionCost"] = 0;
-            if (changed.system?.attributes?.activation !== "action") {
+            }
+            if (changed.system?.attributes?.activation === "reaction") {
+                changed["system.attributes.actionCost"] = 0;
+                changed["system.attributes.isMajorAction"] = false;
+                changed["system.attributes.triggerReactions"] = false;
+            }
+            if (changed.system?.attributes?.activation === "quickAction") {
+                changed["system.attributes.reactionCost"] = 0;
                 changed["system.attributes.actionCost"] = 0;
                 changed["system.attributes.isMajorAction"] = false;
                 changed["system.attributes.triggerReactions"] = false;
@@ -119,8 +126,10 @@ export class Pl1eItem extends Item {
             }
             if (["target", "self"].includes(changed.system?.attributes?.areaShape))
                 changed["system.attributes.excludeSelf"] = false;
-            if (changed.system?.attributes?.areaShape === "self")
+            if (changed.system?.attributes?.areaShape === "self") {
+                changed["system.attributes.areaNumber"] = 0;
                 changed["system.attributes.includeSelf"] = true;
+            }
         }
 
         return super._preUpdate(changed, options, user);
@@ -300,7 +309,7 @@ export class Pl1eItem extends Item {
         if (!await this._preActivate(characterData)) return false;
 
         // Character rollData if exist
-        if (characterData.attributes.characterRoll.length === 0) {
+        if (characterData.attributes.characterRoll.length > 0) {
             characterData.rollData = await characterData.actor.rollSkills(characterData.attributes.characterRoll);
             characterData.result = characterData.rollData.total;
         }
@@ -445,10 +454,10 @@ export class Pl1eItem extends Item {
                     // Apply resolution type
                     if (characterData.attributes[`${key}ResolutionType`] !== undefined) {
                         const resolutionType = characterData.attributes[`${key}ResolutionType`];
-                        if (resolutionType === "valueMultipliedBySuccess") {
+                        if (resolutionType === "multipliedBySuccess") {
                             calculatedAttribute *= characterData.result > 0 ? characterData.result : 0;
                         }
-                        if (resolutionType === "valueIfSuccess") {
+                        if (resolutionType === "ifSuccess") {
                             calculatedAttribute = characterData.result > 0 ? calculatedAttribute : 0;
                         }
                     }

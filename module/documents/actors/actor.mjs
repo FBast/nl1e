@@ -242,9 +242,8 @@ export class Pl1eActor extends Actor {
             if (id === "magic" && actorMisc.gesturalMagic) {
                 attributesSum += actorMisc["flexibility"];
             }
-            skill.numberMod = attributesSum;
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
-            skill.number = Math.clamped(skill.number + skill.numberMod, 1, 10);
+            skill.number = Math.clamped(skill.number + skill.numberMod + attributesSum, 1, 10);
             skill.diceMod += actorGeneral.advantages;
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
             if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;

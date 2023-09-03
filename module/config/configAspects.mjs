@@ -10,7 +10,8 @@ export function getConfigAspects() {
             "operator": "add",
             "value": 0,
             "createEffect": false,
-            "effectIcon": "systems/pl1e/assets/icons/increase.svg"
+            "effectIcon": "systems/pl1e/assets/icons/modify.svg",
+            "effectIconTint": "#ffffff"
         },
     ]
 
@@ -22,25 +23,26 @@ export function getConfigAspects() {
             "operator": "add",
             "damageType": "raw",
             "value": 0,
-            "resolutionType": "value",
+            "resolutionType": "fixed",
             "targetGroup": "all",
             "createEffect": false,
             "effectDuration": 1,
-            "effectDurationResolutionType": "value",
+            "effectDurationResolutionType": "fixed",
             "effectIcon": "systems/pl1e/assets/icons/modify.svg",
-            "effectIconTint": "#000000"
+            "effectIconTint": "#ffffff"
         },
         {
             "name": "transfer",
             "value": 0,
             "dataGroup": "aspectsResources",
             "data": "health",
-            "resolutionType": "value",
+            "resolutionType": "fixed",
             "targetGroup": "all",
             "transferSource": "all",
             "transferDestination": "all",
             "damageType": "raw",
-            "effectIcon": "systems/pl1e/assets/icons/transfer.svg"
+            "effectIcon": "systems/pl1e/assets/icons/transfer.svg",
+            "effectIconTint": "#ffffff"
         },
         {
             "name": "status",
@@ -63,7 +65,7 @@ export function getConfigAspects() {
             "value": 0,
             "dataGroup": "invocations",
             "data": "standard",
-            "resolutionType": "value",
+            "resolutionType": "fixed",
             "invocation": ""
         }
     ]

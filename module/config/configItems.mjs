@@ -263,9 +263,9 @@ export function getConfigItems() {
     }
 
     PL1E.resolutionTypes = {
-        "value": "PL1E.Value",
-        "valueIfSuccess" : "PL1E.ValueIfSuccess",
-        "valueMultipliedBySuccess": "PL1E.ValueMultipliedBySuccess"
+        "fixed": "PL1E.Fixed",
+        "ifSuccess" : "PL1E.IfSuccess",
+        "multipliedBySuccess": "PL1E.MultipliedBySuccess"
     }
 
     PL1E.linkOverrides = {

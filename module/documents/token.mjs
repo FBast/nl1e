@@ -5,12 +5,12 @@ export class Pl1eTokenDocument extends TokenDocument {
     /** @inheritDoc */
     async _preUpdate(data, options, user) {
         // Restrict the token movement
-        if (!options.noRestriction && (data.x || data.y)) {
+        if (this.combatant && !options.noRestriction && (data.x || data.y)) {
             const actorGeneral = this.actor.system.general;
             const actorMisc = this.actor.system.misc;
             const actorVariables = this.actor.system.variables;
 
-            if (this.combatant !== null && game.combat.current?.tokenId !== this.id) {
+            if (game.combat.current?.tokenId !== this.id) {
                 ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
                 delete data.x;
                 delete data.y;

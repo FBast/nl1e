@@ -22,8 +22,8 @@ export class Pl1eActiveEffect extends ActiveEffect {
     static async createActiveEffect(aspect, characterData, targetData) {
         // Calculate duration
         let effectDuration = aspect.effectDuration;
-        if (aspect.effectDurationResolutionType === "valueIfSuccess" && characterData.result <= 0) effectDuration = 0;
-        else if (aspect.effectDurationResolutionType === "valueMultipliedBySuccess") effectDuration *= characterData.result;
+        if (aspect.effectDurationResolutionType === "ifSuccess" && characterData.result <= 0) effectDuration = 0;
+        else if (aspect.effectDurationResolutionType === "multipliedBySuccess") effectDuration *= characterData.result;
         aspect.effectDuration = effectDuration;
 
         // Abort if the duration is null
