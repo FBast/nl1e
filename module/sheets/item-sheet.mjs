@@ -99,6 +99,12 @@ export class Pl1eItemSheet extends ItemSheet {
             context.rollData = actor.getRollData();
         }
 
+        // Add the actor's data to context.data for easier access
+        context.system = itemData.system;
+        context.flags = itemData.flags;
+        context.config = CONFIG.PL1E;
+        context.game = game;
+
         // Prepare refItems
         await this._prepareItems(context);
 
@@ -109,12 +115,6 @@ export class Pl1eItemSheet extends ItemSheet {
         context.sequencerMacros = await this._listDocuments("legacy-sequencer-macros", true);
         context.modificationMacros = await this._listDocuments("legacy-modification-macros", true);
         context.invocations = await this._listDocuments("legacy-characters");
-
-        // Add the actor's data to context.data for easier access
-        context.system = itemData.system;
-        context.flags = itemData.flags;
-        context.config = CONFIG.PL1E;
-        context.game = game;
 
         return context;
     }
@@ -219,7 +219,8 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     async _prepareAspects(context) {
-
+        context.system.hasResolutionType = context.system.attributes.characterRoll?.length > 0
+            || context.system.attributes.meleeRoll?.length > 0 || context.system.attributes.rangeRoll?.length > 0;
     }
 
     /**

@@ -42,6 +42,14 @@
                         </select>
                     </div>
                     {{#with (config ../dataGroup ../data)}}
+                        {{#if (eq type "number")}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.Operator"}}</label>
+                                <select name="system.passiveAspects.{{@key}}.operator">
+                                    {{selectOptions (config "numberOperators") selected=../../operator localize=true}}
+                                </select>
+                            </div>
+                        {{/if}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.Value"}}</label>
                             {{#if (eq type "number")}}
