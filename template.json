@@ -77,7 +77,8 @@
             "rank": 3,
             "dice": 8,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": false
           },
           "parry": {
             "number": 2,
@@ -85,7 +86,8 @@
             "rank": 3,
             "dice": 8,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": false
           },
           "reflex": {
             "number": 2,
@@ -93,7 +95,8 @@
             "rank": 3,
             "dice": 8,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "vigor": {
             "number": 2,
@@ -101,7 +104,8 @@
             "rank": 3,
             "dice": 8,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "resilience": {
             "number": 2,
@@ -109,7 +113,8 @@
             "rank": 3,
             "dice": 8,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "intuition": {
             "number": 2,
@@ -117,7 +122,8 @@
             "rank": 3,
             "dice": 8,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "handling": {
             "number": 2,
@@ -125,7 +131,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "throwing": {
             "number": 2,
@@ -133,7 +140,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "athletics": {
             "number": 2,
@@ -141,7 +149,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "acrobatics": {
             "number": 2,
@@ -149,7 +158,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "accuracy": {
             "number": 2,
@@ -157,7 +167,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "search": {
             "number": 2,
@@ -165,7 +176,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "vigilance": {
             "number": 2,
@@ -173,7 +185,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "discretion": {
             "number": 2,
@@ -181,7 +194,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "performance": {
             "number": 2,
@@ -189,7 +203,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "diplomacy": {
             "number": 2,
@@ -197,7 +212,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "intimidation": {
             "number": 2,
@@ -205,7 +221,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "bluff": {
             "number": 2,
@@ -213,7 +230,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "craft": {
             "number": 2,
@@ -221,7 +239,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "erudition": {
             "number": 2,
@@ -229,7 +248,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "nature": {
             "number": 2,
@@ -237,7 +257,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           },
           "magic": {
             "number": 2,
@@ -245,7 +266,8 @@
             "rank": 1,
             "dice": 4,
             "diceMod": 0,
-            "explosion": false
+            "explosion": false,
+            "usable": true
           }
         },
         "general": {

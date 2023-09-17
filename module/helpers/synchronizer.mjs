@@ -26,7 +26,6 @@ export class Pl1eSynchronizer {
                 console.log(`PL1E | ${item.name} of ${actor.name} is reset`);
                 updateNumber++;
             }
-            if (renderActor) actor.sheet.render(actor.sheet.rendered);
         }
 
         const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");

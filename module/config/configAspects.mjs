@@ -179,6 +179,11 @@ export function getConfigAspects() {
             "path": "system.skills.cover.explosion",
             "type": "bool"
         },
+        "coverUsable": {
+            "label": "PL1E.CoverUsable",
+            "path": "system.skills.cover.usable",
+            "type": "bool"
+        },
         "parryNumber": {
             "label": "PL1E.ParryBonus",
             "path": "system.skills.parry.numberMod",
@@ -192,6 +197,11 @@ export function getConfigAspects() {
         "parryExplosion": {
             "label": "PL1E.ParryExplosion",
             "path": "system.skills.parry.explosion",
+            "type": "bool"
+        },
+        "parryUsable": {
+            "label": "PL1E.ParryUsable",
+            "path": "system.skills.parry.usable",
             "type": "bool"
         },
         "reflexNumber": {

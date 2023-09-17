@@ -183,6 +183,9 @@ export class Pl1eActor extends Actor {
         }
         // Apply passive values
         for (const item of this.items) {
+            if (!item.system.passiveAspects) {
+                console.log("here");
+            }
             for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
                 if (aspect.createEffect || !item.isEnabled) continue;
                 Pl1eAspect.applyPassiveValue(aspect, id, this, item);
@@ -268,7 +271,7 @@ export class Pl1eActor extends Actor {
      */
     async rollSkill(skillName) {
         const skill = this.system.skills[skillName];
-        let formula = skill.number + "d" + skill.dice;
+        let formula = skill.usable ? skill.number + "d" + skill.dice : "0d0";
         formula += skill.explosion ? "xo" + skill.dice : "";
         formula += "cs>=4";
         let roll = new Roll(formula, this.getRollData());
@@ -288,7 +291,7 @@ export class Pl1eActor extends Actor {
                 let bestSkillName = undefined;
                 for (let skillName of skillNames) {
                     const skill = this.system.skills[skillName];
-                    const currentSkillAvg = (skill.dice + 1) / 2 * skill.number;
+                    const currentSkillAvg = skill.usable ? (skill.dice + 1) / 2 * skill.number : 0;
                     if (skillAvg < currentSkillAvg) {
                         skillAvg = currentSkillAvg;
                         bestSkillName = skillName;

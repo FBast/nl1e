@@ -125,7 +125,7 @@ export class Pl1eAspect {
     }
 
     /**
-     * Apply modify aspect
+     * Apply the modify aspect
      * @param aspect
      * @param characterData
      * @param targetsData
@@ -182,7 +182,7 @@ export class Pl1eAspect {
     }
 
     /**
-     * Apply transfer aspect
+     * Apply the transfer aspect
      * @param aspect
      * @param characterData
      * @param targetsData
@@ -259,7 +259,7 @@ export class Pl1eAspect {
     }
 
     /**
-     * Apply status aspect
+     * Apply the status aspect
      * @param aspect
      * @param characterData
      * @param targetsData
@@ -311,7 +311,7 @@ export class Pl1eAspect {
     }
 
     /**
-     * Apply movement aspect
+     * Apply the movement aspect
      * @param aspect
      * @param characterData
      * @param targetsData
@@ -372,7 +372,7 @@ export class Pl1eAspect {
     }
 
     /**
-     * Apply invocation aspect
+     * Apply the invocation aspect
      * @param aspect
      * @param characterData
      * @param targetsData

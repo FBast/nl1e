@@ -12,6 +12,8 @@
         font-size: small;
       }
       .skill-rank {
+        display: flex;
+        flex: 2;
         align-items: center;
       }
     }

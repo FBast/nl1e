@@ -201,6 +201,7 @@ export class Pl1eActorSheet extends ActorSheet {
     /** @inheritDoc */
     async _onDropItem(event, data) {
         const item = await Item.implementation.fromDropData(data);
+
         await this._addItem(item);
     }
 

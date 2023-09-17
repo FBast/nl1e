@@ -6,7 +6,9 @@
             {{#with (config "skills" @key)}}
                 <li class="skill grid grid-5col" data-skill-id="{{@key}}">
                     <i class="skill-roll fas fa-dice-d{{../dice}} hover-red
-                        {{#if (gt ../diceMod 0)}}color-green{{else if (lt ../diceMod 0)}}color-red{{else}}color-black{{/if}}">
+                        {{#if (gt ../diceMod 0)}}color-green
+                        {{else if (lt ../diceMod 0)}}color-red
+                        {{else}}color-black{{/if}}">
                         <label class="{{#if (gt ../numberMod 0)}}color-green{{else if (lt ../numberMod 0)}}color-red
                             {{else}}color-black{{/if}}">{{../number}}</label>
                     </i>
@@ -15,13 +17,16 @@
                         {{localize label}}
                     </label>
                     <div class="skill-rank align-right">
+                        {{#unless ../usable}}
+                            <i class="fas fa-ban hover-green" data-tooltip='{{localize "PL1E.Unusable"}}'></i>
+                        {{/unless}}
                         {{#if ../explosion}}
-                            <i class="fas fa-burst fa-lg"></i>
+                            <i class="fas fa-burst hover-green" data-tooltip='{{localize "PL1E.Explosion"}}'></i>
                         {{/if}}
                         {{#if (and (not fixedRank) @root.system.general.creationMod (ne @root.type "character"))}}
-                            <i class="rank-control fas fa-circle-{{../rank}} fa-lg hover-red" data-skill="{{@key}}"></i>
+                            <i class="rank-control fas fa-circle-{{../rank}} hover-red" data-skill="{{@key}}"></i>
                         {{else}}
-                            <i class="far fa-circle-{{../rank}} fa-lg"></i>
+                            <i class="far fa-circle-{{../rank}}"></i>
                         {{/if}}
                     </div>
                 </li>

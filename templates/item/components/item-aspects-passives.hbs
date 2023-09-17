@@ -14,18 +14,16 @@
         {{#with (config "aspects" name)}}
             <li class="item" data-aspect-id="{{@key}}" data-aspect-type="passive"  data-item-id="{{@key}}">
                 <div class="item-attribute flexrow">
-                    <div class="item-attribute flexrow">
-                        <img class="item-image" src="{{#if ../createEffect}}
-                            {{../effectIcon}}
-                        {{else if (eq ../name "status")}}
-                            {{#with (config ../dataGroup ../data)}}{{img}}{{/with}}
-                        {{else}}
-                            {{img}}
-                        {{/if}}" title="{{localize label}}" width="24" height="24"/>
-                        <label class="item-name item-tooltip-activate">{{localize label}} {{../data}} {{../operator}} {{../value}}</label>
-                        <div class="item-controls">
-                            <a class="item-control aspect-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
-                        </div>
+                    <img class="item-image" src="{{#if ../createEffect}}
+                        {{../effectIcon}}
+                    {{else if (eq ../name "status")}}
+                        {{#with (config ../dataGroup ../data)}}{{img}}{{/with}}
+                    {{else}}
+                        {{img}}
+                    {{/if}}" title="{{localize label}}" width="24" height="24"/>
+                    <label class="item-name item-tooltip-activate">{{localize label}} {{../data}} {{../operator}} {{../value}}</label>
+                    <div class="item-controls">
+                        <a class="item-control aspect-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                     </div>
                 </div>
                 <div class="item-tooltip flexcol">
@@ -87,8 +85,8 @@
                                 </div>
                             </div>
                         {{/if}}
-                    </div>
                     {{/with}}
+                </div>
             </li>
         {{/with}}
     {{/each}}
