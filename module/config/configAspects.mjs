@@ -152,12 +152,12 @@ export function getConfigAspects() {
             "type": "number"
         },
         "manaMax": {
-            "label": "PL1E.MaxStamina",
+            "label": "PL1E.MaxMana",
             "path": "system.resources.mana.max",
             "type": "number"
         },
         "manaTemp": {
-            "label": "PL1E.TempStamina",
+            "label": "PL1E.TempMana",
             "path": "system.resources.mana.temp",
             "type": "number"
         }
