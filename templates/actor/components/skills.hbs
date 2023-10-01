@@ -20,6 +20,9 @@
                         {{#unless ../usable}}
                             <i class="fas fa-ban hover-green" data-tooltip='{{localize "PL1E.Unusable"}}'></i>
                         {{/unless}}
+                        {{#if ../implosion}}
+                            <i class="fas fa-skull hover-green" data-tooltip='{{localize "PL1E.Implosion"}}'></i>
+                        {{/if}}
                         {{#if ../explosion}}
                             <i class="fas fa-burst hover-green" data-tooltip='{{localize "PL1E.Explosion"}}'></i>
                         {{/if}}

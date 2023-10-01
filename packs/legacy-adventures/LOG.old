@@ -1,3 +1,7 @@
-2023/09/19-19:06:08.096 f70 Recovering log #871
-2023/09/19-19:06:08.100 f70 Delete type=0 #871
-2023/09/19-19:06:08.100 f70 Delete type=3 #870
+2023/10/01-15:02:58.935 20b0 Recovering log #894
+2023/10/01-15:02:58.940 20b0 Delete type=0 #894
+2023/10/01-15:02:58.941 20b0 Delete type=3 #892
+2023/10/01-15:10:20.961 4654 Level-0 table #899: started
+2023/10/01-15:10:20.961 4654 Level-0 table #899: 0 bytes OK
+2023/10/01-15:10:20.964 4654 Delete type=0 #897
+2023/10/01-15:10:20.964 4654 Manual compaction at level-0 from '!adventures!b3pxDTwa7eRY58T5' @ 72057594037927935 : 1 .. '!adventures!b3pxDTwa7eRY58T5' @ 0 : 0; will stop at (end)

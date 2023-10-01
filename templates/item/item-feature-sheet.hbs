@@ -12,9 +12,9 @@
                 </div>
                 {{#if (eq system.attributes.featureType "trait")}}
                     <div class="form-group box">
-                        <label>{{localize "PL1E.Cost"}}</label>
-                        <input type="number" step="1" min="-5" max="5" name="system.attributes.cost"
-                               value="{{system.attributes.cost}}" data-dtype="Number"/>
+                        <label>{{localize "PL1E.Points"}}</label>
+                        <input type="number" step="1" min="-5" max="5" name="system.attributes.points"
+                               value="{{system.attributes.points}}" data-dtype="Number"/>
                     </div>
                 {{/if}}
             </div>

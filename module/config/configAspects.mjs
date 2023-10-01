@@ -179,6 +179,11 @@ export function getConfigAspects() {
             "path": "system.skills.cover.explosion",
             "type": "bool"
         },
+        "coverImplosion": {
+            "label": "PL1E.CoverImplosion",
+            "path": "system.skills.cover.implosion",
+            "type": "bool"
+        },
         "coverUsable": {
             "label": "PL1E.CoverUsable",
             "path": "system.skills.cover.usable",
@@ -197,6 +202,11 @@ export function getConfigAspects() {
         "parryExplosion": {
             "label": "PL1E.ParryExplosion",
             "path": "system.skills.parry.explosion",
+            "type": "bool"
+        },
+        "parryImplosion": {
+            "label": "PL1E.ParryImplosion",
+            "path": "system.skills.parry.implosion",
             "type": "bool"
         },
         "parryUsable": {
@@ -219,6 +229,11 @@ export function getConfigAspects() {
             "path": "system.skills.reflex.explosion",
             "type": "bool"
         },
+        "reflexImplosion": {
+            "label": "PL1E.ReflexImplosion",
+            "path": "system.skills.reflex.implosion",
+            "type": "bool"
+        },
         "vigorNumber": {
             "label": "PL1E.VigorBonus",
             "path": "system.skills.vigor.numberMod",
@@ -232,6 +247,11 @@ export function getConfigAspects() {
         "vigorExplosion": {
             "label": "PL1E.VigorExplosion",
             "path": "system.skills.vigor.explosion",
+            "type": "bool"
+        },
+        "vigorImplosion": {
+            "label": "PL1E.VigorImplosion",
+            "path": "system.skills.vigor.implosion",
             "type": "bool"
         },
         "resilienceNumber": {
@@ -249,6 +269,11 @@ export function getConfigAspects() {
             "path": "system.skills.resilience.explosion",
             "type": "bool"
         },
+        "resilienceImplosion": {
+            "label": "PL1E.ResilienceImplosion",
+            "path": "system.skills.resilience.implosion",
+            "type": "bool"
+        },
         "intuitionNumber": {
             "label": "PL1E.IntuitionBonus",
             "path": "system.skills.intuition.numberMod",
@@ -262,6 +287,11 @@ export function getConfigAspects() {
         "intuitionExplosion": {
             "label": "PL1E.IntuitionExplosion",
             "path": "system.skills.intuition.explosion",
+            "type": "bool"
+        },
+        "intuitionImplosion": {
+            "label": "PL1E.IntuitionImplosion",
+            "path": "system.skills.intuition.implosion",
             "type": "bool"
         },
         "handlingNumber": {
@@ -279,6 +309,11 @@ export function getConfigAspects() {
             "path": "system.skills.handling.explosion",
             "type": "bool"
         },
+        "handlingImplosion": {
+            "label": "PL1E.HandlingImplosion",
+            "path": "system.skills.handling.implosion",
+            "type": "bool"
+        },
         "throwingNumber": {
             "label": "PL1E.ThrowingBonus",
             "path": "system.skills.throwing.numberMod",
@@ -292,6 +327,11 @@ export function getConfigAspects() {
         "throwingExplosion": {
             "label": "PL1E.ThrowingExplosion",
             "path": "system.skills.throwing.explosion",
+            "type": "bool"
+        },
+        "throwingImplosion": {
+            "label": "PL1E.ThrowingImplosion",
+            "path": "system.skills.throwing.implosion",
             "type": "bool"
         },
         "athleticsNumber": {
@@ -309,6 +349,11 @@ export function getConfigAspects() {
             "path": "system.skills.athletics.explosion",
             "type": "bool"
         },
+        "athleticsImplosion": {
+            "label": "PL1E.AthleticsImplosion",
+            "path": "system.skills.athletics.implosion",
+            "type": "bool"
+        },
         "acrobaticsNumber": {
             "label": "PL1E.AcrobaticsBonus",
             "path": "system.skills.acrobatics.numberMod",
@@ -322,6 +367,11 @@ export function getConfigAspects() {
         "acrobaticsExplosion": {
             "label": "PL1E.AcrobaticsExplosion",
             "path": "system.skills.acrobatics.explosion",
+            "type": "bool"
+        },
+        "acrobaticsImplosion": {
+            "label": "PL1E.AcrobaticsImplosion",
+            "path": "system.skills.acrobatics.implosion",
             "type": "bool"
         },
         "accuracyNumber": {
@@ -339,6 +389,11 @@ export function getConfigAspects() {
             "path": "system.skills.accuracy.explosion",
             "type": "bool"
         },
+        "accuracyImplosion": {
+            "label": "PL1E.AccuracyImplosion",
+            "path": "system.skills.accuracy.implosion",
+            "type": "bool"
+        },
         "searchNumber": {
             "label": "PL1E.SearchBonus",
             "path": "system.skills.search.numberMod",
@@ -352,6 +407,11 @@ export function getConfigAspects() {
         "searchExplosion": {
             "label": "PL1E.SearchExplosion",
             "path": "system.skills.search.explosion",
+            "type": "bool"
+        },
+        "searchImplosion": {
+            "label": "PL1E.SearchImplosion",
+            "path": "system.skills.search.implosion",
             "type": "bool"
         },
         "vigilanceNumber": {
@@ -369,6 +429,11 @@ export function getConfigAspects() {
             "path": "system.skills.vigilance.explosion",
             "type": "bool"
         },
+        "vigilanceImplosion": {
+            "label": "PL1E.VigilanceImplosion",
+            "path": "system.skills.vigilance.implosion",
+            "type": "bool"
+        },
         "discretionNumber": {
             "label": "PL1E.DiscretionBonus",
             "path": "system.skills.discretion.numberMod",
@@ -382,6 +447,11 @@ export function getConfigAspects() {
         "discretionExplosion": {
             "label": "PL1E.DiscretionExplosion",
             "path": "system.skills.discretion.explosion",
+            "type": "bool"
+        },
+        "discretionImplosion": {
+            "label": "PL1E.DiscretionImplosion",
+            "path": "system.skills.discretion.implosion",
             "type": "bool"
         },
         "performanceNumber": {
@@ -399,6 +469,11 @@ export function getConfigAspects() {
             "path": "system.skills.performance.explosion",
             "type": "bool"
         },
+        "performanceImplosion": {
+            "label": "PL1E.PerformanceImplosion",
+            "path": "system.skills.performance.implosion",
+            "type": "bool"
+        },
         "diplomacyNumber": {
             "label": "PL1E.DiplomacyBonus",
             "path": "system.skills.diplomacy.numberMod",
@@ -412,6 +487,11 @@ export function getConfigAspects() {
         "diplomacyExplosion": {
             "label": "PL1E.DiplomacyExplosion",
             "path": "system.skills.diplomacy.explosion",
+            "type": "bool"
+        },
+        "diplomacyImplosion": {
+            "label": "PL1E.DiplomacyImplosion",
+            "path": "system.skills.diplomacy.implosion",
             "type": "bool"
         },
         "intimidationNumber": {
@@ -429,6 +509,11 @@ export function getConfigAspects() {
             "path": "system.skills.intimidation.explosion",
             "type": "bool"
         },
+        "intimidationImplosion": {
+            "label": "PL1E.IntimidationImplosion",
+            "path": "system.skills.intimidation.implosion",
+            "type": "bool"
+        },
         "bluffNumber": {
             "label": "PL1E.BluffBonus",
             "path": "system.skills.bluff.numberMod",
@@ -442,6 +527,11 @@ export function getConfigAspects() {
         "bluffExplosion": {
             "label": "PL1E.BluffExplosion",
             "path": "system.skills.bluff.explosion",
+            "type": "bool"
+        },
+        "bluffImplosion": {
+            "label": "PL1E.BluffImplosion",
+            "path": "system.skills.bluff.implosion",
             "type": "bool"
         },
         "craftNumber": {
@@ -459,6 +549,11 @@ export function getConfigAspects() {
             "path": "system.skills.craft.explosion",
             "type": "bool"
         },
+        "craftImplosion": {
+            "label": "PL1E.CraftImplosion",
+            "path": "system.skills.craft.implosion",
+            "type": "bool"
+        },
         "eruditionNumber": {
             "label": "PL1E.EruditionBonus",
             "path": "system.skills.erudition.numberMod",
@@ -472,6 +567,11 @@ export function getConfigAspects() {
         "eruditionExplosion": {
             "label": "PL1E.EruditionExplosion",
             "path": "system.skills.erudition.explosion",
+            "type": "bool"
+        },
+        "eruditionImplosion": {
+            "label": "PL1E.EruditionImplosion",
+            "path": "system.skills.erudition.implosion",
             "type": "bool"
         },
         "natureNumber": {
@@ -489,6 +589,11 @@ export function getConfigAspects() {
             "path": "system.skills.nature.explosion",
             "type": "bool"
         },
+        "natureImplosion": {
+            "label": "PL1E.NatureImplosion",
+            "path": "system.skills.nature.implosion",
+            "type": "bool"
+        },
         "magicNumber": {
             "label": "PL1E.MagicBonus",
             "path": "system.skills.magic.numberMod",
@@ -502,6 +607,11 @@ export function getConfigAspects() {
         "magicExplosion": {
             "label": "PL1E.MagicExplosion",
             "path": "system.skills.magic.explosion",
+            "type": "bool"
+        },
+        "magicImplosion": {
+            "label": "PL1E.MagicImplosion",
+            "path": "system.skills.magic.implosion",
             "type": "bool"
         }
     }

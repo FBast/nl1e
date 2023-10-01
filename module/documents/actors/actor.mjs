@@ -274,9 +274,10 @@ export class Pl1eActor extends Actor {
         let formula = skill.usable ? skill.number + "d" + skill.dice : "0d0";
         formula += skill.explosion ? "xo" + skill.dice : "";
         formula += "cs>=4";
+        formula += skill.implosion ? "df=1" : "";
         let roll = new Roll(formula, this.getRollData());
         roll.skillName = skillName;
-        return roll.evaluate({async: true});
+        return  roll.evaluate({async: true});
     }
 
     /**
