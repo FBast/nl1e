@@ -1,3 +1,18 @@
 <section class="scroll-auto">
+    {{#if (eq system.attributes.featureType "trait")}}
+        <fieldset>
+            <legend class="section-header">
+                {{localize "PL1E.Attributes"}}
+            </legend>
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">
+                    {{localize "PL1E.FeatureSubType"}}
+                </label>
+                <select name="system.attributes.featureSubType">
+                    {{selectOptions (config "featureSubTypes") selected=system.attributes.featureSubType localize=true}}
+                </select>
+            </div>
+        </fieldset>
+    {{/if}}
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
 </section>

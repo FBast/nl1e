@@ -1,8 +1,17 @@
 import {PL1E} from "./config.mjs";
 
 export function getConfigBase() {
+    PL1E.featureSubTypes = {
+        "destiny": "PL1E.Destiny",
+        "mental": "PL1E.Mental",
+        "personality": "PL1E.Personality",
+        "physical": "PL1E.Physical",
+        "resource": "PL1E.Resource",
+        "social": "PL1E.Social"
+    }
+
     PL1E.featureTypes = {
-        "race": "PL1E.Race",
+        "mind": "PL1E.Race",
         "bodyClass": "PL1E.BodyClass",
         "mindClass": "PL1E.MindClass",
         "faith": "PL1E.Faith",
