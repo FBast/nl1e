@@ -18,12 +18,6 @@ export function getConfigBase() {
         "trait": "PL1E.Trait"
     }
 
-    PL1E.money = {
-        "gold": "PL1E.Gold",
-        "silver": "PL1E.Silver",
-        "copper": "PL1E.Copper"
-    }
-
     PL1E.rangeOverrides = {
         "none": "PL1E.None",
         "melee": "PL1E.Melee",

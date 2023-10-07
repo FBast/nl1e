@@ -79,6 +79,7 @@ export function getConfigAspects() {
                 "characteristics": "PL1E.Characteristics",
                 "aspectsSkills": "PL1E.Skills",
                 "general": "PL1E.General",
+                "money": "PL1E.Money",
                 "reductions": "PL1E.Reductions",
                 "aspectsMisc": "PL1E.Misc"
             }

@@ -339,13 +339,39 @@ export function getConfigActor() {
         }
     }
 
+    PL1E.money = {
+        "gold": {
+            "label": "PL1E.Gold",
+            "icon": "fa-cube",
+            "type": "number",
+            "path": "system.money.gold"
+        },
+        "silver": {
+            "label": "PL1E.Silver",
+            "icon": "fa-cube",
+            "type": "number",
+            "path": "system.money.silver"
+        },
+        "copper": {
+            "label": "PL1E.Copper",
+            "icon": "fa-cube",
+            "type": "number",
+            "path": "system.money.copper"
+        }
+    }
+
     PL1E.general = {
+        "experience": {
+            "label": "PL1E.Experience",
+            "icon": "fa-cube",
+            "type": "number",
+            "path": "system.general.experience"
+        },
         "advantages": {
             "label": "PL1E.Advantages",
             "icon": "fa-cube",
             "type": "number",
-            "path": "system.general.advantages",
-            "hidden": false
+            "path": "system.general.advantages"
         },
         "masters": {
             "label": "PL1E.Masters",
@@ -365,22 +391,19 @@ export function getConfigActor() {
             "label": "PL1E.Action",
             "icon": "fa-clock",
             "type": "number",
-            "path": "system.misc.action",
-            "hidden": false
+            "path": "system.misc.action"
         },
         "reaction": {
             "label": "PL1E.Reaction",
             "icon": "fa-reply-clock",
             "type": "number",
-            "path": "system.misc.reaction",
-            "hidden": false
+            "path": "system.misc.reaction"
         },
         "quickAction": {
             "label": "PL1E.QuickAction",
             "icon": "fa-bell",
             "type": "number",
-            "path": "system.misc.quickAction",
-            "hidden": false
+            "path": "system.misc.quickAction"
         }
     }
 

@@ -332,15 +332,15 @@
           "gesturalMagic": false,
           "vocalMagic": false
         },
+        "money": {
+          "gold": 50,
+          "silver": 0,
+          "copper": 0
+        },
         "variables": {
           "remainingMovement": 0,
           "usedMovement": 0,
           "movementAction": 0
-        },
-        "money": {
-          "gold": 0,
-          "silver": 0,
-          "copper": 0
         }
       }
     },

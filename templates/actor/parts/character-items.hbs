@@ -6,7 +6,7 @@
             {{#each system.money}}
                 <div class="input-spin currency">
                     {{#with (config "money" @key)}}
-                        <i class="currency-icon fas fa-coins color-{{@key}} hover-green" data-tooltip='{{localize this}}'></i>
+                        <i class="currency-icon fas fa-coins color-{{@key}} hover-green" data-tooltip='{{localize label}}'></i>
                     {{/with}}
                     <input name="system.money.{{@key}}.value" type="number" value="{{this}}" data-dtype="Number" min="0" placeholder="0" disabled/>
                     <span>
