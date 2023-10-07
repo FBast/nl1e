@@ -15,7 +15,7 @@
         <nav class="sheet-tabs tabs" data-group="primary">
             <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
             <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
-            {{#if (ne item.type "common")}}
+            {{#if (or (eq item.type "weapon") (eq item.type "wearable") (eq item.type "consumable"))}}
                 <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
             {{/if}}
         </nav>
@@ -35,9 +35,11 @@
                 {{> "systems/pl1e/templates/item/parts/consumable-attributes.hbs"}}
             {{else if (eq item.type "common")}}
                 {{> "systems/pl1e/templates/item/parts/common-attributes.hbs"}}
+            {{else if (eq item.type "module")}}
+                {{> "systems/pl1e/templates/item/parts/module-attributes.hbs"}}
             {{/if}}
         </div>
-        {{#if (ne item.type "common")}}
+        {{#if (or (eq item.type "weapon") (eq item.type "wearable") (eq item.type "consumable"))}}
             {{!-- Linked Items Tab --}}
             <div class="tab items flexcol" data-group="primary" data-tab="linked-items">
                 {{> "systems/pl1e/templates/item/parts/item-linked.hbs"}}

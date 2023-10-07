@@ -1,17 +1,13 @@
 <section class="scroll-auto">
-    <ol class="items-list">
-        {{#each items}}
-            {{#if (eq type "unknown")}}
-                <li class="item" data-item-id="{{id}}">
-                    <div class="flexrow">
-                        <img class="item-image hover-red" src="systems/pl1e/assets/icons/hazard.svg" width="24" height="24"/>
-                        <label class="item-name">{{id}}</label>
-                        <div class="item-controls">
-                            <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
-                        </div>
-                    </div>
-                </li>
-            {{else}}
+    {{#if (gt (length abilities) 0)}}
+        <ol class="items-list">
+            <li class="flexrow items-header grid grid-4col">
+                <div class="item-name grid-span-3">{{localize "PL1E.Abilities"}}</div>
+                <div class="item-controls">
+
+                </div>
+            </li>
+            {{#each abilities}}
                 <li class="item" data-item-id="{{id}}">
                     <div class="flexrow">
                         <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
@@ -23,7 +19,120 @@
                         </div>
                     </div>
                 </li>
-            {{/if}}
-        {{/each}}
-    </ol>
+            {{/each}}
+        </ol>
+    {{/if}}
+    {{#if (gt (length features) 0)}}
+        <ol class="items-list">
+            <li class="flexrow items-header grid grid-4col">
+                <div class="item-name grid-span-3">{{localize "PL1E.Features"}}</div>
+                <div class="item-controls">
+
+                </div>
+            </li>
+            {{#each features}}
+                <li class="item" data-item-id="{{id}}">
+                    <div class="flexrow">
+                        <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-name">{{name}}</label>
+                        <div class="item-controls">
+                            {{#if (eq system.childId undefined)}}
+                                <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                            {{/if}}
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ol>
+    {{/if}}
+    {{#if (gt (length weapons) 0)}}
+        <ol class="items-list">
+            <li class="flexrow items-header grid grid-4col">
+                <div class="item-name grid-span-3">{{localize "PL1E.Weapons"}}</div>
+                <div class="item-controls">
+
+                </div>
+            </li>
+            {{#each weapons}}
+                <li class="item" data-item-id="{{id}}">
+                    <div class="flexrow">
+                        <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-name">{{name}}</label>
+                        <div class="item-controls">
+                            {{#if (eq system.childId undefined)}}
+                                <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                            {{/if}}
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ol>
+    {{/if}}
+    {{#if (gt (length wearables) 0)}}
+        <ol class="items-list">
+            <li class="flexrow items-header grid grid-4col">
+                <div class="item-name grid-span-3">{{localize "PL1E.Wearables"}}</div>
+                <div class="item-controls">
+
+                </div>
+            </li>
+            {{#each wearables}}
+                <li class="item" data-item-id="{{id}}">
+                    <div class="flexrow">
+                        <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-name">{{name}}</label>
+                        <div class="item-controls">
+                            {{#if (eq system.childId undefined)}}
+                                <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                            {{/if}}
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ol>
+    {{/if}}
+    {{#if (gt (length modules) 0)}}
+        <ol class="items-list">
+            <li class="flexrow items-header grid grid-4col">
+                <div class="item-name grid-span-3">{{localize "PL1E.Modules"}}</div>
+                <div class="item-controls">
+
+                </div>
+            </li>
+            {{#each modules}}
+                <li class="item" data-item-id="{{id}}">
+                    <div class="flexrow">
+                        <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-name">{{name}}</label>
+                        <div class="item-controls">
+                            {{#if (eq system.childId undefined)}}
+                                <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                            {{/if}}
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ol>
+    {{/if}}
+    {{#if (gt (length unknowns) 0)}}
+        <ol class="items-list">
+            <li class="flexrow items-header grid grid-4col">
+                <div class="item-name grid-span-3">{{localize "PL1E.Unknowns"}}</div>
+                <div class="item-controls">
+
+                </div>
+            </li>
+            {{#each unknowns}}
+                <li class="item" data-item-id="{{id}}">
+                    <div class="flexrow">
+                        <img class="item-image hover-red" src="systems/pl1e/assets/icons/hazard.svg" width="24" height="24"/>
+                        <label class="item-name">{{id}}</label>
+                        <div class="item-controls">
+                            <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ol>
+    {{/if}}
 </section>

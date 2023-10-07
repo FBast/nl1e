@@ -18,7 +18,7 @@ export function getConfigBase() {
         "trait": "PL1E.Trait"
     }
 
-    PL1E.rangeOverrides = {
+    PL1E.weaponOverrides = {
         "none": "PL1E.None",
         "melee": "PL1E.Melee",
         "range": "PL1E.Range"

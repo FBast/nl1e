@@ -78,16 +78,20 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Override range attribute
-        if (characterData.attributes.rangeOverride === "melee") {
-            characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
+        if (characterData.attributes.weaponOverride === "melee") {
+            if (characterData.attributes.overrideRange) characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
+            if (characterData.attributes.overrideRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.meleeRoll;
+            if (characterData.attributes.overrideOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.meleeOppositeRoll;
         }
-        else if (characterData.attributes.rangeOverride === "range") {
-            characterData.attributes.range = characterData.linkedItem.system.attributes.range;
+        else if (characterData.attributes.weaponOverride === "range") {
+            if (characterData.attributes.overrideRange) characterData.attributes.range = characterData.linkedItem.system.attributes.range;
+            if (characterData.attributes.overrideRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.rangeRoll;
+            if (characterData.attributes.overrideOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.rangeOppositeRoll;
         }
 
         // Use the parent active aspects when launching the ability
         if (characterData.attributes.launchParentActiveAspects) {
-            Pl1eHelpers.mergeDeep(characterData.activeAspects, characterData.linkedItem.system.activeAspects);
+            Pl1eHelpers.mergeDeep(characterData.activeAspects, await characterData.linkedItem.getActiveAspects());
         }
         return true;
     }

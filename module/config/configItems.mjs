@@ -11,12 +11,12 @@ export function getConfigItems() {
             "stackable": []
         },
         "weapon": {
-            "droppable": ["feature", "ability"],
-            "stackable": []
+            "droppable": ["feature", "ability", "module"],
+            "stackable": ["module"]
         },
         "wearable": {
-            "droppable": ["feature", "ability"],
-            "stackable": []
+            "droppable": ["feature", "ability", "module"],
+            "stackable": ["module"]
         },
         "consumable": {
             "droppable": [],
@@ -154,8 +154,8 @@ export function getConfigItems() {
             "type": "select",
             "select": "abilityLinks"
         },
-        "characterRoll": {
-            "label": "PL1E.CharacterRoll",
+        "roll": {
+            "label": "PL1E.Roll",
             "type": "select",
             "select": "abilitySkills"
         },
@@ -195,7 +195,7 @@ export function getConfigItems() {
             "type": "number",
             "fallback": 1
         },
-        "targetRoll": {
+        "oppositeRoll": {
             "label": "PL1E.TargetRoll",
             "type": "select",
             "select": "abilityResistances",

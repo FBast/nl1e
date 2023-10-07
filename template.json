@@ -366,7 +366,7 @@
     }
   },
   "Item": {
-    "types": ["feature", "ability", "weapon", "wearable", "consumable", "common"],
+    "types": ["feature", "ability", "weapon", "wearable", "consumable", "common", "module"],
     "templates": {
       "base": {
         "description": "",
@@ -408,11 +408,14 @@
         "level": 1,
         "requireParentMastery": true,
         "launchParentActiveAspects": true,
-        "rangeOverride": "none",
-        "characterRoll": [],
-        "characterRollAdvantages": 0,
-        "targetRoll": [],
-        "targetRollAdvantages": 0,
+        "weaponOverride": "none",
+        "overrideRange": false,
+        "overrideRoll": false,
+        "overrideOppositeRoll": false,
+        "roll": [],
+        "rollAdvantages": 0,
+        "oppositeRoll": [],
+        "oppositeRollAdvantages": 0,
         "healthCost": 0,
         "staminaCost": 0,
         "manaCost": 0,
@@ -474,8 +477,8 @@
         "actionCost": 0,
         "reactionCost": 0,
         "triggerReactions": false,
-        "characterRoll": "none",
-        "targetRoll": [],
+        "roll": "none",
+        "oppositeRoll": [],
         "areaShape": "circle",
         "range": 0,
         "rangeResolutionType": "fixed",
@@ -501,6 +504,12 @@
         "healthRest": 0,
         "staminaRest": 0,
         "manaRest": 0
+      }
+    },
+    "module": {
+      "templates": ["base", "item"],
+      "attributes": {
+
       }
     }
   },

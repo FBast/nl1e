@@ -260,12 +260,7 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     _prepareItems(context) {
         // Initialize containers.
-        let weapons = [];
-        let wearables = [];
-        const consumables = [];
-        let commons = [];
-        const features = [];
-        const abilities = {
+        let abilities = {
             0: [],
             1: [],
             2: [],
@@ -273,6 +268,12 @@ export class Pl1eActorSheet extends ActorSheet {
             4: [],
             5: []
         };
+        let features = [];
+        let weapons = [];
+        let wearables = [];
+        let consumables = [];
+        let commons = [];
+        let modules = [];
 
         // Iterate through subItems, allocating to containers
         const sourceIdFlags = [];
@@ -282,38 +283,13 @@ export class Pl1eActorSheet extends ActorSheet {
 
             // Append to item categories
             const sourceIdFlag = item.flags.core ? item.sourceId : null;
-            if (item.type === 'weapon') {
-                weapons.push(item);
-            }
-            else if (item.type === 'wearable') {
-                wearables.push(item);
-            }
-            else if (item.type === 'consumable') {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = consumables.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                }
-                else {
-                    consumables.push(item);
-                }
-            }
-            else if (item.type === 'common') {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = commons.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                }
-                else {
-                    commons.push(item);
-                }
-            }
+
             // Append to features.
-            else if (item.type === 'feature') {
+            if (item.type === "feature") {
                 features.push(item);
             }
             // Append to abilities.
-            else if (item.type === 'ability') {
+            else if (item.type === "ability") {
                 // Filter item with faith parent
                 let parentItem = null;
                 for (const otherItem of this.actor.items) {
@@ -337,23 +313,68 @@ export class Pl1eActorSheet extends ActorSheet {
                     abilities[item.system.attributes.level].push(item);
                 }
             }
+            else if (item.type === "weapon") {
+                weapons.push(item);
+            }
+            else if (item.type === "wearable") {
+                wearables.push(item);
+            }
+            else if (item.type === "consumable") {
+                // Increase units
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = consumables.find(item => item.sourceId === sourceIdFlag);
+                    sameItem.system.units++;
+                }
+                else {
+                    consumables.push(item);
+                }
+            }
+            else if (item.type === "common") {
+                // Increase units
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = commons.find(item => item.sourceId === sourceIdFlag);
+                    sameItem.system.units++;
+                }
+                else {
+                    commons.push(item);
+                }
+            }
+            else if (item.type === "module") {
+                // Increase units
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = modules.find(item => item.sourceId === sourceIdFlag);
+                    sameItem.system.units++;
+                }
+                else {
+                    modules.push(item);
+                }
+            }
+
             // Push sourceId flag to handle duplicates
             if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
         }
 
-        // Sorting arrays by name
+        // Sorting arrays
+        for (let key in abilities) {
+            if (abilities.hasOwnProperty(key) && Array.isArray(abilities[key])) {
+                abilities[key] = abilities[key].sort((a, b) => a.name.localeCompare(b.name));
+            }
+        }
+        features = features.sort((a, b) => a.name.localeCompare(b.featureType));
         weapons = weapons.sort((a, b) => a.name.localeCompare(b.name));
         wearables = wearables.sort((a, b) => a.name.localeCompare(b.name));
-        wearables = wearables.sort((a, b) => a.name.localeCompare(b.name));
+        consumables = consumables.sort((a, b) => a.name.localeCompare(b.name));
         commons = commons.sort((a, b) => a.name.localeCompare(b.name));
+        modules = modules.sort((a, b) => a.name.localeCompare(b.name));
 
         // Assign and return
+        context.abilities = abilities;
+        context.features = features;
         context.weapons = weapons;
         context.wearables = wearables;
         context.consumables = consumables;
         context.commons = commons;
-        context.features = features;
-        context.abilities = abilities;
+        context.modules = modules;
     }
 
     async _prepareRollTables(context) {

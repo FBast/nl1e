@@ -181,12 +181,10 @@ export class Pl1eActor extends Actor {
                 range: 20
             });
         }
+
         // Apply passive values
-        for (const item of this.items) {
-            if (!item.system.passiveAspects) {
-                console.log("here");
-            }
-            for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
+        for (/** @type {Pl1eItem} */ const item of this.items) {
+            for (const [id, aspect] of Object.entries(await item.getPassiveAspects())) {
                 if (aspect.createEffect || !item.isEnabled) continue;
                 Pl1eAspect.applyPassiveValue(aspect, id, this, item);
             }
@@ -316,8 +314,8 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<void>}
      */
     async addItem(item, childId = undefined) {
-        let newItem = await this.createEmbeddedDocuments("Item", [item]);
-        newItem = newItem[0];
+        /** @type {Pl1eItem} */
+        let newItem = (await this.createEmbeddedDocuments("Item", [item]))[0];
 
         // Flag the new item
         if (childId) await newItem.setFlag("pl1e", "childId", childId);
@@ -329,11 +327,11 @@ export class Pl1eActor extends Actor {
         if (this.type === "merchant") return;
 
         // Add new item children
-        if (newItem.system.refItems && newItem.system.refItems.length > 0) {
-            for (let id of newItem.system.refItems) {
-                const refItem = await Pl1eHelpers.getDocument("Item", id);
-                await this.addItem(refItem, parentId);
-            }
+        for (let subItem of await newItem.getSubItems()) {
+            // Skip module item types
+            if (subItem.type === "module") continue;
+
+            await this.addItem(subItem, parentId);
         }
     }
 

@@ -135,14 +135,13 @@ export class Pl1eHelpers {
 
     /**
      * Check recursive loop between parent item and child item or its sub items
-     * @param parentItem
-     * @param childItem
+     * @param parentItem {Pl1eItem}
+     * @param childItem {Pl1eItem}
      * @returns {Promise<boolean>}
      */
     static async createRecursiveLoop(parentItem, childItem) {
         if (parentItem.id === childItem.id) return true;
-        for (const id of childItem.system.refItems) {
-            const subItem = await Pl1eHelpers.getDocument("Item", id);
+        for (const subItem of await childItem.getSubItems()) {
             if (await this.createRecursiveLoop(parentItem, subItem)) return true;
         }
         return false;

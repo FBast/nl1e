@@ -39,21 +39,21 @@
         {{/unless}}
         <hr>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.CharacterRoll"}}</label>
-            <select name="system.attributes.characterRoll">
-                {{selectOptions (config "abilitySkills") selected=system.attributes.characterRoll localize=true}}
+            <label class="attribute-name">{{localize "PL1E.Roll"}}</label>
+            <select name="system.attributes.roll">
+                {{selectOptions (config "abilitySkills") selected=system.attributes.roll localize=true}}
             </select>
         </div>
         {{#unless system.attributes.outCombatOnly}}
-            {{#if (ne (length system.attributes.characterRoll) 0)}}
+            {{#if (ne (length system.attributes.roll) 0)}}
                 <div class="item-attribute flexrow">
                     <label class="attribute-name">{{localize "PL1E.TargetRoll"}}</label>
                     <ul class="attribute-name">
-                        {{#each system.attributes.targetRoll}}
+                        {{#each system.attributes.oppositeRoll}}
                             <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                         {{/each}}
                     </ul>
-                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.TargetRoll" data-key-path="attributes.targetRoll"
+                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.TargetRoll" data-key-path="attributes.oppositeRoll"
                        data-tooltip="{{localize 'PL1E.TargetRollConfig'}}">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -73,7 +73,7 @@
                 <div class="item-attribute flexrow">
                     <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
                     <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
-                    {{#if (ne (length system.attributes.characterRoll) 0)}}
+                    {{#if (ne (length system.attributes.roll) 0)}}
                         <select name="system.attributes.areaNumberResolutionType">
                             {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
                         </select>
@@ -83,7 +83,7 @@
                     <div class="item-attribute flexrow">
                         <label class="attribute-name">{{localize "PL1E.CircleRadius"}}</label>
                         <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
-                        {{#if (ne (length system.attributes.characterRoll) 0)}}
+                        {{#if (ne (length system.attributes.roll) 0)}}
                             <select name="system.attributes.circleRadiusResolutionType">
                                 {{selectOptions (config "resolutionTypes") selected=system.attributes.circleRadiusResolutionType localize=true}}
                             </select>
@@ -93,7 +93,7 @@
                     <div class="item-attribute flexrow">
                         <label class="attribute-name">{{localize "PL1E.ConeLength"}}</label>
                         <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
-                        {{#if (ne (length system.attributes.characterRoll) 0)}}
+                        {{#if (ne (length system.attributes.roll) 0)}}
                             <select name="system.attributes.coneLengthResolutionType">
                                 {{selectOptions (config "resolutionTypes") selected=system.attributes.coneLengthResolutionType localize=true}}
                             </select>
@@ -110,7 +110,7 @@
                     <div class="item-attribute flexrow">
                         <label class="attribute-name">{{localize "PL1E.SquareLength"}}</label>
                         <input type="number" name="system.attributes.squareLength" value="{{system.attributes.squareLength}}" data-dtype="Number"/>
-                        {{#if (ne (length system.attributes.characterRoll) 0)}}
+                        {{#if (ne (length system.attributes.roll) 0)}}
                             <select name="system.attributes.squareLengthResolutionType">
                                 {{selectOptions (config "resolutionTypes") selected=system.attributes.squareLengthResolutionType localize=true}}
                             </select>
@@ -120,7 +120,7 @@
                     <div class="item-attribute flexrow">
                         <label class="attribute-name">{{localize "PL1E.RayLength"}}</label>
                         <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
-                        {{#if (ne (length system.attributes.characterRoll) 0)}}
+                        {{#if (ne (length system.attributes.roll) 0)}}
                             <select name="system.attributes.rayLengthResolutionType">
                                 {{selectOptions (config "resolutionTypes") selected=system.attributes.rayLengthResolutionType localize=true}}
                             </select>

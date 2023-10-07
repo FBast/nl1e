@@ -3,13 +3,13 @@ import {PL1E} from "./config.mjs";
 export function getConfigActor() {
     PL1E.actors = {
         "character": {
-            "droppable": ["feature", "weapon", "wearable", "consumable", "common"]
+            "droppable": ["feature", "weapon", "wearable", "consumable", "common", "module"]
         },
         "npc": {
-            "droppable": ["feature", "weapon", "wearable", "consumable", "common"]
+            "droppable": ["feature", "weapon", "wearable", "consumable", "common", "module"]
         },
         "merchant": {
-            "droppable": ["feature", "weapon", "wearable", "consumable", "common"]
+            "droppable": ["feature", "weapon", "wearable", "consumable", "common", "module"]
         }
     }
 

@@ -27,7 +27,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @inheritDoc */
     get template() {
-        if (["weapon", "wearable", "consumable", "common"].includes(this.item.type)) {
+        if (["weapon", "wearable", "consumable", "common", "module"].includes(this.item.type)) {
             return `systems/pl1e/templates/item/item-base-sheet.hbs`;
         }
         else {
@@ -82,15 +82,10 @@ export class Pl1eItemSheet extends ItemSheet {
         const context = super.getData();
 
         // Use a safe clone of the item data for further operations.
-        const itemData = context.item;
+        // const itemData = context.item;
 
         // Sheet editable if original or parent is token and user is owner
-        if (this.item.isEmbedded) {
-            this.options.editable = this.item.parent.isToken && this.item.isOwner;
-        }
-        else {
-            this.options.editable = this.item.isOwner;
-        }
+        this.options.editable = this.item.isOwner;
 
         // Retrieve the roll data for TinyMCE editors.
         context.rollData = {};
@@ -100,8 +95,8 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Add the actor's data to context.data for easier access
-        context.system = itemData.system;
-        context.flags = itemData.flags;
+        context.system = context.item.system;
+        context.flags = context.item.flags;
         context.config = CONFIG.PL1E;
         context.game = game;
 
@@ -183,35 +178,95 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Check item type and subtype
         const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
-        const uuidArray = data.uuid.split(".");
-        const id = uuidArray[uuidArray.length - 1];
-        const item = await Pl1eHelpers.getDocument("Item", id);
-        if (!item) throw new Error(`PL1E | No item found with UUID ${data.uuid}`);
+        let item = await fromUuid(data.uuid)
 
-        if (CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) {
+        // Check if item can be dropped into this
+        if (!CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) return;
+
+        // If item is module and too much module on this
+        if (item.type === "module") {
+            // If more than 3 module already
+            const items = await this.item.getSubItems();
+            if (items.filter(item => item.type === "module").length >= 3) {
+                ui.notifications.warn(game.i18n.localize("PL1E.TooMuchModule"));
+                return;
+            }
+        }
+
+        // If item is embedded and is a module
+        if (item.isEmbedded && item.type === "module") {
+            // Add the original item
+            const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
+            await this.item.addRefItem(originalItem);
+            this.render();
+
+            // Then remove the item
+            await item.actor.removeItem(item);
+        }
+        // Else item is not embedded
+        else if (!item.isEmbedded) {
             await this.item.addRefItem(item);
             this.render();
         }
+
     }
 
+    /**
+     * Organize and classify Items for Character sheets.
+     * @param {Object} context The actor to prepare.
+     * @return {undefined}
+     */
     async _prepareItems(context) {
-        // Get ref items using id
-        const items = [];
+        // Initialize containers.
+        let abilities = [];
+        let features = [];
+        let weapons = [];
+        let wearables = [];
+        let modules = [];
+        let unknowns = [];
+
+        // Iterate through subItems, allocating to containers
         for (let i = 0; i < this.item.system.refItems.length; i++) {
             const id = this.item.system.refItems[i];
             let item = await Pl1eHelpers.getDocument("Item", id);
             if (!item) {
                 // Create an unknown item for display
-                item = {
+                unknowns.push({
                     type: "unknown",
                     id: id
-                }
+                });
             }
-            items[i] = item;
+            else if (item.type === "feature") {
+                features.push(item);
+            }
+            else if (item.type === "ability") {
+                abilities.push(item);
+            }
+            else if (item.type === "weapon") {
+                weapons.push(item);
+            }
+            else if (item.type === "wearable") {
+                wearables.push(item);
+            }
+            else if (item.type === "module") {
+                modules.push(item);
+            }
         }
 
+        // Sorting arrays
+        abilities = abilities.sort((a, b) => a.name.localeCompare(b.system.attributes.level));
+        features = features.sort((a, b) => a.name.localeCompare(b.name));
+        weapons = weapons.sort((a, b) => a.name.localeCompare(b.name));
+        wearables = wearables.sort((a, b) => a.name.localeCompare(b.name));
+        modules = modules.sort((a, b) => a.name.localeCompare(b.name));
+
         // Assign and return
-        context.items = items;
+        context.abilities = abilities;
+        context.features = features;
+        context.weapons = weapons;
+        context.wearables = wearables;
+        context.modules = modules;
+        context.unknowns = unknowns;
         context.passiveAspects = this.item.system.passiveAspects;
         context.activeAspects = this.item.system.activeAspects;
         context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
@@ -219,7 +274,7 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     async _prepareAspects(context) {
-        context.system.hasResolutionType = context.system.attributes.characterRoll?.length > 0
+        context.system.hasResolutionType = context.system.attributes.roll?.length > 0
             || context.system.attributes.meleeRoll?.length > 0 || context.system.attributes.rangeRoll?.length > 0;
     }
 

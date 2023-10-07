@@ -58,7 +58,7 @@ export class Pl1eItem extends Item {
             item: this,
             itemId: this._id,
             attributes: {...this.system.attributes},
-            activeAspects: {...this.system.activeAspects},
+            activeAspects: {...await this.getActiveAspects()},
             templates: [],
             templatesIds: []
         }
@@ -118,9 +118,9 @@ export class Pl1eItem extends Item {
                 changed["system.attributes.isMajorAction"] = false;
                 changed["system.attributes.triggerReactions"] = false;
             }
-            if (changed.system?.attributes?.characterRoll?.length === 0)
-                changed["system.attributes.targetRoll"] = [];
-            if (changed.system?.attributes?.rangeOverride === "none") {
+            if (changed.system?.attributes?.roll?.length === 0)
+                changed["system.attributes.oppositeRoll"] = [];
+            if (changed.system?.attributes?.overrideRange === "none") {
                 changed["system.attributes.isMajorAction"] = false;
                 changed["system.attributes.usageCost"] = 0;
             }
@@ -155,27 +155,66 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Add a ref Item
+     * Get the items based on their refs
+     * @return {Promise<Pl1eItem[]>}
+     */
+    async getSubItems() {
+        const refItems = [];
+        for (let id of this.system.refItems) {
+            const refItem = await Pl1eHelpers.getDocument("Item", id);
+            refItems.push(refItem);
+        }
+        return refItems;
+    }
+
+    /**
+     * Get all passive aspects including modules related
+     * @return {Promise<Object[]>}
+     */
+    async getPassiveAspects() {
+        const items = await this.getSubItems();
+        const passiveAspectsFromModules = items
+            .filter(item => item.type === "module")
+            .map(item => item.system.passiveAspects);
+
+        return Object.assign({}, this.system.passiveAspects, ...passiveAspectsFromModules);
+    }
+
+    /**
+     * Get all active aspects including modules related
+     * @return {Promise<Object[]>}
+     */
+    async getActiveAspects() {
+        const items = await this.getSubItems();
+        const activeAspectsFromModules = items
+            .filter(item => item.type === "module")
+            .map(item => item.system.activeAspects);
+
+        return Object.assign({}, this.system.activeAspects, ...activeAspectsFromModules);
+    }
+
+    /**
+     * Add an item ref
      * @param item
      * @returns {Promise<void>}
      */
     async addRefItem(item) {
-        if (this.isEmbedded) throw new Error("PL1E | Cannot add ref item on embedded " + this.name);
+        if (!this.isEmbedded) {
+            // Return if item with same id exist
+            if (this.system.refItems.some(id => id === item._id) && !CONFIG.PL1E.items[this.type].stackable.includes(item.type)) {
+                const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
+                if (enableDebugUINotifications)
+                    ui.notifications.warn(game.i18n.localize("PL1E.ChildWithSameIdExist"));
+                return;
+            }
 
-        // Return if item with same id exist
-        if (this.system.refItems.some(id => id === item._id) && !CONFIG.PL1E.items[this.type].stackable.includes(item.type)) {
-            const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
-            if (enableDebugUINotifications)
-                ui.notifications.warn(game.i18n.localize("PL1E.ChildWithSameIdExist"));
-            return;
-        }
-
-        // Return against recursive loop
-        if (await Pl1eHelpers.createRecursiveLoop(this, item)) {
-            const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
-            if (enableDebugUINotifications)
-                ui.notifications.warn(game.i18n.localize("PL1E.WillCreateRecursiveLoop"));
-            return;
+            // Return against recursive loop
+            if (await Pl1eHelpers.createRecursiveLoop(this, item)) {
+                const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
+                if (enableDebugUINotifications)
+                    ui.notifications.warn(game.i18n.localize("PL1E.WillCreateRecursiveLoop"));
+                return;
+            }
         }
 
         // Add item as child id to this
@@ -184,23 +223,23 @@ export class Pl1eItem extends Item {
             "system.refItems": this.system.refItems
         });
 
-        // Update actors with this item to add the new item
-        for (const actor of game.actors) {
-            for (const actorItem of actor.items) {
-                if (actorItem.sourceId !== this._id) continue;
-                await actor.addItem(item, actorItem.parentId);
+        if (!this.isEmbedded) {
+            // Update actors with this item to add the new item
+            for (const actor of game.actors) {
+                for (const actorItem of actor.items) {
+                    if (actorItem.sourceId !== this._id) continue;
+                    await actor.addItem(item, actorItem.parentId);
+                }
             }
         }
     }
 
     /**
-     * Remove a ref Item
+     * Remove an item ref
      * @param {string} itemId
      * @returns {Promise<void>}
      */
     async removeRefItem(itemId) {
-        if (this.isEmbedded) throw new Error("PL1E | Cannot remove ref item on embedded " + this.name);
-
         // Remove item as child id from this
         this.system.refItems.splice(this.system.refItems.indexOf(itemId), 1);
         await this.update({
@@ -276,13 +315,13 @@ export class Pl1eItem extends Item {
      */
     async toggle(options = {}) {
         if (this.isEnabled) {
-            for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
+            for (const [id, aspect] of Object.entries(await this.getPassiveAspects())) {
                 if (!aspect.createEffect) continue;
                 await Pl1eAspect.applyPassiveEffect(aspect, id, this.actor, this);
             }
         }
         else {
-            for (const [id, aspect] of Object.entries(this.system.passiveAspects)) {
+            for (const [id, aspect] of Object.entries(await this.getPassiveAspects())) {
                 await Pl1eAspect.removePassiveEffect(aspect, id, this.actor);
             }
         }
@@ -309,8 +348,8 @@ export class Pl1eItem extends Item {
         if (!await this._preActivate(characterData)) return false;
 
         // Character rollData if exist
-        if (characterData.attributes.characterRoll.length > 0) {
-            characterData.rollData = await characterData.actor.rollSkills(characterData.attributes.characterRoll);
+        if (characterData.attributes.roll.length > 0) {
+            characterData.rollData = await characterData.actor.rollSkills(characterData.attributes.roll);
             characterData.result = characterData.rollData.total;
         }
         else {
@@ -386,7 +425,7 @@ export class Pl1eItem extends Item {
                 });
             }
         }
-        // If we have a no token
+        // If we have no token
         else {
             // Display message
             await Pl1eChat.actionRoll(characterData);
@@ -638,8 +677,8 @@ export class Pl1eItem extends Item {
      */
     async _getTargetData(characterData, actor, token = null, template = null) {
         const targetData = {};
-        if (characterData.attributes.targetRoll.length > 0) {
-            targetData.rollData = await actor.rollSkills(characterData.attributes.targetRoll);
+        if (characterData.attributes.oppositeRoll.length > 0) {
+            targetData.rollData = await actor.rollSkills(characterData.attributes.oppositeRoll);
             targetData.result = characterData.result - targetData.rollData.total;
         } else {
             targetData.result = characterData.result;
