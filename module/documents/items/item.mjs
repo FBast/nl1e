@@ -58,7 +58,7 @@ export class Pl1eItem extends Item {
             item: this,
             itemId: this._id,
             attributes: {...this.system.attributes},
-            activeAspects: {...await this.getActiveAspects()},
+            activeAspects: {...await this.getCombinedActiveAspects()},
             templates: [],
             templatesIds: []
         }
@@ -171,26 +171,28 @@ export class Pl1eItem extends Item {
      * Get all passive aspects including modules related
      * @return {Promise<Object[]>}
      */
-    async getPassiveAspects() {
+    async getCombinedPassiveAspects() {
         const items = await this.getSubItems();
         const passiveAspectsFromModules = items
             .filter(item => item.type === "module")
             .map(item => item.system.passiveAspects);
 
-        return Object.assign({}, this.system.passiveAspects, ...passiveAspectsFromModules);
+        const allAspects = Object.assign({}, this.system.passiveAspects, ...passiveAspectsFromModules);
+        return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 
     /**
      * Get all active aspects including modules related
      * @return {Promise<Object[]>}
      */
-    async getActiveAspects() {
+    async getCombinedActiveAspects() {
         const items = await this.getSubItems();
         const activeAspectsFromModules = items
             .filter(item => item.type === "module")
             .map(item => item.system.activeAspects);
 
-        return Object.assign({}, this.system.activeAspects, ...activeAspectsFromModules);
+        const allAspects = Object.assign({}, this.system.activeAspects, ...activeAspectsFromModules);
+        return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 
     /**
@@ -315,13 +317,13 @@ export class Pl1eItem extends Item {
      */
     async toggle(options = {}) {
         if (this.isEnabled) {
-            for (const [id, aspect] of Object.entries(await this.getPassiveAspects())) {
+            for (const [id, aspect] of Object.entries(await this.getCombinedPassiveAspects())) {
                 if (!aspect.createEffect) continue;
                 await Pl1eAspect.applyPassiveEffect(aspect, id, this.actor, this);
             }
         }
         else {
-            for (const [id, aspect] of Object.entries(await this.getPassiveAspects())) {
+            for (const [id, aspect] of Object.entries(await this.getCombinedPassiveAspects())) {
                 await Pl1eAspect.removePassiveEffect(aspect, id, this.actor);
             }
         }

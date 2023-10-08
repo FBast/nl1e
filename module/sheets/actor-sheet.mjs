@@ -80,8 +80,8 @@ export class Pl1eActorSheet extends ActorSheet {
         context.items = this.actor.items;
         context.inCombat = this.actor.bestToken !== null && this.actor.bestToken.inCombat;
 
-        this._prepareItems(context);
-        this._prepareEffects(context);
+        await this._prepareItems(context);
+        await this._prepareEffects(context);
 
         if (this.actor.type === "merchant")
             await this._prepareRollTables(context);
@@ -258,7 +258,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param {Object} context The actor to prepare.
      * @return {undefined}
      */
-    _prepareItems(context) {
+    async _prepareItems(context) {
         // Initialize containers.
         let abilities = {
             0: [],
@@ -284,6 +284,10 @@ export class Pl1eActorSheet extends ActorSheet {
             // Append to item categories
             const sourceIdFlag = item.flags.core ? item.sourceId : null;
 
+            // Merge aspects for each item
+            item.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
+            item.system.combinedActiveAspects = await item.getCombinedActiveAspects();
+
             // Append to features.
             if (item.type === "feature") {
                 features.push(item);
@@ -308,44 +312,35 @@ export class Pl1eActorSheet extends ActorSheet {
                 if (sourceIdFlags.includes(sourceIdFlag)) {
                     const sameItem = abilities[item.system.attributes.level].find(item => item.flags.core.sourceId === sourceIdFlag);
                     sameItem.system.units++;
-                }
-                else {
+                } else {
                     abilities[item.system.attributes.level].push(item);
                 }
-            }
-            else if (item.type === "weapon") {
+            } else if (item.type === "weapon") {
                 weapons.push(item);
-            }
-            else if (item.type === "wearable") {
+            } else if (item.type === "wearable") {
                 wearables.push(item);
-            }
-            else if (item.type === "consumable") {
+            } else if (item.type === "consumable") {
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
                     const sameItem = consumables.find(item => item.sourceId === sourceIdFlag);
                     sameItem.system.units++;
-                }
-                else {
+                } else {
                     consumables.push(item);
                 }
-            }
-            else if (item.type === "common") {
+            } else if (item.type === "common") {
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
                     const sameItem = commons.find(item => item.sourceId === sourceIdFlag);
                     sameItem.system.units++;
-                }
-                else {
+                } else {
                     commons.push(item);
                 }
-            }
-            else if (item.type === "module") {
+            } else if (item.type === "module") {
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
                     const sameItem = modules.find(item => item.sourceId === sourceIdFlag);
                     sameItem.system.units++;
-                }
-                else {
+                } else {
                     modules.push(item);
                 }
             }

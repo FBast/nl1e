@@ -91,7 +91,7 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Use the parent active aspects when launching the ability
         if (characterData.attributes.launchParentActiveAspects) {
-            Pl1eHelpers.mergeDeep(characterData.activeAspects, await characterData.linkedItem.getActiveAspects());
+            Pl1eHelpers.mergeDeep(characterData.activeAspects, await characterData.linkedItem.getCombinedActiveAspects());
         }
         return true;
     }

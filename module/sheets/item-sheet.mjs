@@ -103,9 +103,6 @@ export class Pl1eItemSheet extends ItemSheet {
         // Prepare refItems
         await this._prepareItems(context);
 
-        // Prepare aspects
-        await this._prepareAspects(context);
-
         // Retrieve some documents from packs
         context.sequencerMacros = await this._listDocuments("legacy-sequencer-macros", true);
         context.modificationMacros = await this._listDocuments("legacy-modification-macros", true);
@@ -271,11 +268,6 @@ export class Pl1eItemSheet extends ItemSheet {
         context.activeAspects = this.item.system.activeAspects;
         context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
         context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
-    }
-
-    async _prepareAspects(context) {
-        context.system.hasResolutionType = context.system.attributes.roll?.length > 0
-            || context.system.attributes.meleeRoll?.length > 0 || context.system.attributes.rangeRoll?.length > 0;
     }
 
     /**

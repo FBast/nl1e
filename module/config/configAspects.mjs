@@ -120,47 +120,57 @@ export function getConfigAspects() {
         "health": {
             "label": "PL1E.Health",
             "path": "system.resources.health.value",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-heart"
         },
         "healthMax": {
             "label": "PL1E.MaxHealth",
             "path": "system.resources.health.max",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-heart"
+
         },
         "healthTemp": {
             "label": "PL1E.TempHealth",
             "path": "system.resources.health.temp",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-heart"
         },
         "stamina": {
             "label": "PL1E.Stamina",
             "path": "system.resources.stamina.value",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-wave-pulse"
         },
         "staminaMax": {
             "label": "PL1E.MaxStamina",
             "path": "system.resources.stamina.max",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-wave-pulse"
         },
         "staminaTemp": {
             "label": "PL1E.TempStamina",
             "path": "system.resources.stamina.temp",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-wave-pulse"
         },
         "mana": {
             "label": "PL1E.Mana",
             "path": "system.resources.mana.value",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-sparkles"
         },
         "manaMax": {
             "label": "PL1E.MaxMana",
             "path": "system.resources.mana.max",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-sparkles"
         },
         "manaTemp": {
             "label": "PL1E.TempMana",
             "path": "system.resources.mana.temp",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-sparkles"
         }
     }
 

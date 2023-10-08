@@ -29,7 +29,7 @@
                                 <label>{{minus system.attributes.uses system.removedUses}}</label>
                             </i>
                         {{/if}}
-                        {{#each system.activeAspects}}
+                        {{#each system.combinedActiveAspects}}
                             {{#if (eq damageType "raw")}}
                                 {{#with (config dataGroup data)}}
                                     <i class="item-info fas {{icon}} hover-green" data-tooltip="{{localize label}}">

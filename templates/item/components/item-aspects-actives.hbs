@@ -72,14 +72,12 @@
                                 </select>
                             {{/if}}
                         </div>
-                        {{#if @root.system.hasResolutionType}}
-                            <div class="item-attribute flexrow">
-                                <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
-                                <select name="system.activeAspects.{{@key}}.resolutionType">
-                                    {{selectOptions (config "resolutionTypes") selected=../../resolutionType localize=true}}
-                                </select>
-                            </div>
-                        {{/if}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
+                            <select name="system.activeAspects.{{@key}}.resolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=../../resolutionType localize=true}}
+                            </select>
+                        </div>
                     {{/with}}
                     {{#if (and ../targetGroup (ne ../name "transfer"))}}
                         <div class="item-attribute flexrow">

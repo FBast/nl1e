@@ -419,6 +419,13 @@ export class Pl1eAspect {
         return targetsData;
     }
 
+    /**
+     *
+     * @param aspect
+     * @param targetData
+     * @return {Promise<void>}
+     * @private
+     */
     static async _applyTargetAspect(aspect, targetData) {
         const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
         let currentValue = getProperty(targetData.actor, dataConfig.path);
@@ -444,11 +451,61 @@ export class Pl1eAspect {
         }
     }
 
+    /**
+     *
+     * @param group
+     * @param targetToken
+     * @param characterToken
+     * @return {boolean}
+     * @private
+     */
     static _isTargetValid(group, targetToken, characterToken) {
         if (group === "self" && targetToken !== characterToken) return false;
         if (group === "allies" && targetToken.document.disposition !== characterToken.document.disposition) return false;
         if (group === "opponents" && targetToken.document.disposition === characterToken.document.disposition) return false;
         return true;
+    }
+
+    /**
+     * Merge aspects with the same properties except for the value.
+     * @param {Object} aspectsObject
+     * @return {Object}
+     */
+    static mergeAspectsObjects(aspectsObject) {
+        const mergedAspects = {};
+        const aspectKeys = {}; // To store the original keys
+
+        for (const aspectName in aspectsObject) {
+            const aspect = aspectsObject[aspectName];
+            const key = this._generateAspectKey(aspect);
+
+            if (!mergedAspects[key]) {
+                mergedAspects[key] = { ...aspect };
+                aspectKeys[key] = aspectName; // Store the original key
+            } else {
+                mergedAspects[key].value += aspect.value;
+            }
+        }
+
+        // Convert back to original keys
+        const result = {};
+        for (const key in mergedAspects) {
+            const originalKey = aspectKeys[key];
+            result[originalKey] = mergedAspects[key];
+        }
+
+        return result;
+    }
+
+    /**
+     * Generate a unique key for an aspect based on its properties except for the value.
+     * @param {Object} aspect
+     * @return {string}
+     * @private
+     */
+    static _generateAspectKey(aspect) {
+        const { value, ...restOfAspect } = aspect;
+        return JSON.stringify(restOfAspect);
     }
 
 }
