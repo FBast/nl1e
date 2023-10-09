@@ -307,7 +307,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = abilities[item.system.attributes.level].find(item => item.flags.core.sourceId === sourceIdFlag);
+                    const sameItem = abilities[item.system.attributes.level].find(item => item.sourceId === sourceIdFlag);
                     sameItem.system.units++;
                 } else {
                     abilities[item.system.attributes.level].push(item);
@@ -447,11 +447,11 @@ export class Pl1eActorSheet extends ActorSheet {
      * Remove all the items from the merchant
      * @param event
      */
-    onRemoveItemsClick(event) {
+    async onRemoveItemsClick(event) {
         let removedItemsNumber = 0;
         for (const item of this.actor.items) {
             if (!["weapon", "wearable", "consumable", "common"].includes(item.type)) continue;
-            item.delete();
+            await item.delete();
             removedItemsNumber++;
         }
         ui.notifications.info(`${game.i18n.localize("NumberOfRemovedItems")} : ${removedItemsNumber}`);
@@ -608,13 +608,13 @@ export class Pl1eActorSheet extends ActorSheet {
      * Remove effect
      * @param {Event} event
      */
-    onEffectRemove(event) {
+    async onEffectRemove(event) {
         event.preventDefault();
 
         const effectId = $(event.currentTarget).closest(".item").data("effect-id");
         const effect = this.actor.effects.get(effectId);
 
-        effect.delete();
+        await effect.delete();
     }
 
 }

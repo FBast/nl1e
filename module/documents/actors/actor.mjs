@@ -314,14 +314,23 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<void>}
      */
     async addItem(item, childId = undefined) {
-        /** @type {Pl1eItem} */
-        let newItem = (await this.createEmbeddedDocuments("Item", [item]))[0];
-
-        // Flag the new item
-        if (childId) await newItem.setFlag("pl1e", "childId", childId);
+        const itemCopy = item.toObject()
         const parentId = randomID();
-        await newItem.setFlag("pl1e", "parentId", parentId);
-        await newItem.setFlag("core", "sourceId", item.uuid);
+
+        // Modify the item copy to include the flags before creation
+        itemCopy.flags = {
+            pl1e: {
+                childId: childId || null,  // If childId might be undefined or falsy
+                parentId: parentId
+            },
+            core: {
+                sourceId: item.uuid
+            }
+        };
+
+        const newItems = await this.createEmbeddedDocuments("Item", [itemCopy]);
+        /** @type {Pl1eItem} */
+        let newItem = newItems[0];
 
         // In case of merchant when don't add children items
         if (this.type === "merchant") return;
@@ -350,7 +359,7 @@ export class Pl1eActor extends Actor {
             }
         }
 
-        await this.deleteEmbeddedDocuments("Item", [item._id]);
+        await this.deleteEmbeddedDocuments("Item", [item.id]);
     }
 
     /**

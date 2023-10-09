@@ -16,7 +16,7 @@ export class Pl1eSynchronizer {
                 if (item.sourceId !== sourceItem._id) continue
 
                 // Update the item
-                await this._resetItem(item, sourceItem);
+                await this._resetItem(actor, item, sourceItem);
 
                 // Render item if rendered
                 item.sheet.render(item.sheet.rendered);
@@ -26,21 +26,24 @@ export class Pl1eSynchronizer {
                 console.log(`PL1E | ${item.name} of ${actor.name} is reset`);
                 updateNumber++;
             }
+
+            if (renderActor) actor.sheet.render(actor.sheet.rendered);
         }
 
         const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
         if (enableDebugUINotifications && notifyInfo)
-            ui.notifications.info(`${game.i18n.localize("NumberOfUpdateClones")} : ${updateNumber}`);
+            ui.notifications.info(`${game.i18n.localize("PL1E.NumberOfUpdatedClones")} : ${updateNumber}`);
     }
 
     /**
      * Reset this item based on the original item
+     * @param {Pl1eActor} actor the actor of the item
      * @param {Pl1eItem} item the item to reset
      * @param {Pl1eItem} originalItem the source of the reset
      * @returns {Promise<void>}
      * @private
      */
-    static async _resetItem(item, originalItem) {
+    static async _resetItem(actor, item, originalItem) {
         if (!item.isEmbedded)
             throw new Error(`PL1E | Item ${item.name} should not be reset because not embedded`)
 
@@ -60,9 +63,9 @@ export class Pl1eSynchronizer {
             }
 
             // Remove the associated effect (updated aspect are removed too)
-            const effect = item.actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
+            const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
             if (effect !== undefined && item.isEnabled) {
-                await Pl1eAspect.removePassiveEffect(aspect, id, item.actor);
+                await Pl1eAspect.removePassiveEffect(aspect, id, actor);
             }
         }
 
@@ -72,7 +75,7 @@ export class Pl1eSynchronizer {
 
             // Add the associated effect
             if (aspect.createEffect && item.isEnabled) {
-                await Pl1eAspect.applyPassiveEffect(aspect, id, item.actor, item);
+                await Pl1eAspect.applyPassiveEffect(aspect, id, actor, item);
             }
         }
 
@@ -90,6 +93,23 @@ export class Pl1eSynchronizer {
 
         // Update the item data
         await item.update(itemData);
+
+        // Update the sub items
+        const subItems = await item.getSubItems();
+        // Add the refItems in item which are not present in the actor
+        for (const subItem of subItems) {
+            // If we find an item with the same source id then continue
+            if (actor.items.find(item => item.sourceId === subItem.id)) continue;
+            await actor.addItem(subItem, item.parentId);
+        }
+        // Remove the item of the actor which use the same parentId and are not present in the item
+        for (const otherItem of actor.items) {
+            // If the otherItem as a different childId than the item parentId then continue
+            if (otherItem.childId !== item.parentId) continue;
+            // If the otherItem id is inside the subItems then continue
+            if (subItems.find(item => item.id === otherItem.sourceId)) continue;
+            await actor.removeItem(otherItem);
+        }
     }
 
 }

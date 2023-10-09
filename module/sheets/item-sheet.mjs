@@ -35,6 +35,10 @@ export class Pl1eItemSheet extends ItemSheet {
         }
     }
 
+    get title() {
+        return this.item.actor ? `${this.item.name} of ${this.item.actor.name}` : this.item.name;
+    }
+
     /**
      * Custom header buttons
      * @returns {Application.HeaderButton[]}
@@ -178,38 +182,30 @@ export class Pl1eItemSheet extends ItemSheet {
         let item = await fromUuid(data.uuid)
 
         // Check if item can be dropped into this
-        if (!CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) return;
+        if (this.item.isEmbedded) {
+            if (!CONFIG.PL1E.items[this.item.type].localDroppable.includes(item.type)) return;
 
-        // If item is module
-        if (item.type === "module") {
-            // If this item is not embedded
-            if (!this.item.isEmbedded) {
-                ui.notifications.warn(game.i18n.localize("PL1E.ModuleOnEmbeddedItemOnly"));
-                return;
+            // If item is module
+            if (item.type === "module") {
+                // If module capacity is full
+                const items = await this.item.getSubItems();
+                if (items.filter(item => item.type === "module").length >= this.item.system.attributes.modules) {
+                    ui.notifications.warn(game.i18n.localize("PL1E.TooMuchModule"));
+                    return;
+                }
             }
 
-            // If module capacity is full
-            const items = await this.item.getSubItems();
-            if (items.filter(item => item.type === "module").length >= this.item.system.attributes.modules) {
-                ui.notifications.warn(game.i18n.localize("PL1E.TooMuchModule"));
-                return;
-            }
+            // Retrieve original item
+            const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
+            await this.item.addRefItem(originalItem);
+            this.render();
 
-            // If item is embedded
-            if (item.isEmbedded) {
-                const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
-                await this.item.addRefItem(originalItem);
-                this.render();
-
-                // Remove item if embedded
-                if (item.isEmbedded) await item.actor.removeItem(item);
-            }
-            else {
-                await this.item.addRefItem(item);
-                this.render();
-            }
+            // Remove item if embedded
+            if (item.isEmbedded) await item.actor.removeItem(item);
         }
         else {
+            if (!CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) return;
+
             await this.item.addRefItem(item);
             this.render();
         }
@@ -231,8 +227,8 @@ export class Pl1eItemSheet extends ItemSheet {
         let unknowns = [];
 
         // Iterate through subItems, allocating to containers
-        for (let i = 0; i < this.item.system.refItems.length; i++) {
-            const id = this.item.system.refItems[i];
+        const allRefs = [...this.item.system.refItems, ...this.item.system.localRefItems];
+        for (const id of allRefs) {
             let item = await Pl1eHelpers.getDocument("Item", id);
             items.push(item);
             if (!item) {

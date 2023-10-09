@@ -4,26 +4,32 @@ export function getConfigItems() {
     PL1E.items = {
         "feature": {
             "droppable": ["feature", "ability", "weapon", "wearable"],
+            "localDroppable": [],
             "stackable": ["weapon"]
         },
         "ability": {
             "droppable": [],
+            "localDroppable": [],
             "stackable": []
         },
         "weapon": {
-            "droppable": ["feature", "ability", "module"],
+            "droppable": ["feature", "ability"],
+            "localDroppable": ["module"],
             "stackable": ["module"]
         },
         "wearable": {
-            "droppable": ["feature", "ability", "module"],
+            "droppable": ["feature", "ability"],
+            "localDroppable": ["module"],
             "stackable": ["module"]
         },
         "consumable": {
             "droppable": [],
+            "localDroppable": [],
             "stackable": []
         },
         "common": {
             "droppable": [],
+            "localDroppable": [],
             "stackable": []
         }
     }

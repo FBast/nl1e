@@ -139,6 +139,7 @@ export class Pl1eItem extends Item {
     async _onUpdate(changed, options, userId) {
         super._onUpdate(changed, options, userId);
 
+        // If the item is an original
         if (!this.isEmbedded) {
             // Auto reset actors items on update
             const enableAutoResetActorsItems = game.settings.get("pl1e", "enableAutoResetActorsItems");
@@ -159,13 +160,15 @@ export class Pl1eItem extends Item {
      * @return {Promise<Pl1eItem[]>}
      */
     async getSubItems() {
-        const refItems = [];
-        for (let id of this.system.refItems) {
-            const refItem = await Pl1eHelpers.getDocument("Item", id);
-            refItems.push(refItem);
+        const allRefs = [...this.system.refItems, ...this.system.localRefItems];
+        const subItems = [];
+        for (let id of allRefs) {
+            const subItem = await Pl1eHelpers.getDocument("Item", id);
+            if (subItem) subItems.push(subItem);
         }
-        return refItems;
+        return subItems;
     }
+
 
     /**
      * Get all passive aspects including modules related
@@ -201,7 +204,16 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async addRefItem(item) {
-        if (!this.isEmbedded) {
+        // This is embedded
+        if (this.isEmbedded) {
+            // Add item as child id to this
+            this.system.localRefItems.push(item._id);
+            await this.update({
+                "system.localRefItems": this.system.localRefItems
+            });
+        }
+        // This is original
+        else {
             // Return if item with same id exist
             if (this.system.refItems.some(id => id === item._id) && !CONFIG.PL1E.items[this.type].stackable.includes(item.type)) {
                 const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
@@ -217,22 +229,12 @@ export class Pl1eItem extends Item {
                     ui.notifications.warn(game.i18n.localize("PL1E.WillCreateRecursiveLoop"));
                 return;
             }
-        }
 
-        // Add item as child id to this
-        this.system.refItems.push(item._id);
-        await this.update({
-            "system.refItems": this.system.refItems
-        });
-
-        if (!this.isEmbedded) {
-            // Update actors with this item to add the new item
-            for (/** @type {Pl1eActor} */ const actor of game.actors) {
-                for (/** @type {Pl1eItem} */ const actorItem of actor.items) {
-                    if (actorItem.sourceId !== this._id) continue;
-                    await actor.addItem(item, actorItem.parentId);
-                }
-            }
+            // Add item as child id to this
+            this.system.refItems.push(item._id);
+            await this.update({
+                "system.refItems": this.system.refItems
+            });
         }
     }
 
@@ -242,19 +244,26 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async removeRefItem(itemId) {
-        // Remove item as child id from this
-        this.system.refItems.splice(this.system.refItems.indexOf(itemId), 1);
-        await this.update({
-            "system.refItems": this.system.refItems
-        });
-
-        // Update actors with this item to remove the related embedded items
-        for (const actor of game.actors) {
-            for (const actorItem of actor.items) {
-                if (actorItem.sourceId !== this._id) continue;
-                const itemToRemove = actor.items.find(otherItem => otherItem.sourceId === itemId &&
-                    otherItem.childId === actorItem.parentId)
-                if (itemToRemove) await actor.removeItem(itemToRemove);
+        // This is embedded
+        if (this.isEmbedded) {
+            // Remove item as child id from this
+            const index = this.system.localRefItems.indexOf(itemId);
+            if (index >= 0) {
+                this.system.localRefItems.splice(index, 1);
+                await this.update({
+                    "system.localRefItems": this.system.localRefItems
+                });
+            }
+        }
+        // This is original
+        else {
+            // Remove item as child id from this
+            const index = this.system.refItems.indexOf(itemId);
+            if (index >= 0) {
+                this.system.refItems.splice(index, 1);
+                await this.update({
+                    "system.refItems": this.system.refItems
+                });
             }
         }
     }
