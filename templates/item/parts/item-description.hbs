@@ -1,13 +1,6 @@
 <section class="scroll-auto">
     <ul class="traits-list">
-        {{#each abilities as |abilities level|}}
-            {{#each abilities}}
-                <li class="item item-edit tag" data-item-id="{{this._id}}">
-                    <a>{{this.name}} ({{level}})</a>
-                </li>
-            {{/each}}
-        {{/each}}
-        {{#each features}}
+        {{#each items}}
             <li class="item item-edit tag" data-item-id="{{this._id}}">
                 <a>{{this.name}}</a>
             </li>

@@ -2,8 +2,14 @@
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Junk"}}</label>
-            <input type="checkbox" name="system.attributes.junk" {{checked system.attributes.junk}} data-dtype="Boolean"/>
+            <label class="attribute-name">{{localize "PL1E.Modules"}}</label>
+            <input type="number" name="system.attributes.modules" value="{{system.attributes.modules}}" data-dtype="Number"/>
+        </div>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.Slot"}}</label>
+            <select name="system.attributes.slot">
+                {{selectOptions (config "slots") selected=system.attributes.slot localize=true}}
+            </select>
         </div>
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
@@ -16,12 +22,6 @@
                data-tooltip="{{localize 'PL1E.MastersConfig'}}">
                 <i class="fas fa-edit"></i>
             </a>
-        </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Slot"}}</label>
-            <select name="system.attributes.slot">
-                {{selectOptions (config "slots") selected=system.attributes.slot localize=true}}
-            </select>
         </div>
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}

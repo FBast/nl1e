@@ -278,9 +278,6 @@ export class Pl1eActorSheet extends ActorSheet {
         // Iterate through subItems, allocating to containers
         const sourceIdFlags = [];
         for (let item of context.items) {
-            // Hide junk for merchant
-            if (item.system.attributes.junk && this.actor.system.general.hideJunk) continue;
-
             // Append to item categories
             const sourceIdFlag = item.flags.core ? item.sourceId : null;
 

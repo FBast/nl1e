@@ -9,7 +9,7 @@
                 <label class="item-name item-tooltip-activate">{{name}}</label>
                 {{#unless (eq @root.actor.type "npc")}}
                     <div class="item-icons grid-span-2">
-                        {{#each system.passiveAspects}}
+                        {{#each system.combinedPassiveAspects}}
                             {{#with (config dataGroup data)}}
                                 <i class="item-info fas {{icon}} hover-green" data-tooltip="{{localize label}}">
                                     <label>{{../value}}</label>

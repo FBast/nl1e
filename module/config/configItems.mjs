@@ -12,11 +12,11 @@ export function getConfigItems() {
         },
         "weapon": {
             "droppable": ["feature", "ability", "module"],
-            "stackable": []
+            "stackable": ["module"]
         },
         "wearable": {
             "droppable": ["feature", "ability", "module"],
-            "stackable": []
+            "stackable": ["module"]
         },
         "consumable": {
             "droppable": [],

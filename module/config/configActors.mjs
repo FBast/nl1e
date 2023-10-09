@@ -153,7 +153,7 @@ export function getConfigActor() {
             "fixedRank": true,
             "divider": 3,
             "weights": {
-                "characteristics": ["strength", "constitution"],
+                "characteristics": ["strength", "agility"],
                 "misc": []
             }
         },

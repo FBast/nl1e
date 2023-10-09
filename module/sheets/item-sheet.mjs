@@ -180,32 +180,39 @@ export class Pl1eItemSheet extends ItemSheet {
         // Check if item can be dropped into this
         if (!CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) return;
 
-        // If item is module and too much module on this
+        // If item is module
         if (item.type === "module") {
-            // If more than 3 module already
+            // If this item is not embedded
+            if (!this.item.isEmbedded) {
+                ui.notifications.warn(game.i18n.localize("PL1E.ModuleOnEmbeddedItemOnly"));
+                return;
+            }
+
+            // If module capacity is full
             const items = await this.item.getSubItems();
-            if (items.filter(item => item.type === "module").length >= 3) {
+            if (items.filter(item => item.type === "module").length >= this.item.system.attributes.modules) {
                 ui.notifications.warn(game.i18n.localize("PL1E.TooMuchModule"));
                 return;
             }
-        }
 
-        // If item is embedded and is a module
-        if (item.isEmbedded && item.type === "module") {
-            // Add the original item
-            const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
-            await this.item.addRefItem(originalItem);
-            this.render();
+            // If item is embedded
+            if (item.isEmbedded) {
+                const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
+                await this.item.addRefItem(originalItem);
+                this.render();
 
-            // Then remove the item
-            await item.actor.removeItem(item);
+                // Remove item if embedded
+                if (item.isEmbedded) await item.actor.removeItem(item);
+            }
+            else {
+                await this.item.addRefItem(item);
+                this.render();
+            }
         }
-        // Else item is not embedded
-        else if (!item.isEmbedded) {
+        else {
             await this.item.addRefItem(item);
             this.render();
         }
-
     }
 
     /**
@@ -215,6 +222,7 @@ export class Pl1eItemSheet extends ItemSheet {
      */
     async _prepareItems(context) {
         // Initialize containers.
+        let items = [];
         let abilities = [];
         let features = [];
         let weapons = [];
@@ -226,6 +234,7 @@ export class Pl1eItemSheet extends ItemSheet {
         for (let i = 0; i < this.item.system.refItems.length; i++) {
             const id = this.item.system.refItems[i];
             let item = await Pl1eHelpers.getDocument("Item", id);
+            items.push(item);
             if (!item) {
                 // Create an unknown item for display
                 unknowns.push({
@@ -258,6 +267,7 @@ export class Pl1eItemSheet extends ItemSheet {
         modules = modules.sort((a, b) => a.name.localeCompare(b.name));
 
         // Assign and return
+        context.items = items;
         context.abilities = abilities;
         context.features = features;
         context.weapons = weapons;

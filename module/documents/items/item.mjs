@@ -227,8 +227,8 @@ export class Pl1eItem extends Item {
 
         if (!this.isEmbedded) {
             // Update actors with this item to add the new item
-            for (const actor of game.actors) {
-                for (const actorItem of actor.items) {
+            for (/** @type {Pl1eActor} */ const actor of game.actors) {
+                for (/** @type {Pl1eItem} */ const actorItem of actor.items) {
                     if (actorItem.sourceId !== this._id) continue;
                     await actor.addItem(item, actorItem.parentId);
                 }

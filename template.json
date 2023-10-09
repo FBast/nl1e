@@ -360,8 +360,7 @@
       "general": {
         "sellMultiplier": -100,
         "buyMultiplier": 0,
-        "unlimitedItems": false,
-        "hideJunk": false
+        "unlimitedItems": false
       }
     }
   },
@@ -384,7 +383,6 @@
       "item": {
         "removedUses": 0,
         "attributes": {
-          "junk": false,
           "uses": 0
         },
         "price": {
@@ -449,6 +447,7 @@
       "isEquippedSecondary": false,
       "isMajorActionUsed": false,
       "attributes": {
+        "modules": 0,
         "masters": [],
         "hands": 1,
         "reach": 0,
@@ -464,6 +463,7 @@
       "isEquipped": false,
       "isMajorActionUsed": false,
       "attributes": {
+        "modules": 0,
         "masters": [],
         "slot": "none"
       }
