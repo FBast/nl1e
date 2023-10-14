@@ -38,6 +38,14 @@ export class Pl1eItem extends Item {
         }
     }
 
+    get realName() {
+        return (this.system.customName && this.system.customName !== "") ? this.system.customName : this.name;
+    }
+
+    get realImg() {
+        return this.system.customImg ? this.system.customImg : this.img;
+    }
+
     /**
      * Get the characterData
      * @return {Promise<CharacterData>}
@@ -215,7 +223,7 @@ export class Pl1eItem extends Item {
         // This is original
         else {
             // Return if item with same id exist
-            if (this.system.refItems.some(id => id === item._id) && !CONFIG.PL1E.items[this.type].stackable.includes(item.type)) {
+            if (this.system.refItems.some(id => id === item._id) && !CONFIG.PL1E.itemTypes[this.type].stackable.includes(item.type)) {
                 const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
                 if (enableDebugUINotifications)
                     ui.notifications.warn(game.i18n.localize("PL1E.ChildWithSameIdExist"));

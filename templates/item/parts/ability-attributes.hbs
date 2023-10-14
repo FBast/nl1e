@@ -44,6 +44,10 @@
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Usage"}}</legend>
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.Level"}}</label>
+            <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" data-dtype="Number"/>
+        </div>
         {{#unless system.attributes.overrideRoll}}
             <div class="item-attribute flexrow">
                 <label class="attribute-name">{{localize "PL1E.Roll"}}</label>

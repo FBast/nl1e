@@ -365,7 +365,7 @@
     }
   },
   "Item": {
-    "types": ["feature", "ability", "weapon", "wearable", "consumable", "common", "module"],
+    "types": ["feature", "race", "class", "ability", "weapon", "wearable", "consumable", "common", "module"],
     "templates": {
       "base": {
         "description": "",
@@ -382,6 +382,7 @@
         }
       },
       "item": {
+        "customName": "",
         "removedUses": 0,
         "attributes": {
           "uses": 0
@@ -398,6 +399,18 @@
       "attributes": {
         "featureType": "none",
         "points": 0
+      }
+    },
+    "race": {
+      "templates": ["base"],
+      "attributes": {
+
+      }
+    },
+    "class": {
+      "templates": ["base"],
+      "attributes": {
+        "classType": "body"
       }
     },
     "ability": {
@@ -448,6 +461,7 @@
       "isEquippedSecondary": false,
       "isMajorActionUsed": false,
       "attributes": {
+        "customizable": false,
         "modules": 0,
         "masters": [],
         "hands": 1,
@@ -464,6 +478,7 @@
       "isEquipped": false,
       "isMajorActionUsed": false,
       "attributes": {
+        "customizable": false,
         "modules": 0,
         "masters": [],
         "slot": "none"

@@ -1,5 +1,6 @@
 import {JournalEditor} from "./journal-editor-sheet.mjs";
 import {PL1E} from "../config/config.mjs";
+import {Pl1eEvent} from "../helpers/events.mjs";
 
 export class Pl1eJournalPageSheet extends JournalPageSheet {
 
@@ -63,20 +64,8 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
     activateListeners(html) {
         super.activateListeners(html);
         html[0].querySelectorAll(".launch-text-editor").forEach(e => {
-            e.addEventListener("click", this._onLaunchTextEditor.bind(this));
+            e.addEventListener("click", ev => Pl1eEvent.onLaunchTextEditor(ev, this.document));
         });
-    }
-
-    /**
-     * Handle launching the individual text editing window.
-     * @param {Event} event  The triggering click event.
-     */
-    _onLaunchTextEditor(event) {
-        event.preventDefault();
-        const textKeyPath = event.currentTarget.dataset.target;
-        const label = event.target.closest(".form-group").querySelector("label");
-        const editor = new JournalEditor(this.document, { textKeyPath, title: label?.innerText });
-        editor.render(true);
     }
 
 }

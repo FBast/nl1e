@@ -167,15 +167,17 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Check item type and subtype
         const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
+        let document = await fromUuid(data.uuid)
+
+        // Check if the user own the dropped document
+        if (!document.isOwner) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotOwnedDocument"));
+            return;
+        }
 
         // Roll table for merchant only
-        if (this.actor.type === "merchant" && data.type === "RollTable") {
-            const uuidArray = data.uuid.split(".");
-            const id = uuidArray[uuidArray.length - 1];
-            const rollTable = await Pl1eHelpers.getDocument("RollTable", id);
-            if (!rollTable) throw new Error(`PL1E | No roll table found with UUID ${data.uuid}`);
-
-            await this.actor.addRefRollTable(rollTable);
+        if (this.actor.type === "merchant" && document.type === "RollTable") {
+            await this.actor.addRefRollTable(document);
         }
 
         this.render();
@@ -216,7 +218,7 @@ export class Pl1eActorSheet extends ActorSheet {
         if (item.parent === this.actor) return;
 
         // Filter item to actor droppable
-        if (!CONFIG.PL1E.actors[this.actor.type].droppable.includes(item.type)) return;
+        if (!CONFIG.PL1E.actorTypes[this.actor.type].droppable.includes(item.type)) return;
 
         // Only one body class
         if (item.system.attributes.featureType === "bodyClass" && this.actor.items.find(item => item.system.attributes.featureType === "bodyClass")) {
@@ -249,7 +251,7 @@ export class Pl1eActorSheet extends ActorSheet {
             await this.actor.addItem(originalItem);
 
             // Delete the source item if it is embedded
-            if (item.isOwned) await item.actor.removeItem(item);
+            if (item.isEmbedded) await item.actor.removeItem(item);
         }
     }
 
@@ -302,7 +304,7 @@ export class Pl1eActorSheet extends ActorSheet {
                 if (parentItem && parentItem.system.attributes.featureType === "faith" && !this.actor.system.misc.faithPower) continue;
 
                 // Search if the character has a mastery listed in item masters
-                if (item.system.attributes.requireParentMastery && parentItem && parentItem.system.attributes.masters.length > 0
+                if (item.system.attributes.requireParentMastery && parentItem && parentItem.system.attributes.masters?.length > 0
                     && !this.actor.system.general.masters.some(mastery => parentItem.system.attributes.masters.includes(mastery))) continue;
 
                 // Increase units

@@ -19,6 +19,8 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/item/parts/item-description.hbs",
         "systems/pl1e/templates/item/parts/ability-attributes.hbs",
         "systems/pl1e/templates/item/parts/feature-attributes.hbs",
+        "systems/pl1e/templates/item/parts/race-attributes.hbs",
+        "systems/pl1e/templates/item/parts/class-attributes.hbs",
         "systems/pl1e/templates/item/parts/weapon-attributes.hbs",
         "systems/pl1e/templates/item/parts/wearable-attributes.hbs",
         "systems/pl1e/templates/item/parts/common-attributes.hbs",
@@ -45,6 +47,7 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/components/roll-tables.hbs",
 
         // Item components
+        "systems/pl1e/templates/item/components/itemTags.hbs",
         "systems/pl1e/templates/item/components/price.hbs",
         "systems/pl1e/templates/item/components/item-aspects-passives.hbs",
         "systems/pl1e/templates/item/components/item-aspects-actives.hbs"

@@ -1,49 +1,71 @@
 <form class="pl1e {{cssClass}} flexcol" autocomplete="off">
     {{!-- Sheet Header --}}
     <header class="sheet-header">
-        <img class="profile" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        {{#if (and system.attributes.customizable item.isEmbedded)}}
+            <img class="profile" src="{{item.realImg}}" data-edit="system.customImg" title="{{item.name}}"/>
+        {{else}}
+            <img class="profile" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        {{/if}}
         <div class="header-fields">
-            <h1 class="sheet-name"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-            <div class="resources">
-                <div class="grid-span-3">
-                    {{> "systems/pl1e/templates/item/components/price.hbs"}}
-                </div>
-            </div>
+            {{#if (and @root.game.user.isGM (not item.isEmbedded))}}
+                <h1 class="sheet-name"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize "PL1E.Name"}}"/></h1>
+            {{else}}
+                <h1 class="sheet-name"><label>{{item.name}}</label></h1>
+            {{/if}}
+            {{#if (and system.attributes.customizable item.isEmbedded)}}
+                <h1 class="sheet-name"><input name="system.customName" type="text" value="{{item.system.customName}}" placeholder="Custom name"/></h1>
+            {{/if}}
         </div>
     </header>
-    {{!-- Sheet Tab Navigation --}}
+    {{#if @root.game.user.isGM}}
+    {{!-- Sheet Tab Navigation for GM --}}
         <nav class="sheet-tabs tabs" data-group="primary">
             <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
             <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
-            {{#if (or (eq item.type "weapon") (eq item.type "wearable") (eq item.type "consumable"))}}
+            {{#if (or (gt (length system.refItems) 0) (gt (length system.localRefItems) 0))}}
                 <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
             {{/if}}
         </nav>
-    {{!-- Sheet Body --}}
-    <section class="sheet-body">
-        {{!-- Description Tab --}}
-        <div class="tab description flexcol" data-group="primary" data-tab="description">
-            {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
-        </div>
-        {{!-- Attributes Tab --}}
-        <div class="tab attributes flexcol" data-group="primary" data-tab="attributes">
-            {{#if (eq item.type "weapon")}}
-                {{> "systems/pl1e/templates/item/parts/weapon-attributes.hbs"}}
-            {{else if (eq item.type "wearable")}}
-                {{> "systems/pl1e/templates/item/parts/wearable-attributes.hbs"}}
-            {{else if (eq item.type "consumable")}}
-                {{> "systems/pl1e/templates/item/parts/consumable-attributes.hbs"}}
-            {{else if (eq item.type "common")}}
-                {{> "systems/pl1e/templates/item/parts/common-attributes.hbs"}}
-            {{else if (eq item.type "module")}}
-                {{> "systems/pl1e/templates/item/parts/module-attributes.hbs"}}
-            {{/if}}
-        </div>
-        {{#if (or (eq item.type "weapon") (eq item.type "wearable") (eq item.type "consumable"))}}
-            {{!-- Linked Items Tab --}}
-            <div class="tab items flexcol" data-group="primary" data-tab="linked-items">
-                {{> "systems/pl1e/templates/item/parts/item-linked.hbs"}}
+        {{!-- Sheet Body for GM --}}
+        <section class="sheet-body">
+            {{!-- Description Tab --}}
+            <div class="tab description flexcol" data-group="primary" data-tab="description">
+                {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
             </div>
-        {{/if}}
-    </section>
+            {{!-- Attributes Tab --}}
+            <div class="tab attributes flexcol" data-group="primary" data-tab="attributes">
+                {{#if (eq item.type "race")}}
+                    {{> "systems/pl1e/templates/item/parts/race-attributes.hbs"}}
+                {{else if (eq item.type "class")}}
+                    {{> "systems/pl1e/templates/item/parts/class-attributes.hbs"}}
+                {{else if (eq item.type "ability")}}
+                    {{> "systems/pl1e/templates/item/parts/ability-attributes.hbs"}}
+                {{else if (eq item.type "weapon")}}
+                    {{> "systems/pl1e/templates/item/parts/weapon-attributes.hbs"}}
+                {{else if (eq item.type "wearable")}}
+                    {{> "systems/pl1e/templates/item/parts/wearable-attributes.hbs"}}
+                {{else if (eq item.type "consumable")}}
+                    {{> "systems/pl1e/templates/item/parts/consumable-attributes.hbs"}}
+                {{else if (eq item.type "common")}}
+                    {{> "systems/pl1e/templates/item/parts/common-attributes.hbs"}}
+                {{else if (eq item.type "module")}}
+                    {{> "systems/pl1e/templates/item/parts/module-attributes.hbs"}}
+                {{/if}}
+            </div>
+            {{#if (or (gt (length item.system.refItems) 0) (gt (length item.system.localRefItems) 0))}}
+            {{!-- Linked Items Tab --}}
+                <div class="tab items flexcol" data-group="primary" data-tab="linked-items">
+                    {{> "systems/pl1e/templates/item/parts/item-linked.hbs"}}
+                </div>
+            {{/if}}
+        </section>
+    {{else}}
+    {{!-- Description content for Players --}}
+        <section class="sheet-body">
+            <div class="tab description flexcol">
+                {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
+            </div>
+        </section>
+    {{/if}}
+
 </form>

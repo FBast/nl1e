@@ -1,15 +1,18 @@
 import {PL1E} from "./config.mjs";
 
 export function getConfigActor() {
-    PL1E.actors = {
+    PL1E.actorTypes = {
         "character": {
-            "droppable": ["feature", "weapon", "wearable", "consumable", "common", "module"]
+            "label": "PL1E.Character",
+            "droppable": ["feature", "race", "class", "weapon", "wearable", "consumable", "common", "module"]
         },
         "npc": {
-            "droppable": ["feature", "weapon", "wearable", "consumable", "common", "module"]
+            "label": "PL1E.NPC",
+            "droppable": ["feature", "race", "class", "weapon", "wearable", "consumable", "common", "module"]
         },
         "merchant": {
-            "droppable": ["feature", "weapon", "wearable", "consumable", "common", "module"]
+            "label": "PL1E.Merchant",
+            "droppable": ["weapon", "wearable", "consumable", "common", "module"]
         }
     }
 

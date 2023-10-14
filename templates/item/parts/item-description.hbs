@@ -1,11 +1,44 @@
 <section class="scroll-auto">
-    <ul class="traits-list">
-        {{#each items}}
-            <li class="item item-edit tag" data-item-id="{{this._id}}">
-                <a>{{this.name}}</a>
-            </li>
-        {{/each}}
-    </ul>
-    {{editor system.description target="system.description" rollData=rollData
-             button=true owner=owner editable=editable engine="prosemirror"}}
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.LinkedItems"}}</legend>
+        {{#if (gt (length abilities) 0)}}
+            <div class="form-group">
+                <label class="attribute-name">{{localize "PL1E.Abilities"}}</label>
+                <div class="form-fields">
+                    {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=abilities}}
+                </div>
+            </div>
+        {{/if}}
+        {{#if (gt (length features) 0)}}
+            <div class="form-group">
+                <label class="attribute-name">{{localize "PL1E.Features"}}</label>
+                <div class="form-fields">
+                    {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=features}}
+                </div>
+            </div>
+        {{/if}}
+        {{#if (gt (length weapons) 0)}}
+            <div class="form-group">
+                <label class="attribute-name">{{localize "PL1E.Weapons"}}</label>
+                <div class="form-fields">
+                    {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=weapons}}
+                </div>
+            </div>
+        {{/if}}
+        {{#if (gt (length modules) 0)}}
+            <div class="form-group">
+                <label class="attribute-name">{{localize "PL1E.Modules"}}</label>
+                <div class="form-fields">
+                    {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=modules}}
+                </div>
+            </div>
+        {{/if}}
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Description"}}</legend>
+        {{{system.description}}}
+    </fieldset>
 </section>

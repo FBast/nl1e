@@ -2,9 +2,10 @@
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
         <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Points"}}</label>
-            <input type="number" step="1" min="-5" max="5" name="system.attributes.points"
-                   value="{{system.attributes.points}}" data-dtype="Number"/>
+            <label class="attribute-name">{{localize "PL1E.ClassType"}}</label>
+            <select name="system.attributes.classType">
+                {{selectOptions (config "classTypes") selected=system.attributes.classType localize=true}}
+            </select>
         </div>
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}

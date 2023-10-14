@@ -3,7 +3,7 @@
     <header class="sheet-header">
         <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
         <div class="header-fields">
-            <h1 class="sheet-name"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+            <h1 class="sheet-name"><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/></h1>
             {{> "systems/pl1e/templates/actor/components/resources.hbs" resources=system.resources}}
         </div>
     </header>

@@ -11,11 +11,16 @@ export function getConfigBase() {
     }
 
     PL1E.featureTypes = {
-        "mind": "PL1E.Race",
+        "race": "PL1E.Race",
         "bodyClass": "PL1E.BodyClass",
         "mindClass": "PL1E.MindClass",
         "faith": "PL1E.Faith",
         "trait": "PL1E.Trait"
+    }
+
+    PL1E.classTypes = {
+        "mind": "PL1E.Mind",
+        "body": "PL1E.Body"
     }
 
     PL1E.weaponOverrides = {

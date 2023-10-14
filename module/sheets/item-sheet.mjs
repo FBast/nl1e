@@ -27,16 +27,13 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @inheritDoc */
     get template() {
-        if (["weapon", "wearable", "consumable", "common", "module"].includes(this.item.type)) {
-            return `systems/pl1e/templates/item/item-base-sheet.hbs`;
-        }
-        else {
-            return `systems/pl1e/templates/item/item-${this.item.type}-sheet.hbs`;
-        }
+        return `systems/pl1e/templates/item/item-base-sheet.hbs`;
     }
 
+    /** @inheritDoc */
     get title() {
-        return this.item.actor ? `${this.item.name} of ${this.item.actor.name}` : this.item.name;
+        const label = game.i18n.localize(CONFIG.PL1E.itemTypes[this.item.type].label) || "Unknown";
+        return this.item.actor ? `${label} (${this.item.actor.name})` : label;
     }
 
     /**
@@ -54,7 +51,6 @@ export class Pl1eItemSheet extends ItemSheet {
                     icon: 'fas fa-clone',
                     onclick: async () => {
                         const item = await Pl1eHelpers.getDocument("Item", this.item.sourceId);
-                        await this.close();
                         if (item.sheet.rendered) item.sheet.bringToTop();
                         else item.sheet.render(true);
                     }
@@ -166,6 +162,9 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find(".trait-selector").on("click", ev => Pl1eEvent.onTraitSelector(ev, this.item));
         html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));
         html.find('.aspect-remove').on("click", ev => this._onAspectRemove(ev));
+        html[0].querySelectorAll(".launch-text-editor").forEach(e => {
+            e.addEventListener("click", ev => Pl1eEvent.onLaunchTextEditor(ev, this.item));
+        });
     }
 
     /**
@@ -179,14 +178,20 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Check item type and subtype
         const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
-        let item = await fromUuid(data.uuid)
+        let document = await fromUuid(data.uuid)
+
+        // Check if the user own the dropped document
+        if (!document.isOwner) {
+            ui.notifications.warn(game.i18n.localize("PL1E.NotOwnedDocument"));
+            return;
+        }
 
         // Check if item can be dropped into this
         if (this.item.isEmbedded) {
-            if (!CONFIG.PL1E.items[this.item.type].localDroppable.includes(item.type)) return;
+            if (!CONFIG.PL1E.itemTypes[this.item.type].localDroppable.includes(document.type)) return;
 
             // If item is module
-            if (item.type === "module") {
+            if (document.type === "module") {
                 // If module capacity is full
                 const items = await this.item.getSubItems();
                 if (items.filter(item => item.type === "module").length >= this.item.system.attributes.modules) {
@@ -196,17 +201,17 @@ export class Pl1eItemSheet extends ItemSheet {
             }
 
             // Retrieve original item
-            const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
+            const originalItem = await Pl1eHelpers.getDocument("Item", document.sourceId);
             await this.item.addRefItem(originalItem);
             this.render();
 
             // Remove item if embedded
-            if (item.isEmbedded) await item.actor.removeItem(item);
+            if (document.isEmbedded) await document.actor.removeItem(document);
         }
         else {
-            if (!CONFIG.PL1E.items[this.item.type].droppable.includes(item.type)) return;
+            if (!CONFIG.PL1E.itemTypes[this.item.type].droppable.includes(document.type)) return;
 
-            await this.item.addRefItem(item);
+            await this.item.addRefItem(document);
             this.render();
         }
     }

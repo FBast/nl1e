@@ -1,33 +1,51 @@
 import {PL1E} from "./config.mjs";
 
 export function getConfigItems() {
-    PL1E.items = {
+    PL1E.itemTypes = {
         "feature": {
-            "droppable": ["feature", "ability", "weapon", "wearable"],
+            "label": "PL1E.Feature",
+            "droppable": ["ability"],
+            "localDroppable": [],
+            "stackable": []
+        },
+        "race": {
+            "label": "PL1E.Race",
+            "droppable": ["feature", "ability", "weapon"],
             "localDroppable": [],
             "stackable": ["weapon"]
         },
+        "class": {
+            "label": "PL1E.Class",
+            "droppable": ["feature", "ability"],
+            "localDroppable": [],
+            "stackable": []
+        },
         "ability": {
+            "label": "PL1E.Ability",
             "droppable": [],
             "localDroppable": [],
             "stackable": []
         },
         "weapon": {
+            "label": "PL1E.Weapon",
             "droppable": ["feature", "ability"],
             "localDroppable": ["module"],
             "stackable": ["module"]
         },
         "wearable": {
+            "label": "PL1E.Wearable",
             "droppable": ["feature", "ability"],
             "localDroppable": ["module"],
             "stackable": ["module"]
         },
         "consumable": {
+            "label": "PL1E.Consumable",
             "droppable": [],
             "localDroppable": [],
             "stackable": []
         },
         "common": {
+            "label": "PL1E.Common",
             "droppable": [],
             "localDroppable": [],
             "stackable": []

@@ -4,6 +4,7 @@ import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eChat} from "./chat.mjs";
 import {TraitSelector} from "../apps/traitSelector.mjs";
 import {Pl1eResting} from "../apps/resting.mjs";
+import {JournalEditor} from "../sheets/journal-editor-sheet.mjs";
 
 export class Pl1eEvent {
 
@@ -356,6 +357,19 @@ export class Pl1eEvent {
         const keyPath = $(event.currentTarget).data("key-path");
 
         return new TraitSelector(document, trait, traitLabel, keyPath).render(true);
+    }
+
+    /**
+     * Handle launching the individual text editing window.
+     * @param {Event} event  The triggering click event.
+     * @param {Document} document The document linked to the editor
+     */
+    static onLaunchTextEditor(event, document) {
+        event.preventDefault();
+        const textKeyPath = event.currentTarget.dataset.target;
+        const label = event.target.closest(".form-group").querySelector("label");
+        const editor = new JournalEditor(document, { textKeyPath, title: label?.innerText });
+        editor.render(true);
     }
 
 }

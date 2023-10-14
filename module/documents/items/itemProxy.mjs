@@ -5,6 +5,8 @@ import {Pl1eConsumable} from "./consumable.mjs";
 import {Pl1eItem} from "./item.mjs";
 import {Pl1eFeature} from "./feature.mjs";
 import {Pl1eModule} from "./module.mjs";
+import {Pl1eRace} from "./race.mjs";
+import {Pl1eClass} from "./class.mjs";
 
 const handler = {
     /**
@@ -15,6 +17,10 @@ const handler = {
         switch (args[0]?.type) {
             case "feature":
                 return new Pl1eFeature(...args);
+            case "race":
+                return new Pl1eRace(...args);
+            case "class":
+                return new Pl1eClass(...args);
             case "ability":
                 return new Pl1eAbility(...args);
             case "weapon":

@@ -2,6 +2,20 @@
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
         <div class="item-attribute flexrow">
+            <label class="attribute-name">
+                {{localize "PL1E.GoldPrice"}}
+                <input type="number" name="system.attributes.price.gold" value="{{system.price.gold}}" data-dtype="Number"/>
+            </label>
+            <label class="attribute-name">
+                {{localize "PL1E.SilverPrice"}}
+                <input type="number" name="system.attributes.price.silver" value="{{system.price.silver}}" data-dtype="Number"/>
+            </label>
+            <label class="attribute-name">
+                {{localize "PL1E.CopperPrice"}}
+                <input type="number" name="system.attributes.price.copper" value="{{system.price.copper}}" data-dtype="Number"/>
+            </label>
+        </div>
+        <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.Uses"}}</label>
             <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
         </div>
