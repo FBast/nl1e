@@ -103,6 +103,14 @@ export class Pl1eItemSheet extends ItemSheet {
         // Prepare refItems
         await this._prepareItems(context);
 
+        // Enrich HTML description
+        context.enriched = await TextEditor.enrichHTML(this.item.system.description, {
+            secrets: this.item.isOwner,
+            async: true,
+            relativeTo: this.item,
+            rollData: context.rollData
+        });
+
         // Retrieve some documents from packs
         context.sequencerMacros = await this._listDocuments("legacy-sequencer-macros", true);
         context.modificationMacros = await this._listDocuments("legacy-modification-macros", true);

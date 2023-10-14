@@ -17,8 +17,15 @@
             {{/if}}
         </div>
     </header>
-    {{#if @root.game.user.isGM}}
-    {{!-- Sheet Tab Navigation for GM --}}
+    {{#if (or (not item.isOwner) item.isEmbedded)}}
+        {{!-- Description content for Players --}}
+        <section class="sheet-body">
+            <div class="tab description flexcol">
+                {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
+            </div>
+        </section>
+    {{else}}
+        {{!-- Sheet Tab Navigation for GM --}}
         <nav class="sheet-tabs tabs" data-group="primary">
             <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
             <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
@@ -53,19 +60,11 @@
                 {{/if}}
             </div>
             {{#if (or (gt (length item.system.refItems) 0) (gt (length item.system.localRefItems) 0))}}
-            {{!-- Linked Items Tab --}}
+                {{!-- Linked Items Tab --}}
                 <div class="tab items flexcol" data-group="primary" data-tab="linked-items">
                     {{> "systems/pl1e/templates/item/parts/item-linked.hbs"}}
                 </div>
             {{/if}}
         </section>
-    {{else}}
-    {{!-- Description content for Players --}}
-        <section class="sheet-body">
-            <div class="tab description flexcol">
-                {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
-            </div>
-        </section>
     {{/if}}
-
 </form>
