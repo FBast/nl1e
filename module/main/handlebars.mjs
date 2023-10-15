@@ -54,4 +54,8 @@ export const registerHandlebars = function () {
         if (Array.isArray(arr) || typeof(arr) === "string") return arr.length;
         else return Object.keys(arr).length;
     });
+
+    Handlebars.registerHelper('isEmpty', function(obj) {
+        return Object.keys(obj).length === 0;
+    });
 }

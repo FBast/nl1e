@@ -71,21 +71,25 @@ export function getConfigItems() {
         // Common
         "description": {
             "label": "PL1E.Description",
-            "type": "text"
+            "type": "text",
+            "show": false
         },
         "masters": {
             "label": "PL1E.Masters",
             "type": "select",
-            "select": "masters"
+            "select": "masters",
+            "show": true
         },
         "range": {
             "label": "PL1E.Range",
             "type": "number",
-            "fallback": 0
+            "fallback": 0,
+            "show": true
         },
         "uses": {
             "label": "PL1E.Uses",
-            "type": "number"
+            "type": "number",
+            "show": true
         },
         "actionCost": {
             "label": "PL1E.ActionCost",
@@ -94,7 +98,8 @@ export function getConfigItems() {
             "dataGroup": "misc",
             "data": "action",
             "invertSign": true,
-            "combatOnly": true
+            "combatOnly": true,
+            "show": true
         },
         "reactionCost": {
             "label": "PL1E.ReactionCost",
@@ -103,7 +108,8 @@ export function getConfigItems() {
             "dataGroup": "misc",
             "data": "reaction",
             "invertSign": true,
-            "combatOnly": true
+            "combatOnly": true,
+            "show": true
         },
         "isMajorAction": {
             "label": "PL1E.Major",
@@ -112,34 +118,41 @@ export function getConfigItems() {
             "dataGroup": "itemBase",
             "data": "isMajorActionUsed",
             "applyIfTrue": true,
-            "combatOnly": true
+            "combatOnly": true,
+            "show": true
         },
         "activationMacro": {
             "label": "PL1E.ActivationMacro",
-            "type": "text"
+            "type": "text",
+            "show": false
         },
         "preLaunchMacro": {
             "label": "PL1E.PreLaunchMacro",
-            "type": "text"
+            "type": "text",
+            "show": false
         },
         "postLaunchMacro": {
             "label": "PL1E.PostLaunchMacro",
-            "type": "text"
+            "type": "text",
+            "show": false
         },
         // Features
         "featureType": {
             "label": "PL1E.FeatureType",
             "type": "number",
-            "select": "featureTypes"
+            "select": "featureTypes",
+            "show": true
         },
         "cost": {
             "label": "PL1E.Cost",
-            "type": "number"
+            "type": "number",
+            "show": true
         },
         // Abilities
         "level": {
             "label": "PL1E.Level",
-            "type": "number"
+            "type": "number",
+            "show": true
         },
         "healthCost": {
             "label": "PL1E.HealthCost",
@@ -147,7 +160,8 @@ export function getConfigItems() {
             "document": "actor",
             "dataGroup": "resources",
             "data": "health",
-            "invertSign": true
+            "invertSign": true,
+            "show": true
         },
         "staminaCost": {
             "label": "PL1E.StaminaCost",
@@ -155,7 +169,8 @@ export function getConfigItems() {
             "document": "actor",
             "dataGroup": "resources",
             "data": "stamina",
-            "invertSign": true
+            "invertSign": true,
+            "show": true
         },
         "manaCost": {
             "label": "PL1E.ManaCost",
@@ -163,7 +178,8 @@ export function getConfigItems() {
             "document": "actor",
             "dataGroup": "resources",
             "data": "mana",
-            "invertSign": true
+            "invertSign": true,
+            "show": true
         },
         "usageCost": {
             "label": "PL1E.UsageCost",
@@ -171,81 +187,96 @@ export function getConfigItems() {
             "document": "linkedItem",
             "dataGroup": "itemBase",
             "data": "removedUses",
-            "invertSign": false
+            "invertSign": false,
+            "show": true
         },
         "abilityLink": {
             "label": "PL1E.AbilityLink",
             "type": "select",
-            "select": "abilityLinks"
+            "select": "abilityLinks",
+            "show": true
         },
         "roll": {
             "label": "PL1E.Roll",
             "type": "select",
-            "select": "abilitySkills"
+            "select": "abilitySkills",
+            "show": true
         },
         "areaShape": {
             "label": "PL1E.AreaShape",
             "type": "select",
             "select": "areaShapes",
-            "fallback": "circle"
+            "fallback": "circle",
+            "show": true
         },
         "areaNumber": {
             "label": "PL1E.AreaNumber",
             "type": "number",
-            "fallback": 1
+            "fallback": 1,
+            "show": true
         },
         "circleRadius": {
             "label": "PL1E.CircleRadius",
             "type": "number",
-            "fallback": 1
+            "fallback": 1,
+            "show": true
         },
         "coneLength": {
             "label": "PL1E.ConeLength",
             "type": "number",
-            "fallback": 1
+            "fallback": 1,
+            "show": true
         },
         "coneAngle": {
             "label": "PL1E.ConeAngle",
             "type": "number",
-            "fallback": 50
+            "fallback": 50,
+            "show": true
         },
         "squareLength": {
             "label": "PL1E.SquareLength",
             "type": "number",
-            "fallback": 1
+            "fallback": 1,
+            "show": true
         },
         "rayLength": {
             "label": "PL1E.RayLength",
             "type": "number",
-            "fallback": 1
+            "fallback": 1,
+            "show": true
         },
         "oppositeRoll": {
             "label": "PL1E.TargetRoll",
             "type": "select",
             "select": "abilityResistances",
-            "fallback": "none"
+            "fallback": "none",
+            "show": true
         },
         // Weapons
         "hands": {
             "label": "PL1E.Hands",
-            "type": "number"
+            "type": "number",
+            "show": true
         },
         // Wearables
         "slot": {
             "label": "PL1E.Slot",
             "type": "select",
-            "select": "slots"
+            "select": "slots",
+            "show": true
         },
         // Consumables
         "isReloadable": {
             "label": "PL1E.Reloadable",
-            "type": "bool"
+            "type": "bool",
+            "show": true
         },
         // Common Objects
         "commonType": {
             "label": "PL1E.CommonType",
             "type": "select",
-            "select": "commonTypes"
+            "select": "commonTypes",
+            "show": true
         }
     }
 

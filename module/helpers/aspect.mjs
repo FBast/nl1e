@@ -124,6 +124,31 @@ export class Pl1eAspect {
         }
     }
 
+    static getDescription(aspect) {
+        let description = [];
+        if (aspect.operator) description.push(game.i18n.localize(CONFIG.PL1E.numberOperators[aspect.operator]));
+        if (aspect.value) {
+            if (typeof aspect.value === "boolean") {
+                description.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
+            }
+            else {
+                description.push(aspect.value);
+            }
+        }
+        if (aspect.damageType) description.push(game.i18n.localize(CONFIG.PL1E.damageTypes[aspect.damageType]));
+        if (aspect.resolutionType) description.push(game.i18n.localize(CONFIG.PL1E.resolutionTypes[aspect.resolutionType]));
+        if (aspect.data) {
+            description.push(game.i18n.localize("PL1E.On"));
+            description.push(game.i18n.localize(CONFIG.PL1E[aspect.dataGroup][aspect.data].label));
+        }
+        if (aspect.targetGroup) {
+            description.push(game.i18n.localize("PL1E.For"));
+            description.push(game.i18n.localize(CONFIG.PL1E.targetGroups[aspect.targetGroup]));
+        }
+        description = description.join(' ');
+        return description.toLowerCase();
+    }
+
     /**
      * Apply the modify aspect
      * @param aspect

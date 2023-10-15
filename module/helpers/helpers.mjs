@@ -257,4 +257,13 @@ export class Pl1eHelpers {
         return JSON.stringify(obj, replacer);
     }
 
+    static multiLocalize(...keys) {
+        return keys.map(key => {
+            if (!key) return "";  // If the key is undefined or empty, return an empty string
+            if (typeof key !== "string") return key;
+            let localized = game.i18n.localize(key);
+            return localized !== key ? localized : key;  // If localization returns the key itself, it means there's no translation for it
+        }).join(' ');
+    }
+
 }

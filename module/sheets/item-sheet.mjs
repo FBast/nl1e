@@ -82,7 +82,7 @@ export class Pl1eItemSheet extends ItemSheet {
         const context = super.getData();
 
         // Use a safe clone of the item data for further operations.
-        // const itemData = context.item;
+        // context.item = this.item.toObject(false);
 
         // Sheet editable if original or parent is token and user is owner
         this.options.editable = this.item.isOwner;
@@ -95,16 +95,18 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Add the actor's data to context.data for easier access
-        context.system = context.item.system;
-        context.flags = context.item.flags;
+        context.item = this.item;
+        context.system = this.item.system;
+        context.flags = this.item.flags;
         context.config = CONFIG.PL1E;
         context.game = game;
 
         // Prepare refItems
         await this._prepareItems(context);
+        await this._prepareDisplay(context);
 
         // Enrich HTML description
-        context.enriched = await TextEditor.enrichHTML(this.item.system.description, {
+        context.enriched = await TextEditor.enrichHTML(this.item.system, {
             secrets: this.item.isOwner,
             async: true,
             relativeTo: this.item,
@@ -122,7 +124,7 @@ export class Pl1eItemSheet extends ItemSheet {
     /** @inheritDoc */
     _updateObject(event, formData) {
         const deepenFormData = Pl1eHelpers.deepen(formData)
-        if (deepenFormData.system.passiveAspects !== undefined) {
+        if (deepenFormData.system?.passiveAspects !== undefined) {
             for (const [id, aspect] of Object.entries(deepenFormData.system.passiveAspects)) {
                 // Set passive aspect default data
                 if (PL1E[aspect.dataGroup][aspect.data] === undefined)
@@ -134,7 +136,7 @@ export class Pl1eItemSheet extends ItemSheet {
             }
         }
 
-        if (deepenFormData.system.activeAspects !== undefined) {
+        if (deepenFormData.system?.activeAspects !== undefined) {
             for (const [id, aspect] of Object.entries(deepenFormData.system.activeAspects)) {
                 // Set passive aspect default value
                 if (PL1E[aspect.dataGroup][aspect.data] === undefined)
@@ -240,7 +242,7 @@ export class Pl1eItemSheet extends ItemSheet {
         let unknowns = [];
 
         // Iterate through subItems, allocating to containers
-        const allRefs = [...this.item.system.refItems, ...this.item.system.localRefItems];
+        const allRefs = [...context.item.system.refItems, ...context.item.system.localRefItems];
         for (const id of allRefs) {
             let item = await Pl1eHelpers.getDocument("Item", id);
             items.push(item);
@@ -283,10 +285,69 @@ export class Pl1eItemSheet extends ItemSheet {
         context.wearables = wearables;
         context.modules = modules;
         context.unknowns = unknowns;
-        context.passiveAspects = this.item.system.passiveAspects;
-        context.activeAspects = this.item.system.activeAspects;
+        context.passiveAspects = context.item.system.passiveAspects;
+        context.activeAspects = context.item.system.activeAspects;
         context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
         context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+    }
+
+    async _prepareDisplay(context) {
+        // Attributes
+        const attributesDisplay = {};
+        for (let [key, value] of Object.entries(context.system.attributes)) {
+            const attributeConfig = CONFIG.PL1E.attributes[key];
+            if (attributeConfig === undefined || !attributeConfig.show) continue;
+
+            // Type modification
+            if (Array.isArray(value)) {
+                value = value.map(value => {
+                    const label = CONFIG.PL1E[attributeConfig.select][value]
+                    return game.i18n.localize(label);
+                }).join(', ');
+            }
+            else if (attributeConfig.type === "select") {
+                value = CONFIG.PL1E[attributeConfig.select][value];
+                value = game.i18n.localize(value);
+            }
+            else if (typeof value === "boolean") {
+                value = game.i18n.localize(value ? "PL1E.Yes" : "PL1E.No");
+            }
+            else if (value === 0) continue;
+            
+            // Assign the attribute display
+            attributesDisplay[key] = Object.assign({}, attributeConfig, {
+                label: game.i18n.localize(attributeConfig.label),
+                value: value
+            });
+        }
+        context.attributesDisplay = attributesDisplay;
+
+        // Passive aspects
+        const passiveAspectsDisplay = {}
+        for (let [key, aspect] of Object.entries(await this.item.getCombinedPassiveAspects())) {
+            let aspectCopy = Object.assign({}, aspect);
+            const aspectConfig = CONFIG.PL1E.aspects[aspectCopy.name];
+            if (aspectConfig === undefined) continue;
+
+            passiveAspectsDisplay[key] = Object.assign({}, aspectConfig, {
+                label: game.i18n.localize(aspectConfig.label),
+                description: Pl1eAspect.getDescription(aspectCopy),
+            });
+        }
+        context.passiveAspectsDisplay = passiveAspectsDisplay;
+
+        // Active aspects
+        const activeAspectsDisplay = {}
+        for (let [key, aspect] of Object.entries(await this.item.getCombinedActiveAspects())) {
+            let aspectCopy = Object.assign({}, aspect);
+            const aspectConfig = CONFIG.PL1E.aspects[aspectCopy.name];
+            if (aspectConfig === undefined) continue;
+            activeAspectsDisplay[key] = Object.assign({}, aspectConfig, {
+                label: game.i18n.localize(aspectConfig.label),
+                description: Pl1eAspect.getDescription(aspectCopy),
+            });
+        }
+        context.activeAspectsDisplay = activeAspectsDisplay;
     }
 
     /**

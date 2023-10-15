@@ -1,42 +1,74 @@
 <section class="scroll-auto">
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.LinkedItems"}}</legend>
-        {{#if (gt (length abilities) 0)}}
-            <div class="form-group">
-                <label class="attribute-name">{{localize "PL1E.Abilities"}}</label>
-                <div class="form-fields">
-                    {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=abilities}}
+    {{#if (gt (length items) 0)}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.LinkedItems"}}</legend>
+            {{#if (gt (length abilities) 0)}}
+                <div class="form-group">
+                    <label class="attribute-name">{{localize "PL1E.Abilities"}}</label>
+                    <div class="form-fields align-right">
+                        {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=abilities}}
+                    </div>
                 </div>
-            </div>
-        {{/if}}
-        {{#if (gt (length features) 0)}}
-            <div class="form-group">
-                <label class="attribute-name">{{localize "PL1E.Features"}}</label>
-                <div class="form-fields">
-                    {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=features}}
+            {{/if}}
+            {{#if (gt (length features) 0)}}
+                <div class="form-group">
+                    <label class="attribute-name">{{localize "PL1E.Features"}}</label>
+                    <div class="form-fields align-right">
+                        {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=features}}
+                    </div>
                 </div>
-            </div>
-        {{/if}}
-        {{#if (gt (length weapons) 0)}}
-            <div class="form-group">
-                <label class="attribute-name">{{localize "PL1E.Weapons"}}</label>
-                <div class="form-fields">
-                    {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=weapons}}
+            {{/if}}
+            {{#if (gt (length weapons) 0)}}
+                <div class="form-group">
+                    <label class="attribute-name">{{localize "PL1E.Weapons"}}</label>
+                    <div class="form-fields align-right">
+                        {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=weapons}}
+                    </div>
                 </div>
-            </div>
-        {{/if}}
-        {{#if (gt (length modules) 0)}}
-            <div class="form-group">
-                <label class="attribute-name">{{localize "PL1E.Modules"}}</label>
-                <div class="form-fields">
-                    {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=modules}}
+            {{/if}}
+            {{#if (gt (length modules) 0)}}
+                <div class="form-group">
+                    <label class="attribute-name">{{localize "PL1E.Modules"}}</label>
+                    <div class="form-fields align-right">
+                        {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=modules}}
+                    </div>
                 </div>
-            </div>
-        {{/if}}
-    </fieldset>
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
-    </fieldset>
+            {{/if}}
+        </fieldset>
+    {{/if}}
+    {{#unless (isEmpty attributesDisplay)}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+            {{#each attributesDisplay}}
+                <div class="form-group">
+                    <label>{{label}}</label>
+                    <label class="align-right">{{value}}</label>
+                </div>
+            {{/each}}
+        </fieldset>
+    {{/unless}}
+    {{#unless (isEmpty passiveAspectsDisplay)}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.PassiveAspects"}}</legend>
+            {{#each passiveAspectsDisplay}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{label}}</label>
+                    <label class="attribute-name">{{description}}</label>
+                </div>
+            {{/each}}
+        </fieldset>
+    {{/unless}}
+    {{#unless (isEmpty activeAspectsDisplay)}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.ActiveAspects"}}</legend>
+            {{#each activeAspectsDisplay}}
+                <div class="item-attribute flexrow">
+                    <label class="attribute-name">{{label}}</label>
+                    <label class="attribute-name">{{description}}</label>
+                </div>
+            {{/each}}
+        </fieldset>
+    {{/unless}}
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Description"}}</legend>
         {{{enriched}}}

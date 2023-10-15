@@ -87,6 +87,8 @@
   "PL1E.RollAdvantages": "Roll advantages",
   "PL1E.Characteristics": "Characteristics",
   "PL1E.Child": "Child",
+  "PL1E.On": "On",
+  "PL1E.For": "For",
   "PL1E.ChildWithSameIdExist": "Child with same id exist",
   "PL1E.Circle": "Circle",
   "PL1E.CircleRadius": "Circle radius",

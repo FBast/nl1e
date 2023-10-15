@@ -6,9 +6,7 @@
              data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
         <div class="item-effects-target">
             {{#each targetData.activeAspects}}
-                {{log this}}
                 {{#with (config dataGroup data)}}
-                    {{log this}}
                     {{#if (and (eq type "number") (ne ../../this 0))}}
                         <i class="{{#if (gt ../value 0)}}fas{{else}}fas{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
                             <label>{{formatNumber ../value signe=true}}</label>
