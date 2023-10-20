@@ -10,14 +10,6 @@ export function getConfigBase() {
         "social": "PL1E.Social"
     }
 
-    PL1E.featureTypes = {
-        "race": "PL1E.Race",
-        "bodyClass": "PL1E.BodyClass",
-        "mindClass": "PL1E.MindClass",
-        "faith": "PL1E.Faith",
-        "trait": "PL1E.Trait"
-    }
-
     PL1E.classTypes = {
         "mind": "PL1E.Mind",
         "body": "PL1E.Body"

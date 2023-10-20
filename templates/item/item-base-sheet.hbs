@@ -45,6 +45,8 @@
                     {{> "systems/pl1e/templates/item/parts/race-attributes.hbs"}}
                 {{else if (eq item.type "class")}}
                     {{> "systems/pl1e/templates/item/parts/class-attributes.hbs"}}
+                {{else if (eq item.type "feature")}}
+                    {{> "systems/pl1e/templates/item/parts/feature-attributes.hbs"}}
                 {{else if (eq item.type "ability")}}
                     {{> "systems/pl1e/templates/item/parts/ability-attributes.hbs"}}
                 {{else if (eq item.type "weapon")}}
