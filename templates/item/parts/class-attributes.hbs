@@ -1,8 +1,14 @@
 <section class="scroll-auto">
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.ClassType"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Description"}}</label>
+            <button class="launch-text-editor" data-target="system.description">
+                <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+            </button>
+        </div>
+        <div class="form-group">
+            <label>{{localize "PL1E.ClassType"}}</label>
             <select name="system.attributes.classType">
                 {{selectOptions (config "classTypes") selected=system.attributes.classType localize=true}}
             </select>

@@ -1,16 +1,25 @@
 <section class="scroll-auto">
-    <div class="item-attribute flexrow">
-        <label class="attribute-name">{{localize "PL1E.ItemType"}}</label>
-        <select name="system.attributes.itemType">
-            {{selectOptions (config "slots") selected=system.attributes.itemType localize=true}}
-        </select>
-    </div>
-    <div class="item-attribute flexrow">
-        <label class="attribute-name">{{localize "PL1E.Slot"}}</label>
-        <select name="system.attributes.slot">
-            {{selectOptions (config "slots") selected=system.attributes.slot localize=true}}
-        </select>
-    </div>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+        <div class="form-group">
+            <label>{{localize "PL1E.Description"}}</label>
+            <button class="launch-text-editor" data-target="system.description">
+                <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+            </button>
+        </div>
+        <div class="form-group">
+            <label>{{localize "PL1E.ItemType"}}</label>
+            <select name="system.attributes.itemType">
+                {{selectOptions (config "slots") selected=system.attributes.itemType localize=true}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>{{localize "PL1E.Slot"}}</label>
+            <select name="system.attributes.slot">
+                {{selectOptions (config "slots") selected=system.attributes.slot localize=true}}
+            </select>
+        </div>
+    </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
     {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
 </section>

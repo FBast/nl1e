@@ -131,6 +131,13 @@ export class Pl1eAspect {
             if (typeof aspect.value === "boolean") {
                 description.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
             }
+            else if (Array.isArray(aspect.value)) {
+                const value = aspect.value.map(value => {
+                    const label = CONFIG.PL1E[aspect.data][value]
+                    return game.i18n.localize(label);
+                }).join(", ");
+                description.push(value);
+            }
             else {
                 description.push(aspect.value);
             }
@@ -498,7 +505,6 @@ export class Pl1eAspect {
      */
     static mergeAspectsObjects(aspectsObject) {
         const mergedAspects = {};
-        const aspectKeys = {}; // To store the original keys
 
         for (const aspectName in aspectsObject) {
             const aspect = aspectsObject[aspectName];
@@ -506,21 +512,22 @@ export class Pl1eAspect {
 
             if (!mergedAspects[key]) {
                 mergedAspects[key] = { ...aspect };
-                aspectKeys[key] = aspectName; // Store the original key
+                if (typeof aspect.value === "string") {
+                    mergedAspects[key].value = [aspect.value];
+                }
             } else {
-                mergedAspects[key].value += aspect.value;
+                if (typeof aspect.value === "number" && typeof mergedAspects[key].value === "number") {
+                    mergedAspects[key].value += aspect.value;
+                }
+                else if (typeof aspect.value === "string" && Array.isArray(mergedAspects[key].value)) {
+                    mergedAspects[key].value.push(aspect.value);
+                }
             }
         }
 
-        // Convert back to original keys
-        const result = {};
-        for (const key in mergedAspects) {
-            const originalKey = aspectKeys[key];
-            result[originalKey] = mergedAspects[key];
-        }
-
-        return result;
+        return mergedAspects;
     }
+
 
     /**
      * Generate a unique key for an aspect based on its properties except for the value.

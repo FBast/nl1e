@@ -21,17 +21,17 @@
                 <input type="number" name="system.attributes.price.copper" value="{{system.price.copper}}" data-dtype="Number"/>
             </label>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Customizable"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Customizable"}}</label>
             <input type="checkbox" name="system.attributes.customizable" {{checked system.attributes.customizable}} data-dtype="Boolean"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Modules"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Modules"}}</label>
             <input type="number" name="system.attributes.modules" value="{{system.attributes.modules}}" data-dtype="Number"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
-            <ul class="attribute-name">
+        <div class="form-group">
+            <label>{{localize "PL1E.Masters"}}</label>
+            <ul>
                 {{#each system.attributes.masters}}
                     <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
                 {{/each}}
@@ -41,18 +41,18 @@
                 <i class="fas fa-edit"></i>
             </a>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Hands"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Hands"}}</label>
             <input type="number" name="system.attributes.hands" value="{{system.attributes.hands}}" data-dtype="Number"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Reach"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Reach"}}</label>
             <input type="number" name="system.attributes.reach" value="{{system.attributes.reach}}" data-dtype="Number"/>
         </div>
         {{#if (gt system.attributes.reach 0)}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.MeleeRoll"}}</label>
-                <ul class="attribute-name">
+            <div class="form-group">
+                <label>{{localize "PL1E.MeleeRoll"}}</label>
+                <ul>
                     {{#each system.attributes.meleeRoll}}
                         <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
                     {{/each}}
@@ -63,9 +63,9 @@
                 </a>
             </div>
             {{#if (gt system.attributes.meleeRoll.length 0)}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.MeleeOppositeRoll"}}</label>
-                    <ul class="attribute-name">
+                <div class="form-group">
+                    <label>{{localize "PL1E.MeleeOppositeRoll"}}</label>
+                    <ul>
                         {{#each system.attributes.meleeOppositeRoll}}
                             <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                         {{/each}}
@@ -77,14 +77,14 @@
                 </div>
             {{/if}}
         {{/if}}
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Range"}}</label>
             <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
         </div>
         {{#if (gt system.attributes.range 0)}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.RangeRoll"}}</label>
-                <ul class="attribute-name">
+            <div class="form-group">
+                <label>{{localize "PL1E.RangeRoll"}}</label>
+                <ul>
                     {{#each system.attributes.rangeRoll}}
                         <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
                     {{/each}}
@@ -95,9 +95,9 @@
                 </a>
             </div>
             {{#if (gt system.attributes.rangeRoll.length 0)}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.RangeOppositeRoll"}}</label>
-                    <ul class="attribute-name">
+                <div class="form-group">
+                    <label>{{localize "PL1E.RangeOppositeRoll"}}</label>
+                    <ul>
                         {{#each system.attributes.rangeOppositeRoll}}
                             <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                         {{/each}}
@@ -109,8 +109,8 @@
                 </div>
             {{/if}}
         {{/if}}
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Uses"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Uses"}}</label>
             <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
         </div>
     </fieldset>

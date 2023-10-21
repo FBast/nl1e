@@ -1,25 +1,38 @@
 <section class="scroll-auto">
     <fieldset>
+        <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+        <div class="form-group">
+            <label>{{localize "PL1E.Description"}}</label>
+            <button class="launch-text-editor" data-target="system.description">
+                <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+            </button>
+        </div>
+        <div class="form-group">
+            <label>{{localize "PL1E.Level"}}</label>
+            <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" data-dtype="Number"/>
+        </div>
+    </fieldset>
+    <fieldset>
         <legend class="section-header">
             <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipLegendParent"}}'></i>
             {{localize "PL1E.Parent"}}
         </legend>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">
+        <div class="form-group">
+            <label>
                 <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipRequireParentMastery"}}'></i>
                 {{localize "PL1E.RequireParentMastery"}}
             </label>
             <input type="checkbox" name="system.attributes.requireParentMastery" {{checked system.attributes.requireParentMastery}} data-dtype="Boolean"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">
+        <div class="form-group">
+            <label>
                 <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipLaunchParentActiveAspects"}}'></i>
                 {{localize "PL1E.LaunchParentActiveAspects"}}
             </label>
             <input type="checkbox" name="system.attributes.launchParentActiveAspects" {{checked system.attributes.launchParentActiveAspects}} data-dtype="Boolean"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">
+        <div class="form-group">
+            <label>
                 <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipWeaponOverride"}}'></i>
                 {{localize "PL1E.WeaponOverride"}}
             </label>
@@ -28,49 +41,45 @@
             </select>
         </div>
         {{#if (ne system.attributes.weaponOverride "none")}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.RangeOverride"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.RangeOverride"}}</label>
                 <input type="checkbox" name="system.attributes.overrideRange" {{checked system.attributes.overrideRange}} data-dtype="Boolean"/>
             </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.OverrideRoll"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.OverrideRoll"}}</label>
                 <input type="checkbox" name="system.attributes.overrideRoll" {{checked system.attributes.overrideRoll}} data-dtype="Boolean"/>
             </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.OverrideOppositeRoll"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.OverrideOppositeRoll"}}</label>
                 <input type="checkbox" name="system.attributes.overrideOppositeRoll" {{checked system.attributes.overrideOppositeRoll}} data-dtype="Boolean"/>
             </div>
         {{/if}}
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Usage"}}</legend>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Level"}}</label>
-            <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" data-dtype="Number"/>
-        </div>
         {{#unless system.attributes.overrideRoll}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.Roll"}}</label>
-                <ul class="attribute-name">
+            <div class="form-group">
+                <label>{{localize "PL1E.Roll"}}</label>
+                <ul>
                     {{#each system.attributes.roll}}
                         <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
                     {{/each}}
                 </ul>
-                <a class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.Roll" data-key-path="attributes.roll"
+                <a class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.Roll" data-key-path="attributes.roll"
                    data-tooltip="{{localize 'PL1E.RollConfig'}}">
                     <i class="fas fa-edit"></i>
                 </a>
             </div>
         {{/unless}}
         {{#if (or system.attributes.overrideRoll (gt (length system.attributes.roll) 0))}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.RollAdvantages"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.RollAdvantages"}}</label>
                 <input type="number" name="system.attributes.rollAdvantages" value="{{system.attributes.rollAdvantages}}" data-dtype="Number"/>
             </div>
             {{#unless system.attributes.overrideOppositeRoll}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.TargetRoll"}}</label>
-                <ul class="attribute-name">
+            <div class="form-group">
+                <label>{{localize "PL1E.TargetRoll"}}</label>
+                <ul>
                     {{#each system.attributes.oppositeRoll}}
                         <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                     {{/each}}
@@ -82,69 +91,69 @@
             </div>
             {{/unless}}
             {{#if (or system.attributes.overrideOppositeRoll (gt (length system.attributes.oppositeRoll) 0))}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.TargetRollAdvantages"}}</label>
+                <div class="form-group">
+                    <label>{{localize "PL1E.TargetRollAdvantages"}}</label>
                     <input type="number" name="system.attributes.oppositeRollAdvantages" value="{{system.attributes.oppositeRollAdvantages}}" data-dtype="Number"/>
                 </div>
             {{/if}}
         {{/if}}
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.HealthCost"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.HealthCost"}}</label>
             <input type="number" name="system.attributes.healthCost" value="{{system.attributes.healthCost}}" data-dtype="Number"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.StaminaCost"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.StaminaCost"}}</label>
             <input type="number" name="system.attributes.staminaCost" value="{{system.attributes.staminaCost}}" data-dtype="Number"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.ManaCost"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.ManaCost"}}</label>
             <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}" data-dtype="Number"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.UsageCost"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.UsageCost"}}</label>
             <input type="number" name="system.attributes.usageCost" value="{{system.attributes.usageCost}}" data-dtype="Number"/>
         </div>
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Activation"}}</legend>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Activation"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Activation"}}</label>
             <select name="system.attributes.activation">
                 {{selectOptions (config "activations") selected=system.attributes.activation localize=true}}
             </select>
         </div>
         {{#if (eq system.attributes.activation "action")}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.ActionCost"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.ActionCost"}}</label>
                 <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
             </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.IsMajorAction"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.IsMajorAction"}}</label>
                 <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
             </div>
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.TriggerReactions"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.TriggerReactions"}}</label>
                 <input type="checkbox" name="system.attributes.triggerReactions" {{checked system.attributes.triggerReactions}} data-dtype="Boolean"/>
             </div>
         {{else if (eq system.attributes.activation "reaction")}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.ReactionCost"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.ReactionCost"}}</label>
                 <input type="number" name="system.attributes.reactionCost" value="1" data-dtype="Number" disabled/>
             </div>
         {{/if}}
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Target"}}</legend>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.AreaShape"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.AreaShape"}}</label>
             <select name="system.attributes.areaShape">
                 {{selectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
             </select>
         </div>
         {{#if (ne system.attributes.areaShape "self")}}
             {{#unless system.attributes.overrideRange}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.Range"}}</label>
+                <div class="form-group">
+                    <label>{{localize "PL1E.Range"}}</label>
                     <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
                     {{#if (ne (length system.attributes.roll) 0)}}
                         <select name="system.attributes.rangeResolutionType">
@@ -153,8 +162,8 @@
                     {{/if}}
                 </div>
             {{/unless}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.AreaNumber"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.AreaNumber"}}</label>
                 <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
                 {{#if (ne (length system.attributes.roll) 0)}}
                     <select name="system.attributes.areaNumberResolutionType">
@@ -163,8 +172,8 @@
                 {{/if}}
             </div>
             {{#if (eq system.attributes.areaShape "circle")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.CircleRadius"}}</label>
+                <div class="form-group">
+                    <label>{{localize "PL1E.CircleRadius"}}</label>
                     <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
                     {{#if (ne (length system.attributes.roll) 0)}}
                         <select name="system.attributes.circleRadiusResolutionType">
@@ -173,8 +182,8 @@
                     {{/if}}
                 </div>
             {{else if (eq system.attributes.areaShape "cone")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.ConeLength"}}</label>
+                <div class="form-group">
+                    <label>{{localize "PL1E.ConeLength"}}</label>
                     <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
                     {{#if (ne (length system.attributes.roll) 0)}}
                         <select name="system.attributes.coneLengthResolutionType">
@@ -182,16 +191,16 @@
                         </select>
                     {{/if}}
                 </div>
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.ConeAngle"}}</label>
+                <div class="form-group">
+                    <label>{{localize "PL1E.ConeAngle"}}</label>
                     <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
                     <select name="system.attributes.coneAngleResolutionType">
                         {{selectOptions (config "resolutionTypes") selected=system.attributes.coneAngleResolutionType localize=true}}
                     </select>
                 </div>
             {{else if (eq system.attributes.areaShape "square")}}
-                    <div class="item-attribute flexrow">
-                        <label class="attribute-name">{{localize "PL1E.SquareLength"}}</label>
+                    <div class="form-group">
+                        <label>{{localize "PL1E.SquareLength"}}</label>
                         <input type="number" name="system.attributes.squareLength" value="{{system.attributes.squareLength}}" data-dtype="Number"/>
                         {{#if (ne (length system.attributes.roll) 0)}}
                             <select name="system.attributes.squareLengthResolutionType">
@@ -200,8 +209,8 @@
                         {{/if}}
                     </div>
             {{else if (eq system.attributes.areaShape "ray")}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.RayLength"}}</label>
+                <div class="form-group">
+                    <label>{{localize "PL1E.RayLength"}}</label>
                     <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
                     {{#if (ne (length system.attributes.roll) 0)}}
                         <select name="system.attributes.rayLengthResolutionType">
@@ -211,23 +220,23 @@
                 </div>
             {{/if}}
             {{#if (and (ne system.attributes.areaShape "target") (ne system.attributes.areaShape "self"))}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{localize "PL1E.ExcludeSelf"}}</label>
+                <div class="form-group">
+                    <label>{{localize "PL1E.ExcludeSelf"}}</label>
                     <input type="checkbox" name="system.attributes.excludeSelf" {{checked system.attributes.excludeSelf}} data-dtype="Boolean"/>
                 </div>
             {{/if}}
         {{/if}}
         {{#if (ne system.attributes.areaShape "self")}}
-            <div class="item-attribute flexrow">
-                <label class="attribute-name">{{localize "PL1E.IncludeSelf"}}</label>
+            <div class="form-group">
+                <label>{{localize "PL1E.IncludeSelf"}}</label>
                 <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}} data-dtype="Boolean"/>
             </div>
         {{/if}}
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.ModificationMacros"}}</legend>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.ActorUpdateMacro"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.ActorUpdateMacro"}}</label>
             <select name="system.attributes.actorUpdateMacro">
                 {{selectOptions modificationMacros selected=system.attributes.actorUpdateMacro localize=true}}
             </select>
@@ -235,20 +244,20 @@
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.SequencerMacros"}}</legend>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.ActivationMacro"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.ActivationMacro"}}</label>
             <select name="system.attributes.activationMacro">
                 {{selectOptions sequencerMacros selected=system.attributes.activationMacro localize=true}}
             </select>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.PreLaunchMacro"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.PreLaunchMacro"}}</label>
             <select name="system.attributes.preLaunchMacro">
                 {{selectOptions sequencerMacros selected=system.attributes.preLaunchMacro localize=true}}
             </select>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.PostLaunchMacro"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.PostLaunchMacro"}}</label>
             <select name="system.attributes.postLaunchMacro">
                 {{selectOptions sequencerMacros selected=system.attributes.postLaunchMacro localize=true}}
             </select>

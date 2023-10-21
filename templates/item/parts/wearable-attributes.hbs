@@ -1,37 +1,43 @@
 <section class="scroll-auto">
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">
+        <div class="form-group">
+            <label>{{localize "PL1E.Description"}}</label>
+            <button class="launch-text-editor" data-target="system.description">
+                <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+            </button>
+        </div>
+        <div class="form-group">
+            <label>
                 {{localize "PL1E.GoldPrice"}}
                 <input type="number" name="system.attributes.price.gold" value="{{system.price.gold}}" data-dtype="Number"/>
             </label>
-            <label class="attribute-name">
+            <label>
                 {{localize "PL1E.SilverPrice"}}
                 <input type="number" name="system.attributes.price.silver" value="{{system.price.silver}}" data-dtype="Number"/>
             </label>
-            <label class="attribute-name">
+            <label>
                 {{localize "PL1E.CopperPrice"}}
                 <input type="number" name="system.attributes.price.copper" value="{{system.price.copper}}" data-dtype="Number"/>
             </label>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Customizable"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Customizable"}}</label>
             <input type="checkbox" name="system.attributes.customizable" {{checked system.attributes.customizable}} data-dtype="Boolean"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Modules"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Modules"}}</label>
             <input type="number" name="system.attributes.modules" value="{{system.attributes.modules}}" data-dtype="Number"/>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Slot"}}</label>
+        <div class="form-group">
+            <label>{{localize "PL1E.Slot"}}</label>
             <select name="system.attributes.slot">
                 {{selectOptions (config "slots") selected=system.attributes.slot localize=true}}
             </select>
         </div>
-        <div class="item-attribute flexrow">
-            <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
-            <ul class="attribute-name">
+        <div class="form-group">
+            <label>{{localize "PL1E.Masters"}}</label>
+            <ul>
                 {{#each system.attributes.masters}}
                     <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
                 {{/each}}

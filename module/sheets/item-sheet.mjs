@@ -303,7 +303,7 @@ export class Pl1eItemSheet extends ItemSheet {
                 value = value.map(value => {
                     const label = CONFIG.PL1E[attributeConfig.select][value]
                     return game.i18n.localize(label);
-                }).join(', ');
+                }).join(", ");
             }
             else if (attributeConfig.type === "select") {
                 value = CONFIG.PL1E[attributeConfig.select][value];
