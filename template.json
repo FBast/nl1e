@@ -418,12 +418,12 @@
       "isMemorized": false,
       "attributes": {
         "level": 1,
-        "requireParentMastery": true,
+        "useParentMastery": true,
         "launchParentActiveAspects": true,
-        "weaponOverride": "none",
-        "overrideRange": false,
-        "overrideRoll": false,
-        "overrideOppositeRoll": false,
+        "weaponMode": "none",
+        "useParentRange": false,
+        "useParentRoll": false,
+        "useParentOppositeRoll": false,
         "roll": [],
         "rollAdvantages": 0,
         "oppositeRoll": [],
@@ -459,7 +459,7 @@
       "templates": ["base", "item"],
       "isEquippedMain": false,
       "isEquippedSecondary": false,
-      "isMajorActionUsed": false,
+      "majorActionUsed": false,
       "attributes": {
         "customizable": false,
         "modules": 0,
@@ -476,7 +476,7 @@
     "wearable": {
       "templates": ["base", "item"],
       "isEquipped": false,
-      "isMajorActionUsed": false,
+      "majorActionUsed": false,
       "attributes": {
         "customizable": false,
         "modules": 0,

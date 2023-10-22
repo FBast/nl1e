@@ -82,8 +82,16 @@ export class Pl1eItem extends Item {
         // Keep id if coming from compendium
         if (options.fromCompendium) options["keepId"] = true;
 
-        await super.create(docData, options);
+        const createdItem = await super.create(docData, options);
+
+        // Remove the sourceId flag if not from compendium
+        if (!options.fromCompendium && createdItem.sourceId) {
+            await createdItem.unsetFlag("core", "sourceId");
+        }
+
+        return createdItem;
     }
+
 
     /** @inheritDoc */
     async _onDelete(options, userId) {
@@ -128,7 +136,7 @@ export class Pl1eItem extends Item {
             }
             if (changed.system?.attributes?.roll?.length === 0)
                 changed["system.attributes.oppositeRoll"] = [];
-            if (changed.system?.attributes?.overrideRange === "none") {
+            if (changed.system?.attributes?.useParentRange === "none") {
                 changed["system.attributes.isMajorAction"] = false;
                 changed["system.attributes.usageCost"] = 0;
             }

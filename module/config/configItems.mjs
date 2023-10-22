@@ -53,11 +53,11 @@ export function getConfigItems() {
     }
 
     PL1E.itemBase = {
-        "isMajorActionUsed": {
-            "label": "PL1E.MajorAction",
+        "majorActionUsed": {
+            "label": "PL1E.MajorActionUsed",
             "icon": "fa-star",
             "type": "bool",
-            "path": "system.isMajorActionUsed"
+            "path": "system.majorActionUsed"
         },
         "removedUses": {
             "label": "PL1E.RemovedUses",
@@ -112,11 +112,11 @@ export function getConfigItems() {
             "show": true
         },
         "isMajorAction": {
-            "label": "PL1E.Major",
+            "label": "PL1E.MajorAction",
             "type": "bool",
             "document": "linkedItem",
             "dataGroup": "itemBase",
-            "data": "isMajorActionUsed",
+            "data": "majorActionUsed",
             "applyIfTrue": true,
             "combatOnly": true,
             "show": true
@@ -246,7 +246,7 @@ export function getConfigItems() {
             "show": true
         },
         "oppositeRoll": {
-            "label": "PL1E.TargetRoll",
+            "label": "PL1E.OppositeRoll",
             "type": "select",
             "select": "abilityResistances",
             "fallback": "none",

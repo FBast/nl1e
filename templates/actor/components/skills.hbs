@@ -66,6 +66,8 @@
                             {{/if}}
                             {{#if (and @root.system.general.creationMod (ne @root.type "character"))}}
                                 <i class="rank-control fas fa-circle-{{../rank}} fa-lg hover-red" data-skill="{{@key}}"></i>
+                            {{else}}
+                                <i class="far fa-circle-{{../rank}} fa-lg"></i>
                             {{/if}}
                         </div>
                     </li>

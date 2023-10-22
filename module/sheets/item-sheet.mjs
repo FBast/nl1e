@@ -43,20 +43,20 @@ export class Pl1eItemSheet extends ItemSheet {
      */
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
+        if (this.item.isEmbedded && this.item.sourceId !== undefined) {
+            buttons.unshift({
+                label: 'PL1E.Original',
+                class: 'button-original',
+                icon: 'fas fa-clone',
+                onclick: async () => {
+                    const item = await Pl1eHelpers.getDocument("Item", this.item.sourceId);
+                    if (item.sheet.rendered) item.sheet.bringToTop();
+                    else item.sheet.render(true);
+                }
+            });
+        }
         if (game.user.isGM) {
-            if (this.item.isEmbedded && this.item.sourceId !== undefined) {
-                buttons.unshift({
-                    label: 'PL1E.Original',
-                    class: 'button-original',
-                    icon: 'fas fa-clone',
-                    onclick: async () => {
-                        const item = await Pl1eHelpers.getDocument("Item", this.item.sourceId);
-                        if (item.sheet.rendered) item.sheet.bringToTop();
-                        else item.sheet.render(true);
-                    }
-                });
-            }
-            else if (!this.item.isEmbedded) {
+            if (!this.item.isEmbedded) {
                 buttons.unshift({
                     label: 'PL1E.ResetActorsItems',
                     class: 'button-reset',
@@ -70,7 +70,7 @@ export class Pl1eItemSheet extends ItemSheet {
                 label: 'PL1E.Debug',
                 class: 'button-debug',
                 icon: 'fas fa-ban-bug',
-                onclick: () => console.log(this)
+                onclick: () => console.log("PL1E | Content of item sheet:", this)
             });
         }
         return buttons;

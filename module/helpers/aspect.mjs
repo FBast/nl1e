@@ -117,6 +117,7 @@ export class Pl1eAspect {
             case "number":
                 return 0;
             case "array":
+                return Object.keys(PL1E[data.select])[0];
             case "select":
                 return Object.keys(PL1E[data.select])[0];
             case "bool":
@@ -130,6 +131,9 @@ export class Pl1eAspect {
         if (aspect.value) {
             if (typeof aspect.value === "boolean") {
                 description.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
+            }
+            if (typeof aspect.value === "string") {
+                description.push(game.i18n.localize(aspect.value));
             }
             else if (Array.isArray(aspect.value)) {
                 const value = aspect.value.map(value => {
@@ -510,16 +514,15 @@ export class Pl1eAspect {
             const aspect = aspectsObject[aspectName];
             const key = this._generateAspectKey(aspect);
 
+            const aspectConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
             if (!mergedAspects[key]) {
                 mergedAspects[key] = { ...aspect };
-                if (typeof aspect.value === "string") {
-                    mergedAspects[key].value = [aspect.value];
-                }
+                mergedAspects[key].value = aspectConfig.type === "array" ? [aspect.value] : aspect.value;
             } else {
-                if (typeof aspect.value === "number" && typeof mergedAspects[key].value === "number") {
+                if (aspectConfig.type === "number") {
                     mergedAspects[key].value += aspect.value;
                 }
-                else if (typeof aspect.value === "string" && Array.isArray(mergedAspects[key].value)) {
+                else if (aspectConfig.type === "array") {
                     mergedAspects[key].value.push(aspect.value);
                 }
             }

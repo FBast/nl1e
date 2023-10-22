@@ -67,14 +67,14 @@
         {{#unless system.attributes.outCombatOnly}}
             {{#if (ne (length system.attributes.roll) 0)}}
                 <div class="form-group">
-                    <label>{{localize "PL1E.TargetRoll"}}</label>
+                    <label>{{localize "PL1E.OppositeRoll"}}</label>
                     <ul>
                         {{#each system.attributes.oppositeRoll}}
                             <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                         {{/each}}
                     </ul>
-                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.TargetRoll" data-key-path="attributes.oppositeRoll"
-                       data-tooltip="{{localize 'PL1E.TargetRollConfig'}}">
+                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll"
+                       data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
                         <i class="fas fa-edit"></i>
                     </a>
                 </div>

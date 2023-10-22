@@ -49,7 +49,7 @@ export class Pl1eCombat extends Combat {
         for (let item of actor.items) {
             if (item.type === "weapon" || item.type === "wearable") {
                 await item.update({
-                    "system.isMajorActionUsed": false
+                    "system.majorActionUsed": false
                 });
             }
         }

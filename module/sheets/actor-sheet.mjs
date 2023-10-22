@@ -57,7 +57,7 @@ export class Pl1eActorSheet extends ActorSheet {
                 label: 'PL1E.Debug',
                 class: 'button-debug',
                 icon: 'fas fa-ban-bug',
-                onclick: () => console.log(this)
+                onclick: () => console.log("PL1E | Content of actor sheet:", this)
             });
         }
         return buttons;
@@ -270,6 +270,7 @@ export class Pl1eActorSheet extends ActorSheet {
             4: [],
             5: []
         };
+        let background = [];
         let features = [];
         let weapons = [];
         let wearables = [];
@@ -287,6 +288,10 @@ export class Pl1eActorSheet extends ActorSheet {
             item.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
             item.system.combinedActiveAspects = await item.getCombinedActiveAspects();
 
+            // Append to background.
+            if (item.type === "race" || item.type === "class") {
+                background.push(item);
+            }
             // Append to features.
             if (item.type === "feature") {
                 features.push(item);
@@ -301,9 +306,8 @@ export class Pl1eActorSheet extends ActorSheet {
                         break;
                     }
                 }
-                if (parentItem && parentItem.system.attributes.featureType === "faith" && !this.actor.system.misc.faithPower) continue;
 
-                // Search if the character has a mastery listed in item masters
+                // Check if the character has a mastery in parent masters
                 if (item.system.attributes.requireParentMastery && parentItem && parentItem.system.attributes.masters?.length > 0
                     && !this.actor.system.general.masters.some(mastery => parentItem.system.attributes.masters.includes(mastery))) continue;
 
@@ -354,7 +358,8 @@ export class Pl1eActorSheet extends ActorSheet {
                 abilities[key] = abilities[key].sort((a, b) => a.name.localeCompare(b.name));
             }
         }
-        features = features.sort((a, b) => a.name.localeCompare(b.featureType));
+        background = background.sort((a, b) => a.type.localeCompare(b.type));
+        features = features.sort((a, b) => b.system.points - a.system.points);
         weapons = weapons.sort((a, b) => a.name.localeCompare(b.name));
         wearables = wearables.sort((a, b) => a.name.localeCompare(b.name));
         consumables = consumables.sort((a, b) => a.name.localeCompare(b.name));
@@ -362,8 +367,9 @@ export class Pl1eActorSheet extends ActorSheet {
         modules = modules.sort((a, b) => a.name.localeCompare(b.name));
 
         // Assign and return
-        context.abilities = abilities;
+        context.background = background;
         context.features = features;
+        context.abilities = abilities;
         context.weapons = weapons;
         context.wearables = wearables;
         context.consumables = consumables;

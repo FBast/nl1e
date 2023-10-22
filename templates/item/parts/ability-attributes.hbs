@@ -19,10 +19,10 @@
         </legend>
         <div class="form-group">
             <label>
-                <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipRequireParentMastery"}}'></i>
-                {{localize "PL1E.RequireParentMastery"}}
+                <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipUseParentMastery"}}'></i>
+                {{localize "PL1E.UseParentMastery"}}
             </label>
-            <input type="checkbox" name="system.attributes.requireParentMastery" {{checked system.attributes.requireParentMastery}} data-dtype="Boolean"/>
+            <input type="checkbox" name="system.attributes.useParentMastery" {{checked system.attributes.useParentMastery}} data-dtype="Boolean"/>
         </div>
         <div class="form-group">
             <label>
@@ -31,33 +31,39 @@
             </label>
             <input type="checkbox" name="system.attributes.launchParentActiveAspects" {{checked system.attributes.launchParentActiveAspects}} data-dtype="Boolean"/>
         </div>
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">
+            <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipLegendParentAsWeapon"}}'></i>
+            {{localize "PL1E.ParentAsWeapon"}}
+        </legend>
         <div class="form-group">
             <label>
-                <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipWeaponOverride"}}'></i>
-                {{localize "PL1E.WeaponOverride"}}
+                <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipWeaponMode"}}'></i>
+                {{localize "PL1E.WeaponMode"}}
             </label>
-            <select name="system.attributes.weaponOverride">
-                {{selectOptions (config "weaponOverrides") selected=system.attributes.weaponOverride localize=true}}
+            <select name="system.attributes.weaponMode">
+                {{selectOptions (config "weaponModes") selected=system.attributes.weaponMode localize=true}}
             </select>
         </div>
-        {{#if (ne system.attributes.weaponOverride "none")}}
+        {{#if (ne system.attributes.weaponMode "none")}}
             <div class="form-group">
                 <label>{{localize "PL1E.RangeOverride"}}</label>
-                <input type="checkbox" name="system.attributes.overrideRange" {{checked system.attributes.overrideRange}} data-dtype="Boolean"/>
+                <input type="checkbox" name="system.attributes.useParentRange" {{checked system.attributes.useParentRange}} data-dtype="Boolean"/>
             </div>
             <div class="form-group">
-                <label>{{localize "PL1E.OverrideRoll"}}</label>
-                <input type="checkbox" name="system.attributes.overrideRoll" {{checked system.attributes.overrideRoll}} data-dtype="Boolean"/>
+                <label>{{localize "PL1E.UseParentRoll"}}</label>
+                <input type="checkbox" name="system.attributes.useParentRoll" {{checked system.attributes.useParentRoll}} data-dtype="Boolean"/>
             </div>
             <div class="form-group">
-                <label>{{localize "PL1E.OverrideOppositeRoll"}}</label>
-                <input type="checkbox" name="system.attributes.overrideOppositeRoll" {{checked system.attributes.overrideOppositeRoll}} data-dtype="Boolean"/>
+                <label>{{localize "PL1E.UseParentOppositeRoll"}}</label>
+                <input type="checkbox" name="system.attributes.useParentOppositeRoll" {{checked system.attributes.useParentOppositeRoll}} data-dtype="Boolean"/>
             </div>
         {{/if}}
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Usage"}}</legend>
-        {{#unless system.attributes.overrideRoll}}
+        {{#unless system.attributes.useParentRoll}}
             <div class="form-group">
                 <label>{{localize "PL1E.Roll"}}</label>
                 <ul>
@@ -71,28 +77,28 @@
                 </a>
             </div>
         {{/unless}}
-        {{#if (or system.attributes.overrideRoll (gt (length system.attributes.roll) 0))}}
+        {{#if (or system.attributes.useParentRoll (gt (length system.attributes.roll) 0))}}
             <div class="form-group">
                 <label>{{localize "PL1E.RollAdvantages"}}</label>
                 <input type="number" name="system.attributes.rollAdvantages" value="{{system.attributes.rollAdvantages}}" data-dtype="Number"/>
             </div>
-            {{#unless system.attributes.overrideOppositeRoll}}
+            {{#unless system.attributes.useParentOppositeRoll}}
             <div class="form-group">
-                <label>{{localize "PL1E.TargetRoll"}}</label>
+                <label>{{localize "PL1E.OppositeRoll"}}</label>
                 <ul>
                     {{#each system.attributes.oppositeRoll}}
                         <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                     {{/each}}
                 </ul>
-                <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.TargetRoll" data-key-path="attributes.oppositeRoll"
-                   data-tooltip="{{localize 'PL1E.TargetRollConfig'}}">
+                <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll"
+                   data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
                     <i class="fas fa-edit"></i>
                 </a>
             </div>
             {{/unless}}
-            {{#if (or system.attributes.overrideOppositeRoll (gt (length system.attributes.oppositeRoll) 0))}}
+            {{#if (or system.attributes.useParentOppositeRoll (gt (length system.attributes.oppositeRoll) 0))}}
                 <div class="form-group">
-                    <label>{{localize "PL1E.TargetRollAdvantages"}}</label>
+                    <label>{{localize "PL1E.OppositeRollAdvantages"}}</label>
                     <input type="number" name="system.attributes.oppositeRollAdvantages" value="{{system.attributes.oppositeRollAdvantages}}" data-dtype="Number"/>
                 </div>
             {{/if}}
@@ -151,7 +157,7 @@
             </select>
         </div>
         {{#if (ne system.attributes.areaShape "self")}}
-            {{#unless system.attributes.overrideRange}}
+            {{#unless system.attributes.useParentRange}}
                 <div class="form-group">
                     <label>{{localize "PL1E.Range"}}</label>
                     <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>

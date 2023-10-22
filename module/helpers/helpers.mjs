@@ -266,4 +266,41 @@ export class Pl1eHelpers {
         }).join(' ');
     }
 
+    static async CleanupItem(item) {
+        // Load the model from template.json
+        const template = await fetch("/systems/pl1e/template.json").then(r => r.json());
+
+        const removed = {}; // Object to store removed properties
+
+        // Function to clean an object based on the model
+        function cleanObject(obj, model, removedObj) {
+            for (let k in obj) {
+                if (k === "passiveAspects" || k === "activeAspects") continue; // Skip these properties
+                if (!(k in model)) {
+                    removedObj[k] = obj[k];
+                    delete obj[k];
+                } else if (typeof obj[k] === "object" && obj[k] !== null && !Array.isArray(obj[k])) {
+                    removedObj[k] = {};
+                    cleanObject(obj[k], model[k], removedObj[k]);
+                    if (Object.keys(removedObj[k]).length === 0) {
+                        delete removedObj[k]; // Remove empty objects from the removed object
+                    }
+                }
+            }
+        }
+
+        let itemType = item.type;
+        let specificTemplates = template.Item[itemType].templates;
+        let model = {...template.Item[itemType]}; // Include direct properties
+        delete model.templates; // Exclude the "templates" property
+        for (let template of specificTemplates) {
+            model = foundry.utils.mergeObject(model, template.Item.templates[template]);
+        }
+        let itemCopy = duplicate(item);
+        cleanObject(itemCopy.system, model, removed);
+        console.log("PL1E | Removed system properties:", removed);
+        await item.update({ system: itemCopy.system }, { merge: false });
+    }
+
+
 }

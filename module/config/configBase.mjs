@@ -15,7 +15,7 @@ export function getConfigBase() {
         "body": "PL1E.Body"
     }
 
-    PL1E.weaponOverrides = {
+    PL1E.weaponModes = {
         "none": "PL1E.None",
         "melee": "PL1E.Melee",
         "range": "PL1E.Range"

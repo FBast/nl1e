@@ -93,7 +93,14 @@ export class Pl1eActor extends Actor {
                 );
                 break;
         }
-        await super.create(docData, options);
+
+        const createdActor = await super.create(docData, options);
+
+        if (!options.fromCompendium && createdActor.sourceId) {
+            await createdActor.unsetFlag("core", "sourceId");
+        }
+
+        return createdActor;
     }
 
     /** @inheritDoc */

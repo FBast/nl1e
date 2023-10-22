@@ -78,15 +78,15 @@ export class Pl1eAbility extends Pl1eItem {
         }
 
         // Override range attribute
-        if (characterData.attributes.weaponOverride === "melee") {
-            if (characterData.attributes.overrideRange) characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
-            if (characterData.attributes.overrideRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.meleeRoll;
-            if (characterData.attributes.overrideOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.meleeOppositeRoll;
+        if (characterData.attributes.weaponMode === "melee") {
+            if (characterData.attributes.useParentRange) characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
+            if (characterData.attributes.useParentRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.meleeRoll;
+            if (characterData.attributes.useParentOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.meleeOppositeRoll;
         }
-        else if (characterData.attributes.weaponOverride === "range") {
-            if (characterData.attributes.overrideRange) characterData.attributes.range = characterData.linkedItem.system.attributes.range;
-            if (characterData.attributes.overrideRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.rangeRoll;
-            if (characterData.attributes.overrideOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.rangeOppositeRoll;
+        else if (characterData.attributes.weaponMode === "range") {
+            if (characterData.attributes.useParentRange) characterData.attributes.range = characterData.linkedItem.system.attributes.range;
+            if (characterData.attributes.useParentRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.rangeRoll;
+            if (characterData.attributes.useParentOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.rangeOppositeRoll;
         }
 
         // Use the parent active aspects when launching the ability
@@ -146,7 +146,7 @@ export class Pl1eAbility extends Pl1eItem {
         for (const item of characterData.actor.items) {
             if (!["weapon", "wearable"].includes(item.type)) continue;
             if (!item.isEnabled) continue;
-            if (characterData.attributes.isMajorAction && item.system.isMajorActionUsed) continue;
+            if (characterData.attributes.isMajorAction && item.system.majorActionUsed) continue;
             if (characterData.attributes.linkedItem === "melee" && item.system.attributes.reach === 0) continue;
             if (characterData.attributes.linkedItem === "range" && item.system.attributes.range === 0) continue;
             // Item usages are not enough
