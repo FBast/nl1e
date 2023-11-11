@@ -20,6 +20,12 @@ export function getConfigItems() {
             "localDroppable": [],
             "stackable": []
         },
+        "mastery": {
+            "label": "PL1E.Mastery",
+            "droppable": ["ability"],
+            "localDroppable": [],
+            "stackable": []
+        },
         "ability": {
             "label": "PL1E.Ability",
             "droppable": [],
@@ -28,13 +34,13 @@ export function getConfigItems() {
         },
         "weapon": {
             "label": "PL1E.Weapon",
-            "droppable": ["feature", "ability"],
+            "droppable": ["feature", "ability", "mastery"],
             "localDroppable": ["module"],
             "stackable": ["module"]
         },
         "wearable": {
             "label": "PL1E.Wearable",
-            "droppable": ["feature", "ability"],
+            "droppable": ["feature", "ability", "mastery"],
             "localDroppable": ["module"],
             "stackable": ["module"]
         },
@@ -46,6 +52,12 @@ export function getConfigItems() {
         },
         "common": {
             "label": "PL1E.Common",
+            "droppable": [],
+            "localDroppable": [],
+            "stackable": []
+        },
+        "module": {
+            "label": "PL1E.Module",
             "droppable": [],
             "localDroppable": [],
             "stackable": []
@@ -276,6 +288,13 @@ export function getConfigItems() {
             "label": "PL1E.CommonType",
             "type": "select",
             "select": "commonTypes",
+            "show": true
+        },
+        // Modules
+        "moduleTypes": {
+            "label": "PL1E.ModuleTypes",
+            "type": "select",
+            "select": "moduleTypes",
             "show": true
         }
     }

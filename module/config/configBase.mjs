@@ -53,6 +53,14 @@ export function getConfigBase() {
         "necklace": "PL1E.Necklace"
     }
 
+    PL1E.moduleTypes = {
+        "weapon": "PL1E.Weapon",
+        "clothes": "PL1E.Clothes",
+        "armor": "PL1E.Armor",
+        "ring": "PL1E.Ring",
+        "necklace": "PL1E.Necklace"
+    }
+
     PL1E.activations = {
         "action": "PL1E.Action",
         "reaction": "PL1E.Reaction",

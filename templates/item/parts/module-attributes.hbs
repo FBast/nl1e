@@ -8,16 +8,34 @@
             </button>
         </div>
         <div class="form-group">
-            <label>{{localize "PL1E.ItemType"}}</label>
-            <select name="system.attributes.itemType">
-                {{selectOptions (config "slots") selected=system.attributes.itemType localize=true}}
-            </select>
+            <label>
+                {{localize "PL1E.GoldPrice"}}
+                <input type="number" name="system.attributes.price.gold" value="{{system.price.gold}}" data-dtype="Number"/>
+            </label>
+            <label>
+                {{localize "PL1E.SilverPrice"}}
+                <input type="number" name="system.attributes.price.silver" value="{{system.price.silver}}" data-dtype="Number"/>
+            </label>
+            <label>
+                {{localize "PL1E.CopperPrice"}}
+                <input type="number" name="system.attributes.price.copper" value="{{system.price.copper}}" data-dtype="Number"/>
+            </label>
         </div>
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Module"}}</legend>
         <div class="form-group">
-            <label>{{localize "PL1E.Slot"}}</label>
-            <select name="system.attributes.slot">
-                {{selectOptions (config "slots") selected=system.attributes.slot localize=true}}
-            </select>
+            <label>{{localize "PL1E.ModuleTypes"}}</label>
+            <div class="form-fields">
+                <ul>
+                    {{#each system.attributes.moduleTypes}}
+                        <li class="tag {{this}}">{{localize (config "moduleTypes" this)}}</li>
+                    {{/each}}
+                </ul>
+                <a style="flex: 0;" class="trait-selector align-right" data-trait="moduleTypes" data-trait-label="PL1E.ModuleTypes" data-key-path="attributes.moduleTypes" data-tooltip="{{localize 'PL1E.ModuleTypesConfig'}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
         </div>
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}

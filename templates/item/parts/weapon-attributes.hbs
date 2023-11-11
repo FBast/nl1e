@@ -21,6 +21,9 @@
                 <input type="number" name="system.attributes.price.copper" value="{{system.price.copper}}" data-dtype="Number"/>
             </label>
         </div>
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Weapon"}}</legend>
         <div class="form-group">
             <label>{{localize "PL1E.Customizable"}}</label>
             <input type="checkbox" name="system.attributes.customizable" {{checked system.attributes.customizable}} data-dtype="Boolean"/>
@@ -31,15 +34,16 @@
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.Masters"}}</label>
-            <ul>
-                {{#each system.attributes.masters}}
-                    <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
-                {{/each}}
-            </ul>
-            <a class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masters"
-               data-tooltip="{{localize 'PL1E.MastersConfig'}}">
-                <i class="fas fa-edit"></i>
-            </a>
+            <div class="form-fields">
+                <ul>
+                    {{#each system.attributes.masters}}
+                        <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
+                    {{/each}}
+                </ul>
+                <a style="flex: 0;" class="trait-selector align-right" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masters" data-tooltip="{{localize 'PL1E.MastersConfig'}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.Hands"}}</label>
@@ -52,28 +56,32 @@
         {{#if (gt system.attributes.reach 0)}}
             <div class="form-group">
                 <label>{{localize "PL1E.MeleeRoll"}}</label>
-                <ul>
-                    {{#each system.attributes.meleeRoll}}
-                        <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.MeleeRoll" data-key-path="attributes.meleeRoll"
-                   data-tooltip="{{localize 'PL1E.MeleeRollConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.meleeRoll}}
+                            <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.MeleeRoll" data-key-path="attributes.meleeRoll"
+                       data-tooltip="{{localize 'PL1E.MeleeRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
             </div>
             {{#if (gt system.attributes.meleeRoll.length 0)}}
                 <div class="form-group">
                     <label>{{localize "PL1E.MeleeOppositeRoll"}}</label>
-                    <ul>
-                        {{#each system.attributes.meleeOppositeRoll}}
-                            <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
-                        {{/each}}
-                    </ul>
-                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.MeleeOppositeRoll" data-key-path="attributes.meleeOppositeRoll"
-                       data-tooltip="{{localize 'PL1E.MeleeOppositeRollConfig'}}">
-                        <i class="fas fa-edit"></i>
-                    </a>
+                    <div class="form-fields">
+                        <ul>
+                            {{#each system.attributes.meleeOppositeRoll}}
+                                <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                            {{/each}}
+                        </ul>
+                        <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.MeleeOppositeRoll" data-key-path="attributes.meleeOppositeRoll"
+                           data-tooltip="{{localize 'PL1E.MeleeOppositeRollConfig'}}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
                 </div>
             {{/if}}
         {{/if}}
@@ -84,28 +92,32 @@
         {{#if (gt system.attributes.range 0)}}
             <div class="form-group">
                 <label>{{localize "PL1E.RangeRoll"}}</label>
-                <ul>
-                    {{#each system.attributes.rangeRoll}}
-                        <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.RangeRoll" data-key-path="attributes.rangeRoll"
-                   data-tooltip="{{localize 'PL1E.RangeRollConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.rangeRoll}}
+                            <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.RangeRoll" data-key-path="attributes.rangeRoll"
+                       data-tooltip="{{localize 'PL1E.RangeRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
             </div>
             {{#if (gt system.attributes.rangeRoll.length 0)}}
                 <div class="form-group">
                     <label>{{localize "PL1E.RangeOppositeRoll"}}</label>
-                    <ul>
-                        {{#each system.attributes.rangeOppositeRoll}}
-                            <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
-                        {{/each}}
-                    </ul>
-                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.RangeOppositeRoll" data-key-path="attributes.rangeOppositeRoll"
-                       data-tooltip="{{localize 'PL1E.RangeOppositeRollConfig'}}">
-                        <i class="fas fa-edit"></i>
-                    </a>
+                    <div class="form-fields">
+                        <ul>
+                            {{#each system.attributes.rangeOppositeRoll}}
+                                <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                            {{/each}}
+                        </ul>
+                        <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.RangeOppositeRoll" data-key-path="attributes.rangeOppositeRoll"
+                           data-tooltip="{{localize 'PL1E.RangeOppositeRollConfig'}}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
                 </div>
             {{/if}}
         {{/if}}

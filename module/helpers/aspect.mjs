@@ -504,14 +504,13 @@ export class Pl1eAspect {
 
     /**
      * Merge aspects with the same properties except for the value.
-     * @param {Object} aspectsObject
+     * @param {Object} aspectsArray
      * @return {Object}
      */
-    static mergeAspectsObjects(aspectsObject) {
+    static mergeAspectsObjects(aspectsArray) {
         const mergedAspects = {};
 
-        for (const aspectName in aspectsObject) {
-            const aspect = aspectsObject[aspectName];
+        for (const aspect of aspectsArray) {
             const key = this._generateAspectKey(aspect);
 
             const aspectConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
@@ -521,8 +520,7 @@ export class Pl1eAspect {
             } else {
                 if (aspectConfig.type === "number") {
                     mergedAspects[key].value += aspect.value;
-                }
-                else if (aspectConfig.type === "array") {
+                } else if (aspectConfig.type === "array") {
                     mergedAspects[key].value.push(aspect.value);
                 }
             }
@@ -530,7 +528,6 @@ export class Pl1eAspect {
 
         return mergedAspects;
     }
-
 
     /**
      * Generate a unique key for an aspect based on its properties except for the value.

@@ -66,15 +66,17 @@
         {{#unless system.attributes.useParentRoll}}
             <div class="form-group">
                 <label>{{localize "PL1E.Roll"}}</label>
-                <ul>
-                    {{#each system.attributes.roll}}
-                        <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.Roll" data-key-path="attributes.roll"
-                   data-tooltip="{{localize 'PL1E.RollConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.roll}}
+                            <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.Roll" data-key-path="attributes.roll"
+                       data-tooltip="{{localize 'PL1E.RollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
             </div>
         {{/unless}}
         {{#if (or system.attributes.useParentRoll (gt (length system.attributes.roll) 0))}}
@@ -85,15 +87,17 @@
             {{#unless system.attributes.useParentOppositeRoll}}
             <div class="form-group">
                 <label>{{localize "PL1E.OppositeRoll"}}</label>
-                <ul>
-                    {{#each system.attributes.oppositeRoll}}
-                        <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll"
-                   data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.oppositeRoll}}
+                            <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll"
+                       data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
             </div>
             {{/unless}}
             {{#if (or system.attributes.useParentOppositeRoll (gt (length system.attributes.oppositeRoll) 0))}}

@@ -46,6 +46,23 @@ export class Pl1eItem extends Item {
         return this.system.customImg ? this.system.customImg : this.img;
     }
 
+    get linkedParents() {
+        const parentsItems = [];
+        if (!this.actor || !this.sourceId) return parentsItems;
+        for (/** @type {Pl1eItem} */ const parentItem of this.actor.items) {
+            if (!parentItem.system.refItems.includes(this.sourceId)) continue;
+            // Item parent is a module or a mastery
+            if (["module", "mastery"].includes(parentItem.type)) {
+                // Then push this module or mastery parents
+                parentsItems.push(...parentItem.linkedParents);
+            }
+            else {
+                parentsItems.push(parentItem);
+            }
+        }
+        return parentsItems;
+    }
+
     /**
      * Get the characterData
      * @return {Promise<CharacterData>}
@@ -120,6 +137,12 @@ export class Pl1eItem extends Item {
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {
             // Reset default values in case of changes
+            if (changed.system?.attributes?.moduleType === "weapon") {
+                changed["system.attributes.moduleSlot"] = [];
+            }
+            if (changed.system?.attributes?.moduleType === "shield") {
+                changed["system.attributes.moduleSlot"] = [];
+            }
             if (changed.system?.attributes?.activation === "action") {
                 changed["system.attributes.reactionCost"] = 0;
             }
@@ -194,9 +217,9 @@ export class Pl1eItem extends Item {
         const items = await this.getSubItems();
         const passiveAspectsFromModules = items
             .filter(item => item.type === "module")
-            .map(item => item.system.passiveAspects);
+            .flatMap(item => Object.values(item.system.passiveAspects));
 
-        const allAspects = Object.assign({}, this.system.passiveAspects, ...passiveAspectsFromModules);
+        const allAspects = [...Object.values(this.system.passiveAspects), ...passiveAspectsFromModules];
         return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 
@@ -208,9 +231,9 @@ export class Pl1eItem extends Item {
         const items = await this.getSubItems();
         const activeAspectsFromModules = items
             .filter(item => item.type === "module")
-            .map(item => item.system.activeAspects);
+            .flatMap(item => Object.values(item.system.activeAspects));
 
-        const allAspects = Object.assign({}, this.system.activeAspects, ...activeAspectsFromModules);
+        const allAspects = [...Object.values(this.system.activeAspects), ...activeAspectsFromModules];
         return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 

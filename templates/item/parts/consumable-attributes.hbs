@@ -21,6 +21,9 @@
                 <input type="number" name="system.attributes.price.copper" value="{{system.price.copper}}" data-dtype="Number"/>
             </label>
         </div>
+    </fieldset>
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Consumable"}}</legend>
         <div class="form-group">
             <label>{{localize "PL1E.Uses"}}</label>
             <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
@@ -68,15 +71,17 @@
             {{#if (ne (length system.attributes.roll) 0)}}
                 <div class="form-group">
                     <label>{{localize "PL1E.OppositeRoll"}}</label>
-                    <ul>
-                        {{#each system.attributes.oppositeRoll}}
-                            <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
-                        {{/each}}
-                    </ul>
-                    <a class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll"
-                       data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
-                        <i class="fas fa-edit"></i>
-                    </a>
+                    <div class="form-fields">
+                        <ul>
+                            {{#each system.attributes.oppositeRoll}}
+                                <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                            {{/each}}
+                        </ul>
+                        <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll"
+                           data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
                 </div>
             {{/if}}
             <div class="form-group">

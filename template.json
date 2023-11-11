@@ -365,7 +365,7 @@
     }
   },
   "Item": {
-    "types": ["feature", "race", "class", "ability", "weapon", "wearable", "consumable", "common", "module"],
+    "types": ["feature", "race", "class", "mastery", "ability", "weapon", "wearable", "consumable", "common", "module"],
     "templates": {
       "base": {
         "description": "",
@@ -411,6 +411,12 @@
       "templates": ["base"],
       "attributes": {
         "classType": "body"
+      }
+    },
+    "mastery": {
+      "templates": ["base"],
+      "attributes": {
+
       }
     },
     "ability": {
@@ -525,7 +531,7 @@
     "module": {
       "templates": ["base", "item"],
       "attributes": {
-
+        "moduleTypes": []
       }
     }
   },

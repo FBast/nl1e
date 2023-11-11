@@ -32,7 +32,9 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @inheritDoc */
     get title() {
-        const label = game.i18n.localize(CONFIG.PL1E.itemTypes[this.item.type].label) || "Unknown";
+        const itemType = CONFIG.PL1E.itemTypes[this.item.type];
+        let label = "Unknown";
+        if (itemType) label = game.i18n.localize(itemType.label);
         return this.item.actor ? `${label} (${this.item.actor.name})` : label;
     }
 
@@ -183,48 +185,62 @@ export class Pl1eItemSheet extends ItemSheet {
      * @private
      */
     async _onDrop(event) {
-        // Everything below here is only needed if the sheet is editable
+        // Return if the sheet is not editable
         if (!this.isEditable) return;
 
-        // Check item type and subtype
+        // Extract and validate the dropped data
         const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
-        let document = await fromUuid(data.uuid)
-
-        // Check if the user own the dropped document
+        let document = await fromUuid(data.uuid);
         if (!document.isOwner) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotOwnedDocument"));
             return;
         }
 
-        // Check if item can be dropped into this
-        if (this.item.isEmbedded) {
-            if (!CONFIG.PL1E.itemTypes[this.item.type].localDroppable.includes(document.type)) return;
+        // Function to check module-specific conditions
+        const checkModuleConditions = async (document, item) => {
+            if (document.type !== "module") return true;
 
-            // If item is module
-            if (document.type === "module") {
-                // If module capacity is full
-                const items = await this.item.getSubItems();
-                if (items.filter(item => item.type === "module").length >= this.item.system.attributes.modules) {
-                    ui.notifications.warn(game.i18n.localize("PL1E.TooMuchModule"));
-                    return;
-                }
+            const isInvalidWearable = item.type === "wearable" &&
+                !document.system.attributes.moduleTypes.includes(item.system.attributes.slot);
+            const isInvalidWeapon = item.type === "weapon" &&
+                !document.system.attributes.moduleTypes.includes("weapon");
+            if (isInvalidWearable || isInvalidWeapon) {
+                ui.notifications.warn(game.i18n.localize("PL1E.IncorrectModule"));
+                return false;
             }
 
-            // Retrieve original item
-            const originalItem = await Pl1eHelpers.getDocument("Item", document.sourceId);
-            await this.item.addRefItem(originalItem);
-            this.render();
+            const items = await item.getSubItems();
+            if (items.filter(i => i.type === "module").length >= item.system.attributes.modules) {
+                ui.notifications.warn(game.i18n.localize("PL1E.TooMuchModule"));
+                return false;
+            }
+            return true;
+        };
 
-            // Remove item if embedded
-            if (document.isEmbedded) await document.actor.removeItem(document);
-        }
-        else {
-            if (!CONFIG.PL1E.itemTypes[this.item.type].droppable.includes(document.type)) return;
+        // Common logic for handling items
+        const handleItem = async (document) => {
+            const itemTypeConfig = this.item.isEmbedded ?
+                CONFIG.PL1E.itemTypes[this.item.type].localDroppable :
+                CONFIG.PL1E.itemTypes[this.item.type].droppable;
+            if (!itemTypeConfig.includes(document.type)) return;
 
-            await this.item.addRefItem(document);
+            if (!await checkModuleConditions(document, this.item)) return;
+
+            if (this.item.isEmbedded) {
+                const originalItem = await Pl1eHelpers.getDocument("Item", document.sourceId);
+                await this.item.addRefItem(originalItem);
+                if (document.isEmbedded) await document.actor.removeItem(document);
+            } else {
+                await this.item.addRefItem(document);
+            }
+
             this.render();
-        }
+        };
+
+        // Process the dropped item
+        await handleItem(document);
     }
+
 
     /**
      * Organize and classify Items for Character sheets.
@@ -234,6 +250,7 @@ export class Pl1eItemSheet extends ItemSheet {
     async _prepareItems(context) {
         // Initialize containers.
         let items = [];
+        let masters = [];
         let abilities = [];
         let features = [];
         let weapons = [];
@@ -253,11 +270,14 @@ export class Pl1eItemSheet extends ItemSheet {
                     id: id
                 });
             }
-            else if (item.type === "feature") {
-                features.push(item);
+            else if (item.type === "mastery") {
+                masters.push(item);
             }
             else if (item.type === "ability") {
                 abilities.push(item);
+            }
+            else if (item.type === "feature") {
+                features.push(item);
             }
             else if (item.type === "weapon") {
                 weapons.push(item);
@@ -270,6 +290,14 @@ export class Pl1eItemSheet extends ItemSheet {
             }
         }
 
+        // Iterate on aspects to create description
+        for (const [id, aspect] of Object.entries(context.item.system.passiveAspects)) {
+            aspect.description = Pl1eAspect.getDescription(aspect);
+        }
+        for (const [id, aspect] of Object.entries(context.item.system.activeAspects)) {
+            aspect.description = Pl1eAspect.getDescription(aspect);
+        }
+
         // Sorting arrays
         abilities = abilities.sort((a, b) => a.name.localeCompare(b.system.attributes.level));
         features = features.sort((a, b) => a.name.localeCompare(b.name));
@@ -279,6 +307,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Assign and return
         context.items = items;
+        context.masters = masters;
         context.abilities = abilities;
         context.features = features;
         context.weapons = weapons;

@@ -143,7 +143,7 @@ export class Pl1eAbility extends Pl1eItem {
      */
     _getLinkableItems(characterData) {
         const relatedItems = [];
-        for (const item of characterData.actor.items) {
+        for (const item of characterData.item.linkedParents) {
             if (!["weapon", "wearable"].includes(item.type)) continue;
             if (!item.isEnabled) continue;
             if (characterData.attributes.isMajorAction && item.system.majorActionUsed) continue;
@@ -152,8 +152,7 @@ export class Pl1eAbility extends Pl1eItem {
             // Item usages are not enough
             if (characterData.attributes.usageCost > 0 && item.system.attributes.uses > 0 &&
                 characterData.attributes.usageCost > item.system.attributes.uses - item.system.removedUses) continue;
-            // Item parent id and child id does not match
-            else if (characterData.item.sourceId && !item.system.refItems.includes(characterData.item.sourceId)) continue;
+
             relatedItems.push(item);
         }
         return relatedItems;
