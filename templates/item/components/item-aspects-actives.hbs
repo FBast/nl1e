@@ -27,134 +27,140 @@
                     </div>
                 </div>
                 <div class="item-tooltip flexcol">
-                    <div class="item-attribute flexrow">
-                        <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
-                        <select name="system.activeAspects.{{@key}}.dataGroup">
-                            {{selectOptions dataGroups selected=../dataGroup localize=true}}
-                        </select>
-                    </div>
-                    <div class="item-attribute flexrow">
-                        <label class="attribute-name">{{localize "PL1E.Data"}}</label>
-                        <select name="system.activeAspects.{{@key}}.data">
-                            {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
-                        </select>
-                    </div>
-                    {{#with (config ../dataGroup ../data)}}
-                        {{#if (eq type "number")}}
-                            <div class="item-attribute flexrow">
-                                <label class="attribute-name">{{localize "PL1E.Operator"}}</label>
-                                <select name="system.activeAspects.{{@key}}.operator">
-                                    {{selectOptions (config "numberOperators") selected=../../operator localize=true}}
-                                </select>
-                            </div>
-                        {{/if}}
-                        {{#if (and (eq ../../operator "remove") (eq type "number"))}}
-                            <div class="item-attribute flexrow">
-                                <label class="attribute-name">{{localize "PL1E.DamageType"}}</label>
-                                <select name="system.activeAspects.{{@key}}.damageType">
-                                    {{selectOptions (config "damageTypes") selected=../../damageType localize=true}}
-                                </select>
-                            </div>
-                        {{/if}}
+                    {{#if dataGroups}}
                         <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.Value"}}</label>
+                            <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
+                            <select name="system.activeAspects.{{@key}}.dataGroup">
+                                {{selectOptions dataGroups selected=../dataGroup localize=true}}
+                            </select>
+                        </div>
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.Data"}}</label>
+                            <select name="system.activeAspects.{{@key}}.data">
+                                {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
+                            </select>
+                        </div>
+                        {{#with (config ../dataGroup ../data)}}
                             {{#if (eq type "number")}}
-                                <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
-                            {{else if (eq type "bool")}}
-                                <input type="checkbox" name="system.activeAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
-                            {{else if (eq type "select")}}
-                                <select name="system.activeAspects.{{@key}}.value">
-                                    {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
-                                </select>
-                            {{else if (eq type "array")}}
-                                <select name="system.activeAspects.{{@key}}.value">
-                                    {{selectOptions (config select) selected=../../value localize=true}}
-                                </select>
+                                <div class="item-attribute flexrow">
+                                    <label class="attribute-name">{{localize "PL1E.Operator"}}</label>
+                                    <select name="system.activeAspects.{{@key}}.operator">
+                                        {{selectOptions (config "numberOperators") selected=../../operator localize=true}}
+                                    </select>
+                                </div>
                             {{/if}}
-                        </div>
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
-                            <select name="system.activeAspects.{{@key}}.resolutionType">
-                                {{selectOptions (config "resolutionTypes") selected=../../resolutionType localize=true}}
-                            </select>
-                        </div>
-                    {{/with}}
-                    {{#if (and ../targetGroup (ne ../name "transfer"))}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.TargetGroup"}}</label>
-                            <select name="system.activeAspects.{{@key}}.targetGroup">
-                                {{selectOptions (config "targetGroups") selected=../targetGroup localize=true}}
-                            </select>
-                        </div>
-                    {{/if}}
-                    {{#if ../transferSource}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.TransferSource"}}</label>
-                            <select name="system.activeAspects.{{@key}}.transferSource">
-                                {{selectOptions (config "targetGroups") selected=../transferSource localize=true}}
-                            </select>
-                        </div>
-                    {{/if}}
-                    {{#if ../transferDestination}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.TransferDestination"}}</label>
-                            <select name="system.activeAspects.{{@key}}.transferDestination">
-                                {{selectOptions (config "targetGroups") selected=../transferDestination localize=true}}
-                            </select>
-                        </div>
-                    {{/if}}
-                    {{#if ../statusType}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.StatusType"}}</label>
-                            <select name="system.activeAspects.{{@key}}.statusType">
-                                {{selectOptions (config "statusTypes") selected=../statusType localize=true}}
-                            </select>
-                        </div>
-                    {{/if}}
-                    {{#if (eq ../statusType "durationIfSuccess")}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
-                            <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{../effectDuration}}" data-dtype="Number"/>
-                        </div>
-                    {{/if}}
-                    {{#if (eq ../name "invocation")}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.Invocation"}}</label>
-                            <select name="system.activeAspects.{{@key}}.invocation">
-                                {{selectOptions invocations selected=../invocation localize=true}}
-                            </select>
-                        </div>
-                    {{/if}}
-                    {{#if (ne ../name "status")}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">
-                                <i class="item-info far fa-circle-exclamation hover-green" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'></i>
-                                {{localize "PL1E.CreateEffect"}}
-                            </label>
-                            <input type="checkbox" name="system.activeAspects.{{@key}}.createEffect" {{checked ../createEffect}} data-dtype="Boolean"/>
-                        </div>
-                    {{/if}}
-                    {{#if ../createEffect}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
-                            <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{../effectDuration}}" data-dtype="Number"/>
-                            <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
-                                {{selectOptions (config "resolutionTypes") selected=../effectDurationResolutionType localize=true}}
-                            </select>
-                        </div>
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.EffectIcon"}}</label>
-                            <div class="flexrow">
-                                <input name="system.activeAspects.{{@key}}.effectIcon" type="text" value="{{../effectIcon}}"/>
-                                {{filePicker target=(concat "system.activeAspects." @key ".effectIcon") type="image"}}
+                            {{#if (and (eq ../../operator "remove") (eq type "number"))}}
+                                <div class="item-attribute flexrow">
+                                    <label class="attribute-name">{{localize "PL1E.DamageType"}}</label>
+                                    <select name="system.activeAspects.{{@key}}.damageType">
+                                        {{selectOptions (config "damageTypes") selected=../../damageType localize=true}}
+                                    </select>
+                                </div>
+                            {{/if}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.Value"}}</label>
+                                {{#if (eq type "number")}}
+                                    <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
+                                {{else if (eq type "bool")}}
+                                    <input type="checkbox" name="system.activeAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
+                                {{else if (eq type "select")}}
+                                    <select name="system.activeAspects.{{@key}}.value">
+                                        {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
+                                    </select>
+                                {{else if (and (eq type "array") select)}}
+                                    <select name="system.activeAspects.{{@key}}.value">
+                                        {{selectOptions (config select) selected=../../value localize=true}}
+                                    </select>
+                                {{else if (and (eq type "array") documentType)}}
+                                    <select name="system.activeAspects.{{@key}}.value">
+                                        {{selectOptions (documents documentType documentSubType) selected=../../value localize=true}}
+                                    </select>
+                                {{/if}}
                             </div>
-                        </div>
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.EffectIconTint"}}</label>
-                            <div class="flexrow">
-                                {{colorPicker name=(concat "system.activeAspects." @key ".effectIconTint") value=../effectIconTint}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
+                                <select name="system.activeAspects.{{@key}}.resolutionType">
+                                    {{selectOptions (config "resolutionTypes") selected=../../resolutionType localize=true}}
+                                </select>
                             </div>
-                        </div>
+                        {{/with}}
+                        {{#if (and ../targetGroup (ne ../name "transfer"))}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.TargetGroup"}}</label>
+                                <select name="system.activeAspects.{{@key}}.targetGroup">
+                                    {{selectOptions (config "targetGroups") selected=../targetGroup localize=true}}
+                                </select>
+                            </div>
+                        {{/if}}
+                        {{#if ../transferSource}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.TransferSource"}}</label>
+                                <select name="system.activeAspects.{{@key}}.transferSource">
+                                    {{selectOptions (config "targetGroups") selected=../transferSource localize=true}}
+                                </select>
+                            </div>
+                        {{/if}}
+                        {{#if ../transferDestination}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.TransferDestination"}}</label>
+                                <select name="system.activeAspects.{{@key}}.transferDestination">
+                                    {{selectOptions (config "targetGroups") selected=../transferDestination localize=true}}
+                                </select>
+                            </div>
+                        {{/if}}
+                        {{#if ../statusType}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.StatusType"}}</label>
+                                <select name="system.activeAspects.{{@key}}.statusType">
+                                    {{selectOptions (config "statusTypes") selected=../statusType localize=true}}
+                                </select>
+                            </div>
+                        {{/if}}
+                        {{#if (eq ../statusType "durationIfSuccess")}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
+                                <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{../effectDuration}}" data-dtype="Number"/>
+                            </div>
+                        {{/if}}
+                        {{#if (eq ../name "invocation")}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.Invocation"}}</label>
+                                <select name="system.activeAspects.{{@key}}.invocation">
+                                    {{selectOptions invocations selected=../invocation localize=true}}
+                                </select>
+                            </div>
+                        {{/if}}
+                        {{#if (ne ../name "status")}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">
+                                    <i class="item-info far fa-circle-exclamation hover-green" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'></i>
+                                    {{localize "PL1E.CreateEffect"}}
+                                </label>
+                                <input type="checkbox" name="system.activeAspects.{{@key}}.createEffect" {{checked ../createEffect}} data-dtype="Boolean"/>
+                            </div>
+                        {{/if}}
+                        {{#if ../createEffect}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
+                                <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{../effectDuration}}" data-dtype="Number"/>
+                                <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
+                                    {{selectOptions (config "resolutionTypes") selected=../effectDurationResolutionType localize=true}}
+                                </select>
+                            </div>
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.EffectIcon"}}</label>
+                                <div class="flexrow">
+                                    <input name="system.activeAspects.{{@key}}.effectIcon" type="text" value="{{../effectIcon}}"/>
+                                    {{filePicker target=(concat "system.activeAspects." @key ".effectIcon") type="image"}}
+                                </div>
+                            </div>
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.EffectIconTint"}}</label>
+                                <div class="flexrow">
+                                    {{colorPicker name=(concat "system.activeAspects." @key ".effectIconTint") value=../effectIconTint}}
+                                </div>
+                            </div>
+                        {{/if}}
                     {{/if}}
                 </div>
             </li>

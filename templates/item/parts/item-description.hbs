@@ -2,6 +2,14 @@
     {{#if (gt (length items) 0)}}
         <fieldset>
             <legend class="section-header">{{localize "PL1E.LinkedItems"}}</legend>
+            {{#if (gt (length masters) 0)}}
+                <div class="form-group">
+                    <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
+                    <div class="form-fields align-right">
+                        {{> "systems/pl1e/templates/item/components/itemTags.hbs" sections=masters}}
+                    </div>
+                </div>
+            {{/if}}
             {{#if (gt (length abilities) 0)}}
                 <div class="form-group">
                     <label class="attribute-name">{{localize "PL1E.Abilities"}}</label>

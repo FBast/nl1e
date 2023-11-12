@@ -111,13 +111,22 @@ export class Pl1eAspect {
      * @param aspect
      * @returns {number|boolean|string}
      */
-    static getDefaultValue(aspect) {
+    static async getDefaultValue(aspect) {
         const data = PL1E[aspect.dataGroup][aspect.data];
         switch (data.type) {
             case "number":
                 return 0;
             case "array":
-                return Object.keys(PL1E[data.select])[0];
+                if (data.select) {
+                    return Object.keys(PL1E[data.select])[0];
+                }
+                else if (data.documentType) {
+                    let documents = await Pl1eHelpers.getDocuments(data.documentType, data.documentSubType);
+                    return documents[0].id;
+                }
+                else {
+                    throw new Error("PL1E | config array type should have a select or documentType value");
+                }
             case "select":
                 return Object.keys(PL1E[data.select])[0];
             case "bool":

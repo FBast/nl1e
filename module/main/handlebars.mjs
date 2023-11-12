@@ -1,3 +1,5 @@
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
+
 /**
  * Custom Handlebars for Pl1e
  */
@@ -36,6 +38,23 @@ export const registerHandlebars = function () {
         }
         return data;
     });
+
+    Handlebars.registerHelper('documents', async function(...args) {
+        // Arguments: documentType, and optionally documentSubType
+        let [documentType, documentSubType] = args;
+
+        // Get documents using the modified getDocuments method
+        let documents = await Pl1eHelpers.getDocuments(documentType, documentSubType);
+
+        // Create an object with key-value pairs (UUID: Name)
+        let documentsData = {};
+        documents.forEach(doc => {
+            documentsData[doc.id] = doc.name;
+        });
+
+        return documentsData;
+    });
+
 
     Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {
         const optionsData = {};

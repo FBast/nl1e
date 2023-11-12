@@ -381,7 +381,8 @@ export function getConfigActor() {
             "icon": "fa-swords",
             "type": "array",
             "path": "system.general.masters",
-            "select": "masters"
+            "documentType": "Item",
+            "documentSubType": "mastery"
         },
         "statusImmunities": {
             "label": "PL1E.StatusImmunities",

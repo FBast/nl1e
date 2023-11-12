@@ -288,6 +288,13 @@ export class Pl1eActorSheet extends ActorSheet {
             item.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
             item.system.combinedActiveAspects = await item.getCombinedActiveAspects();
 
+            // Enriched HTML description
+            item.enriched = await TextEditor.enrichHTML(item.system.description, {
+                secrets: item.isOwner,
+                async: true,
+                relativeTo: item
+            });
+
             // Append to background.
             if (item.type === "race" || item.type === "class") {
                 background.push(item);

@@ -197,17 +197,24 @@ export class Pl1eHelpers {
     /**
      * Get a document from a compendium if not in the game using id
      * @param {string} type
+     * @param {string} subType
      * @param {string} id
      * @returns {Promise<Pl1eItem[] | Pl1eActor[] | Macro[]>}
      */
-    static async getDocuments(type, id = undefined) {
+    static async getDocuments(type, subType = undefined, id = undefined) {
         let documents = [];
+
+        // Inner function to check conditions and add document if it meets criteria
+        const addIfMatches = (document) => {
+            if ((id === undefined || document._id === id) && (!subType || document.type === subType)) {
+                documents.push(document);
+            }
+        };
 
         // Search inside compendiums
         for (const pack of game.packs.filter(pack => pack.documentName === type)) {
             for (const document of await pack.getDocuments()) {
-                if (id !== undefined && document._id === id) documents.push(document);
-                else if (id === undefined) documents.push(document);
+                addIfMatches(document);
             }
         }
 
@@ -223,13 +230,26 @@ export class Pl1eHelpers {
             case "Macro":
                 worldCollection = game.macros;
                 break;
+            // ... other cases as needed ...
         }
         for (const document of worldCollection) {
-            if (id !== undefined && document._id === id) documents.push(document);
-            else if (id === undefined) documents.push(document);
+            addIfMatches(document);
         }
 
         return documents;
+    }
+
+    static async getDocumentsData(type, subType = undefined, id = undefined) {
+        // Get documents using the modified getDocuments method
+        let documents = await Pl1eHelpers.getDocuments(type, subType, id);
+
+        // Create an object with key-value pairs (UUID: Name)
+        let documentsData = {};
+        documents.forEach(doc => {
+            documentsData[doc.id] = doc.name;
+        });
+
+        return documentsData;
     }
 
     static findFirstCommonElement(array1, array2) {

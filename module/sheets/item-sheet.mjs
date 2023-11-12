@@ -105,14 +105,15 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Prepare refItems
         await this._prepareItems(context);
+        await this._prepareAspectDocuments(context, context.system.passiveAspects);
+        await this._prepareAspectDocuments(context, context.system.activeAspects);
         await this._prepareDisplay(context);
 
-        // Enrich HTML description
-        context.enriched = await TextEditor.enrichHTML(this.item.system, {
+        // Enriched HTML description
+        context.enriched = await TextEditor.enrichHTML(this.item.system.description, {
             secrets: this.item.isOwner,
             async: true,
-            relativeTo: this.item,
-            rollData: context.rollData
+            relativeTo: this.item
         });
 
         // Retrieve some documents from packs
@@ -122,38 +123,6 @@ export class Pl1eItemSheet extends ItemSheet {
 
         return context;
     }
-
-    /** @inheritDoc */
-    _updateObject(event, formData) {
-        const deepenFormData = Pl1eHelpers.deepen(formData)
-        if (deepenFormData.system?.passiveAspects !== undefined) {
-            for (const [id, aspect] of Object.entries(deepenFormData.system.passiveAspects)) {
-                // Set passive aspect default data
-                if (PL1E[aspect.dataGroup][aspect.data] === undefined)
-                    aspect.data = Pl1eAspect.getDefaultData(aspect);
-
-                // Set passive aspect default value
-                if (aspect.data !== this.item.system.passiveAspects[id].data)
-                    aspect.value = Pl1eAspect.getDefaultValue(aspect);
-            }
-        }
-
-        if (deepenFormData.system?.activeAspects !== undefined) {
-            for (const [id, aspect] of Object.entries(deepenFormData.system.activeAspects)) {
-                // Set passive aspect default value
-                if (PL1E[aspect.dataGroup][aspect.data] === undefined)
-                    aspect.data = Pl1eAspect.getDefaultData(aspect);
-
-                // Set passive aspect default value
-                if (aspect.data !== this.item.system.activeAspects[id].data)
-                    aspect.value = Pl1eAspect.getDefaultValue(aspect);
-            }
-        }
-
-        formData = Pl1eHelpers.flatten(deepenFormData);
-        return super._updateObject(event, formData);
-    }
-
 
     /** @inheritDoc */
     activateListeners(html) {
@@ -177,7 +146,80 @@ export class Pl1eItemSheet extends ItemSheet {
         html[0].querySelectorAll(".launch-text-editor").forEach(e => {
             e.addEventListener("click", ev => Pl1eEvent.onLaunchTextEditor(ev, this.item));
         });
+
+        // Bind event listener for dataGroup dropdown change
+        html.find("[name^='system.passiveAspects.'][name$='.dataGroup']").on('change', event => this._onDataGroupChange(event, html));
+
+        // Bind event listener for data dropdown change
+        html.find("[name^='system.passiveAspects.'][name$='.data']").on('change', event => this._onDataChange(event, html));
     }
+
+    _onDataGroupChange(event, html) {
+        const selectedDataGroup = event.target.value;
+        const aspectId = $(event.currentTarget).closest(".item").data("aspect-id");
+
+        // Fetch new options based on dataGroup
+        const dataGroupObject = PL1E[selectedDataGroup];
+        if (!dataGroupObject) {
+            console.warn(`PL1E | Data group ${selectedDataGroup} not found`);
+            return;
+        }
+        const newDataOptions = Object.entries(dataGroupObject).map(([key, value]) => ({
+            value: key,
+            text: game.i18n.localize(value.label)
+        }));
+
+        // Update the data dropdown options
+        const dataDropdown = html.find(`[name='system.passiveAspects.${aspectId}.data']`);
+        dataDropdown.empty();
+        newDataOptions.forEach(option => {
+            dataDropdown.append($('<option>', { value: option.value, text: option.text }));
+        });
+
+        // Automatically set default data for the newly populated dropdown and trigger change event
+        if (newDataOptions.length > 0) {
+            const firstOption = newDataOptions[0].value;
+            dataDropdown.val(firstOption).change(); // Set value and trigger change event
+        }
+    }
+
+    async _onDataChange(event, html) {
+        const selectedData = event.target.value;
+        const aspectId = $(event.currentTarget).closest(".item").data("aspect-id");
+
+        // Find the data group of the selected data
+        let dataGroup = null;
+        for (const [groupKey, group] of Object.entries(PL1E)) {
+            if (group[selectedData]) {
+                dataGroup = groupKey;
+                break;
+            }
+        }
+        if (!dataGroup) return;
+
+        // Get the default value for the selected data
+        const aspect = { dataGroup, data: selectedData };
+        const defaultValue = await Pl1eAspect.getDefaultValue(aspect);
+
+        // Check the type of the value field and set it accordingly
+        const dataConfig = PL1E[dataGroup][selectedData];
+        switch (dataConfig.type) {
+            case "number":
+            case "bool":
+                // Set the value directly for simple types
+                html.find(`[name='system.passiveAspects.${aspectId}.value']`).val(defaultValue);
+                break;
+            case "array":
+            case "select":
+                // If it's an array or select, trigger change event to update the dropdown
+                // Assuming the template handles the generation of options for these dropdowns
+                const valueDropdown = html.find(`[name='system.passiveAspects.${aspectId}.value']`);
+                valueDropdown.val(defaultValue).trigger('change');
+                break;
+        }
+    }
+
+
 
     /**
      * Callback actions which occur when a dragged element is dropped on a target.
@@ -318,6 +360,20 @@ export class Pl1eItemSheet extends ItemSheet {
         context.activeAspects = context.item.system.activeAspects;
         context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
         context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+    }
+
+    async _prepareAspectDocuments(context, aspects) {
+        for (const [id, aspect] of Object.entries(aspects)) {
+            if (!aspect.dataGroup || !aspect.data) continue;
+            const aspectConfig = PL1E[aspect.dataGroup][aspect.data];
+            if (aspectConfig.type === "array" && aspectConfig.documentType) {
+                const key = `documents_${aspectConfig.documentType}_${aspectConfig.documentSubType || 'all'}`;
+                // Only fetch documents if they haven't been fetched already
+                if (!context[key]) {
+                    context[key] = await Pl1eHelpers.getDocumentsData(aspectConfig.documentType, aspectConfig.documentSubType);
+                }
+            }
+        }
     }
 
     async _prepareDisplay(context) {
