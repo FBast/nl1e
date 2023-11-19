@@ -3,6 +3,7 @@ import {Pl1eResting} from "../apps/resting.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
+import {PL1E} from "../config/config.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -80,6 +81,7 @@ export class Pl1eActorSheet extends ActorSheet {
         context.items = this.actor.items;
         context.inCombat = this.actor.bestToken !== null && this.actor.bestToken.inCombat;
 
+        await this._prepareDocuments(context);
         await this._prepareItems(context);
         await this._prepareEffects(context);
 
@@ -255,6 +257,15 @@ export class Pl1eActorSheet extends ActorSheet {
         }
     }
 
+    async _prepareDocuments(context) {
+        // Get masters id and name
+        context.masters = {};
+        const masters = await Pl1eHelpers.getDocuments("Item", "mastery");
+        for (const mastery of masters) {
+            context.masters[mastery.id] = mastery.name;
+        }
+    }
+
     /**
      * Organize and classify Items for Character sheets.
      * @param {Object} context The actor to prepare.
@@ -305,18 +316,12 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             // Append to abilities.
             else if (item.type === "ability") {
-                // Filter item with faith parent
-                let parentItem = null;
-                for (const otherItem of this.actor.items) {
-                    if (otherItem.parentId && otherItem.parentId === item.childId) {
-                        parentItem = otherItem;
-                        break;
-                    }
-                }
+                // Retrieve parent
+                let parentItem = item.parentItem;
 
-                // Check if the character has a mastery in parent masters
-                if (item.system.attributes.requireParentMastery && parentItem && parentItem.system.attributes.masters?.length > 0
-                    && !this.actor.system.general.masters.some(mastery => parentItem.system.attributes.masters.includes(mastery))) continue;
+                // If the parent item is a mastery check if the character can use it
+                if (parentItem && parentItem.type === "mastery" &&
+                    !this.actor.system.general.masters.some(mastery => mastery === parentItem.sourceId)) continue;
 
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {

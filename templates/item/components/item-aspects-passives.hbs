@@ -65,7 +65,6 @@
                                     </select>
                                 {{else if (and (eq type "array") documentType documentSubType)}}
                                     {{!-- Dynamically determine the key for the documents --}}
-                                    {{log (concat 'documents_' documentType '_' documentSubType)}}
                                     {{#with (lookup @root (concat 'documents_' documentType '_' documentSubType))}}
                                         <select name="system.passiveAspects.{{@key}}.value">
                                             {{selectOptions this selected=../../../value localize=true}}

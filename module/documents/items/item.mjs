@@ -17,14 +17,22 @@ export class Pl1eItem extends Item {
         return this.getFlag("pl1e", "parentId");
     }
 
+    /** @return {Pl1eItem|null} */
+    get parentItem() {
+        return this.actor.items.find(otherItem => otherItem.parentId === this.childId) || null;
+    }
+
     get childId() {
         return this.getFlag("pl1e", "childId");
     }
 
+    /** @return {Pl1eItem[]} */
+    get childItems() {
+        return this.actor.items.filter(otherItem => otherItem.childId === this.parentId) || [];
+    }
+
     get isEnabled() {
         switch (this.type) {
-            case "feature":
-                return true;
             case "weapon":
                 if (this.system.attributes.hands > 0 || this.system.attributes.level > 0)
                     return this.system.isEquippedMain || this.system.isEquippedSecondary;
@@ -34,7 +42,7 @@ export class Pl1eItem extends Item {
             case "ability":
                 return this.system.isMemorized;
             default:
-                return false;
+                return true;
         }
     }
 

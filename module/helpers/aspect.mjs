@@ -43,11 +43,17 @@ export class Pl1eAspect {
         switch (aspect.operator) {
             case "add":
             case "remove":
-                if (Array.isArray(currentValue)) currentValue.push(value);
+                if (Array.isArray(currentValue)) {
+                    if (Array.isArray(value)) currentValue = currentValue.concat(value);
+                    else currentValue.push(value);
+                }
                 else currentValue += value;
                 break;
             case "set":
-                if (Array.isArray(currentValue)) currentValue = [value];
+                if (Array.isArray(currentValue)) {
+                    if (Array.isArray(value)) currentValue = value;
+                    else currentValue = [value];
+                }
                 else currentValue = value;
                 break;
         }
@@ -134,40 +140,46 @@ export class Pl1eAspect {
         }
     }
 
-    static getDescription(aspect) {
-        let description = [];
-        if (aspect.operator) description.push(game.i18n.localize(CONFIG.PL1E.numberOperators[aspect.operator]));
+    static async getDescription(aspect) {
+        let descriptionParts = []; // Utilisez une nouvelle variable pour éviter la confusion avec la chaîne finale
+        if (aspect.operator) descriptionParts.push(game.i18n.localize(CONFIG.PL1E.numberOperators[aspect.operator]));
         if (aspect.value) {
             if (typeof aspect.value === "boolean") {
-                description.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
-            }
-            if (typeof aspect.value === "string") {
-                description.push(game.i18n.localize(aspect.value));
-            }
-            else if (Array.isArray(aspect.value)) {
-                const value = aspect.value.map(value => {
-                    const label = CONFIG.PL1E[aspect.data][value]
-                    return game.i18n.localize(label);
-                }).join(", ");
-                description.push(value);
-            }
-            else {
-                description.push(aspect.value);
+                descriptionParts.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
+            } else if (typeof aspect.value === "string") {
+                descriptionParts.push(game.i18n.localize(aspect.value));
+            } else if (Array.isArray(aspect.value)) {
+                const config = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+                let values;
+                if (config.documentType) {
+                    const documentPromises = aspect.value.map(value => Pl1eHelpers.getDocument(config.documentType, value));
+                    values = await Promise.all(documentPromises);
+                    values = values.map(document => document.name);
+                } else {
+                    values = aspect.value.map(value => {
+                        const label = CONFIG.PL1E[aspect.data][value];
+                        return game.i18n.localize(label);
+                    });
+                }
+                descriptionParts.push(values.join(", "));
+            } else {
+                descriptionParts.push(aspect.value);
             }
         }
-        if (aspect.damageType) description.push(game.i18n.localize(CONFIG.PL1E.damageTypes[aspect.damageType]));
-        if (aspect.resolutionType) description.push(game.i18n.localize(CONFIG.PL1E.resolutionTypes[aspect.resolutionType]));
+        if (aspect.damageType) descriptionParts.push(game.i18n.localize(CONFIG.PL1E.damageTypes[aspect.damageType]));
+        if (aspect.resolutionType) descriptionParts.push(game.i18n.localize(CONFIG.PL1E.resolutionTypes[aspect.resolutionType]));
         if (aspect.data) {
-            description.push(game.i18n.localize("PL1E.On"));
-            description.push(game.i18n.localize(CONFIG.PL1E[aspect.dataGroup][aspect.data].label));
+            descriptionParts.push(game.i18n.localize("PL1E.On"));
+            descriptionParts.push(game.i18n.localize(CONFIG.PL1E[aspect.dataGroup][aspect.data].label));
         }
         if (aspect.targetGroup) {
-            description.push(game.i18n.localize("PL1E.For"));
-            description.push(game.i18n.localize(CONFIG.PL1E.targetGroups[aspect.targetGroup]));
+            descriptionParts.push(game.i18n.localize("PL1E.For"));
+            descriptionParts.push(game.i18n.localize(CONFIG.PL1E.targetGroups[aspect.targetGroup]));
         }
-        description = description.join(' ');
+        const description = descriptionParts.join(' ');
         return description.toLowerCase();
     }
+
 
     /**
      * Apply the modify aspect

@@ -59,7 +59,9 @@
         <div class="form-fields">
             <ul class="align-right">
                 {{#each system.general.masters}}
-                    <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
+                    {{#with (lookup @root.masters this)}}
+                        <li class="tag {{../this}}">{{this}}</li>
+                    {{/with}}
                 {{/each}}
             </ul>
         </div>

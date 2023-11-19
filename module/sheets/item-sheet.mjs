@@ -334,10 +334,10 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Iterate on aspects to create description
         for (const [id, aspect] of Object.entries(context.item.system.passiveAspects)) {
-            aspect.description = Pl1eAspect.getDescription(aspect);
+            aspect.description = await Pl1eAspect.getDescription(aspect);
         }
         for (const [id, aspect] of Object.entries(context.item.system.activeAspects)) {
-            aspect.description = Pl1eAspect.getDescription(aspect);
+            aspect.description = await Pl1eAspect.getDescription(aspect);
         }
 
         // Sorting arrays
@@ -416,7 +416,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
             passiveAspectsDisplay[key] = Object.assign({}, aspectConfig, {
                 label: game.i18n.localize(aspectConfig.label),
-                description: Pl1eAspect.getDescription(aspectCopy),
+                description: await Pl1eAspect.getDescription(aspectCopy),
             });
         }
         context.passiveAspectsDisplay = passiveAspectsDisplay;
@@ -429,7 +429,7 @@ export class Pl1eItemSheet extends ItemSheet {
             if (aspectConfig === undefined) continue;
             activeAspectsDisplay[key] = Object.assign({}, aspectConfig, {
                 label: game.i18n.localize(aspectConfig.label),
-                description: Pl1eAspect.getDescription(aspectCopy),
+                description: await Pl1eAspect.getDescription(aspectCopy),
             });
         }
         context.activeAspectsDisplay = activeAspectsDisplay;

@@ -361,8 +361,8 @@ export class Pl1eActor extends Actor {
 
         // Remove item children
         if (item.parentId) {
-            for (const otherItem of this.items) {
-                if (item.parentId === otherItem.childId) await this.removeItem(otherItem);
+            for (const childItem of item.childItems) {
+                await this.removeItem(childItem);
             }
         }
 
