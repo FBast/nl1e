@@ -424,7 +424,6 @@
       "isMemorized": false,
       "attributes": {
         "level": 1,
-        "useParentMastery": true,
         "launchParentActiveAspects": true,
         "weaponMode": "none",
         "useParentRange": false,
@@ -442,6 +441,8 @@
         "actionCost": 0,
         "reactionCost": 0,
         "isMajorAction": false,
+        "isDangerous": false,
+        "useFocus": false,
         "triggerReactions": false,
         "range": 0,
         "rangeResolutionType": "fixed",

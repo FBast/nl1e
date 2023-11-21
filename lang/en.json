@@ -18,6 +18,8 @@
   "PL1E.Activation": "Activation",
   "PL1E.FeatureSubType": "Feature sub type",
   "PL1E.ClassType": "Class type",
+  "PL1E.IsDangerous": "Is dangerous",
+  "PL1E.UseFocus": "Use focus",
   "PL1E.Destiny": "Destiny",
   "PL1E.Mental": "Mental",
   "PL1E.Personality": "Personality",
@@ -58,7 +60,6 @@
   "PL1E.Area": "Area",
   "PL1E.UseParentRoll": "Use parent roll",
   "PL1E.UseParentOppositeRoll": "Use parent opposite roll",
-  "PL1E.ParentAsWeapon": "Parent as weapon",
   "PL1E.WeaponMode": "Weapon mode",
   "PL1E.AreaNumber": "Area number",
   "PL1E.AreaShape": "Area type",
@@ -603,5 +604,4 @@
   "PL1E.StatusShockImmunity": "Shock immunity",
   "PL1E.StatusAcidImmunity": "Acid immunity",
   "PL1E.TooltipLegendParent": "This part contains the parameters allowing the object to be linked to its parent, in the case where the object does not have a parent then these parameters will be ignored",
-  "PL1E.UseParentMastery": "Require parent mastery"
 }

@@ -43,6 +43,12 @@
                             {{#if system.attributes.isMajorAction}}
                                 <i class="item-info fas fa-star hover-green" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
                             {{/if}}
+                            {{#if system.attributes.isDangerous}}
+                                <i class="item-info fas fa-skull-crossbones hover-green" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
+                            {{/if}}
+                            {{#if system.attributes.useFocus}}
+                                <i class="item-info fas fa-person-rays hover-green" data-tooltip='{{localize "PL1E.UseFocus"}}'></i>
+                            {{/if}}
                             {{#if system.attributes.triggerReactions}}
                                 <i class="item-info fas fa-skull hover-green" data-tooltip='{{localize "PL1E.TriggerReactions"}}'></i>
                             {{/if}}

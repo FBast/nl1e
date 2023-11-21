@@ -19,24 +19,11 @@
         </legend>
         <div class="form-group">
             <label>
-                <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipUseParentMastery"}}'></i>
-                {{localize "PL1E.UseParentMastery"}}
-            </label>
-            <input type="checkbox" name="system.attributes.useParentMastery" {{checked system.attributes.useParentMastery}} data-dtype="Boolean"/>
-        </div>
-        <div class="form-group">
-            <label>
                 <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipLaunchParentActiveAspects"}}'></i>
                 {{localize "PL1E.LaunchParentActiveAspects"}}
             </label>
             <input type="checkbox" name="system.attributes.launchParentActiveAspects" {{checked system.attributes.launchParentActiveAspects}} data-dtype="Boolean"/>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend class="section-header">
-            <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipLegendParentAsWeapon"}}'></i>
-            {{localize "PL1E.ParentAsWeapon"}}
-        </legend>
         <div class="form-group">
             <label>
                 <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipWeaponMode"}}'></i>
@@ -60,6 +47,8 @@
                 <input type="checkbox" name="system.attributes.useParentOppositeRoll" {{checked system.attributes.useParentOppositeRoll}} data-dtype="Boolean"/>
             </div>
         {{/if}}
+    </fieldset>
+    <fieldset>
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Usage"}}</legend>
@@ -140,6 +129,14 @@
             <div class="form-group">
                 <label>{{localize "PL1E.IsMajorAction"}}</label>
                 <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.IsDangerous"}}</label>
+                <input type="checkbox" name="system.attributes.isDangerous" {{checked system.attributes.isDangerous}} data-dtype="Boolean"/>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.UseFocus"}}</label>
+                <input type="checkbox" name="system.attributes.UseFocus" {{checked system.attributes.UseFocus}} data-dtype="Boolean"/>
             </div>
             <div class="form-group">
                 <label>{{localize "PL1E.TriggerReactions"}}</label>

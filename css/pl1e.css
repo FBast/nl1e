@@ -452,7 +452,7 @@
   user-select: text;
 }
 .chat-card .card-buttons {
-  display: none;
+  display: block;
   margin: 5px 0 0 0;
   border-top: 2px groove #FFF;
 }
