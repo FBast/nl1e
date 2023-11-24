@@ -72,7 +72,7 @@
   height: 100%;
 }
 .pl1e .window-content form .sheet-header {
-  padding: 5px;
+  padding: 5px 5px 0 5px;
   -webkit-box-flex: 0;
   -ms-flex: 0 auto;
   flex: 0 auto;
@@ -452,7 +452,7 @@
   user-select: text;
 }
 .chat-card .card-buttons {
-  display: block;
+  display: none;
   margin: 5px 0 0 0;
   border-top: 2px groove #FFF;
 }

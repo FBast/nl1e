@@ -6,21 +6,15 @@ export class Pl1eChat {
      * Send a message for an action roll
      * @param {CharacterData} characterData
      * @param {TargetData} targetData
-     * @param {Object} options
      * @returns {Promise<ChatMessage>}
      */
-    static async actionRoll(characterData, targetData = undefined, options = {}) {
+    static async actionRoll(characterData, targetData = undefined) {
         const rollData = targetData === undefined ? characterData.rollData : targetData.rollData;
         const template = targetData === undefined ? "character" : "target";
 
         // Render the chat card template
         const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-${template}.hbs`,
-            foundry.utils.mergeObject(options, {
-                rollData: rollData,
-                characterData: characterData,
-                targetData: targetData
-            })
-        );
+            {rollData: rollData, characterData: characterData, targetData: targetData});
 
         let flavor = `[${game.i18n.localize("PL1E.Action")}] ${characterData.item.name}`;
         if (rollData !== undefined) {
@@ -43,61 +37,7 @@ export class Pl1eChat {
         };
 
         // Render message
-        return  ChatMessage.create(chatData);
-    }
-
-    /**
-     * Send a message for an action roll with a timer and a callback
-     * @param {CharacterData} characterData
-     * @param {TargetData} targetData
-     * @param {number} countdownDuration
-     * @param {Function} countdownCallback
-     * @returns {Promise<ChatMessage>}
-     */
-    static async actionRollWithTimer(characterData, targetData = undefined, countdownDuration = 0, countdownCallback = null) {
-        // Countdown elements
-        const footerHTML = countdownDuration > 0
-            ? `<div id="countdown-timer" data-time-left="${countdownDuration}">${countdownDuration}</div>
-           <button class="pause-button">{{localize "PL1E.Pause"}}</button>
-           <button class="abort-button">{{localize "PL1E.Abort"}}</button>`
-            : "";
-
-        const chatMessage = await this.actionRoll(characterData, targetData, { footerHTML: footerHTML });
-
-        // Start countdown
-        let isPaused = false; // Variable to track pause state
-        let timeLeft = countdownDuration; // Assume a 3-second countdown
-
-        // Attach event handlers after the message is updated
-        Hooks.once('renderChatMessage', (message, html, data) => {
-            if (message.id === chatMessage.id) {
-                html.find('.pause-button').on('click', () => {
-                    isPaused = !isPaused; // Toggle the pause state
-                });
-            }
-        });
-
-        // Function to update the countdown
-        const updateCountdown = async () => {
-            // Find the timer element in the updated chat message
-            const timerElement = $(`#chat-message-${chatMessage.id} .countdown-timer`);
-
-            // Update the timer display
-            timerElement.text(timeLeft);
-
-            // Countdown logic
-            if (!isPaused && timeLeft > 0) {
-                timeLeft -= 1;
-            } else if (timeLeft <= 0) {
-                clearInterval(countdownInterval);
-                countdownCallback?.();
-            }
-        };
-
-        // Start the countdown interval
-        const countdownInterval = setInterval(updateCountdown, 1000);
-
-        return chatMessage;
+        return await ChatMessage.create(chatData);
     }
 
     /**

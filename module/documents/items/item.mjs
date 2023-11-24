@@ -455,18 +455,23 @@ export class Pl1eItem extends Item {
                 active: true
             });
 
-            //TODO Display message with countdown
-            await Pl1eChat.actionRollWithTimer(characterData, undefined, 3, async () => {
-                // Apply the effect on the character
-                await this._applyAttributes(characterData);
+            // Display message
+            chatMessage = await Pl1eChat.actionRoll(characterData);
 
-                // Resolve the action
-                await this.resolve(characterData, {
-                    action: "launch"
-                });
+            // Apply the effect on the character
+            await this._applyAttributes(characterData);
 
-                // Add the data to the message
-                await chatMessage.setFlag("pl1e", "characterData", Pl1eHelpers.stringifyWithCircular(characterData));
+            // Add the data to the message
+            await chatMessage.setFlag("pl1e", "characterData", Pl1eHelpers.stringifyWithCircular(characterData));
+
+            // Show the footer by setting its display property to "block"
+            const $content = $(chatMessage.content);
+            const footer = $content.find(".card-buttons");
+            footer.addClass("show-footer");
+
+            // Update the chat message with the modified content
+            await chatMessage.update({
+                content: $content[0].outerHTML
             });
         }
         // If we have no token
