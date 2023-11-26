@@ -58,8 +58,9 @@
   "PL1E.Arcana": "Arcana",
   "PL1E.Archipelago": "Archipelago",
   "PL1E.Area": "Area",
-  "PL1E.UseParentRoll": "Use parent roll",
-  "PL1E.UseParentOppositeRoll": "Use parent opposite roll",
+  "PL1E.UseParentRoll": "Use parent's roll",
+  "PL1E.UseParentOppositeRoll": "Use parent's opposite roll",
+  "PL1E.UseParentSequencerMacros": "Use parent's sequencer macros",
   "PL1E.WeaponMode": "Weapon mode",
   "PL1E.AreaNumber": "Area number",
   "PL1E.AreaShape": "Area type",
@@ -531,7 +532,6 @@
   "PL1E.TransferDestination": "Transfer destination",
   "PL1E.TransferSource": "Transfer source",
   "PL1E.Translation": "Translation",
-  "PL1E.TriggerReactions": "Trigger reactions",
   "PL1E.Tropical": "Tropical",
   "PL1E.Type": "Type",
   "PL1E.Unknown": "Unknown",
@@ -603,5 +603,5 @@
   "PL1E.StatusColdImmunity": "Cold immunity",
   "PL1E.StatusShockImmunity": "Shock immunity",
   "PL1E.StatusAcidImmunity": "Acid immunity",
-  "PL1E.TooltipLegendParent": "This part contains the parameters allowing the object to be linked to its parent, in the case where the object does not have a parent then these parameters will be ignored",
+  "PL1E.TooltipLegendParent": "This part contains the parameters allowing the object to be linked to its parent, in the case where the object does not have a parent then these parameters will be ignored"
 }

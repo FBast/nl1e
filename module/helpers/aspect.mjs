@@ -136,12 +136,12 @@ export class Pl1eAspect {
             case "select":
                 return Object.keys(PL1E[data.select])[0];
             case "bool":
-                return false;
+                return true;
         }
     }
 
     static async getDescription(aspect) {
-        let descriptionParts = []; // Utilisez une nouvelle variable pour éviter la confusion avec la chaîne finale
+        let descriptionParts = [];
         if (aspect.operator) descriptionParts.push(game.i18n.localize(CONFIG.PL1E.numberOperators[aspect.operator]));
         if (aspect.value) {
             if (typeof aspect.value === "boolean") {

@@ -105,8 +105,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Prepare refItems
         await this._prepareItems(context);
-        await this._prepareAspectDocuments(context, context.system.passiveAspects);
-        await this._prepareAspectDocuments(context, context.system.activeAspects);
+        await this._prepareDocuments(context);
         await this._prepareDisplay(context);
 
         // Enriched HTML description
@@ -148,13 +147,15 @@ export class Pl1eItemSheet extends ItemSheet {
         });
 
         // Bind event listener for dataGroup dropdown change
-        html.find("[name^='system.passiveAspects.'][name$='.dataGroup']").on('change', event => this._onDataGroupChange(event, html));
+        html.find("[name^='system.passiveAspects.'][name$='.dataGroup']").on('change', event => this._onDataGroupChange(event, html, "passive"));
+        html.find("[name^='system.activeAspects.'][name$='.dataGroup']").on('change', event => this._onDataGroupChange(event, html, "active"));
 
         // Bind event listener for data dropdown change
-        html.find("[name^='system.passiveAspects.'][name$='.data']").on('change', event => this._onDataChange(event, html));
+        html.find("[name^='system.passiveAspects.'][name$='.data']").on('change', event => this._onDataChange(event, html, "passive"));
+        html.find("[name^='system.activeAspects.'][name$='.data']").on('change', event => this._onDataChange(event, html, "active"));
     }
 
-    _onDataGroupChange(event, html) {
+    _onDataGroupChange(event, html, aspectType) {
         const selectedDataGroup = event.target.value;
         const aspectId = $(event.currentTarget).closest(".item").data("aspect-id");
 
@@ -170,31 +171,28 @@ export class Pl1eItemSheet extends ItemSheet {
         }));
 
         // Update the data dropdown options
-        const dataDropdown = html.find(`[name='system.passiveAspects.${aspectId}.data']`);
+        const dataDropdown = html.find(`[name='system.${aspectType}Aspects.${aspectId}.data']`);
         dataDropdown.empty();
         newDataOptions.forEach(option => {
             dataDropdown.append($('<option>', { value: option.value, text: option.text }));
         });
 
+        // Determine the default data for the selected data group
+        const defaultData = Pl1eAspect.getDefaultData({ dataGroup: selectedDataGroup });
+
         // Automatically set default data for the newly populated dropdown and trigger change event
         if (newDataOptions.length > 0) {
-            const firstOption = newDataOptions[0].value;
-            dataDropdown.val(firstOption).change(); // Set value and trigger change event
+            dataDropdown.val(defaultData).change(); // Set value to the default data and trigger change event
         }
     }
 
-    async _onDataChange(event, html) {
+    async _onDataChange(event, html, aspectType) {
         const selectedData = event.target.value;
         const aspectId = $(event.currentTarget).closest(".item").data("aspect-id");
 
-        // Find the data group of the selected data
-        let dataGroup = null;
-        for (const [groupKey, group] of Object.entries(PL1E)) {
-            if (group[selectedData]) {
-                dataGroup = groupKey;
-                break;
-            }
-        }
+        // Retrieve the selected dataGroup from the corresponding dropdown
+        const dataGroupDropdown = html.find(`[name='system.${aspectType}Aspects.${aspectId}.dataGroup']`);
+        const dataGroup = dataGroupDropdown.val();
         if (!dataGroup) return;
 
         // Get the default value for the selected data
@@ -203,23 +201,26 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Check the type of the value field and set it accordingly
         const dataConfig = PL1E[dataGroup][selectedData];
+
+        const valueHTML = html.find(`[name='system.${aspectType}Aspects.${aspectId}.value']`);
+
         switch (dataConfig.type) {
             case "number":
+                // Convert number to string if necessary and set the value
+                valueHTML.val(defaultValue).trigger('change');
+                break;
             case "bool":
-                // Set the value directly for simple types
-                html.find(`[name='system.passiveAspects.${aspectId}.value']`).val(defaultValue);
+                // Set the value directly for boolean type
+                valueHTML.val(defaultValue);
                 break;
             case "array":
             case "select":
                 // If it's an array or select, trigger change event to update the dropdown
-                // Assuming the template handles the generation of options for these dropdowns
-                const valueDropdown = html.find(`[name='system.passiveAspects.${aspectId}.value']`);
-                valueDropdown.val(defaultValue).trigger('change');
+                valueHTML.val(defaultValue).trigger('change');
                 break;
         }
+
     }
-
-
 
     /**
      * Callback actions which occur when a dragged element is dropped on a target.
@@ -282,7 +283,6 @@ export class Pl1eItemSheet extends ItemSheet {
         // Process the dropped item
         await handleItem(document);
     }
-
 
     /**
      * Organize and classify Items for Character sheets.
@@ -362,17 +362,9 @@ export class Pl1eItemSheet extends ItemSheet {
         context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
     }
 
-    async _prepareAspectDocuments(context, aspects) {
-        for (const [id, aspect] of Object.entries(aspects)) {
-            if (!aspect.dataGroup || !aspect.data) continue;
-            const aspectConfig = PL1E[aspect.dataGroup][aspect.data];
-            if (aspectConfig.type === "array" && aspectConfig.documentType) {
-                const key = `documents_${aspectConfig.documentType}_${aspectConfig.documentSubType || 'all'}`;
-                // Only fetch documents if they haven't been fetched already
-                if (!context[key]) {
-                    context[key] = await Pl1eHelpers.getDocumentsData(aspectConfig.documentType, aspectConfig.documentSubType);
-                }
-            }
+    async _prepareDocuments(context) {
+        context.documents = {
+            masters: await Pl1eHelpers.getDocumentsData("Item", "mastery")
         }
     }
 
@@ -381,7 +373,7 @@ export class Pl1eItemSheet extends ItemSheet {
         const attributesDisplay = {};
         for (let [key, value] of Object.entries(context.system.attributes)) {
             const attributeConfig = CONFIG.PL1E.attributes[key];
-            if (attributeConfig === undefined || !attributeConfig.show) continue;
+            if (attributeConfig === undefined || !attributeConfig.inDescription) continue;
 
             // Type modification
             if (Array.isArray(value)) {
@@ -447,7 +439,12 @@ export class Pl1eItemSheet extends ItemSheet {
         if (includeNone) documents[""] = "PL1E.None";
 
         const pack = game.packs.find(pack => pack.metadata.name === packName);
-        for (const document of await pack.getDocuments()) {
+        const docs = await pack.getDocuments();
+
+        // Order by name
+        const sortedDocs = docs.sort((a, b) => a.name.localeCompare(b.name));
+
+        for (const document of sortedDocs) {
             documents[document._id] = document.name;
         }
 
@@ -462,6 +459,7 @@ export class Pl1eItemSheet extends ItemSheet {
      */
     async _onAspectAdd(event) {
         event.preventDefault();
+        event.stopPropagation();
 
         const aspectId = $(event.currentTarget).data("aspect-id");
         const aspectType = $(event.currentTarget).data("aspect-type");
@@ -482,6 +480,10 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.${randomID()}`]: aspectsObjects[aspectId]
         });
+
+        if (this.item.compendium) {
+            await this.renderAndRestoreState();
+        }
     }
 
     /**
@@ -513,6 +515,42 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null
         });
+
+        if (this.item.compendium) {
+            await this.renderAndRestoreState();
+        }
+    }
+
+    async renderAndRestoreState() {
+        // Check if the item is from a compendium before proceeding
+        if (!this.item.compendium) return;
+
+        let activeTab = this.element.find('.tabs .active').data('tab');
+        let scrollPosition = this.element.find(`.tab.active .scroll-auto`).scrollTop();
+
+        // Hook into Foundry's render event
+        Hooks.once("renderItemSheet", (app, html, data) => {
+            // Restore tab
+            const tabElement = html.find(`.tabs [data-tab="${activeTab}"]`).get(0);
+            if (tabElement) {
+                const event = new MouseEvent('click', {
+                    'view': window,
+                    'bubbles': true,
+                    'cancelable': true
+                });
+                tabElement.dispatchEvent(event);
+            }
+
+            // Restore the scroll position
+            const scrollContainer = html.find(`.tab.active .scroll-auto`);
+            if (scrollContainer.length) {
+                scrollContainer.scrollTop(scrollPosition);
+            }
+        });
+
+        // Fetch the updated item and render the sheet
+        const updatedItem = await Pl1eHelpers.getDocument("Item", this.item.id);
+        await updatedItem.sheet.render(true);
     }
 
 }

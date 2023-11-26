@@ -77,7 +77,7 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.linkedItem === null) return false;
         }
 
-        // Override range attribute
+        // Override weapon attributes
         if (characterData.attributes.weaponMode === "melee") {
             if (characterData.attributes.useParentRange) characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
             if (characterData.attributes.useParentRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.meleeRoll;
@@ -87,6 +87,13 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.attributes.useParentRange) characterData.attributes.range = characterData.linkedItem.system.attributes.range;
             if (characterData.attributes.useParentRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.rangeRoll;
             if (characterData.attributes.useParentOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.rangeOppositeRoll;
+        }
+
+        // Override sequencer macros
+        if (characterData.attributes.useParentSequencerMacros) {
+            characterData.attributes.activationMacro = characterData.linkedItem.system.attributes.activationMacro;
+            characterData.attributes.preLaunchMacro = characterData.linkedItem.system.attributes.preLaunchMacro;
+            characterData.attributes.postLaunchMacro = characterData.linkedItem.system.attributes.postLaunchMacro;
         }
 
         // Use the parent active aspects when launching the ability

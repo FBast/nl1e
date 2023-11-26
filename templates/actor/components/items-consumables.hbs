@@ -37,9 +37,6 @@
                                 <label>{{system.attributes.reactionCost}}</label>
                             </i>
                         {{/if}}
-                        {{#if system.attributes.triggerReactions}}
-                            <i class="item-info fas fa-skull hover-green" data-tooltip='{{localize "PL1E.TriggerReactions"}}'></i>
-                        {{/if}}
                         {{#if (ne system.attributes.range 0)}}
                             <i class="item-info fas fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
                                 <label>{{system.attributes.range}}</label>

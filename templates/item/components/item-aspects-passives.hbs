@@ -52,7 +52,7 @@
                             <div class="item-attribute flexrow">
                                 <label class="attribute-name">{{localize "PL1E.Value"}}</label>
                                 {{#if (eq type "number")}}
-                                    <input class="input-positive-decimal" type="number" name="system.passiveAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
+                                    <input type="number" name="system.passiveAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
                                 {{else if (eq type "bool")}}
                                     <input type="checkbox" name="system.passiveAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
                                 {{else if (eq type "select")}}
@@ -64,8 +64,7 @@
                                         {{selectOptions (config select) selected=../../value localize=true}}
                                     </select>
                                 {{else if (and (eq type "array") documentType documentSubType)}}
-                                    {{!-- Dynamically determine the key for the documents --}}
-                                    {{#with (lookup @root (concat 'documents_' documentType '_' documentSubType))}}
+                                    {{#with (lookup @root (concat 'documents.' documentSubType))}}
                                         <select name="system.passiveAspects.{{@key}}.value">
                                             {{selectOptions this selected=../../../value localize=true}}
                                         </select>

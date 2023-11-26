@@ -157,13 +157,11 @@ export class Pl1eItem extends Item {
             if (changed.system?.attributes?.activation === "reaction") {
                 changed["system.attributes.actionCost"] = 0;
                 changed["system.attributes.isMajorAction"] = false;
-                changed["system.attributes.triggerReactions"] = false;
             }
             if (changed.system?.attributes?.activation === "quickAction") {
                 changed["system.attributes.reactionCost"] = 0;
                 changed["system.attributes.actionCost"] = 0;
                 changed["system.attributes.isMajorAction"] = false;
-                changed["system.attributes.triggerReactions"] = false;
             }
             if (changed.system?.attributes?.roll?.length === 0)
                 changed["system.attributes.oppositeRoll"] = [];
