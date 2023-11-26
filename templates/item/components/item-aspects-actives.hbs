@@ -67,13 +67,9 @@
                                     <select name="system.activeAspects.{{@key}}.value">
                                         {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
                                     </select>
-                                {{else if (and (eq type "array") select)}}
+                                {{else if (eq type "array")}}
                                     <select name="system.activeAspects.{{@key}}.value">
                                         {{selectOptions (config select) selected=../../value localize=true}}
-                                    </select>
-                                {{else if (and (eq type "array") documentType)}}
-                                    <select name="system.activeAspects.{{@key}}.value">
-                                        {{selectOptions (documents documentType documentSubType) selected=../../value localize=true}}
                                     </select>
                                 {{/if}}
                             </div>

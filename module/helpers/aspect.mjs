@@ -123,16 +123,8 @@ export class Pl1eAspect {
             case "number":
                 return 0;
             case "array":
-                if (data.select) {
-                    return Object.keys(PL1E[data.select])[0];
-                }
-                else if (data.documentType) {
-                    let documents = await Pl1eHelpers.getDocuments(data.documentType, data.documentSubType);
-                    return documents[0].id;
-                }
-                else {
-                    throw new Error("PL1E | config array type should have a select or documentType value");
-                }
+                if (!data.select) throw new Error("PL1E | config array type should have a select value");
+                return Object.keys(PL1E[data.select])[0];
             case "select":
                 return Object.keys(PL1E[data.select])[0];
             case "bool":
@@ -149,18 +141,10 @@ export class Pl1eAspect {
             } else if (typeof aspect.value === "string") {
                 descriptionParts.push(game.i18n.localize(aspect.value));
             } else if (Array.isArray(aspect.value)) {
-                const config = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-                let values;
-                if (config.documentType) {
-                    const documentPromises = aspect.value.map(value => Pl1eHelpers.getDocument(config.documentType, value));
-                    values = await Promise.all(documentPromises);
-                    values = values.map(document => document.name);
-                } else {
-                    values = aspect.value.map(value => {
-                        const label = CONFIG.PL1E[aspect.data][value];
-                        return game.i18n.localize(label);
-                    });
-                }
+                let values = aspect.value.map(value => {
+                    const label = CONFIG.PL1E[aspect.data][value];
+                    return game.i18n.localize(label);
+                });
                 descriptionParts.push(values.join(", "));
             } else {
                 descriptionParts.push(aspect.value);

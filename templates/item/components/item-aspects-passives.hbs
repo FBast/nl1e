@@ -59,16 +59,10 @@
                                     <select name="system.passiveAspects.{{@key}}.value">
                                         {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
                                     </select>
-                                {{else if (and (eq type "array") select)}}
+                                {{else if (eq type "array")}}
                                     <select name="system.passiveAspects.{{@key}}.value">
                                         {{selectOptions (config select) selected=../../value localize=true}}
                                     </select>
-                                {{else if (and (eq type "array") documentType documentSubType)}}
-                                    {{#with (lookup @root (concat 'documents.' documentSubType))}}
-                                        <select name="system.passiveAspects.{{@key}}.value">
-                                            {{selectOptions this selected=../../../value localize=true}}
-                                        </select>
-                                    {{/with}}
                                 {{/if}}
                             </div>
                             {{#unless (eq @root.item.type "feature")}}

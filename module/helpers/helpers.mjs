@@ -252,15 +252,6 @@ export class Pl1eHelpers {
         return documentsData;
     }
 
-    static findFirstCommonElement(array1, array2) {
-        for (let i = 0; i < array1.length; i++) {
-            if (array2.includes(array1[i])) {
-                return array1[i];
-            }
-        }
-        return null; // No common element found
-    }
-
     static stringifyWithCircular(obj) {
         const seen = new Set();
 

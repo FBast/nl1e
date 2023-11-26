@@ -184,6 +184,7 @@ export class Pl1eItemSheet extends ItemSheet {
         if (newDataOptions.length > 0) {
             dataDropdown.val(defaultData).change(); // Set value to the default data and trigger change event
         }
+
     }
 
     async _onDataChange(event, html, aspectType) {
@@ -199,27 +200,9 @@ export class Pl1eItemSheet extends ItemSheet {
         const aspect = { dataGroup, data: selectedData };
         const defaultValue = await Pl1eAspect.getDefaultValue(aspect);
 
-        // Check the type of the value field and set it accordingly
-        const dataConfig = PL1E[dataGroup][selectedData];
-
-        const valueHTML = html.find(`[name='system.${aspectType}Aspects.${aspectId}.value']`);
-
-        switch (dataConfig.type) {
-            case "number":
-                // Convert number to string if necessary and set the value
-                valueHTML.val(defaultValue).trigger('change');
-                break;
-            case "bool":
-                // Set the value directly for boolean type
-                valueHTML.val(defaultValue);
-                break;
-            case "array":
-            case "select":
-                // If it's an array or select, trigger change event to update the dropdown
-                valueHTML.val(defaultValue).trigger('change');
-                break;
-        }
-
+        await this.item.update({
+            [`system.${aspectType}Aspects.${aspectId}.value`]: defaultValue
+        });
     }
 
     /**
@@ -364,7 +347,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
     async _prepareDocuments(context) {
         context.documents = {
-            masters: await Pl1eHelpers.getDocumentsData("Item", "mastery")
+            mastery: await Pl1eHelpers.getDocumentsData("Item", "mastery")
         }
     }
 
@@ -522,9 +505,6 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     async renderAndRestoreState() {
-        // Check if the item is from a compendium before proceeding
-        if (!this.item.compendium) return;
-
         let activeTab = this.element.find('.tabs .active').data('tab');
         let scrollPosition = this.element.find(`.tab.active .scroll-auto`).scrollTop();
 

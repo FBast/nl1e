@@ -301,7 +301,6 @@
           "maxRank": 0,
           "rollBestSkill": true,
           "advantages": 0,
-          "masters": [],
           "statusImmunities": [],
           "action": 2,
           "reaction": 1,
@@ -365,7 +364,7 @@
     }
   },
   "Item": {
-    "types": ["feature", "race", "class", "mastery", "ability", "weapon", "wearable", "consumable", "common", "module"],
+    "types": ["race", "class", "feature", "mastery", "ability", "weapon", "wearable", "consumable", "common", "module"],
     "templates": {
       "base": {
         "description": "",
@@ -470,7 +469,6 @@
       "attributes": {
         "customizable": false,
         "modules": 0,
-        "masters": [],
         "hands": 1,
         "reach": 0,
         "meleeRoll": [],
@@ -487,7 +485,6 @@
       "attributes": {
         "customizable": false,
         "modules": 0,
-        "masters": [],
         "slot": "none"
       }
     },

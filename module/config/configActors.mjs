@@ -376,14 +376,6 @@ export function getConfigActor() {
             "type": "number",
             "path": "system.general.advantages"
         },
-        "masters": {
-            "label": "PL1E.Masters",
-            "icon": "fa-swords",
-            "type": "array",
-            "path": "system.general.masters",
-            "documentType": "Item",
-            "documentSubType": "mastery"
-        },
         "statusImmunities": {
             "label": "PL1E.StatusImmunities",
             "icon": "fa-swords",

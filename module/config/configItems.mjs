@@ -6,61 +6,81 @@ export function getConfigItems() {
             "label": "PL1E.Feature",
             "droppable": ["ability"],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "unlock": [],
+            "locked": false
         },
         "race": {
             "label": "PL1E.Race",
             "droppable": ["feature", "ability", "weapon"],
             "localDroppable": [],
-            "stackable": ["weapon"]
+            "stackable": ["weapon"],
+            "unlock": [],
+            "locked": false
         },
         "class": {
             "label": "PL1E.Class",
-            "droppable": ["feature", "ability"],
+            "droppable": ["feature", "ability", "mastery"],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "unlock": ["mastery"],
+            "locked": false
         },
         "mastery": {
             "label": "PL1E.Mastery",
             "droppable": ["ability"],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "unlock": [],
+            "locked": true
         },
         "ability": {
             "label": "PL1E.Ability",
             "droppable": [],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "unlock": [],
+            "locked": false
         },
         "weapon": {
             "label": "PL1E.Weapon",
             "droppable": ["feature", "ability", "mastery"],
             "localDroppable": ["module"],
-            "stackable": ["module"]
+            "stackable": ["module"],
+            "unlock": [],
+            "locked": false
         },
         "wearable": {
             "label": "PL1E.Wearable",
             "droppable": ["feature", "ability", "mastery"],
             "localDroppable": ["module"],
-            "stackable": ["module"]
+            "stackable": ["module"],
+            "unlock": [],
+            "locked": false
         },
         "consumable": {
             "label": "PL1E.Consumable",
             "droppable": [],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "unlock": [],
+            "locked": false
         },
         "common": {
             "label": "PL1E.Common",
             "droppable": [],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "unlock": [],
+            "locked": false
         },
         "module": {
             "label": "PL1E.Module",
             "droppable": [],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "unlock": [],
+            "locked": false
         }
     }
 
@@ -85,12 +105,6 @@ export function getConfigItems() {
             "label": "PL1E.Description",
             "type": "text",
             "inDescription": false
-        },
-        "masters": {
-            "label": "PL1E.Masters",
-            "type": "select",
-            "select": "masters",
-            "inDescription": true
         },
         "range": {
             "label": "PL1E.Range",

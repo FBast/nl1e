@@ -273,7 +273,7 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     async _prepareItems(context) {
         // Initialize containers.
-        let abilities = {
+        context.abilities = {
             0: [],
             1: [],
             2: [],
@@ -281,112 +281,131 @@ export class Pl1eActorSheet extends ActorSheet {
             4: [],
             5: []
         };
-        let background = [];
-        let features = [];
-        let weapons = [];
-        let wearables = [];
-        let consumables = [];
-        let commons = [];
-        let modules = [];
+        context.background = [];
+        context.masters = [];
+        context.features = [];
+        context.weapons = [];
+        context.wearables = [];
+        context.consumables = [];
+        context.commons = [];
+        context.modules = [];
+
+        // Iterate through subItems to check unlocked items
+        let keyItems = [];
+        let unlockedItemsSourceIds = [];
+        for (let item of context.items) {
+            const itemConfig = CONFIG.PL1E.itemTypes[item.type];
+            if (itemConfig.unlock.length === 0) continue;
+            for (let childItem of item.childItems) {
+                if (itemConfig.unlock.includes(childItem.type)) {
+                    unlockedItemsSourceIds.push(childItem.sourceId);
+                    keyItems.push(childItem.id);
+                }
+            }
+        }
 
         // Iterate through subItems, allocating to containers
         const sourceIdFlags = [];
         for (let item of context.items) {
-            // Append to item categories
-            const sourceIdFlag = item.flags.core ? item.sourceId : null;
-
-            // Merge aspects for each item
-            item.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
-            item.system.combinedActiveAspects = await item.getCombinedActiveAspects();
-
-            // Enriched HTML description
-            item.enriched = await TextEditor.enrichHTML(item.system.description, {
-                secrets: item.isOwner,
-                async: true,
-                relativeTo: item
-            });
-
-            // Append to background.
-            if (item.type === "race" || item.type === "class") {
-                background.push(item);
-            }
-            // Append to features.
-            if (item.type === "feature") {
-                features.push(item);
-            }
-            // Append to abilities.
-            else if (item.type === "ability") {
-                // Retrieve parent
-                let parentItem = item.parentItem;
-
-                // If the parent item is a mastery check if the character can use it
-                if (parentItem && parentItem.type === "mastery" &&
-                    !this.actor.system.general.masters.some(mastery => mastery === parentItem.sourceId)) continue;
-
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = abilities[item.system.attributes.level].find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    abilities[item.system.attributes.level].push(item);
-                }
-            } else if (item.type === "weapon") {
-                weapons.push(item);
-            } else if (item.type === "wearable") {
-                wearables.push(item);
-            } else if (item.type === "consumable") {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = consumables.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    consumables.push(item);
-                }
-            } else if (item.type === "common") {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = commons.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    commons.push(item);
-                }
-            } else if (item.type === "module") {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = modules.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    modules.push(item);
-                }
-            }
-
-            // Push sourceId flag to handle duplicates
-            if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
+            if (item.childId) continue;
+            await this._prepareItem(context, item, sourceIdFlags, keyItems, unlockedItemsSourceIds)
         }
 
         // Sorting arrays
-        for (let key in abilities) {
-            if (abilities.hasOwnProperty(key) && Array.isArray(abilities[key])) {
-                abilities[key] = abilities[key].sort((a, b) => a.name.localeCompare(b.name));
+        for (let key in context.abilities) {
+            if (context.abilities.hasOwnProperty(key) && Array.isArray(context.abilities[key])) {
+                context.abilities[key] = context.abilities[key].sort((a, b) => a.name.localeCompare(b.name));
             }
         }
-        background = background.sort((a, b) => a.type.localeCompare(b.type));
-        features = features.sort((a, b) => b.system.points - a.system.points);
-        weapons = weapons.sort((a, b) => a.name.localeCompare(b.name));
-        wearables = wearables.sort((a, b) => a.name.localeCompare(b.name));
-        consumables = consumables.sort((a, b) => a.name.localeCompare(b.name));
-        commons = commons.sort((a, b) => a.name.localeCompare(b.name));
-        modules = modules.sort((a, b) => a.name.localeCompare(b.name));
+        context.background = context.background.sort((a, b) => a.type.localeCompare(b.type));
+        context.masters = context.masters.sort((a, b) => a.name.localeCompare(b.name));
+        context.features = context.features.sort((a, b) => b.system.points - a.system.points);
+        context.weapons = context.weapons.sort((a, b) => a.name.localeCompare(b.name));
+        context.wearables = context.wearables.sort((a, b) => a.name.localeCompare(b.name));
+        context.consumables = context.consumables.sort((a, b) => a.name.localeCompare(b.name));
+        context.commons = context.commons.sort((a, b) => a.name.localeCompare(b.name));
+        context.modules = context.modules.sort((a, b) => a.name.localeCompare(b.name));
+    }
 
-        // Assign and return
-        context.background = background;
-        context.features = features;
-        context.abilities = abilities;
-        context.weapons = weapons;
-        context.wearables = wearables;
-        context.consumables = consumables;
-        context.commons = commons;
-        context.modules = modules;
+    async _prepareItem(context, item, sourceIdFlags, keyItems, unlockedItemsSourceIds) {
+        // Check if locked
+        const itemConfig = CONFIG.PL1E.itemTypes[item.type];
+        if (itemConfig.locked && !unlockedItemsSourceIds.includes(item.sourceId)) return;
+
+        // Append to item categories
+        const sourceIdFlag = item.flags.core ? item.sourceId : null;
+
+        // Merge aspects for each item
+        item.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
+        item.system.combinedActiveAspects = await item.getCombinedActiveAspects();
+
+        // Enriched HTML description
+        item.enriched = await TextEditor.enrichHTML(item.system.description, {
+            secrets: item.isOwner,
+            async: true,
+            relativeTo: item
+        });
+
+        // Append to background.
+        if (item.type === "race" || item.type === "class") {
+            context.background.push(item);
+        }
+        if (item.type === "mastery") {
+            context.masters.push(item);
+        }
+        // Append to features.
+        if (item.type === "feature") {
+            context.features.push(item);
+        }
+        // Append to abilities.
+        else if (item.type === "ability") {
+            // Increase units
+            if (sourceIdFlags.includes(sourceIdFlag)) {
+                const sameItem = context.abilities[item.system.attributes.level].find(item => item.sourceId === sourceIdFlag);
+                sameItem.system.units++;
+            } else {
+                context.abilities[item.system.attributes.level].push(item);
+            }
+        } else if (item.type === "weapon") {
+            context.weapons.push(item);
+        } else if (item.type === "wearable") {
+            context.wearables.push(item);
+        } else if (item.type === "consumable") {
+            // Increase units
+            if (sourceIdFlags.includes(sourceIdFlag)) {
+                const sameItem = context.consumables.find(item => item.sourceId === sourceIdFlag);
+                sameItem.system.units++;
+            } else {
+                context.consumables.push(item);
+            }
+        } else if (item.type === "common") {
+            // Increase units
+            if (sourceIdFlags.includes(sourceIdFlag)) {
+                const sameItem = context.commons.find(item => item.sourceId === sourceIdFlag);
+                sameItem.system.units++;
+            } else {
+                context.commons.push(item);
+            }
+        } else if (item.type === "module") {
+            // Increase units
+            if (sourceIdFlags.includes(sourceIdFlag)) {
+                const sameItem = context.modules.find(item => item.sourceId === sourceIdFlag);
+                sameItem.system.units++;
+            } else {
+                context.modules.push(item);
+            }
+        }
+
+        // Push sourceId flag to handle duplicates
+        if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
+
+        // Ignore children for key items
+        if (keyItems.includes(item.id)) return;
+
+        // Process childItems
+        for (const childItem of item.childItems) {
+            await this._prepareItem(context, childItem, sourceIdFlags, keyItems, unlockedItemsSourceIds);
+        }
     }
 
     async _prepareRollTables(context) {
