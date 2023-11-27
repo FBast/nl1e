@@ -271,25 +271,27 @@ export class Pl1eActorSheet extends ActorSheet {
         context.commons = [];
         context.modules = [];
 
-        // Iterate through subItems to check unlocked items
-        let keyItems = [];
-        let unlockedItemsSourceIds = [];
-        for (let item of context.items) {
+        let itemKeys = new Map(); // Store key items' sourceId and id
+
+        // Identify key items
+        for (const item of context.items) {
             const itemConfig = CONFIG.PL1E.itemTypes[item.type];
-            if (itemConfig.unlock.length === 0) continue;
-            for (let childItem of item.childItems) {
-                if (itemConfig.unlock.includes(childItem.type)) {
-                    unlockedItemsSourceIds.push(childItem.sourceId);
-                    keyItems.push(childItem.id);
+            if (itemConfig.unlock.length > 0) {
+                for (const childItem of item.childItems) {
+                    if (itemConfig.unlock.includes(childItem.type)) {
+                        itemKeys.set(childItem.sourceId, childItem.id);
+                    }
                 }
             }
         }
 
-        // Iterate through subItems, allocating to containers
+        // Process and categorize items
         const sourceIdFlags = [];
-        for (let item of context.items) {
-            // if (item.parentItem) continue;
-            await this._prepareItem(context, item, sourceIdFlags, keyItems, unlockedItemsSourceIds)
+        for (const item of context.items) {
+            // Skip items with a parentItem
+            if (item.parentItem) continue;
+
+            await this._prepareItem(context, item, sourceIdFlags, itemKeys);
         }
 
         // Sorting arrays
@@ -316,13 +318,25 @@ export class Pl1eActorSheet extends ActorSheet {
         context.modules = context.modules.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    async _prepareItem(context, item, sourceIdFlags, keyItems, unlockedItemsSourceIds) {
-        // // Check if locked
-        // const itemConfig = CONFIG.PL1E.itemTypes[item.type];
-        // if (itemConfig.locked && !unlockedItemsSourceIds.includes(item.sourceId)) return;
+    async _prepareItem(context, item, sourceIdFlags, itemKeys) {
+        const itemConfig = CONFIG.PL1E.itemTypes[item.type];
+        const isItemKey = itemKeys.get(item.sourceId) === item.id;
+        const isUnlockedContainer = itemKeys.has(item.sourceId) && itemKeys.get(item.sourceId) !== item.id;
+        const isLockedContainer = itemConfig.locked && !itemKeys.has(item.sourceId);
 
-        // Append to item categories
-        const sourceIdFlag = item.flags.core ? item.sourceId : null;
+        if (isItemKey || (!isItemKey && !isUnlockedContainer && !isLockedContainer)) {
+            await this.categorizeItem(context, item, sourceIdFlags);
+        }
+
+        if (isUnlockedContainer || (!isItemKey && !isLockedContainer)) {
+            for (const childItem of item.childItems) {
+                await this._prepareItem(context, childItem, sourceIdFlags, itemKeys);
+            }
+        }
+    }
+
+    async categorizeItem(context, item, sourceIdFlags) {
+        const sourceIdFlag = item.sourceId;
 
         // Merge aspects for each item
         item.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
@@ -385,15 +399,9 @@ export class Pl1eActorSheet extends ActorSheet {
             }
         }
 
-        // Push sourceId flag to handle duplicates
-        if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
-
-        // Ignore children key items
-        if (keyItems.includes(item.id)) return;
-
-        // Process childItems
-        for (const childItem of item.childItems) {
-            await this._prepareItem(context, childItem, sourceIdFlags, keyItems, unlockedItemsSourceIds);
+        // Handle sourceId flags for duplicates
+        if (!sourceIdFlags.includes(sourceIdFlag)) {
+            sourceIdFlags.push(sourceIdFlag);
         }
     }
 
