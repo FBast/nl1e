@@ -321,34 +321,32 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<void>}
      */
     async addItem(item, childId = undefined) {
-        const itemCopy = item.toObject()
-        const parentId = randomID();
+        const gatherItemData = async (item, childId, data = []) => {
+            const itemCopy = item.toObject()
+            const parentId = randomID();
+            itemCopy.flags = {
+                pl1e: {
+                    childId: childId || null,  // If childId might be undefined or falsy
+                    parentId: parentId
+                },
+                core: {
+                    sourceId: item.uuid
+                }
+            };
+            data.push(itemCopy);
 
-        // Modify the item copy to include the flags before creation
-        itemCopy.flags = {
-            pl1e: {
-                childId: childId || null,  // If childId might be undefined or falsy
-                parentId: parentId
-            },
-            core: {
-                sourceId: item.uuid
+            // Add child items if not a merchant type
+            if (this.type !== "merchant") {
+                for (const subItem of await item.getSubItems()) {
+                    if (subItem.type === "module") continue;
+                    await gatherItemData(subItem, parentId, data)
+                }
             }
-        };
-
-        const newItems = await this.createEmbeddedDocuments("Item", [itemCopy]);
-        /** @type {Pl1eItem} */
-        let newItem = newItems[0];
-
-        // In case of merchant when don't add children items
-        if (this.type === "merchant") return;
-
-        // Add new item children
-        for (let subItem of await newItem.getSubItems()) {
-            // Skip module item types
-            if (subItem.type === "module") continue;
-
-            await this.addItem(subItem, parentId);
+            return data;
         }
+
+        const itemsData = await gatherItemData(item, childId);
+        await this.createEmbeddedDocuments("Item", itemsData);
     }
 
     /**
@@ -357,17 +355,22 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<void>}
      */
     async removeItem(item) {
-        if (item === undefined) throw new Error("Cannot find item to remove");
+        if (!item) return;
 
-        // Remove item children
-        if (item.parentId) {
-            for (const childItem of item.childItems) {
-                await this.removeItem(childItem);
-            }
+        // Function to recursively gather item IDs
+        const gatherItemIds = (item, ids = []) => {
+            ids.push(item.id); // Add the current item's ID
+            item.childItems.forEach(child => gatherItemIds(child, ids)); // Recurse for children
+            return ids;
         }
 
-        await this.deleteEmbeddedDocuments("Item", [item.id]);
+        // Gather IDs for the item and its children
+        const itemIds = gatherItemIds(item);
+
+        // Delete all items in a single call
+        await this.deleteEmbeddedDocuments("Item", itemIds);
     }
+
 
     /**
      * Add a new ref RollTable

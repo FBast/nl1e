@@ -6,6 +6,10 @@ import {Pl1eChat} from "../../helpers/chat.mjs";
 
 export class Pl1eItem extends Item {
 
+    /**
+     * The source id is related to the id of the original used to create this item
+     * @return {string|*}
+     */
     get sourceId() {
         const sourceId = this.getFlag("core", "sourceId")
         if (sourceId === undefined) return undefined;
@@ -13,20 +17,34 @@ export class Pl1eItem extends Item {
         return sourceIdArray[sourceIdArray.length - 1];
     }
 
+    /**
+     * The parent id is shared by the child id of this item children
+     * @return {string}
+     */
     get parentId() {
         return this.getFlag("pl1e", "parentId");
     }
 
-    /** @return {Pl1eItem|null} */
+    /**
+     * The parent item of this item (if currently in an actor)
+     * @return {Pl1eItem|null}
+     * */
     get parentItem() {
         return this.actor.items.find(otherItem => otherItem.parentId === this.childId) || null;
     }
 
+    /**
+     * The child id is shared by the parent id of this item parent
+     * @return {string}
+     */
     get childId() {
         return this.getFlag("pl1e", "childId");
     }
 
-    /** @return {Pl1eItem[]} */
+    /**
+     * The children items of this item (if currently in an actor)
+     * @return {Pl1eItem[]}
+     * */
     get childItems() {
         return this.actor.items.filter(otherItem => otherItem.childId === this.parentId) || [];
     }

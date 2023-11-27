@@ -168,7 +168,7 @@ export class Pl1eEvent {
             await document.removeRefItem(itemId);
         }
 
-        document.sheet.render();
+        await document.sheet.render();
     }
 
     /**

@@ -81,7 +81,6 @@ export class Pl1eActorSheet extends ActorSheet {
         context.items = this.actor.items;
         context.inCombat = this.actor.bestToken !== null && this.actor.bestToken.inCombat;
 
-        await this._prepareDocuments(context);
         await this._prepareItems(context);
         await this._prepareEffects(context);
 
@@ -182,8 +181,7 @@ export class Pl1eActorSheet extends ActorSheet {
             await this.actor.addRefRollTable(document);
         }
 
-        this.render();
-        super._onDrop(event);
+        await super._onDrop(event);
     }
 
     async _onDropFolder(event, data) {
@@ -205,7 +203,6 @@ export class Pl1eActorSheet extends ActorSheet {
     /** @inheritDoc */
     async _onDropItem(event, data) {
         const item = await Item.implementation.fromDropData(data);
-
         await this._addItem(item);
     }
 
@@ -257,15 +254,6 @@ export class Pl1eActorSheet extends ActorSheet {
         }
     }
 
-    async _prepareDocuments(context) {
-        // Get masters id and name
-        context.masters = {};
-        const masters = await Pl1eHelpers.getDocuments("Item", "mastery");
-        for (const mastery of masters) {
-            context.masters[mastery.id] = mastery.name;
-        }
-    }
-
     /**
      * Organize and classify Items for Character sheets.
      * @param {Object} context The actor to prepare.
@@ -273,14 +261,7 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     async _prepareItems(context) {
         // Initialize containers.
-        context.abilities = {
-            0: [],
-            1: [],
-            2: [],
-            3: [],
-            4: [],
-            5: []
-        };
+        context.abilities = []
         context.background = [];
         context.masters = [];
         context.features = [];
@@ -307,7 +288,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Iterate through subItems, allocating to containers
         const sourceIdFlags = [];
         for (let item of context.items) {
-            if (item.childId) continue;
+            // if (item.parentItem) continue;
             await this._prepareItem(context, item, sourceIdFlags, keyItems, unlockedItemsSourceIds)
         }
 
@@ -317,6 +298,14 @@ export class Pl1eActorSheet extends ActorSheet {
                 context.abilities[key] = context.abilities[key].sort((a, b) => a.name.localeCompare(b.name));
             }
         }
+        context.abilities = context.abilities.sort((a, b) => {
+            // Compare by 'level' first (assumed to be a numeric property)
+            if (a.level < b.level) return -1;
+            if (a.level > b.level) return 1;
+
+            // If 'level' is the same, compare by 'name' alphabetically
+            return a.name.localeCompare(b.name);
+        });
         context.background = context.background.sort((a, b) => a.type.localeCompare(b.type));
         context.masters = context.masters.sort((a, b) => a.name.localeCompare(b.name));
         context.features = context.features.sort((a, b) => b.system.points - a.system.points);
@@ -328,9 +317,9 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     async _prepareItem(context, item, sourceIdFlags, keyItems, unlockedItemsSourceIds) {
-        // Check if locked
-        const itemConfig = CONFIG.PL1E.itemTypes[item.type];
-        if (itemConfig.locked && !unlockedItemsSourceIds.includes(item.sourceId)) return;
+        // // Check if locked
+        // const itemConfig = CONFIG.PL1E.itemTypes[item.type];
+        // if (itemConfig.locked && !unlockedItemsSourceIds.includes(item.sourceId)) return;
 
         // Append to item categories
         const sourceIdFlag = item.flags.core ? item.sourceId : null;
@@ -361,10 +350,10 @@ export class Pl1eActorSheet extends ActorSheet {
         else if (item.type === "ability") {
             // Increase units
             if (sourceIdFlags.includes(sourceIdFlag)) {
-                const sameItem = context.abilities[item.system.attributes.level].find(item => item.sourceId === sourceIdFlag);
+                const sameItem = context.abilities.find(item => item.sourceId === sourceIdFlag);
                 sameItem.system.units++;
             } else {
-                context.abilities[item.system.attributes.level].push(item);
+                context.abilities.push(item);
             }
         } else if (item.type === "weapon") {
             context.weapons.push(item);
@@ -399,7 +388,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Push sourceId flag to handle duplicates
         if (sourceIdFlag && !sourceIdFlags.includes(sourceIdFlag)) sourceIdFlags.push(sourceIdFlag);
 
-        // Ignore children for key items
+        // Ignore children key items
         if (keyItems.includes(item.id)) return;
 
         // Process childItems

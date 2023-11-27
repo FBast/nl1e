@@ -105,7 +105,6 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Prepare refItems
         await this._prepareItems(context);
-        await this._prepareDocuments(context);
         await this._prepareDisplay(context);
 
         // Enriched HTML description
@@ -343,12 +342,6 @@ export class Pl1eItemSheet extends ItemSheet {
         context.activeAspects = context.item.system.activeAspects;
         context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
         context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
-    }
-
-    async _prepareDocuments(context) {
-        context.documents = {
-            mastery: await Pl1eHelpers.getDocumentsData("Item", "mastery")
-        }
     }
 
     async _prepareDisplay(context) {

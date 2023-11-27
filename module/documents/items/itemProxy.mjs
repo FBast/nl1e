@@ -7,6 +7,8 @@ import {Pl1eFeature} from "./feature.mjs";
 import {Pl1eModule} from "./module.mjs";
 import {Pl1eRace} from "./race.mjs";
 import {Pl1eClass} from "./class.mjs";
+import {Pl1eMastery} from "./mastery.mjs";
+import {Pl1eCommon} from "./common.mjs";
 
 const handler = {
     /**
@@ -15,12 +17,14 @@ const handler = {
      */
     construct(_, args) {
         switch (args[0]?.type) {
-            case "feature":
-                return new Pl1eFeature(...args);
             case "race":
                 return new Pl1eRace(...args);
             case "class":
                 return new Pl1eClass(...args);
+            case "feature":
+                return new Pl1eFeature(...args);
+            case "mastery":
+                return new Pl1eMastery(...args);
             case "ability":
                 return new Pl1eAbility(...args);
             case "weapon":
@@ -29,6 +33,8 @@ const handler = {
                 return new Pl1eWearable(...args);
             case "consumable":
                 return new Pl1eConsumable(...args);
+            case "common":
+                return new Pl1eCommon(...args);
             case "module":
                 return new Pl1eModule(...args);
             default:
