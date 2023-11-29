@@ -44,7 +44,7 @@ export function getConfigItems() {
         },
         "weapon": {
             "label": "PL1E.Weapon",
-            "droppable": ["feature", "ability", "mastery"],
+            "droppable": ["feature", "ability", "mastery", "module"],
             "localDroppable": ["module"],
             "stackable": ["module"],
             "unlock": [],

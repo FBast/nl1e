@@ -172,6 +172,23 @@ export class Pl1eEvent {
     }
 
     /**
+     * Switch between behavior values
+     * @param {Event} event
+     * @param {Item} item
+     */
+    static async onItemSwitchBehavior(event, item) {
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+
+        const currentValue = item.system.refItems[itemId].behavior;
+        const values = ["regular", "container", "key"];
+        const currentIndex = values.indexOf(currentValue);
+        const nextIndex = (currentIndex + 1) % values.length;
+        await item.update({
+            [`system.refItems.${itemId}.behavior`]: values[nextIndex]
+        });
+    }
+
+    /**
      * Handle currency changes
      * @param {Event} event The originating click event
      * @param {Actor|Item} document the document to modify

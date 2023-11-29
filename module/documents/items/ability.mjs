@@ -150,7 +150,7 @@ export class Pl1eAbility extends Pl1eItem {
      */
     _getLinkableItems(characterData) {
         const relatedItems = [];
-        for (const item of characterData.item.linkedParents) {
+        for (const item of characterData.item.sourceParentsItems) {
             if (!["weapon", "wearable"].includes(item.type)) continue;
             if (!item.isEnabled) continue;
             if (characterData.attributes.isMajorAction && item.system.majorActionUsed) continue;

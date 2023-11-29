@@ -369,8 +369,7 @@
       "base": {
         "description": "",
         "units": 1,
-        "refItems": [],
-        "localRefItems": [],
+        "refItems": {},
         "passiveAspects": {},
         "activeAspects": {},
         "attributes": {

@@ -1,4 +1,14 @@
 /**
+ * Ref item object with data
+ * @typedef {Object} RefItem
+ * @property {string} itemId
+ * @property {string} behavior
+ * @property {string} synchronized
+ * @property {string|undefined} instanceId
+ * @property {Pl1eItem|undefined} item
+ */
+
+/**
  * Manage roll data
  * @typedef {Object} RollData
  * @property {string} formula

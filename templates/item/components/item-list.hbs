@@ -1,0 +1,46 @@
+{{#if (gt (length section) 0)}}
+    <ol class="items-list">
+        <li class="flexrow items-header grid grid-4col">
+            <div class="item-name grid-span-3">{{localize title}}</div>
+            <div class="item-controls">
+
+            </div>
+        </li>
+        {{#each section}}
+            <li class="item" data-item-id="{{instanceId}}">
+                <div class="flexrow">
+                    <img class="item-image item-edit hover-red" src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
+                    <label class="item-name">{{item.name}}</label>
+                    <div class="item-icons grid-span-2">
+                        {{#if @root.item.isEmbedded}}
+                            {{#if (eq behavior "regular")}}
+                                <i class="item-info fas fa-cube hover-green" data-tooltip="{{localize "PL1E.Regular"}}"></i>
+                            {{else if (eq behavior "container")}}
+                                <i class="item-info fas fa-treasure-chest hover-green" data-tooltip="{{localize "PL1E.Container"}}"></i>
+                            {{else if (eq behavior "key")}}
+                                <i class="item-info fas fa-key-skeleton hover-green" data-tooltip="{{localize "PL1E.Key"}}"></i>
+                            {{/if}}
+                        {{/if}}
+                        {{#if synchronized}}
+                            <i class="item-info fas fa-circle-nodes hover-green" data-tooltip="{{localize "PL1E.Synchronized"}}"></i>
+                        {{/if}}
+                    </div>
+                    <div class="item-controls">
+                        {{#unless @root.item.isEmbedded}}
+                            {{#if (eq behavior "regular")}}
+                                <a class="item-control item-switch-behavior" data-tooltip='{{localize "PL1E.Regular"}}'><i class="fas fa-cube"></i></a>
+                            {{else if (eq behavior "container")}}
+                                <a class="item-control item-switch-behavior" data-tooltip='{{localize "PL1E.Container"}}'><i class="fas fa-treasure-chest"></i></a>
+                            {{else if (eq behavior "key")}}
+                                <a class="item-control item-switch-behavior" data-tooltip='{{localize "PL1E.Key"}}'><i class="fas fa-key-skeleton"></i></a>
+                            {{/if}}
+                        {{/unless}}
+                        {{#if (or (and @root.item.isEmbedded (not synchronized)) (and (not @root.item.isEmbedded) synchronized))}}
+                            <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        {{/if}}
+                    </div>
+                </div>
+            </li>
+        {{/each}}
+    </ol>
+{{/if}}

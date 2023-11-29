@@ -141,8 +141,8 @@ export class Pl1eHelpers {
      */
     static async createRecursiveLoop(parentItem, childItem) {
         if (parentItem.id === childItem.id) return true;
-        for (const subItem of await childItem.getSubItems()) {
-            if (await this.createRecursiveLoop(parentItem, subItem)) return true;
+        for (const refItem of await childItem.getRefItems()) {
+            if (await this.createRecursiveLoop(parentItem, refItem.item)) return true;
         }
         return false;
     }

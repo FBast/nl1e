@@ -26,14 +26,6 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * The parent item of this item (if currently in an actor)
-     * @return {Pl1eItem|null}
-     * */
-    get parentItem() {
-        return this.actor.items.find(otherItem => otherItem.parentId === this.childId) || null;
-    }
-
-    /**
      * The child id is shared by the parent id of this item parent
      * @return {string}
      */
@@ -41,14 +33,14 @@ export class Pl1eItem extends Item {
         return this.getFlag("pl1e", "childId");
     }
 
-    /**
-     * The children items of this item (if currently in an actor)
-     * @return {Pl1eItem[]}
-     * */
-    get childItems() {
-        return this.actor.items.filter(otherItem => otherItem.childId === this.parentId) || [];
+    get behavior() {
+        return this.getFlag("pl1e", "behavior");
     }
 
+    /**
+     * The current status of the item, true if enabled else false
+     * @return {boolean}
+     */
     get isEnabled() {
         switch (this.type) {
             case "weapon":
@@ -64,23 +56,51 @@ export class Pl1eItem extends Item {
         }
     }
 
+    /**
+     * The custom name of the item if none the name
+     * @return {string}
+     */
     get realName() {
         return (this.system.customName && this.system.customName !== "") ? this.system.customName : this.name;
     }
 
+    /**
+     * The custom img of the item if none the img
+     * @return {string}
+     */
     get realImg() {
         return this.system.customImg ? this.system.customImg : this.img;
     }
 
-    get linkedParents() {
+    /**
+     * The children items of this item within its actor
+     * @return {Pl1eItem[]}
+     * */
+    get childItems() {
+        return this.actor.items.filter(otherItem => otherItem.childId === this.parentId) || [];
+    }
+
+    /**
+     * The parent item of this item within its actor
+     * @return {Pl1eItem|null}
+     * */
+    get parentItem() {
+        return this.actor.items.find(otherItem => otherItem.parentId === this.childId) || null;
+    }
+
+    /**
+     * The source parents items of this item within its actor
+     * @return {Pl1eItem[]}
+     */
+    get sourceParentsItems() {
         const parentsItems = [];
-        if (!this.actor || !this.sourceId) return parentsItems;
+        if (!this.actor || !this.parentItem) return parentsItems;
         for (/** @type {Pl1eItem} */ const parentItem of this.actor.items) {
-            if (!parentItem.system.refItems.includes(this.sourceId)) continue;
-            // Item parent is a module or a mastery
-            if (["module", "mastery"].includes(parentItem.type)) {
-                // Then push this module or mastery parents
-                parentsItems.push(...parentItem.linkedParents);
+            if (!Object.values(parentItem.system.refItems).includes(this.sourceId)) continue;
+            // Item parent behavior is not regular
+            if (parentItem.behavior !== "regular") {
+                // Then find source parents items of parentItem
+                parentsItems.push(...parentItem.sourceParentsItems);
             }
             else {
                 parentsItems.push(parentItem);
@@ -219,31 +239,38 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Get the items based on their refs
-     * @return {Promise<Pl1eItem[]>}
+     * Get the items based on their refs with all data
+     * @return {Promise<RefItem[]>}
      */
-    async getSubItems() {
-        const allRefs = [...this.system.refItems, ...this.system.localRefItems];
-        const subItems = [];
-        for (let id of allRefs) {
-            const subItem = await Pl1eHelpers.getDocument("Item", id);
-            if (subItem) subItems.push(subItem);
+    async getRefItems() {
+        const refItems = [];
+        for (let [instanceId, refItem] of Object.entries(this.system.refItems)) {
+            refItems.push({
+                itemId: refItem.itemId,
+                behavior: refItem.behavior,
+                synchronized: refItem.synchronized,
+                instanceId: instanceId,
+                item: await Pl1eHelpers.getDocument("Item", refItem.itemId)
+            });
         }
-        return subItems;
+        return refItems;
     }
-
 
     /**
      * Get all passive aspects including modules related
      * @return {Promise<Object[]>}
      */
     async getCombinedPassiveAspects() {
-        const items = await this.getSubItems();
-        const passiveAspectsFromModules = items
-            .filter(item => item.type === "module")
-            .flatMap(item => Object.values(item.system.passiveAspects));
+        const refItems = await this.getRefItems();
 
-        const allAspects = [...Object.values(this.system.passiveAspects), ...passiveAspectsFromModules];
+        let passiveAspectsFromModules = {};
+        refItems.forEach(refItem => {
+            if (refItem.item.type === "module") {
+                Object.assign(passiveAspectsFromModules, refItem.item.system.passiveAspects);
+            }
+        });
+
+        const allAspects = [...Object.values(this.system.passiveAspects), ...Object.values(passiveAspectsFromModules)];
         return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 
@@ -252,12 +279,16 @@ export class Pl1eItem extends Item {
      * @return {Promise<Object[]>}
      */
     async getCombinedActiveAspects() {
-        const items = await this.getSubItems();
-        const activeAspectsFromModules = items
-            .filter(item => item.type === "module")
-            .flatMap(item => Object.values(item.system.activeAspects));
+        const refItems = await this.getRefItems();
 
-        const allAspects = [...Object.values(this.system.activeAspects), ...activeAspectsFromModules];
+        let activeAspectsFromModules = {};
+        refItems.forEach(refItem => {
+            if (refItem.item.type === "module") {
+                Object.assign(activeAspectsFromModules, refItem.item.system.activeAspects);
+            }
+        });
+
+        const allAspects = [...Object.values(this.system.activeAspects), ...Object.values(activeAspectsFromModules)];
         return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 
@@ -267,67 +298,43 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async addRefItem(item) {
-        // This is embedded
-        if (this.isEmbedded) {
-            // Add item as child id to this
-            this.system.localRefItems.push(item._id);
-            await this.update({
-                "system.localRefItems": this.system.localRefItems
-            });
+        // Return against recursive loop
+        if (await Pl1eHelpers.createRecursiveLoop(this, item)) {
+            const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
+            if (enableDebugUINotifications)
+                ui.notifications.warn(game.i18n.localize("PL1E.WillCreateRecursiveLoop"));
+            return;
         }
-        // This is original
-        else {
-            // Return if item with same id exist
-            if (this.system.refItems.some(id => id === item._id) && !CONFIG.PL1E.itemTypes[this.type].stackable.includes(item.type)) {
-                const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
-                if (enableDebugUINotifications)
-                    ui.notifications.warn(game.i18n.localize("PL1E.ChildWithSameIdExist"));
-                return;
-            }
 
-            // Return against recursive loop
-            if (await Pl1eHelpers.createRecursiveLoop(this, item)) {
-                const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
-                if (enableDebugUINotifications)
-                    ui.notifications.warn(game.i18n.localize("PL1E.WillCreateRecursiveLoop"));
-                return;
-            }
-
-            // Add item as child id to this
-            this.system.refItems.push(item._id);
-            await this.update({
-                "system.refItems": this.system.refItems
-            });
+        // Return if item with same id exist
+        if (!CONFIG.PL1E.itemTypes[this.type].stackable.includes(item.type) && Object.values(this.system.refItems).some(id => id === item._id)) {
+            const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
+            if (enableDebugUINotifications)
+                ui.notifications.warn(game.i18n.localize("PL1E.ChildWithSameIdExist"));
+            return;
         }
+
+        // Add item ref item
+        this.system.refItems[randomID()] = {
+            itemId: item.id,
+            behavior: "regular",
+            synchronized: !this.isEmbedded
+        };
+        await this.update({
+            "system.refItems": this.system.refItems,
+        });
     }
 
     /**
      * Remove an item ref
-     * @param {string} itemId
+     * @param {string} instanceId
      * @returns {Promise<void>}
      */
-    async removeRefItem(itemId) {
-        // This is embedded
-        if (this.isEmbedded) {
-            // Remove item as child id from this
-            const index = this.system.localRefItems.indexOf(itemId);
-            if (index >= 0) {
-                this.system.localRefItems.splice(index, 1);
-                await this.update({
-                    "system.localRefItems": this.system.localRefItems
-                });
-            }
-        }
-        // This is original
-        else {
-            // Remove item as child id from this
-            const index = this.system.refItems.indexOf(itemId);
-            if (index >= 0) {
-                this.system.refItems.splice(index, 1);
-                await this.update({
-                    "system.refItems": this.system.refItems
-                });
-            }
+    async removeRefItem(instanceId) {
+        if (instanceId in this.system.refItems) {
+            await this.update({
+                [`system.refItems.-=${instanceId}`]: null
+            });
         }
     }
 

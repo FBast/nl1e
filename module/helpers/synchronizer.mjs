@@ -52,8 +52,21 @@ export class Pl1eSynchronizer {
             "img": originalItem.img,
             "system.price": originalItem.system.price,
             "system.description": originalItem.system.description,
-            "system.attributes": originalItem.system.attributes,
-            "system.refItems": originalItem.system.refItems
+            "system.attributes": originalItem.system.attributes
+        }
+
+        // Remove obsolete ref items
+        for (const [instanceId, refItem] of Object.entries(item.system.refItems)) {
+            if (!refItem.synchronized) continue;
+            if (!Object.keys(originalItem.system.refItems).some(refItemInstanceId => refItemInstanceId === instanceId)) {
+                itemData[`system.refItems.-=${instanceId}`] = null;
+            }
+        }
+
+        // Add new ref items
+        for (const [instanceId, refItem] of Object.entries(originalItem.system.refItems)) {
+            if (!refItem.synchronized) continue;
+            itemData[`system.refItems.${instanceId}`] = refItem;
         }
 
         // Remove obsolete passive aspects
@@ -94,20 +107,19 @@ export class Pl1eSynchronizer {
         // Update the item data
         await item.update(itemData);
 
-        // Update the sub items
-        const subItems = await item.getSubItems();
+        const refItems = await item.getRefItems();
         // Add the refItems in item which are not present in the actor
-        for (const subItem of subItems) {
+        for (const refItem of refItems) {
             // If we find an item with the same source id then continue
-            if (actor.items.find(item => item.sourceId === subItem.id)) continue;
-            await actor.addItem(subItem, item.parentId);
+            if (actor.items.find(item => item.sourceId === refItem.itemId)) continue;
+            await actor.addItem(refItem.item, item.parentId);
         }
         // Remove the item of the actor which use the same parentId and are not present in the item
         for (const otherItem of actor.items) {
             // If the otherItem as a different childId than the item parentId then continue
             if (otherItem.childId !== item.parentId) continue;
-            // If the otherItem id is inside the subItems then continue
-            if (subItems.find(item => item.id === otherItem.sourceId)) continue;
+            // If the otherItem id is inside the refItems then continue
+            if (refItems.find(refItem => refItem.itemId === otherItem.sourceId)) continue;
             await actor.removeItem(otherItem);
         }
     }

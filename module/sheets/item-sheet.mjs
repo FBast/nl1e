@@ -136,6 +136,7 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find(`.actor-edit`).on("click", ev => Pl1eEvent.onActorEdit(ev, this.item));
         html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));
         html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
+        html.find(`.item-switch-behavior`).on("click", ev => Pl1eEvent.onItemSwitchBehavior(ev, this.item));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
         html.find(".trait-selector").on("click", ev => Pl1eEvent.onTraitSelector(ev, this.item));
@@ -234,8 +235,8 @@ export class Pl1eItemSheet extends ItemSheet {
                 return false;
             }
 
-            const items = await item.getSubItems();
-            if (items.filter(i => i.type === "module").length >= item.system.attributes.modules) {
+            const refItems = await item.getRefItems();
+            if (refItems.filter(i => i.item.type === "module").length >= item.system.attributes.modules) {
                 ui.notifications.warn(game.i18n.localize("PL1E.TooMuchModule"));
                 return false;
             }
@@ -251,10 +252,10 @@ export class Pl1eItemSheet extends ItemSheet {
 
             if (!await checkModuleConditions(document, this.item)) return;
 
-            if (this.item.isEmbedded) {
+            if (document.isEmbedded) {
                 const originalItem = await Pl1eHelpers.getDocument("Item", document.sourceId);
                 await this.item.addRefItem(originalItem);
-                if (document.isEmbedded) await document.actor.removeItem(document);
+                await document.actor.removeItem(document);
             } else {
                 await this.item.addRefItem(document);
             }
@@ -283,34 +284,28 @@ export class Pl1eItemSheet extends ItemSheet {
         let unknowns = [];
 
         // Iterate through subItems, allocating to containers
-        const allRefs = [...context.item.system.refItems, ...context.item.system.localRefItems];
-        for (const id of allRefs) {
-            let item = await Pl1eHelpers.getDocument("Item", id);
-            items.push(item);
-            if (!item) {
-                // Create an unknown item for display
-                unknowns.push({
-                    type: "unknown",
-                    id: id
-                });
+        for (const refItem of await context.item.getRefItems()) {
+            items.push(refItem);
+            if (!refItem.item) {
+                unknowns.push(refItem);
             }
-            else if (item.type === "mastery") {
-                masters.push(item);
+            else if (refItem.item.type === "mastery") {
+                masters.push(refItem);
             }
-            else if (item.type === "ability") {
-                abilities.push(item);
+            else if (refItem.item.type === "ability") {
+                abilities.push(refItem);
             }
-            else if (item.type === "feature") {
-                features.push(item);
+            else if (refItem.item.type === "feature") {
+                features.push(refItem);
             }
-            else if (item.type === "weapon") {
-                weapons.push(item);
+            else if (refItem.item.type === "weapon") {
+                weapons.push(refItem);
             }
-            else if (item.type === "wearable") {
-                wearables.push(item);
+            else if (refItem.item.type === "wearable") {
+                wearables.push(refItem);
             }
-            else if (item.type === "module") {
-                modules.push(item);
+            else if (refItem.item.type === "module") {
+                modules.push(refItem);
             }
         }
 
@@ -323,11 +318,11 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Sorting arrays
-        abilities = abilities.sort((a, b) => a.name.localeCompare(b.system.attributes.level));
-        features = features.sort((a, b) => a.name.localeCompare(b.name));
-        weapons = weapons.sort((a, b) => a.name.localeCompare(b.name));
-        wearables = wearables.sort((a, b) => a.name.localeCompare(b.name));
-        modules = modules.sort((a, b) => a.name.localeCompare(b.name));
+        abilities = abilities.sort((a, b) => a.item.name.localeCompare(b.item.system.attributes.level));
+        features = features.sort((a, b) => a.item.name.localeCompare(b.item.name));
+        weapons = weapons.sort((a, b) => a.item.name.localeCompare(b.item.name));
+        wearables = wearables.sort((a, b) => a.item.name.localeCompare(b.item.name));
+        modules = modules.sort((a, b) => a.item.name.localeCompare(b.item.name));
 
         // Assign and return
         context.items = items;

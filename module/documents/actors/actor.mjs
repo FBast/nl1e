@@ -335,12 +335,12 @@ export class Pl1eActor extends Actor {
             };
             data.push(itemCopy);
 
-            // Add child items if not a merchant type
-            if (this.type !== "merchant") {
-                for (const subItem of await item.getSubItems()) {
-                    if (subItem.type === "module") continue;
-                    await gatherItemData(subItem, parentId, data)
-                }
+            // Add item children
+            for (const refItem of await item.getRefItems()) {
+                // Add item child if actor should
+                if (!CONFIG.PL1E.actorTypes[this.type].itemChildren.includes(refItem.item.type)) continue;
+
+                await gatherItemData(refItem.item, parentId, data)
             }
             return data;
         }
