@@ -321,13 +321,14 @@ export class Pl1eActor extends Actor {
      * @returns {Promise<void>}
      */
     async addItem(item, childId = undefined) {
-        const gatherItemData = async (item, childId, data = []) => {
+        const gatherItemData = async (item, childId, behavior = "regular", data = []) => {
             const itemCopy = item.toObject()
             const parentId = randomID();
             itemCopy.flags = {
                 pl1e: {
                     childId: childId || null,  // If childId might be undefined or falsy
-                    parentId: parentId
+                    parentId: parentId,
+                    behavior: behavior
                 },
                 core: {
                     sourceId: item.uuid
@@ -340,7 +341,7 @@ export class Pl1eActor extends Actor {
                 // Add item child if actor should
                 if (!CONFIG.PL1E.actorTypes[this.type].itemChildren.includes(refItem.item.type)) continue;
 
-                await gatherItemData(refItem.item, parentId, data)
+                await gatherItemData(refItem.item, parentId, refItem.behavior, data)
             }
             return data;
         }

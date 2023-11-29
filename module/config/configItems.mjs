@@ -6,81 +6,61 @@ export function getConfigItems() {
             "label": "PL1E.Feature",
             "droppable": ["ability"],
             "localDroppable": [],
-            "stackable": [],
-            "unlock": [],
-            "locked": false
+            "stackable": []
         },
         "race": {
             "label": "PL1E.Race",
             "droppable": ["feature", "ability", "weapon"],
             "localDroppable": [],
-            "stackable": ["weapon"],
-            "unlock": [],
-            "locked": false
+            "stackable": ["weapon"]
         },
         "class": {
             "label": "PL1E.Class",
             "droppable": ["feature", "ability", "mastery"],
             "localDroppable": [],
-            "stackable": [],
-            "unlock": ["mastery"],
-            "locked": false
+            "stackable": []
         },
         "mastery": {
             "label": "PL1E.Mastery",
             "droppable": ["ability"],
             "localDroppable": [],
-            "stackable": [],
-            "unlock": [],
-            "locked": true
+            "stackable": []
         },
         "ability": {
             "label": "PL1E.Ability",
             "droppable": [],
             "localDroppable": [],
-            "stackable": [],
-            "unlock": [],
-            "locked": false
+            "stackable": []
         },
         "weapon": {
             "label": "PL1E.Weapon",
             "droppable": ["feature", "ability", "mastery", "module"],
             "localDroppable": ["module"],
-            "stackable": ["module"],
-            "unlock": [],
-            "locked": false
+            "stackable": ["module"]
         },
         "wearable": {
             "label": "PL1E.Wearable",
             "droppable": ["feature", "ability", "mastery"],
             "localDroppable": ["module"],
-            "stackable": ["module"],
-            "unlock": [],
-            "locked": false
+            "stackable": ["module"]
         },
         "consumable": {
             "label": "PL1E.Consumable",
             "droppable": [],
             "localDroppable": [],
-            "stackable": [],
-            "unlock": [],
-            "locked": false
+            "stackable": []
         },
         "common": {
             "label": "PL1E.Common",
             "droppable": [],
             "localDroppable": [],
-            "stackable": [],
-            "unlock": [],
-            "locked": false
+            "stackable": []
         },
         "module": {
             "label": "PL1E.Module",
             "droppable": [],
             "localDroppable": [],
-            "stackable": [],
-            "unlock": [],
-            "locked": false
+            "stackable": []
         }
     }
 
