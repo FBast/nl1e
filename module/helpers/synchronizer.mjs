@@ -112,14 +112,20 @@ export class Pl1eSynchronizer {
         for (const refItem of refItems) {
             // If we find an item with the same source id then continue
             if (actor.items.find(item => item.sourceId === refItem.itemId)) continue;
+
+            // Add item child if actor should
+            if (!CONFIG.PL1E.actorTypes[actor.type].itemChildren.includes(refItem.item.type)) continue;
+
             await actor.addItem(refItem.item, item.parentId);
         }
         // Remove the item of the actor which use the same parentId and are not present in the item
         for (const otherItem of actor.items) {
             // If the otherItem as a different childId than the item parentId then continue
             if (otherItem.childId !== item.parentId) continue;
+
             // If the otherItem id is inside the refItems then continue
             if (refItems.find(refItem => refItem.itemId === otherItem.sourceId)) continue;
+
             await actor.removeItem(otherItem);
         }
     }

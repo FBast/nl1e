@@ -12,7 +12,7 @@
                     <img class="item-image item-edit hover-red" src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
                     <label class="item-name">{{item.name}}</label>
                     <div class="item-icons grid-span-2">
-                        {{#if @root.item.isEmbedded}}
+                        {{#if (and @root.item.isEmbedded (eq item.type "mastery"))}}
                             {{#if (eq behavior "regular")}}
                                 <i class="item-info fas fa-cube hover-green" data-tooltip="{{localize "PL1E.Regular"}}"></i>
                             {{else if (eq behavior "container")}}
@@ -26,7 +26,7 @@
                         {{/if}}
                     </div>
                     <div class="item-controls">
-                        {{#unless @root.item.isEmbedded}}
+                        {{#if (and (not @root.item.isEmbedded) (eq item.type "mastery"))}}
                             {{#if (eq behavior "regular")}}
                                 <a class="item-control item-switch-behavior" data-tooltip='{{localize "PL1E.Regular"}}'><i class="fas fa-cube"></i></a>
                             {{else if (eq behavior "container")}}
@@ -34,7 +34,7 @@
                             {{else if (eq behavior "key")}}
                                 <a class="item-control item-switch-behavior" data-tooltip='{{localize "PL1E.Key"}}'><i class="fas fa-key-skeleton"></i></a>
                             {{/if}}
-                        {{/unless}}
+                        {{/if}}
                         {{#if (or (and @root.item.isEmbedded (not synchronized)) (and (not @root.item.isEmbedded) synchronized))}}
                             <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                         {{/if}}
