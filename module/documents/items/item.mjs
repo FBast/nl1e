@@ -265,7 +265,7 @@ export class Pl1eItem extends Item {
 
         let passiveAspectsFromModules = {};
         refItems.forEach(refItem => {
-            if (refItem.item.type === "module") {
+            if (refItem.item && refItem.item.type === "module") {
                 Object.assign(passiveAspectsFromModules, refItem.item.system.passiveAspects);
             }
         });
@@ -283,7 +283,7 @@ export class Pl1eItem extends Item {
 
         let activeAspectsFromModules = {};
         refItems.forEach(refItem => {
-            if (refItem.item.type === "module") {
+            if (refItem.item && refItem.item.type === "module") {
                 Object.assign(activeAspectsFromModules, refItem.item.system.activeAspects);
             }
         });

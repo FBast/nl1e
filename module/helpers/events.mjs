@@ -157,14 +157,15 @@ export class Pl1eEvent {
      */
     static async onItemRemove(event, document) {
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        if (itemId == null) return;
 
         // Remove embedded items from actor
-        if (document instanceof Pl1eActor && itemId) {
+        if (document instanceof Pl1eActor) {
             const item = document.items.get(itemId);
             await document.removeItem(item);
         }
         // Remove refItem from item
-        else if (document instanceof Pl1eItem && itemId) {
+        else if (document instanceof Pl1eItem) {
             await document.removeRefItem(itemId);
         }
 

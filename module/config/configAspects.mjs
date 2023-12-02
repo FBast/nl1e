@@ -81,7 +81,8 @@ export function getConfigAspects() {
                 "general": "PL1E.General",
                 "money": "PL1E.Money",
                 "reductions": "PL1E.Reductions",
-                "aspectsMisc": "PL1E.Misc"
+                "aspectsMisc": "PL1E.Misc",
+                "aspectsItemLinked": "PL1E.ItemLinked"
             }
         },
         "transfer": {
@@ -683,6 +684,16 @@ export function getConfigAspects() {
             "icon": "fa-reply-clock",
             "type": "bool",
             "path": "system.misc.vocalMagic"
+        }
+    }
+
+    PL1E.aspectsItemLinked = {
+        "removedUses": {
+            "label": "PL1E.RemovedUses",
+            "type": "number",
+            "document": "linkedItem",
+            "dataGroup": "itemBase",
+            "data": "removedUses"
         }
     }
 

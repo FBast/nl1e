@@ -517,7 +517,6 @@ export class Pl1eAspect {
 
         for (const aspect of aspectsArray) {
             const key = this._generateAspectKey(aspect);
-
             const aspectConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
             if (!mergedAspects[key]) {
                 mergedAspects[key] = { ...aspect };
