@@ -176,7 +176,7 @@ export class Pl1eAspect {
     static async _modify(aspect, characterData, targetsData) {
         for (const targetData of targetsData) {
             // Check targetGroup validation for aspect
-            if (!this._isTargetValid(aspect.targetGroup, targetData.token, characterData.token)) continue;
+            if (!this._isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
 
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
@@ -237,7 +237,7 @@ export class Pl1eAspect {
         // First pass for source
         for (const targetData of targetsData) {
             // Check transferSource validation for aspect
-            if (!this._isTargetValid(aspect.transferSource, targetData.token, characterData.token)) continue;
+            if (!this._isTargetValid(aspect.transferSource, targetData, characterData)) continue;
 
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
@@ -273,7 +273,7 @@ export class Pl1eAspect {
 
         // Count destination targets
         const destinationNumber = targetsData.filter(target => {
-            return this._isTargetValid(aspect.transferDestination, target.token, characterData.token);
+            return this._isTargetValid(aspect.transferDestination, target, characterData);
         }).length;
 
         // Split sum into destination number
@@ -283,7 +283,7 @@ export class Pl1eAspect {
         // Second pass for destination
         for (const targetData of targetsData) {
             // Check transferSource validation for aspect
-            if (!this._isTargetValid(aspect.transferDestination, targetData.token, characterData.token)) continue;
+            if (!this._isTargetValid(aspect.transferDestination, targetData, characterData)) continue;
 
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
@@ -310,7 +310,7 @@ export class Pl1eAspect {
     static async _status(aspect, characterData, targetsData) {
         for (const targetData of targetsData) {
             // Check targetGroup validation for aspect
-            if (!this._isTargetValid(aspect.targetGroup, targetData.token, characterData.token)) continue;
+            if (!this._isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
 
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
@@ -362,7 +362,7 @@ export class Pl1eAspect {
     static async _movement(aspect, characterData, targetsData) {
         for (const targetData of targetsData) {
             // Check targetGroup validation for aspect
-            if (!this._isTargetValid(aspect.targetGroup, targetData.token, characterData.token)) continue;
+            if (!this._isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
 
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
@@ -494,20 +494,24 @@ export class Pl1eAspect {
 
     /**
      *
-     * @param group
-     * @param targetToken
-     * @param characterToken
+     * @param {string} group
+     * @param {TargetData} targetData
+     * @param {CharacterData} characterData
      * @return {boolean}
      * @private
      */
-    static _isTargetValid(group, targetToken, characterToken) {
-        if (group === "self" && targetToken !== characterToken) return false;
-        if (group === "allies" && targetToken.document.disposition !== characterToken.document.disposition) return false;
-        if (group === "opponents" && targetToken.document.disposition === characterToken.document.disposition) return false;
+    static _isTargetValid(group, targetData, characterData) {
+        const targetToken = targetData.token;
+        const characterToken = characterData.token;
+        if ("targets" === group && targetData.actor === characterData.actor && !targetData.template) return false;
+        if (["targets", "self", "alliesAndSelf", "opponentsAndSelf"].includes(group) && targetToken !== characterToken) return false;
+        if (["targets", "allies", "alliesAndSelf"].includes(group) && targetToken.document.disposition !== characterToken.document.disposition) return false;
+        if (["targets", "opponents","opponentsAndSelf"].includes(group) && targetToken.document.disposition === characterToken.document.disposition) return false;
         return true;
     }
 
     /**
+     * TODO should be refactored to properly merge the new aspects
      * Merge aspects with the same properties except for the value.
      * @param {Object} aspectsArray
      * @return {Object}

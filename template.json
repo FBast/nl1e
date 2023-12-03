@@ -455,9 +455,7 @@
         "squareLength": 1,
         "squareLengthResolutionType": "fixed",
         "rayLength": 1,
-        "rayLengthResolutionType": "fixed",
-        "excludeSelf": false,
-        "includeSelf": false
+        "rayLengthResolutionType": "fixed"
       }
     },
     "weapon": {
@@ -510,9 +508,7 @@
         "squareLength": 1,
         "squareLengthResolutionType": "fixed",
         "rayLength": 1,
-        "rayLengthResolutionType": "fixed",
-        "excludeSelf": false,
-        "includeSelf": false
+        "rayLengthResolutionType": "fixed"
       }
     },
     "common": {

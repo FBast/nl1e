@@ -148,18 +148,6 @@
                         {{/if}}
                     </div>
                 {{/if}}
-                {{#if (and (ne system.attributes.areaShape "target") (ne system.attributes.areaShape "self"))}}
-                    <div class="form-group">
-                        <label>{{localize "PL1E.ExcludeSelf"}}</label>
-                        <input type="checkbox" name="system.attributes.excludeSelf" {{checked system.attributes.excludeSelf}} data-dtype="Boolean"/>
-                    </div>
-                {{/if}}
-            {{/if}}
-            {{#if (ne system.attributes.areaShape "self")}}
-                <div class="form-group">
-                    <label>{{localize "PL1E.IncludeSelf"}}</label>
-                    <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}} data-dtype="Boolean"/>
-                </div>
             {{/if}}
             <hr>
             <div class="form-group">

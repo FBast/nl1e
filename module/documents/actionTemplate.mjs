@@ -294,13 +294,11 @@ export class ActionTemplate extends MeasuredTemplate {
                 if (token.x === gridPosition.x && token.y === gridPosition.y) {
                     // Filter non valid targets
                     if (!targetGroups.includes("all")) {
-                        if (!targetGroups.includes("self") && token.document === actionData.token) continue;
-                        if (!targetGroups.includes("allies") && token.document.disposition === actionData.token.disposition) continue;
-                        if (!targetGroups.includes("opponents") && token.document.disposition !== actionData.token.disposition) continue;
+                        if (!targetGroups.includes("allies") && !targetGroups.includes("alliesAndSelf")
+                            && token.document.disposition === actionData.token.disposition) continue;
+                        if (!targetGroups.includes("opponents") && !targetGroups.includes("opponentsAndSelf")
+                            && token.document.disposition !== actionData.token.disposition) continue;
                     }
-
-                    // Filter if excludeSelf
-                    if (actionData.attributes.excludeSelf && token.document === actionData.token) continue;
 
                     // Add to targets array
                     targets.push(token);

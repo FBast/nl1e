@@ -333,6 +333,7 @@ export function getConfigItems() {
 
     PL1E.areaShapes = {
         "self": "PL1E.Self",
+        "none": "PL1E.None",
         "target": "PL1E.Target",
         "circle": "PL1E.Circle",
         "cone": "PL1E.Cone",

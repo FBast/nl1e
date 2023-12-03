@@ -95,15 +95,15 @@ export class Pl1eItem extends Item {
     get sourceParentsItems() {
         const parentsItems = [];
         if (!this.actor || !this.parentItem) return parentsItems;
-        for (/** @type {Pl1eItem} */ const parentItem of this.actor.items) {
-            if (!Object.values(parentItem.system.refItems).includes(this.sourceId)) continue;
+        for (/** @type {Pl1eItem} */ const actorItem of this.actor.items) {
+            if (!Object.values(actorItem.system.refItems).find(refItem => refItem.itemId === this.sourceId)) continue;
             // Item parent behavior is not regular
-            if (parentItem.behavior !== "regular") {
-                // Then find source parents items of parentItem
-                parentsItems.push(...parentItem.sourceParentsItems);
+            if (actorItem.behavior !== "regular") {
+                // Then find source parents items of actorItem
+                parentsItems.push(...actorItem.sourceParentsItems);
             }
             else {
-                parentsItems.push(parentItem);
+                parentsItems.push(actorItem);
             }
         }
         return parentsItems;
@@ -207,11 +207,8 @@ export class Pl1eItem extends Item {
                 changed["system.attributes.isMajorAction"] = false;
                 changed["system.attributes.usageCost"] = 0;
             }
-            if (["target", "self"].includes(changed.system?.attributes?.areaShape))
-                changed["system.attributes.excludeSelf"] = false;
             if (changed.system?.attributes?.areaShape === "self") {
                 changed["system.attributes.areaNumber"] = 0;
-                changed["system.attributes.includeSelf"] = true;
             }
         }
 
@@ -289,6 +286,8 @@ export class Pl1eItem extends Item {
         });
 
         const allAspects = [...Object.values(this.system.activeAspects), ...Object.values(activeAspectsFromModules)];
+
+        //TODO merging error to fix here
         return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 
@@ -315,6 +314,7 @@ export class Pl1eItem extends Item {
         }
 
         // Add item ref item
+        this.system.refItems = {};
         this.system.refItems[randomID()] = {
             itemId: item.id,
             behavior: "regular",
@@ -679,7 +679,7 @@ export class Pl1eItem extends Item {
     async launch(characterData) {
         // Roll data for every targets
         /** @type {TargetData[]} */
-        let targetsData = []
+        let targetsData = [];
 
         // Reconstruct templates based on actionData flag
         for (const template of characterData.templates) {
@@ -691,11 +691,9 @@ export class Pl1eItem extends Item {
             template.actionData = actionData;
         }
 
-        // In case of include self
-        if (characterData.attributes.includeSelf) {
-            const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
-            targetsData.push(targetData);
-        }
+        // Include self
+        const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
+        targetsData.push(targetData);
         if (characterData.attributes.areaShape !== "none") {
             // Populate targetsData
             for (let template of characterData.templates) {
@@ -756,9 +754,9 @@ export class Pl1eItem extends Item {
             targetData.result = characterData.result;
         }
         targetData.actor = actor;
-        targetData.actorId = actor._id;
-        targetData.scene = token.scene;
-        targetData.sceneId = token.scene.id;
+        targetData.actorId = actor.id;
+        targetData.scene = characterData.scene;
+        targetData.sceneId = characterData.scene.id;
         targetData.token = token;
         targetData.tokenId = token?.id;
         targetData.template = template;
