@@ -293,7 +293,7 @@ export class ActionTemplate extends MeasuredTemplate {
                 // Check if target position in template
                 if (token.x === gridPosition.x && token.y === gridPosition.y) {
                     // Filter non valid targets
-                    if (!targetGroups.includes("all")) {
+                    if (!targetGroups.includes("all") && !targetGroups.includes("targets")) {
                         if (!targetGroups.includes("allies") && !targetGroups.includes("alliesAndSelf")
                             && token.document.disposition === actionData.token.disposition) continue;
                         if (!targetGroups.includes("opponents") && !targetGroups.includes("opponentsAndSelf")

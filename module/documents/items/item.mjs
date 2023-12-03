@@ -267,7 +267,7 @@ export class Pl1eItem extends Item {
             }
         });
 
-        const allAspects = [...Object.values(this.system.passiveAspects), ...Object.values(passiveAspectsFromModules)];
+        const allAspects = {...this.system.passiveAspects, ...passiveAspectsFromModules};
         return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 
@@ -285,9 +285,7 @@ export class Pl1eItem extends Item {
             }
         });
 
-        const allAspects = [...Object.values(this.system.activeAspects), ...Object.values(activeAspectsFromModules)];
-
-        //TODO merging error to fix here
+        const allAspects = {...this.system.activeAspects, ...activeAspectsFromModules};
         return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 
@@ -505,8 +503,8 @@ export class Pl1eItem extends Item {
             // Apply the effect on the character
             await this._applyAttributes(characterData);
 
-            // In case of self area shape
-            if (characterData.attributes.areaShape === "self") {
+            // In case of no area shape
+            if (characterData.attributes.areaShape === "none") {
                 await this.resolve(characterData, {
                     action: "launch"
                 });
@@ -691,9 +689,12 @@ export class Pl1eItem extends Item {
             template.actionData = actionData;
         }
 
-        // Include self
-        const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
-        targetsData.push(targetData);
+        // Include self if targetGroup use it
+        if (Object.values(characterData.activeAspects).find(aspect => ["self", "alliesAndSelf", "opponentsAndSelf"]
+            .includes(aspect.targetGroup))) {
+            const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
+            targetsData.push(targetData);
+        }
         if (characterData.attributes.areaShape !== "none") {
             // Populate targetsData
             for (let template of characterData.templates) {

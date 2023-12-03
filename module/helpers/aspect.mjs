@@ -504,36 +504,37 @@ export class Pl1eAspect {
         const targetToken = targetData.token;
         const characterToken = characterData.token;
         if ("targets" === group && targetData.actor === characterData.actor && !targetData.template) return false;
-        if (["targets", "self", "alliesAndSelf", "opponentsAndSelf"].includes(group) && targetToken !== characterToken) return false;
-        if (["targets", "allies", "alliesAndSelf"].includes(group) && targetToken.document.disposition !== characterToken.document.disposition) return false;
-        if (["targets", "opponents","opponentsAndSelf"].includes(group) && targetToken.document.disposition === characterToken.document.disposition) return false;
+        if (["self", "alliesAndSelf", "opponentsAndSelf"].includes(group) && targetToken !== characterToken) return false;
+        if (["allies", "alliesAndSelf"].includes(group) && targetToken.document.disposition !== characterToken.document.disposition) return false;
+        if (["opponents","opponentsAndSelf"].includes(group) && targetToken.document.disposition === characterToken.document.disposition) return false;
         return true;
     }
 
     /**
-     * TODO should be refactored to properly merge the new aspects
      * Merge aspects with the same properties except for the value.
-     * @param {Object} aspectsArray
+     * @param {Object} aspects
      * @return {Object}
      */
-    static mergeAspectsObjects(aspectsArray) {
+    static mergeAspectsObjects(aspects) {
+        const mergeKeys = {};
         const mergedAspects = {};
-
-        for (const aspect of aspectsArray) {
-            const key = this._generateAspectKey(aspect);
+        for (const [aspectId, aspect] of Object.entries(aspects)) {
+            const mergeKey = this._generateMergeKey(aspect);
             const aspectConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-            if (!mergedAspects[key]) {
-                mergedAspects[key] = { ...aspect };
-                mergedAspects[key].value = aspectConfig.type === "array" ? [aspect.value] : aspect.value;
-            } else {
+            if (mergeKeys[mergeKey]) {
+                const aspectId = mergeKeys[mergeKey];
                 if (aspectConfig.type === "number") {
-                    mergedAspects[key].value += aspect.value;
-                } else if (aspectConfig.type === "array") {
-                    mergedAspects[key].value.push(aspect.value);
+                    mergedAspects[aspectId].value += aspect.value;
+                }
+                else if (aspectConfig.type === "array") {
+                    mergedAspects[aspectId].value.push(aspect.value);
                 }
             }
+            else {
+                mergeKeys[mergeKey] = aspectId;
+                mergedAspects[aspectId] = aspect;
+            }
         }
-
         return mergedAspects;
     }
 
@@ -543,7 +544,7 @@ export class Pl1eAspect {
      * @return {string}
      * @private
      */
-    static _generateAspectKey(aspect) {
+    static _generateMergeKey(aspect) {
         const { value, ...restOfAspect } = aspect;
         return JSON.stringify(restOfAspect);
     }
