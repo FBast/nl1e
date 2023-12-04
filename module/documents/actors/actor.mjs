@@ -114,22 +114,19 @@ export class Pl1eActor extends Actor {
 
     /** @inheritDoc */
     async _preUpdate(changed, options, user) {
-        // Items macros
-        for (const item of this.items) {
-            if (item.type !== "ability") continue;
-            if (!item.isEnabled) continue;
-
-            const macroId = item.system.attributes.actorUpdateMacro;
-            const actorUpdateMacro = await Pl1eHelpers.getDocument("Macro", macroId);
-
-            // Execute post-launch macro
-            if (actorUpdateMacro) actorUpdateMacro.execute({
-                actor: this,
-                changed: changed,
-                options: options,
-                user: user
-            });
+        // Apply passive macro
+        for (/** @type {Pl1eItem} */ const item of this.items) {
+            for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
+                if (aspect.name !== "macro" || aspect.context !== "preUpdate" || !item.isEnabled) continue;
+                await Pl1eAspect.applyPassiveMacro(aspect, id, {
+                    actor: this,
+                    changed: changed,
+                    options: options,
+                    user: user
+                });
+            }
         }
+
         return super._preUpdate(changed, options, user);
     }
 

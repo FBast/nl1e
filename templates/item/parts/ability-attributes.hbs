@@ -226,15 +226,6 @@
             {{/if}}
         {{/if}}
     </fieldset>
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.ModificationMacros"}}</legend>
-        <div class="form-group">
-            <label>{{localize "PL1E.ActorUpdateMacro"}}</label>
-            <select name="system.attributes.actorUpdateMacro">
-                {{selectOptions modificationMacros selected=system.attributes.actorUpdateMacro localize=true}}
-            </select>
-        </div>
-    </fieldset>
     {{#unless system.attributes.useParentSequencerMacros}}
         <fieldset>
             <legend class="section-header">{{localize "PL1E.SequencerMacros"}}</legend>

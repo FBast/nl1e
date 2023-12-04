@@ -116,7 +116,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
         // Retrieve some documents from packs
         context.sequencerMacros = await this._listDocuments("legacy-sequencer-macros", true);
-        context.modificationMacros = await this._listDocuments("legacy-modification-macros", true);
+        context.actorPreUpdate = await this._listDocuments("legacy-actor-pre-update-macros");
         context.invocations = await this._listDocuments("legacy-characters");
 
         return context;

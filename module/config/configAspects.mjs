@@ -13,6 +13,11 @@ export function getConfigAspects() {
             "effectIcon": "systems/pl1e/assets/icons/modify.svg",
             "effectIconTint": "#ffffff"
         },
+        {
+            "name": "passiveMacro",
+            "context": "actorPreUpdate",
+            "macroId": ""
+        }
     ]
 
     PL1E.activeAspectsObjects = [
@@ -67,6 +72,11 @@ export function getConfigAspects() {
             "data": "standard",
             "resolutionType": "fixed",
             "invocation": ""
+        },
+        {
+            "name": "activeMacro",
+            "context": "targetResolution",
+            "macroId": ""
         }
     ]
 
@@ -113,6 +123,20 @@ export function getConfigAspects() {
             "img": "systems/pl1e/assets/icons/invocation.svg",
             "dataGroups": {
                 "invocations": "PL1E.Invocations"
+            }
+        },
+        "passiveMacro": {
+            "label": "PL1E.Macro",
+            "img": "systems/pl1e/assets/icons/dice-target.svg",
+            "contexts": {
+                "actorPreUpdate": "PL1E.ActorPreUpdate"
+            }
+        },
+        "activeMacro": {
+            "label": "PL1E.Macro",
+            "img": "systems/pl1e/assets/icons/dice-target.svg",
+            "contexts": {
+                "targetResolution": "PL1E.TargetResolution"
             }
         }
     }

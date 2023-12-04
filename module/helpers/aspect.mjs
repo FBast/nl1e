@@ -25,6 +25,8 @@ export class Pl1eAspect {
                 return await this._movement(aspect, characterData, targetsData);
             case "invocation":
                 return await this._invocation(aspect, characterData, targetsData);
+            case "macro":
+                return await this._macro(aspect, characterData, targetsData);
             default:
                 throw new Error("PL1E | unknown aspect : " + aspect.name);
         }
@@ -58,6 +60,14 @@ export class Pl1eAspect {
                 break;
         }
         setProperty(actor, dataConfig.path, currentValue);
+    }
+
+    static async applyPassiveMacro(aspect, aspectId, scope) {
+        const macroId = aspect.value;
+        const macro = await Pl1eHelpers.getDocument("Macro", macroId);
+
+        // Execute actor update macro
+        if (macro) macro.execute(scope);
     }
 
     /**
@@ -134,31 +144,39 @@ export class Pl1eAspect {
 
     static async getDescription(aspect) {
         let descriptionParts = [];
-        if (aspect.operator) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("numberOperators", aspect.operator)));
-        if (aspect.value) {
-            if (typeof aspect.value === "boolean") {
-                descriptionParts.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
-            } else if (typeof aspect.value === "string") {
-                descriptionParts.push(game.i18n.localize(aspect.value));
-            } else if (Array.isArray(aspect.value)) {
-                let values = aspect.value.map(value => {
-                    const label = Pl1eHelpers.getConfig(aspect.data, value);
-                    return game.i18n.localize(label);
-                });
-                descriptionParts.push(values.join(", "));
-            } else {
-                descriptionParts.push(aspect.value);
-            }
-        }
-        if (aspect.damageType) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
-        if (aspect.resolutionType) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
-        if (aspect.data) {
+        if (["passiveMacro", "activeMacro"].includes(aspect.name)) {
+            const macro = await Pl1eHelpers.getDocument("Macro", aspect.macroId);
+            descriptionParts.push(macro ? macro.name : game.i18n.localize("PL1E.Unknown"));
             descriptionParts.push(game.i18n.localize("PL1E.On"));
-            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data, "label")));
+            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("aspects", aspect.name, "contexts", aspect.context)));
         }
-        if (aspect.targetGroup) {
-            descriptionParts.push(game.i18n.localize("PL1E.For"));
-            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroups", aspect.targetGroup)));
+        else {
+            if (aspect.operator) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("numberOperators", aspect.operator)));
+            if (aspect.value) {
+                if (typeof aspect.value === "boolean") {
+                    descriptionParts.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
+                } else if (typeof aspect.value === "string") {
+                    descriptionParts.push(game.i18n.localize(aspect.value));
+                } else if (Array.isArray(aspect.value)) {
+                    let values = aspect.value.map(value => {
+                        const label = Pl1eHelpers.getConfig(aspect.data, value);
+                        return game.i18n.localize(label);
+                    });
+                    descriptionParts.push(values.join(", "));
+                } else {
+                    descriptionParts.push(aspect.value);
+                }
+            }
+            if (aspect.damageType) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
+            if (aspect.resolutionType) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
+            if (aspect.data) {
+                descriptionParts.push(game.i18n.localize("PL1E.On"));
+                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data, "label")));
+            }
+            if (aspect.targetGroup) {
+                descriptionParts.push(game.i18n.localize("PL1E.For"));
+                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroups", aspect.targetGroup)));
+            }
         }
         const description = descriptionParts.join(' ');
         return description.toLowerCase();
@@ -207,7 +225,7 @@ export class Pl1eAspect {
             }
             else {
                 // Apply the aspect
-                await this._applyTargetAspect(aspectCopy, characterData, targetData);
+                await this._applyTargetAspect(aspectCopy, targetData);
             }
 
             // Add label for Sequence
@@ -461,28 +479,40 @@ export class Pl1eAspect {
     }
 
     /**
+     * Apply the macro aspect
+     * @param aspect
+     * @param characterData
+     * @param targetsData
+     * @returns {Promise<TargetData[]>}
+     * @private
+     */
+    static async _macro(aspect, characterData, targetsData) {
+        // Find macro
+        const macroId = aspect.value;
+        const macro = await Pl1eHelpers.getDocument("Macro", macroId);
+
+        // Execute macro
+        if (macro !== undefined) macro.execute({
+            characterData: characterData,
+            targetsData: targetsData
+        });
+    }
+
+    /**
      *
      * @param aspect
-     * @param {CharacterData} characterData
      * @param {TargetData} targetData
      * @return {Promise<void>}
      * @private
      */
-    static async _applyTargetAspect(aspect, characterData, targetData) {
+    static async _applyTargetAspect(aspect, targetData) {
         const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
         let currentValue = getProperty(targetData.actor, dataConfig.path);
         currentValue = aspect.operator === "set" ? aspect.value : currentValue + aspect.value;
         if (game.user.isGM) {
-            //TODO some uber treatment to do here
-            if (dataConfig.document === "linkedItem") {
-                // const itemConfig = Pl1eHelpers.getConfig(dataConfig.dataGroup, dataConfig.data);
-                // characterData.linkedItem.update()
-            }
-            else {
-                await targetData.actor.update({
-                    [dataConfig.path]: currentValue
-                });
-            }
+            await targetData.actor.update({
+                [dataConfig.path]: currentValue
+            });
         }
         else {
             if (Pl1eHelpers.isGMConnected()) {
@@ -528,8 +558,8 @@ export class Pl1eAspect {
         const mergedAspects = {};
         for (const [aspectId, aspect] of Object.entries(aspects)) {
             const mergeKey = this._generateMergeKey(aspect);
-            const aspectConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-            if (mergeKeys[mergeKey]) {
+            const aspectConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
+            if (aspectConfig && mergeKeys[mergeKey]) {
                 const aspectId = mergeKeys[mergeKey];
                 if (aspectConfig.type === "number") {
                     mergedAspects[aspectId].value += aspect.value;

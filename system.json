@@ -52,10 +52,10 @@
       "flags": {}
     },
     {
-      "name": "legacy-modification-macros",
-      "label": "Legacy Modification Macros",
+      "name": "legacy-actor-pre-update-macros",
+      "label": "Legacy Actor Pre Update Macros",
       "system": "pl1e",
-      "path": "packs/legacy-modification-macros.db",
+      "path": "packs/legacy-actor-pre-update-macros.db",
       "type": "Macro",
       "private": true,
       "flags": {}
