@@ -1,4 +1,5 @@
 import {Pl1eItem} from "../documents/items/item.mjs";
+import {Pl1eHelpers} from "./helpers.mjs";
 
 export class Pl1eChat {
 
@@ -18,7 +19,7 @@ export class Pl1eChat {
 
         let flavor = `[${game.i18n.localize("PL1E.Action")}] ${characterData.item.name}`;
         if (rollData !== undefined) {
-            const skillConfig = CONFIG.PL1E.skills[rollData.skillName];
+            const skillConfig = Pl1eHelpers.getConfig("skills", rollData.skillName);
             flavor += ` [${game.i18n.localize("PL1E.Skill")}] ${game.i18n.localize(skillConfig.label)}`
         }
 
@@ -47,7 +48,7 @@ export class Pl1eChat {
      * @returns {Promise<void>}
      */
     static async skillRoll(actor, skillName) {
-        const skillConfig = CONFIG.PL1E.skills[skillName];
+        const skillConfig = Pl1eHelpers.getConfig("skills", skillName);
         let roll = await actor.rollSkill(skillName)
 
         // Render message

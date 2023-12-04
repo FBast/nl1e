@@ -32,7 +32,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @inheritDoc */
     get title() {
-        const itemType = CONFIG.PL1E.itemTypes[this.item.type];
+        const itemType = Pl1eHelpers.getConfig("itemTypes", this.item.type);
         let label = "Unknown";
         if (itemType) label = game.i18n.localize(itemType.label);
         return this.item.actor ? `${label} (${this.item.actor.name})` : label;
@@ -246,8 +246,8 @@ export class Pl1eItemSheet extends ItemSheet {
         // Common logic for handling items
         const handleItem = async (document) => {
             const itemTypeConfig = this.item.isEmbedded ?
-                CONFIG.PL1E.itemTypes[this.item.type].localDroppable :
-                CONFIG.PL1E.itemTypes[this.item.type].droppable;
+                Pl1eHelpers.getConfig("itemTypes", this.item.type, "localDroppable") :
+                Pl1eHelpers.getConfig("itemTypes", this.item.type, "droppable");
             if (!itemTypeConfig.includes(document.type)) return;
 
             if (!await checkModuleConditions(document, this.item)) return;
@@ -343,18 +343,18 @@ export class Pl1eItemSheet extends ItemSheet {
         // Attributes
         const attributesDisplay = {};
         for (let [key, value] of Object.entries(context.system.attributes)) {
-            const attributeConfig = CONFIG.PL1E.attributes[key];
+            const attributeConfig = Pl1eHelpers.getConfig("attributes", key);
             if (attributeConfig === undefined || !attributeConfig.inDescription) continue;
 
             // Type modification
             if (Array.isArray(value)) {
                 value = value.map(value => {
-                    const label = CONFIG.PL1E[attributeConfig.select][value]
+                    const label = Pl1eHelpers.getConfig(attributeConfig.select, value);
                     return game.i18n.localize(label);
                 }).join(", ");
             }
             else if (attributeConfig.type === "select") {
-                value = CONFIG.PL1E[attributeConfig.select][value];
+                value = Pl1eHelpers.getConfig(attributeConfig.select, value);
                 value = game.i18n.localize(value);
             }
             else if (typeof value === "boolean") {
@@ -374,7 +374,7 @@ export class Pl1eItemSheet extends ItemSheet {
         const passiveAspectsDisplay = {}
         for (let [key, aspect] of Object.entries(await this.item.getCombinedPassiveAspects())) {
             let aspectCopy = Object.assign({}, aspect);
-            const aspectConfig = CONFIG.PL1E.aspects[aspectCopy.name];
+            const aspectConfig = Pl1eHelpers.getConfig("aspects", aspectCopy.name);
             if (aspectConfig === undefined) continue;
 
             passiveAspectsDisplay[key] = Object.assign({}, aspectConfig, {
@@ -388,7 +388,7 @@ export class Pl1eItemSheet extends ItemSheet {
         const activeAspectsDisplay = {}
         for (let [key, aspect] of Object.entries(await this.item.getCombinedActiveAspects())) {
             let aspectCopy = Object.assign({}, aspect);
-            const aspectConfig = CONFIG.PL1E.aspects[aspectCopy.name];
+            const aspectConfig = Pl1eHelpers.getConfig("aspects", aspectCopy.name);
             if (aspectConfig === undefined) continue;
             activeAspectsDisplay[key] = Object.assign({}, aspectConfig, {
                 label: game.i18n.localize(aspectConfig.label),

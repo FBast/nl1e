@@ -159,12 +159,22 @@ export class Pl1eActor extends Actor {
         super.prepareBaseData();
         const systemData = this.system;
         const actorMisc = systemData.misc;
+        const actorGeneral = systemData.general;
 
         // Selection based values
-        actorMisc.sizeMultiplier = CONFIG.PL1E.sizes[actorMisc.size].multiplier;
-        actorMisc.tokenSize = CONFIG.PL1E.sizes[actorMisc.size].token;
-        actorMisc.movement = CONFIG.PL1E.speeds[actorMisc.speed].movement;
-        actorMisc.baseInitiative = CONFIG.PL1E.speeds[actorMisc.speed].baseInitiative;
+        actorMisc.sizeMultiplier = Pl1eHelpers.getConfig("sizes", actorMisc.size, "multiplier");
+        actorMisc.tokenSize = Pl1eHelpers.getConfig("sizes", actorMisc.size, "token");
+        actorMisc.movement = Pl1eHelpers.getConfig("speeds", actorMisc.speed, "movement");
+        actorMisc.baseInitiative = Pl1eHelpers.getConfig("speeds", actorMisc.speed, "baseInitiative");
+
+        // Calculate slots and ranks
+        actorGeneral.slots = Math.floor(actorGeneral.experience / 3);
+        for (let otherItem of this.items) {
+            if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
+            actorGeneral.slots -= otherItem.system.attributes.level;
+        }
+        actorGeneral.ranks = actorGeneral.experience;
+        actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
     }
 
     /** @inheritDoc */
@@ -226,7 +236,7 @@ export class Pl1eActor extends Actor {
 
         // Handle actorResources scores.
         for (let [id, resource] of Object.entries(actorResources)) {
-            const resourceConfig = CONFIG.PL1E.resources[id];
+            const resourceConfig = Pl1eHelpers.getConfig("resources", id);
             resource.max = 0;
             for (let characteristic of resourceConfig.weights.characteristics) {
                 resource.max += actorCharacteristics[characteristic].value;
@@ -237,7 +247,7 @@ export class Pl1eActor extends Actor {
 
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
-            const skillConfig = CONFIG.PL1E.skills[id];
+            const skillConfig = Pl1eHelpers.getConfig("skills", id);
             let characteristicsSum = 0;
             for (let characteristic of skillConfig.weights.characteristics) {
                 characteristicsSum += actorCharacteristics[characteristic].value;
@@ -339,7 +349,8 @@ export class Pl1eActor extends Actor {
             // Add item children
             for (const refItem of await item.getRefItems()) {
                 // Add item child if actor should
-                if (!CONFIG.PL1E.actorTypes[this.type].itemChildren.includes(refItem.item.type)) continue;
+                const itemChildren = Pl1eHelpers.getConfig("actorTypes", this.type, "itemChildren");
+                if (!itemChildren.includes(refItem.item.type)) continue;
 
                 await gatherItemData(refItem.item, parentId, refItem.behavior, data)
             }

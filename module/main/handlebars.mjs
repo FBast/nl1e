@@ -27,16 +27,7 @@ export const registerHandlebars = function () {
     });
 
     Handlebars.registerHelper('config', function (...args) {
-        let data = CONFIG.PL1E;
-        for (let arg of args){
-            // Ignore if not string
-            if (typeof arg !== "string") continue;
-
-            data = data[arg];
-            if (data === undefined)
-                console.warn(`PL1E | config return is undefined with args ${args}`);
-        }
-        return data;
+        return Pl1eHelpers.getConfig(...args);
     });
 
     Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {

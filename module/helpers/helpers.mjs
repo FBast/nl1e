@@ -268,6 +268,19 @@ export class Pl1eHelpers {
         return JSON.stringify(obj, replacer);
     }
 
+    static getConfig(...keys) {
+        let data = CONFIG.PL1E;
+        for (let key of keys) {
+            // Ignore if not string
+            if (typeof key !== "string") continue;
+
+            data = data[key];
+            if (data === undefined)
+                console.warn(`PL1E | config return is undefined with keys ${keys}`);
+        }
+        return data;
+    }
+
     static multiLocalize(...keys) {
         return keys.map(key => {
             if (!key) return "";  // If the key is undefined or empty, return an empty string

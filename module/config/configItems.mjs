@@ -92,6 +92,11 @@ export function getConfigItems() {
             "fallback": 0,
             "inDescription": true
         },
+        "rangeResolutionType": {
+            "label": "PL1E.RangeResolutionType",
+            "type": "string",
+            "inDescription": false
+        },
         "uses": {
             "label": "PL1E.Uses",
             "type": "number",
@@ -137,6 +142,11 @@ export function getConfigItems() {
             "type": "bool",
             "inDescription": true
         },
+        "customMacro": {
+            "label": "PL1E.CustomMacro",
+            "type": "bool",
+            "inDescription": false
+        },
         "activationMacro": {
             "label": "PL1E.ActivationMacro",
             "type": "text",
@@ -169,6 +179,51 @@ export function getConfigItems() {
             "label": "PL1E.Level",
             "type": "number",
             "inDescription": true
+        },
+        "launchParentActiveAspects": {
+            "label": "PL1E.LaunchParentActiveAspects",
+            "type": "bool",
+            "inDescription": false
+        },
+        "weaponMode": {
+            "label": "PL1E.LaunchMode",
+            "type": "string",
+            "inDescription": false
+        },
+        "useParentRange": {
+            "label": "PL1E.UseParentRange",
+            "type": "bool",
+            "inDescription": false
+        },
+        "useParentRoll": {
+            "label": "PL1E.UseParentRoll",
+            "type": "bool",
+            "inDescription": false
+        },
+        "useParentOppositeRoll": {
+            "label": "PL1E.UseParentOppositeRoll",
+            "type": "bool",
+            "inDescription": false
+        },
+        "useParentSequencerMacros": {
+            "label": "PL1E.UseParentSequencerMacros",
+            "type": "bool",
+            "inDescription": false
+        },
+        "rollAdvantages": {
+            "label": "PL1E.RollAdvantages",
+            "type": "number",
+            "inDescription": false
+        },
+        "oppositeRollAdvantages": {
+            "label": "PL1E.OppositeRollAdvantages",
+            "type": "number",
+            "inDescription": false
+        },
+        "activation": {
+            "label": "PL1E.Activation",
+            "type": "string",
+            "inDescription": false
         },
         "healthCost": {
             "label": "PL1E.HealthCost",
@@ -231,17 +286,32 @@ export function getConfigItems() {
             "fallback": 1,
             "inDescription": true
         },
+        "areaNumberResolutionType": {
+            "label": "PL1E.AreaNumberResolutionType",
+            "type": "string",
+            "inDescription": false
+        },
         "circleRadius": {
             "label": "PL1E.CircleRadius",
             "type": "number",
             "fallback": 1,
             "inDescription": true
         },
+        "circleRadiusResolutionType": {
+            "label": "PL1E.CircleRadiusResolutionType",
+            "type": "string",
+            "inDescription": false
+        },
         "coneLength": {
             "label": "PL1E.ConeLength",
             "type": "number",
             "fallback": 1,
             "inDescription": true
+        },
+        "coneLengthResolutionType": {
+            "label": "PL1E.ConeLengthResolutionType",
+            "type": "string",
+            "inDescription": false
         },
         "coneAngle": {
             "label": "PL1E.ConeAngle",
@@ -255,11 +325,21 @@ export function getConfigItems() {
             "fallback": 1,
             "inDescription": true
         },
+        "squareLengthResolutionType": {
+            "label": "PL1E.SquareLengthResolutionType",
+            "type": "string",
+            "inDescription": false
+        },
         "rayLength": {
             "label": "PL1E.RayLength",
             "type": "number",
             "fallback": 1,
             "inDescription": true
+        },
+        "rayLengthResolutionType": {
+            "label": "PL1E.RayLengthResolutionType",
+            "type": "string",
+            "inDescription": false
         },
         "oppositeRoll": {
             "label": "PL1E.OppositeRoll",

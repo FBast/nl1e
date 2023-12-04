@@ -38,7 +38,7 @@ export class Pl1eAspect {
      */
     static applyPassiveValue(aspect, aspectId, actor) {
         const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+        const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
         let currentValue = getProperty(actor, dataConfig.path);
         switch (aspect.operator) {
             case "add":
@@ -70,8 +70,8 @@ export class Pl1eAspect {
      */
     static async applyPassiveEffect(aspect, aspectId, actor, item) {
         const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-        const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
+        const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
+        const aspectConfig = Pl1eHelpers.getConfig("aspects", aspect.name);
         const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
         await actor.createEmbeddedDocuments("ActiveEffect", [{
             name: name,
@@ -134,7 +134,7 @@ export class Pl1eAspect {
 
     static async getDescription(aspect) {
         let descriptionParts = [];
-        if (aspect.operator) descriptionParts.push(game.i18n.localize(CONFIG.PL1E.numberOperators[aspect.operator]));
+        if (aspect.operator) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("numberOperators", aspect.operator)));
         if (aspect.value) {
             if (typeof aspect.value === "boolean") {
                 descriptionParts.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
@@ -142,7 +142,7 @@ export class Pl1eAspect {
                 descriptionParts.push(game.i18n.localize(aspect.value));
             } else if (Array.isArray(aspect.value)) {
                 let values = aspect.value.map(value => {
-                    const label = CONFIG.PL1E[aspect.data][value];
+                    const label = Pl1eHelpers.getConfig(aspect.data, value);
                     return game.i18n.localize(label);
                 });
                 descriptionParts.push(values.join(", "));
@@ -150,15 +150,15 @@ export class Pl1eAspect {
                 descriptionParts.push(aspect.value);
             }
         }
-        if (aspect.damageType) descriptionParts.push(game.i18n.localize(CONFIG.PL1E.damageTypes[aspect.damageType]));
-        if (aspect.resolutionType) descriptionParts.push(game.i18n.localize(CONFIG.PL1E.resolutionTypes[aspect.resolutionType]));
+        if (aspect.damageType) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
+        if (aspect.resolutionType) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
         if (aspect.data) {
             descriptionParts.push(game.i18n.localize("PL1E.On"));
-            descriptionParts.push(game.i18n.localize(CONFIG.PL1E[aspect.dataGroup][aspect.data].label));
+            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data, "label")));
         }
         if (aspect.targetGroup) {
             descriptionParts.push(game.i18n.localize("PL1E.For"));
-            descriptionParts.push(game.i18n.localize(CONFIG.PL1E.targetGroups[aspect.targetGroup]));
+            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroups", aspect.targetGroup)));
         }
         const description = descriptionParts.join(' ');
         return description.toLowerCase();
@@ -207,11 +207,11 @@ export class Pl1eAspect {
             }
             else {
                 // Apply the aspect
-                await this._applyTargetAspect(aspectCopy, targetData);
+                await this._applyTargetAspect(aspectCopy, characterData, targetData);
             }
 
             // Add label for Sequence
-            aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);
+            aspectCopy.label = game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspectCopy.data, "label"));
 
             // Push the aspect
             targetData.activeAspects ??= [];
@@ -463,18 +463,26 @@ export class Pl1eAspect {
     /**
      *
      * @param aspect
-     * @param targetData
+     * @param {CharacterData} characterData
+     * @param {TargetData} targetData
      * @return {Promise<void>}
      * @private
      */
-    static async _applyTargetAspect(aspect, targetData) {
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
+    static async _applyTargetAspect(aspect, characterData, targetData) {
+        const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
         let currentValue = getProperty(targetData.actor, dataConfig.path);
         currentValue = aspect.operator === "set" ? aspect.value : currentValue + aspect.value;
         if (game.user.isGM) {
-            await targetData.actor.update({
-                [dataConfig.path]: currentValue
-            });
+            //TODO some uber treatment to do here
+            if (dataConfig.document === "linkedItem") {
+                // const itemConfig = Pl1eHelpers.getConfig(dataConfig.dataGroup, dataConfig.data);
+                // characterData.linkedItem.update()
+            }
+            else {
+                await targetData.actor.update({
+                    [dataConfig.path]: currentValue
+                });
+            }
         }
         else {
             if (Pl1eHelpers.isGMConnected()) {

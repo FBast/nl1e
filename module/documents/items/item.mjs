@@ -3,6 +3,7 @@ import {Pl1eSynchronizer} from "../../helpers/synchronizer.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {ActionTemplate} from "../actionTemplate.mjs";
 import {Pl1eChat} from "../../helpers/chat.mjs";
+import * as CONFIG from "../../config/config.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -304,7 +305,8 @@ export class Pl1eItem extends Item {
         }
 
         // Return if item with same id exist
-        if (!CONFIG.PL1E.itemTypes[this.type].stackable.includes(item.type) && Object.values(this.system.refItems).some(id => id === item._id)) {
+        const stackable = Pl1eHelpers.getConfig("itemsTypes", this.type, "stackable");
+        if (!stackable.includes(item.type) && Object.values(this.system.refItems).some(id => id === item._id)) {
             const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
             if (enableDebugUINotifications)
                 ui.notifications.warn(game.i18n.localize("PL1E.ChildWithSameIdExist"));
@@ -313,7 +315,7 @@ export class Pl1eItem extends Item {
 
         // Add item ref item
         this.system.refItems = {};
-        this.system.refItems[randomID()] = {
+        this.system.refItems[foundry.utils.randomID()] = {
             itemId: item.id,
             behavior: "regular",
             synchronized: !this.isEmbedded
@@ -442,7 +444,7 @@ export class Pl1eItem extends Item {
         // If we have a token then we can process further and apply the effects
         if (characterData.token) {
             // If shape is target and range equal to 0 then self effect don't need template
-            if (characterData.attributes.areaShape !== "target" || characterData.attributes.range !== 0) {
+            if (characterData.attributes.areaShape !== "none" || characterData.attributes.range !== 0) {
                 // Minimize the actor sheet to facilitate templates creation
                 await characterData.actor.sheet?.minimize();
 
@@ -556,7 +558,7 @@ export class Pl1eItem extends Item {
         let calculatedAttributes = {};
         for (let [key, value] of Object.entries(characterData.attributes)) {
             let calculatedAttribute = value;
-            const attributeConfig = CONFIG.PL1E.attributes[key];
+            const attributeConfig = Pl1eHelpers.getConfig("attributes", key);
             if (attributeConfig !== undefined) {
                 if (attributeConfig.combatOnly && (!characterData.token || !characterData.token.inCombat)) continue;
                 if (attributeConfig.type === "number") {
@@ -590,7 +592,7 @@ export class Pl1eItem extends Item {
      */
     async _applyAttributes(characterData) {
         for (const [key, value] of Object.entries(characterData.attributes)) {
-            const attributeConfig = CONFIG.PL1E.attributes[key];
+            const attributeConfig = Pl1eHelpers.getConfig("attributes", key);
             if (attributeConfig?.data === undefined || value === 0) continue;
 
             // Retrieve document for attribute modification
@@ -610,7 +612,7 @@ export class Pl1eItem extends Item {
             if (document === undefined) continue;
 
             // Calculate modification
-            const attributeDataConfig = CONFIG.PL1E[attributeConfig.dataGroup][attributeConfig.data];
+            const attributeDataConfig = Pl1eHelpers.getConfig(attributeConfig.dataGroup, attributeConfig.data);
             let currentValue = foundry.utils.getProperty(document, attributeDataConfig.path);
             switch (attributeConfig.type) {
                 case "number":

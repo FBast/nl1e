@@ -1,3 +1,5 @@
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
+
 export class Pl1eActiveEffect extends ActiveEffect {
 
     /**
@@ -30,8 +32,8 @@ export class Pl1eActiveEffect extends ActiveEffect {
         if (aspect.effectDuration <= 0) return;
 
         // Get configuration data
-        const dataConfig = CONFIG.PL1E[aspect.dataGroup][aspect.data];
-        const aspectConfig = CONFIG.PL1E.aspects[aspect.name];
+        const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
+        const aspectConfig = Pl1eHelpers.getConfig(aspect.name);
         const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`
 
         // Create effect

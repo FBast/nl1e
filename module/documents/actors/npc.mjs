@@ -1,4 +1,5 @@
 import {Pl1eActor} from "./actor.mjs";
+import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 
 export class Pl1eNPC extends Pl1eActor {
 
@@ -17,17 +18,12 @@ export class Pl1eNPC extends Pl1eActor {
         const actorSkills = systemData.skills;
 
         // Handle experience
-        actorGeneral.experience = CONFIG.PL1E.experienceTemplates[actorGeneral.experienceTemplate].value;
-        actorGeneral.slots = Math.floor(actorGeneral.experience / 3);
-        for (let otherItem of this.items) {
-            if (otherItem.type !== 'ability' || !otherItem.system.isMemorized) continue;
-            actorGeneral.slots -= otherItem.system.attributes.level;
-        }
-        actorGeneral.ranks = actorGeneral.experience;
-        actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
+        actorGeneral.experience = Pl1eHelpers.getDocument("experienceTemplates", actorGeneral.experienceTemplate, "value");
+
+        super.prepareBaseData();
 
         // Handle characteristics repartition
-        let npcTemplateConfig = CONFIG.PL1E.NPCTemplates[actorGeneral.NPCTemplate];
+        let npcTemplateConfig = Pl1eHelpers.getConfig("NPCTemplates", actorGeneral.NPCTemplate);
         for (let [id, characteristic] of Object.entries(npcTemplateConfig.characteristics)) {
             actorCharacteristics[id].base = characteristic;
         }
@@ -48,8 +44,6 @@ export class Pl1eNPC extends Pl1eActor {
                 }
             }
         }
-
-        super.prepareBaseData();
     }
 
     /** @inheritDoc */

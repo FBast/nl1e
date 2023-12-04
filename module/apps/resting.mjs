@@ -11,7 +11,7 @@ export class Pl1eResting extends FormApplication {
         this.slots = this.actor.system.general.slots;
         this.items = [];
         this.skills = deepClone(this.actor.system.skills);
-        this.skills = Object.fromEntries(Object.entries(this.skills).filter(([key]) => !CONFIG.PL1E.skills[key].fixedRank));
+        this.skills = Object.fromEntries(Object.entries(this.skills).filter(([key]) => !Pl1eHelpers.getConfig("skills", key, "fixedRank")));
         this.maxRank = this.actor.system.general.maxRank;
         this.ranks = this.actor.system.general.ranks;
         this.itemEaten = null;

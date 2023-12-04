@@ -217,7 +217,8 @@ export class Pl1eActorSheet extends ActorSheet {
         if (item.parent === this.actor) return;
 
         // Filter item to actor droppable
-        if (!CONFIG.PL1E.actorTypes[this.actor.type].droppable.includes(item.type)) return;
+        const droppable = Pl1eHelpers.getConfig("actorTypes", this.actor.type, "droppable");
+        if (!droppable.includes(item.type)) return;
 
         // Only one body class
         if (item.system.attributes.featureType === "bodyClass" && this.actor.items.find(item => item.system.attributes.featureType === "bodyClass")) {

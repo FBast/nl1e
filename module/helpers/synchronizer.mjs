@@ -114,7 +114,8 @@ export class Pl1eSynchronizer {
             if (actor.items.find(item => item.sourceId === refItem.itemId)) continue;
 
             // Add item child if actor should
-            if (!CONFIG.PL1E.actorTypes[actor.type].itemChildren.includes(refItem.item.type)) continue;
+            const itemChildren = Pl1eHelpers.getConfig("actorTypes", actor.type, "itemChildren");
+            if (!itemChildren.includes(refItem.item.type)) continue;
 
             await actor.addItem(refItem.item, item.parentId);
         }
