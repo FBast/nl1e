@@ -135,11 +135,12 @@ export class Pl1eActor extends Actor {
         const minSize = 20;
         const maxSize = 50
         if (keyConfig && diffValue !== 0) {
-            const textStyle = new PIXI.TextStyle({
+            const options = {
+                duration: 5000,
                 fontSize: Math.clamped(Math.abs(diffValue) / resourceProperty.max * maxSize, minSize, maxSize),
-                fill: diffValue > 0 ? "green" : "red",
-            })
-            canvas.interface.createScrollingText(position, text, textStyle);
+                fill: diffValue > 0 ? "#00FF00" : "#FF0000",
+            }
+            canvas.interface.createScrollingText(position, text, options);
         }
     }
 

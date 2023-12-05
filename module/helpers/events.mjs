@@ -157,19 +157,18 @@ export class Pl1eEvent {
      */
     static async onItemRemove(event, document) {
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
-        if (itemId == null) return;
+        const instanceId = $(event.currentTarget).closest(".item").data("instance-id");
+        if (itemId == null && instanceId == null) return;
 
         // Remove embedded items from actor
-        if (document instanceof Pl1eActor) {
+        if (document instanceof Pl1eActor && itemId) {
             const item = document.items.get(itemId);
             await document.removeItem(item);
         }
         // Remove refItem from item
-        else if (document instanceof Pl1eItem) {
-            await document.removeRefItem(itemId);
+        else if (document instanceof Pl1eItem && instanceId) {
+            await document.removeRefItem(instanceId);
         }
-
-        await document.sheet.render();
     }
 
     /**

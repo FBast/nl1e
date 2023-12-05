@@ -20,37 +20,30 @@ export class Pl1eMacro {
     }
 
     /**
+     * Activate an item when a macro is clicked
+     * @param {string} itemName
+     * @returns {Promise<boolean>}
+     */
+    static async activateItem(itemName) {
+        return await this.getTarget(itemName, "Item").activate();
+    }
+
+    /**
     * Attempt to create a macro.mjs from the dropped data. Will use an existing macro.mjs if one exists.
     * @param {object} dropData     The dropped data
     * @param {number} slot         The hotbar slot to use
     */
     static async createMacro(dropData, slot) {
         const macroData = { type: "script", scope: "actor" };
-        switch ( dropData.type ) {
-            case "Item":
-                const itemData = await Item.implementation.fromDropData(dropData);
-                if ( !itemData ) return ui.notifications.warn(game.i18n.localize("PL1E.Unowned"));
-                foundry.utils.mergeObject(macroData, {
-                    name: itemData.name,
-                    img: itemData.img,
-                    command: `game.pl1e.Pl1eMacro.rollItem("${itemData.name}")`,
-                    flags: {"pl1e.itemMacro": true}
-                });
-                break;
-            case "ActiveEffect":
-                const effectData = await ActiveEffect.implementation.fromDropData(dropData);
-                if ( !effectData ) return ui.notifications.warn(game.i18n.localize("PL1E.Unowned"));
-                foundry.utils.mergeObject(macroData, {
-                    name: effectData.label,
-                    img: effectData.icon,
-                    command: this.toggleEffect(effectData.label),
-                    // command: `game.pl1e.toggleEffect("${effectData.label}")`,
-                    flags: {"pl1e.effectMacro": true}
-                });
-                break;
-            default:
-                return;
-        }
+        if (dropData.type !== "Item") return;
+        const itemData = await Item.implementation.fromDropData(dropData);
+        if ( !itemData ) return ui.notifications.warn(game.i18n.localize("PL1E.Unowned"));
+        foundry.utils.mergeObject(macroData, {
+            name: itemData.name,
+            img: itemData.img,
+            command: `game.pl1e.Pl1eMacro.activateItem("${itemData.name}")`,
+            flags: {"pl1e.itemMacro": true}
+        });
 
         // Assign the macro.mjs to the hotbar
         const macro = game.macros.find(m => (m.name === macroData.name) && (m.command === macroData.command)
