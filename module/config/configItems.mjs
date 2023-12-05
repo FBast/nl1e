@@ -76,7 +76,7 @@ export function getConfigItems() {
             "icon": "fa-tally",
             "type": "number",
             "path": "system.removedUses"
-        },
+        }
     }
 
     PL1E.attributes = {
@@ -412,7 +412,6 @@ export function getConfigItems() {
     }
 
     PL1E.areaShapes = {
-        "self": "PL1E.Self",
         "none": "PL1E.None",
         "target": "PL1E.Target",
         "circle": "PL1E.Circle",

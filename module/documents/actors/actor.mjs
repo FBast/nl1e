@@ -117,7 +117,7 @@ export class Pl1eActor extends Actor {
         // Apply passive macro
         for (/** @type {Pl1eItem} */ const item of this.items) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                if (aspect.name !== "macro" || aspect.context !== "preUpdate" || !item.isEnabled) continue;
+                if (aspect.name !== "macro" || aspect.macroId === "none" || aspect.context !== "preUpdate" || !item.isEnabled) continue;
                 await Pl1eAspect.applyPassiveMacro(aspect, id, {
                     actor: this,
                     changed: changed,

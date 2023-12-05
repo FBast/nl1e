@@ -71,6 +71,7 @@ export class Pl1eAbility extends Pl1eItem {
         }
         else if (relatedItems.length === 1) {
             characterData.linkedItem = relatedItems[0];
+            characterData.linkedItemId = relatedItems[0].id;
         }
         else {
             characterData.linkedItem = await this._itemsDialog(relatedItems);

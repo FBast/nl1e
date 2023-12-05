@@ -208,7 +208,7 @@ export class Pl1eItem extends Item {
                 changed["system.attributes.isMajorAction"] = false;
                 changed["system.attributes.usageCost"] = 0;
             }
-            if (changed.system?.attributes?.areaShape === "self") {
+            if (changed.system?.attributes?.areaShape === "none") {
                 changed["system.attributes.areaNumber"] = 0;
             }
         }
@@ -305,7 +305,7 @@ export class Pl1eItem extends Item {
         }
 
         // Return if item with same id exist
-        const stackable = Pl1eHelpers.getConfig("itemsTypes", this.type, "stackable");
+        const stackable = Pl1eHelpers.getConfig("itemTypes", this.type, "stackable");
         if (!stackable.includes(item.type) && Object.values(this.system.refItems).some(id => id === item._id)) {
             const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
             if (enableDebugUINotifications)
@@ -487,15 +487,24 @@ export class Pl1eItem extends Item {
             // Add the data to the message
             await chatMessage.setFlag("pl1e", "characterData", Pl1eHelpers.stringifyWithCircular(characterData));
 
-            // Show the footer by setting its display property to "block"
-            const $content = $(chatMessage.content);
-            const footer = $content.find(".card-buttons");
-            footer.addClass("show-footer");
+            // If the roll is a total failure then resolve immediately
+            if (characterData.result === 0) {
+                await this.resolve(characterData, {
+                    action: "launch"
+                });
+            }
+            else {
+                // Show the footer by setting its display property to "block"
+                const $content = $(chatMessage.content);
+                const footer = $content.find(".card-buttons");
+                footer.addClass("show-footer");
 
-            // Update the chat message with the modified content
-            await chatMessage.update({
-                content: $content[0].outerHTML
-            });
+                // Update the chat message with the modified content
+                await chatMessage.update({
+                    content: $content[0].outerHTML
+                });
+            }
+
         }
         // If we have no token
         else {
@@ -733,9 +742,11 @@ export class Pl1eItem extends Item {
             targetsData: targetsData
         });
 
-        // Display messages
-        for (const targetData of targetsData) {
-            await Pl1eChat.actionRoll(characterData, targetData);
+        // Display messages if targets found
+        if (targetsData) {
+            for (const targetData of targetsData) {
+                await Pl1eChat.actionRoll(characterData, targetData);
+            }
         }
     }
 

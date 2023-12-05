@@ -155,7 +155,7 @@
                 {{selectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
             </select>
         </div>
-        {{#if (ne system.attributes.areaShape "self")}}
+        {{#if (ne system.attributes.areaShape "none")}}
             {{#unless system.attributes.useParentRange}}
                 <div class="form-group">
                     <label>{{localize "PL1E.Range"}}</label>

@@ -25,13 +25,14 @@
  * @property {string} tokenId The token id of the character
  * @property {Scene} scene The scene where the token is
  * @property {string} sceneId The id of the scene where the token is
- * @property {Pl1eItem} item The ability itself
- * @property {string} itemId The ability id
+ * @property {Pl1eItem} item The item itself
+ * @property {string} itemId The item id
  * @property {RollData} rollData The roll data of the character
  * @property {number} result The result of the rollData
  * @property {object} attributes The attributes of the item
  * @property {object} activeAspects The active aspects of the item
- * @property {Pl1eItem} linkedItem The linked item in case of abilityLink
+ * @property {Pl1eItem} linkedItem The linked item in case of parent item
+ * @property {string} linkedItemId The linked item id
  * @property {ActionTemplate[]} templates The templates of the action
  * @property {string[]} templatesIds The templates ids
  * @property {object} templatePosition The template position

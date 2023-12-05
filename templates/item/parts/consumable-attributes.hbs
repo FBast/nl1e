@@ -86,7 +86,7 @@
                     {{selectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
                 </select>
             </div>
-            {{#if (ne system.attributes.areaShape "self")}}
+            {{#if (ne system.attributes.areaShape "none")}}
                 <div class="form-group">
                     <label>{{localize "PL1E.Range"}}</label>
                     <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>

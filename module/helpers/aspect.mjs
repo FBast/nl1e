@@ -25,7 +25,7 @@ export class Pl1eAspect {
                 return await this._movement(aspect, characterData, targetsData);
             case "invocation":
                 return await this._invocation(aspect, characterData, targetsData);
-            case "macro":
+            case "activeMacro":
                 return await this._macro(aspect, characterData, targetsData);
             default:
                 throw new Error("PL1E | unknown aspect : " + aspect.name);
@@ -146,7 +146,7 @@ export class Pl1eAspect {
         let descriptionParts = [];
         if (["passiveMacro", "activeMacro"].includes(aspect.name)) {
             const macro = await Pl1eHelpers.getDocument("Macro", aspect.macroId);
-            descriptionParts.push(macro ? macro.name : game.i18n.localize("PL1E.Unknown"));
+            descriptionParts.push(macro ? macro.name : game.i18n.localize("PL1E.None"));
             descriptionParts.push(game.i18n.localize("PL1E.On"));
             descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("aspects", aspect.name, "contexts", aspect.context)));
         }
@@ -488,8 +488,7 @@ export class Pl1eAspect {
      */
     static async _macro(aspect, characterData, targetsData) {
         // Find macro
-        const macroId = aspect.value;
-        const macro = await Pl1eHelpers.getDocument("Macro", macroId);
+        const macro = await Pl1eHelpers.getDocument("Macro", aspect.macroId);
 
         // Execute macro
         if (macro !== undefined) macro.execute({

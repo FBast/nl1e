@@ -27,7 +27,20 @@
                     </div>
                 </div>
                 <div class="item-tooltip flexcol">
-                    {{#if dataGroups}}
+                    {{#if (eq ../name "activeMacro")}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.MacroContext"}}</label>
+                            <select name="system.activeAspects.{{@key}}.context">
+                                {{selectOptions contexts selected=../context localize=true}}
+                            </select>
+                        </div>
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.Macro"}}</label>
+                            <select name="system.activeAspects.{{@key}}.macroId">
+                                {{selectOptions (lookup @root ../context) selected=../macroId localize=true}}
+                            </select>
+                        </div>
+                    {{else}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
                             <select name="system.activeAspects.{{@key}}.dataGroup">

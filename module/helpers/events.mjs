@@ -317,8 +317,7 @@ export class Pl1eEvent {
         characterData.token = token;
         characterData.item = item;
         characterData.scene = scene;
-        if (characterData.linkedItem)
-            characterData.linkedItem = await Pl1eHelpers.getDocument("Item", characterData.linkedItem.id);
+        characterData.linkedItem = token.actor.items.get(characterData.linkedItemId);
         let templates = [];
         for (const templateId of characterData.templatesIds) {
             let template = await Pl1eHelpers.getDocument("MeasuredTemplate", templateId);
