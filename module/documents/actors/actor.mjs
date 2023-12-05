@@ -109,33 +109,38 @@ export class Pl1eActor extends Actor {
             }
         }
 
-        // Add scrolling text for changed
+        // Add scrolling text for resources changes
         const token = this.token;
-        if (token && changed.system) {
-            let options = {
-                fontSize: 48,
-                fillStyle: "#FF0000",
-                strokeStyle: "#FFFFFF",
-                strokeWidth: 4
-            };
+        if (token && changed.system.resources) {
             const position = {
                 x: token.x + token.width * token.parent.grid.size / 2,
                 y: token.y + token.height * token.parent.grid.size / 2
             }
 
-            const flattenSystem = Pl1eHelpers.flatten(changed.system);
+            const flattenSystem = Pl1eHelpers.flatten(changed.system.resources);
             for (const [key, value] of Object.entries(flattenSystem)) {
-                const currentValue = getProperty(this.system, key);
-                const splitKey = key.split(".");
-                const keyConfig = Pl1eHelpers.getConfig(splitKey[0], splitKey[1]);
-                const text = `${value - currentValue} ${game.i18n.localize(keyConfig.label)}`;
-                if (keyConfig) {
-                    canvas.interface.createScrollingText(position, text, options);
-                }
+                this.displayResourceScrollingText(key, value, position);
             }
         }
 
         return super._preUpdate(changed, options, user);
+    }
+
+    displayResourceScrollingText(key, value, position) {
+        const splitKey = key.split(".");
+        const resourceProperty = getProperty(this.system.resources, splitKey[0]);
+        const diffValue = value - resourceProperty.value;
+        const keyConfig = Pl1eHelpers.getConfig("resources", splitKey[0]);
+        const text = `${diffValue} ${game.i18n.localize(keyConfig.label)}`;
+        const minSize = 20;
+        const maxSize = 50
+        if (keyConfig && diffValue !== 0) {
+            const textStyle = new PIXI.TextStyle({
+                fontSize: Math.clamped(Math.abs(diffValue) / resourceProperty.max * maxSize, minSize, maxSize),
+                fill: diffValue > 0 ? "green" : "red",
+            })
+            canvas.interface.createScrollingText(position, text, textStyle);
+        }
     }
 
     /** @inheritDoc */
