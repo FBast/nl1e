@@ -33,6 +33,29 @@ export class Pl1eTokenDocument extends TokenDocument {
         await super._preUpdate(data, options, user);
     }
 
+    async _onUpdate(data, options, userId) {
+        super._onUpdate(data, options, userId);
+
+        const Sequence = window.Sequence;
+        const style = {
+            fill: "#ff0000",
+            fontFamily: "Arial Black",
+            fontSize: 28,
+            stroke: "#ffffff",
+            strokeThickness: 4
+        }
+
+        let text = "Coucou !";
+        if (Sequence) {
+            await new Sequence()
+                .scrollingText(this.id, text)
+                .atLocation(this.id)
+                .text(text, style)
+                .waitUntilFinished(-1000)
+                .play()
+        }
+    }
+
     /**
      * Restrict the movement for the token in combat
      * @param data

@@ -325,6 +325,4 @@ export class Pl1eHelpers {
         console.log("PL1E | Removed system properties:", removed);
         await item.update({ system: itemCopy.system }, { merge: false });
     }
-
-
 }

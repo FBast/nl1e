@@ -58,41 +58,23 @@ export class Pl1eActor extends Actor {
 
         // Some tweak on actors prototypeToken
         docData.prototypeToken = docData.prototypeToken || {};
-        switch (docData.type) {
-            case "character":
-                foundry.utils.mergeObject(
-                    docData.prototypeToken,
-                    {
-                        actorLink: true,
-                        vision: true,
-                        disposition: 1, // friendly
-                    },
-                    { overwrite: false }
-                );
-                break;
-            case "npc":
-                foundry.utils.mergeObject(
-                    docData.prototypeToken,
-                    {
-                        actorLink: false,
-                        vision: true,
-                        disposition: -1, // hostile
-                    },
-                    { overwrite: false }
-                );
-                break;
-            case "merchant":
-                foundry.utils.mergeObject(
-                    docData.prototypeToken,
-                    {
-                        actorLink: true,
-                        vision: true,
-                        disposition: 0, // neutral
-                    },
-                    { overwrite: false }
-                );
-                break;
+        const dispositions = {
+            "character": 1,
+            "npc": -1,
+            "merchant": 0
         }
+        foundry.utils.mergeObject(
+            docData.prototypeToken,
+            {
+                actorLink: docData.type === "character",
+                vision: true,
+                disposition: dispositions[docData.type],
+                texture: {
+                    src: `systems/pl1e/assets/icons/${docData.type}.svg`
+                }
+            },
+            { overwrite: false }
+        );
 
         const createdActor = await super.create(docData, options);
 
@@ -124,6 +106,32 @@ export class Pl1eActor extends Actor {
                     options: options,
                     user: user
                 });
+            }
+        }
+
+        // Add scrolling text for changed
+        const token = this.token;
+        if (token && changed.system) {
+            let options = {
+                fontSize: 48,
+                fillStyle: "#FF0000",
+                strokeStyle: "#FFFFFF",
+                strokeWidth: 4
+            };
+            const position = {
+                x: token.x + token.width * token.parent.grid.size / 2,
+                y: token.y + token.height * token.parent.grid.size / 2
+            }
+
+            const flattenSystem = Pl1eHelpers.flatten(changed.system);
+            for (const [key, value] of Object.entries(flattenSystem)) {
+                const currentValue = getProperty(this.system, key);
+                const splitKey = key.split(".");
+                const keyConfig = Pl1eHelpers.getConfig(splitKey[0], splitKey[1]);
+                const text = `${value - currentValue} ${game.i18n.localize(keyConfig.label)}`;
+                if (keyConfig) {
+                    canvas.interface.createScrollingText(position, text, options);
+                }
             }
         }
 
