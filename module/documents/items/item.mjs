@@ -89,25 +89,20 @@ export class Pl1eItem extends Item {
         return this.actor.items.find(otherItem => otherItem.parentId === this.childId) || null;
     }
 
-    /**
-     * The source parents items of this item within its actor
-     * @return {Pl1eItem[]}
-     */
-    get sourceParentsItems() {
-        const parentsItems = [];
-        if (!this.actor || !this.parentItem) return parentsItems;
-        for (/** @type {Pl1eItem} */ const actorItem of this.actor.items) {
-            if (!Object.values(actorItem.system.refItems).find(refItem => refItem.itemId === this.sourceId)) continue;
-            // Item parent behavior is not regular
-            if (actorItem.behavior !== "regular") {
-                // Then find source parents items of actorItem
-                parentsItems.push(...actorItem.sourceParentsItems);
-            }
-            else {
-                parentsItems.push(actorItem);
-            }
-        }
-        return parentsItems;
+    get linkableParentItem() {
+        const parentItem = this.parentItem;
+        // Return null if no parent
+        if (!parentItem) return null;
+        // Return null if parent not enabled
+        if (!parentItem.isEnabled) return null;
+        // Return null if parent is a key and only unlock this item
+        if (parentItem.behavior === "key") return null;
+        // Jump to next parent if container behavior
+        if (parentItem.behavior === "container") return parentItem.linkableParentItem;
+        // Return the parent if regular behavior and linkable
+        if (parentItem.behavior === "regular" && ["weapon", "wearable"].includes(parentItem.type)) return parentItem;
+        // Return null in last case
+        return null;
     }
 
     /**

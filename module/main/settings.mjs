@@ -29,6 +29,45 @@ export const registerSettings = function () {
         default: false
     });
 
+    game.settings.register('pl1e', 'scrollingTextMinFont', {
+        name: 'Scrolling text minimal font',
+        hint: "Define the minimal font possible for a scrolling text font when displaying actor update.",
+        config: true,
+        type: Number,
+        range: {
+            min: 10,
+            max: 50,
+            step: 5
+        },
+        default: 20
+    });
+
+    game.settings.register('pl1e', 'scrollingTextMaxFont', {
+        name: 'Scrolling text maximal font',
+        hint: "Define the maximal font possible for a scrolling text font when displaying actor update.",
+        config: true,
+        type: Number,
+        range: {
+            min: 50,
+            max: 100,
+            step: 5
+        },
+        default: 50
+    });
+
+    game.settings.register('pl1e', 'scrollingTextDuration', {
+        name: 'Scrolling text duration in seconds',
+        hint: "Define duration for a scrolling text when displaying actor update.",
+        config: true,
+        type: Number,
+        range: {
+            min: 1,
+            max: 10,
+            step: 1
+        },
+        default: 5
+    });
+
     game.settings.register("pl1e", "globalAdvantages", {
         name: "Global advantages",
         scope: "world",

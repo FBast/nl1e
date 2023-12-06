@@ -151,17 +151,23 @@ export class Pl1eAbility extends Pl1eItem {
      */
     _getLinkableItems(characterData) {
         const relatedItems = [];
-        for (const item of characterData.item.sourceParentsItems) {
-            if (!["weapon", "wearable"].includes(item.type)) continue;
-            if (!item.isEnabled) continue;
-            if (characterData.attributes.isMajorAction && item.system.majorActionUsed) continue;
-            if (characterData.attributes.linkedItem === "melee" && item.system.attributes.reach === 0) continue;
-            if (characterData.attributes.linkedItem === "range" && item.system.attributes.range === 0) continue;
-            // Item usages are not enough
-            if (characterData.attributes.usageCost > 0 && item.system.attributes.uses > 0 &&
-                characterData.attributes.usageCost > item.system.attributes.uses - item.system.removedUses) continue;
-
-            relatedItems.push(item);
+        for (/** @type {Pl1eItem} **/ const item of characterData.actor.items) {
+            // Only same source id item provide a valid linkable item
+            if (item.sourceId !== characterData.item.sourceId) continue;
+            const parentItem = item.linkableParentItem;
+            // If no parent found then check next sharing source id item
+            if (!parentItem) continue;
+            // Extra conditions
+            if (characterData.attributes.isMajorAction && parentItem.system.majorActionUsed) continue;
+            // Weapon mode is melee but parent has no reach
+            if (characterData.attributes.weaponMode === "melee" && parentItem.system.attributes.reach === 0) continue;
+            // Weapon mode is range but parent has no range
+            if (characterData.attributes.weaponMode === "range" && parentItem.system.attributes.range === 0) continue;
+            // Parent usages are not enough
+            if (characterData.attributes.usageCost > 0 && parentItem.system.attributes.uses > 0 &&
+                characterData.attributes.usageCost > parentItem.system.attributes.uses - parentItem.system.removedUses) continue;
+            // The parent is a valid linkable item
+            relatedItems.push(parentItem);
         }
         return relatedItems;
     }

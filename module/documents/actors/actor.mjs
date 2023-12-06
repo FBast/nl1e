@@ -132,11 +132,12 @@ export class Pl1eActor extends Actor {
         const diffValue = value - resourceProperty.value;
         const keyConfig = Pl1eHelpers.getConfig("resources", splitKey[0]);
         const text = `${diffValue} ${game.i18n.localize(keyConfig.label)}`;
-        const minSize = 20;
-        const maxSize = 50
+        const minSize = game.settings.get("pl1e", "scrollingTextMinFont");
+        const maxSize = game.settings.get("pl1e", "scrollingTextMaxFont");
+        const duration = game.settings.get("pl1e", "scrollingTextDuration");
         if (keyConfig && diffValue !== 0) {
             const options = {
-                duration: 5000,
+                duration: duration * 1000,
                 fontSize: Math.clamped(Math.abs(diffValue) / resourceProperty.max * maxSize, minSize, maxSize),
                 fill: diffValue > 0 ? "#00FF00" : "#FF0000",
             }
