@@ -2,6 +2,8 @@
     <li class="item flexrow items-header">
         <div class="item-name">{{localize "PL1E.PassiveAspects"}}</div>
         <div class="item-controls">
+            <a class="item-control passive-aspects-copy" data-tooltip='{{localize "PL1E.Copy"}}'><i class="fas fa-copy"></i></a>
+            <a class="item-control passive-aspects-paste" data-tooltip='{{localize "PL1E.Paste"}}'><i class="fas fa-paste"></i></a>
             {{#each passiveAspectsObjects}}
                 {{#with (config "aspects" name)}}
                     <input type="image" class="item-control aspect-add hover-red" src="{{img}}" data-aspect-id="{{@key}}"

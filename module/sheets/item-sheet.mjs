@@ -143,6 +143,10 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find(".trait-selector").on("click", ev => Pl1eEvent.onTraitSelector(ev, this.item));
         html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));
         html.find('.aspect-remove').on("click", ev => this._onAspectRemove(ev));
+        html.find('.passive-aspects-copy').on("click", ev => this._onAspectsCopy(ev, "passive"));
+        html.find('.passive-aspects-paste').on("click", ev => this._onAspectsPaste(ev, "passive"));
+        html.find('.active-aspects-copy').on("click", ev => this._onAspectsCopy(ev, "active"));
+        html.find('.active-aspects-paste').on("click", ev => this._onAspectsPaste(ev, "active"));
         html[0].querySelectorAll(".launch-text-editor").forEach(e => {
             e.addEventListener("click", ev => Pl1eEvent.onLaunchTextEditor(ev, this.item));
         });
@@ -491,6 +495,34 @@ export class Pl1eItemSheet extends ItemSheet {
         if (this.item.compendium) {
             await this.renderAndRestoreState();
         }
+    }
+
+    /**
+     * Copy all the aspects of the item into the clipboard
+     * @param event
+     * @param {string} aspectType
+     * @return {Promise<void>}
+     * @private
+     */
+    async _onAspectsCopy(event, aspectType) {
+        const str = JSON.stringify(this.item.system[`${aspectType}Aspects`]);
+        localStorage.setItem(`${aspectType}AspectsCopy`, str);
+        ui.notifications.info(game.i18n.localize("PL1E.AspectsCopied"));
+    }
+
+    /**
+     * Paste all the aspects from the clipboard into this item
+     * @param event
+     * @param {string} aspectType
+     * @return {Promise<void>}
+     * @private
+     */
+    async _onAspectsPaste(event, aspectType) {
+        const objStr = localStorage.getItem(`${aspectType}AspectsCopy`);
+        const copiedAspects = JSON.parse(objStr);
+        await this.item.update({
+            [`system.${aspectType}Aspects`]: copiedAspects
+        });
     }
 
     async renderAndRestoreState() {
