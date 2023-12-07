@@ -1,9 +1,11 @@
 <ol class="items-list">
     <li class="item flexrow items-header">
-        <div class="item-name">{{localize "PL1E.ActiveAspects"}}</div>
         <div class="item-controls">
             <a class="item-control active-aspects-copy" data-tooltip='{{localize "PL1E.Copy"}}'><i class="fas fa-copy"></i></a>
             <a class="item-control active-aspects-paste" data-tooltip='{{localize "PL1E.Paste"}}'><i class="fas fa-paste"></i></a>
+        </div>
+        <div class="item-name">{{localize "PL1E.ActiveAspects"}}</div>
+        <div class="item-controls">
             {{#each activeAspectsObjects}}
                 {{#with (config "aspects" name)}}
                     <input type="image" class="item-control aspect-add hover-red" src="{{img}}" data-aspect-id="{{@key}}"
