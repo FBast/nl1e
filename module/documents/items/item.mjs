@@ -159,8 +159,12 @@ export class Pl1eItem extends Item {
         if (!this.isEmbedded && documents.length === 0) {
             // Remove item from items
             for (const item of await Pl1eHelpers.getDocuments("Item")) {
-                if (item.system.refItems.find(refItem => refItem.itemId === this._id))
-                    await item.removeRefItem(this._id);
+                // Check for ref item with the same id
+                for (const [instanceId, refItem] of Object.entries(item.system.refItems)) {
+                    if (refItem.itemId !== this._id) continue;
+                    // Remove using instance id
+                    await item.removeRefItem(instanceId);
+                }
             }
 
             // Remove embedded from actors
