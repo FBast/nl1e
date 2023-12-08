@@ -543,123 +543,153 @@ export function getConfigActor() {
     PL1E.statuses = {
         "charmed": {
             "label": "PL1E.StatusCharmed",
-            "img": "systems/pl1e/assets/icons/charmed.svg"
+            "img": "systems/pl1e/assets/icons/charmed.svg",
+            "type": "number"
         },
         "paralysis": {
             "label": "PL1E.StatusParalysis",
             "img": "systems/pl1e/assets/icons/paralysis.svg",
+            "type": "number"
         },
         "asleep": {
             "label": "PL1E.StatusAsleep",
             "img": "systems/pl1e/assets/icons/asleep.svg",
+            "type": "number"
         },
         "restrained": {
             "label": "PL1E.StatusRestrained",
             "img": "systems/pl1e/assets/icons/restrained.svg",
+            "type": "number"
         },
         "slow": {
             "label": "PL1E.StatusSlow",
             "img": "systems/pl1e/assets/icons/slow.svg",
+            "type": "number"
         },
         "fast": {
             "label": "PL1E.StatusFast",
             "img": "systems/pl1e/assets/icons/fast.svg",
+            "type": "number"
         },
         "stunned": {
             "label": "PL1E.StatusStunned",
             "img": "systems/pl1e/assets/icons/stunned.svg",
+            "type": "number"
         },
         "invigorated": {
             "label": "PL1E.StatusInvigorated",
             "img": "systems/pl1e/assets/icons/invigorated.svg",
+            "type": "number"
         },
         "sick": {
             "label": "PL1E.StatusSick",
             "img": "systems/pl1e/assets/icons/sick.svg",
+            "type": "number"
         },
         "healthy": {
             "label": "PL1E.StatusHealthy",
             "img": "systems/pl1e/assets/icons/healthy.svg",
+            "type": "number"
         },
         "confused": {
             "label": "PL1E.StatusConfused",
             "img": "systems/pl1e/assets/icons/confused.svg",
+            "type": "number"
         },
         "composed": {
             "label": "PL1E.StatusComposed",
             "img": "systems/pl1e/assets/icons/composed.svg",
+            "type": "number"
         },
         "bleeding": {
             "label": "PL1E.StatusBleeding",
             "img": "systems/pl1e/assets/icons/bleeding.svg",
+            "type": "number"
         },
         "regenerate": {
             "label": "PL1E.StatusRegenerate",
             "img": "systems/pl1e/assets/icons/regenerate.svg",
+            "type": "number"
         },
         "downgraded": {
             "label": "PL1E.StatusDowngraded",
             "img": "systems/pl1e/assets/icons/downgraded.svg",
+            "type": "number"
         },
         "upgraded": {
             "label": "PL1E.StatusUpgraded",
             "img": "systems/pl1e/assets/icons/upgraded.svg",
+            "type": "number"
         },
         "blind": {
             "label": "PL1E.StatusBlind",
             "img": "systems/pl1e/assets/icons/blind.svg",
+            "type": "number"
         },
         "deaf": {
             "label": "PL1E.StatusDeaf",
             "img": "systems/pl1e/assets/icons/deaf.svg",
+            "type": "number"
         },
         "invisible": {
             "label": "PL1E.StatusInvisible",
             "img": "systems/pl1e/assets/icons/invisible.svg",
+            "type": "number"
         },
         "clairvoyant": {
             "label": "PL1E.StatusClairvoyant",
             "img": "systems/pl1e/assets/icons/clairvoyant.svg",
+            "type": "number"
         },
         "tremorsense": {
             "label": "PL1E.StatusTremorsense",
             "img": "systems/pl1e/assets/icons/tremorsense.svg",
+            "type": "number"
         },
         "focus": {
             "label": "PL1E.StatusFocus",
             "img": "systems/pl1e/assets/icons/focus.svg",
+            "type": "number"
         },
         "slashingImmunity": {
             "label": "PL1E.StatusSlashingImmunity",
-            "img": "systems/pl1e/assets/icons/slashingImmunity.svg"
+            "img": "systems/pl1e/assets/icons/slashingImmunity.svg",
+            "type": "number"
         },
         "crushingImmunity": {
             "label": "PL1E.StatusCrushingImmunity",
-            "img": "systems/pl1e/assets/icons/crushingImmunity.svg"
+            "img": "systems/pl1e/assets/icons/crushingImmunity.svg",
+            "type": "number"
         },
         "piercingImmunity": {
             "label": "PL1E.StatusPiercingImmunity",
-            "img": "systems/pl1e/assets/icons/piercingImmunity.svg"
+            "img": "systems/pl1e/assets/icons/piercingImmunity.svg",
+            "type": "number"
         },
         "fireImmunity": {
             "label": "PL1E.StatusFireImmunity",
-            "img": "systems/pl1e/assets/icons/fire-shield.svg"
+            "img": "systems/pl1e/assets/icons/fire-shield.svg",
+            "type": "number"
         },
         "coldImmunity": {
             "label": "PL1E.StatusColdImmunity",
-            "img": "systems/pl1e/assets/icons/ice-shield.svg"
+            "img": "systems/pl1e/assets/icons/ice-shield.svg",
+            "type": "number"
         },
         "shockImmunity": {
             "label": "PL1E.StatusShockImmunity",
-            "img": "systems/pl1e/assets/icons/shockImmunity.svg"
+            "img": "systems/pl1e/assets/icons/shockImmunity.svg",
+            "type": "number"
         },
         "acidImmunity": {
             "label": "PL1E.StatusAcidImmunity",
-            "img": "systems/pl1e/assets/icons/acidImmunity.svg"
+            "img": "systems/pl1e/assets/icons/acidImmunity.svg",
+            "type": "number"
         },
         "immortal": {
             "label": "PL1E.StatusImmortal",
-            "img": "systems/pl1e/assets/icons/immortal.svg"
+            "img": "systems/pl1e/assets/icons/immortal.svg",
+            "type": "number"
         }
     }
 

@@ -1,4 +1,8 @@
 <section class="scroll-auto">
+    <fieldset>
+        <legend class="section-header">{{localize "PL1E.Description"}}</legend>
+        {{{enriched}}}
+    </fieldset>
     {{#if (gt (length items) 0)}}
         <fieldset>
             <legend class="section-header">{{localize "PL1E.LinkedItems"}}</legend>
@@ -77,8 +81,4 @@
             {{/each}}
         </fieldset>
     {{/unless}}
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.Description"}}</legend>
-        {{{enriched}}}
-    </fieldset>
 </section>

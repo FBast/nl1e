@@ -107,11 +107,11 @@ export class Pl1eEvent {
         const item = actor.items.get(itemId);
 
         if (!Pl1eHelpers.isGMConnected()) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoGMConnected"));
+            ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
             return;
         }
         if (!game.user.character) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoCharacterAssociated"));
+            ui.notifications.info(game.i18n.localize("PL1E.NoCharacterAssociated"));
             return;
         }
 

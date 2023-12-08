@@ -223,7 +223,7 @@ export class Pl1eItemSheet extends ItemSheet {
         const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
         let document = await fromUuid(data.uuid);
         if (!document.isOwner) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotOwnedDocument"));
+            ui.notifications.info(game.i18n.localize("PL1E.NotOwnedDocument"));
             return;
         }
 
@@ -236,13 +236,13 @@ export class Pl1eItemSheet extends ItemSheet {
             const isInvalidWeapon = item.type === "weapon" &&
                 !document.system.attributes.moduleTypes.includes("weapon");
             if (isInvalidWearable || isInvalidWeapon) {
-                ui.notifications.warn(game.i18n.localize("PL1E.IncorrectModule"));
+                ui.notifications.info(game.i18n.localize("PL1E.IncorrectModule"));
                 return false;
             }
 
             const refItems = await item.getRefItems();
             if (refItems.filter(i => i.item.type === "module").length >= item.system.attributes.modules) {
-                ui.notifications.warn(game.i18n.localize("PL1E.TooMuchModule"));
+                ui.notifications.info(game.i18n.localize("PL1E.TooMuchModule"));
                 return false;
             }
             return true;

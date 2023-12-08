@@ -54,9 +54,7 @@ export function getConfigAspects() {
             "value": 0,
             "dataGroup": "statuses",
             "data": "stunned",
-            "targetGroup": "all",
-            "statusType": "permanent",
-            "effectDuration": 1,
+            "targetGroup": "all"
         },
         {
             "name": "movement",
@@ -729,12 +727,6 @@ export function getConfigAspects() {
         "alliesAndSelf": "PL1E.AlliesAndSelf",
         "opponents": "PL1E.Opponents",
         "opponentsAndSelf": "PL1E.OpponentsAndSelf"
-    }
-
-    PL1E.statusTypes = {
-        "permanentIfSuccess": "PL1E.PermanentIfSuccess",
-        "durationFromSuccess": "PL1E.DurationFromSuccess",
-        "durationIfSuccess": "PL1E.DurationIfSuccess"
     }
 
     PL1E.statusImmunities = {

@@ -172,7 +172,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Check if the user own the dropped document
         if (!document.isOwner) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotOwnedDocument"));
+            ui.notifications.info(game.i18n.localize("PL1E.NotOwnedDocument"));
             return;
         }
 
@@ -222,20 +222,20 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Only one body class
         if (item.system.attributes.featureType === "bodyClass" && this.actor.items.find(item => item.system.attributes.featureType === "bodyClass")) {
-            ui.notifications.warn(game.i18n.localize("PL1E.OnlyOneBodyClass"));
+            ui.notifications.info(game.i18n.localize("PL1E.OnlyOneBodyClass"));
             return;
         }
 
         // Only one mind class
         if (item.system.attributes.featureType === "mindClass" && this.actor.items.find(item => item.system.attributes.featureType === "mindClass")) {
-            ui.notifications.warn(game.i18n.localize("PL1E.OnlyOneMindClass"));
+            ui.notifications.info(game.i18n.localize("PL1E.OnlyOneMindClass"));
             return;
         }
 
         // Player to other actor transfer
         if (!this.actor.isOwner) {
             if (!Pl1eHelpers.isGMConnected()) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoGMConnected"));
+                ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
                 return;
             }
             // Player transfer item to a not owned actor
@@ -287,8 +287,8 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         context.abilities = context.abilities.sort((a, b) => {
             // Compare by 'level' first (assumed to be a numeric property)
-            if (a.level < b.level) return -1;
-            if (a.level > b.level) return 1;
+            if (a.system.attributes.level < b.system.attributes.level) return -1;
+            if (a.system.attributes.level > b.system.attributes.level) return 1;
 
             // If 'level' is the same, compare by 'name' alphabetically
             return a.name.localeCompare(b.name);

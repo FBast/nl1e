@@ -9,11 +9,11 @@ export class Pl1eWeapon extends Pl1eItem {
         const token = this.actor.bestToken;
 
         if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
+            ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
             return false;
         }
         if (token !== null && this.actor.system.general.action <= 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
         }
         return true;

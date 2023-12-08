@@ -67,15 +67,15 @@ export class Pl1eWearable extends Pl1eItem {
 
         if ((this.system.attributes.slot === "armor" || this.system.attributes.slot === "clothes")
             && token && token.inCombat) {
-            ui.notifications.warn(game.i18n.localize("PL1E.OutCombatOnly"));
+            ui.notifications.info(game.i18n.localize("PL1E.OutCombatOnly"));
             return false;
         }
         if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
+            ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
             return false;
         }
         if (token !== null && this.actor.system.general.action <= 0 && !this.system.isEquipped) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
         }
         return true;

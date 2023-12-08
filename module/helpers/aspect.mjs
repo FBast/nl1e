@@ -333,24 +333,20 @@ export class Pl1eAspect {
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
 
-            // Modify duration or skip based on statusType
-            switch (aspectCopy.statusType) {
-                case "permanentIfSuccess":
-                    if (targetData.result <= 0) continue;
+            // Modify aspect value by resolution type
+            switch (aspect.resolutionType) {
+                case "multipliedBySuccess":
+                    aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
                     break;
-                case "durationFromSuccess":
-                    if (targetData.result <= 0) continue;
-                    aspectCopy.effectDuration = targetData.result;
-                    break;
-                case "durationIfSuccess":
-                    if (targetData.result <= 0) continue;
+                case "ifSuccess":
+                    aspectCopy.value = targetData.result > 0 ? aspectCopy.value : 0;
                     break;
             }
 
             // Create the status
             await Pl1eActiveEffect.createStatusEffect(targetData.actor, aspectCopy.data, {
                 duration: {
-                    rounds: aspectCopy.effectDuration
+                    rounds: aspectCopy.value
                 },
                 flags: {
                     core: {
@@ -524,7 +520,7 @@ export class Pl1eAspect {
                 });
             }
             else {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoGMConnected"));
+                ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
             }
         }
     }

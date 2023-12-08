@@ -163,12 +163,12 @@ export class GmToolbox extends FormApplication {
         for (const player of players) {
             // Return if the player has no associated character
             if (!player.character) {
-                ui.notifications.warn(`${game.i18n.localize("PL1E.PlayerHasNoCharacter")} : ${player.name}`);
+                ui.notifications.info(`${game.i18n.localize("PL1E.PlayerHasNoCharacter")} : ${player.name}`);
                 abort = true;
             }
             // Return if the character is in creation mod
             if (player.character.system.general.creationMod) {
-                ui.notifications.warn(`${game.i18n.localize("PL1E.CharacterInCreationMode")} : ${player.character.name}`);
+                ui.notifications.info(`${game.i18n.localize("PL1E.CharacterInCreationMode")} : ${player.character.name}`);
                 abort = true;
             }
         }

@@ -9,6 +9,7 @@
                 <label class="item-name item-tooltip-activate">{{name}}</label>
                 {{#unless (eq @root.actor.type "npc")}}
                     <div class="item-icons grid-span-2">
+                        <i class="item-info fas fa-circle-{{system.attributes.level}} hover-green" data-tooltip='{{localize "PL1E.Level"}}'></i>
                         {{#if (ne system.attributes.healthCost 0)}}
                             <i class="item-info fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthCost"}}'>
                                 <label>{{system.attributes.healthCost}}</label>

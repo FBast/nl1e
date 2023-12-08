@@ -20,7 +20,7 @@ export class Pl1eConsumable extends Pl1eItem {
         if (!super._canActivate(characterData)) return false;
 
         if (characterData.attributes.outCombatOnly && characterData.token && characterData.token.inCombat) {
-            ui.notifications.warn(game.i18n.localize("PL1E.OutCombatOnly"));
+            ui.notifications.info(game.i18n.localize("PL1E.OutCombatOnly"));
             return false;
         }
         return true;

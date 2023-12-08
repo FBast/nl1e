@@ -349,11 +349,11 @@ export class Pl1eItem extends Item {
         const token = this.actor.bestToken;
 
         if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
+            ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
             return false;
         }
         if (token !== null && this.actor.system.general.action <= 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+            ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
         }
         return true;
@@ -382,7 +382,7 @@ export class Pl1eItem extends Item {
      */
     canToggle() {
         if (this.actor.statuses.has("paralysis")) {
-            ui.notifications.warn(game.i18n.localize("PL1E.YouAreParalysed"));
+            ui.notifications.info(game.i18n.localize("PL1E.YouAreParalysed"));
             return false;
         }
         return true;
@@ -536,20 +536,20 @@ export class Pl1eItem extends Item {
 
         if (itemAttributes.activation === "action") {
             if (characterData.token.inCombat && characterData.tokenId !== game.combat.current.tokenId) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
+                ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
                 return false;
             }
             if (characterData.actor.system.general.action < itemAttributes.actionCost) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+                ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
                 return false;
             }
         }
         else if (itemAttributes.activation === "reaction" && characterData.actor.system.misc.reaction <= 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreReaction"));
+            ui.notifications.info(game.i18n.localize("PL1E.NoMoreReaction"));
             return false;
         }
         else if (itemAttributes.activation === "quickAction" && characterData.actor.system.misc.quickAction <= 0) {
-            ui.notifications.warn(game.i18n.localize("PL1E.NoMoreQuickAction"));
+            ui.notifications.info(game.i18n.localize("PL1E.NoMoreQuickAction"));
             return false;
         }
         return true;

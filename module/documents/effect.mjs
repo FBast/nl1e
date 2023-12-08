@@ -33,7 +33,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
 
         // Get configuration data
         const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
-        const aspectConfig = Pl1eHelpers.getConfig(aspect.name);
+        const aspectConfig = Pl1eHelpers.getConfig("aspects", aspect.name);
         const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`
 
         // Create effect

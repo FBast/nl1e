@@ -47,6 +47,8 @@
                     {{> "systems/pl1e/templates/item/parts/class-attributes.hbs"}}
                 {{else if (eq item.type "feature")}}
                     {{> "systems/pl1e/templates/item/parts/feature-attributes.hbs"}}
+                {{else if (eq item.type "mastery")}}
+                    {{> "systems/pl1e/templates/item/parts/mastery-attributes.hbs"}}
                 {{else if (eq item.type "ability")}}
                     {{> "systems/pl1e/templates/item/parts/ability-attributes.hbs"}}
                 {{else if (eq item.type "weapon")}}

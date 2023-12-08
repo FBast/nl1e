@@ -11,17 +11,17 @@ export class Pl1eTokenDocument extends TokenDocument {
             const actorVariables = this.actor.system.variables;
 
             if (game.combat.current?.tokenId !== this.id) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NotYourTurn"));
+                ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
                 delete data.x;
                 delete data.y;
             }
             else if (actorMisc.movement === 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoMovement"));
+                ui.notifications.info(game.i18n.localize("PL1E.NoMovement"));
                 delete data.x;
                 delete data.y;
             }
             else if (actorGeneral.action === 0 && actorVariables.remainingMovement === 0) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NoMoreAction"));
+                ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
                 delete data.x;
                 delete data.y;
             }
@@ -59,7 +59,7 @@ export class Pl1eTokenDocument extends TokenDocument {
 
             // Return if not enough action to do this movement
             if (requiredActions > actorGeneral.action) {
-                ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughActions"));
+                ui.notifications.info(game.i18n.localize("PL1E.NotEnoughActions"));
                 delete data.x;
                 delete data.y;
                 return;

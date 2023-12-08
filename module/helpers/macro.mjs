@@ -37,7 +37,7 @@ export class Pl1eMacro {
         const macroData = { type: "script", scope: "actor" };
         if (dropData.type !== "Item") return;
         const itemData = await Item.implementation.fromDropData(dropData);
-        if ( !itemData ) return ui.notifications.warn(game.i18n.localize("PL1E.Unowned"));
+        if ( !itemData ) return ui.notifications.info(game.i18n.localize("PL1E.Unowned"));
         foundry.utils.mergeObject(macroData, {
             name: itemData.name,
             img: itemData.img,
@@ -62,7 +62,7 @@ export class Pl1eMacro {
         const speaker = ChatMessage.getSpeaker();
         if ( speaker.token ) actor = game.actors.tokens[speaker.token];
         actor ??= game.actors.get(speaker.actor);
-        if ( !actor ) return ui.notifications.warn(game.i18n.localize("PL1E.NoActorSelected"));
+        if ( !actor ) return ui.notifications.info(game.i18n.localize("PL1E.NoActorSelected"));
 
         const collection = (documentType === "Item") ? actor.items : actor.effects;
         const nameKeyPath = (documentType === "Item") ? "name" : "label";
@@ -71,10 +71,10 @@ export class Pl1eMacro {
         const documents = collection.filter(i => foundry.utils.getProperty(i, nameKeyPath) === name);
         const type = game.i18n.localize(`DOCUMENT.${documentType}`);
         if ( documents.length === 0 ) {
-            return ui.notifications.warn(game.i18n.format("PL1E.MissingTarget", { actor: actor.name, type, name }));
+            return ui.notifications.info(game.i18n.format("PL1E.MissingTarget", { actor: actor.name, type, name }));
         }
         if ( documents.length > 1 ) {
-            ui.notifications.warn(game.i18n.format("PL1E.MultipleTargets", { actor: actor.name, type, name }));
+            ui.notifications.info(game.i18n.format("PL1E.MultipleTargets", { actor: actor.name, type, name }));
         }
         return documents[0];
     }
