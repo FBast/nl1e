@@ -38,6 +38,32 @@ export class Pl1eEvent {
     }
 
     /**
+     * Center the screen on a token
+     * @param event
+     * @return {Promise<void>}
+     */
+    static async onFocusToken(event) {
+        const tokenId = $(event.currentTarget).data("token-id");
+        const sceneId = $(event.currentTarget).data("scene-id");
+        const token = await Pl1eHelpers.getDocument("Token", tokenId, {
+            scene: await Pl1eHelpers.getDocument("Scene", sceneId)
+        });
+
+        if (token) {
+            const x = token.x;
+            const y = token.y;
+            await canvas.animatePan({x: x, y: y, scale: 1});
+            const placeable = canvas.tokens.placeables.find(t => t.id === tokenId);
+            if (placeable) {
+                game.user.targets.clear();
+                placeable.setTarget(true, { user: game.user, releaseOthers: true });
+            }
+        } else {
+            console.warn(`Token with id ${tokenId} not found.`);
+        }
+    }
+
+    /**
      * Open actor sheet
      * @param event The originating click event
      */
@@ -59,20 +85,25 @@ export class Pl1eEvent {
         if (itemId === undefined) itemId = $(event.currentTarget).data("item-id");
         if (itemId === undefined) throw new Error("PL1E | no itemId found");
 
-        //TODO Need a scene to retrieve a token
-
-        // if (document === undefined) {
-        //     const tokenId = $(event.currentTarget).data("token-id");
-        //     const token = await Pl1eHelpers.getDocument("Token", tokenId);
-        //     if (token !== undefined) document = token.actor;
-        // }
-        if (document === undefined) throw new Error("PL1E | no document found");
+        // Chat message need to retrieve the token actor to find the item
+        if (document instanceof ChatMessage) {
+            const sceneId = $(event.currentTarget).data("scene-id");
+            const tokenId = $(event.currentTarget).data("token-id");
+            const scene = await Pl1eHelpers.getDocument("Scene", sceneId);
+            const token = await Pl1eHelpers.getDocument("Token", tokenId, {
+                scene: scene
+            });
+            if (token !== undefined) document = token.actor;
+        }
 
         let item;
         if (document instanceof Pl1eActor)
             item = document.items.get(itemId);
         else if (document instanceof Pl1eItem) {
             item = await Pl1eHelpers.getDocument("Item", itemId);
+        }
+        else {
+            throw new Error(`PL1E | unknown ${document}`);
         }
 
         if (item.sheet.rendered) item.sheet.bringToTop();

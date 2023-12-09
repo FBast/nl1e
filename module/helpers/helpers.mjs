@@ -152,7 +152,7 @@ export class Pl1eHelpers {
      * @param {string} type
      * @param {string} id
      * @param {Object} options
-     * @returns {Promise<Pl1eItem | Pl1eActor | Token | Macro | MeasuredTemplate | RollTable>}
+     * @returns {Promise<Pl1eItem | Pl1eActor | TokenDocument | Macro | MeasuredTemplate | RollTable>}
      */
     static async getDocument(type, id, options = {}) {
         let document = undefined;

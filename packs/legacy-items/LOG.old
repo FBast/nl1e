@@ -1,18 +1,15 @@
-2023/12/08-00:49:21.384 c9c Recovering log #1602
-2023/12/08-00:49:21.385 c9c Level-0 table #1605: started
-2023/12/08-00:49:21.388 c9c Level-0 table #1605: 109028 bytes OK
-2023/12/08-00:49:21.391 c9c Delete type=2 #1599
-2023/12/08-00:49:21.392 c9c Delete type=2 #1601
-2023/12/08-00:49:21.392 c9c Delete type=0 #1602
-2023/12/08-00:49:21.392 c9c Delete type=3 #1600
-2023/12/08-00:50:18.607 12fc Level-0 table #1608: started
-2023/12/08-00:50:18.607 12fc Level-0 table #1608: 0 bytes OK
-2023/12/08-00:50:18.608 12fc Delete type=0 #1606
-2023/12/08-00:50:18.608 12fc Manual compaction at level-0 from '!folders!0Gvc5INZc66WbQxC' @ 72057594037927935 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at '!items!vMDhFFXDhHTFvh0m' @ 11717 : 1
-2023/12/08-00:50:18.608 12fc Compacting 1@0 + 1@1 files
-2023/12/08-00:50:18.616 12fc Generated table #1609@0: 428 keys, 260433 bytes
-2023/12/08-00:50:18.616 12fc Compacted 1@0 + 1@1 files => 260433 bytes
-2023/12/08-00:50:18.617 12fc compacted to: files[ 0 1 0 0 0 0 0 ]
-2023/12/08-00:50:18.617 12fc Delete type=2 #1603
-2023/12/08-00:50:18.618 12fc Delete type=2 #1605
-2023/12/08-00:50:18.621 12fc Manual compaction at level-0 from '!items!vMDhFFXDhHTFvh0m' @ 11717 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at (end)
+2023/12/09-13:39:02.425 1714 Recovering log #1614
+2023/12/09-13:39:02.429 1714 Delete type=0 #1614
+2023/12/09-13:39:02.429 1714 Delete type=3 #1612
+2023/12/09-15:50:56.462 274c Level-0 table #1618: started
+2023/12/09-15:50:56.464 274c Level-0 table #1618: 1870 bytes OK
+2023/12/09-15:50:56.466 274c Delete type=0 #1616
+2023/12/09-15:50:56.466 274c Manual compaction at level-0 from '!folders!0Gvc5INZc66WbQxC' @ 72057594037927935 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at '!items!eeeU948Kf9zMlRgd' @ 11789 : 1
+2023/12/09-15:50:56.466 274c Compacting 2@0 + 1@1 files
+2023/12/09-15:50:56.471 274c Generated table #1619@0: 428 keys, 260478 bytes
+2023/12/09-15:50:56.471 274c Compacted 2@0 + 1@1 files => 260478 bytes
+2023/12/09-15:50:56.472 274c compacted to: files[ 0 1 0 0 0 0 0 ]
+2023/12/09-15:50:56.472 274c Delete type=2 #1609
+2023/12/09-15:50:56.472 274c Delete type=2 #1613
+2023/12/09-15:50:56.473 274c Delete type=2 #1618
+2023/12/09-15:50:56.478 274c Manual compaction at level-0 from '!items!eeeU948Kf9zMlRgd' @ 11789 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at (end)

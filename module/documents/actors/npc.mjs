@@ -18,7 +18,7 @@ export class Pl1eNPC extends Pl1eActor {
         const actorSkills = systemData.skills;
 
         // Handle experience
-        actorGeneral.experience = Pl1eHelpers.getDocument("experienceTemplates", actorGeneral.experienceTemplate, "value");
+        actorGeneral.experience = Pl1eHelpers.getConfig("experienceTemplates", actorGeneral.experienceTemplate, "value");
 
         super.prepareBaseData();
 
@@ -53,7 +53,7 @@ export class Pl1eNPC extends Pl1eActor {
     }
 
     /** @inheritDoc */
-    prepareDerivedData() {
+    async prepareDerivedData() {
         super.prepareDerivedData();
 
     }

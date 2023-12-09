@@ -1,6 +1,6 @@
 <div class="chat-card item-card" data-item-id={{characterData.itemId}} data-token-id={{characterData.tokenId}} data-scene-id={{characterData.sceneId}}>
     <header class="card-header flexrow">
-        <img class="left-image token-edit" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
+        <img class="left-image token-focus" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
              data-scene-id="{{characterData.sceneId}}" title="{{characterData.token.name}}" width="36" height="36"/>
         <div class="item-effects-character">
             {{#each characterData.attributes}}
@@ -22,10 +22,12 @@
             {{/each}}
         </div>
         <img class="right-image item-edit" src="{{characterData.item.img}}" data-item-id="{{characterData.item._id}}"
-             data-token-id="{{characterData.tokenId}}" title="{{characterData.item.name}}" width="36" height="36"/>
+             data-scene-id="{{characterData.sceneId}}" data-token-id="{{characterData.tokenId}}"
+             title="{{characterData.item.name}}" width="36" height="36"/>
         {{#if characterData.linkedItem}}
             <img class="right-image item-edit" src="{{characterData.linkedItem.img}}" data-item-id="{{characterData.linkedItem._id}}"
-                 data-token-id="{{characterData.tokenId}}" title="{{characterData.linkedItem.name}}" width="36" height="36"/>
+                 data-scene-id="{{characterData.sceneId}}" data-token-id="{{characterData.tokenId}}"
+                 title="{{characterData.linkedItem.name}}" width="36" height="36"/>
         {{/if}}
     </header>
     <div class="card-content">
@@ -61,8 +63,10 @@
             </div>
         {{/if}}
     </div>
-    <footer class="card-buttons">
-        <button data-action="launch">{{localize "PL1E.Launch"}}</button>
-        <button data-action="counter">{{localize "PL1E.Cancel"}}</button>
-    </footer>
+    {{#if (gt characterData.result 0)}}
+        <footer class="card-buttons">
+            <button data-action="launch">{{localize "PL1E.Launch"}}</button>
+            <button data-action="counter">{{localize "PL1E.Cancel"}}</button>
+        </footer>
+    {{/if}}
 </div>

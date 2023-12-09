@@ -70,6 +70,15 @@
       "flags": {}
     },
     {
+      "name": "legacy-sub-macros",
+      "label": "Legacy Sub Macros",
+      "system": "pl1e",
+      "path": "packs/legacy-sub-macros.db",
+      "type": "Macro",
+      "private": true,
+      "flags": {}
+    },
+    {
       "name": "legacy-adventures",
       "label": "Legacy Adventures",
       "system": "pl1e",

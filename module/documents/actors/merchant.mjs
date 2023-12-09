@@ -30,7 +30,7 @@ export class Pl1eMerchant extends Pl1eActor {
     }
 
     /** @inheritDoc */
-    prepareDerivedData() {
+    async prepareDerivedData() {
         super.prepareDerivedData();
 
     }

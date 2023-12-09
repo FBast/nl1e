@@ -62,9 +62,9 @@ export default class Pl1eHooks {
     }
 
     static renderChatMessage(app, html, data) {
-        html.on("click", ".token-edit", Pl1eEvent.onTokenEdit.bind(this));
-        html.on("click", ".item-edit", Pl1eEvent.onItemEdit.bind(this));
-        html.on("click", ".card-buttons button", Pl1eEvent.onChatCardAction.bind(this));
+        html.find(".token-focus").on("click", ev => Pl1eEvent.onFocusToken(ev));
+        html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, app));
+        html.find(".card-buttons button").on("click", ev => Pl1eEvent.onChatCardAction(ev));
     }
 
     /* -------------------------------------------- */

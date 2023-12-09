@@ -3,7 +3,6 @@ import {Pl1eSynchronizer} from "../../helpers/synchronizer.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {ActionTemplate} from "../actionTemplate.mjs";
 import {Pl1eChat} from "../../helpers/chat.mjs";
-import * as CONFIG from "../../config/config.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -492,18 +491,6 @@ export class Pl1eItem extends Item {
                     action: "launch"
                 });
             }
-            else {
-                // Show the footer by setting its display property to "block"
-                const $content = $(chatMessage.content);
-                const footer = $content.find(".card-buttons");
-                footer.addClass("show-footer");
-
-                // Update the chat message with the modified content
-                await chatMessage.update({
-                    content: $content[0].outerHTML
-                });
-            }
-
         }
         // If we have no token
         else {

@@ -304,83 +304,76 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     async _prepareItem(context, item, sourceIdFlags) {
-        // Check for key if the item is a container
-        if (item.behavior === "container" && !context.items.find(otherItem =>
-            otherItem.sourceId === item.sourceId && otherItem.id !== item.id && otherItem.behavior === "key")) return;
+        // Don't process if container
+        if (item.behavior === "container") return;
 
-        // Other than container only are added
-        if (item.behavior !== "container") {
-            const sourceIdFlag = item.sourceId;
+        const sourceIdFlag = item.sourceId;
 
-            // Merge aspects for each item
-            item.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
-            item.system.combinedActiveAspects = await item.getCombinedActiveAspects();
+        // Merge aspects for each item
+        item.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
+        item.system.combinedActiveAspects = await item.getCombinedActiveAspects();
 
-            // Enriched HTML description
-            item.enriched = await TextEditor.enrichHTML(item.system.description, {
-                secrets: item.isOwner,
-                async: true,
-                relativeTo: item
-            });
+        // Enriched HTML description
+        item.enriched = await TextEditor.enrichHTML(item.system.description, {
+            secrets: item.isOwner,
+            async: true,
+            relativeTo: item
+        });
 
-            // Append to background.
-            if (item.type === "race" || item.type === "class") {
-                context.background.push(item);
+        // Append to background.
+        if (item.type === "race" || item.type === "class") {
+            context.background.push(item);
+        }
+        if (item.type === "mastery") {
+            context.masters.push(item);
+        }
+        // Append to features.
+        if (item.type === "feature") {
+            context.features.push(item);
+        }
+        // Append to abilities.
+        else if (item.type === "ability") {
+            // Increase units
+            if (sourceIdFlags.includes(sourceIdFlag)) {
+                const sameItem = context.abilities.find(item => item.sourceId === sourceIdFlag);
+                sameItem.system.units++;
+            } else {
+                context.abilities.push(item);
             }
-            if (item.type === "mastery") {
-                context.masters.push(item);
+        } else if (item.type === "weapon") {
+            context.weapons.push(item);
+        } else if (item.type === "wearable") {
+            context.wearables.push(item);
+        } else if (item.type === "consumable") {
+            // Increase units
+            if (sourceIdFlags.includes(sourceIdFlag)) {
+                const sameItem = context.consumables.find(item => item.sourceId === sourceIdFlag);
+                sameItem.system.units++;
+            } else {
+                context.consumables.push(item);
             }
-            // Append to features.
-            if (item.type === "feature") {
-                context.features.push(item);
+        } else if (item.type === "common") {
+            // Increase units
+            if (sourceIdFlags.includes(sourceIdFlag)) {
+                const sameItem = context.commons.find(item => item.sourceId === sourceIdFlag);
+                sameItem.system.units++;
+            } else {
+                context.commons.push(item);
             }
-            // Append to abilities.
-            else if (item.type === "ability") {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = context.abilities.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    context.abilities.push(item);
-                }
-            } else if (item.type === "weapon") {
-                context.weapons.push(item);
-            } else if (item.type === "wearable") {
-                context.wearables.push(item);
-            } else if (item.type === "consumable") {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = context.consumables.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    context.consumables.push(item);
-                }
-            } else if (item.type === "common") {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = context.commons.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    context.commons.push(item);
-                }
-            } else if (item.type === "module") {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = context.modules.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    context.modules.push(item);
-                }
-            }
-
-            // Handle sourceId flags for duplicates
-            if (!sourceIdFlags.includes(sourceIdFlag)) {
-                sourceIdFlags.push(sourceIdFlag);
+        } else if (item.type === "module") {
+            // Increase units
+            if (sourceIdFlags.includes(sourceIdFlag)) {
+                const sameItem = context.modules.find(item => item.sourceId === sourceIdFlag);
+                sameItem.system.units++;
+            } else {
+                context.modules.push(item);
             }
         }
 
-        // Don't process item key children
-        if (item.behavior === "key") return;
+        // Handle sourceId flags for duplicates
+        if (!sourceIdFlags.includes(sourceIdFlag)) {
+            sourceIdFlags.push(sourceIdFlag);
+        }
 
         // Iterate over children
         for (const itemChild of item.childItems) {
