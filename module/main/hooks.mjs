@@ -10,9 +10,9 @@ export default class Pl1eHooks {
 
     static ready() {
         // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-        Hooks.on("hotbarDrop", async (bar, data, slot) => {
-            if (["Item", "ActiveEffect"].includes(data.type)) {
-                await Pl1eMacro.createMacro(data, slot);
+        Hooks.on("hotbarDrop", (bar, data, slot) => {
+            if (["Item"].includes(data.type)) {
+                Pl1eMacro.createMacro(data, slot);
                 return false;
             }
         });
@@ -104,12 +104,6 @@ export default class Pl1eHooks {
                 const remainingMovement = token.actor.system.variables.remainingMovement;
                 const usedMovement = token.actor.system.variables.usedMovement;
                 const movementAction = token.actor.system.variables.movementAction;
-
-                // const walk = 0;
-                // const run = 0;
-                // const extraMovement = 0;
-                // if (movementAction + action >= 2)
-                //     walk = remainingMovement
 
                 const totalMovement = remainingMovement + usedMovement;
                 const totalAction = action + movementAction;
