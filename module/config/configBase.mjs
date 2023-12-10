@@ -64,7 +64,8 @@ export function getConfigBase() {
     PL1E.activations = {
         "action": "PL1E.Action",
         "reaction": "PL1E.Reaction",
-        "quickAction": "PL1E.QuickAction"
+        "quickAction": "PL1E.QuickAction",
+        "outOfCombat": "PL1E.OutOfCombat"
     }
 
     PL1E.activationLink = {

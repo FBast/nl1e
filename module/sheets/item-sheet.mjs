@@ -351,8 +351,10 @@ export class Pl1eItemSheet extends ItemSheet {
             const attributeConfig = Pl1eHelpers.getConfig("attributes", key);
             if (attributeConfig === undefined || !attributeConfig.inDescription) continue;
 
+            let ignore = false;
             // Type modification
             if (Array.isArray(value)) {
+                ignore = value.length === 0;
                 value = value.map(value => {
                     const label = Pl1eHelpers.getConfig(attributeConfig.select, value);
                     return game.i18n.localize(label);
@@ -367,11 +369,13 @@ export class Pl1eItemSheet extends ItemSheet {
             }
             else if (value === 0) continue;
             
-            // Assign the attribute display
-            attributesDisplay[key] = Object.assign({}, attributeConfig, {
-                label: game.i18n.localize(attributeConfig.label),
-                value: value
-            });
+            if (!ignore) {
+                // Assign the attribute display
+                attributesDisplay[key] = Object.assign({}, attributeConfig, {
+                    label: game.i18n.localize(attributeConfig.label),
+                    value: value
+                });
+            }
         }
         context.attributesDisplay = attributesDisplay;
 

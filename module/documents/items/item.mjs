@@ -202,9 +202,17 @@ export class Pl1eItem extends Item {
                 changed["system.attributes.useFocus"] = false;
             }
             if (changed.system?.attributes?.activation === "quickAction") {
+                changed["system.attributes.actionCost"] = 0;
+                changed["system.attributes.reactionCost"] = 0;
+                changed["system.attributes.quickActionCost"] = 1;
+                changed["system.attributes.isMajorAction"] = false;
+                changed["system.attributes.isDangerous"] = false;
+                changed["system.attributes.useFocus"] = false;
+            }
+            if (changed.system?.attributes?.activation === "outOfCombat") {
                 changed["system.attributes.reactionCost"] = 0;
                 changed["system.attributes.actionCost"] = 0;
-                changed["system.attributes.quickActionCost"] = 1;
+                changed["system.attributes.quickActionCost"] = 0;
                 changed["system.attributes.isMajorAction"] = false;
                 changed["system.attributes.isDangerous"] = false;
                 changed["system.attributes.useFocus"] = false;
@@ -217,6 +225,47 @@ export class Pl1eItem extends Item {
             }
             if (changed.system?.attributes?.areaShape === "none") {
                 changed["system.attributes.areaNumber"] = 0;
+                changed["system.attributes.circleRadius"] = 0;
+                changed["system.attributes.coneLength"] = 0;
+                changed["system.attributes.coneAngle"] = 0;
+                changed["system.attributes.squareLength"] = 0;
+                changed["system.attributes.rayLength"] = 0;
+            }
+            if (changed.system?.attributes?.areaShape === "target") {
+                changed["system.attributes.areaNumber"] = 1;
+                changed["system.attributes.circleRadius"] = 0;
+                changed["system.attributes.coneLength"] = 0;
+                changed["system.attributes.coneAngle"] = 0;
+                changed["system.attributes.squareLength"] = 0;
+                changed["system.attributes.rayLength"] = 0;
+            }
+            if (changed.system?.attributes?.areaShape === "circle") {
+                changed["system.attributes.areaNumber"] = 1;
+                changed["system.attributes.coneLength"] = 0;
+                changed["system.attributes.coneAngle"] = 0;
+                changed["system.attributes.squareLength"] = 0;
+                changed["system.attributes.rayLength"] = 0;
+            }
+            if (changed.system?.attributes?.areaShape === "cone") {
+                changed["system.attributes.areaNumber"] = 1;
+                changed["system.attributes.circleRadius"] = 0;
+                changed["system.attributes.squareLength"] = 0;
+                changed["system.attributes.rayLength"] = 0;
+            }
+            if (changed.system?.attributes?.areaShape === "square") {
+                changed["system.attributes.areaNumber"] = 1;
+                changed["system.attributes.circleRadius"] = 0;
+                changed["system.attributes.coneLength"] = 0;
+                changed["system.attributes.coneAngle"] = 0;
+                changed["system.attributes.rayLength"] = 0;
+            }
+            if (changed.system?.attributes?.areaShape === "ray") {
+                changed["system.attributes.areaNumber"] = 1;
+                changed["system.attributes.circleRadius"] = 0;
+                changed["system.attributes.coneLength"] = 0;
+                changed["system.attributes.coneAngle"] = 0;
+                changed["system.attributes.squareLength"] = 0;
+
             }
         }
 
@@ -544,8 +593,18 @@ export class Pl1eItem extends Item {
             ui.notifications.info(game.i18n.localize("PL1E.NoMoreReaction"));
             return false;
         }
-        else if (itemAttributes.activation === "quickAction" && characterData.actor.system.misc.quickAction <= 0) {
-            ui.notifications.info(game.i18n.localize("PL1E.NoMoreQuickAction"));
+        else if (itemAttributes.activation === "quickAction") {
+            if (characterData.token.inCombat && characterData.tokenId !== game.combat.current.tokenId) {
+                ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
+                return false;
+            }
+            if (characterData.actor.system.misc.quickAction <= 0) {
+                ui.notifications.info(game.i18n.localize("PL1E.NoMoreQuickAction"));
+                return false;
+            }
+        }
+        else if (itemAttributes.activation === "outOfCombat" && characterData.token.inCombat) {
+            ui.notifications.info(game.i18n.localize("PL1E.OutOfCombatOnly"));
             return false;
         }
         return true;

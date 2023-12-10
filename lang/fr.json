@@ -586,6 +586,8 @@
   "PL1E.Uses": "Utilisations",
   "PL1E.Value": "Valeur",
   "PL1E.VeryFast": "Très rapide",
+  "PL1E.OutOfCombat": "Hors combat",
+  "PL1E.OutOfCombatOnly": "Hors combat uniquement",
   "PL1E.VerySlow": "Très lent",
   "PL1E.Vigilance": "Vigilance",
   "PL1E.VigilanceBonus": "Bonus de Vigilance",

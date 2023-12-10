@@ -584,6 +584,8 @@
   "PL1E.Usage": "Usage",
   "PL1E.UsageContext": "Usage context",
   "PL1E.UsageCost": "Usage cost",
+  "PL1E.OutOfCombat": "Out of combat",
+  "PL1E.OutOfCombatOnly": "Out of combat only",
   "PL1E.Use": "Use",
   "PL1E.UseFocus": "Use focus",
   "PL1E.UseParentOppositeRoll": "Use parent's opposite roll",
