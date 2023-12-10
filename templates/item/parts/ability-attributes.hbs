@@ -140,11 +140,6 @@
                 <label>{{localize "PL1E.UseFocus"}}</label>
                 <input type="checkbox" name="system.attributes.useFocus" {{checked system.attributes.useFocus}} data-dtype="Boolean"/>
             </div>
-        {{else if (eq system.attributes.activation "reaction")}}
-            <div class="form-group">
-                <label>{{localize "PL1E.ReactionCost"}}</label>
-                <input type="number" name="system.attributes.reactionCost" value="1" data-dtype="Number" disabled/>
-            </div>
         {{/if}}
     </fieldset>
     <fieldset>

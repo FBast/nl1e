@@ -122,6 +122,16 @@ export function getConfigItems() {
             "combatOnly": true,
             "inDescription": true
         },
+        "quickActionCost": {
+            "label": "PL1E.QuickActionCost",
+            "type": "number",
+            "document": "actor",
+            "dataGroup": "general",
+            "data": "quickAction",
+            "invertSign": true,
+            "combatOnly": true,
+            "inDescription": true
+        },
         "isMajorAction": {
             "label": "PL1E.MajorAction",
             "type": "bool",

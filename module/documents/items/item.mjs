@@ -189,16 +189,25 @@ export class Pl1eItem extends Item {
                 changed["system.attributes.moduleSlot"] = [];
             }
             if (changed.system?.attributes?.activation === "action") {
+                changed["system.attributes.actionCost"] = 1;
                 changed["system.attributes.reactionCost"] = 0;
+                changed["system.attributes.quickActionCost"] = 0;
             }
             if (changed.system?.attributes?.activation === "reaction") {
                 changed["system.attributes.actionCost"] = 0;
+                changed["system.attributes.reactionCost"] = 1;
+                changed["system.attributes.quickActionCost"] = 0;
                 changed["system.attributes.isMajorAction"] = false;
+                changed["system.attributes.isDangerous"] = false;
+                changed["system.attributes.useFocus"] = false;
             }
             if (changed.system?.attributes?.activation === "quickAction") {
                 changed["system.attributes.reactionCost"] = 0;
                 changed["system.attributes.actionCost"] = 0;
+                changed["system.attributes.quickActionCost"] = 1;
                 changed["system.attributes.isMajorAction"] = false;
+                changed["system.attributes.isDangerous"] = false;
+                changed["system.attributes.useFocus"] = false;
             }
             if (changed.system?.attributes?.roll?.length === 0)
                 changed["system.attributes.oppositeRoll"] = [];

@@ -390,19 +390,19 @@ export function getConfigActor() {
             "label": "PL1E.Action",
             "icon": "fa-clock",
             "type": "number",
-            "path": "system.misc.action"
+            "path": "system.general.action"
         },
         "reaction": {
             "label": "PL1E.Reaction",
             "icon": "fa-reply-clock",
             "type": "number",
-            "path": "system.misc.reaction"
+            "path": "system.general.reaction"
         },
         "quickAction": {
             "label": "PL1E.QuickAction",
             "icon": "fa-bell",
             "type": "number",
-            "path": "system.misc.quickAction"
+            "path": "system.general.quickAction"
         }
     }
 

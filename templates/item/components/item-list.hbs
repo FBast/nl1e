@@ -1,17 +1,24 @@
 {{#if (gt (length section) 0)}}
     <ol class="items-list">
-        <li class="flexrow items-header grid grid-4col">
-            <div class="item-name grid-span-3">{{localize title}}</div>
-            <div class="item-controls">
+        <li class="items-header grid grid-12col">
+            <div class="item-title grid-span-4 flexrow">
+                <div class="item-name grid-span-3">{{localize title}}</div>
+            </div>
+            <div class="item-icons grid-span-2">
+
+            </div>
+            <div class="item-controls grid-span-6">
 
             </div>
         </li>
         {{#each section}}
             <li class="item" data-item-id="{{itemId}}" data-instance-id="{{instanceId}}">
-                <div class="flexrow">
-                    <img class="item-image item-edit hover-red" src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
-                    <label class="item-name">{{item.name}}</label>
-                    <div class="item-icons grid-span-2">
+                <div class="item-content grid grid-12col">
+                    <div class="item-title grid-span-4 flexrow">
+                        <img class="item-image item-edit hover-red" src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
+                        <label class="item-name item-tooltip-activate">{{item.name}}</label>
+                    </div>
+                    <div class="item-icons grid-span-6">
                         {{#if (and @root.item.isEmbedded (eq item.type "mastery"))}}
                             {{#if (eq behavior "regular")}}
                                 <i class="item-info fas fa-cube hover-green" data-tooltip="{{localize "PL1E.Regular"}}"></i>
@@ -25,7 +32,7 @@
                             <i class="item-info fas fa-circle-nodes hover-green" data-tooltip="{{localize "PL1E.Synchronized"}}"></i>
                         {{/if}}
                     </div>
-                    <div class="item-controls">
+                    <div class="item-controls grid-span-2">
                         {{#if (and (not @root.item.isEmbedded) (eq item.type "mastery"))}}
                             {{#if (eq behavior "regular")}}
                                 <a class="item-control item-switch-behavior" data-tooltip='{{localize "PL1E.Regular"}}'><i class="fas fa-cube"></i></a>
@@ -40,6 +47,7 @@
                         {{/if}}
                     </div>
                 </div>
+                <div class="item-tooltip">{{{item.system.description}}}</div>
             </li>
         {{/each}}
     </ol>

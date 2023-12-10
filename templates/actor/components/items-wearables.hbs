@@ -1,14 +1,24 @@
 <ol class="items-list">
-    <li class="items-header flexrow">
-        <div class="item-name">{{localize "PL1E.Wearable"}}</div>
+    <li class="items-header grid grid-12col">
+        <div class="item-title grid-span-4 flexrow">
+            <label class="item-name">{{localize "PL1E.Wearables"}}</label>
+        </div>
+        <div class="item-icons grid-span-6">
+
+        </div>
+        <div class="item-controls grid-span-2">
+
+        </div>
     </li>
     {{#each wearables}}
         <li class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">
-            <div class="flexrow">
-                <img class="item-image item-edit hover-red" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
-                <label class="item-name item-tooltip-activate">{{realName}}</label>
+            <div class="item-content grid grid-12col">
+                <div class="item-title grid-span-4 flexrow">
+                    <img class="item-image item-edit hover-red" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
+                    <label class="item-name item-tooltip-activate">{{realName}}</label>
+                </div>
                 {{#unless (eq @root.actor.type "npc")}}
-                    <div class="item-icons grid-span-2">
+                    <div class="item-icons grid-span-6">
                         {{#each system.combinedPassiveAspects}}
                             {{#with (config dataGroup data)}}
                                 <i class="item-info fas {{icon}} hover-green" data-tooltip="{{localize label}}">
@@ -56,7 +66,7 @@
                         {{/if}}
                     </div>
                 {{/unless}}
-                <div class="item-controls">
+                <div class="item-controls grid-span-2">
                     {{#if (eq @root.actor.type "merchant")}}
                         {{#if (eq @root.actor.system.general.buyMultiplier 0)}}
                             <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Take"}}'>

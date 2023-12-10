@@ -1,13 +1,26 @@
 <ol class="items-list">
-    <li class="items-header flexrow">
-        <div class="item-name">{{localize "PL1E.PassiveEffects"}}</div>
+    <li class="items-header grid grid-12col">
+        <div class="item-title grid-span-4 flexrow">
+            <label class="item-name">{{localize "PL1E.PassiveEffects"}}</label>
+        </div>
+        <div class="item-icons grid-span-6">
+
+        </div>
+        <div class="item-controls grid-span-2">
+
+        </div>
     </li>
     {{#each passiveEffects}}
         <li class="item" data-effect-id="{{_id}}" data-item-link-id="{{flags.pl1e.itemId}}">
-            <div class="flexrow">
-                <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
-                <label class="item-name item-tooltip-activate">{{localize name}}</label>
-                <div class="item-controls">
+            <div class="item-content grid grid-12col">
+                <div class="item-title grid-span-4 flexrow">
+                    <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
+                    <label class="item-name item-tooltip-activate">{{localize name}}</label>
+                </div>
+                <div class="item-icons grid-span-6">
+
+                </div>
+                <div class="item-controls grid-span-2">
                     <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
                     {{#if @root.game.user.isGM}}
                         <a class="item-control effect-remove" data-tooltip="{{localize "PL1E.Delete"}}"><i class="fas fa-trash"></i></a>
@@ -19,20 +32,30 @@
     {{/each}}
 </ol>
 <ol class="items-list">
-    <li class="items-header flexrow">
-        <div class="item-name">{{localize "PL1E.TemporaryEffects"}}</div>
+    <li class="items-header grid grid-12col">
+        <div class="item-title grid-span-4 flexrow">
+            <label class="item-name">{{localize "PL1E.TemporaryEffects"}}</label>
+        </div>
+        <div class="item-icons grid-span-6">
+
+        </div>
+        <div class="item-controls grid-span-2">
+
+        </div>
     </li>
     {{#each temporaryEffects}}
         <li class="item" data-effect-id="{{_id}}" data-item-link-id="{{flags.pl1e.itemId}}">
-            <div class="flexrow">
-                <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
-                <label class="item-name item-tooltip-activate">{{localize name}}</label>
-                <div class="item-icons grid-span-2">
+            <div class="item-content grid grid-12col">
+                <div class="item-title grid-span-4 flexrow">
+                    <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
+                    <label class="item-name item-tooltip-activate">{{localize name}}</label>
+                </div>
+                <div class="item-icons grid-span-6">
                     <i class="item-info fas fa-clock hover-green" data-tooltip="{{localize "PL1E.Action"}}">
                         <label>{{duration.label}}</label>
                     </i>
                 </div>
-                <div class="item-controls">
+                <div class="item-controls grid-span-2">
                     <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
                     {{#if @root.game.user.isGM}}
                         <a class="item-control effect-remove" data-tooltip="{{localize "PL1E.Delete"}}"><i class="fas fa-trash"></i></a>
@@ -44,15 +67,28 @@
     {{/each}}
 </ol>
 <ol class="items-list">
-    <li class="items-header flexrow">
-        <div class="item-name">{{localize "PL1E.InactiveEffects"}}</div>
+    <li class="items-header grid grid-12col">
+        <div class="item-title grid-span-4 flexrow">
+            <label class="item-name">{{localize "PL1E.InactiveEffects"}}</label>
+        </div>
+        <div class="item-icons grid-span-6">
+
+        </div>
+        <div class="item-controls grid-span-2">
+
+        </div>
     </li>
     {{#each inactiveEffects}}
         <li class="item" data-effect-id="{{_id}}" data-item-link-id="{{flags.pl1e.itemId}}">
-            <div class="flexrow">
-                <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
-                <label class="item-name item-tooltip-activate">{{localize name}}</label>
-                <div class="item-controls">
+            <div class="item-content grid grid-12col">
+                <div class="item-title grid-span-4 flexrow">
+                    <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
+                    <label class="item-name item-tooltip-activate">{{localize name}}</label>
+                </div>
+                <div class="item-icons grid-span-6">
+
+                </div>
+                <div class="item-controls grid-span-2">
                     <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
                     {{#if @root.game.user.isGM}}
                         <a class="item-control effect-remove" data-tooltip="{{localize "PL1E.Delete"}}"><i class="fas fa-trash"></i></a>

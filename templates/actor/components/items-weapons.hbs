@@ -1,14 +1,24 @@
 <ol class="items-list">
-    <li class="items-header flexrow">
-        <div class="item-name">{{localize "PL1E.Weapon"}}</div>
+    <li class="items-header grid grid-12col">
+        <div class="item-title grid-span-4 flexrow">
+            <label class="item-name">{{localize "PL1E.Weapons"}}</label>
+        </div>
+        <div class="item-icons grid-span-6">
+
+        </div>
+        <div class="item-controls grid-span-2">
+
+        </div>
     </li>
     {{#each weapons}}
         <li class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">
-            <div class="flexrow">
-                <img class="item-image item-edit hover-red" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
-                <label class="item-name item-tooltip-activate">{{realName}}</label>
+            <div class="item-content grid grid-12col">
+                <div class="item-title grid-span-4 flexrow">
+                    <img class="item-image item-edit hover-red" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
+                    <label class="item-name item-tooltip-activate">{{realName}}</label>
+                </div>
                 {{#unless (eq @root.actor.type "npc")}}
-                    <div class="item-icons grid-span-2">
+                    <div class="item-icons grid-span-6">
                         {{#if (ne system.attributes.hands 0)}}
                             <i class="item-info fas fa-hand hover-green" data-tooltip="{{localize "PL1E.Hands"}}">
                                 <label>{{system.attributes.hands}}</label>
@@ -84,7 +94,7 @@
                         {{/if}}
                     </div>
                 {{/unless}}
-                <div class="item-controls">
+                <div class="item-controls grid-span-2">
                     {{#if (eq @root.actor.type "merchant")}}
                         {{#if (eq @root.actor.system.general.buyMultiplier 0)}}
                             <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Take"}}'>
