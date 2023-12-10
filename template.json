@@ -437,7 +437,7 @@
         "manaCost": 0,
         "usageCost": 0,
         "activation": "action",
-        "actionCost": 0,
+        "actionCost": 1,
         "reactionCost": 0,
         "isMajorAction": false,
         "isDangerous": false,

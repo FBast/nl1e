@@ -368,7 +368,7 @@ export class Pl1eItemSheet extends ItemSheet {
                 value = game.i18n.localize(value ? "PL1E.Yes" : "PL1E.No");
             }
             else if (value === 0) continue;
-            
+
             if (!ignore) {
                 // Assign the attribute display
                 attributesDisplay[key] = Object.assign({}, attributeConfig, {
