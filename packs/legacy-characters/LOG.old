@@ -1,3 +1,8 @@
-2023/12/10-17:39:31.117 df4 Recovering log #1475
-2023/12/10-17:39:31.121 df4 Delete type=0 #1475
-2023/12/10-17:39:31.121 df4 Delete type=3 #1474
+2023/12/11-19:35:43.178 2ff0 Recovering log #1486
+2023/12/11-19:35:43.182 2ff0 Delete type=0 #1486
+2023/12/11-19:35:43.182 2ff0 Delete type=3 #1484
+2023/12/11-22:10:30.227 29b0 Level-0 table #1491: started
+2023/12/11-22:10:30.227 29b0 Level-0 table #1491: 0 bytes OK
+2023/12/11-22:10:30.229 29b0 Delete type=0 #1489
+2023/12/11-22:10:30.238 29b0 Manual compaction at level-0 from '!actors!jQ91YfNgGJnxUnfK' @ 72057594037927935 : 1 .. '!folders!aKEe1PRxoHuTzbOR' @ 0 : 0; will stop at (end)
+2023/12/11-22:10:30.246 29b0 Manual compaction at level-1 from '!actors!jQ91YfNgGJnxUnfK' @ 72057594037927935 : 1 .. '!folders!aKEe1PRxoHuTzbOR' @ 0 : 0; will stop at (end)

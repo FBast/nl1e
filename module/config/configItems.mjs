@@ -4,63 +4,73 @@ export function getConfigItems() {
     PL1E.itemTypes = {
         "feature": {
             "label": "PL1E.Feature",
-            "droppable": ["ability"],
+            "droppable": ["ability", "mastery"],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "behaviors": ["regular", "container", "key"]
         },
         "race": {
             "label": "PL1E.Race",
             "droppable": ["feature", "ability", "weapon"],
             "localDroppable": [],
-            "stackable": ["weapon"]
+            "stackable": ["weapon"],
+            "behaviors": ["regular"]
         },
         "class": {
             "label": "PL1E.Class",
             "droppable": ["feature", "ability", "mastery"],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "behaviors": ["regular"]
         },
         "mastery": {
             "label": "PL1E.Mastery",
             "droppable": ["ability"],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "behaviors": ["regular", "container", "key"]
         },
         "ability": {
             "label": "PL1E.Ability",
             "droppable": [],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "behaviors": ["regular"]
         },
         "weapon": {
             "label": "PL1E.Weapon",
             "droppable": ["feature", "ability", "mastery", "module"],
             "localDroppable": ["module"],
-            "stackable": ["module"]
+            "stackable": ["module"],
+            "behaviors": ["regular"]
         },
         "wearable": {
             "label": "PL1E.Wearable",
             "droppable": ["feature", "ability", "mastery"],
             "localDroppable": ["module"],
-            "stackable": ["module"]
+            "stackable": ["module"],
+            "behaviors": ["regular"]
         },
         "consumable": {
             "label": "PL1E.Consumable",
             "droppable": [],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "behaviors": ["regular"]
         },
         "common": {
             "label": "PL1E.Common",
             "droppable": [],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "behaviors": ["regular"]
         },
         "module": {
             "label": "PL1E.Module",
             "droppable": [],
             "localDroppable": [],
-            "stackable": []
+            "stackable": [],
+            "behaviors": ["regular"]
         }
     }
 
@@ -409,7 +419,7 @@ export function getConfigItems() {
         "craft": "PL1E.Craft",
         "erudition": "PL1E.Erudition",
         "nature": "PL1E.Nature",
-        "magic": "PL1E.Magic",
+        "occultism": "PL1E.Occultism",
     }
     
     PL1E.abilityResistances = {

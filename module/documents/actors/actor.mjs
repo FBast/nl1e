@@ -268,10 +268,6 @@ export class Pl1eActor extends Actor {
             for (let misc of skillConfig.weights.misc) {
                 attributesSum += actorMisc[misc];
             }
-            // Particular case of gestural magic
-            if (id === "magic" && actorMisc.gesturalMagic) {
-                attributesSum += actorMisc["flexibility"];
-            }
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod + attributesSum, 1, 10);
             skill.diceMod += actorGeneral.advantages;

@@ -116,7 +116,7 @@ export function getConfigActor() {
             "label": "PL1E.Cunning",
             "weights": {
                 "resources": [],
-                "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "magic"]
+                "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "occultism"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -136,7 +136,7 @@ export function getConfigActor() {
             "label": "PL1E.Will",
             "weights": {
                 "resources": ["health", "mana"],
-                "skills": ["resilience", "performance", "magic"]
+                "skills": ["resilience", "performance", "occultism"]
             },
             "icon": "fa-dumbbell",
             "type": "number",
@@ -334,8 +334,8 @@ export function getConfigActor() {
                 "misc": []
             }
         },
-        "magic": {
-            "label": "PL1E.Magic",
+        "occultism": {
+            "label": "PL1E.Occultism",
             "fixedRank": false,
             "divider": 2,
             "weights": {
@@ -519,24 +519,6 @@ export function getConfigActor() {
             "icon": "fa-eye",
             "type": "number",
             "path": "system.misc.nightVisionRange"
-        },
-        "faithPower": {
-            "label": "PL1E.FaithPower",
-            "icon": "fa-reply-clock",
-            "type": "bool",
-            "path": "system.misc.faithPower"
-        },
-        "gesturalMagic": {
-            "label": "PL1E.GesturalMagic",
-            "icon": "fa-reply-clock",
-            "type": "bool",
-            "path": "system.misc.gesturalMagic"
-        },
-        "vocalMagic": {
-            "label": "PL1E.VocalMagic",
-            "icon": "fa-reply-clock",
-            "type": "bool",
-            "path": "system.misc.vocalMagic"
         }
     }
 

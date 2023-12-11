@@ -7,10 +7,25 @@
             {{> "systems/pl1e/templates/actor/components/resources.hbs" resources=system.resources}}
         </div>
     </header>
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="stats">{{localize "PL1E.Stats"}}</a>
+        <a class="item" data-tab="features">{{localize "PL1E.FeaturesAndAbilities"}}</a>
+        <a class="item" data-tab="items">{{localize "PL1E.Items"}}</a>
+    </nav>
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-        <div class="tab flexcol">
+        {{!-- Stats Tab --}}
+        <div class="tab stats flexcol" data-group="primary" data-tab="stats">
             {{> "systems/pl1e/templates/actor/parts/npc-stats.hbs"}}
+        </div>
+        {{!-- Features Tab --}}
+        <div class="tab features flexcol" data-group="primary" data-tab="features">
+            {{> "systems/pl1e/templates/actor/parts/character-features.hbs"}}
+        </div>
+        {{!-- Items Tab --}}
+        <div class="tab items flexcol" data-group="primary" data-tab="items">
+            {{> "systems/pl1e/templates/actor/parts/character-items.hbs"}}
         </div>
     </section>
 </form>

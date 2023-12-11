@@ -281,7 +281,7 @@
             "implosion": false,
             "usable": true
           },
-          "magic": {
+          "occultism": {
             "number": 2,
             "numberMod": 0,
             "rank": 1,
@@ -327,9 +327,7 @@
           "deathDoor": 10,
           "flexibility": 0,
           "nightVisionRange": 0,
-          "faithPower": false,
-          "gesturalMagic": false,
-          "vocalMagic": false
+          "faithPower": false
         },
         "money": {
           "gold": 50,
@@ -467,12 +465,17 @@
         "customizable": false,
         "modules": 0,
         "hands": 1,
+        "meleeUse": false,
         "reach": 0,
         "meleeRoll": [],
         "meleeOppositeRoll": [],
+        "rangedUse": false,
         "range": 0,
         "rangeRoll": [],
-        "rangeOppositeRoll": []
+        "rangeOppositeRoll": [],
+        "magicUse": false,
+        "magicRoll": [],
+        "magicOppositeRoll": []
       }
     },
     "wearable": {
@@ -482,7 +485,10 @@
       "attributes": {
         "customizable": false,
         "modules": 0,
-        "slot": "none"
+        "slot": "none",
+        "magicUse": false,
+        "magicRoll": [],
+        "magicOppositeRoll": []
       }
     },
     "consumable": {

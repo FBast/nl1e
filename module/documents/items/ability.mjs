@@ -89,6 +89,10 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.attributes.useParentRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.rangeRoll;
             if (characterData.attributes.useParentOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.rangeOppositeRoll;
         }
+        else if (characterData.attributes.weaponMode === "magic") {
+            if (characterData.attributes.useParentRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.magicRoll;
+            if (characterData.attributes.useParentOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.magicOppositeRoll;
+        }
 
         // Override sequencer macros
         if (characterData.attributes.useParentSequencerMacros) {
@@ -159,10 +163,12 @@ export class Pl1eAbility extends Pl1eItem {
             if (!parentItem) continue;
             // Extra conditions
             if (characterData.attributes.isMajorAction && parentItem.system.majorActionUsed) continue;
-            // Weapon mode is melee but parent has no reach
-            if (characterData.attributes.weaponMode === "melee" && parentItem.system.attributes.reach === 0) continue;
-            // Weapon mode is range but parent has no range
-            if (characterData.attributes.weaponMode === "range" && parentItem.system.attributes.range === 0) continue;
+            // Weapon mode is melee but parent does not use melee
+            if (characterData.attributes.weaponMode === "melee" && !parentItem.system.attributes.meleeUse) continue;
+            // Weapon mode is range but parent does not use ranged
+            if (characterData.attributes.weaponMode === "range" && !parentItem.system.attributes.rangedUse) continue;
+            // Weapon mode is magic but parent does not use magic
+            if (characterData.attributes.weaponMode === "magic" && !parentItem.system.attributes.magicUse) continue;
             // Parent usages are not enough
             if (characterData.attributes.usageCost > 0 && parentItem.system.attributes.uses > 0 &&
                 characterData.attributes.usageCost > parentItem.system.attributes.uses - parentItem.system.removedUses) continue;

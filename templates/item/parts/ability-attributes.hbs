@@ -34,10 +34,12 @@
             </select>
         </div>
         {{#if (ne system.attributes.weaponMode "none")}}
-            <div class="form-group">
-                <label>{{localize "PL1E.RangeOverride"}}</label>
-                <input type="checkbox" name="system.attributes.useParentRange" {{checked system.attributes.useParentRange}} data-dtype="Boolean"/>
-            </div>
+            {{#if (ne system.attributes.weaponMode "magic")}}
+                <div class="form-group">
+                    <label>{{localize "PL1E.RangeOverride"}}</label>
+                    <input type="checkbox" name="system.attributes.useParentRange" {{checked system.attributes.useParentRange}} data-dtype="Boolean"/>
+                </div>
+            {{/if}}
             <div class="form-group">
                 <label>{{localize "PL1E.UseParentRoll"}}</label>
                 <input type="checkbox" name="system.attributes.useParentRoll" {{checked system.attributes.useParentRoll}} data-dtype="Boolean"/>

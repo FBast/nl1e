@@ -33,27 +33,22 @@
             <input type="number" name="system.attributes.modules" value="{{system.attributes.modules}}" data-dtype="Number"/>
         </div>
         <div class="form-group">
-            <label>{{localize "PL1E.Masters"}}</label>
-            <div class="form-fields">
-                <ul>
-                    {{#each system.attributes.masters}}
-                        <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a style="flex: 0;" class="trait-selector align-right" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masters" data-tooltip="{{localize 'PL1E.MastersConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </div>
-        </div>
-        <div class="form-group">
             <label>{{localize "PL1E.Hands"}}</label>
             <input type="number" name="system.attributes.hands" value="{{system.attributes.hands}}" data-dtype="Number"/>
         </div>
         <div class="form-group">
-            <label>{{localize "PL1E.Reach"}}</label>
-            <input type="number" name="system.attributes.reach" value="{{system.attributes.reach}}" data-dtype="Number"/>
+            <label>{{localize "PL1E.Uses"}}</label>
+            <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
         </div>
-        {{#if (gt system.attributes.reach 0)}}
+        <div class="form-group">
+            <label>{{localize "PL1E.MeleeUse"}}</label>
+            <input type="checkbox" name="system.attributes.meleeUse" {{checked system.attributes.meleeUse}} data-dtype="Boolean"/>
+        </div>
+        {{#if system.attributes.meleeUse}}
+            <div class="form-group">
+                <label>{{localize "PL1E.Reach"}}</label>
+                <input type="number" name="system.attributes.reach" value="{{system.attributes.reach}}" data-dtype="Number"/>
+            </div>
             <div class="form-group">
                 <label>{{localize "PL1E.MeleeRoll"}}</label>
                 <div class="form-fields">
@@ -86,10 +81,14 @@
             {{/if}}
         {{/if}}
         <div class="form-group">
-            <label>{{localize "PL1E.Range"}}</label>
-            <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+            <label>{{localize "PL1E.RangedUse"}}</label>
+            <input type="checkbox" name="system.attributes.rangedUse" {{checked system.attributes.rangedUse}} data-dtype="Boolean"/>
         </div>
-        {{#if (gt system.attributes.range 0)}}
+        {{#if system.attributes.rangedUse}}
+            <div class="form-group">
+                <label>{{localize "PL1E.Range"}}</label>
+                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+            </div>
             <div class="form-group">
                 <label>{{localize "PL1E.RangeRoll"}}</label>
                 <div class="form-fields">
@@ -122,9 +121,41 @@
             {{/if}}
         {{/if}}
         <div class="form-group">
-            <label>{{localize "PL1E.Uses"}}</label>
-            <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
+            <label>{{localize "PL1E.MagicUse"}}</label>
+            <input type="checkbox" name="system.attributes.magicUse" {{checked system.attributes.magicUse}} data-dtype="Boolean"/>
         </div>
+        {{#if system.attributes.magicUse}}
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicRoll"}}</label>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.magicRoll}}
+                            <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.MagicRoll" data-key-path="attributes.magicRoll"
+                       data-tooltip="{{localize 'PL1E.MagicRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+            {{#if (gt system.attributes.magicRoll.length 0)}}
+                <div class="form-group">
+                    <label>{{localize "PL1E.MagicOppositeRoll"}}</label>
+                    <div class="form-fields">
+                        <ul>
+                            {{#each system.attributes.magicOppositeRoll}}
+                                <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                            {{/each}}
+                        </ul>
+                        <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.MagicOppositeRoll" data-key-path="attributes.magicOppositeRoll"
+                           data-tooltip="{{localize 'PL1E.MagicOppositeRollConfig'}}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+            {{/if}}
+        {{/if}}
     </fieldset>
     <fieldset>
         <legend class="section-header">{{localize "PL1E.SequencerMacros"}}</legend>

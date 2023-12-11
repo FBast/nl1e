@@ -182,12 +182,6 @@ export class Pl1eItem extends Item {
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {
             // Reset default values in case of changes
-            if (changed.system?.attributes?.moduleType === "weapon") {
-                changed["system.attributes.moduleSlot"] = [];
-            }
-            if (changed.system?.attributes?.moduleType === "shield") {
-                changed["system.attributes.moduleSlot"] = [];
-            }
             if (changed.system?.attributes?.activation === "action") {
                 changed["system.attributes.actionCost"] = 1;
                 changed["system.attributes.reactionCost"] = 0;

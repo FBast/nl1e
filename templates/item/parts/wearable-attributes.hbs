@@ -39,19 +39,41 @@
             </select>
         </div>
         <div class="form-group">
-            <label>{{localize "PL1E.Masters"}}</label>
-            <div class="form-fields">
-                <ul>
-                    {{#each system.attributes.masters}}
-                        <li class="tag {{this}}">{{localize (config "masters" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a style="flex: 0;" class="trait-selector flexshrink" data-trait="masters" data-trait-label="PL1E.Masters" data-key-path="attributes.masters"
-                   data-tooltip="{{localize 'PL1E.MastersConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </div>
+            <label>{{localize "PL1E.MagicUse"}}</label>
+            <input type="checkbox" name="system.attributes.magicUse" {{checked system.attributes.magicUse}} data-dtype="Boolean"/>
         </div>
+        {{#if system.attributes.magicUse}}
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicRoll"}}</label>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.magicRoll}}
+                            <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.MagicRoll" data-key-path="attributes.magicRoll"
+                       data-tooltip="{{localize 'PL1E.MagicRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+            {{#if (gt system.attributes.magicRoll.length 0)}}
+                <div class="form-group">
+                    <label>{{localize "PL1E.MagicOppositeRoll"}}</label>
+                    <div class="form-fields">
+                        <ul>
+                            {{#each system.attributes.magicOppositeRoll}}
+                                <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                            {{/each}}
+                        </ul>
+                        <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.MagicOppositeRoll" data-key-path="attributes.magicOppositeRoll"
+                           data-tooltip="{{localize 'PL1E.MagicOppositeRollConfig'}}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+            {{/if}}
+        {{/if}}
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
 </section>

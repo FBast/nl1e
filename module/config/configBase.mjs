@@ -18,31 +18,8 @@ export function getConfigBase() {
     PL1E.weaponModes = {
         "none": "PL1E.None",
         "melee": "PL1E.Melee",
-        "range": "PL1E.Range"
-    }
-
-    PL1E.masters = {
-        "hands": "PL1E.Hands",
-        "mouth": "PL1E.Mouth",
-        "crossbows": "PL1E.Crossbows",
-        "bows": "PL1E.Bows",
-        "poleArms": "PL1E.PoleArms",
-        "shields": "PL1E.Shields",
-        "shortAxes": "PL1E.ShortAxes",
-        "longAxes": "PL1E.LongAxes",
-        "shortBlades": "PL1E.ShortBlades",
-        "mediumBlades": "PL1E.MediumBlades",
-        "longBlades": "PL1E.LongBlades",
-        "shortHammers": "PL1E.ShortHammers",
-        "longHammers": "PL1E.LongHammers",
-        "arcana": "PL1E.Arcana",
-        "aramancia": "PL1E.Aramancia",
-        "biomancia": "PL1E.Biomancia",
-        "diastamancia": "PL1E.Diastamancia",
-        "goetia": "PL1E.Goetia",
-        "myalomancia": "PL1E.Myalomancia",
-        "necromancia": "PL1E.Necromancia",
-        "theurgy": "PL1E.Theurgy"
+        "range": "PL1E.Range",
+        "magic": "PL1E.Magic"
     }
 
     PL1E.slots = {

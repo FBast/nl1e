@@ -209,9 +209,10 @@ export class Pl1eEvent {
      */
     static async onItemSwitchBehavior(event, item) {
         const instanceId = $(event.currentTarget).closest(".item").data("instance-id");
+        const itemType = $(event.currentTarget).closest(".item").data("item-type");
 
         const currentValue = item.system.refItems[instanceId].behavior;
-        const values = ["regular", "container", "key"];
+        const values = CONFIG.PL1E.itemTypes[itemType].behaviors;
         const currentIndex = values.indexOf(currentValue);
         const nextIndex = (currentIndex + 1) % values.length;
         await item.update({

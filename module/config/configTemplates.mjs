@@ -14,7 +14,7 @@ export function getConfigTemplates() {
                 "wisdom": 3,
                 "will": 3
             },
-            "skills": ["handling", "throwing", "accuracy", "nature", "magic", "athletics", "acrobatics", "vigilance"]
+            "skills": ["handling", "throwing", "accuracy", "nature", "occultism", "athletics", "acrobatics", "vigilance"]
         },
         "soldier": {
             "label": "PL1E.Soldier",
@@ -84,7 +84,7 @@ export function getConfigTemplates() {
                 "wisdom": 3,
                 "will": 3
             },
-            "skills": ["magic", "erudition", "diplomacy", "craft", "search"]
+            "skills": ["occultism", "erudition", "diplomacy", "craft", "search"]
         },
         "priest": {
             "label":  "PL1E.Priest",
@@ -112,7 +112,7 @@ export function getConfigTemplates() {
                 "wisdom": 4,
                 "will": 4
             },
-            "skills": ["magic", "nature", "erudition", "craft", "diplomacy", "performance"]
+            "skills": ["occultism", "nature", "erudition", "craft", "diplomacy", "performance"]
         },
         "battleMage": {
             "label": "PL1E.BattleMage",
@@ -126,7 +126,7 @@ export function getConfigTemplates() {
                 "wisdom": 2,
                 "will": 2
             },
-            "skills": ["handling", "magic", "diplomacy", "vigilance", "search"]
+            "skills": ["handling", "occultism", "diplomacy", "vigilance", "search"]
         },
         "crusader": {
             "label": "PL1E.Crusader",
@@ -154,7 +154,7 @@ export function getConfigTemplates() {
                 "wisdom": 2,
                 "will": 2
             },
-            "skills": ["accuracy", "magic", "discretion", "bluff", "vigilance"]
+            "skills": ["accuracy", "occultism", "discretion", "bluff", "vigilance"]
         },
         "monk": {
             "label": "PL1E.Monk",

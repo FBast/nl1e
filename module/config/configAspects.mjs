@@ -627,24 +627,24 @@ export function getConfigAspects() {
             "path": "system.skills.nature.implosion",
             "type": "bool"
         },
-        "magicNumber": {
-            "label": "PL1E.MagicBonus",
-            "path": "system.skills.magic.numberMod",
+        "occultismNumber": {
+            "label": "PL1E.OccultismBonus",
+            "path": "system.skills.occultism.numberMod",
             "type": "number"
         },
-        // "magicDice": {
-        //     "label": "PL1E.MagicDice",
-        //     "path": "system.skills.magic.numberMod",
+        // "occultismDice": {
+        //     "label": "PL1E.OccultismDice",
+        //     "path": "system.skills.occultism.numberMod",
         //     "type": "number"
         // },
-        "magicExplosion": {
-            "label": "PL1E.MagicExplosion",
-            "path": "system.skills.magic.explosion",
+        "occultismExplosion": {
+            "label": "PL1E.OccultismExplosion",
+            "path": "system.skills.occultism.explosion",
             "type": "bool"
         },
-        "magicImplosion": {
-            "label": "PL1E.MagicImplosion",
-            "path": "system.skills.magic.implosion",
+        "occultismImplosion": {
+            "label": "PL1E.OccultismImplosion",
+            "path": "system.skills.occultism.implosion",
             "type": "bool"
         }
     }
@@ -687,24 +687,6 @@ export function getConfigAspects() {
             "icon": "fa-eye",
             "type": "number",
             "path": "system.misc.nightVisionRange"
-        },
-        "faithPower": {
-            "label": "PL1E.FaithPower",
-            "icon": "fa-reply-clock",
-            "type": "bool",
-            "path": "system.misc.faithPower"
-        },
-        "gesturalMagic": {
-            "label": "PL1E.GesturalMagic",
-            "icon": "fa-reply-clock",
-            "type": "bool",
-            "path": "system.misc.gesturalMagic"
-        },
-        "vocalMagic": {
-            "label": "PL1E.VocalMagic",
-            "icon": "fa-reply-clock",
-            "type": "bool",
-            "path": "system.misc.vocalMagic"
         }
     }
 

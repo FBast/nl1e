@@ -13,7 +13,7 @@
                             <label class="{{#if (gt ../numberMod 0)}}color-green{{else if (lt ../numberMod 0)}}color-red
                             {{else}}color-black{{/if}}">{{../number}}</label>
                         </i>
-                        <label class="skill-label {{#if (eq @root.actor.type "character")}}highlight-link hover-green{{/if}} grid-span-3 align-left"
+                        <label class="skill-label highlight-link hover-green grid-span-3 align-left"
                                data-attributes="{{weights.attributes}}" data-characteristics="{{weights.characteristics}}">
                             {{localize label}}
                         </label>
@@ -50,7 +50,7 @@
                             <label class="{{#if (gt ../numberMod 0)}}color-green{{else if (lt ../numberMod 0)}}color-red
                             {{else}}color-black{{/if}}">{{../number}}</label>
                         </i>
-                        <label class="skill-label {{#if (eq @root.actor.type "character")}}highlight-link hover-green{{/if}} grid-span-3 align-left"
+                        <label class="skill-label highlight-link hover-green grid-span-3 align-left"
                                data-attributes="{{weights.attributes}}" data-characteristics="{{weights.characteristics}}">
                             {{localize label}}
                         </label>
@@ -64,7 +64,7 @@
                             {{#if ../explosion}}
                                 <i class="fas fa-burst fa-lg hover-green" data-tooltip='{{localize "PL1E.Explosion"}}'></i>
                             {{/if}}
-                            {{#if (and @root.system.general.creationMod (ne @root.type "character"))}}
+                            {{#if (and @root.system.general.creationMod (eq @root.actor.type "character"))}}
                                 <i class="rank-control fas fa-circle-{{../rank}} fa-lg hover-red" data-skill="{{@key}}"></i>
                             {{else}}
                                 <i class="far fa-circle-{{../rank}} fa-lg"></i>

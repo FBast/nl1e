@@ -7,7 +7,7 @@
             <div class="characteristic-values flexrow flex-group-center">
                 <div class="input-spin">
                     <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" data-dtype="Number" min="0" placeholder="0" disabled/>
-                    {{#if @root.system.general.creationMod}}
+                    {{#if (and @root.system.general.creationMod (eq @root.actor.type "character"))}}
                         <span>
                             <i class="characteristic-control hover-red fa fa-plus-square" data-value="1"></i>
                             <i class="characteristic-control hover-red fa fa-minus-square" data-value="-1"></i>
