@@ -78,7 +78,7 @@ Hooks.once('init', async function () {
 });
 
 /* ------------------------------------ */
-/*  Hooks Once                           */
+/*  Hooks Once                          */
 /* ------------------------------------ */
 
 Hooks.once("ready", Pl1eHooks.ready);
@@ -86,7 +86,8 @@ Hooks.once("socketlib.ready", Pl1eHooks.socketLibReady);
 Hooks.once("dragRuler.ready", (SpeedProvider) => Pl1eHooks.dragRulerReady(SpeedProvider));
 
 /* ------------------------------------ */
-/*  Hooks On                             */
+/*  Hooks On                            */
 /* ------------------------------------ */
 
 Hooks.on("renderChatMessage", (app, html, data) => Pl1eHooks.renderChatMessage(app, html, data));
+Hooks.on("getSceneControlButtons", (controls) => Pl1eHooks.getSceneControlButtons(controls));

@@ -4,7 +4,8 @@ import {Pl1eEvent} from "../helpers/events.mjs";
 import {PL1E} from "../config/config.mjs";
 import {Pl1eTrade} from "../helpers/trade.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
-import {GmToolbox} from "../apps/gmToolbox.mjs";
+import {GmToolbox as displaySleeping, GmToolbox} from "../apps/gmToolbox.mjs";
+import * as CONFIG from "../config/config.mjs";
 
 export default class Pl1eHooks {
 
@@ -47,6 +48,7 @@ export default class Pl1eHooks {
                 const formApp = Object.values(ui.windows)
                     .find(w => w instanceof Pl1eResting);
                 if (formApp) formApp.render(true);
+
                 // Apply the user color to the sheet
                 for (const [id, user] of Object.entries(game.users.players)) {
                     if (user.character !== actorSheet.actor) continue;
@@ -54,17 +56,63 @@ export default class Pl1eHooks {
                 }
             }
         });
-
-        // Settings TN and EncounterType
-        if (game.user.isGM) {
-            new game.pl1e.GmToolbox().render(true);
-        }
     }
 
     static renderChatMessage(app, html, data) {
         html.find(".token-focus").on("click", ev => Pl1eEvent.onFocusToken(ev));
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, app));
         html.find(".card-buttons button").on("click", ev => Pl1eEvent.onChatCardAction(ev));
+    }
+
+    static getSceneControlButtons(controls) {
+        const managePlayers = {
+            icon: "fas fa-people-roof",
+            name: "manage-players",
+            title: "PL1E.ManagePlayers",
+            button: true,
+            visible: game.user.isGM,
+            onClick: () => {
+                console.log("Manage players");
+            }
+        };
+        const startSleeping = {
+            icon: "fas fa-face-sleeping",
+            name: "start-sleeping",
+            title: "PL1E.StartSleeping",
+            button: true,
+            visible: game.user.isGM,
+            onClick: () => {
+                const players = game.users.filter(user => user.active && !user.isGM);
+                const playerIds = players.map(player => player.id);
+
+                let abort = false;
+                for (const player of players) {
+                    // Return if the player has no associated character
+                    if (!player.character) {
+                        ui.notifications.info(`${game.i18n.localize("PL1E.PlayerHasNoCharacter")} : ${player.name}`);
+                        abort = true;
+                    }
+                    // Return if the character is in creation mod
+                    if (player.character.system.general.creationMod) {
+                        ui.notifications.info(`${game.i18n.localize("PL1E.CharacterInCreationMode")} : ${player.character.name}`);
+                        abort = true;
+                    }
+                }
+                if (abort) return;
+
+                // Execute the socket
+                CONFIG.PL1E.socket.executeForUsers('displaySleeping', playerIds);
+            }
+        };
+        controls.push({
+            name: "gm-controls",
+            title: game.i18n.localize("PL1E.GMControls"),
+            icon: "fas fa-user-crown",
+            layer: "controls",
+            visible: game.user.isGM,
+            activeTool: "manage-token",
+            tools: [managePlayers, startSleeping]
+        });
     }
 
     /* -------------------------------------------- */
@@ -122,5 +170,4 @@ export default class Pl1eHooks {
 
         dragRuler.registerSystem("pl1e", Pl1eSpeedProvider);
     }
-
 }
