@@ -4,7 +4,6 @@ import {Pl1eEvent} from "../helpers/events.mjs";
 import {PL1E} from "../config/config.mjs";
 import {Pl1eTrade} from "../helpers/trade.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
-import {GmToolbox, GmToolbox as displaySleeping} from "../apps/gmToolbox.mjs";
 
 export default class Pl1eHooks {
 

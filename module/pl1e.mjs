@@ -12,7 +12,6 @@ import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 import {Pl1eJournalPageSheet} from "./sheets/journal-sheet.mjs";
 // Import app classes
 import {Pl1eCombat} from "./apps/combat.mjs";
-import {GmToolbox} from "./apps/gmToolbox.mjs";
 // Import main classes and functions
 import Pl1eHooks from "./main/hooks.mjs";
 import {preloadHandlebarsTemplates} from "./main/templates.mjs";
@@ -32,8 +31,7 @@ Hooks.once('init', async function () {
     game.pl1e = {
         Pl1eActor,
         Pl1eItem,
-        Pl1eMacro,
-        GmToolbox
+        Pl1eMacro
     };
 
     // Add custom constants for configuration.
