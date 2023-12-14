@@ -217,20 +217,23 @@ export class GmToolbox extends FormApplication {
     /**
      * Display the sleeping window for the current user
      */
-    static displaySleeping() {
-        // Return if the sleeping windows is already displayed
-        const formApp = Object.values(ui.windows)
-            .find(w => w instanceof Pl1eResting);
-        if (formApp) return;
+    static displayRestWindow() {
+        const character = game.user.character;
+        // Return if the player has no associated character
+        if (!character ) {
+            ui.notifications.info(game.i18n.localize("PL1E.PlayerHasNoCharacter"));
+            return;
+        }
+        // Return if the character is in creation mod
+        if (character.system.general.creationMod) {
+            ui.notifications.info(game.i18n.localize("PL1E.CharacterInCreationMode"));
+            return;
+        }
 
-        const actor = game.user.character;
-        if (!actor) return;
-
-        const app = new Pl1eResting(actor, {
-            title: `${game.i18n.localize("PL1E.Sleeping")} : ${actor.name}`,
+        const app = new Pl1eResting(character, {
+            title: `${game.i18n.localize("PL1E.Rest")} : ${character.name}`,
         });
         app.render(true);
     }
-
 
 }

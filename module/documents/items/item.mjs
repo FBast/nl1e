@@ -99,9 +99,9 @@ export class Pl1eItem extends Item {
         // Jump to next parent if container behavior
         if (parentItem.behavior === "container") return parentItem.linkableParentItem;
         // Return the parent if regular behavior and linkable
-        if (parentItem.behavior === "regular" && ["weapon", "wearable"].includes(parentItem.type)) return parentItem;
+        // if (parentItem.behavior === "regular" && ["weapon", "wearable"].includes(parentItem.type)) return parentItem;
         // Return null in last case
-        return null;
+        return parentItem;
     }
 
     /**

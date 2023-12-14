@@ -260,6 +260,8 @@ export class Pl1eActor extends Actor {
         // Handle actorSkills scores.
         for (let [id, skill] of Object.entries(actorSkills)) {
             const skillConfig = Pl1eHelpers.getConfig("skills", id);
+            if (!skillConfig) continue;
+
             let characteristicsSum = 0;
             for (let characteristic of skillConfig.weights.characteristics) {
                 characteristicsSum += actorCharacteristics[characteristic].value;

@@ -4,8 +4,7 @@ import {Pl1eEvent} from "../helpers/events.mjs";
 import {PL1E} from "../config/config.mjs";
 import {Pl1eTrade} from "../helpers/trade.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
-import {GmToolbox as displaySleeping, GmToolbox} from "../apps/gmToolbox.mjs";
-import * as CONFIG from "../config/config.mjs";
+import {GmToolbox, GmToolbox as displaySleeping} from "../apps/gmToolbox.mjs";
 
 export default class Pl1eHooks {
 
@@ -64,57 +63,6 @@ export default class Pl1eHooks {
         html.find(".card-buttons button").on("click", ev => Pl1eEvent.onChatCardAction(ev));
     }
 
-    static getSceneControlButtons(controls) {
-        const managePlayers = {
-            icon: "fas fa-people-roof",
-            name: "manage-players",
-            title: "PL1E.ManagePlayers",
-            button: true,
-            visible: game.user.isGM,
-            onClick: () => {
-                console.log("Manage players");
-            }
-        };
-        const startSleeping = {
-            icon: "fas fa-face-sleeping",
-            name: "start-sleeping",
-            title: "PL1E.StartSleeping",
-            button: true,
-            visible: game.user.isGM,
-            onClick: () => {
-                const players = game.users.filter(user => user.active && !user.isGM);
-                const playerIds = players.map(player => player.id);
-
-                let abort = false;
-                for (const player of players) {
-                    // Return if the player has no associated character
-                    if (!player.character) {
-                        ui.notifications.info(`${game.i18n.localize("PL1E.PlayerHasNoCharacter")} : ${player.name}`);
-                        abort = true;
-                    }
-                    // Return if the character is in creation mod
-                    if (player.character.system.general.creationMod) {
-                        ui.notifications.info(`${game.i18n.localize("PL1E.CharacterInCreationMode")} : ${player.character.name}`);
-                        abort = true;
-                    }
-                }
-                if (abort) return;
-
-                // Execute the socket
-                CONFIG.PL1E.socket.executeForUsers('displaySleeping', playerIds);
-            }
-        };
-        controls.push({
-            name: "gm-controls",
-            title: game.i18n.localize("PL1E.GMControls"),
-            icon: "fas fa-user-crown",
-            layer: "controls",
-            visible: game.user.isGM,
-            activeTool: "manage-token",
-            tools: [managePlayers, startSleeping]
-        });
-    }
-
     /* -------------------------------------------- */
     /*  Modules                                     */
     /* -------------------------------------------- */
@@ -127,7 +75,7 @@ export default class Pl1eHooks {
         PL1E.socket.register("sendContenant", async function (data) {
             await Pl1eTrade.sendContenant(data.sourceActorId, data.targetActorId, data.itemId);
         });
-        PL1E.socket.register("displaySleeping", GmToolbox.displaySleeping);
+        PL1E.socket.register("displaySleeping", GmToolbox.displayRestWindow);
         PL1E.socket.register("tokenUpdate", async function (data) {
             const token = await Pl1eHelpers.getDocument("Token", data.tokenId, {
                 scene: await Pl1eHelpers.getDocument("Scene", data.sceneId)
@@ -158,7 +106,7 @@ export default class Pl1eHooks {
                 const walk = totalAction >= 1 ? totalMovement + movement * (1 - movementAction) : 0;
                 const run = totalAction >= 2 ? totalMovement + movement * (2 - movementAction) : 0;
                 const extraMovement = totalAction >= 3 ? totalMovement + movement * (3 - movementAction) : 0;
-
+                game.user.character
                 // A character can always walk it's base speed and dash twice it's base speed
                 return [
                     {range: walk, color: "walk"},
