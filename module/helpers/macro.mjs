@@ -79,34 +79,18 @@ export class Pl1eMacro {
         const documents = collection.filter(i => foundry.utils.getProperty(i, nameKeyPath) === name);
         const type = game.i18n.localize(`DOCUMENT.${documentType}`);
         if ( documents.length === 0 ) {
-            ui.notifications.info(game.i18n.format("PL1E.MissingTarget", { actor: actor.name, type, name }));
-            return null;
-        }
-        if ( documents.length > 1 ) {
-            ui.notifications.info(game.i18n.format("PL1E.MultipleTargets", { actor: actor.name, type, name }));
+            ui.notifications.info(game.i18n.format("PL1E.NoItemFound", { actor: actor.name, type, name }));
             return null;
         }
         return documents[0];
     }
 
     /**
-     * Display the sleeping window for the current user
+     * Display the sleeping window for the actor
      */
-    static displayRestWindow() {
-        const character = game.user.character;
-        // Return if the player has no associated character
-        if (!character ) {
-            ui.notifications.info(game.i18n.localize("PL1E.PlayerHasNoCharacter"));
-            return;
-        }
-        // Return if the character is in creation mod
-        if (character.system.general.creationMod) {
-            ui.notifications.info(game.i18n.localize("PL1E.CharacterInCreationMode"));
-            return;
-        }
-
-        const app = new Pl1eResting(character, {
-            title: `${game.i18n.localize("PL1E.Rest")} : ${character.name}`,
+    static displayRestWindow(actor) {
+        const app = new Pl1eResting(actor, {
+            title: `${game.i18n.localize("PL1E.Rest")} : ${actor.name}`
         });
         app.render(true);
     }

@@ -74,7 +74,6 @@ export default class Pl1eHooks {
         PL1E.socket.register("sendContenant", async function (data) {
             await Pl1eTrade.sendContenant(data.sourceActorId, data.targetActorId, data.itemId);
         });
-        PL1E.socket.register("displaySleeping", GmToolbox.displayRestWindow);
         PL1E.socket.register("tokenUpdate", async function (data) {
             const token = await Pl1eHelpers.getDocument("Token", data.tokenId, {
                 scene: await Pl1eHelpers.getDocument("Scene", data.sceneId)
