@@ -13,12 +13,12 @@
             <legend class="section-header">{{localize "PL1E.Templates"}}</legend>
             <div class="form-group attribute">
                 <select name="system.general.NPCTemplate">
-                    {{selectOptionsWithLabel (config "NPCTemplates") selected=system.general.NPCTemplate localize=true}}
+                    {{selectOptions (config "NPCTemplates") selected=system.general.NPCTemplate label="label" localize=true}}
                 </select>
             </div>
             <div class="form-group attribute">
                 <select name="system.general.experienceTemplate">
-                    {{selectOptionsWithLabel (config "experienceTemplates") selected=system.general.experienceTemplate localize=true}}
+                    {{selectOptions (config "experienceTemplates") selected=system.general.experienceTemplate label="label" localize=true}}
                 </select>
             </div>
         </fieldset>

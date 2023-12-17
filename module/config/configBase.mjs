@@ -39,15 +39,11 @@ export function getConfigBase() {
     }
 
     PL1E.activations = {
+        "none": "PL1E.None",
         "action": "PL1E.Action",
         "reaction": "PL1E.Reaction",
         "quickAction": "PL1E.QuickAction",
         "outOfCombat": "PL1E.OutOfCombat"
-    }
-
-    PL1E.activationLink = {
-        "passive": "PL1E.Passive",
-        "child": "PL1E.Child"
     }
 
     PL1E.commonTypes = {

@@ -30,6 +30,23 @@ export const registerHandlebars = function () {
         return Pl1eHelpers.getConfig(...args);
     });
 
+    // Save a reference to the original selectOptions helper
+    const originalSelectOptions = Handlebars.helpers.selectOptions;
+    Handlebars.registerHelper('selectOptions', function(choices, options) {
+        // If "label" option is specified, modify the choices to use value.label
+        if (options.hash.label) {
+            const modifiedChoices = {};
+            for (const key in choices) {
+                const value = choices[key];
+                modifiedChoices[key] = value[options.hash.label];
+            }
+            return originalSelectOptions(modifiedChoices, options);
+        }
+
+        // Default behavior
+        return originalSelectOptions(choices, options);
+    });
+
     Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {
         const optionsData = {};
         for (const key in choices) {

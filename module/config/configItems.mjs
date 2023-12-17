@@ -102,11 +102,6 @@ export function getConfigItems() {
             "fallback": 0,
             "inDescription": true
         },
-        "rangeResolutionType": {
-            "label": "PL1E.RangeResolutionType",
-            "type": "string",
-            "inDescription": false
-        },
         "uses": {
             "label": "PL1E.Uses",
             "type": "number",
@@ -243,7 +238,7 @@ export function getConfigItems() {
         "activation": {
             "label": "PL1E.Activation",
             "type": "string",
-            "inDescription": false
+            "inDescription": true
         },
         "healthCost": {
             "label": "PL1E.HealthCost",
@@ -306,32 +301,17 @@ export function getConfigItems() {
             "fallback": 1,
             "inDescription": true
         },
-        "areaNumberResolutionType": {
-            "label": "PL1E.AreaNumberResolutionType",
-            "type": "string",
-            "inDescription": false
-        },
         "circleRadius": {
             "label": "PL1E.CircleRadius",
             "type": "number",
             "fallback": 1,
             "inDescription": true
         },
-        "circleRadiusResolutionType": {
-            "label": "PL1E.CircleRadiusResolutionType",
-            "type": "string",
-            "inDescription": false
-        },
         "coneLength": {
             "label": "PL1E.ConeLength",
             "type": "number",
             "fallback": 1,
             "inDescription": true
-        },
-        "coneLengthResolutionType": {
-            "label": "PL1E.ConeLengthResolutionType",
-            "type": "string",
-            "inDescription": false
         },
         "coneAngle": {
             "label": "PL1E.ConeAngle",
@@ -345,21 +325,11 @@ export function getConfigItems() {
             "fallback": 1,
             "inDescription": true
         },
-        "squareLengthResolutionType": {
-            "label": "PL1E.SquareLengthResolutionType",
-            "type": "string",
-            "inDescription": false
-        },
         "rayLength": {
             "label": "PL1E.RayLength",
             "type": "number",
             "fallback": 1,
             "inDescription": true
-        },
-        "rayLengthResolutionType": {
-            "label": "PL1E.RayLengthResolutionType",
-            "type": "string",
-            "inDescription": false
         },
         "oppositeRoll": {
             "label": "PL1E.OppositeRoll",

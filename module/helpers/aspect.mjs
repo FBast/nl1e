@@ -127,7 +127,7 @@ export class Pl1eAspect {
      * @param aspect
      * @returns {number|boolean|string}
      */
-    static async getDefaultValue(aspect) {
+    static getDefaultValue(aspect) {
         const data = PL1E[aspect.dataGroup][aspect.data];
         switch (data.type) {
             case "number":
@@ -138,7 +138,7 @@ export class Pl1eAspect {
             case "select":
                 return Object.keys(PL1E[data.select])[0];
             case "bool":
-                return true;
+                return false;
         }
     }
 

@@ -62,7 +62,7 @@
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.Data"}}</label>
                             <select name="system.activeAspects.{{@key}}.data">
-                                {{selectOptionsWithLabel (config ../dataGroup) selected=../data localize=true}}
+                                {{selectOptions (config ../dataGroup) selected=../data label="label" localize=true}}
                             </select>
                         </div>
                         {{#with (config ../dataGroup ../data)}}
@@ -90,7 +90,7 @@
                                     <input type="checkbox" name="system.activeAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
                                 {{else if (eq type "select")}}
                                     <select name="system.activeAspects.{{@key}}.value">
-                                        {{selectOptionsWithLabel (config select) selected=../../value localize=true}}
+                                        {{selectOptions (config select) selected=../../value label="label" localize=true}}
                                     </select>
                                 {{else if (eq type "array")}}
                                     <select name="system.activeAspects.{{@key}}.value">

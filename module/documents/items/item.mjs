@@ -181,7 +181,29 @@ export class Pl1eItem extends Item {
     /** @inheritDoc */
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {
-            // Reset default values in case of changes
+            // Activation resets
+            if (changed.system?.attributes?.activation === "none") {
+                changed["system.attributes.actionCost"] = 0;
+                changed["system.attributes.reactionCost"] = 0;
+                changed["system.attributes.quickActionCost"] = 0;
+                changed["system.attributes.isMajorAction"] = false;
+                changed["system.attributes.isDangerous"] = false;
+                changed["system.attributes.useFocus"] = false;
+                changed["system.attributes.areaShape"] = "none";
+                changed["system.attributes.launchParentActiveAspects"] = false;
+                changed["system.attributes.weaponMode"] = "none";
+                changed["system.attributes.roll"] = [];
+                changed["system.attributes.healthCost"] = 0;
+                changed["system.attributes.staminaCost"] = 0;
+                changed["system.attributes.manaCost"] = 0;
+                changed["system.attributes.usageCost"] = 0;
+                changed["system.attributes.areaShape"] = "none";
+                changed["system.attributes.activationMacro"] = "";
+                changed["system.attributes.preLaunchMacro"] = "";
+                changed["system.attributes.postLaunchMacro"] = "";
+                changed["system.attributes.postLaunchMacro"] = "";
+                changed["system.activeAspects"] = null;
+            }
             if (changed.system?.attributes?.activation === "action") {
                 changed["system.attributes.actionCost"] = 1;
                 changed["system.attributes.reactionCost"] = 0;
@@ -211,11 +233,30 @@ export class Pl1eItem extends Item {
                 changed["system.attributes.isDangerous"] = false;
                 changed["system.attributes.useFocus"] = false;
             }
-            if (changed.system?.attributes?.roll?.length === 0)
+            // Active parent resets
+            if (changed.system?.attributes?.weaponMode === "none") {
+                changed["system.attributes.useParentRange"] = false;
+                changed["system.attributes.useParentRoll"] = false;
+                changed["system.attributes.useParentOppositeRoll"] = false;
+                changed["system.attributes.useParentSequencerMacros"] = false;
+            }
+            // Usage resets
+            if (changed.system?.attributes?.useParentRoll === true) {
+                changed["system.attributes.roll"] = [];
+            }
+            if (changed.system?.attributes?.useParentOppositeRoll === true) {
                 changed["system.attributes.oppositeRoll"] = [];
-            if (changed.system?.attributes?.useParentRange === "none") {
-                changed["system.attributes.isMajorAction"] = false;
-                changed["system.attributes.usageCost"] = 0;
+            }
+            if (changed.system?.attributes?.roll?.length === 0) {
+                changed["system.attributes.rollAdvantages"] = 0;
+                changed["system.attributes.oppositeRoll"] = [];
+            }
+            if (changed.system?.attributes?.oppositeRoll?.length === 0) {
+                changed["system.attributes.oppositeRollAdvantages"] = 0;
+            }
+            // Target resets
+            if (changed.system?.attributes?.useParentRange === false) {
+                changed["system.attributes.range"] = 0;
             }
             if (changed.system?.attributes?.areaShape === "none") {
                 changed["system.attributes.areaNumber"] = 0;
@@ -259,7 +300,6 @@ export class Pl1eItem extends Item {
                 changed["system.attributes.coneLength"] = 0;
                 changed["system.attributes.coneAngle"] = 0;
                 changed["system.attributes.squareLength"] = 0;
-
             }
         }
 
@@ -619,17 +659,6 @@ export class Pl1eItem extends Item {
             if (attributeConfig !== undefined) {
                 if (attributeConfig.combatOnly && (!characterData.token || !characterData.token.inCombat)) continue;
                 if (attributeConfig.type === "number") {
-                    // Apply resolution type
-                    if (characterData.attributes[`${key}ResolutionType`] !== undefined) {
-                        const resolutionType = characterData.attributes[`${key}ResolutionType`];
-                        if (resolutionType === "multipliedBySuccess") {
-                            calculatedAttribute *= characterData.result > 0 ? characterData.result : 0;
-                        }
-                        if (resolutionType === "ifSuccess") {
-                            calculatedAttribute = characterData.result > 0 ? calculatedAttribute : 0;
-                        }
-                    }
-
                     // Negate some attributes
                     if (value > 0 && attributeConfig.invertSign) {
                         calculatedAttribute *= -1;

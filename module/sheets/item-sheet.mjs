@@ -202,10 +202,11 @@ export class Pl1eItemSheet extends ItemSheet {
         if (!dataGroup) return;
 
         // Get the default value for the selected data
-        const aspect = { dataGroup, data: selectedData };
-        const defaultValue = await Pl1eAspect.getDefaultValue(aspect);
+        const aspect = {dataGroup, data: selectedData};
+        const defaultValue = Pl1eAspect.getDefaultValue(aspect);
 
         await this.item.update({
+            [`system.${aspectType}Aspects.${aspectId}.data`]: selectedData,
             [`system.${aspectType}Aspects.${aspectId}.value`]: defaultValue
         });
     }
@@ -315,11 +316,15 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Iterate on aspects to create description
-        for (const [id, aspect] of Object.entries(context.item.system.passiveAspects)) {
-            aspect.description = await Pl1eAspect.getDescription(aspect);
+        if (context.item.system.passiveAspects) {
+            for (const [id, aspect] of Object.entries(context.item.system.passiveAspects)) {
+                aspect.description = await Pl1eAspect.getDescription(aspect);
+            }
         }
-        for (const [id, aspect] of Object.entries(context.item.system.activeAspects)) {
-            aspect.description = await Pl1eAspect.getDescription(aspect);
+        if (context.item.system.activeAspects) {
+            for (const [id, aspect] of Object.entries(context.item.system.activeAspects)) {
+                aspect.description = await Pl1eAspect.getDescription(aspect);
+            }
         }
 
         // Sorting arrays
