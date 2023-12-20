@@ -419,7 +419,7 @@
       "templates": ["base"],
       "isMemorized": false,
       "attributes": {
-        "level": 1,
+        "level": 0,
         "launchParentActiveAspects": true,
         "weaponMode": "none",
         "useParentRange": false,
@@ -435,19 +435,19 @@
         "manaCost": 0,
         "usageCost": 0,
         "activation": "none",
-        "actionCost": 1,
+        "actionCost": 0,
         "reactionCost": 0,
         "isMajorAction": false,
         "isDangerous": false,
         "useFocus": false,
         "range": 0,
-        "areaShape": "circle",
-        "areaNumber": 1,
-        "circleRadius": 1,
-        "coneLength": 1,
-        "coneAngle": 40,
-        "squareLength": 1,
-        "rayLength": 1
+        "areaShape": "none",
+        "areaNumber": 0,
+        "circleRadius": 0,
+        "coneLength": 0,
+        "coneAngle": 0,
+        "squareLength": 0,
+        "rayLength": 0
       }
     },
     "weapon": {

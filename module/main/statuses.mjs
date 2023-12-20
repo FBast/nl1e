@@ -5,6 +5,7 @@ export const registerStatuses = function () {
             id: "dead",
             label: "PL1E.StatusDead",
             icon: "systems/pl1e/assets/icons/dead.svg",
+            tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -37,6 +38,7 @@ export const registerStatuses = function () {
             id: "unconscious",
             label: "PL1E.StatusUnconscious",
             icon: "systems/pl1e/assets/icons/unconscious.svg",
+            tint: "#ff0000",
             changes: [{ // Unconscious health decrease is handled from Combat class
                 key: "system.misc.movement",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -439,6 +441,7 @@ export const registerStatuses = function () {
             id: "slashingImmunity",
             label: "PL1E.StatusSlashingImmunity",
             icon: "systems/pl1e/assets/icons/slashingImmunity.svg",
+            tint: "#00bbff",
             changes: [{
                 key: "system.reductions.slashing",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -452,6 +455,7 @@ export const registerStatuses = function () {
             id: "crushingImmunity",
             label: "PL1E.StatusCrushingImmunity",
             icon: "systems/pl1e/assets/icons/crushingImmunity.svg",
+            tint: "#00bbff",
             changes: [{
                 key: "system.reductions.crushing",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -465,6 +469,7 @@ export const registerStatuses = function () {
             id: "piercingImmunity",
             label: "PL1E.StatusPiercingImmunity",
             icon: "systems/pl1e/assets/icons/piercingImmunity.svg",
+            tint: "#00bbff",
             changes: [{
                 key: "system.reductions.piercing",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -478,6 +483,7 @@ export const registerStatuses = function () {
             id: "fireImmunity",
             label: "PL1E.StatusFireImmunity",
             icon: "systems/pl1e/assets/icons/fireImmunity.svg",
+            tint: "#00bbff",
             changes: [{
                 key: "system.reductions.burn",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -491,6 +497,7 @@ export const registerStatuses = function () {
             id: "coldImmunity",
             label: "PL1E.StatusColdImmunity",
             icon: "systems/pl1e/assets/icons/coldImmunity.svg",
+            tint: "#00bbff",
             changes: [{
                 key: "system.reductions.cold",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -504,6 +511,7 @@ export const registerStatuses = function () {
             id: "shockImmunity",
             label: "PL1E.StatusShockImmunity",
             icon: "systems/pl1e/assets/icons/shockImmunity.svg",
+            tint: "#00bbff",
             changes: [{
                 key: "system.reductions.acid",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -517,6 +525,7 @@ export const registerStatuses = function () {
             id: "acidImmunity",
             label: "PL1E.StatusAcidImmunity",
             icon: "systems/pl1e/assets/icons/acidImmunity.svg",
+            tint: "#00bbff",
             changes: [{
                 key: "system.reductions.shock",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -530,6 +539,7 @@ export const registerStatuses = function () {
             id: "immortal",
             label: "PL1E.StatusImmortal",
             icon: "systems/pl1e/assets/icons/immortal.svg",
+            tint: "#00bbff",
             changes: [{
                 key: "system.reductions.slashing",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,

@@ -183,123 +183,129 @@ export class Pl1eItem extends Item {
         if (!this.isEmbedded) {
             // Activation resets
             if (changed.system?.attributes?.activation === "none") {
-                changed["system.attributes.actionCost"] = 0;
-                changed["system.attributes.reactionCost"] = 0;
-                changed["system.attributes.quickActionCost"] = 0;
-                changed["system.attributes.isMajorAction"] = false;
-                changed["system.attributes.isDangerous"] = false;
-                changed["system.attributes.useFocus"] = false;
-                changed["system.attributes.areaShape"] = "none";
-                changed["system.attributes.launchParentActiveAspects"] = false;
-                changed["system.attributes.weaponMode"] = "none";
-                changed["system.attributes.roll"] = [];
-                changed["system.attributes.healthCost"] = 0;
-                changed["system.attributes.staminaCost"] = 0;
-                changed["system.attributes.manaCost"] = 0;
-                changed["system.attributes.usageCost"] = 0;
-                changed["system.attributes.areaShape"] = "none";
-                changed["system.attributes.activationMacro"] = "";
-                changed["system.attributes.preLaunchMacro"] = "";
-                changed["system.attributes.postLaunchMacro"] = "";
-                changed["system.attributes.postLaunchMacro"] = "";
-                changed["system.activeAspects"] = null;
+                changed.system.attributes.actionCost = 0;
+                changed.system.attributes.reactionCost = 0;
+                changed.system.attributes.quickActionCost = 0;
+                changed.system.attributes.isMajorAction = false;
+                changed.system.attributes.isDangerous = false;
+                changed.system.attributes.useFocus = false;
+                changed.system.attributes.areaShape = "none";
+                changed.system.attributes.launchParentActiveAspects = false;
+                changed.system.attributes.weaponMode = "none";
+                changed.system.attributes.roll = [];
+                changed.system.attributes.healthCost = 0;
+                changed.system.attributes.staminaCost = 0;
+                changed.system.attributes.manaCost = 0;
+                changed.system.attributes.usageCost = 0;
+                changed.system.attributes.areaShape = "none";
+                changed.system.attributes.activationMacro = "";
+                changed.system.attributes.preLaunchMacro = "";
+                changed.system.attributes.postLaunchMacro = "";
+                changed.system.attributes.postLaunchMacro = "";
+                changed.system.activeAspects = null;
             }
             if (changed.system?.attributes?.activation === "action") {
-                changed["system.attributes.actionCost"] = 1;
-                changed["system.attributes.reactionCost"] = 0;
-                changed["system.attributes.quickActionCost"] = 0;
+                changed.system.attributes.actionCost = 1;
+                changed.system.attributes.reactionCost = 0;
+                changed.system.attributes.quickActionCost = 0;
             }
             if (changed.system?.attributes?.activation === "reaction") {
-                changed["system.attributes.actionCost"] = 0;
-                changed["system.attributes.reactionCost"] = 1;
-                changed["system.attributes.quickActionCost"] = 0;
-                changed["system.attributes.isMajorAction"] = false;
-                changed["system.attributes.isDangerous"] = false;
-                changed["system.attributes.useFocus"] = false;
+                changed.system.attributes.actionCost = 0;
+                changed.system.attributes.reactionCost = 1;
+                changed.system.attributes.quickActionCost = 0;
+                changed.system.attributes.isMajorAction = false;
+                changed.system.attributes.isDangerous = false;
+                changed.system.attributes.useFocus = false;
             }
             if (changed.system?.attributes?.activation === "quickAction") {
-                changed["system.attributes.actionCost"] = 0;
-                changed["system.attributes.reactionCost"] = 0;
-                changed["system.attributes.quickActionCost"] = 1;
-                changed["system.attributes.isMajorAction"] = false;
-                changed["system.attributes.isDangerous"] = false;
-                changed["system.attributes.useFocus"] = false;
+                changed.system.attributes.actionCost = 0;
+                changed.system.attributes.reactionCost = 0;
+                changed.system.attributes.quickActionCost = 1;
+                changed.system.attributes.isMajorAction = false;
+                changed.system.attributes.isDangerous = false;
+                changed.system.attributes.useFocus = false;
             }
             if (changed.system?.attributes?.activation === "outOfCombat") {
-                changed["system.attributes.reactionCost"] = 0;
-                changed["system.attributes.actionCost"] = 0;
-                changed["system.attributes.quickActionCost"] = 0;
-                changed["system.attributes.isMajorAction"] = false;
-                changed["system.attributes.isDangerous"] = false;
-                changed["system.attributes.useFocus"] = false;
+                changed.system.attributes.reactionCost = 0;
+                changed.system.attributes.actionCost = 0;
+                changed.system.attributes.quickActionCost = 0;
+                changed.system.attributes.isMajorAction = false;
+                changed.system.attributes.isDangerous = false;
+                changed.system.attributes.useFocus = false;
             }
             // Active parent resets
             if (changed.system?.attributes?.weaponMode === "none") {
-                changed["system.attributes.useParentRange"] = false;
-                changed["system.attributes.useParentRoll"] = false;
-                changed["system.attributes.useParentOppositeRoll"] = false;
-                changed["system.attributes.useParentSequencerMacros"] = false;
+                changed.system.attributes.useParentRange = false;
+                changed.system.attributes.useParentRoll = false;
+                changed.system.attributes.useParentOppositeRoll = false;
+                changed.system.attributes.useParentSequencerMacros = false;
             }
             // Usage resets
             if (changed.system?.attributes?.useParentRoll === true) {
-                changed["system.attributes.roll"] = [];
+                changed.system.attributes.roll = [];
             }
             if (changed.system?.attributes?.useParentOppositeRoll === true) {
-                changed["system.attributes.oppositeRoll"] = [];
+                changed.system.attributes.oppositeRoll = [];
             }
             if (changed.system?.attributes?.roll?.length === 0) {
-                changed["system.attributes.rollAdvantages"] = 0;
-                changed["system.attributes.oppositeRoll"] = [];
+                changed.system.attributes.rollAdvantages = 0;
+                changed.system.attributes.oppositeRoll = [];
             }
             if (changed.system?.attributes?.oppositeRoll?.length === 0) {
-                changed["system.attributes.oppositeRollAdvantages"] = 0;
+                changed.system.attributes.oppositeRollAdvantages = 0;
             }
             // Target resets
             if (changed.system?.attributes?.useParentRange === false) {
-                changed["system.attributes.range"] = 0;
+                changed.system.attributes.range = 0;
             }
             if (changed.system?.attributes?.areaShape === "none") {
-                changed["system.attributes.areaNumber"] = 0;
-                changed["system.attributes.circleRadius"] = 0;
-                changed["system.attributes.coneLength"] = 0;
-                changed["system.attributes.coneAngle"] = 0;
-                changed["system.attributes.squareLength"] = 0;
-                changed["system.attributes.rayLength"] = 0;
+                changed.system.attributes.range = 0;
+                changed.system.attributes.areaNumber = 0;
+                changed.system.attributes.circleRadius = 0;
+                changed.system.attributes.coneLength = 0;
+                changed.system.attributes.coneAngle = 0;
+                changed.system.attributes.squareLength = 0;
+                changed.system.attributes.rayLength = 0;
             }
             if (changed.system?.attributes?.areaShape === "target") {
-                changed["system.attributes.areaNumber"] = 1;
-                changed["system.attributes.circleRadius"] = 0;
-                changed["system.attributes.coneLength"] = 0;
-                changed["system.attributes.coneAngle"] = 0;
-                changed["system.attributes.squareLength"] = 0;
-                changed["system.attributes.rayLength"] = 0;
+                changed.system.attributes.range = 1;
+                changed.system.attributes.areaNumber = 1;
+                changed.system.attributes.circleRadius = 0;
+                changed.system.attributes.coneLength = 0;
+                changed.system.attributes.coneAngle = 0;
+                changed.system.attributes.squareLength = 0;
+                changed.system.attributes.rayLength = 0;
             }
             if (changed.system?.attributes?.areaShape === "circle") {
-                changed["system.attributes.areaNumber"] = 1;
-                changed["system.attributes.coneLength"] = 0;
-                changed["system.attributes.coneAngle"] = 0;
-                changed["system.attributes.squareLength"] = 0;
-                changed["system.attributes.rayLength"] = 0;
+                changed.system.attributes.range = 4;
+                changed.system.attributes.areaNumber = 1;
+                changed.system.attributes.coneLength = 0;
+                changed.system.attributes.coneAngle = 0;
+                changed.system.attributes.squareLength = 0;
+                changed.system.attributes.rayLength = 0;
             }
             if (changed.system?.attributes?.areaShape === "cone") {
-                changed["system.attributes.areaNumber"] = 1;
-                changed["system.attributes.circleRadius"] = 0;
-                changed["system.attributes.squareLength"] = 0;
-                changed["system.attributes.rayLength"] = 0;
+                changed.system.attributes.range = 0;
+                changed.system.attributes.areaNumber = 1;
+                changed.system.attributes.circleRadius = 0;
+                changed.system.attributes.squareLength = 0;
+                changed.system.attributes.rayLength = 0;
             }
             if (changed.system?.attributes?.areaShape === "square") {
-                changed["system.attributes.areaNumber"] = 1;
-                changed["system.attributes.circleRadius"] = 0;
-                changed["system.attributes.coneLength"] = 0;
-                changed["system.attributes.coneAngle"] = 0;
-                changed["system.attributes.rayLength"] = 0;
+                changed.system.attributes.range = 4;
+                changed.system.attributes.areaNumber = 1;
+                changed.system.attributes.circleRadius = 0;
+                changed.system.attributes.coneLength = 0;
+                changed.system.attributes.coneAngle = 0;
+                changed.system.attributes.rayLength = 0;
             }
             if (changed.system?.attributes?.areaShape === "ray") {
-                changed["system.attributes.areaNumber"] = 1;
-                changed["system.attributes.circleRadius"] = 0;
-                changed["system.attributes.coneLength"] = 0;
-                changed["system.attributes.coneAngle"] = 0;
-                changed["system.attributes.squareLength"] = 0;
+                changed.system.attributes.range = 0;
+                changed.system.attributes.areaNumber = 1;
+                changed.system.attributes.circleRadius = 0;
+                changed.system.attributes.coneLength = 0;
+                changed.system.attributes.coneAngle = 0;
+                changed.system.attributes.squareLength = 0;
             }
         }
 

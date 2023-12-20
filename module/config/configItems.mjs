@@ -237,7 +237,8 @@ export function getConfigItems() {
         },
         "activation": {
             "label": "PL1E.Activation",
-            "type": "string",
+            "type": "select",
+            "select": "activations",
             "inDescription": true
         },
         "healthCost": {

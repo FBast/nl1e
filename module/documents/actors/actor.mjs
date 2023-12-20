@@ -99,13 +99,15 @@ export class Pl1eActor extends Actor {
         // Apply passive macro
         for (/** @type {Pl1eItem} */ const item of this.items) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                if (aspect.name !== "macro" || aspect.macroId === "none" || aspect.context !== "preUpdate" || !item.isEnabled) continue;
-                await Pl1eAspect.applyPassiveMacro(aspect, id, {
-                    actor: this,
-                    changed: changed,
-                    options: options,
-                    user: user
-                });
+                if (!item.isEnabled) continue;
+                if (aspect.name === "macro" && aspect.macroId !== "none" && aspect.context === "preUpdate") {
+                    await Pl1eAspect.applyPassiveMacro(aspect, id, {
+                        actor: this,
+                        changed: changed,
+                        options: options,
+                        user: user
+                    });
+                }
             }
         }
 
@@ -119,14 +121,21 @@ export class Pl1eActor extends Actor {
 
             const flattenSystem = Pl1eHelpers.flatten(changed.system.resources);
             for (const [key, value] of Object.entries(flattenSystem)) {
-                this.displayResourceScrollingText(key, value, position);
+                this._displayResourceScrollingText(key, value, position);
             }
         }
 
         return super._preUpdate(changed, options, user);
     }
 
-    displayResourceScrollingText(key, value, position) {
+    /**
+     * Generate a scrolling text above the character token
+     * @param key
+     * @param value
+     * @param position
+     * @private
+     */
+    _displayResourceScrollingText(key, value, position) {
         const splitKey = key.split(".");
         const resourceProperty = getProperty(this.system.resources, splitKey[0]);
         const diffValue = value - resourceProperty.value;
@@ -153,6 +162,38 @@ export class Pl1eActor extends Actor {
         }
 
         return super._preDelete(options, user);
+    }
+
+    /** @inheritDoc */
+    async _onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
+        // Apply passives effects
+        if (embeddedName === "Item") {
+            for (/** @type {Pl1eItem} */ const item of documents) {
+                for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
+                    if (!item.isEnabled) continue;
+                    if (!aspect.createEffect) continue;
+                    await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
+                }
+            }
+        }
+
+        super._onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId);
+    }
+
+    /** @inheritDoc */
+    async _onDeleteEmbeddedDocuments(embeddedName, documents, result, options, userId) {
+        // Remove passives effects
+        if (embeddedName === "Item") {
+            for (/** @type {Pl1eItem} */ const item of documents) {
+                for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
+                    if (!item.isEnabled) continue;
+                    if (!aspect.createEffect) continue;
+                    await Pl1eAspect.removePassiveEffect(aspect, id, this);
+                }
+            }
+        }
+
+        super._onDeleteEmbeddedDocuments(embeddedName, documents, result, options, userId);
     }
 
     /** @inheritDoc

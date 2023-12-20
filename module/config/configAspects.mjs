@@ -14,6 +14,13 @@ export function getConfigAspects() {
             "effectIconTint": "#ffffff"
         },
         {
+            "name": "status",
+            "dataGroup": "statuses",
+            "data": "stunned",
+            "createEffect": true,
+            "targetGroup": "self" //TODO add aura using this ?
+        },
+        {
             "name": "passiveMacro",
             "context": "actorPreUpdate",
             "macroId": ""

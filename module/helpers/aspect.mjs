@@ -79,27 +79,45 @@ export class Pl1eAspect {
      * @returns {Promise<void>}
      */
     static async applyPassiveEffect(aspect, aspectId, actor, item) {
-        const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
-        const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
-        const aspectConfig = Pl1eHelpers.getConfig("aspects", aspect.name);
-        const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
-        await actor.createEmbeddedDocuments("ActiveEffect", [{
-            name: name,
-            icon: aspect.effectIcon,
-            tint: aspect.effectIconTint,
-            changes: [{
-                key: dataConfig.path,
-                mode: aspect.operator === "set" ? 5 : 2,
-                value: value
-            }],
-            flags: {
-                pl1e: {
-                    itemId: item._id,
-                    aspectId: aspectId,
-                    permanent: true
+        // Skip if the effect already exist
+        const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === aspectId);
+        if (effect) return;
+
+        if (aspect.name === "status") {
+            await Pl1eActiveEffect.createStatusEffect(actor, aspect.data, {
+                origin: item._id,
+                flags: {
+                    pl1e: {
+                        itemId: item._id,
+                        aspectId: aspectId,
+                        permanent: true
+                    }
                 }
-            }
-        }]);
+            });
+        }
+        else {
+            const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
+            const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
+            const aspectConfig = Pl1eHelpers.getConfig("aspects", aspect.name);
+            const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
+            await actor.createEmbeddedDocuments("ActiveEffect", [{
+                name: name,
+                icon: aspect.effectIcon,
+                tint: aspect.effectIconTint,
+                changes: [{
+                    key: dataConfig.path,
+                    mode: aspect.operator === "set" ? 5 : 2,
+                    value: value
+                }],
+                flags: {
+                    pl1e: {
+                        itemId: item._id,
+                        aspectId: aspectId,
+                        permanent: true
+                    }
+                }
+            }]);
+        }
     }
 
     /**
@@ -110,6 +128,7 @@ export class Pl1eAspect {
      * @returns {Promise<void>}
      */
     static async removePassiveEffect(aspect, aspectId, actor) {
+        // Done if the effect exist
         const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === aspectId);
         if (effect) await actor.deleteEmbeddedDocuments("ActiveEffect", [effect._id])
     }
