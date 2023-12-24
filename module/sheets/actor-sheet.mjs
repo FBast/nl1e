@@ -17,6 +17,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @protected
      */
     _filters = {
+        background: new Set(),
         features: new Set(),
         abilities: new Set(),
         effects: new Set(),
@@ -273,14 +274,28 @@ export class Pl1eActorSheet extends ActorSheet {
         const droppable = Pl1eHelpers.getConfig("actorTypes", this.actor.type, "droppable");
         if (!droppable.includes(item.type)) return;
 
+        // Only one race
+        if (item.type === "race" && this.actor.items.find(item => item.type === "race")) {
+            ui.notifications.info(game.i18n.localize("PL1E.OnlyOneRace"));
+            return;
+        }
+
+        // Only one culture
+        if (item.type === "culture" && this.actor.items.find(item => item.type === "culture")) {
+            ui.notifications.info(game.i18n.localize("PL1E.OnlyOneCulture"));
+            return;
+        }
+
         // Only one body class
-        if (item.system.attributes.featureType === "bodyClass" && this.actor.items.find(item => item.system.attributes.featureType === "bodyClass")) {
+        if (item.type === "class" && item.system.attributes.classType === "body" &&
+            this.actor.items.find(item => item.type === "class" && item.system.attributes.classType === "body")) {
             ui.notifications.info(game.i18n.localize("PL1E.OnlyOneBodyClass"));
             return;
         }
 
         // Only one mind class
-        if (item.system.attributes.featureType === "mindClass" && this.actor.items.find(item => item.system.attributes.featureType === "mindClass")) {
+        if (item.type === "class" && item.system.attributes.classType === "mind" &&
+            this.actor.items.find(item => item.type === "class" && item.system.attributes.classType === "mind")) {
             ui.notifications.info(game.i18n.localize("PL1E.OnlyOneMindClass"));
             return;
         }
@@ -309,16 +324,15 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Organize and classify Items for Character sheets.
+     * Organize and classify Items and Effects for Character sheets.
      * @param {Object} context The actor to prepare.
      * @return {undefined}
      */
     async _prepareItems(context) {
         // Initialize containers.
-        context.abilities = []
         context.background = [];
-        context.masters = [];
         context.features = [];
+        context.abilities = []
         context.weapons = [];
         context.wearables = [];
         context.consumables = [];
@@ -333,6 +347,7 @@ export class Pl1eActorSheet extends ActorSheet {
         }
 
         // Apply features and capacities filters
+        context.background = this._filterDocuments(context.background, this._filters.background);
         context.features = this._filterDocuments(context.features, this._filters.features);
         context.abilities = this._filterDocuments(context.abilities, this._filters.abilities);
         context.effects = this._filterDocuments(context.effects, this._filters.effects);
@@ -344,22 +359,38 @@ export class Pl1eActorSheet extends ActorSheet {
         context.commons = this._filterDocuments(context.commons, this._filters.commons);
         context.modules = this._filterDocuments(context.modules, this._filters.modules);
 
-        // Sorting arrays
-        for (let key in context.abilities) {
-            if (context.abilities.hasOwnProperty(key) && Array.isArray(context.abilities[key])) {
-                context.abilities[key] = context.abilities[key].sort((a, b) => a.name.localeCompare(b.name));
+        // Background sorting
+        const backgroundOrder = ["race", "culture", "class", "mastery"];
+        context.background = context.background.sort((a, b) => {
+            // Compare by type using the background order
+            let typeComparison = backgroundOrder.indexOf(a.type) - backgroundOrder.indexOf(b.type);
+            if (typeComparison !== 0) {
+                return typeComparison;
             }
-        }
+
+            // If types are the same, then compare by name
+            return a.name.localeCompare(b.name);
+        });
+
+        // Abilities sorting
+        const abilitiesOrder = Object.keys(CONFIG.PL1E.activations);
         context.abilities = context.abilities.sort((a, b) => {
-            // Compare by 'level' first (assumed to be a numeric property)
+            // Compare by level
             if (a.system.attributes.level < b.system.attributes.level) return -1;
             if (a.system.attributes.level > b.system.attributes.level) return 1;
 
-            // If 'level' is the same, compare by 'name' alphabetically
+            // Then Compare by activation using the abilities order
+            let activationComparison = abilitiesOrder.indexOf(a.system.attributes.activation)
+                - abilitiesOrder.indexOf(b.system.attributes.activation);
+            if (activationComparison !== 0) {
+                return activationComparison;
+            }
+
+            // Then compare by name
             return a.name.localeCompare(b.name);
         });
-        context.background = context.background.sort((a, b) => a.type.localeCompare(b.type));
-        context.masters = context.masters.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Others sorting
         context.features = context.features.sort((a, b) => b.system.points - a.system.points);
         context.weapons = context.weapons.sort((a, b) => a.name.localeCompare(b.name));
         context.wearables = context.wearables.sort((a, b) => a.name.localeCompare(b.name));
@@ -386,11 +417,8 @@ export class Pl1eActorSheet extends ActorSheet {
         });
 
         // Append to background.
-        if (item.type === "race" || item.type === "class") {
+        if (["race", "culture", "class", "mastery"].includes(item.type)) {
             context.background.push(item);
-        }
-        if (item.type === "mastery") {
-            context.masters.push(item);
         }
         // Append to features.
         if (item.type === "feature") {
@@ -398,6 +426,9 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Append to abilities.
         else if (item.type === "ability") {
+            // Skip ability if actor level is lower than ability level
+            if (item.system.attributes.level > this.actor.system.general.level) return;
+
             // Increase units
             if (sourceIdFlags.includes(sourceIdFlag)) {
                 const sameItem = context.abilities.find(item => item.sourceId === sourceIdFlag);
@@ -457,6 +488,22 @@ export class Pl1eActorSheet extends ActorSheet {
         return documents.filter(item => {
             if (item.parentCollection === "items") {
                 switch (item.type) {
+                    case "race": {
+                        if (filters.has("race")) return false;
+                        break;
+                    }
+                    case "culture": {
+                        if (filters.has("culture")) return false;
+                        break;
+                    }
+                    case "class": {
+                        if (filters.has("class")) return false;
+                        break;
+                    }
+                    case "mastery": {
+                        if (filters.has("mastery")) return false;
+                        break;
+                    }
                     case "feature": {
                         for (const featureType of Object.keys(CONFIG.PL1E.featureTypes)) {
                             if (filters.has(featureType) && (item.system.attributes.featureType === featureType)) return false;
@@ -470,12 +517,14 @@ export class Pl1eActorSheet extends ActorSheet {
                         break;
                     }
                     case "weapon": {
+                        if (filters.has("equipped") && item.isEnabled) return false;
                         if (filters.has("melee") && item.system.attributes.meleeUse) return false;
                         if (filters.has("ranged") && item.system.attributes.rangedUse) return false;
                         if (filters.has("magic") && item.system.attributes.magicUse) return false;
                         break;
                     }
                     case "wearable": {
+                        if (filters.has("equipped") && item.isEnabled) return false;
                         for (const slot of Object.keys(CONFIG.PL1E.slots)) {
                             if (filters.has(slot) && (item.system.attributes.slot === slot)) return false;
                         }
@@ -506,18 +555,6 @@ export class Pl1eActorSheet extends ActorSheet {
                 if (filters.has("temporary") && item.createEffect) return false;
                 if (filters.has("inactive") && item.disabled) return false;
             }
-            // Effects types
-            // // Spell-specific filters
-            // if ( filters.has("ritual") && (item.system.components.ritual !== true) ) return false;
-            // if ( filters.has("concentration") && (item.system.components.concentration !== true) ) return false;
-            // if ( filters.has("prepared") ) {
-            //     if ( (item.system.level === 0) || ["innate", "always"].includes(item.system.preparation.mode) ) return true;
-            //     if ( this.actor.type === "npc" ) return true;
-            //     return item.system.preparation.prepared;
-            // }
-            //
-            // // Equipment-specific filters
-            // if ( filters.has("equipped") && (item.system.equipped !== true) ) return false;
             return true;
         });
     }

@@ -44,7 +44,7 @@ export class Pl1eItem extends Item {
     get isEnabled() {
         switch (this.type) {
             case "weapon":
-                if (this.system.attributes.hands > 0 || this.system.attributes.level > 0)
+                if (this.system.attributes.hands > 0)
                     return this.system.isEquippedMain || this.system.isEquippedSecondary;
                 return true;
             case "wearable":

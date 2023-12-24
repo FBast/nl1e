@@ -4,6 +4,7 @@
             <label class="item-name">{{localize "PL1E.Weapons"}}</label>
         </div>
         <ul class="item-filter-list grid-span-8" data-filter="weapons">
+            <li class="item-filter" data-filter="equipped">{{localize "PL1E.Equipped"}}</li>
             {{#each (config "weaponUsages")}}
                 <li class="item-filter" data-filter="{{@key}}">{{localize this}}</li>
             {{/each}}

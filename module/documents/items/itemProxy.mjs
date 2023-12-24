@@ -9,6 +9,7 @@ import {Pl1eRace} from "./race.mjs";
 import {Pl1eClass} from "./class.mjs";
 import {Pl1eMastery} from "./mastery.mjs";
 import {Pl1eCommon} from "./common.mjs";
+import {Pl1eCulture} from "./culture.mjs";
 
 const handler = {
     /**
@@ -19,6 +20,8 @@ const handler = {
         switch (args[0]?.type) {
             case "race":
                 return new Pl1eRace(...args);
+            case "culture":
+                return new Pl1eCulture(...args);
             case "class":
                 return new Pl1eClass(...args);
             case "feature":

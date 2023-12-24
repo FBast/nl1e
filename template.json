@@ -296,6 +296,7 @@
           "creationMod": true,
           "experience": 10,
           "remainingCharacteristics": 8,
+          "level": 1,
           "ranks": 0,
           "maxRank": 0,
           "rollBestSkill": true,
@@ -361,7 +362,7 @@
     }
   },
   "Item": {
-    "types": ["race", "class", "feature", "mastery", "ability", "weapon", "wearable", "consumable", "common", "module"],
+    "types": ["race", "culture", "class", "mastery", "feature", "ability", "weapon", "wearable", "consumable", "common", "module"],
     "templates": {
       "base": {
         "description": "",
@@ -389,14 +390,13 @@
         }
       }
     },
-    "feature": {
+    "race": {
       "templates": ["base"],
       "attributes": {
-        "featureType": "none",
-        "points": 0
+
       }
     },
-    "race": {
+    "culture": {
       "templates": ["base"],
       "attributes": {
 
@@ -412,6 +412,13 @@
       "templates": ["base"],
       "attributes": {
 
+      }
+    },
+    "feature": {
+      "templates": ["base"],
+      "attributes": {
+        "featureType": "none",
+        "points": 0
       }
     },
     "ability": {

@@ -4,13 +4,13 @@ export function getConfigActor() {
     PL1E.actorTypes = {
         "character": {
             "label": "PL1E.Character",
-            "droppable": ["race", "class", "feature", "weapon", "wearable", "consumable", "common", "module"],
-            "itemChildren": ["race", "class", "feature", "mastery", "ability", "weapon", "wearable", "consumable", "common"]
+            "droppable": ["race", "culture", "class", "feature", "weapon", "wearable", "consumable", "common", "module"],
+            "itemChildren": ["race", "culture", "class", "feature", "mastery", "ability", "weapon", "wearable", "consumable", "common"]
         },
         "npc": {
             "label": "PL1E.NPC",
-            "droppable": ["race", "class", "feature", "weapon", "wearable", "consumable", "common", "module"],
-            "itemChildren": ["race", "class", "feature", "mastery", "ability", "weapon", "wearable", "consumable", "common"]
+            "droppable": ["race", "culture", "class", "feature", "weapon", "wearable", "consumable", "common", "module"],
+            "itemChildren": ["race", "culture", "class", "feature", "mastery", "ability", "weapon", "wearable", "consumable", "common"]
         },
         "merchant": {
             "label": "PL1E.Merchant",

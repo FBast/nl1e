@@ -3,12 +3,12 @@
         <div class="item-title grid-span-4 flexrow">
             <label class="item-name">{{localize "PL1E.Background"}}</label>
         </div>
-        <div class="item-icons grid-span-6">
-
-        </div>
-        <div class="item-controls grid-span-2">
-
-        </div>
+        <ul class="item-filter-list grid-span-8" data-filter="background">
+            <li class="item-filter" data-filter="race">{{localize "PL1E.Race"}}</li>
+            <li class="item-filter" data-filter="culture">{{localize "PL1E.Culture"}}</li>
+            <li class="item-filter" data-filter="class">{{localize "PL1E.Class"}}</li>
+            <li class="item-filter" data-filter="mastery">{{localize "PL1E.Mastery"}}</li>
+        </ul>
     </li>
     {{#each background}}
         <li class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">
