@@ -8,16 +8,43 @@
     background: rgba(0, 0, 0, 0.05);
     border: $borderGroove;
     font-weight: bold;
+
     > * {
       font-size: 14px;
       text-align: center;
     }
+
     .item-name {
       font-weight: bold;
       padding-left: 5px;
       text-align: left;
       display: flex;
       font-size: 14px;
+    }
+
+    .item-filter-list {
+      align-items: flex-end;
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      line-height: 16px;
+
+      .item-filter {
+        width: fit-content;
+        font-size: 12px;
+        margin: 0 20px 0 0;
+        white-space: nowrap;
+      }
+
+      .item-filter:hover {
+        text-shadow: 0 0 4px red;
+      }
+
+      .item-filter.active {
+        color: grey;
+      }
     }
   }
 

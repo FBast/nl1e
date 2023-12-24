@@ -3,7 +3,6 @@
     <nav class="sheet-tabs tabs" data-group="primary">
         {{!-- Default tab is specified in actor-sheet.mjs --}}
         <a class="item" data-tab="rest">{{localize "PL1E.Rest"}}</a>
-        <a class="item" data-tab="abilities">{{localize "PL1E.Abilities"}}</a>
         <a class="item" data-tab="skills">{{localize "PL1E.Skills"}}</a>
     </nav>
     {{!-- Sheet Body --}}
@@ -77,38 +76,6 @@
                                 </div>
                             </div>
                         </li>
-                    {{/each}}
-                </ol>
-            </section>
-        </div>
-        {{!-- Abilities Tab --}}
-        <div class="tab abilities flexcol" data-group="primary" data-tab="abilities">
-            <section class="scroll-auto">
-                <p>You have {{slots}} slots to memorize new abilities.</p>
-                <ol class="items-list">
-                    {{#each abilities as |abilities level|}}
-                        {{#if (gt abilities.length 0)}}
-                            <li class="item items-header flexrow">
-                                <div class="item-name">{{localize "PL1E.AbilitiesLevel"}} {{level}}</div>
-                            </li>
-                            {{#each abilities}}
-                                <li class="item" data-item-id="{{_id}}">
-                                    <div class="flexrow">
-                                        <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
-                                        <label class="item-name">{{name}}</label>
-                                        <div class="item-icons grid-span-2">
-
-                                        </div>
-                                        <div class="item-controls">
-                                            <a class="item-control {{#if system.isMemorized}}item-toggle{{else if (lt (minus @root.slots system.attributes.level) 0)}}
-                                            color-red{{else}}color-grey item-toggle{{/if}}" data-tooltip='{{localize "PL1E.Memorize"}}'>
-                                                <i class="fas fa-book"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                            {{/each}}
-                        {{/if}}
                     {{/each}}
                 </ol>
             </section>

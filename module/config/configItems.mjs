@@ -423,4 +423,24 @@ export function getConfigItems() {
         "range": "PL1E.Range"
     }
 
+    PL1E.featureTypes = {
+        "historical": "PL1E.Historical",
+        "mental": "PL1E.Mental",
+        "personality": "PL1E.Personality",
+        "physical": "PL1E.Physical",
+        "social": "PL1E.Social",
+        "special": "PL1E.Special"
+    }
+
+    PL1E.effectTypes = {
+        "passive": "PL1E.Passive",
+        "temporary": "PL1E.Temporary",
+        "inactive": "PL1E.Inactive"
+    }
+
+    PL1E.weaponUsages = {
+        "melee": "PL1E.Melee",
+        "ranged": "PL1E.Ranged",
+        "magic": "PL1E.Magic"
+    }
 }

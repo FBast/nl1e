@@ -296,7 +296,6 @@
           "creationMod": true,
           "experience": 10,
           "remainingCharacteristics": 8,
-          "slots": 0,
           "ranks": 0,
           "maxRank": 0,
           "rollBestSkill": true,
@@ -417,7 +416,6 @@
     },
     "ability": {
       "templates": ["base"],
-      "isMemorized": false,
       "attributes": {
         "level": 0,
         "launchParentActiveAspects": true,
@@ -434,7 +432,7 @@
         "staminaCost": 0,
         "manaCost": 0,
         "usageCost": 0,
-        "activation": "none",
+        "activation": "passive",
         "actionCost": 0,
         "reactionCost": 0,
         "isMajorAction": false,

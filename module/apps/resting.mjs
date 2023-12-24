@@ -8,7 +8,6 @@ export class Pl1eResting extends FormApplication {
 
         /** @type {Pl1eActor} */
         this.actor = actor;
-        this.slots = this.actor.system.general.slots;
         this.items = [];
         this.skills = deepClone(this.actor.system.skills);
         this.skills = Object.fromEntries(Object.entries(this.skills).filter(([key]) => !Pl1eHelpers.getConfig("skills", key, "fixedRank")));
@@ -29,7 +28,7 @@ export class Pl1eResting extends FormApplication {
                 ".scroll-auto"
             ],
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "rest"}],
-            resizable: true
+            resizable: false
         });
     }
 
@@ -85,7 +84,6 @@ export class Pl1eResting extends FormApplication {
         data.itemDrink = this.itemDrink;
 
         // Abilities part
-        data.slots = this.slots;
         data.abilities = abilities;
 
         // Skills part
@@ -128,16 +126,6 @@ export class Pl1eResting extends FormApplication {
             rank = this.skills[skillId].rank;
         this.ranks -= Pl1eHelpers.rankCost(rank) - Pl1eHelpers.rankCost(this.skills[skillId].nextRank);
         this.skills[skillId].nextRank = rank;
-        this.render();
-    }
-
-    async _onItemMemorize(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
-        const item = this.items.find(item => item._id === itemId);
-        item.system.isMemorized = !item.system.isMemorized;
-        this.slots -= (item.system.isMemorized ? 1 : -1) * item.system.attributes.level
         this.render();
     }
 

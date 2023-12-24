@@ -3,12 +3,11 @@
         <div class="item-title grid-span-4 flexrow">
             <label class="item-name">{{localize "PL1E.Modules"}}</label>
         </div>
-        <div class="item-icons grid-span-6">
-
-        </div>
-        <div class="item-controls grid-span-2">
-
-        </div>
+        <ul class="item-filter-list grid-span-8" data-filter="modules">
+            {{#each (config "moduleTypes")}}
+                <li class="item-filter" data-filter="{{@key}}">{{localize this}}</li>
+            {{/each}}
+        </ul>
     </li>
     {{#each modules}}
         <li class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">

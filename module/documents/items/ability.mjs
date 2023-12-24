@@ -4,17 +4,6 @@ import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 export class Pl1eAbility extends Pl1eItem {
 
     /** @inheritDoc */
-    async toggle(options) {
-        if (!this.system.isMemorized && this.actor.system.general.slots - this.system.attributes.level < 0) return;
-
-        await this.update({
-            ["system.isMemorized"]: !this.system.isMemorized
-        });
-
-        await super.toggle(options);
-    }
-
-    /** @inheritDoc */
     async _preActivate(characterData) {
         // Get linked attributes
         return await this._linkItem(characterData);
@@ -35,10 +24,6 @@ export class Pl1eAbility extends Pl1eItem {
         if (!super._canActivate(characterData)) return false;
         const itemAttributes = characterData.attributes;
 
-        if (itemAttributes.level > 0 && !this.system.isMemorized) {
-            ui.notifications.info(game.i18n.localize("PL1E.NotMemorized"));
-            return false;
-        }
         if (this._getLinkableItems(characterData).length === 0) {
             ui.notifications.info(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;

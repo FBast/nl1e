@@ -70,38 +70,46 @@ export class Pl1eSynchronizer {
         }
 
         // Remove obsolete passive aspects
-        for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
-            if (!Object.keys(originalItem.system.passiveAspects).some(aspectId => aspectId === id)) {
-                itemData[`system.passiveAspects.-=${id}`] = null;
-            }
+        if (item.system.passiveAspects) {
+            for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
+                if (!Object.keys(originalItem.system.passiveAspects).some(aspectId => aspectId === id)) {
+                    itemData[`system.passiveAspects.-=${id}`] = null;
+                }
 
-            // Remove the associated effect (updated aspect are removed too)
-            const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
-            if (effect !== undefined && item.isEnabled) {
-                await Pl1eAspect.removePassiveEffect(aspect, id, actor);
+                // Remove the associated effect (updated aspect are removed too)
+                const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
+                if (effect !== undefined && item.isEnabled) {
+                    await Pl1eAspect.removePassiveEffect(aspect, id, actor);
+                }
             }
         }
 
         // Add new passive aspects
-        for (const [id, aspect] of Object.entries(originalItem.system.passiveAspects)) {
-            itemData[`system.passiveAspects.${id}`] = aspect;
+        if (originalItem.system.passiveAspects) {
+            for (const [id, aspect] of Object.entries(originalItem.system.passiveAspects)) {
+                itemData[`system.passiveAspects.${id}`] = aspect;
 
-            // Add the associated effect
-            if (aspect.createEffect && item.isEnabled) {
-                await Pl1eAspect.applyPassiveEffect(aspect, id, actor, item);
+                // Add the associated effect
+                if (aspect.createEffect && item.isEnabled) {
+                    await Pl1eAspect.applyPassiveEffect(aspect, id, actor, item);
+                }
             }
         }
 
         // Remove obsolete active aspects
-        for (const [id, aspect] of Object.entries(item.system.activeAspects)) {
-            if (!Object.keys(originalItem.system.activeAspects).some(aspectId => aspectId === id)) {
-                itemData[`system.activeAspects.-=${id}`] = null;
+        if (item.system.activeAspects) {
+            for (const [id, aspect] of Object.entries(item.system.activeAspects)) {
+                if (!Object.keys(originalItem.system.activeAspects).some(aspectId => aspectId === id)) {
+                    itemData[`system.activeAspects.-=${id}`] = null;
+                }
             }
         }
 
         // Update the active aspects
-        for (const [id, aspect] of Object.entries(originalItem.system.activeAspects)) {
-            itemData[`system.activeAspects.${id}`] = aspect;
+        if (originalItem.system.activeAspects) {
+            for (const [id, aspect] of Object.entries(originalItem.system.activeAspects)) {
+                itemData[`system.activeAspects.${id}`] = aspect;
+            }
         }
 
         // Update the item data

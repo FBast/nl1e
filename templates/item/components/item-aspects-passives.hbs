@@ -22,10 +22,10 @@
             <li class="item" data-aspect-id="{{@key}}" data-aspect-type="passive" data-item-id="{{@key}}">
                 <div class="item-content grid grid-12col">
                     <div class="item-title grid-span-8 flexrow">
-                        <img class="item-image" src="{{#if ../createEffect}}
-                            {{../effectIcon}}
-                        {{else if (eq ../name "status")}}
+                        <img class="item-image" src="{{#if (eq ../name "status")}}
                             {{#with (config ../dataGroup ../data)}}{{img}}{{/with}}
+                        {{else if ../createEffect}}
+                            {{../effectIcon}}
                         {{else}}
                             {{img}}
                         {{/if}}" title="{{localize label}}" width="24" height="24"/>

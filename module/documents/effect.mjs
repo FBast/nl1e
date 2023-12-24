@@ -41,6 +41,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
             name: name,
             icon: aspect.effectIcon,
             tint: aspect.effectIconTint,
+            origin: characterData.item._id,
             changes: [{
                 key: dataConfig.path,
                 mode: aspect.operator === "set" ? 5 : 2,
@@ -50,11 +51,8 @@ export class Pl1eActiveEffect extends ActiveEffect {
                 rounds: effectDuration
             },
             flags: {
-                core: {
-                    sourceId: characterData.actorId,
-                },
                 pl1e: {
-                    itemId: characterData.item._id,
+                    originActor: characterData.actorId,
                     aspectId: aspect._id
                 }
             }

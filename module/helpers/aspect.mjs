@@ -85,10 +85,10 @@ export class Pl1eAspect {
 
         if (aspect.name === "status") {
             await Pl1eActiveEffect.createStatusEffect(actor, aspect.data, {
-                origin: item._id,
+                origin: item.id,
                 flags: {
                     pl1e: {
-                        itemId: item._id,
+                        originActor: actor.id,
                         aspectId: aspectId,
                         permanent: true
                     }
@@ -104,6 +104,7 @@ export class Pl1eAspect {
                 name: name,
                 icon: aspect.effectIcon,
                 tint: aspect.effectIconTint,
+                origin: item.id,
                 changes: [{
                     key: dataConfig.path,
                     mode: aspect.operator === "set" ? 5 : 2,
@@ -111,7 +112,7 @@ export class Pl1eAspect {
                 }],
                 flags: {
                     pl1e: {
-                        itemId: item._id,
+                        originActor: actor.id,
                         aspectId: aspectId,
                         permanent: true
                     }

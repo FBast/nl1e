@@ -3,12 +3,11 @@
         <div class="item-title grid-span-4 flexrow">
             <label class="item-name">{{localize "PL1E.Consumables"}}</label>
         </div>
-        <div class="item-icons grid-span-6">
-
-        </div>
-        <div class="item-controls grid-span-2">
-
-        </div>
+        <ul class="item-filter-list grid-span-8" data-filter="consumables">
+            <li class="item-filter" data-filter="action">{{localize "PL1E.Action"}}</li>
+            <li class="item-filter" data-filter="quickAction">{{localize "PL1E.QuickAction"}}</li>
+            <li class="item-filter" data-filter="outOfCombat">{{localize "PL1E.OutOfCombat"}}</li>
+        </ul>
     </li>
     {{#each consumables}}
         <li class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">

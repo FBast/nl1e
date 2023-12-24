@@ -3,12 +3,11 @@
         <div class="item-title grid-span-4 flexrow">
             <label class="item-name">{{localize "PL1E.Abilities"}}</label>
         </div>
-        <div class="item-icons grid-span-6">
-
-        </div>
-        <div class="item-controls grid-span-2">
-
-        </div>
+        <ul class="item-filter-list grid-span-8" data-filter="abilities">
+            {{#each (config "activations")}}
+                <li class="item-filter" data-filter="{{@key}}">{{localize this}}</li>
+            {{/each}}
+        </ul>
     </li>
     {{#each abilities}}
         <li class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">
@@ -80,14 +79,9 @@
                 {{/unless}}
                 <div class="item-controls grid-span-2">
                     {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#if (or system.isMemorized (eq system.attributes.level 0))}}
+                        {{#unless (eq system.attributes.activation "passive")}}
                             <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
-                        {{/if}}
-                        {{#if (and (gt system.attributes.level 0) @root.system.general.creationMod)}}
-                            <a class="item-control {{#unless system.isMemorized}}color-grey{{/unless}} item-toggle" data-tooltip='{{localize "PL1E.Memorize"}}'>
-                                <i class="fas fa-book"></i>
-                            </a>
-                        {{/if}}
+                        {{/unless}}
                     {{/if}}
                     {{#if @root.actor.isOwner}}
                         {{#if (eq flags.pl1e.childId undefined)}}

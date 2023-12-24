@@ -11,6 +11,22 @@ import {PL1E} from "../config/config.mjs";
  */
 export class Pl1eActorSheet extends ActorSheet {
 
+    /**
+     * Track the set of item filters which are applied
+     * @type {Object<string, Set>}
+     * @protected
+     */
+    _filters = {
+        features: new Set(),
+        abilities: new Set(),
+        effects: new Set(),
+        weapons: new Set(),
+        wearables: new Set(),
+        consumables: new Set(),
+        commons: new Set(),
+        modules: new Set()
+    };
+
     /** @inheritDoc */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
@@ -79,10 +95,11 @@ export class Pl1eActorSheet extends ActorSheet {
         context.system = this.actor.system;
         context.flags = this.actor.flags;
         context.items = this.actor.items;
+        context.effects = this.actor.effects;
         context.inCombat = this.actor.bestToken !== null && this.actor.bestToken.inCombat;
+        context.filters = this._filters;
 
         await this._prepareItems(context);
-        await this._prepareEffects(context);
 
         if (this.actor.type === "merchant")
             await this._prepareRollTables(context);
@@ -109,6 +126,7 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".effect-edit").on("click", ev => this.onEffectEdit(ev));
         html.find(".effect-remove").on("click", ev => this.onEffectRemove(ev));
         html.find(".item-link").on("click", ev => this.onItemLink(ev));
+        html.find(".item-origin").on("click", ev => this.onItemOrigin(ev));
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
 
         // Highlights indications
@@ -118,6 +136,11 @@ export class Pl1eActorSheet extends ActorSheet {
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
+
+        // Item filters
+        const filterLists = html.find(".item-filter-list");
+        filterLists.each(this._initializeFilterItemList.bind(this));
+        filterLists.on("click", ".item-filter", this._onToggleFilter.bind(this));
 
         // Item management
         html.find(".item-create").on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
@@ -159,6 +182,36 @@ export class Pl1eActorSheet extends ActorSheet {
         if (titleElement) {
             titleElement.textContent = "New Title";
         }
+    }
+
+    /**
+     * Initialize Item list filters by activating the set of filters which are currently applied
+     * @param {number} i  Index of the filter in the list.
+     * @param {HTML} ul   HTML object for the list item surrounding the filter.
+     * @private
+     */
+    _initializeFilterItemList(i, ul) {
+        const set = this._filters[ul.dataset.filter];
+        const filters = ul.querySelectorAll(".item-filter");
+        for ( let li of filters ) {
+            if ( set.has(li.dataset.filter) ) li.classList.add("active");
+        }
+    }
+
+    /**
+     * Handle toggling of filters to display a different set of owned items.
+     * @param {Event} event     The click event which triggered the toggle.
+     * @returns {Pl1eActorSheet}  This actor sheet with toggled filters.
+     * @private
+     */
+    _onToggleFilter(event) {
+        event.preventDefault();
+        const li = event.currentTarget;
+        const set = this._filters[li.parentElement.dataset.filter];
+        const filter = li.dataset.filter;
+        if ( set.has(filter) ) set.delete(filter);
+        else set.add(filter);
+        return this.render();
     }
 
     /** @inheritDoc */
@@ -279,6 +332,18 @@ export class Pl1eActorSheet extends ActorSheet {
             await this._prepareItem(context, item, sourceIdFlags);
         }
 
+        // Apply features and capacities filters
+        context.features = this._filterDocuments(context.features, this._filters.features);
+        context.abilities = this._filterDocuments(context.abilities, this._filters.abilities);
+        context.effects = this._filterDocuments(context.effects, this._filters.effects);
+
+        // Apply inventory filters
+        context.weapons = this._filterDocuments(context.weapons, this._filters.weapons);
+        context.wearables = this._filterDocuments(context.wearables, this._filters.wearables);
+        context.consumables = this._filterDocuments(context.consumables, this._filters.consumables);
+        context.commons = this._filterDocuments(context.commons, this._filters.commons);
+        context.modules = this._filterDocuments(context.modules, this._filters.modules);
+
         // Sorting arrays
         for (let key in context.abilities) {
             if (context.abilities.hasOwnProperty(key) && Array.isArray(context.abilities[key])) {
@@ -381,6 +446,82 @@ export class Pl1eActorSheet extends ActorSheet {
         }
     }
 
+    /**
+     * Determine whether an Owned Document will be shown based on the current set of filters.
+     * @param {object[]} documents   Copies of documents data to be filtered.
+     * @param {Set<string>} filters  Filters applied to the item list.
+     * @returns {object[]}           Subset of input documents limited by the provided filters.
+     * @protected
+     */
+    _filterDocuments(documents, filters) {
+        return documents.filter(item => {
+            if (item.parentCollection === "items") {
+                switch (item.type) {
+                    case "feature": {
+                        for (const featureType of Object.keys(CONFIG.PL1E.featureTypes)) {
+                            if (filters.has(featureType) && (item.system.attributes.featureType === featureType)) return false;
+                        }
+                        break;
+                    }
+                    case "ability": {
+                        for (const activation of Object.keys(CONFIG.PL1E.activations)) {
+                            if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
+                        }
+                        break;
+                    }
+                    case "weapon": {
+                        if (filters.has("melee") && item.system.attributes.meleeUse) return false;
+                        if (filters.has("ranged") && item.system.attributes.rangedUse) return false;
+                        if (filters.has("magic") && item.system.attributes.magicUse) return false;
+                        break;
+                    }
+                    case "wearable": {
+                        for (const slot of Object.keys(CONFIG.PL1E.slots)) {
+                            if (filters.has(slot) && (item.system.attributes.slot === slot)) return false;
+                        }
+                        break;
+                    }
+                    case "consumable": {
+                        for (const activation of Object.keys(CONFIG.PL1E.activations)) {
+                            if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
+                        }
+                        break;
+                    }
+                    case "common": {
+                        for (const commonType of Object.keys(CONFIG.PL1E.commonTypes)) {
+                            if (filters.has(commonType) && (item.system.attributes.commonType === commonType)) return false;
+                        }
+                        break;
+                    }
+                    case "module": {
+                        for (const moduleType of Object.keys(CONFIG.PL1E.moduleTypes)) {
+                            if (filters.has(moduleType) && (item.system.attributes.moduleTypes.includes(moduleType))) return false;
+                        }
+                        break;
+                    }
+                }
+            }
+            else if (item.parentCollection === "effects") {
+                if (filters.has("passive") && item.flags?.pl1e?.permanent) return false;
+                if (filters.has("temporary") && item.createEffect) return false;
+                if (filters.has("inactive") && item.disabled) return false;
+            }
+            // Effects types
+            // // Spell-specific filters
+            // if ( filters.has("ritual") && (item.system.components.ritual !== true) ) return false;
+            // if ( filters.has("concentration") && (item.system.components.concentration !== true) ) return false;
+            // if ( filters.has("prepared") ) {
+            //     if ( (item.system.level === 0) || ["innate", "always"].includes(item.system.preparation.mode) ) return true;
+            //     if ( this.actor.type === "npc" ) return true;
+            //     return item.system.preparation.prepared;
+            // }
+            //
+            // // Equipment-specific filters
+            // if ( filters.has("equipped") && (item.system.equipped !== true) ) return false;
+            return true;
+        });
+    }
+
     async _prepareRollTables(context) {
         // Initialize container.
         let rollTables = [];
@@ -403,33 +544,12 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Organize and classify Effects for Character sheets.
-     * @param {Object} context The actor to prepare.
-     * @return {undefined}
-     */
-    async _prepareEffects(context) {
-        const passiveEffects = [];
-        const temporaryEffects = [];
-        const inactiveEffects = [];
-
-        // Iterate over active effects, classifying them into categories
-        for (let effect of this.actor.effects) {
-            if (effect.disabled) inactiveEffects.push(effect);
-            else if (effect.createEffect) temporaryEffects.push(effect);
-            else passiveEffects.push(effect);
-        }
-
-        context.passiveEffects = passiveEffects;
-        context.temporaryEffects = temporaryEffects;
-        context.inactiveEffects = inactiveEffects;
-    }
-
-    /**
      * Use an ability
      * @param {Event} event The originating click event
      */
     async onItemUse(event) {
         event.preventDefault();
+
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         /** @type {Pl1eItem} */
         const item = this.actor.items.get(itemId);
@@ -448,6 +568,7 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     async onItemReload(event) {
         event.preventDefault();
+
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
             /** @type {Pl1eItem} */
         const item = this.actor.items.get(itemId);
@@ -519,6 +640,24 @@ export class Pl1eActorSheet extends ActorSheet {
                     sheetPosition.y += 30;
                 }
             }
+        }
+    }
+
+    /**
+     * Render the origin item of the effect
+     * @param event
+     * @return {Promise<void>}
+     */
+    async onItemOrigin(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const itemOrigin = $(event.currentTarget).closest(".item").data("item-origin-id");
+        const actorOrigin = $(event.currentTarget).closest(".item").data("actor-origin-id");
+        const actor = await Pl1eHelpers.getDocument("Actor", actorOrigin);
+        if (actor) {
+            const item = actor.items.get(itemOrigin);
+            item.sheet.render(true);
         }
     }
 

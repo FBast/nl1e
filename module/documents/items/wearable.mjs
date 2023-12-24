@@ -14,7 +14,7 @@ export class Pl1eWearable extends Pl1eItem {
         });
 
         // Ignore if not using a slot
-        if (!['clothes', 'armor', 'ring', 'necklace'].includes(slot)) return;
+        if (!['garment', 'armor', 'ring', 'necklace'].includes(slot)) return;
 
         // If the item is now equipped
         if (this.system.isEquipped) {
@@ -27,8 +27,8 @@ export class Pl1eWearable extends Pl1eItem {
                 if (otherItem === this) continue;
                 // Count same subItems slot
                 if (otherItem.system.isEquipped && otherItem.system.attributes.slot === slot) {
-                    // Unequipped immediately if clothes, armor or necklace
-                    if (['clothes', 'armor', 'necklace'].includes(slot)) {
+                    // Unequipped immediately if garment, armor or necklace
+                    if (['garment', 'armor', 'necklace'].includes(slot)) {
                         await otherItem.update({
                             ["system.isEquipped"]: false
                         });
@@ -65,7 +65,7 @@ export class Pl1eWearable extends Pl1eItem {
     _canToggle() {
         const token = this.actor.bestToken;
 
-        if ((this.system.attributes.slot === "armor" || this.system.attributes.slot === "clothes")
+        if ((this.system.attributes.slot === "armor" || this.system.attributes.slot === "garment")
             && token && token.inCombat) {
             ui.notifications.info(game.i18n.localize("PL1E.OutCombatOnly"));
             return false;

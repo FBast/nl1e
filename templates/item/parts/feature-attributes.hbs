@@ -8,6 +8,12 @@
             </button>
         </div>
         <div class="form-group">
+            <label>{{localize "PL1E.Type"}}</label>
+            <select name="system.attributes.featureType">
+                {{selectOptions (config "featureTypes") selected=system.attributes.featureType localize=true}}
+            </select>
+        </div>
+        <div class="form-group">
             <label>{{localize "PL1E.Points"}}</label>
             <input type="number" step="1" min="-5" max="5" name="system.attributes.points"
                    value="{{system.attributes.points}}" data-dtype="Number"/>

@@ -49,8 +49,6 @@ export class Pl1eItem extends Item {
                 return true;
             case "wearable":
                 return this.system.isEquipped;
-            case "ability":
-                return this.system.isMemorized;
             default:
                 return true;
         }
@@ -182,7 +180,7 @@ export class Pl1eItem extends Item {
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {
             // Activation resets
-            if (changed.system?.attributes?.activation === "none") {
+            if (changed.system?.attributes?.activation === "passive") {
                 changed.system.attributes.actionCost = 0;
                 changed.system.attributes.reactionCost = 0;
                 changed.system.attributes.quickActionCost = 0;

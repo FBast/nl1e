@@ -108,17 +108,17 @@ export const registerStatuses = function () {
             },
             {
                 key: "system.skills.parry.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.reflex.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.vigor.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {

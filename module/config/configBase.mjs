@@ -24,7 +24,7 @@ export function getConfigBase() {
 
     PL1E.slots = {
         "none": "PL1E.None",
-        "clothes": "PL1E.Clothes",
+        "garment": "PL1E.Garment",
         "armor": "PL1E.Armor",
         "ring": "PL1E.Ring",
         "necklace": "PL1E.Necklace"
@@ -32,17 +32,17 @@ export function getConfigBase() {
 
     PL1E.moduleTypes = {
         "weapon": "PL1E.Weapon",
-        "clothes": "PL1E.Clothes",
+        "garment": "PL1E.Garment",
         "armor": "PL1E.Armor",
         "ring": "PL1E.Ring",
         "necklace": "PL1E.Necklace"
     }
 
     PL1E.activations = {
-        "none": "PL1E.None",
+        "passive": "PL1E.Passive",
         "action": "PL1E.Action",
-        "reaction": "PL1E.Reaction",
         "quickAction": "PL1E.QuickAction",
+        "reaction": "PL1E.Reaction",
         "outOfCombat": "PL1E.OutOfCombat"
     }
 

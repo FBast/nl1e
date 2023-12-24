@@ -3,12 +3,13 @@
         <div class="item-title grid-span-4 flexrow">
             <label class="item-name">{{localize "PL1E.Wearables"}}</label>
         </div>
-        <div class="item-icons grid-span-6">
-
-        </div>
-        <div class="item-controls grid-span-2">
-
-        </div>
+        <ul class="item-filter-list grid-span-8" data-filter="wearables">
+            <li class="item-filter" data-filter="garment">{{localize "PL1E.Garment"}}</li>
+            <li class="item-filter" data-filter="armor">{{localize "PL1E.Armor"}}</li>
+            <li class="item-filter" data-filter="ring">{{localize "PL1E.Ring"}}</li>
+            <li class="item-filter" data-filter="necklace">{{localize "PL1E.Necklace"}}</li>
+            <li class="item-filter" data-filter="none">{{localize "PL1E.Others"}}</li>
+        </ul>
     </li>
     {{#each wearables}}
         <li class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">
@@ -78,7 +79,7 @@
                             </a>
                         {{/if}}
                     {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#if (eq system.attributes.slot "clothes")}}
+                        {{#if (eq system.attributes.slot "garment")}}
                             <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                                 <i class="fas fa-shirt-long-sleeve {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
                             </a>

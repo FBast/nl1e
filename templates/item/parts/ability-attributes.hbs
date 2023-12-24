@@ -39,7 +39,7 @@
             </div>
         {{/if}}
     </fieldset>
-    {{#unless (eq system.attributes.activation "none")}}
+    {{#unless (eq system.attributes.activation "passive")}}
         <fieldset>
             <legend class="section-header">
                 <i class="item-info far fa-circle-question hover-green" data-tooltip='{{localize "PL1E.TooltipLegendActiveParent"}}'></i>
@@ -216,7 +216,7 @@
         {{/unless}}
     {{/unless}}
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
-    {{#unless (eq system.attributes.activation "none")}}
+    {{#unless (eq system.attributes.activation "passive")}}
         {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
     {{/unless}}
 </section>
