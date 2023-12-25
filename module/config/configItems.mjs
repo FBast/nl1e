@@ -2,18 +2,18 @@ import {PL1E} from "./config.mjs";
 
 export function getConfigItems() {
     PL1E.itemTypes = {
-        "feature": {
-            "label": "PL1E.Feature",
-            "droppable": ["ability", "mastery"],
-            "localDroppable": [],
-            "stackable": [],
-            "behaviors": ["regular", "container", "key"]
-        },
         "race": {
             "label": "PL1E.Race",
             "droppable": ["feature", "ability", "weapon"],
             "localDroppable": [],
             "stackable": ["weapon"],
+            "behaviors": ["regular"]
+        },
+        "culture": {
+            "label": "PL1E.Culture",
+            "droppable": ["feature", "ability"],
+            "localDroppable": [],
+            "stackable": [],
             "behaviors": ["regular"]
         },
         "class": {
@@ -26,6 +26,13 @@ export function getConfigItems() {
         "mastery": {
             "label": "PL1E.Mastery",
             "droppable": ["ability"],
+            "localDroppable": [],
+            "stackable": [],
+            "behaviors": ["regular", "container", "key"]
+        },
+        "feature": {
+            "label": "PL1E.Feature",
+            "droppable": ["ability", "mastery"],
             "localDroppable": [],
             "stackable": [],
             "behaviors": ["regular", "container", "key"]

@@ -21,38 +21,17 @@
         {{#with (config "aspects" name)}}
             <li class="item" data-aspect-id="{{@key}}" data-aspect-type="passive" data-item-id="{{@key}}">
                 <div class="item-content grid grid-12col">
-                    <div class="item-title grid-span-8 flexrow">
-                        <img class="item-image" src="{{#if (eq ../name "status")}}
-                            {{#with (config ../dataGroup ../data)}}{{img}}{{/with}}
-                        {{else if ../createEffect}}
-                            {{../effectIcon}}
-                        {{else}}
-                            {{img}}
-                        {{/if}}" title="{{localize label}}" width="24" height="24"/>
+                    <div class="item-title grid-span-10 flexrow">
+                        <img class="item-image" src="{{img}}" title="{{localize label}}" width="24" height="24"/>
                         <label class="item-name item-tooltip-activate">{{localize ../description}}</label>
-                    </div>
-                    <div class="item-icons grid-span-2">
-
                     </div>
                     <div class="item-controls grid-span-2">
                         <a class="item-control aspect-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                     </div>
                 </div>
                 <div class="item-tooltip flexcol">
-                    {{#if (eq ../name "passiveMacro")}}
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.MacroContext"}}</label>
-                            <select name="system.passiveAspects.{{@key}}.context">
-                                {{selectOptions contexts selected=../context localize=true}}
-                            </select>
-                        </div>
-                        <div class="item-attribute flexrow">
-                            <label class="attribute-name">{{localize "PL1E.Macro"}}</label>
-                            <select name="system.passiveAspects.{{@key}}.macroId">
-                                {{selectOptions (lookup @root ../context) selected=../macroId localize=true}}
-                            </select>
-                        </div>
-                    {{else}}
+                    {{!-- Modify passive aspect --}}
+                    {{#if (eq ../name "modify")}}
                         <div class="item-attribute flexrow">
                             <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
                             <select name="system.passiveAspects.{{@key}}.dataGroup">
@@ -65,53 +44,80 @@
                                 {{selectOptions (config ../dataGroup) selected=../data label="label" localize=true}}
                             </select>
                         </div>
-                        {{#unless (eq ../name "status")}}
-                            {{#with (config ../dataGroup ../data)}}
+                        {{#with (config ../dataGroup ../data)}}
+                            {{#if (eq type "number")}}
+                                <div class="item-attribute flexrow">
+                                    <label class="attribute-name">{{localize "PL1E.Operator"}}</label>
+                                    <select name="system.passiveAspects.{{@key}}.operator">
+                                        {{selectOptions (config "numberOperators") selected=../../operator localize=true}}
+                                    </select>
+                                </div>
+                            {{/if}}
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.Value"}}</label>
                                 {{#if (eq type "number")}}
-                                    <div class="item-attribute flexrow">
-                                        <label class="attribute-name">{{localize "PL1E.Operator"}}</label>
-                                        <select name="system.passiveAspects.{{@key}}.operator">
-                                            {{selectOptions (config "numberOperators") selected=../../operator localize=true}}
-                                        </select>
-                                    </div>
+                                    <input type="number" name="system.passiveAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
+                                {{else if (eq type "bool")}}
+                                    <input type="checkbox" name="system.passiveAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
+                                {{else if (eq type "select")}}
+                                    <select name="system.passiveAspects.{{@key}}.value">
+                                        {{selectOptions (config select) selected=../../value label="label" localize=true}}
+                                    </select>
+                                {{else if (eq type "array")}}
+                                    <select name="system.passiveAspects.{{@key}}.value">
+                                        {{selectOptions (config select) selected=../../value localize=true}}
+                                    </select>
                                 {{/if}}
-                                <div class="item-attribute flexrow">
-                                    <label class="attribute-name">{{localize "PL1E.Value"}}</label>
-                                    {{#if (eq type "number")}}
-                                        <input type="number" name="system.passiveAspects.{{@key}}.value" value="{{../../value}}" data-dtype="Number"/>
-                                    {{else if (eq type "bool")}}
-                                        <input type="checkbox" name="system.passiveAspects.{{@key}}.value" {{checked ../../value}} data-dtype="Boolean"/>
-                                    {{else if (eq type "select")}}
-                                        <select name="system.passiveAspects.{{@key}}.value">
-                                            {{selectOptions (config select) selected=../../value label="label" localize=true}}
-                                        </select>
-                                    {{else if (eq type "array")}}
-                                        <select name="system.passiveAspects.{{@key}}.value">
-                                            {{selectOptions (config select) selected=../../value localize=true}}
-                                        </select>
-                                    {{/if}}
-                                </div>
-                                <div class="item-attribute flexrow">
-                                    <label class="attribute-name">{{localize "PL1E.CreateEffect"}}</label>
-                                    <input type="checkbox" name="system.passiveAspects.{{@key}}.createEffect" {{checked ../createEffect}} data-dtype="Boolean"/>
-                                </div>
-                                {{#if ../createEffect}}
-                                    <div class="item-attribute flexrow">
-                                        <label class="attribute-name">{{localize "PL1E.EffectIcon"}}</label>
-                                        <div class="flexrow">
-                                            <input name="system.passiveAspects.{{@key}}.effectIcon" type="text" value="{{../effectIcon}}"/>
-                                            {{filePicker target=(concat "system.passiveAspects." @key ".effectIcon") type="image"}}
-                                        </div>
-                                    </div>
-                                    <div class="item-attribute flexrow">
-                                        <label class="attribute-name">{{localize "PL1E.EffectIconTint"}}</label>
-                                        <div class="flexrow">
-                                            {{colorPicker name=(concat "system.passiveAspects." @key ".effectIconTint") value=../effectIconTint}}
-                                        </div>
-                                    </div>
-                                {{/if}}
-                            {{/with}}
-                        {{/unless}}
+                            </div>
+                        {{/with}}
+                    {{!-- Status passive aspect --}}
+                    {{else if (eq ../name "status")}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
+                            <select name="system.passiveAspects.{{@key}}.dataGroup">
+                                {{selectOptions dataGroups selected=../dataGroup localize=true}}
+                            </select>
+                        </div>
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.Data"}}</label>
+                            <select name="system.passiveAspects.{{@key}}.data">
+                                {{selectOptions (config ../dataGroup) selected=../data label="label" localize=true}}
+                            </select>
+                        </div>
+                    {{!-- Passive macro aspect --}}
+                    {{else if (eq ../name "passiveMacro")}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.MacroContext"}}</label>
+                            <select name="system.passiveAspects.{{@key}}.context">
+                                {{selectOptions contexts selected=../context localize=true}}
+                            </select>
+                        </div>
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.Macro"}}</label>
+                            <select name="system.passiveAspects.{{@key}}.macroId">
+                                {{selectOptions (lookup @root ../context) selected=../macroId localize=true}}
+                            </select>
+                        </div>
+                    {{/if}}
+                    {{!-- Passive aspect common elements --}}
+                    <div class="item-attribute flexrow">
+                        <label class="attribute-name">{{localize "PL1E.CreateEffect"}}</label>
+                        <input type="checkbox" name="system.passiveAspects.{{@key}}.createEffect" {{checked ../createEffect}} data-dtype="Boolean"/>
+                    </div>
+                    {{#if ../createEffect}}
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.EffectIcon"}}</label>
+                            <div class="flexrow">
+                                <input name="system.passiveAspects.{{@key}}.effectIcon" type="text" value="{{../effectIcon}}"/>
+                                {{filePicker target=(concat "system.passiveAspects." @key ".effectIcon") type="image"}}
+                            </div>
+                        </div>
+                        <div class="item-attribute flexrow">
+                            <label class="attribute-name">{{localize "PL1E.EffectIconTint"}}</label>
+                            <div class="flexrow">
+                                {{colorPicker name=(concat "system.passiveAspects." @key ".effectIconTint") value=../effectIconTint}}
+                            </div>
+                        </div>
                     {{/if}}
                 </div>
             </li>

@@ -552,7 +552,7 @@ export class Pl1eActorSheet extends ActorSheet {
             }
             else if (item.parentCollection === "effects") {
                 if (filters.has("passive") && item.flags?.pl1e?.permanent) return false;
-                if (filters.has("temporary") && item.createEffect) return false;
+                if (filters.has("temporary") && item.duration.label) return false;
                 if (filters.has("inactive") && item.disabled) return false;
             }
             return true;

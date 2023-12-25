@@ -152,7 +152,7 @@ export class Pl1eItem extends Item {
     /** @inheritDoc */
     async _onDelete(options, userId) {
         // If the item is not embedded and is the last then update refs
-        const documents = await Pl1eHelpers.getDocuments("Item", this._id);
+        const documents = await Pl1eHelpers.getDocuments("Item", this.type, this._id);
         if (!this.isEmbedded && documents.length === 0) {
             // Remove item from items
             for (const item of await Pl1eHelpers.getDocuments("Item")) {
