@@ -171,8 +171,8 @@ export class Pl1eAspect {
             descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("aspects", aspect.name, "contexts", aspect.context)));
         }
         else {
-            if (aspect.operator) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("numberOperators", aspect.operator)));
-            if (aspect.value) {
+            if (aspect.operator !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("numberOperators", aspect.operator)));
+            if (aspect.value !== undefined) {
                 if (typeof aspect.value === "boolean") {
                     descriptionParts.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
                 } else if (typeof aspect.value === "string") {
@@ -187,13 +187,13 @@ export class Pl1eAspect {
                     descriptionParts.push(aspect.value);
                 }
             }
-            if (aspect.damageType) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
-            if (aspect.resolutionType) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
-            if (aspect.data) {
+            if (aspect.damageType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
+            if (aspect.resolutionType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
+            if (aspect.data !== undefined) {
                 descriptionParts.push(game.i18n.localize("PL1E.On"));
                 descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data, "label")));
             }
-            if (aspect.targetGroup) {
+            if (aspect.targetGroup !== undefined) {
                 descriptionParts.push(game.i18n.localize("PL1E.For"));
                 descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroups", aspect.targetGroup)));
             }
