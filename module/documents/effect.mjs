@@ -39,8 +39,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
         // Create effect
         await targetData.actor.createEmbeddedDocuments("ActiveEffect", [{
             name: name,
-            icon: aspect.effectIcon,
-            tint: aspect.effectIconTint,
+            icon: characterData.item.img,
             origin: characterData.item._id,
             changes: [{
                 key: dataConfig.path,

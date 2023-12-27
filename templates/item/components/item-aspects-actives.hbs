@@ -22,13 +22,7 @@
             <li class="item" data-aspect-id="{{@key}}" data-aspect-type="active"  data-item-id="{{@key}}">
                 <div class="item-content grid grid-12col">
                     <div class="item-title grid-span-8 flexrow">
-                        <img class="item-image" src="{{#if ../createEffect}}
-                            {{../effectIcon}}
-                        {{else if (eq ../name "status")}}
-                            {{#with (config ../dataGroup ../data)}}{{img}}{{/with}}
-                        {{else}}
-                            {{img}}
-                        {{/if}}" title="{{localize label}}" width="24" height="24"/>
+                        <img class="item-image" src="{{img}}" title="{{localize label}}" width="24" height="24"/>
                         <label class="item-name item-tooltip-activate">{{localize ../description}}</label>
                     </div>
                     <div class="item-icons grid-span-2">
@@ -150,22 +144,12 @@
                             <div class="item-attribute flexrow">
                                 <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
                                 <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{../effectDuration}}" data-dtype="Number"/>
+                            </div>
+                            <div class="item-attribute flexrow">
+                                <label class="attribute-name">{{localize "PL1E.EffectDurationResolutionType"}}</label>
                                 <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
                                     {{selectOptions (config "resolutionTypes") selected=../effectDurationResolutionType localize=true}}
                                 </select>
-                            </div>
-                            <div class="item-attribute flexrow">
-                                <label class="attribute-name">{{localize "PL1E.EffectIcon"}}</label>
-                                <div class="flexrow">
-                                    <input name="system.activeAspects.{{@key}}.effectIcon" type="text" value="{{../effectIcon}}"/>
-                                    {{filePicker target=(concat "system.activeAspects." @key ".effectIcon") type="image"}}
-                                </div>
-                            </div>
-                            <div class="item-attribute flexrow">
-                                <label class="attribute-name">{{localize "PL1E.EffectIconTint"}}</label>
-                                <div class="flexrow">
-                                    {{colorPicker name=(concat "system.activeAspects." @key ".effectIconTint") value=../effectIconTint}}
-                                </div>
                             </div>
                         {{/if}}
                     {{/if}}

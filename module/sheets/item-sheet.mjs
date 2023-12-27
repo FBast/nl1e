@@ -195,20 +195,25 @@ export class Pl1eItemSheet extends ItemSheet {
     async _onDataChange(event, html, aspectType) {
         const selectedData = event.target.value;
         const aspectId = $(event.currentTarget).closest(".item").data("aspect-id");
+        const aspectPath = `system.${aspectType}Aspects.${aspectId}`;
 
         // Retrieve the selected dataGroup from the corresponding dropdown
-        const dataGroupDropdown = html.find(`[name='system.${aspectType}Aspects.${aspectId}.dataGroup']`);
+        const dataGroupDropdown = html.find(`[name='${aspectPath}']`);
         const dataGroup = dataGroupDropdown.val();
         if (!dataGroup) return;
 
         // Get the default value for the selected data
         const aspect = {dataGroup, data: selectedData};
         const defaultValue = Pl1eAspect.getDefaultValue(aspect);
+        const data = {
+            [`${aspectPath}.data`]: selectedData,
+        }
 
-        await this.item.update({
-            [`system.${aspectType}Aspects.${aspectId}.data`]: selectedData,
-            [`system.${aspectType}Aspects.${aspectId}.value`]: defaultValue
-        });
+        // If the aspect as a value then set the default value
+        if (this.item[`${aspectPath}.value`])
+            data[`${aspectPath}.value`] = defaultValue;
+
+        await this.item.update(data);
     }
 
     /**
@@ -328,20 +333,15 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         // Sorting arrays
-        abilities = abilities.sort((a, b) => a.item.name.localeCompare(b.item.system.attributes.level));
-        features = features.sort((a, b) => a.item.name.localeCompare(b.item.name));
-        weapons = weapons.sort((a, b) => a.item.name.localeCompare(b.item.name));
-        wearables = wearables.sort((a, b) => a.item.name.localeCompare(b.item.name));
-        modules = modules.sort((a, b) => a.item.name.localeCompare(b.item.name));
+        context.masters = masters.sort((a, b) => a.item.name.localeCompare(b.item.name));
+        context.abilities = abilities.sort((a, b) => a.item.system.attributes.level - b.item.system.attributes.level)
+        context.features = features.sort((a, b) => a.item.name.localeCompare(b.item.name));
+        context.weapons = weapons.sort((a, b) => a.item.name.localeCompare(b.item.name));
+        context.wearables = wearables.sort((a, b) => a.item.name.localeCompare(b.item.name));
+        context.modules = modules.sort((a, b) => a.item.name.localeCompare(b.item.name));
 
         // Assign and return
         context.items = items;
-        context.masters = masters;
-        context.abilities = abilities;
-        context.features = features;
-        context.weapons = weapons;
-        context.wearables = wearables;
-        context.modules = modules;
         context.unknowns = unknowns;
         context.passiveAspects = context.item.system.passiveAspects;
         context.activeAspects = context.item.system.activeAspects;

@@ -9,9 +9,7 @@ export function getConfigAspects() {
             "data": "health",
             "operator": "add",
             "value": 0,
-            "createEffect": false,
-            "effectIcon": "systems/pl1e/assets/icons/modify.svg",
-            "effectIconTint": "#ffffff"
+            "createEffect": false
         },
         {
             "name": "status",
@@ -39,9 +37,7 @@ export function getConfigAspects() {
             "targetGroup": "all",
             "createEffect": false,
             "effectDuration": 1,
-            "effectDurationResolutionType": "fixed",
-            "effectIcon": "systems/pl1e/assets/icons/modify.svg",
-            "effectIconTint": "#ffffff"
+            "effectDurationResolutionType": "fixed"
         },
         {
             "name": "transfer",
@@ -52,15 +48,14 @@ export function getConfigAspects() {
             "targetGroup": "all",
             "transferSource": "all",
             "transferDestination": "all",
-            "damageType": "raw",
-            "effectIcon": "systems/pl1e/assets/icons/transfer.svg",
-            "effectIconTint": "#ffffff"
+            "damageType": "raw"
         },
         {
             "name": "status",
             "value": 0,
             "dataGroup": "statuses",
             "data": "stunned",
+            "createEffect": true,
             "targetGroup": "all"
         },
         {

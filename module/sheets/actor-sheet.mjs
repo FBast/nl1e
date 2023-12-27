@@ -426,8 +426,8 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Append to abilities.
         else if (item.type === "ability") {
-            // Skip ability if actor level is lower than ability level
-            if (item.system.attributes.level > this.actor.system.general.level) return;
+            // Skip disabled ability
+            if (!item.isEnabled) return;
 
             // Increase units
             if (sourceIdFlags.includes(sourceIdFlag)) {

@@ -39,6 +39,7 @@ export class Pl1eAspect {
      * @param {Pl1eActor} actor
      */
     static applyPassiveValue(aspect, aspectId, actor) {
+        if (aspect.value === undefined) return;
         const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
         const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
         let currentValue = getProperty(actor, dataConfig.path);
@@ -102,8 +103,7 @@ export class Pl1eAspect {
             const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
             await actor.createEmbeddedDocuments("ActiveEffect", [{
                 name: name,
-                icon: aspect.effectIcon,
-                tint: aspect.effectIconTint,
+                icon: item.img,
                 origin: item.id,
                 changes: [{
                     key: dataConfig.path,
@@ -186,11 +186,11 @@ export class Pl1eAspect {
                 } else {
                     descriptionParts.push(aspect.value);
                 }
-            }
-            if (aspect.damageType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
-            if (aspect.resolutionType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
-            if (aspect.data !== undefined) {
+                if (aspect.damageType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
+                if (aspect.resolutionType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
                 descriptionParts.push(game.i18n.localize("PL1E.On"));
+            }
+            if (aspect.data !== undefined) {
                 descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data, "label")));
             }
             if (aspect.targetGroup !== undefined) {
