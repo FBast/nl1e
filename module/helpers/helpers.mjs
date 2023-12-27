@@ -325,4 +325,27 @@ export class Pl1eHelpers {
         console.log("PL1E | Removed system properties:", removed);
         await item.update({ system: itemCopy.system }, { merge: false });
     }
+
+    static levelToXP(actor, level) {
+        if (level === 0) return 0;
+        const levelCaps = this._levelCaps(actor);
+        const xp = levelCaps[level - 1];
+        return xp === undefined ? levelCaps[levelCaps.length - 1] : xp;
+    }
+
+    static XPToLevel(actor, xp) {
+        const levelCaps = this._levelCaps(actor);
+        let level = 0;
+        for (let levelCap of levelCaps) {
+            if (levelCap <= xp) level++;
+            else break;
+        }
+        return level;
+    }
+
+    static _levelCaps(actor) {
+        const classNumber = Math.max(actor.items.filter(item => item.type === "class").length, 1);
+        const key = classNumber === 1 ? "monoClassLevelCaps" : "multiClassLevelCaps";
+        return game.settings.get("pl1e", key).split(',').map(x => parseInt(x.trim()));
+    }
 }

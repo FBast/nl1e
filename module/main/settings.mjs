@@ -68,19 +68,21 @@ export const registerSettings = function () {
         default: 5
     });
 
-    game.settings.register("pl1e", "globalAdvantages", {
-        name: "Global advantages",
+    game.settings.register("pl1e", "monoClassLevelCaps", {
+        name: "Mono class XP level caps",
+        hint: "Enter the XP caps for each levels, separated by commas. E.g., '10, 20, 30, 40, 50'.",
         scope: "world",
-        config: false,
-        type: Number,
-        default: 0
+        config: true,
+        type: String,
+        default: "10, 20, 30, 40, 50"
     });
 
-    game.settings.register("pl1e", "globalBonuses", {
-        name: "Global bonuses",
+    game.settings.register("pl1e", "multiClassLevelCaps", {
+        name: "Multi class XP level caps",
+        hint: "Enter the XP caps for each levels, separated by commas. E.g., '10, 20, 30, 40, 50'.",
         scope: "world",
-        config: false,
-        type: Number,
-        default: 0
+        config: true,
+        type: String,
+        default: "10, 30, 50"
     });
 }

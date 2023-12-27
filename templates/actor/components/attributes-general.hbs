@@ -18,6 +18,8 @@
         <label>{{localize "PL1E.Level"}}</label>
         <div class="form-fields">
             <label class="align-right">{{system.general.level}}</label>
+            <progress id="file" max="100" value="{{system.general.levelProgression}}">{{system.general.levelProgression}}%</progress>
+            <label class="align-right">({{system.general.experience}}/{{system.general.experienceNeeded}})</label>
         </div>
     </div>
     <div class="form-group">

@@ -220,8 +220,11 @@ export class Pl1eActor extends Actor {
         actorMisc.movement = Pl1eHelpers.getConfig("speeds", actorMisc.speed, "movement");
         actorMisc.baseInitiative = Pl1eHelpers.getConfig("speeds", actorMisc.speed, "baseInitiative");
 
-        const classMultiplier = Math.max(this.items.filter(item => item.type === "class").length, 1);
-        actorGeneral.level = Math.max(actorGeneral.experience / (10 * classMultiplier), 1);
+        actorGeneral.level = Pl1eHelpers.XPToLevel(this, actorGeneral.experience);
+        actorGeneral.experienceNeeded = Pl1eHelpers.levelToXP(this, actorGeneral.level + 1);
+        const experienceReached = Pl1eHelpers.levelToXP(this, actorGeneral.level);
+        actorGeneral.levelProgression = 100 * (actorGeneral.experience - experienceReached) /
+            (actorGeneral.experienceNeeded - experienceReached);
         actorGeneral.ranks = actorGeneral.experience;
         actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
     }
