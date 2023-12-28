@@ -416,11 +416,12 @@ export class Pl1eAspect {
                 }
             }
             else {
-                for (const targetData of targetsData) {
-                    if (!this._isTargetValid(aspect.movementDestination, targetData, characterData)) continue;
+                for (const otherTargetData of targetsData) {
+                    if (otherTargetData.token === targetData.token) continue;
+                    if (!this._isTargetValid(aspect.movementDestination, otherTargetData, characterData)) continue;
                     possibleDestination.push({
-                        x: targetData.tokenX,
-                        y: targetData.tokenY
+                        x: otherTargetData.tokenX,
+                        y: otherTargetData.tokenY
                     });
                 }
             }
@@ -430,6 +431,7 @@ export class Pl1eAspect {
 
             // Take a possible destination at random
             const destination = possibleDestination[Math.floor(Math.random() * possibleDestination.length)];
+            console.log(`${targetData.token.name} at ${targetData.tokenX}(X) and ${targetData.tokenY}(Y) moves to ${destination.x}(X) and ${destination.y}(Y)`);
 
             // Move the target on this destination
             if (aspect.data === "walk") {
