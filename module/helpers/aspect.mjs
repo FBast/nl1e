@@ -164,39 +164,41 @@ export class Pl1eAspect {
 
     static async getDescription(aspect) {
         let descriptionParts = [];
-        if (["passiveMacro", "activeMacro"].includes(aspect.name)) {
+        if (aspect.macroId !== undefined) {
             const macro = await Pl1eHelpers.getDocument("Macro", aspect.macroId);
             descriptionParts.push(macro ? macro.name : game.i18n.localize("PL1E.None"));
             descriptionParts.push(game.i18n.localize("PL1E.On"));
             descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("aspects", aspect.name, "contexts", aspect.context)));
         }
-        else {
-            if (aspect.operator !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("numberOperators", aspect.operator)));
-            if (aspect.value !== undefined) {
-                if (typeof aspect.value === "boolean") {
-                    descriptionParts.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
-                } else if (typeof aspect.value === "string") {
-                    descriptionParts.push(game.i18n.localize(aspect.value));
-                } else if (Array.isArray(aspect.value)) {
-                    let values = aspect.value.map(value => {
-                        const label = Pl1eHelpers.getConfig(aspect.data, value);
-                        return game.i18n.localize(label);
-                    });
-                    descriptionParts.push(values.join(", "));
-                } else {
-                    descriptionParts.push(aspect.value);
-                }
-                if (aspect.damageType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
-                if (aspect.resolutionType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
-                descriptionParts.push(game.i18n.localize("PL1E.On"));
+        if (aspect.operator !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("numberOperators", aspect.operator)));
+        if (aspect.value !== undefined) {
+            if (typeof aspect.value === "boolean") {
+                descriptionParts.push(game.i18n.localize(aspect.value ? "PL1E.Yes" : "PL1E.No"));
+            } else if (typeof aspect.value === "string") {
+                descriptionParts.push(game.i18n.localize(aspect.value));
+            } else if (Array.isArray(aspect.value)) {
+                let values = aspect.value.map(value => {
+                    const label = Pl1eHelpers.getConfig(aspect.data, value);
+                    return game.i18n.localize(label);
+                });
+                descriptionParts.push(values.join(", "));
+            } else {
+                descriptionParts.push(aspect.value);
             }
-            if (aspect.data !== undefined) {
-                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data, "label")));
-            }
-            if (aspect.targetGroup !== undefined) {
-                descriptionParts.push(game.i18n.localize("PL1E.For"));
-                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroups", aspect.targetGroup)));
-            }
+            if (aspect.damageType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
+            if (aspect.resolutionType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
+            descriptionParts.push(game.i18n.localize("PL1E.On"));
+        }
+        if (aspect.data !== undefined) {
+            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data, "label")));
+        }
+        if (aspect.targetGroup !== undefined) {
+            descriptionParts.push(game.i18n.localize("PL1E.For"));
+            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroups", aspect.targetGroup)));
+        }
+        if (aspect.movementDestination !== undefined) {
+            descriptionParts.push(game.i18n.localize("PL1E.To"));
+            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("movementDestinations", aspect.movementDestination)));
         }
         const description = descriptionParts.join(' ');
         return description.toLowerCase();
@@ -388,8 +390,8 @@ export class Pl1eAspect {
     /**
      * Apply the movement aspect
      * @param aspect
-     * @param characterData
-     * @param targetsData
+     * @param {CharacterData} characterData
+     * @param {TargetData[]} targetsData
      * @returns {Promise<TargetData[]>}
      * @private
      */
@@ -401,39 +403,43 @@ export class Pl1eAspect {
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
 
-            // Get all template except this target template or template if this target has no template
-            const otherTemplates = targetData.template ? characterData.templates
-                .filter(template => template._id !== targetData.template._id) : characterData.templates;
+            // Filter base on movement destination
+            const possibleDestination = [];
+            if (aspect.movementDestination === "template") {
+                const offset = canvas.dimensions.size / 2;
+                for (const template of characterData.templates) {
+                    if (targetData.template && template._id === targetData.template._id) continue;
+                    possibleDestination.push({
+                        x: template.x - offset,
+                        y: template.y - offset
+                    });
+                }
+            }
+            else {
+                for (const targetData of targetsData) {
+                    if (!this._isTargetValid(aspect.movementDestination, targetData, characterData)) continue;
+                    possibleDestination.push({
+                        x: targetData.tokenX,
+                        y: targetData.tokenY
+                    });
+                }
+            }
 
-            // Fallback on this target template (could be undefined)
-            let randomTemplate = targetData.template;
+            // Skip if no destination found
+            if (possibleDestination.length === 0) continue;
 
-            // Take a template at random
-            if (otherTemplates.length > 0)
-                randomTemplate = otherTemplates[Math.floor(Math.random() * otherTemplates.length)];
+            // Take a possible destination at random
+            const destination = possibleDestination[Math.floor(Math.random() * possibleDestination.length)];
 
-            // If no random template then skip
-            if (!randomTemplate) continue;
-
-            // Move the target on this template
-            const offset = canvas.dimensions.size / 2;
+            // Move the target on this destination
             if (aspect.data === "walk") {
-                await targetData.token.document.update({
-                    x: randomTemplate.x - offset,
-                    y: randomTemplate.y - offset,
-                }, {animate: true, noRestriction: false});
+                await targetData.token.update(destination, {animate: true, noRestriction: false});
             }
             if (aspect.data === "push") {
-                await targetData.token.document.update({
-                    x: randomTemplate.x - offset,
-                    y: randomTemplate.y - offset,
-                }, {animate: true, noRestriction: true});
+                await targetData.token.update(destination, {animate: true, noRestriction: true});
             }
             if (aspect.data === "teleport") {
-                await targetData.token.document.update({
-                    x: randomTemplate.x - offset,
-                    y: randomTemplate.y - offset,
-                }, {animate: false, noRestriction: true});
+                await targetData.token.update(destination, {animate: false, noRestriction: true});
             }
 
             // Add label for Sequence
@@ -558,8 +564,8 @@ export class Pl1eAspect {
         const characterToken = characterData.token;
         if ("targets" === group && targetData.actor === characterData.actor && !targetData.template) return false;
         if (["self", "alliesAndSelf", "opponentsAndSelf"].includes(group) && targetToken !== characterToken) return false;
-        if (["allies", "alliesAndSelf"].includes(group) && targetToken.document.disposition !== characterToken.document.disposition) return false;
-        if (["opponents","opponentsAndSelf"].includes(group) && targetToken.document.disposition === characterToken.document.disposition) return false;
+        if (["allies", "alliesAndSelf"].includes(group) && targetToken.disposition !== characterToken.disposition) return false;
+        if (["opponents","opponentsAndSelf"].includes(group) && targetToken.disposition === characterToken.disposition) return false;
         return true;
     }
 

@@ -41,6 +41,7 @@ export function getConfigAspects() {
         },
         {
             "name": "transfer",
+            "damageType": "raw",
             "value": 0,
             "dataGroup": "aspectsResources",
             "data": "health",
@@ -48,22 +49,16 @@ export function getConfigAspects() {
             "targetGroup": "all",
             "transferSource": "all",
             "transferDestination": "all",
-            "damageType": "raw"
-        },
-        {
-            "name": "status",
-            "value": 0,
-            "dataGroup": "statuses",
-            "data": "stunned",
-            "createEffect": true,
-            "targetGroup": "all"
+            "createEffect": false,
+            "effectDuration": 1,
+            "effectDurationResolutionType": "fixed"
         },
         {
             "name": "movement",
-            "value": 0,
             "dataGroup": "movements",
-            "data": "standard",
-            "targetGroup": "all"
+            "data": "walk",
+            "targetGroup": "self",
+            "movementDestination": "all"
         },
         {
             "name": "invocation",
@@ -71,7 +66,20 @@ export function getConfigAspects() {
             "dataGroup": "invocations",
             "data": "standard",
             "resolutionType": "fixed",
-            "invocation": ""
+            "targetGroup": "all",
+            "invocation": "",
+            "createEffect": false,
+            "effectDuration": 1,
+            "effectDurationResolutionType": "fixed"
+        },
+        {
+            "name": "status",
+            "value": 0,
+            "dataGroup": "statuses",
+            "data": "stunned",
+            "createEffect": true,
+            "effectDuration": 1,
+            "effectDurationResolutionType": "fixed"
         },
         {
             "name": "activeMacro",
@@ -704,6 +712,17 @@ export function getConfigAspects() {
     }
 
     PL1E.targetGroups = {
+        "all": "PL1E.All",
+        "targets": "PL1E.Targets",
+        "self": "PL1E.Self",
+        "allies": "PL1E.Allies",
+        "alliesAndSelf": "PL1E.AlliesAndSelf",
+        "opponents": "PL1E.Opponents",
+        "opponentsAndSelf": "PL1E.OpponentsAndSelf"
+    }
+
+    PL1E.movementDestinations = {
+        "template": "PL1E.Template",
         "all": "PL1E.All",
         "targets": "PL1E.Targets",
         "self": "PL1E.Self",

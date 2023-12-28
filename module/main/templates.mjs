@@ -53,7 +53,16 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/item/components/item-tags.hbs",
         "systems/pl1e/templates/item/components/price.hbs",
         "systems/pl1e/templates/item/components/item-aspects-passives.hbs",
-        "systems/pl1e/templates/item/components/item-aspects-actives.hbs"
+        "systems/pl1e/templates/item/components/passive-aspect-modify.hbs",
+        "systems/pl1e/templates/item/components/passive-aspect-status.hbs",
+        "systems/pl1e/templates/item/components/passive-aspect-macro.hbs",
+        "systems/pl1e/templates/item/components/item-aspects-actives.hbs",
+        "systems/pl1e/templates/item/components/active-aspect-modify.hbs",
+        "systems/pl1e/templates/item/components/active-aspect-transfer.hbs",
+        "systems/pl1e/templates/item/components/active-aspect-movement.hbs",
+        "systems/pl1e/templates/item/components/active-aspect-invocation.hbs",
+        "systems/pl1e/templates/item/components/active-aspect-status.hbs",
+        "systems/pl1e/templates/item/components/active-aspect-macro.hbs"
 
     ]);
 };

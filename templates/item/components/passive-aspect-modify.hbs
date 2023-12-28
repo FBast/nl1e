@@ -1,0 +1,42 @@
+<div class="item-attribute flexrow">
+    <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
+    <select name="system.passiveAspects.{{@key}}.dataGroup">
+        {{selectOptions dataGroups selected=aspect.dataGroup localize=true}}
+    </select>
+</div>
+<div class="item-attribute flexrow">
+    <label class="attribute-name">{{localize "PL1E.Data"}}</label>
+    <select name="system.passiveAspects.{{@key}}.data">
+        {{selectOptions (config aspect.dataGroup) selected=aspect.data label="label" localize=true}}
+    </select>
+</div>
+{{#with (config aspect.dataGroup aspect.data)}}
+    {{#if (eq type "number")}}
+        <div class="item-attribute flexrow">
+            <label class="attribute-name">{{localize "PL1E.Operator"}}</label>
+            <select name="system.passiveAspects.{{@key}}.operator">
+                {{selectOptions (config "numberOperators") selected=../aspect.operator localize=true}}
+            </select>
+        </div>
+    {{/if}}
+    <div class="item-attribute flexrow">
+        <label class="attribute-name">{{localize "PL1E.Value"}}</label>
+        {{#if (eq type "number")}}
+            <input type="number" name="system.passiveAspects.{{@key}}.value" value="{{../aspect.value}}" data-dtype="Number"/>
+        {{else if (eq type "bool")}}
+            <input type="checkbox" name="system.passiveAspects.{{@key}}.value" {{checked ../aspect.value}} data-dtype="Boolean"/>
+        {{else if (eq type "select")}}
+            <select name="system.passiveAspects.{{@key}}.value">
+                {{selectOptions (config select) selected=../aspect.value label="label" localize=true}}
+            </select>
+        {{else if (eq type "array")}}
+            <select name="system.passiveAspects.{{@key}}.value">
+                {{selectOptions (config select) selected=../aspect.value localize=true}}
+            </select>
+        {{/if}}
+    </div>
+{{/with}}
+<div class="item-attribute flexrow">
+    <label class="attribute-name">{{localize "PL1E.CreateEffect"}}</label>
+    <input type="checkbox" name="system.passiveAspects.{{@key}}.createEffect" {{checked aspect.createEffect}} data-dtype="Boolean"/>
+</div>

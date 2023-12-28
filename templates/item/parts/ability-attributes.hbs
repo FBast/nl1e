@@ -215,8 +215,9 @@
             </fieldset>
         {{/unless}}
     {{/unless}}
-    {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
-    {{#unless (eq system.attributes.activation "passive")}}
+    {{#if (eq system.attributes.activation "passive")}}
+        {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
+    {{else}}
         {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
-    {{/unless}}
+    {{/if}}
 </section>

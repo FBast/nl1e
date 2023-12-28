@@ -21,7 +21,7 @@
  * @typedef {Object} CharacterData
  * @property {Pl1eActor} actor The actor of the character
  * @property {string} actorId The actor id of the character
- * @property {Token} token The token of the character
+ * @property {TokenDocument} token The token of the character
  * @property {string} tokenId The token id of the character
  * @property {Scene} scene The scene where the token is
  * @property {string} sceneId The id of the scene where the token is
@@ -45,8 +45,10 @@
  * @property {string} actorId The actor id of the target
  * @property {Scene} scene The scene where the token is
  * @property {string} sceneId The id of the scene where the token is
- * @property {Token} token The token of the target
+ * @property {TokenDocument} token The token of the target
  * @property {string} tokenId The token id of the target
+ * @property {number} tokenX The position of the token on x
+ * @property {number} tokenY The position of the token on y
  * @property {object} template The template where this target is in
  * @typedef {RollData} rollData The roll data of the target
  * @property {number} result The result of the rollData

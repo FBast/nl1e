@@ -201,8 +201,8 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.activationMacro = "";
                 changed.system.attributes.preLaunchMacro = "";
                 changed.system.attributes.postLaunchMacro = "";
-                changed.system.attributes.postLaunchMacro = "";
                 changed.system.activeAspects = null;
+                changed.system.passiveAspects = null;
             }
             if (changed.system?.attributes?.activation === "action") {
                 changed.system.attributes.actionCost = 1;
@@ -856,6 +856,8 @@ export class Pl1eItem extends Item {
         targetData.sceneId = characterData.scene.id;
         targetData.token = token;
         targetData.tokenId = token?.id;
+        targetData.tokenX = token.x;
+        targetData.tokenY = token.y;
         targetData.template = template;
         return targetData;
     }
