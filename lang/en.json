@@ -428,6 +428,8 @@
   "PL1E.Reduction": "Reduction",
   "PL1E.Reductions": "Reductions",
   "PL1E.Reflex": "Reflex",
+  "PL1E.Invocation": "Invocation",
+  "PL1E.AreaNumberResolutionType": "Area number resolution type",
   "PL1E.ReflexBonus": "Reflex bonus",
   "PL1E.ReflexBonuses": "Reflex Bonuses",
   "PL1E.ReflexExplosion": "Reflex explosion",

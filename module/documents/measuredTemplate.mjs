@@ -1,4 +1,4 @@
-export class ActionTemplate extends MeasuredTemplate {
+export class Pl1eMeasuredTemplate extends MeasuredTemplate {
 
     /**
      * Track the timestamp when the last mouse move event was captured.
@@ -24,17 +24,16 @@ export class ActionTemplate extends MeasuredTemplate {
 
     /**
      * A factory method to create an ActionTemplate instance using provided data from an Pl1eItem instance
-     * @param {Pl1eItem} item               The Item object for which to construct the template
+     * @param {Pl1eItem} item The Item object for which to construct the template
      * @param {object} attributes
      * @param {object} activeAspects
-     * @returns {ActionTemplate|null}    The template object, or null if the item does not produce a template
+     * @returns {Pl1eMeasuredTemplate|null} The template object, or null if the item does not produce a template
      */
-    static async fromItem(item, attributes, activeAspects) {
-        const areaShape = attributes.areaShape;
+    static fromItem(item, attributes, activeAspects) {
+        let areaShape = attributes.areaShape;
 
         // Prepare template data
         const templateData = {
-            // _id: randomID(),
             t: areaShape,
             user: game.user.id,
             direction: 0,
@@ -60,13 +59,13 @@ export class ActionTemplate extends MeasuredTemplate {
                 templateData.distance = attributes.coneLength * game.system.gridDistance;
                 templateData.angle = attributes.coneAngle;
                 break;
-            case "square":
-                templateData.t = "rect";
-                templateData.distance = attributes.squareLength * game.system.gridDistance;
-                templateData.width = attributes.squareLength * game.system.gridDistance;
-                templateData.height = attributes.squareLength * game.system.gridDistance;
-                templateData.direction = 45;
-                break;
+            // case "square":
+            //     templateData.t = "rect";
+            //     templateData.distance = attributes.squareLength * game.system.gridDistance;
+            //     templateData.width = attributes.squareLength * game.system.gridDistance;
+            //     templateData.height = attributes.squareLength * game.system.gridDistance;
+            //     templateData.direction = 45;
+            //     break;
             case "ray":
                 templateData.width = game.system.gridDistance;
                 templateData.distance = attributes.rayLength * game.system.gridDistance;
@@ -74,7 +73,6 @@ export class ActionTemplate extends MeasuredTemplate {
         }
 
         // Return the template constructed from the item data
-        // const template = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [templateData])
         const cls = CONFIG.MeasuredTemplate.documentClass;
         const template = new cls(templateData, {parent: canvas.scene});
         const token = item.actor.bestToken;
@@ -120,6 +118,27 @@ export class ActionTemplate extends MeasuredTemplate {
 
         // Activate interactivity
         return this.activatePreviewListeners(initialLayer);
+    }
+
+    /** @inheritDoc */
+    highlightGrid() {
+        super.highlightGrid();
+
+        // Only proceed if the template is visible
+        if (!this.isVisible) return;
+
+        // Get the highlight layer
+        const grid = canvas.grid;
+        const hl = grid.getHighlightLayer(this.highlightId);
+
+        // Get the target highlight position
+        const position = Pl1eMeasuredTemplate.getSpecialPosition(this.document);
+        const gridSize = canvas.grid.size;
+
+        // Highlight the center grid position with a red square
+        hl.beginFill(0xFF0000, 0.5); // Semi-transparent red
+        hl.drawRect(position.x, position.y, gridSize, gridSize);
+        hl.endFill();
     }
 
     /* -------------------------------------------- */
@@ -174,19 +193,23 @@ export class ActionTemplate extends MeasuredTemplate {
         let now = Date.now(); // Apply a 20ms throttle
         if (now - this.#moveTime <= 20) return;
         let templateCenter = event.data.getLocalPosition(this.layer);
-                    const offset = canvas.dimensions.size / 2;
+        const offset = canvas.dimensions.size / 2;
         templateCenter.x -= offset;
         templateCenter.y -= offset;
+
         // Clamp with range
         const range = this.document.actionData.attributes.range * game.system.gridDistance;
         templateCenter = this._clampVectorRadius(templateCenter, this.document.actionData.token, range * canvas.dimensions.size);
+
         // Snap position
         templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 1);
+
         // Move position
         this.document.updateSource({x: templateCenter.x + offset, y: templateCenter.y + offset});
         this.refresh();
+
         // Target tokens
-        const targets = ActionTemplate.getTemplateTargets(this.document);
+        const targets = Pl1eMeasuredTemplate.getTemplateTargets(this.document);
         for (const token of canvas.tokens.placeables) {
             // Target the current token and group with others
             token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
@@ -227,8 +250,9 @@ export class ActionTemplate extends MeasuredTemplate {
         const update = {direction: this.document.direction + (snap * Math.sign(event.deltaY))};
         this.document.updateSource(update);
         this.refresh();
+
         // Target tokens
-        const targets = ActionTemplate.getTemplateTargets(this.document);
+        const targets = Pl1eMeasuredTemplate.getTemplateTargets(this.document);
         for (const token of canvas.tokens.placeables) {
             // Target the current token and group with others
             token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
@@ -271,7 +295,7 @@ export class ActionTemplate extends MeasuredTemplate {
 
     /**
      * Get targets currently inside the template
-     * @param {ActionTemplate} template
+     * @param {Pl1eMeasuredTemplate} template
      * @returns {Token[]}     */
     static getTemplateTargets(template) {
         const actionData = template.actionData;
@@ -312,7 +336,7 @@ export class ActionTemplate extends MeasuredTemplate {
 
     /**
      * Return the positions inside a template
-     * @param {MeasuredTemplate} template
+     * @param {Pl1eMeasuredTemplate} template
      * @returns {*[]}
      * @private
      */
@@ -345,6 +369,33 @@ export class ActionTemplate extends MeasuredTemplate {
             }
         }
         return positions;
+    }
+
+    /**
+     * Get the special position of a template (often used for movement or invocation)
+     * @param template
+     * @return {{x: number, y: number}}
+     */
+    static getSpecialPosition(template) {
+        // Calculate the center position of the template
+        const center = { x: template.x, y: template.y }
+        const gridSize = canvas.grid.size;
+
+        // Calculate the position of the red square
+        let x, y;
+        if (template.t === "ray" || template.t === "cone") {
+            const distanceInPixels = template.distance * gridSize;
+            const rayAngleRadians = Math.toRadians(template.direction);
+            x = template.x + Math.cos(rayAngleRadians) * distanceInPixels - gridSize / 2;
+            y = template.y + Math.sin(rayAngleRadians) * distanceInPixels - gridSize / 2;
+        }
+        else {
+            x = center.x - (gridSize / 2);
+            y = center.y - (gridSize / 2);
+        }
+
+        // Convert into snapped position
+        return canvas.grid.getSnappedPosition(x, y);
     }
 
 }

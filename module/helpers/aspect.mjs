@@ -1,6 +1,7 @@
 import {PL1E} from "../config/config.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eActiveEffect} from "../documents/effect.mjs";
+import {Pl1eMeasuredTemplate} from "../documents/measuredTemplate.mjs";
 
 export class Pl1eAspect {
 
@@ -406,12 +407,11 @@ export class Pl1eAspect {
             // Filter base on movement destination
             const possibleDestination = [];
             if (aspect.movementDestination === "template") {
-                const offset = canvas.dimensions.size / 2;
                 for (const template of characterData.templates) {
                     if (targetData.template && template._id === targetData.template._id) continue;
                     possibleDestination.push({
-                        x: template.x - offset,
-                        y: template.y - offset
+                        x: template.specialPosition.x,
+                        y: template.specialPosition.y
                     });
                 }
             }
@@ -463,24 +463,22 @@ export class Pl1eAspect {
      * @private
      */
     static async _invocation(aspect, characterData, targetsData) {
-        const offset = canvas.dimensions.size / 2;
-
         for (const template of characterData.templates) {
             // Copy the aspect to calculate the new values
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
 
-            // Retrieve the actor
-            let actor = game.actors.get(aspectCopy.invocation);
+            // Retrieve the invocation actor
+            let invocationActor = game.actors.get(aspectCopy.invocation);
 
-            // If the actor is not found, import it from the compendium
-            if (!actor) {
-                actor = await Pl1eHelpers.getDocument("Actor", aspectCopy.invocation);
-                if (actor) actor = await Actor.create(actor, {keepId: true});
+            // If the invocation actor is not found, import it from the compendium
+            if (!invocationActor) {
+                invocationActor = await Pl1eHelpers.getDocument("Actor", aspectCopy.invocation);
+                if (invocationActor) invocationActor = await Actor.create(invocationActor, {keepId: true});
             }
 
-            const tokenData = await actor.getTokenData({
-                x: template.x - offset,
-                y: template.y - offset,
+            const tokenData = await invocationActor.getTokenData({
+                x: template.specialPosition.x,
+                y: template.specialPosition.y,
                 width: 1,
                 height: 1,
                 disposition: characterData.actor.disposition
@@ -494,7 +492,7 @@ export class Pl1eAspect {
                 await game.combat.createEmbeddedDocuments('Combatant', [{
                     tokenId: token.id,
                     sceneId: characterData.scene.id,
-                    actorId: actor.id
+                    actorId: invocationActor.id
                 }]);
             }
         }

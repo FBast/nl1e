@@ -162,7 +162,14 @@
                 {{/unless}}
                 <div class="form-group">
                     <label>{{localize "PL1E.AreaNumber"}}</label>
-                    <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
+                    <div class="form-fields">
+                        <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
+                        {{#if (ne (length system.attributes.roll) 0)}}
+                            <select name="system.attributes.areaNumberResolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                            </select>
+                        {{/if}}
+                    </div>
                 </div>
                 {{#if (eq system.attributes.areaShape "circle")}}
                     <div class="form-group">

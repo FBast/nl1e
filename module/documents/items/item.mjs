@@ -1,8 +1,8 @@
 import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eSynchronizer} from "../../helpers/synchronizer.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
-import {ActionTemplate} from "../actionTemplate.mjs";
 import {Pl1eChat} from "../../helpers/chat.mjs";
+import {Pl1eMeasuredTemplate} from "../measuredTemplate.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -546,11 +546,14 @@ export class Pl1eItem extends Item {
 
                 // Create templates
                 for (let i = 0; i < characterData.attributes.areaNumber; i++) {
-                    const templatePreview = await ActionTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
+                    const templatePreview = await Pl1eMeasuredTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
                     const template = await templatePreview?.drawPreview();
 
                     // If we have no template then break
                     if (!template) break;
+
+                    // Need the special position in some cases
+                    template.specialPosition = Pl1eMeasuredTemplate.getSpecialPosition(template);
 
                     characterData.templates.push(template);
                     characterData.templatesIds.push(template.id);
@@ -665,6 +668,17 @@ export class Pl1eItem extends Item {
             if (attributeConfig !== undefined) {
                 if (attributeConfig.combatOnly && (!characterData.token || !characterData.token.inCombat)) continue;
                 if (attributeConfig.type === "number") {
+                    // Apply resolution type
+                    if (characterData.attributes[`${key}ResolutionType`] !== undefined) {
+                        const resolutionType = characterData.attributes[`${key}ResolutionType`];
+                        if (resolutionType === "multipliedBySuccess") {
+                            calculatedAttribute *= characterData.result > 0 ? characterData.result : 0;
+                        }
+                        if (resolutionType === "ifSuccess") {
+                            calculatedAttribute = characterData.result > 0 ? calculatedAttribute : 0;
+                        }
+                    }
+
                     // Negate some attributes
                     if (value > 0 && attributeConfig.invertSign) {
                         calculatedAttribute *= -1;
@@ -792,7 +806,7 @@ export class Pl1eItem extends Item {
         if (characterData.attributes.areaShape !== "none") {
             // Populate targetsData
             for (let template of characterData.templates) {
-                for (let token of ActionTemplate.getTemplateTargets(template)) {
+                for (let token of Pl1eMeasuredTemplate.getTemplateTargets(template)) {
                     const targetData = await this._getTargetData(characterData, token.actor, token, template);
                     targetsData.push(targetData);
                 }
@@ -838,7 +852,7 @@ export class Pl1eItem extends Item {
      * @param {CharacterData} characterData
      * @param {Pl1eActor} actor
      * @param {Token | null} token
-     * @param {ActionTemplate} template
+     * @param {MeasuredTemplate} template
      * @return {Promise<TargetData>}
      * @private
      */

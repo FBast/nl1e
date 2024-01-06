@@ -31,17 +31,17 @@
                 </div>
                 <div class="item-tooltip flexcol">
                     {{#if (eq ../name "modify")}}
-                        {{> "systems/pl1e/templates/item/components/active-aspect-modify.hbs" this aspect=../this}}
+                        {{> "systems/pl1e/templates/item/components/active-aspect-modify.hbs" this aspect=../this root=@root}}
                     {{else if (eq ../name "transfer")}}
-                        {{> "systems/pl1e/templates/item/components/active-aspect-transfer.hbs" this aspect=../this}}
+                        {{> "systems/pl1e/templates/item/components/active-aspect-transfer.hbs" this aspect=../this root=@root}}
                     {{else if (eq ../name "movement")}}
-                        {{> "systems/pl1e/templates/item/components/active-aspect-movement.hbs" this aspect=../this}}
+                        {{> "systems/pl1e/templates/item/components/active-aspect-movement.hbs" this aspect=../this root=@root}}
                     {{else if (eq ../name "invocation")}}
-                        {{> "systems/pl1e/templates/item/components/active-aspect-invocation.hbs" this aspect=../this}}
+                        {{> "systems/pl1e/templates/item/components/active-aspect-invocation.hbs" this aspect=../this root=@root}}
                     {{else if (eq ../name "status")}}
-                        {{> "systems/pl1e/templates/item/components/active-aspect-status.hbs" this aspect=../this}}
+                        {{> "systems/pl1e/templates/item/components/active-aspect-status.hbs" this aspect=../this root=@root}}
                     {{else if (eq ../name "activeMacro")}}
-                        {{> "systems/pl1e/templates/item/components/active-aspect-macro.hbs" this aspect=../this}}
+                        {{> "systems/pl1e/templates/item/components/active-aspect-macro.hbs" this aspect=../this root=@root}}
                     {{/if}}
                 </div>
             </li>

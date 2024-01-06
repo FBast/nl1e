@@ -448,6 +448,7 @@
         "range": 0,
         "areaShape": "none",
         "areaNumber": 0,
+        "areaNumberResolutionType": "fixed",
         "circleRadius": 0,
         "coneLength": 0,
         "coneAngle": 0,

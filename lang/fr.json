@@ -547,6 +547,8 @@
   "PL1E.SubType": "Sous-type",
   "PL1E.Subarctic": "Subarctique",
   "PL1E.Success": "Réussites",
+  "PL1E.AreaNumberResolutionType": "Type de résolution du nombre de zone",
+  "PL1E.Invocation": "Invocation",
   "PL1E.Swamp": "Marais",
   "PL1E.Synchronized": "Synchronisé",
   "PL1E.Take": "Prendre",

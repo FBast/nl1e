@@ -6,6 +6,8 @@ import {Pl1eTokenDocument} from "./documents/token.mjs";
 import {Pl1eActiveEffect} from "./documents/effect.mjs";
 import {Pl1eActorProxy} from "./documents/actors/actorProxy.mjs";
 import {Pl1eItemProxy} from "./documents/items/itemProxy.mjs";
+// Import object classes
+import {Pl1eMeasuredTemplate} from "./documents/measuredTemplate.mjs";
 // Import sheet classes
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
@@ -52,6 +54,7 @@ Hooks.once('init', async function () {
     CONFIG.Combat.documentClass = Pl1eCombat;
     CONFIG.Token.documentClass = Pl1eTokenDocument;
     CONFIG.ActiveEffect.documentClass = Pl1eActiveEffect;
+    CONFIG.MeasuredTemplate.objectClass = Pl1eMeasuredTemplate;
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
