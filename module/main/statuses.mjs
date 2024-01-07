@@ -579,4 +579,9 @@ export const registerStatuses = function () {
             flags: {}
         }
     ];
+
+    // Translate status labels
+    for (const statusEffect of CONFIG.statusEffects) {
+        statusEffect.label = game.i18n.localize(statusEffect.label);
+    }
 }

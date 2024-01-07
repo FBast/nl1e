@@ -9,7 +9,8 @@ export function getConfigAspects() {
             "data": "health",
             "operator": "add",
             "value": 0,
-            "createEffect": false
+            "createEffect": false,
+            "targetGroup": "self" //TODO add aura using this ?
         },
         {
             "name": "status",

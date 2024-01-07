@@ -1,3 +1,7 @@
-2024/01/06-17:44:28.501 2f1c Recovering log #1428
-2024/01/06-17:44:28.505 2f1c Delete type=0 #1428
-2024/01/06-17:44:28.505 2f1c Delete type=3 #1426
+2024/01/07-17:23:31.250 3e90 Recovering log #1431
+2024/01/07-17:23:31.254 3e90 Delete type=0 #1431
+2024/01/07-17:23:31.254 3e90 Delete type=3 #1430
+2024/01/07-18:28:27.113 fec Level-0 table #1435: started
+2024/01/07-18:28:27.113 fec Level-0 table #1435: 0 bytes OK
+2024/01/07-18:28:27.117 fec Delete type=0 #1433
+2024/01/07-18:28:27.155 fec Manual compaction at level-0 from '!adventures!b3pxDTwa7eRY58T5' @ 72057594037927935 : 1 .. '!adventures!b3pxDTwa7eRY58T5' @ 0 : 0; will stop at (end)

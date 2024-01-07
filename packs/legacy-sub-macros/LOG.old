@@ -1,3 +1,7 @@
-2024/01/06-17:44:28.494 4478 Recovering log #184
-2024/01/06-17:44:28.498 4478 Delete type=0 #184
-2024/01/06-17:44:28.498 4478 Delete type=3 #182
+2024/01/07-17:23:31.241 27e8 Recovering log #187
+2024/01/07-17:23:31.245 27e8 Delete type=0 #187
+2024/01/07-17:23:31.245 27e8 Delete type=3 #186
+2024/01/07-18:28:27.087 fec Level-0 table #191: started
+2024/01/07-18:28:27.087 fec Level-0 table #191: 0 bytes OK
+2024/01/07-18:28:27.088 fec Delete type=0 #189
+2024/01/07-18:28:27.088 fec Manual compaction at level-0 from '!macros!Njg4bkfVieXevMCn' @ 72057594037927935 : 1 .. '!macros!mVqiFhELRLUnBVeB' @ 0 : 0; will stop at (end)

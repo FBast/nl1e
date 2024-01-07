@@ -69,7 +69,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
         const statusEffect = CONFIG.statusEffects.find(status => status.id === statusEffectId);
         if (!statusEffect) throw new Error("PL1E | no status corresponding to " + statusEffectId);
         const effectData = foundry.utils.mergeObject({
-            label: statusEffect.label,
+            label: game.i18n.localize(statusEffect.label),
             icon: statusEffect.icon,
             changes: statusEffect.changes,
             duration: statusEffect.duration,
