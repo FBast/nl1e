@@ -1,4 +1,22 @@
 <div class="item-attribute flexrow">
+    <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
+    <select name="system.activeAspects.{{@key}}.dataGroup">
+        {{selectOptions dataGroups selected=aspect.dataGroup localize=true}}
+    </select>
+</div>
+<div class="item-attribute flexrow">
+    <label class="attribute-name">{{localize "PL1E.Data"}}</label>
+    <select name="system.activeAspects.{{@key}}.data">
+        {{selectOptions (config aspect.dataGroup) selected=aspect.data label="label" localize=true}}
+    </select>
+</div>
+<div class="item-attribute flexrow">
+    <label class="attribute-name">{{localize "PL1E.TargetGroup"}}</label>
+    <select name="system.activeAspects.{{@key}}.targetGroup">
+        {{selectOptions (config "targetGroups") selected=aspect.targetGroup localize=true}}
+    </select>
+</div>
+<div class="item-attribute flexrow">
     <label class="attribute-name">
         <i class="item-info far fa-circle-exclamation hover-green" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'></i>
         {{localize "PL1E.CreateEffect"}}

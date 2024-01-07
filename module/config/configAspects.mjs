@@ -62,19 +62,15 @@ export function getConfigAspects() {
         },
         {
             "name": "invocation",
-            "value": 0,
             "dataGroup": "invocations",
             "data": "standard",
-            "resolutionType": "fixed",
-            "targetGroup": "all",
             "invocation": "",
-            "createEffect": false,
+            "createEffect": true,
             "effectDuration": 1,
             "effectDurationResolutionType": "fixed"
         },
         {
             "name": "status",
-            "value": 0,
             "dataGroup": "statuses",
             "data": "stunned",
             "createEffect": true,
@@ -721,7 +717,7 @@ export function getConfigAspects() {
         "opponentsAndSelf": "PL1E.OpponentsAndSelf"
     }
 
-    PL1E.movementDestinations = {
+    PL1E.targetGroupWithTemplate = {
         "template": "PL1E.Template",
         "all": "PL1E.All",
         "targets": "PL1E.Targets",

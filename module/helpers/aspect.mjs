@@ -171,6 +171,12 @@ export class Pl1eAspect {
             descriptionParts.push(game.i18n.localize("PL1E.On"));
             descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("aspects", aspect.name, "contexts", aspect.context)));
         }
+        if (aspect.invocation !== undefined) {
+            descriptionParts.push(game.i18n.localize("PL1E.Invocation"));
+            descriptionParts.push(game.i18n.localize("PL1E.Of"));
+            const actorInvocation = await Pl1eHelpers.getDocument("Actor", aspect.invocation);
+            descriptionParts.push(actorInvocation ? actorInvocation.name : game.i18n.localize("PL1E.Unknown"));
+        }
         if (aspect.operator !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("numberOperators", aspect.operator)));
         if (aspect.value !== undefined) {
             if (typeof aspect.value === "boolean") {
@@ -186,8 +192,10 @@ export class Pl1eAspect {
             } else {
                 descriptionParts.push(aspect.value);
             }
-            if (aspect.damageType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
-            if (aspect.resolutionType !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
+            if (aspect.damageType !== undefined && aspect.damageType !== "raw")
+                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
+            if (aspect.resolutionType !== undefined && aspect.resolutionType !== "fixed")
+                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
             descriptionParts.push(game.i18n.localize("PL1E.On"));
         }
         if (aspect.data !== undefined) {
@@ -197,9 +205,24 @@ export class Pl1eAspect {
             descriptionParts.push(game.i18n.localize("PL1E.For"));
             descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroups", aspect.targetGroup)));
         }
+        if (aspect.transferSource !== undefined) {
+            descriptionParts.push(game.i18n.localize("PL1E.From"));
+            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroups", aspect.transferSource)));
+        }
+        if (aspect.transferDestination !== undefined) {
+            descriptionParts.push(game.i18n.localize("PL1E.To"));
+            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroups", aspect.transferDestination)));
+        }
         if (aspect.movementDestination !== undefined) {
             descriptionParts.push(game.i18n.localize("PL1E.To"));
-            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("movementDestinations", aspect.movementDestination)));
+            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroupWithTemplate", aspect.movementDestination)));
+        }
+        if (aspect.createEffect) {
+            descriptionParts.push(game.i18n.localize("PL1E.During"));
+            descriptionParts.push(aspect.effectDuration);
+            descriptionParts.push(game.i18n.localize("PL1E.Turn"));
+            if (aspect.effectDurationResolutionType !== "fixed")
+                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.effectDurationResolutionType)));
         }
         const description = descriptionParts.join(' ');
         return description.toLowerCase();

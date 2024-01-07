@@ -19,6 +19,6 @@
 <div class="item-attribute flexrow">
     <label class="attribute-name">{{localize "PL1E.MovementDestination"}}</label>
     <select name="system.activeAspects.{{@key}}.movementDestination">
-        {{selectOptions (config "movementDestinations") selected=aspect.movementDestination localize=true}}
+        {{selectOptions (config "targetGroupWithTemplate") selected=aspect.movementDestination localize=true}}
     </select>
 </div>

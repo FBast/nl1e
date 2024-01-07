@@ -4,3 +4,22 @@
         {{selectOptions root.invocations selected=aspect.invocation localize=true}}
     </select>
 </div>
+<div class="item-attribute flexrow">
+    <label class="attribute-name">
+        <i class="item-info far fa-circle-exclamation hover-green" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'></i>
+        {{localize "PL1E.CreateEffect"}}
+    </label>
+    <input type="checkbox" name="system.activeAspects.{{@key}}.createEffect" {{checked aspect.createEffect}} data-dtype="Boolean"/>
+</div>
+{{#if aspect.createEffect}}
+    <div class="item-attribute flexrow">
+        <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
+        <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{aspect.effectDuration}}" data-dtype="Number"/>
+    </div>
+    <div class="item-attribute flexrow">
+        <label class="attribute-name">{{localize "PL1E.EffectDurationResolutionType"}}</label>
+        <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
+            {{selectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
+        </select>
+    </div>
+{{/if}}
