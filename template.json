@@ -347,8 +347,7 @@
     "npc": {
       "templates": ["base"],
       "general": {
-        "NPCTemplate": "balanced",
-        "experienceTemplate": "novice"
+        "NPCTemplate": "balanced"
       }
     },
     "merchant": {

@@ -13,7 +13,6 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/parts/merchant-items.hbs",
         "systems/pl1e/templates/actor/parts/merchant-features.hbs",
         "systems/pl1e/templates/actor/parts/merchant-config.hbs",
-        "systems/pl1e/templates/actor/parts/npc-stats.hbs",
 
         // Item partials
         "systems/pl1e/templates/item/parts/item-description.hbs",
@@ -50,8 +49,7 @@ export const preloadHandlebarsTemplates = async function () {
 
         // Item components
         "systems/pl1e/templates/item/components/item-list.hbs",
-        "systems/pl1e/templates/item/components/item-tags.hbs",
-        "systems/pl1e/templates/item/components/price.hbs",
+        "systems/pl1e/templates/item/components/item-tags.hbs", ,
         "systems/pl1e/templates/item/components/item-aspects-passives.hbs",
         "systems/pl1e/templates/item/components/passive-aspect-modify.hbs",
         "systems/pl1e/templates/item/components/passive-aspect-status.hbs",

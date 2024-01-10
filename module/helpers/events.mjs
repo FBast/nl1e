@@ -221,28 +221,25 @@ export class Pl1eEvent {
     }
 
     /**
-     * Handle currency changes
+     * Handle spin number changes
      * @param {Event} event The originating click event
      * @param {Actor|Item} document the document to modify
      */
-    static async onCurrencyChange(event, document) {
+    static async onSpinNumber(event, document) {
         event.preventDefault();
         event.stopPropagation();
-        const currency = $(event.currentTarget).data("currency");
-        let value = $(event.currentTarget).data("value");
-        if (!value || !currency) return;
-        if (document instanceof Actor) {
-            let oldValue = document.system.money[currency];
-            await document.update({
-                ["system.money." + currency]: oldValue + value
-            });
-        }
-        if (document instanceof Item) {
-            let oldValue = document.system.price[currency];
-            await document.update({
-                ["system.price." + currency]: oldValue + value
-            });
-        }
+        const path = $(event.currentTarget).data("path");
+        const value = $(event.currentTarget).data("value");
+        const min = $(event.currentTarget).data("min");
+        const max = $(event.currentTarget).data("max");
+        if (!value || !path) return;
+
+        let newValue = getProperty(document, path) + value;
+        newValue = min !== undefined ? Math.max(newValue, min) : newValue;
+        newValue = max !== undefined ? Math.min(newValue, max) : newValue;
+        await document.update({
+            [path]: newValue
+        })
     }
 
     /**

@@ -19,13 +19,13 @@
                         </label>
                         <div class="skill-rank align-right">
                             {{#unless ../usable}}
-                                <i class="fas fa-ban fa-lg hover-green" data-tooltip='{{localize "PL1E.Unusable"}}'></i>
+                                <i class="far fa-ban fa-lg hover-green" data-tooltip='{{localize "PL1E.Unusable"}}'></i>
                             {{/unless}}
                             {{#if ../implosion}}
-                                <i class="fas fa-skull fa-lg hover-green" data-tooltip='{{localize "PL1E.Implosion"}}'></i>
+                                <i class="far fa-skull fa-lg hover-green" data-tooltip='{{localize "PL1E.Implosion"}}'></i>
                             {{/if}}
                             {{#if ../explosion}}
-                                <i class="fas fa-burst fa-lg hover-green" data-tooltip='{{localize "PL1E.Explosion"}}'></i>
+                                <i class="far fa-burst fa-lg hover-green" data-tooltip='{{localize "PL1E.Explosion"}}'></i>
                             {{/if}}
                             <i class="far fa-circle-{{../rank}} fa-lg"></i>
                         </div>
@@ -56,13 +56,13 @@
                         </label>
                         <div class="skill-rank align-right">
                             {{#unless ../usable}}
-                                <i class="fas fa-ban fa-lg hover-green" data-tooltip='{{localize "PL1E.Unusable"}}'></i>
+                                <i class="far fa-ban fa-lg hover-green" data-tooltip='{{localize "PL1E.Unusable"}}'></i>
                             {{/unless}}
                             {{#if ../implosion}}
-                                <i class="fas fa-skull fa-lg hover-green" data-tooltip='{{localize "PL1E.Implosion"}}'></i>
+                                <i class="far fa-skull fa-lg hover-green" data-tooltip='{{localize "PL1E.Implosion"}}'></i>
                             {{/if}}
                             {{#if ../explosion}}
-                                <i class="fas fa-burst fa-lg hover-green" data-tooltip='{{localize "PL1E.Explosion"}}'></i>
+                                <i class="far fa-burst fa-lg hover-green" data-tooltip='{{localize "PL1E.Explosion"}}'></i>
                             {{/if}}
                             {{#if (and @root.system.general.creationMod (eq @root.actor.type "character"))}}
                                 <i class="rank-control fas fa-circle-{{../rank}} fa-lg hover-red" data-skill="{{@key}}"></i>

@@ -171,31 +171,4 @@ export function getConfigTemplates() {
             "skills": ["accuracy", "nature", "acrobatics", "performance", "vigilance"]
         }
     }
-
-    PL1E.experienceTemplates = {
-        "novice": {
-            "label": "PL1E.Novice",
-            "value": 10
-        },
-        "apprentice": {
-            "label": "PL1E.Apprentice",
-            "value": 20
-        },
-        "adept": {
-            "label": "PL1E.Adept",
-            "value": 30
-        },
-        "expert": {
-            "label": "PL1E.Expert",
-            "value": 40
-        },
-        "master": {
-            "label": "PL1E.Master",
-            "value": 50,
-        },
-        "grandMaster": {
-            "label": "PL1E.GrandMaster",
-            "value": 60
-        }
-    }
 }

@@ -97,7 +97,7 @@ export class Pl1eActorSheet extends ActorSheet {
         context.flags = this.actor.flags;
         context.items = this.actor.items;
         context.effects = this.actor.effects;
-        context.inCombat = this.actor.bestToken !== null && this.actor.bestToken.inCombat;
+        context.inCombat = this.actor.bestToken && this.actor.bestToken.inCombat;
         context.filters = this._filters;
 
         await this._prepareItems(context);
@@ -155,10 +155,10 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".skill-roll").on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
 
         // Currency
-        html.find(".currency-control").on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.actor));
         html.find(".currency-convert").on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
 
         // Custom controls
+        html.find(".spin-number").on("click", ev => Pl1eEvent.onSpinNumber(ev, this.actor));
         html.find(".characteristic-control").on("click", ev => this.onCharacteristicChange(ev));
         html.find(".rank-control").on("click", ev => this.onRankChange(ev));
         html.find(".item-toggle").on("click", ev => Pl1eEvent.onItemToggle(ev, this.actor));

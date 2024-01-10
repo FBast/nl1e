@@ -8,12 +8,12 @@
             {{#each targetData.activeAspects}}
                 {{#with (config dataGroup data)}}
                     {{#if (and (eq type "number") (ne ../../this 0))}}
-                        <i class="{{#if (gt ../value 0)}}fas{{else}}fas{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
+                        <i class="{{#if (gt ../value 0)}}far{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
                             <label>{{formatNumber ../value signe=true}}</label>
                         </i>
                     {{else if (eq type "bool")}}
                         {{#unless (and ../applyIfTrue (not ../value))}}
-                            <i class="fas {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
+                            <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
                         {{/unless}}
                     {{/if}}
                 {{/with}}

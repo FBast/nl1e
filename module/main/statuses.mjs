@@ -413,9 +413,19 @@ export const registerStatuses = function () {
             label: "PL1E.StatusClairvoyant",
             icon: "systems/pl1e/assets/icons/clairvoyant.svg",
             tint: "#00ff00",
-            changes: [], // TODO
+            changes: [],
             duration: {},
-            flags: {}
+            flags: {
+                pl1e: {
+                    tokenChanges: {
+                        "detectionModes": [{
+                            "id": "seeInvisibility",
+                            "enabled": true,
+                            "range": 20
+                        }]
+                    }
+                }
+            }
         },
         {
             // Grant token tremorsense
@@ -423,9 +433,23 @@ export const registerStatuses = function () {
             label: "PL1E.StatusTremorsense",
             icon: "systems/pl1e/assets/icons/tremorsense.svg",
             tint: "#00ff00",
-            changes: [], // TODO
+            changes: [{
+                key: "token.sight.visionMode",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: "tremorsense"
+            }],
             duration: {},
-            flags: {}
+            flags: {
+                pl1e: {
+                    tokenChanges: {
+                        "detectionModes": [{
+                            "id": "feelTremor",
+                            "enabled": true,
+                            "range": 20
+                        }]
+                    }
+                }
+            }
         },
         {
             // The character focus on a spell

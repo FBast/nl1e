@@ -139,7 +139,7 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
         html.find(`.item-switch-behavior`).on("click", ev => Pl1eEvent.onItemSwitchBehavior(ev, this.item));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
-        html.find('.currency-control').on("click", ev => Pl1eEvent.onCurrencyChange(ev, this.item));
+        html.find('.spin-number').on("click", ev => Pl1eEvent.onSpinNumber(ev, this.item));
         html.find(".trait-selector").on("click", ev => Pl1eEvent.onTraitSelector(ev, this.item));
         html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));
         html.find('.aspect-remove').on("click", ev => this._onAspectRemove(ev));

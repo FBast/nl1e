@@ -1,4 +1,42 @@
 <fieldset>
+    <legend class="section-header">{{localize "PL1E.Parameters"}}</legend>
+    {{#if (eq actor.type "npc")}}
+        <div class="form-group attribute">
+            <select name="system.general.NPCTemplate">
+                {{selectOptions (config "NPCTemplates") selected=system.general.NPCTemplate label="label" localize=true}}
+            </select>
+        </div>
+    {{/if}}
+    <div class="form-group">
+        <label>{{localize "PL1E.Advantages"}}</label>
+        <div class="form-fields">
+            {{rangePicker name="system.general.advantages" value=system.general.advantages min=-2 max=2 step=1}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "PL1E.Experience"}}</label>
+        <div class="form-fields">
+            <div class="input-spin">
+                <input type="number" step="1" min="0" max="60" name="system.general.experience"
+                       value="{{system.general.experience}}" data-dtype="Number" {{#unless game.user.isTrusted}}disabled{{/unless}}/>
+                <span>
+                    <i class="spin-number hover-red fa fa-plus-square" data-path="system.general.experience" data-value="1" data-max="50"></i>
+                    <i class="spin-number hover-red fa fa-minus-square" data-path="system.general.experience" data-value="-1" data-min="0"></i>
+                </span>
+            </div>
+            <label>/</label>
+            <input type="number" name="system.general.experienceNeeded"
+                   value="{{system.general.experienceNeeded}}" data-dtype="Number" disabled/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "PL1E.RollBestSkill"}}</label>
+        <div class="form-fields">
+            <input type="checkbox" name="system.general.rollBestSkill" {{checked system.general.rollBestSkill}} data-dtype="Boolean" disabled/>
+        </div>
+    </div>
+</fieldset>
+<fieldset>
     <legend class="section-header">{{localize "PL1E.General"}}</legend>
     <div class="form-group">
         <label>{{localize "PL1E.Level"}}</label>
@@ -8,20 +46,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label>{{localize "PL1E.Experience"}}</label>
+        <label>{{localize "PL1E.RemainingCharacteristics"}}</label>
         <div class="form-fields">
-            <input type="number" step="1" min="0" max="60" name="system.general.experience"
-                   value="{{system.general.experience}}" data-dtype="Number" {{#unless (and game.user.isGM (eq actor.type "character"))}}disabled{{/unless}}/>
-            <label>/</label>
-            <input type="number" name="system.general.experienceNeeded"
-                   value="{{system.general.experienceNeeded}}" data-dtype="Number" disabled/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label>{{localize "PL1E.Characteristics"}}</label>
-        <div class="form-fields">
-            <input type="number" step="1" min="0" max="60" name="system.general.remainingCharacteristics"
-                   value="{{system.general.remainingCharacteristics}}" data-dtype="Number" disabled/>
+            <label class="align-right">{{system.general.remainingCharacteristics}}</label>
         </div>
     </div>
     <div class="form-group">
@@ -44,18 +71,6 @@
             {{else if (eq system.general.maxRank 5)}}
                 <i class="far fa-circle-5 fa-lg align-right"></i>
             {{/if}}
-        </div>
-    </div>
-    <div class="form-group">
-        <label>{{localize "PL1E.RollBestSkill"}}</label>
-        <div class="form-fields">
-            <input type="checkbox" name="system.general.rollBestSkill" {{checked system.general.rollBestSkill}} data-dtype="Boolean" disabled/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label>{{localize "PL1E.Advantages"}}</label>
-        <div class="form-fields">
-            {{rangePicker name="system.general.advantages" value=system.general.advantages min=-2 max=2 step=1}}
         </div>
     </div>
     <div class="form-group">

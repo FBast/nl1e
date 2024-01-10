@@ -2,17 +2,80 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 export class Pl1eActiveEffect extends ActiveEffect {
 
-    /**
-     * Is this active effect currently suppressed?
-     * @type {boolean}
-     */
-    isSuppressed = false;
+    async applyTokenEffect(actor) {
+        if (!this.statuses) return;
 
-    /** @inheritdoc */
-    apply(actor, change) {
-        if ( this.isSuppressed ) return null;
-        return super.apply(actor, change);
+        const actorId = actor.id;
+        const tokenData = actor.isToken ? actor.token : actor.prototypeToken;
+        let tokenUpdates = {};
+
+        for (let status of this.statuses) {
+            // Extract token changes from the effect's flags
+            const tokenChanges = this.getFlag('pl1e', 'tokenChanges');
+            if (tokenChanges) {
+                for (const [key, value] of Object.entries(tokenChanges)) {
+                    if (Array.isArray(value)) {
+                        // Handle arrays: merge with existing array, avoiding duplicates
+                        let existingArray = duplicate(tokenData[key] || []);
+                        tokenUpdates[key] = [...new Set([...existingArray, ...value])];
+                    } else {
+                        // For non-array values, just copy them over
+                        tokenUpdates[key] = value;
+                    }
+                }
+            }
+        }
+
+        // Apply the updates
+        if (actor.isToken) {
+            await actor.token.update(tokenUpdates);
+        } else {
+            // Update all tokens linked to this actor in the current scene
+            const tokensToUpdate = canvas.tokens.placeables.filter(token => token.actor.id === actorId);
+            for (let token of tokensToUpdate) {
+                await token.document.update(tokenUpdates);
+            }
+
+            // Update the actor's prototype token data
+            await actor.update({ "prototypeToken": tokenUpdates });
+        }
     }
+
+    async removeTokenEffect(actor) {
+        if (!this.flags?.pl1e?.tokenChanges) return;
+
+        const actorId = actor.id;
+        let tokenRevertUpdates = {};
+
+        // Prepare the reversed changes
+        for (const [key, value] of Object.entries(this.flags.pl1e.tokenChanges)) {
+            if (Array.isArray(value)) {
+                // Remove specific items from the array
+                let currentArray = duplicate(actor.isToken ? actor.token[key] : actor.prototypeToken[key]) || [];
+                currentArray = currentArray.filter(item => !value.some(val => val.id === item.id));
+                tokenRevertUpdates[key] = currentArray;
+            } else {
+                // Retrieve the original value from a stored flag or set to a default
+                const originalValue = this.getFlag('pl1e', `original_${key}`) || null; // default or null
+                tokenRevertUpdates[key] = originalValue;
+            }
+        }
+
+        // Apply the reversed updates
+        if (actor.isToken) {
+            await actor.token.update(tokenRevertUpdates);
+        } else {
+            // Update all tokens linked to this actor in the current scene
+            const tokensToUpdate = canvas.tokens.placeables.filter(token => token.actor.id === actorId);
+            for (let token of tokensToUpdate) {
+                await token.document.update(tokenRevertUpdates);
+            }
+
+            // Update the actor's prototype token data
+            await actor.update({ "prototypeToken": tokenRevertUpdates });
+        }
+    }
+
 
     /**
      * Create an active effect
@@ -72,6 +135,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
             label: game.i18n.localize(statusEffect.label),
             icon: statusEffect.icon,
             changes: statusEffect.changes,
+            tokenChanges: statusEffect.tokenChanges,
             duration: statusEffect.duration,
             statuses: [statusEffect.id],
             flags: statusEffect.flags

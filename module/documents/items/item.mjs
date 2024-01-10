@@ -150,6 +150,9 @@ export class Pl1eItem extends Item {
         return createdItem;
     }
 
+    _onCreate(data, options, userId) {
+        super._onCreate(data, options, userId);
+    }
 
     /** @inheritDoc */
     async _onDelete(options, userId) {

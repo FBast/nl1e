@@ -17,9 +17,6 @@ export class Pl1eNPC extends Pl1eActor {
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
 
-        // Handle experience
-        actorGeneral.experience = Pl1eHelpers.getConfig("experienceTemplates", actorGeneral.experienceTemplate, "value");
-
         super.prepareBaseData();
 
         // Handle characteristics repartition

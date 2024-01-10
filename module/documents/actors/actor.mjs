@@ -89,6 +89,22 @@ export class Pl1eActor extends Actor {
     async _onUpdate(changed, options, user) {
         await super._onUpdate(changed, options, user);
 
+        // Update actor abilities effects based on level
+        if (changed.system?.general?.experience) {
+            // In case of the level changed then apply or remove effects for enabled or disabled abilities
+            for (/** @type {Pl1eItem} */ const item of this.items.filter(item => item.type === "ability")) {
+                for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
+                    if (!aspect.createEffect) continue;
+                    if (item.isEnabled) {
+                        await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
+                    }
+                    else {
+                        await Pl1eAspect.removePassiveEffect(aspect, id, this);
+                    }
+                }
+            }
+        }
+
         // Add effect based on conditions
         await Pl1eActiveEffect.toggleStatusEffect(this, "dead", this.isDead);
         await Pl1eActiveEffect.toggleStatusEffect(this, "unconscious", this.IsUnconscious);
@@ -177,6 +193,13 @@ export class Pl1eActor extends Actor {
             }
         }
 
+        // Apply special token effects
+        if (embeddedName === "ActiveEffect") {
+            for (/** @type {Pl1eActiveEffect} */ const activeEffect of documents) {
+                await activeEffect.applyTokenEffect(this);
+            }
+        }
+
         super._onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId);
     }
 
@@ -193,7 +216,18 @@ export class Pl1eActor extends Actor {
             }
         }
 
+        // Remove special token effects
+        if (embeddedName === "ActiveEffect") {
+            for (/** @type {Pl1eActiveEffect} */ const activeEffect of documents) {
+                await activeEffect.removeTokenEffect(this);
+            }
+        }
+
         super._onDeleteEmbeddedDocuments(embeddedName, documents, result, options, userId);
+    }
+
+    _onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
+        super._onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId);
     }
 
     /** @inheritDoc
@@ -231,25 +265,7 @@ export class Pl1eActor extends Actor {
 
     /** @inheritDoc */
     async prepareEmbeddedDocuments() {
-        // Status effects before update
-        if (this.statuses && this.statuses.has("charmed") && this.bestToken) {
-            this.bestToken.document.disposition = -this.bestToken.document.disposition;
-        }
-
         super.prepareEmbeddedDocuments();
-
-        // Status effects after update
-        if (this.statuses && this.statuses.has("charmed") && this.bestToken) {
-            this.bestToken.document.disposition = -this.bestToken.document.disposition;
-        }
-        if (this.statuses && this.statuses.has("clairvoyant") && this.bestToken) {
-            //TODO not working
-            this.bestToken.document.detectionModes.push({
-                enabled: true,
-                id: "seeInvisibility",
-                range: 20
-            });
-        }
 
         // Apply passive values
         for (/** @type {Pl1eItem} */ const item of this.items) {
