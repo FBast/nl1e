@@ -38,6 +38,7 @@ export class Pl1eCombat extends Combat {
         await actor.update({
             "system.general.action": 2,
             "system.general.reaction": 1,
+            "system.general.quickAction": 1,
             "system.variables.usedMovement": 0,
             "system.variables.remainingMovement": 0,
             "system.variables.movementAction": 0
