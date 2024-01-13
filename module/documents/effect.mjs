@@ -86,10 +86,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
      */
     static async createActiveEffect(aspect, characterData, targetData) {
         // Calculate duration
-        let effectDuration = aspect.effectDuration;
-        if (aspect.effectDurationResolutionType === "ifSuccess" && characterData.result <= 0) effectDuration = 0;
-        else if (aspect.effectDurationResolutionType === "multipliedBySuccess") effectDuration *= characterData.result;
-        aspect.effectDuration = effectDuration;
+        aspect.effectDuration = Pl1eHelpers.applyResolution(aspect.effectDuration, characterData.result, aspect.effectDurationResolutionType);
 
         // Abort if the duration is null
         if (aspect.effectDuration <= 0) return;
@@ -131,6 +128,18 @@ export class Pl1eActiveEffect extends ActiveEffect {
     static async createStatusEffect(actor, statusEffectId, options = {}) {
         const statusEffect = CONFIG.statusEffects.find(status => status.id === statusEffectId);
         if (!statusEffect) throw new Error("PL1E | no status corresponding to " + statusEffectId);
+
+        // Check if an existing effect is already active
+        const existingStatusEffect = actor.effects.find(effect => effect.statuses.has(statusEffectId));
+        if (existingStatusEffect) {
+            const newDuration = mergeObject(existingStatusEffect.duration, statusEffect.duration);
+            await existingStatusEffect.update({
+                "duration": newDuration
+            })
+            return;
+        }
+
+        // Create effect
         const effectData = foundry.utils.mergeObject({
             label: game.i18n.localize(statusEffect.label),
             icon: statusEffect.icon,

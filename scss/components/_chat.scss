@@ -55,6 +55,13 @@
       }
     }
 
+    .item-effect {
+      line-height: 20px;
+      background: rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--color-border-light-2);
+      box-shadow: 0 0 2px #FFF inset;
+    }
+
     .right-image {
       margin-left: 5px;
     }

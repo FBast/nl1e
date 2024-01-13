@@ -327,12 +327,6 @@ export function getConfigItems() {
             "fallback": 50,
             "inDescription": true
         },
-        "squareLength": {
-            "label": "PL1E.SquareLength",
-            "type": "number",
-            "fallback": 1,
-            "inDescription": true
-        },
         "rayLength": {
             "label": "PL1E.RayLength",
             "type": "number",
@@ -414,7 +408,6 @@ export function getConfigItems() {
         "target": "PL1E.Target",
         "circle": "PL1E.Circle",
         "cone": "PL1E.Cone",
-        "square": "PL1E.Square",
         "ray": "PL1E.Ray"
     }
 

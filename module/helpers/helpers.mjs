@@ -343,6 +343,19 @@ export class Pl1eHelpers {
         return level;
     }
 
+    static applyResolution(value, roll, resolutionType) {
+        let resolvedValue = value;
+        switch (resolutionType) {
+            case "multipliedBySuccess":
+                resolvedValue *= roll > 0 ? roll : 0;
+                break;
+            case "ifSuccess":
+                resolvedValue = roll > 0 ? roll : 0;
+                break;
+        }
+        return resolvedValue;
+    }
+
     static _levelCaps(actor) {
         const classNumber = Math.max(actor.items.filter(item => item.type === "class").length, 1);
         const key = classNumber === 1 ? "monoClassLevelCaps" : "multiClassLevelCaps";

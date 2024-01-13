@@ -6,17 +6,19 @@
             {{#each characterData.attributes}}
                 {{#with (config "attributes" @key)}}
                     {{#if (and (ne dataGroup undefined) (ne data undefined))}}
-                        {{#with (config dataGroup data)}}
-                            {{#if (and (eq type "number") (ne ../../this 0))}}
-                                <i class="{{#if (gt ../../this 0)}}far{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
-                                    <label>{{formatNumber ../../this signe=true}}</label>
-                                </i>
-                            {{else if (eq type "bool")}}
-                                {{#unless (and ../applyIfTrue (not ../../this))}}
-                                    <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
-                                {{/unless}}
-                            {{/if}}
-                        {{/with}}
+                        <div class="item-effect">
+                            {{#with (config dataGroup data)}}
+                                {{#if (and (eq type "number") (ne ../../this 0))}}
+                                    <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                        <label>{{formatNumber ../../this signe=true}}</label>
+                                    </i>
+                                {{else if (eq type "bool")}}
+                                    {{#unless (and ../applyIfTrue (not ../../this))}}
+                                        <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
+                                    {{/unless}}
+                                {{/if}}
+                            {{/with}}
+                        </div>
                     {{/if}}
                 {{/with}}
             {{/each}}
@@ -33,11 +35,11 @@
     <div class="card-content">
         <!-- Description of the ability -->
         {{{characterData.item.system.description}}}
+        <!-- Result of the roll -->
         {{#if (ne (length characterData.attributes.roll) 0)}}
-            <!-- Result of the roll -->
             <div class="dice-roll">
                 <div class="dice-result">
-                    <div class="dice-formula">{{rollData.formula}}</div>
+                    <div class="dice-formula">{{rollData.skillName}} : {{rollData.formula}}</div>
                     <div class="dice-tooltip">
                         {{#each rollData.dice}}
                             <section class="tooltip-part">
@@ -57,7 +59,7 @@
                         {{/each}}
                     </div>
                     <h4 class="dice-total {{#if (gt rollData.total 0)}}success{{else}}failure{{/if}}">
-                        {{rollData.total}} {{localize "PL1E.Success"}}
+                        {{#if (gt rollData.total 0)}}{{localize "PL1E.Success"}}{{else}}{{localize "PL1E.Failure"}}{{/if}} ({{rollData.total}})
                     </h4>
                 </div>
             </div>

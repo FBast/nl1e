@@ -13,15 +13,17 @@ export class Pl1eChat {
         const rollData = targetData === undefined ? characterData.rollData : targetData.rollData;
         const template = targetData === undefined ? "character" : "target";
 
+        // Localize skill name
+        if (rollData !== undefined) {
+            const skillConfig = Pl1eHelpers.getConfig("skills", rollData.skillName);
+            rollData.skillName = game.i18n.localize(skillConfig.label);
+        }
+
         // Render the chat card template
         const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-${template}.hbs`,
             {rollData: rollData, characterData: characterData, targetData: targetData});
 
         let flavor = `[${game.i18n.localize("PL1E.Action")}] ${characterData.item.name}`;
-        if (rollData !== undefined) {
-            const skillConfig = Pl1eHelpers.getConfig("skills", rollData.skillName);
-            flavor += ` [${game.i18n.localize("PL1E.Skill")}] ${game.i18n.localize(skillConfig.label)}`
-        }
 
         // Create the ChatMessage data object
         const chatData = {

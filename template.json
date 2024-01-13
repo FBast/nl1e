@@ -451,7 +451,6 @@
         "circleRadius": 0,
         "coneLength": 0,
         "coneAngle": 0,
-        "squareLength": 0,
         "rayLength": 0
       }
     },
@@ -506,7 +505,6 @@
         "circleRadius": 1,
         "coneLength": 1,
         "coneAngle": 40,
-        "squareLength": 1,
         "rayLength": 1
       }
     },

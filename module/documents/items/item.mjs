@@ -118,9 +118,9 @@ export class Pl1eItem extends Item {
             actor: actor,
             actorId: actor._id,
             token: token,
-            tokenId: token?.document._id,
-            scene: token.scene,
-            sceneId: token.scene.id,
+            tokenId: token._id,
+            scene: token.parent,
+            sceneId: token.parent.id,
             item: this,
             itemId: this._id,
             attributes: {...this.system.attributes},
@@ -267,7 +267,6 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.circleRadius = 0;
                 changed.system.attributes.coneLength = 0;
                 changed.system.attributes.coneAngle = 0;
-                changed.system.attributes.squareLength = 0;
                 changed.system.attributes.rayLength = 0;
             }
             if (changed.system?.attributes?.areaShape === "target") {
@@ -276,7 +275,6 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.circleRadius = 0;
                 changed.system.attributes.coneLength = 0;
                 changed.system.attributes.coneAngle = 0;
-                changed.system.attributes.squareLength = 0;
                 changed.system.attributes.rayLength = 0;
             }
             if (changed.system?.attributes?.areaShape === "circle") {
@@ -284,14 +282,12 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.areaNumber = 1;
                 changed.system.attributes.coneLength = 0;
                 changed.system.attributes.coneAngle = 0;
-                changed.system.attributes.squareLength = 0;
                 changed.system.attributes.rayLength = 0;
             }
             if (changed.system?.attributes?.areaShape === "cone") {
                 changed.system.attributes.range = 0;
                 changed.system.attributes.areaNumber = 1;
                 changed.system.attributes.circleRadius = 0;
-                changed.system.attributes.squareLength = 0;
                 changed.system.attributes.rayLength = 0;
             }
             if (changed.system?.attributes?.areaShape === "square") {
@@ -308,7 +304,6 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.circleRadius = 0;
                 changed.system.attributes.coneLength = 0;
                 changed.system.attributes.coneAngle = 0;
-                changed.system.attributes.squareLength = 0;
             }
         }
 
@@ -635,7 +630,7 @@ export class Pl1eItem extends Item {
                 return false;
             }
         }
-        else if (itemAttributes.activation === "reaction" && characterData.actor.system.misc.reaction <= 0) {
+        else if (itemAttributes.activation === "reaction" && characterData.actor.system.general.reaction <= 0) {
             ui.notifications.info(game.i18n.localize("PL1E.NoMoreReaction"));
             return false;
         }
@@ -644,7 +639,7 @@ export class Pl1eItem extends Item {
                 ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
                 return false;
             }
-            if (characterData.actor.system.misc.quickAction <= 0) {
+            if (characterData.actor.system.general.quickAction <= 0) {
                 ui.notifications.info(game.i18n.localize("PL1E.NoMoreQuickAction"));
                 return false;
             }
@@ -674,12 +669,7 @@ export class Pl1eItem extends Item {
                     // Apply resolution type
                     if (characterData.attributes[`${key}ResolutionType`] !== undefined) {
                         const resolutionType = characterData.attributes[`${key}ResolutionType`];
-                        if (resolutionType === "multipliedBySuccess") {
-                            calculatedAttribute *= characterData.result > 0 ? characterData.result : 0;
-                        }
-                        if (resolutionType === "ifSuccess") {
-                            calculatedAttribute = characterData.result > 0 ? calculatedAttribute : 0;
-                        }
+                        calculatedAttribute = Pl1eHelpers.applyResolution(calculatedAttribute, characterData.result, resolutionType);
                     }
 
                     // Negate some attributes

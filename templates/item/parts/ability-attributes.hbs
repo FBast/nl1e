@@ -181,11 +181,6 @@
                         <label>{{localize "PL1E.ConeAngle"}}</label>
                         <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
                     </div>
-                {{else if (eq system.attributes.areaShape "square")}}
-                        <div class="form-group">
-                            <label>{{localize "PL1E.SquareLength"}}</label>
-                            <input type="number" name="system.attributes.squareLength" value="{{system.attributes.squareLength}}" data-dtype="Number"/>
-                        </div>
                 {{else if (eq system.attributes.areaShape "ray")}}
                     <div class="form-group">
                         <label>{{localize "PL1E.RayLength"}}</label>

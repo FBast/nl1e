@@ -7,15 +7,24 @@
         <div class="item-effects-target">
             {{#each targetData.activeAspects}}
                 {{#with (config dataGroup data)}}
-                    {{#if (and (eq type "number") (ne ../../this 0))}}
-                        <i class="{{#if (gt ../value 0)}}far{{else}}far{{/if}} {{icon}} hover-green" data-tooltip="{{localize label}}">
-                            <label>{{formatNumber ../value signe=true}}</label>
-                        </i>
-                    {{else if (eq type "bool")}}
-                        {{#unless (and ../applyIfTrue (not ../value))}}
-                            <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
-                        {{/unless}}
-                    {{/if}}
+                    <div class="item-effect">
+                        {{#if (and (eq type "number") (ne ../../this 0))}}
+                            <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                <label>{{formatNumber ../value signe=true}}</label>
+                            </i>
+                        {{else if (eq type "bool")}}
+                            {{#unless (and ../applyIfTrue (not ../value))}}
+                                <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
+                            {{/unless}}
+                        {{else if (eq type "status")}}
+                            <i class="far fa-flag hover-green" data-tooltip="{{localize label}}"></i>
+                        {{/if}}
+                        {{#if ../effectDuration}}
+                            <i class="far fa-clock hover-green" data-tooltip="{{localize "PL1E.Turn"}}">
+                                <label>{{../effectDuration}}</label>
+                            </i>
+                        {{/if}}
+                    </div>
                 {{/with}}
             {{/each}}
         </div>
@@ -27,7 +36,7 @@
             <!-- Result of the roll -->
             <div class="dice-roll">
                 <div class="dice-result">
-                    <div class="dice-formula">{{rollData.formula}}</div>
+                    <div class="dice-formula">{{rollData.skillName}} : {{rollData.formula}}</div>
                     <div class="dice-tooltip">
                         {{#each rollData.dice}}
                             <section class="tooltip-part">
@@ -47,7 +56,8 @@
                         {{/each}}
                     </div>
                     <h4 class="dice-total {{#if (gt targetData.result 0)}}success{{else}}failure{{/if}}">
-                        {{characterData.rollData.total}} - {{targetData.rollData.total}} = {{targetData.result}} {{localize "PL1E.Success"}}
+                        {{#if (gt targetData.result 0)}}{{localize "PL1E.Success"}}{{else}}{{localize "PL1E.Failure"}}{{/if}}
+                        ({{characterData.rollData.total}} - {{targetData.rollData.total}} = {{targetData.result}})
                     </h4>
                 </div>
             </div>

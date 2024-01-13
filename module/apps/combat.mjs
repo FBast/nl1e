@@ -1,9 +1,5 @@
 export class Pl1eCombat extends Combat {
 
-    _onCreate(data, options, userId) {
-        super._onCreate(data, options, userId);
-    }
-
     /** @inheritDoc */
     async nextRound() {
         for (const combatant of this.combatants) {
@@ -41,7 +37,7 @@ export class Pl1eCombat extends Combat {
     async _resetCombatStats(actor) {
         await actor.update({
             "system.general.action": 2,
-            "system.misc.reaction": 1,
+            "system.general.reaction": 1,
             "system.variables.usedMovement": 0,
             "system.variables.remainingMovement": 0,
             "system.variables.movementAction": 0

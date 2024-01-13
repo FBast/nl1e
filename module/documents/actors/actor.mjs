@@ -22,7 +22,7 @@ export class Pl1eActor extends Actor {
 
     /**
      * Seek for any token which represent this actor
-     * @returns {Token | null}
+     * @returns {TokenDocument | null}
      */
     get bestToken() {
         // Try to get the token associated with the sheet
@@ -34,11 +34,6 @@ export class Pl1eActor extends Actor {
         // If there is still no token, and actor link is enabled, try to get the first linked token
         if (!token && this.prototypeToken.actorLink && this.getActiveTokens().length > 0) {
             token = this.getActiveTokens()[0].document;
-        }
-
-        // If we have a token, try to find it in the canvas tokens
-        if (token) {
-            token = canvas.tokens.placeables.find(t => t.document.uuid === token.uuid);
         }
 
         return token;

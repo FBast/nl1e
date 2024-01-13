@@ -246,14 +246,7 @@ export class Pl1eAspect {
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
 
             // Modify aspect value by resolution type
-            switch (aspect.resolutionType) {
-                case "multipliedBySuccess":
-                    aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
-                    break;
-                case "ifSuccess":
-                    aspectCopy.value = targetData.result > 0 ? aspectCopy.value : 0;
-                    break;
-            }
+            aspectCopy.value = Pl1eHelpers.applyResolution(aspectCopy.value, targetData.result, aspect.resolutionType);
 
             // Modify aspect value by damage type
             if (aspect.damageType && aspect.damageType !== "raw") {
@@ -261,6 +254,9 @@ export class Pl1eAspect {
                 aspectCopy.value -= getProperty(targetData.actor, damageTypeData.path);
                 aspectCopy.value = Math.max(aspectCopy.value, 0);
             }
+
+            // Ignore the aspect if value equal to zero
+            if (aspectCopy.value === 0) continue;
 
             // Negate the value
             aspectCopy.value = aspect.operator === "remove" ? -aspectCopy.value : aspectCopy.value
@@ -279,8 +275,6 @@ export class Pl1eAspect {
 
             // Push the aspect
             targetData.activeAspects ??= [];
-            // let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
-            // existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
             targetData.activeAspects.push(aspectCopy)
         }
         return targetsData;
@@ -307,14 +301,7 @@ export class Pl1eAspect {
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
 
             // Modify aspect value by resolution type
-            switch (aspect.resolutionType) {
-                case "multipliedBySuccess":
-                    aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
-                    break;
-                case "ifSuccess":
-                    aspectCopy.value = targetData.result > 0 ? aspectCopy.value : 0;
-                    break;
-            }
+            aspectCopy.value = Pl1eHelpers.applyResolution(aspectCopy.value, targetData.result, aspect.resolutionType);
 
             // Modify aspect value by damage type
             if (aspect.damageType !== "raw") {
@@ -322,6 +309,9 @@ export class Pl1eAspect {
                 aspectCopy.value -= getProperty(targetData.actor, damageTypeData.path);
                 aspectCopy.value = Math.max(aspectCopy.value, 0);
             }
+
+            // Ignore the aspect if value equal to zero
+            if (aspectCopy.value === 0) continue;
 
             // Negate the value
             aspectCopy.value = -aspectCopy.value;
@@ -380,19 +370,15 @@ export class Pl1eAspect {
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
 
             // Modify aspect value by resolution type
-            switch (aspect.resolutionType) {
-                case "multipliedBySuccess":
-                    aspectCopy.value *= targetData.result > 0 ? targetData.result : 0;
-                    break;
-                case "ifSuccess":
-                    aspectCopy.value = targetData.result > 0 ? aspectCopy.value : 0;
-                    break;
-            }
+            aspectCopy.effectDuration = Pl1eHelpers.applyResolution(aspectCopy.effectDuration, targetData.result, aspectCopy.effectDurationResolutionType);
+
+            // Ignore the aspect if effect duration equal to zero
+            if (aspectCopy.effectDuration === 0) continue;
 
             // Create the status
             await Pl1eActiveEffect.createStatusEffect(targetData.actor, aspectCopy.data, {
                 duration: {
-                    rounds: aspectCopy.value
+                    rounds: aspectCopy.effectDuration
                 },
                 flags: {
                     core: {

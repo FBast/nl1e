@@ -59,13 +59,6 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
                 templateData.distance = attributes.coneLength * game.system.gridDistance;
                 templateData.angle = attributes.coneAngle;
                 break;
-            // case "square":
-            //     templateData.t = "rect";
-            //     templateData.distance = attributes.squareLength * game.system.gridDistance;
-            //     templateData.width = attributes.squareLength * game.system.gridDistance;
-            //     templateData.height = attributes.squareLength * game.system.gridDistance;
-            //     templateData.direction = 45;
-            //     break;
             case "ray":
                 templateData.width = game.system.gridDistance;
                 templateData.distance = attributes.rayLength * game.system.gridDistance;
@@ -79,8 +72,8 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         template.actionData = {
             "item": item,
             "itemId": item.id,
-            "scene": token.scene,
-            "sceneId": token.scene.id,
+            "scene": token.parent,
+            "sceneId": token.parent.id,
             "token": token,
             "tokenId": token.id,
             "attributes": attributes,
