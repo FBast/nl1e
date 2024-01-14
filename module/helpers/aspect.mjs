@@ -217,7 +217,7 @@ export class Pl1eAspect {
             descriptionParts.push(game.i18n.localize("PL1E.To"));
             descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("targetGroupWithTemplate", aspect.movementDestination)));
         }
-        if (aspect.effectDuration !== undefined) {
+        if (aspect.createEffect && aspect.effectDuration !== undefined) {
             descriptionParts.push(game.i18n.localize("PL1E.During"));
             descriptionParts.push(aspect.effectDuration);
             descriptionParts.push(game.i18n.localize("PL1E.Turn"));
