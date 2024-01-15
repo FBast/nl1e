@@ -160,7 +160,7 @@
                     <label>{{localize "PL1E.AreaNumber"}}</label>
                     <div class="form-fields">
                         <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
-                        {{#if (ne (length system.attributes.roll) 0)}}
+                        {{#if (or system.attributes.useParentRoll (ne (length system.attributes.roll) 0))}}
                             <select name="system.attributes.areaNumberResolutionType">
                                 {{selectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
                             </select>
