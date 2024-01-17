@@ -370,6 +370,9 @@ export class Pl1eAspect {
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
 
             // Modify aspect value by resolution type
+            aspectCopy.value = Pl1eHelpers.applyResolution(aspectCopy.value, targetData.result, aspect.resolutionType);
+
+            // Modify aspect value by resolution type
             aspectCopy.effectDuration = Pl1eHelpers.applyResolution(aspectCopy.effectDuration, targetData.result, aspectCopy.effectDurationResolutionType);
 
             // Ignore the aspect if effect duration equal to zero

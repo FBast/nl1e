@@ -3,9 +3,11 @@
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
         <div class="form-group">
             <label>{{localize "PL1E.Description"}}</label>
-            <button class="launch-text-editor" data-target="system.description">
-                <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
-            </button>
+            <div class="form-fields">
+                <button class="launch-text-editor" data-target="system.description">
+                    <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+                </button>
+            </div>
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.Level"}}</label>
@@ -153,7 +155,12 @@
                 {{#unless system.attributes.useParentRange}}
                     <div class="form-group">
                         <label>{{localize "PL1E.Range"}}</label>
-                        <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+                        <div class="form-fields">
+                            <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+                            <select name="system.attributes.rangeNumberResolutionType">
+                                {{selectOptions (config "resolutionTypes") selected=system.attributes.rangeNumberResolutionType localize=true}}
+                            </select>
+                        </div>
                     </div>
                 {{/unless}}
                 <div class="form-group">

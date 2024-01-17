@@ -445,6 +445,7 @@
         "isDangerous": false,
         "useFocus": false,
         "range": 0,
+        "rangeResolutionType": "fixed",
         "areaShape": "none",
         "areaNumber": 0,
         "areaNumberResolutionType": "fixed",
