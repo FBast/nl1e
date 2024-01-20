@@ -1,5 +1,3 @@
-import {JournalEditor} from "./journal-editor-sheet.mjs";
-import {PL1E} from "../config/config.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 
 export class Pl1eJournalPageSheet extends JournalPageSheet {

@@ -1,27 +1,39 @@
-import {PL1E} from "./config/config.mjs";
 // Import document classes
 import {Pl1eActor} from "./documents/actors/actor.mjs";
 import {Pl1eItem} from "./documents/items/item.mjs";
-import {Pl1eTokenDocument} from "./documents/token.mjs";
-import {Pl1eActiveEffect} from "./documents/effect.mjs";
-import {Pl1eActorProxy} from "./documents/actors/actorProxy.mjs";
-import {Pl1eItemProxy} from "./documents/items/itemProxy.mjs";
-// Import object classes
-import {Pl1eMeasuredTemplate} from "./documents/measuredTemplate.mjs";
-// Import sheet classes
-import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
-import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
-import {Pl1eJournalPageSheet} from "./sheets/journal-sheet.mjs";
-// Import app classes
-import {Pl1eCombat} from "./apps/combat.mjs";
 // Import main classes and functions
 import Pl1eHooks from "./main/hooks.mjs";
 import {preloadHandlebarsTemplates} from "./main/templates.mjs";
-import {registerSettings} from "./main/settings.mjs";
-import {registerHandlebars} from "./main/handlebars.mjs";
-import {registerStatuses} from "./main/statuses.mjs";
 // Import helper/utility classes and constants
 import {Pl1eMacro} from "./helpers/macro.mjs";
+import {Pl1eActorProxy} from "./documents/actors/actorProxy.mjs";
+import {Pl1eItemProxy} from "./documents/items/itemProxy.mjs";
+import {Pl1eCombat} from "./apps/combat.mjs";
+import {Pl1eTokenDocument} from "./documents/token.mjs";
+import {Pl1eActiveEffect} from "./documents/effect.mjs";
+import {Pl1eMeasuredTemplate} from "./documents/measuredTemplate.mjs";
+import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
+import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
+import {Pl1eJournalPageSheet} from "./sheets/journal-sheet.mjs";
+import {getConfigBase} from "./config/configBase.mjs";
+import {getConfigActor} from "./config/configActors.mjs";
+import {getConfigItems} from "./config/configItems.mjs";
+import {getConfigAspects} from "./config/configAspects.mjs";
+import {getConfigTemplates} from "./config/configTemplates.mjs";
+import {getConfigJournals} from "./config/configJournals.mjs";
+import {registerStatuses} from "./main/statuses.mjs";
+import {registerSettings} from "./main/settings.mjs";
+import {registerHandlebars} from "./main/handlebars.mjs";
+
+/* -------------------------------------------- */
+/*  Globals                                     */
+/* -------------------------------------------- */
+
+// Export PL1E for easier access
+export const PL1E = {};
+
+// Register PL1E on system config
+CONFIG.PL1E = PL1E;
 
 /* -------------------------------------------- */
 /*  Hooks                                       */
@@ -36,13 +48,7 @@ Hooks.once('init', async function () {
         Pl1eMacro
     };
 
-    // Add custom constants for configuration.
-    CONFIG.PL1E = PL1E;
-
-    /**
-     * Set an initiative formula for the system
-     * @type {String}
-     */
+    // Set an initiative formula for the system
     CONFIG.Combat.initiative = {
         formula: "@misc.initiative",
         decimals: 2
@@ -63,7 +69,15 @@ Hooks.once('init', async function () {
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
     DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", Pl1eJournalPageSheet, {
         types: ["location", "organization"]
-    })
+    });
+
+    // Register config
+    getConfigBase();
+    getConfigActor();
+    getConfigItems();
+    getConfigAspects();
+    getConfigTemplates();
+    getConfigJournals();
 
     // Register custom statuses
     registerStatuses();

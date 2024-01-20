@@ -1,4 +1,4 @@
-import {PL1E} from "./config.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 export function getConfigJournals() {
     PL1E.locationTypes = {

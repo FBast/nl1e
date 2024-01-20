@@ -1,4 +1,4 @@
-import {PL1E} from "./config.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 export function getConfigAspects() {
 
@@ -705,7 +705,8 @@ export function getConfigAspects() {
         "burn": "PL1E.Burn",
         "cold": "PL1E.Cold",
         "acid": "PL1E.Acid",
-        "shock": "PL1E.Shock"
+        "shock": "PL1E.Shock",
+        "entropy": "PL1E.Entropy"
     }
 
     PL1E.targetGroups = {
@@ -776,5 +777,4 @@ export function getConfigAspects() {
         "remove": "PL1E.Remove",
         "set": "PL1E.Set"
     }
-
 }

@@ -1,4 +1,4 @@
-import {PL1E} from "./config.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 export function getConfigBase() {
     PL1E.featureSubTypes = {
@@ -111,5 +111,4 @@ export function getConfigBase() {
             "baseInitiative": 20
         }
     }
-
 }

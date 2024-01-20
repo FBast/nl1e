@@ -1,4 +1,4 @@
-import {PL1E} from "./config.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 export function getConfigActor() {
     PL1E.actorTypes = {
@@ -22,7 +22,7 @@ export function getConfigActor() {
     PL1E.resources = {
         "health": {
             "label": "PL1E.Health",
-            "multiplier" : 10,
+            "multiplier": 10,
             "weights": {
                 "characteristics": [
                     "constitution",
@@ -35,7 +35,7 @@ export function getConfigActor() {
         },
         "stamina": {
             "label": "PL1E.Stamina",
-            "multiplier" : 10,
+            "multiplier": 10,
             "weights": {
                 "characteristics": [
                     "strength",
@@ -48,7 +48,7 @@ export function getConfigActor() {
         },
         "mana": {
             "label": "PL1E.Mana",
-            "multiplier" : 10,
+            "multiplier": 10,
             "weights": {
                 "characteristics": [
                     "intellect",
@@ -448,7 +448,13 @@ export function getConfigActor() {
             "icon": "fa-bolt",
             "type": "number",
             "path": "system.reductions.shock"
-        }
+        },
+        "entropy": {
+            "label": "PL1E.EntropyReduction",
+            "icon": "fa-ghost",
+            "type": "number",
+            "path": "system.reductions.entropy"
+        },
     }
 
     PL1E.misc = {
@@ -674,5 +680,4 @@ export function getConfigActor() {
             "type": "status"
         }
     }
-
 }

@@ -3,11 +3,9 @@
         <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
         <div class="form-group">
             <label>{{localize "PL1E.Description"}}</label>
-            <div class="form-fields">
-                <button class="launch-text-editor" data-target="system.description">
-                    <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
-                </button>
-            </div>
+            <button class="launch-text-editor" data-target="system.description">
+                <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+            </button>
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.Level"}}</label>
@@ -34,10 +32,6 @@
             <div class="form-group">
                 <label>{{localize "PL1E.IsDangerous"}}</label>
                 <input type="checkbox" name="system.attributes.isDangerous" {{checked system.attributes.isDangerous}} data-dtype="Boolean"/>
-            </div>
-            <div class="form-group">
-                <label>{{localize "PL1E.UseFocus"}}</label>
-                <input type="checkbox" name="system.attributes.useFocus" {{checked system.attributes.useFocus}} data-dtype="Boolean"/>
             </div>
         {{/if}}
     </fieldset>

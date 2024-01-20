@@ -3,8 +3,8 @@ import {Pl1eItem} from "../documents/items/item.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eChat} from "./chat.mjs";
 import {TraitSelector} from "../apps/traitSelector.mjs";
-import {Pl1eResting} from "../apps/resting.mjs";
 import {JournalEditor} from "../sheets/journal-editor-sheet.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 export class Pl1eEvent {
 
@@ -147,7 +147,7 @@ export class Pl1eEvent {
         }
 
         // Player transfer item to a not owned actor
-        CONFIG.PL1E.socket.executeAsGM("sendItem", {
+        PL1E.socket.executeAsGM("sendItem", {
             sourceActorId: actor._id,
             targetActorId: game.user.character._id,
             itemId: item._id
@@ -212,7 +212,7 @@ export class Pl1eEvent {
         const itemType = $(event.currentTarget).closest(".item").data("item-type");
 
         const currentValue = item.system.refItems[instanceId].behavior;
-        const values = CONFIG.PL1E.itemTypes[itemType].behaviors;
+        const values = PL1E.itemTypes[itemType].behaviors;
         const currentIndex = values.indexOf(currentValue);
         const nextIndex = (currentIndex + 1) % values.length;
         await item.update({

@@ -3,7 +3,7 @@
     {{#if (eq actor.type "npc")}}
         <div class="form-group attribute">
             <select name="system.general.NPCTemplate">
-                {{selectOptions (config "NPCTemplates") selected=system.general.NPCTemplate label="label" localize=true}}
+                {{selectOptions (config "NPCTemplates") selected=system.general.NPCTemplate localize=true}}
             </select>
         </div>
     {{/if}}

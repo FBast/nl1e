@@ -1,5 +1,5 @@
-import {PL1E} from "../config/config.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 /**
  * A specialized application used to modify document traits.
@@ -14,12 +14,12 @@ export class TraitSelector extends DocumentSheet {
 
     constructor(document, trait, traitLabel, keyPath, options={}) {
         if (!Pl1eHelpers.getConfig(trait))
-            throw new Error(`Cannot instantiate TraitSelector with a trait not defined in CONFIG.PL1E: ${trait}.`);
+            throw new Error(`Cannot instantiate TraitSelector with a trait not defined in PL1E: ${trait}.`);
 
         super(document, options);
 
         /**
-         * Trait key as defined in CONFIG.PL1E.
+         * Trait key as defined in PL1E.
          * @type {string}
          */
         this.trait = trait;

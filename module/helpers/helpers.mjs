@@ -1,3 +1,5 @@
+import {PL1E} from "../pl1e.mjs";
+
 /**
  * Extends the actor to process special things from PL1E.
  */
@@ -239,17 +241,23 @@ export class Pl1eHelpers {
         return documents;
     }
 
-    static async getDocumentsData(type, subType = undefined, id = undefined) {
-        // Get documents using the modified getDocuments method
-        let documents = await Pl1eHelpers.getDocuments(type, subType, id);
+    static async getDocumentsDataFromPack(packName, includeNone = false) {
+        const documents = {};
+        if (includeNone) documents[""] = "PL1E.None";
 
-        // Create an object with key-value pairs (UUID: Name)
-        let documentsData = {};
-        documents.forEach(doc => {
-            documentsData[doc.id] = doc.name;
-        });
+        const pack = game.packs.find(pack => pack.metadata.name === packName);
+        const docs = await pack.getDocuments();
 
-        return documentsData;
+        // Order by name
+        const sortedDocs = docs.sort((a, b) => a.name.localeCompare(b.name));
+
+        for (const document of sortedDocs) {
+            documents[document._id] = {
+                label: document.name
+            };
+        }
+
+        return documents;
     }
 
     static stringifyWithCircular(obj) {
@@ -269,7 +277,7 @@ export class Pl1eHelpers {
     }
 
     static getConfig(...keys) {
-        let data = CONFIG.PL1E;
+        let data = PL1E;
         for (let key of keys) {
             // Ignore if not string
             if (typeof key !== "string") continue;

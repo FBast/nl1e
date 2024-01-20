@@ -1,4 +1,4 @@
-import {PL1E} from "./config.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 export function getConfigItems() {
     PL1E.itemTypes = {
@@ -393,7 +393,7 @@ export function getConfigItems() {
         "nature": "PL1E.Nature",
         "occultism": "PL1E.Occultism",
     }
-    
+
     PL1E.abilityResistances = {
         "cover": "PL1E.Cover",
         "parry": "PL1E.Parry",

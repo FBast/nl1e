@@ -313,7 +313,8 @@
           "burn": 0,
           "cold": 0,
           "acid": 0,
-          "shock": 0
+          "shock": 0,
+          "entropy": 0
         },
         "misc": {
           "size": "medium",
@@ -424,7 +425,7 @@
       "templates": ["base"],
       "attributes": {
         "level": 0,
-        "launchParentActiveAspects": true,
+        "launchParentActiveAspects": false,
         "weaponMode": "none",
         "useParentRange": false,
         "useParentRoll": false,

@@ -1,6 +1,7 @@
 import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {Pl1eActiveEffect} from "../effect.mjs";
+import {PL1E} from "../../pl1e.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.

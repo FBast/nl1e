@@ -2,8 +2,8 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eFormValidation} from "../main/formValidation.mjs";
 import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
-import {PL1E} from "../config/config.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -100,7 +100,7 @@ export class Pl1eItemSheet extends ItemSheet {
         context.item = this.item;
         context.system = this.item.system;
         context.flags = this.item.flags;
-        context.config = CONFIG.PL1E;
+        context.config = PL1E;
         context.game = game;
 
         // Prepare refItems
@@ -115,10 +115,10 @@ export class Pl1eItemSheet extends ItemSheet {
         });
 
         // Retrieve some documents from packs
-        context.sequencerMacros = await this._listDocuments("legacy-sequencer-macros", true);
-        context.actorPreUpdate = await this._listDocuments("legacy-actor-pre-update-macros", true);
-        context.targetsResolution = await this._listDocuments("legacy-targets-resolution-macros", true);
-        context.invocations = await this._listDocuments("legacy-characters", true);
+        context.sequencerMacros = await Pl1eHelpers.getDocumentsDataFromPack("legacy-sequencer-macros", true);
+        context.actorPreUpdate = await Pl1eHelpers.getDocumentsDataFromPack("legacy-actor-pre-update-macros", true);
+        context.targetsResolution = await Pl1eHelpers.getDocumentsDataFromPack("legacy-targets-resolution-macros", true);
+        context.invocations = await Pl1eHelpers.getDocumentsDataFromPack("legacy-characters", true);
 
         return context;
     }
@@ -345,8 +345,8 @@ export class Pl1eItemSheet extends ItemSheet {
         context.unknowns = unknowns;
         context.passiveAspects = context.item.system.passiveAspects;
         context.activeAspects = context.item.system.activeAspects;
-        context.passiveAspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
-        context.activeAspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+        context.passiveAspectsObjects = PL1E.passiveAspectsObjects;
+        context.activeAspectsObjects = PL1E.activeAspectsObjects;
     }
 
     async _prepareDisplay(context) {
@@ -454,11 +454,11 @@ export class Pl1eItemSheet extends ItemSheet {
         switch (aspectType) {
             case "passive":
                 target = "passiveAspects";
-                aspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
+                aspectsObjects = PL1E.passiveAspectsObjects;
                 break;
             case "active":
                 target = "activeAspects";
-                aspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+                aspectsObjects = PL1E.activeAspectsObjects;
                 break;
         }
 
@@ -489,11 +489,11 @@ export class Pl1eItemSheet extends ItemSheet {
         switch (aspectType) {
             case "passive":
                 target = "passiveAspects";
-                aspectsObjects = CONFIG.PL1E.passiveAspectsObjects;
+                aspectsObjects = PL1E.passiveAspectsObjects;
                 break;
             case "active":
                 target = "activeAspects";
-                aspectsObjects = CONFIG.PL1E.activeAspectsObjects;
+                aspectsObjects = PL1E.activeAspectsObjects;
                 break;
         }
 

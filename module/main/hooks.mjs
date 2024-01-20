@@ -1,9 +1,9 @@
 import {Pl1eMacro} from "../helpers/macro.mjs";
 import {Pl1eResting} from "../apps/resting.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {PL1E} from "../config/config.mjs";
 import {Pl1eTrade} from "../helpers/trade.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 export default class Pl1eHooks {
 
@@ -19,9 +19,10 @@ export default class Pl1eHooks {
         // Restore tooltip expanded state
         Hooks.on("renderItemSheet", handleTooltipState);
         Hooks.on("renderActorSheet", handleTooltipState);
+
         function handleTooltipState(app, html, data) {
             const tooltips = html.find('.item-tooltip');
-            tooltips.each(function() {
+            tooltips.each(function () {
                 const tooltip = $(this);
                 const item = $(tooltip).closest(".item");
 

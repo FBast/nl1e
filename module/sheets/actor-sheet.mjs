@@ -3,7 +3,7 @@ import {Pl1eResting} from "../apps/resting.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
-import {PL1E} from "../config/config.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -108,7 +108,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
         // Add the config data
-        context.config = CONFIG.PL1E;
+        context.config = PL1E;
         // Add game access
         context.game = game;
 
@@ -307,7 +307,7 @@ export class Pl1eActorSheet extends ActorSheet {
                 return;
             }
             // Player transfer item to a not owned actor
-            CONFIG.PL1E.socket.executeAsGM("sendItem", {
+            PL1E.socket.executeAsGM("sendItem", {
                 sourceActorId: game.user.character._id,
                 targetActorId: this.actor._id,
                 itemId: item._id
@@ -373,7 +373,7 @@ export class Pl1eActorSheet extends ActorSheet {
         });
 
         // Abilities sorting
-        const abilitiesOrder = Object.keys(CONFIG.PL1E.activations);
+        const abilitiesOrder = Object.keys(PL1E.activations);
         context.abilities = context.abilities.sort((a, b) => {
             // Compare by level
             if (a.system.attributes.level < b.system.attributes.level) return -1;
@@ -505,13 +505,13 @@ export class Pl1eActorSheet extends ActorSheet {
                         break;
                     }
                     case "feature": {
-                        for (const featureType of Object.keys(CONFIG.PL1E.featureTypes)) {
+                        for (const featureType of Object.keys(PL1E.featureTypes)) {
                             if (filters.has(featureType) && (item.system.attributes.featureType === featureType)) return false;
                         }
                         break;
                     }
                     case "ability": {
-                        for (const activation of Object.keys(CONFIG.PL1E.activations)) {
+                        for (const activation of Object.keys(PL1E.activations)) {
                             if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
                         }
                         break;
@@ -525,25 +525,25 @@ export class Pl1eActorSheet extends ActorSheet {
                     }
                     case "wearable": {
                         if (filters.has("equipped") && item.isEnabled) return false;
-                        for (const slot of Object.keys(CONFIG.PL1E.slots)) {
+                        for (const slot of Object.keys(PL1E.slots)) {
                             if (filters.has(slot) && (item.system.attributes.slot === slot)) return false;
                         }
                         break;
                     }
                     case "consumable": {
-                        for (const activation of Object.keys(CONFIG.PL1E.activations)) {
+                        for (const activation of Object.keys(PL1E.activations)) {
                             if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
                         }
                         break;
                     }
                     case "common": {
-                        for (const commonType of Object.keys(CONFIG.PL1E.commonTypes)) {
+                        for (const commonType of Object.keys(PL1E.commonTypes)) {
                             if (filters.has(commonType) && (item.system.attributes.commonType === commonType)) return false;
                         }
                         break;
                     }
                     case "module": {
-                        for (const moduleType of Object.keys(CONFIG.PL1E.moduleTypes)) {
+                        for (const moduleType of Object.keys(PL1E.moduleTypes)) {
                             if (filters.has(moduleType) && (item.system.attributes.moduleTypes.includes(moduleType))) return false;
                         }
                         break;

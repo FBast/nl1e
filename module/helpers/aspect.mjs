@@ -1,7 +1,6 @@
-import {PL1E} from "../config/config.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eActiveEffect} from "../documents/effect.mjs";
-import {Pl1eMeasuredTemplate} from "../documents/measuredTemplate.mjs";
+import {PL1E} from "../pl1e.mjs";
 
 export class Pl1eAspect {
 
@@ -549,7 +548,7 @@ export class Pl1eAspect {
         }
         else {
             if (Pl1eHelpers.isGMConnected()) {
-                CONFIG.PL1E.socket.executeAsGM('tokenUpdate', {
+                PL1E.socket.executeAsGM('tokenUpdate', {
                     tokenId: targetData.tokenId,
                     sceneId: targetData.sceneId,
                     updateData: {

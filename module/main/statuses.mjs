@@ -462,48 +462,6 @@ export const registerStatuses = function () {
         },
         {
             // Grant immunity to related damage type
-            id: "slashingImmunity",
-            label: "PL1E.StatusSlashingImmunity",
-            icon: "systems/pl1e/assets/icons/slashingImmunity.svg",
-            tint: "#00bbff",
-            changes: [{
-                key: "system.reductions.slashing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-                value: Infinity
-            }],
-            duration: {},
-            flags: {}
-        },
-        {
-            // Grant immunity to related damage type
-            id: "crushingImmunity",
-            label: "PL1E.StatusCrushingImmunity",
-            icon: "systems/pl1e/assets/icons/crushingImmunity.svg",
-            tint: "#00bbff",
-            changes: [{
-                key: "system.reductions.crushing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-                value: Infinity
-            }],
-            duration: {},
-            flags: {}
-        },
-        {
-            // Grant immunity to related damage type
-            id: "piercingImmunity",
-            label: "PL1E.StatusPiercingImmunity",
-            icon: "systems/pl1e/assets/icons/piercingImmunity.svg",
-            tint: "#00bbff",
-            changes: [{
-                key: "system.reductions.piercing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-                value: Infinity
-            }],
-            duration: {},
-            flags: {}
-        },
-        {
-            // Grant immunity to related damage type
             id: "fireImmunity",
             label: "PL1E.StatusFireImmunity",
             icon: "systems/pl1e/assets/icons/fireImmunity.svg",
@@ -552,6 +510,48 @@ export const registerStatuses = function () {
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.shock",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Grant immunity to related damage type
+            id: "slashingImmunity",
+            label: "PL1E.StatusSlashingImmunity",
+            icon: "systems/pl1e/assets/icons/slashingImmunity.svg",
+            tint: "#00bbff",
+            changes: [{
+                key: "system.reductions.slashing",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Grant immunity to related damage type
+            id: "crushingImmunity",
+            label: "PL1E.StatusCrushingImmunity",
+            icon: "systems/pl1e/assets/icons/crushingImmunity.svg",
+            tint: "#00bbff",
+            changes: [{
+                key: "system.reductions.crushing",
+                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
+            }],
+            duration: {},
+            flags: {}
+        },
+        {
+            // Grant immunity to related damage type
+            id: "piercingImmunity",
+            label: "PL1E.StatusPiercingImmunity",
+            icon: "systems/pl1e/assets/icons/piercingImmunity.svg",
+            tint: "#00bbff",
+            changes: [{
+                key: "system.reductions.piercing",
                 mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],

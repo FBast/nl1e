@@ -33,18 +33,13 @@ export const registerHandlebars = function () {
     // Save a reference to the original selectOptions helper
     const originalSelectOptions = Handlebars.helpers.selectOptions;
     Handlebars.registerHelper('selectOptions', function(choices, options) {
-        // If "label" option is specified, modify the choices to use value.label
-        if (options.hash.label) {
-            const modifiedChoices = {};
-            for (const key in choices) {
-                const value = choices[key];
-                modifiedChoices[key] = value[options.hash.label];
-            }
-            return originalSelectOptions(modifiedChoices, options);
+        const modifiedChoices = {};
+        for (const key in choices) {
+            const value = choices[key];
+            if (value.label) modifiedChoices[key] = value.label;
+            else modifiedChoices[key] = value;
         }
-
-        // Default behavior
-        return originalSelectOptions(choices, options);
+        return originalSelectOptions(modifiedChoices, options);
     });
 
     Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {
