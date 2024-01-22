@@ -1,4 +1,6 @@
 import {Pl1eChat} from "../helpers/chat.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eAspect} from "../helpers/aspect.mjs";
 
 export class Pl1eTokenDocument extends TokenDocument {
 
@@ -27,6 +29,35 @@ export class Pl1eTokenDocument extends TokenDocument {
             }
             else {
                 await this._restrictMovement(data);
+            }
+        }
+
+        // Apply passive aspects macros
+        for (/** @type {Pl1eItem} */ const item of this.actor.items) {
+            for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
+                if (!item.isEnabled) continue;
+                if (aspect.name === "macro" && aspect.macroId !== "none" && aspect.context === "tokenPreUpdate") {
+                    await Pl1eAspect.applyPassiveMacro(aspect, id, {
+                        actor: this,
+                        data: data,
+                        options: options,
+                        user: user
+                    });
+                }
+            }
+        }
+
+        // Apply active effect macro
+        for (/** @type {Pl1eActiveEffect} */ const effect of this.effects) {
+            const macroId = effect.getFlag("pl1e", "tokenPreUpdateMacroId");
+            if (macroId) {
+                const macro = await Pl1eHelpers.getDocument("Macro", macroId);
+                if (macro) macro.execute({
+                    actor: this,
+                    data: data,
+                    options: options,
+                    user: user
+                });
             }
         }
 

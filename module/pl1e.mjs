@@ -24,6 +24,7 @@ import {getConfigJournals} from "./config/configJournals.mjs";
 import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
+import {Pl1eHelpers} from "./helpers/helpers.mjs";
 
 /* -------------------------------------------- */
 /*  Globals                                     */
@@ -71,7 +72,7 @@ Hooks.once('init', async function () {
         types: ["location", "organization"]
     });
 
-    // Register config
+    // Register configs
     getConfigBase();
     getConfigActor();
     getConfigItems();
@@ -96,7 +97,17 @@ Hooks.once('init', async function () {
 /*  Hooks Once                          */
 /* ------------------------------------ */
 
-Hooks.once("ready", Pl1eHooks.ready);
+Hooks.once("ready", async function () {
+    // Register dynamic configs
+    PL1E.sequencerMacros = await Pl1eHelpers.getDocumentsDataFromPack("legacy-sequencer-macros", true);
+    PL1E.actorPreUpdate = await Pl1eHelpers.getDocumentsDataFromPack("legacy-actor-pre-update-macros", true);
+    PL1E.tokenPreUpdate = await Pl1eHelpers.getDocumentsDataFromPack("legacy-token-pre-update-macros", true);
+    PL1E.targetsResolution = await Pl1eHelpers.getDocumentsDataFromPack("legacy-targets-resolution-macros", true);
+    PL1E.invocations = await Pl1eHelpers.getDocumentsDataFromPack("legacy-characters", true);
+
+    // Launch all ready hooks
+    Pl1eHooks.ready();
+});
 Hooks.once("socketlib.ready", Pl1eHooks.socketLibReady);
 Hooks.once("dragRuler.ready", (SpeedProvider) => Pl1eHooks.dragRulerReady(SpeedProvider));
 

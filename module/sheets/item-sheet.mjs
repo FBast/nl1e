@@ -114,12 +114,6 @@ export class Pl1eItemSheet extends ItemSheet {
             relativeTo: this.item
         });
 
-        // Retrieve some documents from packs
-        context.sequencerMacros = await Pl1eHelpers.getDocumentsDataFromPack("legacy-sequencer-macros", true);
-        context.actorPreUpdate = await Pl1eHelpers.getDocumentsDataFromPack("legacy-actor-pre-update-macros", true);
-        context.targetsResolution = await Pl1eHelpers.getDocumentsDataFromPack("legacy-targets-resolution-macros", true);
-        context.invocations = await Pl1eHelpers.getDocumentsDataFromPack("legacy-characters", true);
-
         return context;
     }
 

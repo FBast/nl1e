@@ -96,26 +96,32 @@ export class Pl1eActiveEffect extends ActiveEffect {
         const aspectConfig = Pl1eHelpers.getConfig("aspects", aspect.name);
         const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`
 
-        // Create effect
-        await targetData.actor.createEmbeddedDocuments("ActiveEffect", [{
-            name: name,
+        const activeEffectData = {
+            name,
             icon: characterData.item.img,
             origin: characterData.item._id,
-            changes: [{
-                key: dataConfig.path,
-                mode: aspect.operator === "set" ? 5 : 2,
-                value: aspect.value
-            }],
-            duration: {
-                rounds: effectDuration
-            },
+            duration: { rounds: aspect.effectDuration },
             flags: {
                 pl1e: {
                     originActor: characterData.actorId,
-                    aspectId: aspect._id
+                    aspectId: aspect._id,
+                    actorPreUpdateMacroId: aspect.context === "actorPreUpdate" ?
+                        aspect.actorPreUpdateMacroId : undefined,
+                    tokenPreUpdateMacroId: aspect.context === "tokenPreUpdate" ?
+                        aspect.tokenPreUpdateMacroId : undefined
                 }
+            },
+            ...aspect.value && {
+                changes: [{
+                    key: dataConfig.path,
+                    mode: aspect.operator === "set" ? 5 : 2,
+                    value: aspect.value
+                }]
             }
-        }]);
+        };
+
+        // Create effect
+        await targetData.actor.createEmbeddedDocuments("ActiveEffect", [activeEffectData]);
     }
 
     /**

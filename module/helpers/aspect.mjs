@@ -164,18 +164,18 @@ export class Pl1eAspect {
 
     static async getDescription(aspect) {
         let descriptionParts = [];
-        if (aspect.macroId !== undefined) {
-            const macro = await Pl1eHelpers.getDocument("Macro", aspect.macroId);
-            descriptionParts.push(macro ? macro.name : game.i18n.localize("PL1E.None"));
-            descriptionParts.push(game.i18n.localize("PL1E.On"));
-            descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("aspects", aspect.name, "contexts", aspect.context)));
-        }
-        if (aspect.invocation !== undefined) {
-            descriptionParts.push(game.i18n.localize("PL1E.Invocation"));
-            descriptionParts.push(game.i18n.localize("PL1E.Of"));
-            const actorInvocation = await Pl1eHelpers.getDocument("Actor", aspect.invocation);
-            descriptionParts.push(actorInvocation ? actorInvocation.name : game.i18n.localize("PL1E.Unknown"));
-        }
+        // if (aspect.macroId !== undefined) {
+        //     const macro = await Pl1eHelpers.getDocument("Macro", aspect.macroId);
+        //     descriptionParts.push(macro ? macro.name : game.i18n.localize("PL1E.None"));
+        //     descriptionParts.push(game.i18n.localize("PL1E.On"));
+        //     descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("aspects", aspect.name, "contexts", aspect.context)));
+        // }
+        // if (aspect.invocation !== undefined) {
+        //     descriptionParts.push(game.i18n.localize("PL1E.Invocation"));
+        //     descriptionParts.push(game.i18n.localize("PL1E.Of"));
+        //     const actorInvocation = await Pl1eHelpers.getDocument("Actor", aspect.invocation);
+        //     descriptionParts.push(actorInvocation ? actorInvocation.name : game.i18n.localize("PL1E.Unknown"));
+        // }
         if (aspect.operator !== undefined) descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("numberOperators", aspect.operator)));
         if (aspect.value !== undefined) {
             if (typeof aspect.value === "boolean") {
@@ -479,11 +479,11 @@ export class Pl1eAspect {
             let aspectCopy = JSON.parse(JSON.stringify(aspect));
 
             // Retrieve the invocation actor
-            let invocationActor = game.actors.get(aspectCopy.invocation);
+            let invocationActor = game.actors.get(aspectCopy.data);
 
             // If the invocation actor is not found, import it from the compendium
             if (!invocationActor) {
-                invocationActor = await Pl1eHelpers.getDocument("Actor", aspectCopy.invocation);
+                invocationActor = await Pl1eHelpers.getDocument("Actor", aspectCopy.data);
                 if (invocationActor) invocationActor = await Actor.create(invocationActor, {keepId: true});
             }
 
@@ -520,14 +520,38 @@ export class Pl1eAspect {
      * @private
      */
     static async _macro(aspect, characterData, targetsData) {
-        // Find macro
-        const macro = await Pl1eHelpers.getDocument("Macro", aspect.macroId);
+        if (aspect.context === "targetsResolution") {
+            // Find macro
+            const macro = await Pl1eHelpers.getDocument("Macro", aspect.macroId);
 
-        // Execute macro
-        if (macro !== undefined) macro.execute({
-            characterData: characterData,
-            targetsData: targetsData
-        });
+            // Execute macro
+            if (macro !== undefined) macro.execute({
+                characterData: characterData,
+                targetsData: targetsData
+            });
+        }
+        else {
+            for (const targetData of targetsData) {
+                // Check targetGroup validation for the aspect
+                if (!this._isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
+
+                // Copy the aspect to calculate the new values
+                let aspectCopy = JSON.parse(JSON.stringify(aspect));
+
+                // Modify aspect value by resolution type
+                aspectCopy.effectDuration = Pl1eHelpers.applyResolution(aspectCopy.effectDuration, targetData.result, aspectCopy.effectDurationResolutionType);
+
+                // Ignore the aspect if effect duration equal to zero
+                if (aspectCopy.effectDuration === 0) continue;
+
+                // Create the active effect
+                await Pl1eActiveEffect.createActiveEffect(aspectCopy, characterData, targetsData);
+
+                // Push the aspect
+                targetData.activeAspects ??= [];
+                targetData.activeAspects.push(aspectCopy)
+            }
+        }
     }
 
     /**

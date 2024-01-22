@@ -243,7 +243,9 @@ export class Pl1eHelpers {
 
     static async getDocumentsDataFromPack(packName, includeNone = false) {
         const documents = {};
-        if (includeNone) documents[""] = "PL1E.None";
+        if (includeNone) documents["none"] = {
+            label: "PL1E.None"
+        };
 
         const pack = game.packs.find(pack => pack.metadata.name === packName);
         const docs = await pack.getDocuments();
@@ -283,8 +285,10 @@ export class Pl1eHelpers {
             if (typeof key !== "string") continue;
 
             data = data[key];
-            if (data === undefined)
+            if (data === undefined) {
                 console.warn(`PL1E | config return is undefined with keys ${keys}`);
+                break;
+            }
         }
         return data;
     }

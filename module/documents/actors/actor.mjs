@@ -108,11 +108,11 @@ export class Pl1eActor extends Actor {
 
     /** @inheritDoc */
     async _preUpdate(changed, options, user) {
-        // Apply passive macro
+        // Apply passive aspects macros
         for (/** @type {Pl1eItem} */ const item of this.items) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                 if (!item.isEnabled) continue;
-                if (aspect.name === "macro" && aspect.macroId !== "none" && aspect.context === "preUpdate") {
+                if (aspect.name === "macro" && aspect.macroId !== "none" && aspect.context === "actorPreUpdate") {
                     await Pl1eAspect.applyPassiveMacro(aspect, id, {
                         actor: this,
                         changed: changed,
@@ -120,6 +120,20 @@ export class Pl1eActor extends Actor {
                         user: user
                     });
                 }
+            }
+        }
+
+        // Apply active effect macro
+        for (/** @type {Pl1eActiveEffect} */ const effect of this.effects) {
+            const macroId = effect.getFlag("pl1e", "actorPreUpdateMacroId");
+            if (macroId) {
+                const macro = await Pl1eHelpers.getDocument("Macro", macroId);
+                if (macro) macro.execute({
+                    actor: this,
+                    changed: changed,
+                    options: options,
+                    user: user
+                });
             }
         }
 

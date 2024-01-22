@@ -21,8 +21,8 @@ export function getConfigAspects() {
         },
         {
             "name": "passiveMacro",
-            "context": "actorPreUpdate",
-            "macroId": ""
+            "dataGroup": "actorPreUpdate",
+            "data": "none"
         }
     ]
 
@@ -64,8 +64,7 @@ export function getConfigAspects() {
         {
             "name": "invocation",
             "dataGroup": "invocations",
-            "data": "standard",
-            "invocation": "",
+            "data": "none",
             "createEffect": true,
             "effectDuration": 1,
             "effectDurationResolutionType": "fixed"
@@ -80,8 +79,11 @@ export function getConfigAspects() {
         },
         {
             "name": "activeMacro",
-            "context": "targetsResolution",
-            "macroId": ""
+            "dataGroup": "targetsResolution",
+            "data": "none",
+            "createEffect": true,
+            "effectDuration": 1,
+            "effectDurationResolutionType": "fixed"
         }
     ]
 
@@ -132,15 +134,18 @@ export function getConfigAspects() {
         "passiveMacro": {
             "label": "PL1E.Macro",
             "img": "systems/pl1e/assets/icons/dice-target.svg",
-            "contexts": {
-                "actorPreUpdate": "PL1E.ActorPreUpdate"
+            "dataGroups": {
+                "actorPreUpdate": "PL1E.ActorPreUpdate",
+                "tokenPreUpdate": "PL1E.TokenPreUpdate"
             }
         },
         "activeMacro": {
             "label": "PL1E.Macro",
             "img": "systems/pl1e/assets/icons/dice-target.svg",
-            "contexts": {
-                "targetsResolution": "PL1E.TargetsResolution"
+            "dataGroups": {
+                "targetsResolution": "PL1E.TargetsResolution",
+                "actorPreUpdate": "PL1E.ActorPreUpdate",
+                "tokenPreUpdate": "PL1E.TokenPreUpdate",
             }
         }
     }
@@ -763,12 +768,6 @@ export function getConfigAspects() {
         },
         "teleport": {
             "label": "PL1E.Teleport"
-        }
-    }
-
-    PL1E.invocations = {
-        "standard": {
-            "label": "PL1E.Standard"
         }
     }
 

@@ -43,10 +43,28 @@
       "flags": {}
     },
     {
+      "name": "legacy-adventures",
+      "label": "Legacy Adventures",
+      "system": "pl1e",
+      "path": "packs/legacy-adventures.db",
+      "type": "Adventure",
+      "private": true,
+      "flags": {}
+    },
+    {
       "name": "legacy-sequencer-macros",
       "label": "Legacy Sequencer Macros",
       "system": "pl1e",
       "path": "packs/legacy-sequencer-macros.db",
+      "type": "Macro",
+      "private": true,
+      "flags": {}
+    },
+    {
+      "name": "legacy-token-pre-update-macros",
+      "label": "Legacy Token Pre Update Macros",
+      "system": "pl1e",
+      "path": "packs/legacy-token-pre-update-macros.db",
       "type": "Macro",
       "private": true,
       "flags": {}
@@ -75,15 +93,6 @@
       "system": "pl1e",
       "path": "packs/legacy-sub-macros.db",
       "type": "Macro",
-      "private": true,
-      "flags": {}
-    },
-    {
-      "name": "legacy-adventures",
-      "label": "Legacy Adventures",
-      "system": "pl1e",
-      "path": "packs/legacy-adventures.db",
-      "type": "Adventure",
       "private": true,
       "flags": {}
     }
