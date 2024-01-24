@@ -520,9 +520,9 @@ export class Pl1eAspect {
      * @private
      */
     static async _macro(aspect, characterData, targetsData) {
-        if (aspect.context === "targetsResolution") {
+        if (aspect.dataGroup === "targetsResolution") {
             // Find macro
-            const macro = await Pl1eHelpers.getDocument("Macro", aspect.macroId);
+            const macro = await Pl1eHelpers.getDocument("Macro", aspect.data);
 
             // Execute macro
             if (macro !== undefined) macro.execute({
@@ -545,7 +545,7 @@ export class Pl1eAspect {
                 if (aspectCopy.effectDuration === 0) continue;
 
                 // Create the active effect
-                await Pl1eActiveEffect.createActiveEffect(aspectCopy, characterData, targetsData);
+                await Pl1eActiveEffect.createActiveEffect(aspectCopy, characterData, targetData);
 
                 // Push the aspect
                 targetData.activeAspects ??= [];

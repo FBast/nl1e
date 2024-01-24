@@ -36,9 +36,9 @@ export class Pl1eTokenDocument extends TokenDocument {
         for (/** @type {Pl1eItem} */ const item of this.actor.items) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                 if (!item.isEnabled) continue;
-                if (aspect.name === "macro" && aspect.macroId !== "none" && aspect.context === "tokenPreUpdate") {
+                if (aspect.name === "macro" && aspect.data !== "none" && aspect.dataGroup === "tokenPreUpdate") {
                     await Pl1eAspect.applyPassiveMacro(aspect, id, {
-                        actor: this,
+                        actor: this.actor,
                         data: data,
                         options: options,
                         user: user
@@ -48,12 +48,12 @@ export class Pl1eTokenDocument extends TokenDocument {
         }
 
         // Apply active effect macro
-        for (/** @type {Pl1eActiveEffect} */ const effect of this.effects) {
+        for (/** @type {Pl1eActiveEffect} */ const effect of this.actor.effects) {
             const macroId = effect.getFlag("pl1e", "tokenPreUpdateMacroId");
             if (macroId) {
                 const macro = await Pl1eHelpers.getDocument("Macro", macroId);
                 if (macro) macro.execute({
-                    actor: this,
+                    actor: this.actor,
                     data: data,
                     options: options,
                     user: user
@@ -63,6 +63,8 @@ export class Pl1eTokenDocument extends TokenDocument {
 
         await super._preUpdate(data, options, user);
     }
+
+    //TODO the problem here with this restriction system is that it does not consider pathfinding
 
     /**
      * Restrict the movement for the token in combat

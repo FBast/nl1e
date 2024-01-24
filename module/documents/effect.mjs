@@ -85,9 +85,6 @@ export class Pl1eActiveEffect extends ActiveEffect {
      * @returns {Promise<void>}
      */
     static async createActiveEffect(aspect, characterData, targetData) {
-        // Calculate duration
-        aspect.effectDuration = Pl1eHelpers.applyResolution(aspect.effectDuration, characterData.result, aspect.effectDurationResolutionType);
-
         // Abort if the duration is null
         if (aspect.effectDuration <= 0) return;
 
@@ -105,10 +102,10 @@ export class Pl1eActiveEffect extends ActiveEffect {
                 pl1e: {
                     originActor: characterData.actorId,
                     aspectId: aspect._id,
-                    actorPreUpdateMacroId: aspect.context === "actorPreUpdate" ?
-                        aspect.actorPreUpdateMacroId : undefined,
-                    tokenPreUpdateMacroId: aspect.context === "tokenPreUpdate" ?
-                        aspect.tokenPreUpdateMacroId : undefined
+                    actorPreUpdateMacroId: aspect.dataGroup === "actorPreUpdate" ?
+                        aspect.data : undefined,
+                    tokenPreUpdateMacroId: aspect.dataGroup === "tokenPreUpdate" ?
+                        aspect.data : undefined
                 }
             },
             ...aspect.value && {

@@ -80,27 +80,25 @@
         </fieldset>
         <fieldset>
             <legend class="section-header">{{localize "PL1E.Usage"}}</legend>
-            {{#unless system.attributes.useParentRoll}}
-                <div class="form-group">
-                    <label>{{localize "PL1E.Roll"}}</label>
-                    <div class="form-fields">
-                        <ul>
-                            {{#each system.attributes.roll}}
-                                <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
-                            {{/each}}
-                        </ul>
-                        <a style="flex: 0;" class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.Roll" data-key-path="attributes.roll"
-                           data-tooltip="{{localize 'PL1E.RollConfig'}}">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                    </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.Roll"}}</label>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.roll}}
+                            <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.Roll" data-key-path="attributes.roll"
+                       data-tooltip="{{localize 'PL1E.RollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
                 </div>
-            {{/unless}}
+            </div>
             <div class="form-group">
                 <label>{{localize "PL1E.RollAdvantages"}}</label>
                 <input type="number" name="system.attributes.rollAdvantages" value="{{system.attributes.rollAdvantages}}" data-dtype="Number"/>
             </div>
-            {{#unless system.attributes.useParentOppositeRoll}}
+            {{#if (or (gt (length system.attributes.roll) 0) system.attributes.useParentRoll)}}
                 <div class="form-group">
                     <label>{{localize "PL1E.OppositeRoll"}}</label>
                     <div class="form-fields">
@@ -115,11 +113,11 @@
                         </a>
                     </div>
                 </div>
-            {{/unless}}
-            <div class="form-group">
-                <label>{{localize "PL1E.OppositeRollAdvantages"}}</label>
-                <input type="number" name="system.attributes.oppositeRollAdvantages" value="{{system.attributes.oppositeRollAdvantages}}" data-dtype="Number"/>
-            </div>
+                <div class="form-group">
+                    <label>{{localize "PL1E.OppositeRollAdvantages"}}</label>
+                    <input type="number" name="system.attributes.oppositeRollAdvantages" value="{{system.attributes.oppositeRollAdvantages}}" data-dtype="Number"/>
+                </div>
+            {{/if}}
             <div class="form-group">
                 <label>{{localize "PL1E.HealthCost"}}</label>
                 <input type="number" name="system.attributes.healthCost" value="{{system.attributes.healthCost}}" data-dtype="Number"/>

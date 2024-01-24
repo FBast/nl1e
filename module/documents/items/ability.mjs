@@ -65,18 +65,26 @@ export class Pl1eAbility extends Pl1eItem {
 
         // Override weapon attributes
         if (characterData.attributes.weaponMode === "melee") {
-            if (characterData.attributes.useParentRange) characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
-            if (characterData.attributes.useParentRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.meleeRoll;
-            if (characterData.attributes.useParentOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.meleeOppositeRoll;
+            if (characterData.attributes.useParentRange && characterData.linkedItem.system.attributes.reach !== undefined)
+                characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
+            if (characterData.attributes.useParentRoll && characterData.linkedItem.system.attributes.meleeRoll !== undefined)
+                characterData.attributes.roll = characterData.linkedItem.system.attributes.meleeRoll;
+            if (characterData.attributes.useParentOppositeRoll && characterData.linkedItem.system.attributes.meleeOppositeRoll !== undefined)
+                characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.meleeOppositeRoll;
         }
         else if (characterData.attributes.weaponMode === "range") {
-            if (characterData.attributes.useParentRange) characterData.attributes.range = characterData.linkedItem.system.attributes.range;
-            if (characterData.attributes.useParentRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.rangeRoll;
-            if (characterData.attributes.useParentOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.rangeOppositeRoll;
+            if (characterData.attributes.useParentRange && characterData.linkedItem.system.attributes.range !== undefined)
+                characterData.attributes.range = characterData.linkedItem.system.attributes.range;
+            if (characterData.attributes.useParentRoll && characterData.linkedItem.system.attributes.rangeRoll !== undefined)
+                characterData.attributes.roll = characterData.linkedItem.system.attributes.rangeRoll;
+            if (characterData.attributes.useParentOppositeRoll && characterData.linkedItem.system.attributes.rangeOppositeRoll !== undefined)
+                characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.rangeOppositeRoll;
         }
         else if (characterData.attributes.weaponMode === "magic") {
-            if (characterData.attributes.useParentRoll) characterData.attributes.roll = characterData.linkedItem.system.attributes.magicRoll;
-            if (characterData.attributes.useParentOppositeRoll) characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.magicOppositeRoll;
+            if (characterData.attributes.useParentRoll && characterData.linkedItem.system.attributes.magicRoll !== undefined)
+                characterData.attributes.roll = characterData.linkedItem.system.attributes.magicRoll;
+            if (characterData.attributes.useParentOppositeRoll && characterData.linkedItem.system.attributes.magicOppositeRoll !== undefined)
+                characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.magicOppositeRoll;
         }
 
         // Override sequencer macros
@@ -149,14 +157,17 @@ export class Pl1eAbility extends Pl1eItem {
             // Extra conditions
             if (characterData.attributes.isMajorAction && parentItem.system.majorActionUsed) continue;
             // Weapon mode is melee but parent does not use melee
-            if (characterData.attributes.weaponMode === "melee" && !parentItem.system.attributes.meleeUse) continue;
+            if (characterData.attributes.weaponMode === "melee" && parentItem.system.attributes.meleeUse !== undefined
+                && !parentItem.system.attributes.meleeUse) continue;
             // Weapon mode is range but parent does not use ranged
-            if (characterData.attributes.weaponMode === "range" && !parentItem.system.attributes.rangedUse) continue;
+            if (characterData.attributes.weaponMode === "range" && parentItem.system.attributes.rangedUse !== undefined
+                && !parentItem.system.attributes.rangedUse) continue;
             // Weapon mode is magic but parent does not use magic
-            if (characterData.attributes.weaponMode === "magic" && !parentItem.system.attributes.magicUse) continue;
+            if (characterData.attributes.weaponMode === "magic" && parentItem.system.attributes.magicUse !== undefined
+                && !parentItem.system.attributes.magicUse) continue;
             // Parent usages are not enough
-            if (characterData.attributes.usageCost > 0 && parentItem.system.attributes.uses > 0 &&
-                characterData.attributes.usageCost > parentItem.system.attributes.uses - parentItem.system.removedUses) continue;
+            if (parentItem.system.attributes.uses !== undefined && parentItem.system.removedUses !== undefined &&
+                characterData.attributes.usageCost >= parentItem.system.attributes.uses - parentItem.system.removedUses) continue;
             // The parent is a valid linkable item
             relatedItems.push(parentItem);
         }

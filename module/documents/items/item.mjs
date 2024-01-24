@@ -244,12 +244,6 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.useParentSequencerMacros = false;
             }
             // Usage resets
-            if (changed.system?.attributes?.useParentRoll === true) {
-                changed.system.attributes.roll = [];
-            }
-            if (changed.system?.attributes?.useParentOppositeRoll === true) {
-                changed.system.attributes.oppositeRoll = [];
-            }
             if (changed.system?.attributes?.roll?.length === 0) {
                 changed.system.attributes.rollAdvantages = 0;
                 changed.system.attributes.oppositeRoll = [];
@@ -620,8 +614,8 @@ export class Pl1eItem extends Item {
     _canActivate(characterData) {
         const itemAttributes = characterData.attributes;
 
-        if (itemAttributes.activation === "action") {
-            if (characterData.token.inCombat && characterData.tokenId !== game.combat.current.tokenId) {
+        if (characterData.token.inCombat && itemAttributes.activation === "action") {
+            if (characterData.tokenId !== game.combat.current.tokenId) {
                 ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
                 return false;
             }
@@ -630,12 +624,13 @@ export class Pl1eItem extends Item {
                 return false;
             }
         }
-        else if (itemAttributes.activation === "reaction" && characterData.actor.system.general.reaction <= 0) {
+        else if (characterData.token.inCombat && itemAttributes.activation === "reaction"
+            && characterData.actor.system.general.reaction <= 0) {
             ui.notifications.info(game.i18n.localize("PL1E.NoMoreReaction"));
             return false;
         }
-        else if (itemAttributes.activation === "quickAction") {
-            if (characterData.token.inCombat && characterData.tokenId !== game.combat.current.tokenId) {
+        else if (characterData.token.inCombat && itemAttributes.activation === "quickAction") {
+            if (characterData.tokenId !== game.combat.current.tokenId) {
                 ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
                 return false;
             }
@@ -644,7 +639,7 @@ export class Pl1eItem extends Item {
                 return false;
             }
         }
-        else if (itemAttributes.activation === "outOfCombat" && characterData.token.inCombat) {
+        else if (characterData.token.inCombat && itemAttributes.activation === "outOfCombat") {
             ui.notifications.info(game.i18n.localize("PL1E.OutOfCombatOnly"));
             return false;
         }

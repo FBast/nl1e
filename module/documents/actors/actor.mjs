@@ -112,7 +112,7 @@ export class Pl1eActor extends Actor {
         for (/** @type {Pl1eItem} */ const item of this.items) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                 if (!item.isEnabled) continue;
-                if (aspect.name === "macro" && aspect.macroId !== "none" && aspect.context === "actorPreUpdate") {
+                if (aspect.name === "macro" && aspect.data !== "none" && aspect.dataGroup === "actorPreUpdate") {
                     await Pl1eAspect.applyPassiveMacro(aspect, id, {
                         actor: this,
                         changed: changed,
@@ -137,7 +137,7 @@ export class Pl1eActor extends Actor {
             }
         }
 
-        // Add scrolling text for resources changes
+        // Add scrolling text for resource changes
         const token = this.token;
         if (token && changed.system?.resources) {
             const position = {
