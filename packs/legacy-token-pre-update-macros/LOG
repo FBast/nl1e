@@ -1,3 +1,5 @@
-2024/01/24-22:50:31.031 4bbc Recovering log #10
-2024/01/24-22:50:31.036 4bbc Delete type=0 #10
-2024/01/24-22:50:31.036 4bbc Delete type=3 #8
+2024/01/28-15:50:01.810 3a70 Recovering log #14
+2024/01/28-15:50:01.810 3a70 Level-0 table #16: started
+2024/01/28-15:50:01.812 3a70 Level-0 table #16: 948 bytes OK
+2024/01/28-15:50:01.822 3a70 Delete type=0 #14
+2024/01/28-15:50:01.823 3a70 Delete type=3 #13
