@@ -1,13 +1,13 @@
 <div class="item-attribute flexrow">
     <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
     <select name="system.activeAspects.{{@key}}.dataGroup">
-        {{selectOptions dataGroups selected=aspect.dataGroup localize=true}}
+        {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
     </select>
 </div>
 <div class="item-attribute flexrow">
     <label class="attribute-name">{{localize "PL1E.Data"}}</label>
     <select name="system.activeAspects.{{@key}}.data">
-        {{selectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
+        {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
     </select>
 </div>
 {{#with (config aspect.dataGroup aspect.data)}}
@@ -15,7 +15,7 @@
         <div class="item-attribute flexrow">
             <label class="attribute-name">{{localize "PL1E.DamageType"}}</label>
             <select name="system.activeAspects.{{@key}}.damageType">
-                {{selectOptions (config "damageTypes") selected=../aspect.damageType localize=true}}
+                {{customSelectOptions (config "damageTypes") selected=../aspect.damageType localize=true}}
             </select>
         </div>
     {{/if}}
@@ -27,37 +27,37 @@
             <input type="checkbox" name="system.activeAspects.{{@key}}.value" {{checked ../aspect.value}} data-dtype="Boolean"/>
         {{else if (eq type "select")}}
             <select name="system.activeAspects.{{@key}}.value">
-                {{selectOptions (config select) selected=../aspect.value localize=true}}
+                {{customSelectOptions (config select) selected=../aspect.value localize=true}}
             </select>
         {{else if (eq type "array")}}
             <select name="system.activeAspects.{{@key}}.value">
-                {{selectOptions (config select) selected=../aspect.value localize=true}}
+                {{customSelectOptions (config select) selected=../aspect.value localize=true}}
             </select>
         {{/if}}
     </div>
     <div class="item-attribute flexrow">
         <label class="attribute-name">{{localize "PL1E.ResolutionType"}}</label>
         <select name="system.activeAspects.{{@key}}.resolutionType">
-            {{selectOptions (config "resolutionTypes") selected=../aspect.resolutionType localize=true}}
+            {{customSelectOptions (config "resolutionTypes") selected=../aspect.resolutionType localize=true}}
         </select>
     </div>
 {{/with}}
 <div class="item-attribute flexrow">
     <label class="attribute-name">{{localize "PL1E.TargetGroup"}}</label>
     <select name="system.activeAspects.{{@key}}.targetGroup">
-        {{selectOptions (config "targetGroups") selected=aspect.targetGroup localize=true}}
+        {{customSelectOptions (config "targetGroups") selected=aspect.targetGroup localize=true}}
     </select>
 </div>
 <div class="item-attribute flexrow">
     <label class="attribute-name">{{localize "PL1E.TransferSource"}}</label>
     <select name="system.activeAspects.{{@key}}.transferSource">
-        {{selectOptions (config "targetGroups") selected=aspect.transferSource localize=true}}
+        {{customSelectOptions (config "targetGroups") selected=aspect.transferSource localize=true}}
     </select>
 </div>
 <div class="item-attribute flexrow">
     <label class="attribute-name">{{localize "PL1E.TransferDestination"}}</label>
     <select name="system.activeAspects.{{@key}}.transferDestination">
-        {{selectOptions (config "targetGroups") selected=aspect.transferDestination localize=true}}
+        {{customSelectOptions (config "targetGroups") selected=aspect.transferDestination localize=true}}
     </select>
 </div>
 <div class="item-attribute flexrow">
@@ -75,7 +75,7 @@
     <div class="item-attribute flexrow">
         <label class="attribute-name">{{localize "PL1E.EffectDurationResolutionType"}}</label>
         <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
-            {{selectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
+            {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
         </select>
     </div>
 {{/if}}

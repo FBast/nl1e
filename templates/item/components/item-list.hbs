@@ -21,15 +21,15 @@
                     <div class="item-icons grid-span-6">
                         {{#if @root.item.isEmbedded}}
                             {{#if (eq behavior "regular")}}
-                                <i class="item-info fas fa-cube hover-green" data-tooltip="{{localize "PL1E.Regular"}}"></i>
+                                <i class="item-info far fa-cube hover-green" data-tooltip="{{localize "PL1E.Regular"}}"></i>
                             {{else if (eq behavior "container")}}
-                                <i class="item-info fas fa-treasure-chest hover-green" data-tooltip="{{localize "PL1E.Container"}}"></i>
+                                <i class="item-info far fa-treasure-chest hover-green" data-tooltip="{{localize "PL1E.Container"}}"></i>
                             {{else if (eq behavior "key")}}
-                                <i class="item-info fas fa-key-skeleton hover-green" data-tooltip="{{localize "PL1E.Key"}}"></i>
+                                <i class="item-info far fa-key-skeleton hover-green" data-tooltip="{{localize "PL1E.Key"}}"></i>
                             {{/if}}
                         {{/if}}
                         {{#if synchronized}}
-                            <i class="item-info fas fa-circle-nodes hover-green" data-tooltip="{{localize "PL1E.Synchronized"}}"></i>
+                            <i class="item-info far fa-circle-nodes hover-green" data-tooltip="{{localize "PL1E.Synchronized"}}"></i>
                         {{/if}}
                     </div>
                     <div class="item-controls grid-span-2">

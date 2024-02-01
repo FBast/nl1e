@@ -19,36 +19,36 @@
                 <div class="item-icons grid-span-6">
                     {{#unless (eq @root.actor.type "npc")}}
                         {{#if (or (eq system.attributes.commonType "food"))}}
-                            <i class="item-info fas fa-pot-food hover-green" data-tooltip='{{localize "PL1E.Food"}}'></i>
+                            <i class="item-info far fa-pot-food hover-green" data-tooltip='{{localize "PL1E.Food"}}'></i>
                             {{#if (ne system.attributes.healthRest 0)}}
-                                <i class="item-info fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRest"}}'>
+                                <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRest"}}'>
                                     <label>{{system.attributes.healthRest}}</label>
                                 </i>
                             {{/if}}
                             {{#if (ne system.attributes.staminaRest 0)}}
-                                <i class="item-info fas fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
+                                <i class="item-info far fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
                                     <label>{{system.attributes.staminaRest}}</label>
                                 </i>
                             {{/if}}
                             {{#if (ne system.attributes.manaRest 0)}}
-                                <i class="item-info fas fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRest"}}'>
+                                <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRest"}}'>
                                     <label>{{system.attributes.manaRest}}</label>
                                 </i>
                             {{/if}}
                         {{else if (eq system.attributes.commonType "drink")}}
-                            <i class="item-info fas fa-glass hover-green" data-tooltip='{{localize "PL1E.Drink"}}'></i>
+                            <i class="item-info far fa-glass hover-green" data-tooltip='{{localize "PL1E.Drink"}}'></i>
                             {{#if (ne system.attributes.healthRest 0)}}
-                                <i class="item-info fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRest"}}'>
+                                <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRest"}}'>
                                     <label>{{system.attributes.healthRest}}</label>
                                 </i>
                             {{/if}}
                             {{#if (ne system.attributes.staminaRest 0)}}
-                                <i class="item-info fas fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
+                                <i class="item-info far fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
                                     <label>{{system.attributes.staminaRest}}</label>
                                 </i>
                             {{/if}}
                             {{#if (ne system.attributes.manaRest 0)}}
-                                <i class="item-info fas fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRest"}}'>
+                                <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRest"}}'>
                                     <label>{{system.attributes.manaRest}}</label>
                                 </i>
                             {{/if}}
@@ -57,17 +57,17 @@
                     {{#if (eq @root.actor.type "merchant")}}
                         {{#with (lookup ../system.merchantPrices _id)}}
                             {{#if (gt gold 0)}}
-                                <i class="item-info fas fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
+                                <i class="item-info far fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
                                     <label class="color-black">{{gold}}</label>
                                 </i>
                             {{/if}}
                             {{#if (gt silver 0)}}
-                                <i class="item-info fas fa-coins color-silver hover-green" data-tooltip='{{localize "PL1E.Silver"}}'>
+                                <i class="item-info far fa-coins color-silver hover-green" data-tooltip='{{localize "PL1E.Silver"}}'>
                                     <label class="color-black">{{silver}}</label>
                                 </i>
                             {{/if}}
                             {{#if (gt copper 0)}}
-                                <i class="item-info fas fa-coins color-copper hover-green" data-tooltip='{{localize "PL1E.Copper"}}'>
+                                <i class="item-info far fa-coins color-copper hover-green" data-tooltip='{{localize "PL1E.Copper"}}'>
                                     <label class="color-black">{{copper}}</label>
                                 </i>
                             {{/if}}

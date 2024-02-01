@@ -30,25 +30,16 @@ export const registerHandlebars = function () {
         return Pl1eHelpers.getConfig(...args);
     });
 
-    // Save a reference to the original selectOptions helper
-    const originalSelectOptions = Handlebars.helpers.selectOptions;
-    Handlebars.registerHelper('selectOptions', function(choices, options) {
+// Register a new helper for custom handling of select options
+    Handlebars.registerHelper('customSelectOptions', function(choices, options) {
         const modifiedChoices = {};
         for (const key in choices) {
             const value = choices[key];
-            if (value.label) modifiedChoices[key] = value.label;
-            else modifiedChoices[key] = value;
+            // Check if the choice has a label property and use it; otherwise, use the choice directly
+            modifiedChoices[key] = value.label ? value.label : value;
         }
-        return originalSelectOptions(modifiedChoices, options);
-    });
-
-    Handlebars.registerHelper('selectOptionsWithLabel', function(choices, options) {
-        const optionsData = {};
-        for (const key in choices) {
-            const value = choices[key];
-            optionsData[key] = value.label;
-        }
-        return Handlebars.helpers.selectOptions(optionsData, options);
+        // Call the original selectOptions helper with the modified choices
+        return Handlebars.helpers.selectOptions(modifiedChoices, options);
     });
 
     Handlebars.registerHelper('join', function(arr, separator) {

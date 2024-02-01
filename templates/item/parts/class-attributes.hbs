@@ -10,7 +10,7 @@
         <div class="form-group">
             <label>{{localize "PL1E.ClassType"}}</label>
             <select name="system.attributes.classType">
-                {{selectOptions (config "classTypes") selected=system.attributes.classType localize=true}}
+                {{customSelectOptions (config "classTypes") selected=system.attributes.classType localize=true}}
             </select>
         </div>
     </fieldset>

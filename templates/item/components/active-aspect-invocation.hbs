@@ -1,13 +1,13 @@
 <div class="item-attribute flexrow">
     <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
     <select name="system.activeAspects.{{@key}}.dataGroup">
-        {{selectOptions dataGroups selected=aspect.dataGroup localize=true}}
+        {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
     </select>
 </div>
 <div class="item-attribute flexrow">
     <label class="attribute-name">{{localize "PL1E.Data"}}</label>
     <select name="system.activeAspects.{{@key}}.data">
-        {{selectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
+        {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
     </select>
 </div>
 <div class="item-attribute flexrow">
@@ -25,7 +25,7 @@
     <div class="item-attribute flexrow">
         <label class="attribute-name">{{localize "PL1E.EffectDurationResolutionType"}}</label>
         <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
-            {{selectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
+            {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
         </select>
     </div>
 {{/if}}

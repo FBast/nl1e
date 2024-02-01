@@ -30,47 +30,44 @@
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.quickActionCost 0)}}
-                            <i class="item-info fas fa-bell hover-green" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
+                            <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
                                 <label>{{system.attributes.quickActionCost}}</label>
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.healthCost 0)}}
-                            <i class="item-info fas fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthCost"}}'>
+                            <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthCost"}}'>
                                 <label>{{system.attributes.healthCost}}</label>
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.staminaCost 0)}}
-                            <i class="item-info fas fa-wave-pulse hover-green" data-tooltip="{{localize "PL1E.StaminaCost"}}">
+                            <i class="item-info far fa-wave-pulse hover-green" data-tooltip="{{localize "PL1E.StaminaCost"}}">
                                 <label>{{system.attributes.staminaCost}}</label>
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.manaCost 0)}}
-                            <i class="item-info fas fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaCost"}}'>
+                            <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaCost"}}'>
                                 <label>{{system.attributes.manaCost}}</label>
                             </i>
                         {{/if}}
                         {{#if (ne system.attributes.usageCost 0)}}
-                            <i class="item-info fas fa-tally hover-green" data-tooltip='{{localize "PL1E.UsageCost"}}'>
+                            <i class="item-info far fa-tally hover-green" data-tooltip='{{localize "PL1E.UsageCost"}}'>
                                 <label>{{system.attributes.usageCost}}</label>
                             </i>
                         {{/if}}
                         {{#if system.attributes.isMajorAction}}
-                            <i class="item-info fas fa-star hover-green" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
+                            <i class="item-info far fa-star hover-green" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
                         {{/if}}
                         {{#if system.attributes.isDangerous}}
-                            <i class="item-info fas fa-skull-crossbones hover-green" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
-                        {{/if}}
-                        {{#if system.attributes.useFocus}}
-                            <i class="item-info fas fa-person-rays hover-green" data-tooltip='{{localize "PL1E.UseFocus"}}'></i>
+                            <i class="item-info far fa-skull-crossbones hover-green" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
                         {{/if}}
                         {{#if (eq system.attributes.linkedItem "melee")}}
-                            <i class="item-info fas fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>
+                            <i class="item-info far fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>
                         {{else if (eq system.attributes.linkedItem "range")}}
-                            <i class="item-info fas fa-bow-arrow hover-green" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
+                            <i class="item-info far fa-bow-arrow hover-green" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
                         {{/if}}
                         {{#if (eq system.attributes.linkedItem "none")}}
                             {{#if (ne system.attributes.range 0)}}
-                                <i class="item-info fas fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
+                                <i class="item-info far fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
                                     <label>{{system.attributes.range}}</label>
                                 </i>
                             {{/if}}

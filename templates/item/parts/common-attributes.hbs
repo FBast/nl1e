@@ -27,7 +27,7 @@
         <div class="form-group">
             <label>{{localize "PL1E.CommonType"}}</label>
             <select name="system.attributes.commonType">
-                {{selectOptions (config "commonTypes") selected=system.attributes.commonType localize=true}}
+                {{customSelectOptions (config "commonTypes") selected=system.attributes.commonType localize=true}}
             </select>
         </div>
         {{#if (or (eq system.attributes.commonType "food") (eq system.attributes.commonType "drink"))}}

@@ -22,7 +22,7 @@
         <label>{{localize "PL1E.Type"}}</label>
         <div class="form-fields">
             <select name="system.type">
-                {{selectOptions (config "locationTypes") selected=system.type localize=true}}
+                {{customSelectOptions (config "locationTypes") selected=system.type localize=true}}
             </select>
         </div>
         <p class="hint">{{localize "PL1E.DescriptionLocationType"}}</p>
@@ -32,7 +32,7 @@
         <label>{{localize "PL1E.SubType"}}</label>
         <div class="form-fields">
             <select name="system.subType">
-                {{selectOptions (config (concat system.type "Types")) selected=system.subType localize=true}}
+                {{customSelectOptions (config (concat system.type "Types")) selected=system.subType localize=true}}
             </select>
         </div>
         <p class="hint">{{localize "PL1E.DescriptionLocationSubType"}}</p>
@@ -53,7 +53,7 @@
             <label>{{localize "PL1E.Climate"}}</label>
             <div class="form-fields">
                 <select name="system.climate">
-                    {{selectOptions (config "climates") selected=system.climate localize=true}}
+                    {{customSelectOptions (config "climates") selected=system.climate localize=true}}
                 </select>
             </div>
             <p class="hint">{{localize "PL1E.DescriptionClimate"}}</p>

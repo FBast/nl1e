@@ -7,7 +7,7 @@
         <div class="form-group">
             <label>{{ localize "DND5E.AbilityModifier" }}</label>
             <select name="ability">
-                {{selectOptions abilities selected=defaultAbility}}
+                {{customSelectOptions abilities selected=defaultAbility}}
             </select>
         </div>
     {{/if}}
@@ -18,7 +18,7 @@
     <div class="form-group">
         <label>{{ localize "DND5E.RollMode" }}</label>
         <select name="rollMode">
-            {{selectOptions rollModes selected=defaultRollMode localize=true}}
+            {{customSelectOptions rollModes selected=defaultRollMode localize=true}}
         </select>
     </div>
 </form>
