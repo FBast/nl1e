@@ -277,13 +277,6 @@ export class Pl1eActor extends Actor {
     async prepareEmbeddedDocuments() {
         super.prepareEmbeddedDocuments();
 
-        // Apply passive values
-        for (/** @type {Pl1eItem} */ const item of this.items) {
-            for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                if (aspect.createEffect || !item.isEnabled) continue;
-                Pl1eAspect.applyPassiveValue(aspect, id, this);
-            }
-        }
     }
 
     /**
@@ -304,6 +297,14 @@ export class Pl1eActor extends Actor {
         const actorGeneral = systemData.general;
         const actorCharacteristics = systemData.characteristics;
         const actorSkills = systemData.skills;
+
+        // Apply passive values
+        for (/** @type {Pl1eItem} */ const item of this.items) {
+            for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
+                if (aspect.createEffect || !item.isEnabled) continue;
+                Pl1eAspect.applyPassiveValue(aspect, id, this);
+            }
+        }
 
         // Handle actorCharacteristics scores.
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {

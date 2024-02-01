@@ -54,4 +54,8 @@ export const registerHandlebars = function () {
     Handlebars.registerHelper('isEmpty', function(obj) {
         return Object.keys(obj).length === 0;
     });
+
+    Handlebars.registerHelper('contains', function(array, item, options) {
+        return Array.isArray(array) && array.indexOf(item) > -1;
+    });
 }
