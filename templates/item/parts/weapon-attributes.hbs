@@ -44,7 +44,18 @@
             <label>{{localize "PL1E.MeleeUse"}}</label>
             <input type="checkbox" name="system.attributes.meleeUse" {{checked system.attributes.meleeUse}} data-dtype="Boolean"/>
         </div>
-        {{#if system.attributes.meleeUse}}
+        <div class="form-group">
+            <label>{{localize "PL1E.RangedUse"}}</label>
+            <input type="checkbox" name="system.attributes.rangedUse" {{checked system.attributes.rangedUse}} data-dtype="Boolean"/>
+        </div>
+        <div class="form-group">
+            <label>{{localize "PL1E.MagicUse"}}</label>
+            <input type="checkbox" name="system.attributes.magicUse" {{checked system.attributes.magicUse}} data-dtype="Boolean"/>
+        </div>
+    </fieldset>
+    {{#if system.attributes.meleeUse}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.Melee"}}</legend>
             <div class="form-group">
                 <label>{{localize "PL1E.Reach"}}</label>
                 <input type="number" name="system.attributes.reach" value="{{system.attributes.reach}}" data-dtype="Number"/>
@@ -97,12 +108,11 @@
                     {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleePostLaunchMacro localize=true}}
                 </select>
             </div>
-        {{/if}}
-        <div class="form-group">
-            <label>{{localize "PL1E.RangedUse"}}</label>
-            <input type="checkbox" name="system.attributes.rangedUse" {{checked system.attributes.rangedUse}} data-dtype="Boolean"/>
-        </div>
-        {{#if system.attributes.rangedUse}}
+        </fieldset>
+    {{/if}}
+    {{#if system.attributes.rangedUse}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.Ranged"}}</legend>
             <div class="form-group">
                 <label>{{localize "PL1E.Range"}}</label>
                 <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
@@ -155,12 +165,11 @@
                     {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangePostLaunchMacro localize=true}}
                 </select>
             </div>
-        {{/if}}
-        <div class="form-group">
-            <label>{{localize "PL1E.MagicUse"}}</label>
-            <input type="checkbox" name="system.attributes.magicUse" {{checked system.attributes.magicUse}} data-dtype="Boolean"/>
-        </div>
-        {{#if system.attributes.magicUse}}
+        </fieldset>
+    {{/if}}
+    {{#if system.attributes.magicUse}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.Magic"}}</legend>
             <div class="form-group">
                 <label>{{localize "PL1E.MagicRoll"}}</label>
                 <div class="form-fields">
@@ -209,8 +218,8 @@
                     {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPostLaunchMacro localize=true}}
                 </select>
             </div>
-        {{/if}}
-    </fieldset>
+        </fieldset>
+    {{/if}}
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
     {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
 </section>
