@@ -138,7 +138,7 @@ export class Pl1eActor extends Actor {
         }
 
         // Add scrolling text for resource changes
-        const token = this.token;
+        const token = this.bestToken;
         if (token && changed.system?.resources) {
             const position = {
                 x: token.x + token.width * token.parent.grid.size / 2,

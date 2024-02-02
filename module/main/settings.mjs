@@ -35,11 +35,11 @@ export const registerSettings = function () {
         config: true,
         type: Number,
         range: {
-            min: 10,
-            max: 50,
+            min: 25,
+            max: 100,
             step: 5
         },
-        default: 20
+        default: 50
     });
 
     game.settings.register('pl1e', 'scrollingTextMaxFont', {
@@ -48,11 +48,11 @@ export const registerSettings = function () {
         config: true,
         type: Number,
         range: {
-            min: 50,
-            max: 100,
+            min: 75,
+            max: 150,
             step: 5
         },
-        default: 50
+        default: 100
     });
 
     game.settings.register('pl1e', 'scrollingTextDuration', {
