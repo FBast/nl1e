@@ -79,6 +79,24 @@
                     </div>
                 </div>
             {{/if}}
+            <div class="form-group">
+                <label>{{localize "PL1E.MeleeActivationMacro"}}</label>
+                <select name="system.attributes.meleeActivationMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleeActivationMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MeleePreLaunchMacro"}}</label>
+                <select name="system.attributes.meleePreLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleePreLaunchMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MeleePostLaunchMacro"}}</label>
+                <select name="system.attributes.meleePostLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleePostLaunchMacro localize=true}}
+                </select>
+            </div>
         {{/if}}
         <div class="form-group">
             <label>{{localize "PL1E.RangedUse"}}</label>
@@ -119,6 +137,24 @@
                     </div>
                 </div>
             {{/if}}
+            <div class="form-group">
+                <label>{{localize "PL1E.RangeActivationMacro"}}</label>
+                <select name="system.attributes.rangeActivationMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangeActivationMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.RangePreLaunchMacro"}}</label>
+                <select name="system.attributes.rangePreLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangePreLaunchMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.RangePostLaunchMacro"}}</label>
+                <select name="system.attributes.rangePostLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangePostLaunchMacro localize=true}}
+                </select>
+            </div>
         {{/if}}
         <div class="form-group">
             <label>{{localize "PL1E.MagicUse"}}</label>
@@ -155,28 +191,25 @@
                     </div>
                 </div>
             {{/if}}
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicActivationMacro"}}</label>
+                <select name="system.attributes.magicActivationMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicActivationMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicPreLaunchMacro"}}</label>
+                <select name="system.attributes.magicPreLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPreLaunchMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicPostLaunchMacro"}}</label>
+                <select name="system.attributes.magicPostLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPostLaunchMacro localize=true}}
+                </select>
+            </div>
         {{/if}}
-    </fieldset>
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.SequencerMacros"}}</legend>
-        <div class="form-group">
-            <label>{{localize "PL1E.ActivationMacro"}}</label>
-            <select name="system.attributes.activationMacro">
-                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.activationMacro localize=true}}
-            </select>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.PreLaunchMacro"}}</label>
-            <select name="system.attributes.preLaunchMacro">
-                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.preLaunchMacro localize=true}}
-            </select>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.PostLaunchMacro"}}</label>
-            <select name="system.attributes.postLaunchMacro">
-                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.postLaunchMacro localize=true}}
-            </select>
-        </div>
     </fieldset>
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
     {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}

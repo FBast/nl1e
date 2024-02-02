@@ -159,28 +159,53 @@ export function getConfigItems() {
             "type": "bool",
             "inDescription": true
         },
-        "useFocus": {
-            "label": "PL1E.UseFocus",
-            "type": "bool",
-            "inDescription": true
-        },
         "customMacro": {
             "label": "PL1E.CustomMacro",
             "type": "bool",
             "inDescription": false
         },
-        "activationMacro": {
-            "label": "PL1E.ActivationMacro",
+        "meleeActivationMacro": {
+            "label": "PL1E.MeleeActivationMacro",
             "type": "text",
             "inDescription": false
         },
-        "preLaunchMacro": {
-            "label": "PL1E.PreLaunchMacro",
+        "meleePreLaunchMacro": {
+            "label": "PL1E.MeleePreLaunchMacro",
             "type": "text",
             "inDescription": false
         },
-        "postLaunchMacro": {
-            "label": "PL1E.PostLaunchMacro",
+        "meleePostLaunchMacro": {
+            "label": "PL1E.MeleePostLaunchMacro",
+            "type": "text",
+            "inDescription": false
+        },
+        "rangeActivationMacro": {
+            "label": "PL1E.RangeActivationMacro",
+            "type": "text",
+            "inDescription": false
+        },
+        "rangePreLaunchMacro": {
+            "label": "PL1E.RangePreLaunchMacro",
+            "type": "text",
+            "inDescription": false
+        },
+        "rangePostLaunchMacro": {
+            "label": "PL1E.RangePostLaunchMacro",
+            "type": "text",
+            "inDescription": false
+        },
+        "magicActivationMacro": {
+            "label": "PL1E.MagicActivationMacro",
+            "type": "text",
+            "inDescription": false
+        },
+        "magicPreLaunchMacro": {
+            "label": "PL1E.MagicPreLaunchMacro",
+            "type": "text",
+            "inDescription": false
+        },
+        "magicPostLaunchMacro": {
+            "label": "PL1E.MagicPostLaunchMacro",
             "type": "text",
             "inDescription": false
         },
@@ -227,8 +252,18 @@ export function getConfigItems() {
             "type": "bool",
             "inDescription": false
         },
-        "useParentSequencerMacros": {
-            "label": "PL1E.UseParentSequencerMacros",
+        "useParentActivationMacro": {
+            "label": "PL1E.UseParentActivationMacro",
+            "type": "bool",
+            "inDescription": false
+        },
+        "useParentPreLaunchMacro": {
+            "label": "PL1E.UseParentPreLaunchMacro",
+            "type": "bool",
+            "inDescription": false
+        },
+        "useParentPostLaunchMacro": {
+            "label": "PL1E.UseParentPostLaunchMacro",
             "type": "bool",
             "inDescription": false
         },

@@ -1,24 +1,8 @@
-2024/02/02-16:24:43.327 2ab0 Recovering log #849
-2024/02/02-16:24:43.327 2ab0 Level-0 table #851: started
-2024/02/02-16:24:43.329 2ab0 Level-0 table #851: 9887 bytes OK
-2024/02/02-16:24:43.333 2ab0 Delete type=0 #849
-2024/02/02-16:24:43.333 2ab0 Delete type=3 #847
-2024/02/02-16:45:39.932 5218 Level-0 table #854: started
-2024/02/02-16:45:39.933 5218 Level-0 table #854: 0 bytes OK
-2024/02/02-16:45:39.935 5218 Delete type=0 #852
-2024/02/02-16:45:39.940 5218 Manual compaction at level-0 from '!macros!2S6xe9vYBwviaQSB' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at '!macros!dVxOPq8E9ZdKzCZr' @ 124 : 1
-2024/02/02-16:45:39.940 5218 Compacting 2@0 + 0@1 files
-2024/02/02-16:45:39.942 5218 Generated table #855@0: 22 keys, 10111 bytes
-2024/02/02-16:45:39.943 5218 Compacted 2@0 + 0@1 files => 10111 bytes
-2024/02/02-16:45:39.946 5218 compacted to: files[ 0 1 2 0 0 0 0 ]
-2024/02/02-16:45:39.946 5218 Delete type=2 #848
-2024/02/02-16:45:39.946 5218 Delete type=2 #851
-2024/02/02-16:45:39.947 5218 Manual compaction at level-0 from '!macros!dVxOPq8E9ZdKzCZr' @ 124 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
-2024/02/02-16:45:39.947 5218 Manual compaction at level-1 from '!macros!2S6xe9vYBwviaQSB' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at '!macros!xRNwRr3DENy6btWs' @ 139 : 1
-2024/02/02-16:45:39.947 5218 Compacting 1@1 + 1@2 files
-2024/02/02-16:45:39.952 5218 Generated table #856@1: 26 keys, 11305 bytes
-2024/02/02-16:45:39.952 5218 Compacted 1@1 + 1@2 files => 11305 bytes
-2024/02/02-16:45:39.954 5218 compacted to: files[ 0 0 2 0 0 0 0 ]
-2024/02/02-16:45:39.954 5218 Delete type=2 #714
-2024/02/02-16:45:39.955 5218 Delete type=2 #855
-2024/02/02-16:45:39.955 5218 Manual compaction at level-1 from '!macros!xRNwRr3DENy6btWs' @ 139 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
+2024/02/02-16:46:02.560 4df0 Recovering log #853
+2024/02/02-16:46:02.564 4df0 Delete type=0 #853
+2024/02/02-16:46:02.564 4df0 Delete type=3 #850
+2024/02/02-18:48:46.254 5218 Level-0 table #860: started
+2024/02/02-18:48:46.254 5218 Level-0 table #860: 0 bytes OK
+2024/02/02-18:48:46.256 5218 Delete type=0 #858
+2024/02/02-18:48:46.266 5218 Manual compaction at level-0 from '!macros!2S6xe9vYBwviaQSB' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
+2024/02/02-18:48:46.266 5218 Manual compaction at level-1 from '!macros!2S6xe9vYBwviaQSB' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)

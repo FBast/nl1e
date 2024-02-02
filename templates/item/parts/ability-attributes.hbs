@@ -73,8 +73,16 @@
                     <input type="checkbox" name="system.attributes.useParentOppositeRoll" {{checked system.attributes.useParentOppositeRoll}} data-dtype="Boolean"/>
                 </div>
                 <div class="form-group">
-                    <label>{{localize "PL1E.UseParentSequencerMacros"}}</label>
-                    <input type="checkbox" name="system.attributes.useParentSequencerMacros" {{checked system.attributes.useParentSequencerMacros}} data-dtype="Boolean"/>
+                    <label>{{localize "PL1E.UseParentActivationMacro"}}</label>
+                    <input type="checkbox" name="system.attributes.useParentActivationMacro" {{checked system.attributes.useParentActivationMacro}} data-dtype="Boolean"/>
+                </div>
+                <div class="form-group">
+                    <label>{{localize "PL1E.UseParentPreLaunchMacro"}}</label>
+                    <input type="checkbox" name="system.attributes.useParentPreLaunchMacro" {{checked system.attributes.useParentPreLaunchMacro}} data-dtype="Boolean"/>
+                </div>
+                <div class="form-group">
+                    <label>{{localize "PL1E.UseParentPostLaunchMacro"}}</label>
+                    <input type="checkbox" name="system.attributes.useParentPostLaunchMacro" {{checked system.attributes.useParentPostLaunchMacro}} data-dtype="Boolean"/>
                 </div>
             {{/if}}
         </fieldset>
@@ -188,29 +196,27 @@
                 {{/if}}
             {{/if}}
         </fieldset>
-        {{#unless system.attributes.useParentSequencerMacros}}
-            <fieldset>
-                <legend class="section-header">{{localize "PL1E.SequencerMacros"}}</legend>
-                <div class="form-group">
-                    <label>{{localize "PL1E.ActivationMacro"}}</label>
-                    <select name="system.attributes.activationMacro">
-                        {{customSelectOptions (config "sequencerMacros") selected=system.attributes.activationMacro localize=true}}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>{{localize "PL1E.PreLaunchMacro"}}</label>
-                    <select name="system.attributes.preLaunchMacro">
-                        {{customSelectOptions (config "sequencerMacros") selected=system.attributes.preLaunchMacro localize=true}}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>{{localize "PL1E.PostLaunchMacro"}}</label>
-                    <select name="system.attributes.postLaunchMacro">
-                        {{customSelectOptions (config "sequencerMacros") selected=system.attributes.postLaunchMacro localize=true}}
-                    </select>
-                </div>
-            </fieldset>
-        {{/unless}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.SequencerMacros"}}</legend>
+            <div class="form-group">
+                <label>{{localize "PL1E.ActivationMacro"}}</label>
+                <select name="system.attributes.activationMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.activationMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.PreLaunchMacro"}}</label>
+                <select name="system.attributes.preLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.preLaunchMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.PostLaunchMacro"}}</label>
+                <select name="system.attributes.postLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.postLaunchMacro localize=true}}
+                </select>
+            </div>
+        </fieldset>
     {{/unless}}
     {{#if (eq system.attributes.activation "passive")}}
         {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}

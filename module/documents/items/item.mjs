@@ -201,9 +201,15 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.manaCost = 0;
                 changed.system.attributes.usageCost = 0;
                 changed.system.attributes.areaShape = "none";
-                changed.system.attributes.activationMacro = "";
-                changed.system.attributes.preLaunchMacro = "";
-                changed.system.attributes.postLaunchMacro = "";
+                changed.system.attributes.meleeActivationMacro = "";
+                changed.system.attributes.rangeActivationMacro = "";
+                changed.system.attributes.magicActivationMacro = "";
+                changed.system.attributes.meleePreLaunchMacro = "";
+                changed.system.attributes.rangePreLaunchMacro = "";
+                changed.system.attributes.magicPreLaunchMacro = "";
+                changed.system.attributes.meleePostLaunchMacro = "";
+                changed.system.attributes.rangePostLaunchMacro = "";
+                changed.system.attributes.magicPostLaunchMacro = "";
                 changed.system.activeAspects = null;
                 changed.system.passiveAspects = null;
             }
@@ -241,7 +247,9 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.useParentRange = false;
                 changed.system.attributes.useParentRoll = false;
                 changed.system.attributes.useParentOppositeRoll = false;
-                changed.system.attributes.useParentSequencerMacros = false;
+                changed.system.attributes.useParentActivationMacro = false;
+                changed.system.attributes.useParentPreLaunchMacro = false;
+                changed.system.attributes.useParentPostLaunchMacro = false;
             }
             // Usage resets
             if (changed.system?.attributes?.roll?.length === 0) {

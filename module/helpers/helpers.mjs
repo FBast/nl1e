@@ -368,6 +368,12 @@ export class Pl1eHelpers {
         return resolvedValue;
     }
 
+    static assignIfDefined(source, target, condition, sourceProperty, targetProperty = sourceProperty) {
+        if (condition && source[sourceProperty] !== undefined) {
+            target[targetProperty] = source[sourceProperty];
+        }
+    }
+
     static _levelCaps(actor) {
         const classNumber = Math.max(actor.items.filter(item => item.type === "class").length, 1);
         const key = classNumber === 1 ? "monoClassLevelCaps" : "multiClassLevelCaps";

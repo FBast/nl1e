@@ -63,39 +63,38 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.linkedItem === null) return false;
         }
 
-        // Override weapon attributes
-        if (characterData.attributes.weaponMode === "melee") {
-            if (characterData.attributes.useParentRange && characterData.linkedItem.system.attributes.reach !== undefined)
-                characterData.attributes.range = characterData.linkedItem.system.attributes.reach;
-            if (characterData.attributes.useParentRoll && characterData.linkedItem.system.attributes.meleeRoll !== undefined)
-                characterData.attributes.roll = characterData.linkedItem.system.attributes.meleeRoll;
-            if (characterData.attributes.useParentOppositeRoll && characterData.linkedItem.system.attributes.meleeOppositeRoll !== undefined)
-                characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.meleeOppositeRoll;
-        }
-        else if (characterData.attributes.weaponMode === "range") {
-            if (characterData.attributes.useParentRange && characterData.linkedItem.system.attributes.range !== undefined)
-                characterData.attributes.range = characterData.linkedItem.system.attributes.range;
-            if (characterData.attributes.useParentRoll && characterData.linkedItem.system.attributes.rangeRoll !== undefined)
-                characterData.attributes.roll = characterData.linkedItem.system.attributes.rangeRoll;
-            if (characterData.attributes.useParentOppositeRoll && characterData.linkedItem.system.attributes.rangeOppositeRoll !== undefined)
-                characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.rangeOppositeRoll;
-        }
-        else if (characterData.attributes.weaponMode === "magic") {
-            if (characterData.attributes.useParentRoll && characterData.linkedItem.system.attributes.magicRoll !== undefined)
-                characterData.attributes.roll = characterData.linkedItem.system.attributes.magicRoll;
-            if (characterData.attributes.useParentOppositeRoll && characterData.linkedItem.system.attributes.magicOppositeRoll !== undefined)
-                characterData.attributes.oppositeRoll = characterData.linkedItem.system.attributes.magicOppositeRoll;
-        }
+        // Assuming characterData is already defined
+        const attributes = characterData.attributes;
+        const linkedItemAttributes = characterData.linkedItem.system.attributes;
 
-        // Override sequencer macros
-        if (characterData.attributes.useParentSequencerMacros) {
-            characterData.attributes.activationMacro = characterData.linkedItem.system.attributes.activationMacro;
-            characterData.attributes.preLaunchMacro = characterData.linkedItem.system.attributes.preLaunchMacro;
-            characterData.attributes.postLaunchMacro = characterData.linkedItem.system.attributes.postLaunchMacro;
+        switch (attributes.weaponMode) {
+            case "melee":
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRange, 'reach', 'range');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRoll, 'meleeRoll', 'roll');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentOppositeRoll, 'meleeOppositeRoll', 'oppositeRoll');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentActivationMacro, 'meleeActivationMacro');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPreLaunchMacro, 'meleePreLaunchMacro');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPostLaunchMacro, 'meleePostLaunchMacro');
+                break;
+            case "range":
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRange, 'range');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRoll, 'rangeRoll', 'roll');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentOppositeRoll, 'rangeOppositeRoll', 'oppositeRoll');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentActivationMacro, 'rangeActivationMacro', 'activationMacro');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPreLaunchMacro, 'rangePreLaunchMacro', 'preLaunchMacro');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPostLaunchMacro, 'rangePostLaunchMacro', 'postLaunchMacro');
+                break;
+            case "magic":
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRoll, 'magicRoll', 'roll');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentOppositeRoll, 'magicOppositeRoll', 'oppositeRoll');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentActivationMacro, 'magicActivationMacro', 'activationMacro');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPreLaunchMacro, 'magicPreLaunchMacro', 'preLaunchMacro');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPostLaunchMacro, 'magicPostLaunchMacro', 'postLaunchMacro');
+                break;
         }
 
         // Use the parent active aspects when launching the ability
-        if (characterData.attributes.launchParentActiveAspects) {
+        if (attributes.launchParentActiveAspects) {
             Pl1eHelpers.mergeDeep(characterData.activeAspects, await characterData.linkedItem.getCombinedActiveAspects());
         }
         return true;
