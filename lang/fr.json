@@ -573,6 +573,7 @@
   "PL1E.Target": "Cible",
   "PL1E.TargetGroup": "Groupe ciblé",
   "PL1E.Targets": "Cibles",
+  "PL1E.TargetsExceptSelf": "Cibles sauf soi même",
   "PL1E.TargetsResolution": "Résolution des cibles",
   "PL1E.Teleport": "Téléporter",
   "PL1E.TempHealth": "Vie temporaire",

@@ -311,13 +311,13 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
 
                 // Check if target position in template
                 if (tokenDocument.x === gridPosition.x && tokenDocument.y === gridPosition.y) {
-                    // Filter non valid targets
-                    if (!targetGroups.includes("all") && !targetGroups.includes("targets")) {
-                        if (!targetGroups.includes("allies") && !targetGroups.includes("alliesAndSelf")
-                            && tokenDocument.disposition === actionData.token.disposition) continue;
-                        if (!targetGroups.includes("opponents") && !targetGroups.includes("opponentsAndSelf")
-                            && tokenDocument.disposition !== actionData.token.disposition) continue;
-                    }
+                    // // Filter non valid targets
+                    // if (!targetGroups.includes("targets")) {
+                    //     if (!targetGroups.includes("allies") && !targetGroups.includes("alliesAndSelf")
+                    //         && tokenDocument.disposition === actionData.token.disposition) continue;
+                    //     if (!targetGroups.includes("opponents") && !targetGroups.includes("opponentsAndSelf")
+                    //         && tokenDocument.disposition !== actionData.token.disposition) continue;
+                    // }
 
                     // Add to targets array
                     targets.push(tokenDocument);

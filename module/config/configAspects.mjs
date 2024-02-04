@@ -715,8 +715,8 @@ export function getConfigAspects() {
     }
 
     PL1E.targetGroups = {
-        "all": "PL1E.All",
         "targets": "PL1E.Targets",
+        "targetsExceptSelf": "PL1E.TargetsExceptSelf",
         "self": "PL1E.Self",
         "allies": "PL1E.Allies",
         "alliesAndSelf": "PL1E.AlliesAndSelf",
@@ -726,7 +726,6 @@ export function getConfigAspects() {
 
     PL1E.targetGroupWithTemplate = {
         "template": "PL1E.Template",
-        "all": "PL1E.All",
         "targets": "PL1E.Targets",
         "self": "PL1E.Self",
         "allies": "PL1E.Allies",

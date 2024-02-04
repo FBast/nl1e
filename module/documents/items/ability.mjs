@@ -72,9 +72,9 @@ export class Pl1eAbility extends Pl1eItem {
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRange, 'reach', 'range');
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRoll, 'meleeRoll', 'roll');
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentOppositeRoll, 'meleeOppositeRoll', 'oppositeRoll');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentActivationMacro, 'meleeActivationMacro');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPreLaunchMacro, 'meleePreLaunchMacro');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPostLaunchMacro, 'meleePostLaunchMacro');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentActivationMacro, 'meleeActivationMacro', 'activationMacro');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPreLaunchMacro, 'meleePreLaunchMacro', 'preLaunchMacro');
+                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPostLaunchMacro, 'meleePostLaunchMacro', 'postLaunchMacro');
                 break;
             case "range":
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRange, 'range');

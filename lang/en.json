@@ -582,6 +582,7 @@
   "PL1E.Target": "Target",
   "PL1E.TargetGroup": "Target group",
   "PL1E.Targets": "Targets",
+  "PL1E.TargetsExceptSelf": "Targets except self",
   "PL1E.TargetsResolution": "Targets resolution",
   "PL1E.Teleport": "Teleport",
   "PL1E.TempHealth": "Temp health",

@@ -597,10 +597,20 @@ export class Pl1eAspect {
     static _isTargetValid(group, targetData, characterData) {
         const targetToken = targetData.token;
         const characterToken = characterData.token;
-        if ("targets" === group && targetData.actor === characterData.actor && !targetData.template) return false;
-        if (["self", "alliesAndSelf", "opponentsAndSelf"].includes(group) && targetToken !== characterToken) return false;
-        if (["allies", "alliesAndSelf"].includes(group) && targetToken.disposition !== characterToken.disposition) return false;
-        if (["opponents","opponentsAndSelf"].includes(group) && targetToken.disposition === characterToken.disposition) return false;
+        switch (group) {
+            case "targetsExceptSelf":
+                return targetData.actor !== characterData.actor;
+            case "self":
+                return targetData.actor === characterData.actor;
+            case "allies":
+                return targetToken.disposition === characterToken.disposition;
+            case "alliesAndSelf":
+                return targetToken.disposition === characterToken.disposition || targetData.actor === characterData.actor;
+            case "opponents":
+                return targetToken.disposition !== characterToken.disposition;
+            case "opponentsAndSelf":
+                return targetToken.disposition !== characterToken.disposition || targetData.actor === characterData.actor;
+        }
         return true;
     }
 
