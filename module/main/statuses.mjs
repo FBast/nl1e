@@ -452,10 +452,10 @@ export const registerStatuses = function () {
             }
         },
         {
-            // The character focus on a spell
-            id: "focus",
-            label: "PL1E.StatusFocus",
-            icon: "systems/pl1e/assets/icons/focus.svg",
+            // The token will expire
+            id: "ephemeral",
+            label: "PL1E.Ephemeral",
+            icon: "systems/pl1e/assets/icons/ephemeral.svg",
             changes: [], // TODO
             duration: {},
             flags: {}

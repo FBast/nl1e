@@ -752,7 +752,7 @@ export class Pl1eItem extends Item {
         if (options.action === "cancel") return;
 
         // Find activationMacro (pass for deactivation)
-        const macroId = characterData.item.system.attributes.activationMacro;
+        const macroId = characterData.attributes.activationMacro;
         const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
         const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
 

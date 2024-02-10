@@ -4,6 +4,7 @@ export class Pl1eCombat extends Combat {
     async nextRound() {
         for (const combatant of this.combatants) {
             await this._resetCombatStats(combatant.actor);
+            await this._applyCompletedActiveEffects(combatant.actor);
             await this._deleteCompletedActiveEffects(combatant.actor);
         }
         return super.nextRound();
@@ -23,7 +24,9 @@ export class Pl1eCombat extends Combat {
     async endCombat() {
         for (const combatant of this.combatants) {
             await this._resetCombatStats(combatant.actor);
-            await this._deleteTemporaryActiveEffects(combatant.actor);
+            await this._completeTemporaryActiveEffects(combatant.actor);
+            await this._applyCompletedActiveEffects(combatant.actor);
+            await this._deleteCompletedActiveEffects(combatant.actor);
         }
         return super.endCombat();
     }
@@ -77,6 +80,20 @@ export class Pl1eCombat extends Combat {
     }
 
     /**
+     *
+     * @param actor
+     * @return {Promise<void>}
+     * @private
+     */
+    async _applyCompletedActiveEffects(actor) {
+        for (const effect of actor.effects) {
+            if (effect.statuses.has("ephemeral") && effect.duration.rounds === 0) {
+                await actor.token.delete();
+            }
+        }
+    }
+
+    /**
      * Decrease the duration of the effects linked to this actor
      * @param {Actor} actor
      * @return {Promise<void>}
@@ -115,10 +132,10 @@ export class Pl1eCombat extends Combat {
      * @return {Promise<void>}
      * @private
      */
-    async _deleteTemporaryActiveEffects(actor) {
+    async _completeTemporaryActiveEffects(actor) {
         for (const effect of actor.effects) {
             if (effect.getFlag("pl1e", "permanent")) continue;
-            await effect.delete();
+            effect.duration.rounds = 0;
         }
     }
 

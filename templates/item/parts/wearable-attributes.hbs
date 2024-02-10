@@ -42,7 +42,10 @@
             <label>{{localize "PL1E.MagicUse"}}</label>
             <input type="checkbox" name="system.attributes.magicUse" {{checked system.attributes.magicUse}} data-dtype="Boolean"/>
         </div>
-        {{#if system.attributes.magicUse}}
+    </fieldset>
+    {{#if system.attributes.magicUse}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.Magic"}}</legend>
             <div class="form-group">
                 <label>{{localize "PL1E.MagicRoll"}}</label>
                 <div class="form-fields">
@@ -73,7 +76,25 @@
                     </div>
                 </div>
             {{/if}}
-        {{/if}}
-    </fieldset>
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicActivationMacro"}}</label>
+                <select name="system.attributes.magicActivationMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicActivationMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicPreLaunchMacro"}}</label>
+                <select name="system.attributes.magicPreLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPreLaunchMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicPostLaunchMacro"}}</label>
+                <select name="system.attributes.magicPostLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPostLaunchMacro localize=true}}
+                </select>
+            </div>
+        </fieldset>
+    {{/if}}
     {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
 </section>

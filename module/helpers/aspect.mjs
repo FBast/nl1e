@@ -492,11 +492,24 @@ export class Pl1eAspect {
                 y: template.specialPosition.y,
                 width: 1,
                 height: 1,
-                disposition: characterData.actor.disposition
+                disposition: characterData.token.disposition
             });
 
             // Create the token
-            const token = await characterData.scene.createEmbeddedDocuments("Token", [tokenData]);
+            let token = await characterData.scene.createEmbeddedDocuments("Token", [tokenData]);
+            token = token[0];
+
+            // Apply the ephemeral status effect
+            await Pl1eActiveEffect.createStatusEffect(token.actor, "ephemeral",{
+                duration: {
+                    rounds: aspectCopy.effectDuration
+                },
+                flags: {
+                    core: {
+                        sourceId: characterData.actorId
+                    }
+                }
+            });
 
             // Add the combatant if in combat
             if (game.combat) {

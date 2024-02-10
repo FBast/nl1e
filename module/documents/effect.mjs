@@ -9,19 +9,17 @@ export class Pl1eActiveEffect extends ActiveEffect {
         const tokenData = actor.isToken ? actor.token : actor.prototypeToken;
         let tokenUpdates = {};
 
-        for (let status of this.statuses) {
-            // Extract token changes from the effect's flags
-            const tokenChanges = this.getFlag('pl1e', 'tokenChanges');
-            if (tokenChanges) {
-                for (const [key, value] of Object.entries(tokenChanges)) {
-                    if (Array.isArray(value)) {
-                        // Handle arrays: merge with existing array, avoiding duplicates
-                        let existingArray = duplicate(tokenData[key] || []);
-                        tokenUpdates[key] = [...new Set([...existingArray, ...value])];
-                    } else {
-                        // For non-array values, just copy them over
-                        tokenUpdates[key] = value;
-                    }
+        // Extract token changes from the effect's flags
+        const tokenChanges = this.getFlag('pl1e', 'tokenChanges');
+        if (tokenChanges) {
+            for (const [key, value] of Object.entries(tokenChanges)) {
+                if (Array.isArray(value)) {
+                    // Handle arrays: merge with existing array, avoiding duplicates
+                    let existingArray = duplicate(tokenData[key] || []);
+                    tokenUpdates[key] = [...new Set([...existingArray, ...value])];
+                } else {
+                    // For non-array values, just copy them over
+                    tokenUpdates[key] = value;
                 }
             }
         }
