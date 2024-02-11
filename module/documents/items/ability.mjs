@@ -28,15 +28,15 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.info(game.i18n.localize("PL1E.NoLinkedItemMatch"));
             return false;
         }
-        if (itemAttributes.healthCost > characterData.actor.system.resources.health.value) {
+        if (itemAttributes.healthCost > 0 && itemAttributes.healthCost > characterData.actor.system.resources.health.value) {
             ui.notifications.info(game.i18n.localize("PL1E.NotEnoughHealth"));
             return false;
         }
-        if (itemAttributes.staminaCost > characterData.actor.system.resources.stamina.value) {
+        if (itemAttributes.staminaCost > 0 && itemAttributes.staminaCost > characterData.actor.system.resources.stamina.value) {
             ui.notifications.info(game.i18n.localize("PL1E.NotEnoughStamina"));
             return false;
         }
-        if (itemAttributes.manaCost > characterData.actor.system.resources.mana.value) {
+        if (itemAttributes.manaCost > 0 && itemAttributes.manaCost > characterData.actor.system.resources.mana.value) {
             ui.notifications.info(game.i18n.localize("PL1E.NotEnoughMana"));
             return false;
         }
