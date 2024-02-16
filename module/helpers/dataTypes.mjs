@@ -33,7 +33,7 @@
  * @property {object} activeAspects The active aspects of the item
  * @property {Pl1eItem} linkedItem The linked item in case of parent item
  * @property {string} linkedItemId The linked item id
- * @property {ActionTemplate[]} templates The templates of the action
+ * @property {Pl1eMeasuredTemplate[]} templates The templates of the action
  * @property {string[]} templatesIds The templates ids
  * @property {object} templatePosition The template position
  */
@@ -49,7 +49,7 @@
  * @property {string} tokenId The token id of the target
  * @property {number} tokenX The position of the token on x
  * @property {number} tokenY The position of the token on y
- * @property {object} template The template where this target is in
+ * @property {Pl1eMeasuredTemplate} template The template where this target is in
  * @typedef {RollData} rollData The roll data of the target
  * @property {number} result The result of the rollData
  * @property {Pl1eAspect[]} activeAspects The calculated active aspects of the target

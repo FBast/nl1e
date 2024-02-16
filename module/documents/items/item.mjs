@@ -779,7 +779,7 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async launch(characterData) {
-        // Roll data for every targets
+        // Roll data for every target
         /** @type {TargetData[]} */
         let targetsData = [];
 

@@ -418,13 +418,10 @@ export class Pl1eAspect {
             // Filter base on movement destination
             const possibleDestination = [];
             if (aspect.movementDestination === "template") {
-                for (const template of characterData.templates) {
-                    if (targetData.template && template._id === targetData.template._id) continue;
-                    possibleDestination.push({
-                        x: template.specialPosition.x,
-                        y: template.specialPosition.y
-                    });
-                }
+                possibleDestination.push({
+                    x: targetData.template.specialPosition.x,
+                    y: targetData.template.specialPosition.y
+                });
             }
             else {
                 for (const otherTargetData of targetsData) {
