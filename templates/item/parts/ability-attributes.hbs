@@ -195,6 +195,10 @@
                     </div>
                 {{/if}}
             {{/if}}
+            <div class="form-group">
+                <label>{{localize "PL1E.IncludeSelf"}}</label>
+                <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}} data-dtype="Boolean"/>
+            </div>
         </fieldset>
         <fieldset>
             <legend class="section-header">{{localize "PL1E.SequencerMacros"}}</legend>

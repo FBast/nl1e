@@ -793,9 +793,8 @@ export class Pl1eItem extends Item {
             template.actionData = actionData;
         }
 
-        // Include self if targetGroup use it
-        if (Object.values(characterData.activeAspects).find(aspect => ["self", "alliesAndSelf", "opponentsAndSelf"]
-            .includes(aspect.targetGroup))) {
+        // Include self
+        if (characterData.attributes.includeSelf) {
             const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
             targetsData.push(targetData);
         }

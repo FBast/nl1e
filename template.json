@@ -455,7 +455,8 @@
         "circleRadius": 0,
         "coneLength": 0,
         "coneAngle": 0,
-        "rayLength": 0
+        "rayLength": 0,
+        "includeSelf": false
       }
     },
     "weapon": {
