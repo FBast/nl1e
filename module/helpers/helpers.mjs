@@ -374,9 +374,22 @@ export class Pl1eHelpers {
         }
     }
 
+    static displayScrollingText(data) {
+        const minSize = game.settings.get("pl1e", "scrollingTextMinFont");
+        const maxSize = game.settings.get("pl1e", "scrollingTextMaxFont");
+        const duration = game.settings.get("pl1e", "scrollingTextDuration");
+        const options = {
+            duration: duration * 1000,
+            fontSize: Math.clamped(data.fontSize * maxSize, minSize, maxSize),
+            fill: data.fillColor,
+        }
+        canvas.interface.createScrollingText(data.position, data.text, options);
+    }
+
     static _levelCaps(actor) {
         const classNumber = Math.max(actor.items.filter(item => item.type === "class").length, 1);
         const key = classNumber === 1 ? "monoClassLevelCaps" : "multiClassLevelCaps";
         return game.settings.get("pl1e", key).split(',').map(x => parseInt(x.trim()));
     }
+
 }
