@@ -29,7 +29,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
             await actor.token.update(tokenUpdates);
         } else {
             // Update all tokens linked to this actor in the current scene
-            const tokensToUpdate = canvas.tokens.placeables.filter(token => token.actor.id === actorId);
+            const tokensToUpdate = canvas.tokens.placeables.filter(token => token.actor?.id === actorId);
             for (let token of tokensToUpdate) {
                 await token.document.update(tokenUpdates);
             }

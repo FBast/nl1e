@@ -86,6 +86,9 @@ export default class Pl1eHooks {
             });
             await token.actor.update(data.updateData);
         });
+        PL1E.socket.register("displayScrollingText", function (data) {
+            Pl1eHelpers.displayScrollingText(data);
+        });
     }
 
     static dragRulerReady(SpeedProvider) {
