@@ -85,6 +85,8 @@ export class Pl1eActor extends Actor {
     async _onUpdate(changed, options, user) {
         await super._onUpdate(changed, options, user);
 
+        if (!this.isOwner) return;
+
         // Update actor abilities effects based on level
         if (changed.system?.general?.experience) {
             // In case of the level changed then apply or remove effects for enabled or disabled abilities
@@ -100,6 +102,8 @@ export class Pl1eActor extends Actor {
                 }
             }
         }
+
+        console.log(game.user.name);
 
         // Add effect based on conditions
         await Pl1eActiveEffect.toggleStatusEffect(this, "dead", this.isDead);
