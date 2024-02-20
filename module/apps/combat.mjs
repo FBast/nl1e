@@ -23,6 +23,7 @@ export class Pl1eCombat extends Combat {
     /** @inheritDoc */
     async endCombat() {
         for (const combatant of this.combatants) {
+            if (!combatant.actor) continue;
             await this._resetCombatStats(combatant.actor);
             await this._completeTemporaryActiveEffects(combatant.actor);
             await this._applyCompletedActiveEffects(combatant.actor);

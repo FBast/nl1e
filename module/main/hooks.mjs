@@ -61,6 +61,11 @@ export default class Pl1eHooks {
         html.find(".token-focus").on("click", ev => Pl1eEvent.onFocusToken(ev));
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, app));
         html.find(".card-buttons button").on("click", ev => Pl1eEvent.onChatCardAction(ev));
+        if (!game.user.isGM) {
+            html.find(".gm-only").hide(); // Hide the buttons for non-GM users
+        } else {
+            html.find(".gm-only").show(); // Ensure they are visible for the GM
+        }
     }
 
     /* -------------------------------------------- */
