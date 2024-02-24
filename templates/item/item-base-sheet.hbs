@@ -20,11 +20,13 @@
     {{!-- Sheet Tab Navigation for GM --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
-        {{#unless item.isEmbedded}}
-            <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
-        {{/unless}}
-        {{#if (gt (length system.refItems) 0)}}
-            <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
+        {{#if game.user.isGM}}
+            {{#if (not item.isEmbedded)}}
+                <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
+            {{/if}}
+            {{#if (gt (length system.refItems) 0)}}
+                <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
+            {{/if}}
         {{/if}}
     </nav>
     {{!-- Sheet Body for GM --}}

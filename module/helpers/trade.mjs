@@ -11,8 +11,9 @@ export class Pl1eTrade {
      */
     static async sendItem(sourceActorId, targetActorId, itemId) {
         // Object are loose in transit, so we need to get them from this client using id
-        const sourceActor = game.actors.get(sourceActorId);
-        const targetActor = game.actors.get(targetActorId);
+
+        const sourceActor = await Pl1eHelpers.getDocument("Actor", sourceActorId);
+        const targetActor = await Pl1eHelpers.getDocument("Actor", targetActorId);
         const item = sourceActor.items.get(itemId);
 
         if (sourceActor.type === "character" && targetActor.type === "character") {
@@ -57,7 +58,14 @@ export class Pl1eTrade {
         });
 
         const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
+
+        // Check sell validation
+        if (!originalItem.isValidForActor(buyerActor)) return;
+
+        // Do not add the item if unlimited
         if (!buyerActor.system.general.unlimitedItems) await buyerActor.addItem(originalItem);
+
+        // Process with the transaction
         await sellerActor.removeItem(item);
 
         // Send message for historic
@@ -75,23 +83,32 @@ export class Pl1eTrade {
      */
     static async buyItem(buyerActor, sellerActor, item) {
         let priceMoney = sellerActor.system.merchantPrices[item.id];
-        let priceUnits = Pl1eHelpers.moneyToUnits(priceMoney);
-        let units = Pl1eHelpers.moneyToUnits(buyerActor.system.money);
-        if (units < priceUnits) return;
-        units -= priceUnits;
-        const money = Pl1eHelpers.unitsToMoney(units);
-        await buyerActor.update({
-            ["system.money.gold"]: money.gold,
-            ["system.money.silver"]: money.silver,
-            ["system.money.copper"]: money.copper,
-        });
+        if (priceMoney) {
+            let priceUnits = Pl1eHelpers.moneyToUnits(priceMoney);
+            let units = Pl1eHelpers.moneyToUnits(buyerActor.system.money);
+            if (units < priceUnits) return;
+            units -= priceUnits;
+            const money = Pl1eHelpers.unitsToMoney(units);
+            await buyerActor.update({
+                ["system.money.gold"]: money.gold,
+                ["system.money.silver"]: money.silver,
+                ["system.money.copper"]: money.copper,
+            });
+        }
 
         const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
+
+        // Check buy validation
+        if (!originalItem.isValidForActor(buyerActor)) return;
+
+        // Process with transaction
         await buyerActor.addItem(originalItem);
+
+        // Do not remove the item if unlimited
         if (!sellerActor.system.general.unlimitedItems) await sellerActor.removeItem(item);
 
         // Send message for historic
-        if (sellerActor.system.general.buyMultiplier === 0)
+        if (!priceMoney || sellerActor.system.general.buyMultiplier === 0)
             await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "take");
         else
             await Pl1eChat.tradeMessage(item, buyerActor, sellerActor, "purchase", priceMoney);

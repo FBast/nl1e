@@ -1,7 +1,6 @@
-<ul class="traits-list">
-    {{#each sections}}
-        <li class="item item-edit tag" data-item-id="{{this.item.id}}">
-            <a>{{this.item.name}}</a>
-        </li>
-    {{/each}}
-</ul>
+{{#each sections}}
+    <a class="content-link" draggable="true" data-uuid="{{this.item.uuid}}" data-id="{{this.item.id}}"
+       data-type="Item" data-pack="{{this.item.pack}}" data-tooltip="Item">
+        <i class="fas fa-suitcase"></i><label>{{this.item.name}}</label>
+    </a>
+{{/each}}

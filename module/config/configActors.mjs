@@ -14,7 +14,7 @@ export function getConfigActor() {
         },
         "merchant": {
             "label": "PL1E.Merchant",
-            "droppable": ["weapon", "wearable", "consumable", "common", "module"],
+            "droppable": ["weapon", "wearable", "consumable", "common", "module", "race", "culture", "class", "feature"],
             "itemChildren": []
         }
     }

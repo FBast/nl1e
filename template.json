@@ -295,6 +295,8 @@
         "general": {
           "creationMod": true,
           "experience": 10,
+          "remainingFeatures": 0,
+          "remainingFeaturePoints": 0,
           "remainingCharacteristics": 8,
           "level": 1,
           "ranks": 0,

@@ -1,3 +1,8 @@
-2024/02/20-13:44:23.958 d2c Recovering log #484
-2024/02/20-13:44:23.969 d2c Delete type=0 #484
-2024/02/20-13:44:23.970 d2c Delete type=3 #482
+2024/02/24-15:26:58.067 1c84 Recovering log #494
+2024/02/24-15:26:58.071 1c84 Delete type=0 #494
+2024/02/24-15:26:58.071 1c84 Delete type=3 #492
+2024/02/24-18:43:37.632 c40 Level-0 table #499: started
+2024/02/24-18:43:37.632 c40 Level-0 table #499: 0 bytes OK
+2024/02/24-18:43:37.633 c40 Delete type=0 #497
+2024/02/24-18:43:37.636 c40 Manual compaction at level-0 from '!macros!1nXOTXdi47kV3J2J' @ 72057594037927935 : 1 .. '!macros!bQinV9IjUcTLjhaL' @ 0 : 0; will stop at (end)
+2024/02/24-18:43:37.637 c40 Manual compaction at level-1 from '!macros!1nXOTXdi47kV3J2J' @ 72057594037927935 : 1 .. '!macros!bQinV9IjUcTLjhaL' @ 0 : 0; will stop at (end)

@@ -1,3 +1,42 @@
-2024/02/20-13:44:23.700 2038 Recovering log #1864
-2024/02/20-13:44:23.714 2038 Delete type=0 #1864
-2024/02/20-13:44:23.715 2038 Delete type=3 #1862
+2024/02/24-15:26:58.012 2b84 Recovering log #1875
+2024/02/24-15:26:58.018 2b84 Delete type=0 #1875
+2024/02/24-15:26:58.018 2b84 Delete type=3 #1872
+2024/02/24-17:04:50.548 c40 Level-0 table #1882: started
+2024/02/24-17:04:50.569 c40 Level-0 table #1882: 2160567 bytes OK
+2024/02/24-17:04:50.571 c40 Delete type=0 #1880
+2024/02/24-17:07:46.417 c40 Compacting 1@1 + 1@2 files
+2024/02/24-17:07:46.423 c40 Generated table #1883@1: 111 keys, 126377 bytes
+2024/02/24-17:07:46.423 c40 Compacted 1@1 + 1@2 files => 126377 bytes
+2024/02/24-17:07:46.424 c40 compacted to: files[ 0 0 2 0 0 0 0 ]
+2024/02/24-17:07:46.424 c40 Delete type=2 #1878
+2024/02/24-17:07:46.424 c40 Delete type=2 #1882
+2024/02/24-17:14:30.647 c40 Level-0 table #1885: started
+2024/02/24-17:14:30.665 c40 Level-0 table #1885: 2034111 bytes OK
+2024/02/24-17:14:30.666 c40 Delete type=0 #1881
+2024/02/24-17:15:31.623 c40 Compacting 1@1 + 1@2 files
+2024/02/24-17:15:31.629 c40 Generated table #1886@1: 70 keys, 81862 bytes
+2024/02/24-17:15:31.629 c40 Compacted 1@1 + 1@2 files => 81862 bytes
+2024/02/24-17:15:31.629 c40 compacted to: files[ 0 0 2 0 0 0 0 ]
+2024/02/24-17:15:31.630 c40 Delete type=2 #1883
+2024/02/24-17:15:31.630 c40 Delete type=2 #1885
+2024/02/24-17:19:51.254 c40 Level-0 table #1888: started
+2024/02/24-17:19:51.275 c40 Level-0 table #1888: 1980570 bytes OK
+2024/02/24-17:19:51.276 c40 Delete type=0 #1884
+2024/02/24-17:20:02.630 c40 Compacting 1@1 + 1@2 files
+2024/02/24-17:20:02.638 c40 Generated table #1889@1: 105 keys, 98761 bytes
+2024/02/24-17:20:02.638 c40 Compacted 1@1 + 1@2 files => 98761 bytes
+2024/02/24-17:20:02.639 c40 compacted to: files[ 0 0 2 0 0 0 0 ]
+2024/02/24-17:20:02.639 c40 Delete type=2 #1886
+2024/02/24-17:20:02.639 c40 Delete type=2 #1888
+2024/02/24-18:43:37.538 c40 Level-0 table #1891: started
+2024/02/24-18:43:37.554 c40 Level-0 table #1891: 1119939 bytes OK
+2024/02/24-18:43:37.556 c40 Delete type=0 #1887
+2024/02/24-18:43:37.556 c40 Manual compaction at level-0 from '!actors!7XzLcFjxEV9hoHCu' @ 72057594037927935 : 1 .. '!folders!lzuUXEH5d7ydnyds' @ 0 : 0; will stop at (end)
+2024/02/24-18:43:37.577 c40 Manual compaction at level-1 from '!actors!7XzLcFjxEV9hoHCu' @ 72057594037927935 : 1 .. '!folders!lzuUXEH5d7ydnyds' @ 0 : 0; will stop at '!actors.items!RdT0aLmi9lymrbNS.zfj1QVS7NT1M3XFa' @ 6534 : 1
+2024/02/24-18:43:37.577 c40 Compacting 1@1 + 1@2 files
+2024/02/24-18:43:37.584 c40 Generated table #1892@1: 185 keys, 205782 bytes
+2024/02/24-18:43:37.584 c40 Compacted 1@1 + 1@2 files => 205782 bytes
+2024/02/24-18:43:37.584 c40 compacted to: files[ 0 0 2 0 0 0 0 ]
+2024/02/24-18:43:37.584 c40 Delete type=2 #1889
+2024/02/24-18:43:37.585 c40 Delete type=2 #1891
+2024/02/24-18:43:37.586 c40 Manual compaction at level-1 from '!actors.items!RdT0aLmi9lymrbNS.zfj1QVS7NT1M3XFa' @ 6534 : 1 .. '!folders!lzuUXEH5d7ydnyds' @ 0 : 0; will stop at (end)

@@ -1,0 +1,33 @@
+<div class="items-row">
+    <!-- Container for the filters -->
+    <div class="items-header grid grid-12col">
+        <div class="item-title grid-span-4">
+            <label class="item-name">{{localize "PL1E.Traits"}}</label>
+        </div>
+        <!-- Horizontal filter list -->
+        <div class="item-filter-list grid-span-8" data-filter="features">
+            {{#each (config "featureTypes")}}
+                <li class="item-filter" data-filter="{{@key}}">{{localize this}}</li>
+            {{/each}}
+        </div>
+    </div>
+    <!-- Content of the row -->
+    <div class="items-row-content">
+        {{#each features}}
+            <div class="item" data-item-id="{{_id}}" data-item-link-id="{{flags.pl1e.childId}}">
+                <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}"/>
+                {{#if @root.actor.isOwner}}
+                    {{#if flags.pl1e.childId}}
+                        <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'>
+                            <i class="fas fa-link"></i>
+                        </a>
+                    {{else}}
+                        <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'>
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    {{/if}}
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
+</div>

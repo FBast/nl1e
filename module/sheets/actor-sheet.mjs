@@ -167,7 +167,10 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Button actions
         html.find(".button-remove-items").on("click", ev => this.onRemoveItemsClick(ev));
+        html.find(".button-randomize-item").on("click", ev => this.onRandomizeItemClick(ev));
         html.find(".button-generate-item").on("click", ev => this.onGenerateItemClick(ev));
+
+
 
         // Drag events for macros.
         if (this.actor.isOwner) {
@@ -231,11 +234,15 @@ export class Pl1eActorSheet extends ActorSheet {
         }
 
         // Roll table for merchant only
-        if (this.actor.type === "merchant" && document.type === "RollTable") {
+        if (data.type === "RollTable" && this.actor.type === "merchant") {
             await this.actor.addRefRollTable(document);
         }
-
-        await super._onDrop(event);
+        else if (data.type === "Item") {
+            await this._onDropItem(event, data);
+        }
+        else {
+            await super._onDrop(event);
+        }
     }
 
     async _onDropFolder(event, data) {
@@ -270,37 +277,14 @@ export class Pl1eActorSheet extends ActorSheet {
         // Return if same actor
         if (item.parent === this.actor) return;
 
-        // Filter item to actor droppable
+        // Filter item to an actor droppable
         const droppable = Pl1eHelpers.getConfig("actorTypes", this.actor.type, "droppable");
         if (!droppable.includes(item.type)) return;
 
-        // Only one race
-        if (item.type === "race" && this.actor.items.find(item => item.type === "race")) {
-            ui.notifications.info(game.i18n.localize("PL1E.OnlyOneRace"));
-            return;
-        }
+        // Check item validation
+        if (!item.isValidForActor(this.actor)) return;
 
-        // Only one culture
-        if (item.type === "culture" && this.actor.items.find(item => item.type === "culture")) {
-            ui.notifications.info(game.i18n.localize("PL1E.OnlyOneCulture"));
-            return;
-        }
-
-        // Only one body class
-        if (item.type === "class" && item.system.attributes.classType === "body" &&
-            this.actor.items.find(item => item.type === "class" && item.system.attributes.classType === "body")) {
-            ui.notifications.info(game.i18n.localize("PL1E.OnlyOneBodyClass"));
-            return;
-        }
-
-        // Only one mind class
-        if (item.type === "class" && item.system.attributes.classType === "mind" &&
-            this.actor.items.find(item => item.type === "class" && item.system.attributes.classType === "mind")) {
-            ui.notifications.info(game.i18n.localize("PL1E.OnlyOneMindClass"));
-            return;
-        }
-
-        // Player to other actor transfer
+        // Player to another actor transfer
         if (!this.actor.isOwner) {
             if (!Pl1eHelpers.isGMConnected()) {
                 ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
@@ -318,7 +302,7 @@ export class Pl1eActorSheet extends ActorSheet {
             const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
             await this.actor.addItem(originalItem);
 
-            // Delete the source item if it is embedded
+            // If the item is embedded, then delete the source item
             if (item.isEmbedded) await item.actor.removeItem(item);
         }
     }
@@ -618,21 +602,22 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      */
     async onRemoveItemsClick(event) {
+        ui.notifications.info(`${game.i18n.localize("PL1E.RemovingItems")}...`);
+
         let removedItemsNumber = 0;
         for (const item of this.actor.items) {
-            if (!["weapon", "wearable", "consumable", "common"].includes(item.type)) continue;
             await item.delete();
             removedItemsNumber++;
         }
-        ui.notifications.info(`${game.i18n.localize("NumberOfRemovedItems")} : ${removedItemsNumber}`);
+        ui.notifications.info(`${game.i18n.localize("PL1E.NumberOfRemovedItems")} : ${removedItemsNumber}`);
     }
 
     /**
-     * Trigger the reset and generation of the items of the merchant based on roll tables
+     * Trigger the randomization of items in the merchant based on roll tables
      * @param event
      * @return {Promise<void>}
      */
-    async onGenerateItemClick(event) {
+    async onRandomizeItemClick(event) {
         let addedItemsNumber = 0;
         for (const refRollTable of this.actor.system.refRollTables) {
             const rollTable = await Pl1eHelpers.getDocument("RollTable", refRollTable);
@@ -645,7 +630,42 @@ export class Pl1eActorSheet extends ActorSheet {
                 }
             }
         }
-        ui.notifications.info(`${game.i18n.localize("NumberOfAddedItems")} : ${addedItemsNumber}`);
+        ui.notifications.info(`${game.i18n.localize("PL1E.NumberOfAddedItems")} : ${addedItemsNumber}`);
+    }
+
+    /**
+     * Add all items from roll tables to the actor, including items from nested roll tables.
+     * @param event
+     * @return {Promise<void>}
+     */
+    async onGenerateItemClick(event) {
+        ui.notifications.info(`${game.i18n.localize("PL1E.GeneratingItems")}...`);
+
+        let addedItemsNumber = 0;
+        // Define a recursive function to handle roll table items and nested roll tables
+        const addItemsFromRollTable = async (id) => {
+            const item = await Pl1eHelpers.getDocument("Item", id);
+            if (item) {
+                await this.actor.addItem(item);
+                addedItemsNumber++;
+            }
+            else {
+                const rollTable = await Pl1eHelpers.getDocument("RollTable", id);
+                if (rollTable) {
+                    for (const tableResult of rollTable.results) {
+                        // Recursive call for nested roll tables
+                        await addItemsFromRollTable(tableResult.documentId);
+                    }
+                }
+            }
+        };
+
+        // Iterate through all referenced roll tables and add their items
+        for (const refRollTable of this.actor.system.refRollTables) {
+            await addItemsFromRollTable(refRollTable);
+        }
+
+        ui.notifications.info(`${game.i18n.localize("PL1E.NumberOfAddedItems")} : ${addedItemsNumber}`);
     }
 
     /**

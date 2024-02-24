@@ -387,6 +387,61 @@ export class Pl1eItem extends Item {
     }
 
     /**
+     * Check if the item is valid for a given actor
+     * @param actor
+     * @return {boolean}
+     */
+    isValidForActor(actor) {
+        if (actor.type !== "merchant") {
+            // Only one race
+            if (this.type === "race" && actor.items.find(item => item.type === "race")) {
+                ui.notifications.info(game.i18n.localize("PL1E.OnlyOneRace"));
+                return false;
+            }
+
+            // Only one culture
+            if (this.type === "culture" && actor.items.find(item => item.type === "culture")) {
+                ui.notifications.info(game.i18n.localize("PL1E.OnlyOneCulture"));
+                return false;
+            }
+
+            // Only one body class
+            if (this.type === "class" && this.system.attributes.classType === "body" &&
+                actor.items.find(item => item.type === "class" && item.system.attributes.classType === "body")) {
+                ui.notifications.info(game.i18n.localize("PL1E.OnlyOneBodyClass"));
+                return false;
+            }
+
+            // Only one mind class
+            if (this.type === "class" && this.system.attributes.classType === "mind" &&
+                actor.items.find(item => item.type === "class" && item.system.attributes.classType === "mind")) {
+                ui.notifications.info(game.i18n.localize("PL1E.OnlyOneMindClass"));
+                return false;
+            }
+
+            // Check if the feature already exists
+            if (this.type === "feature" && actor.items.find(item => item.sourceId === this.id)) {
+                ui.notifications.info(game.i18n.localize("PL1E.YouAlreadyHaveThisFeature"));
+                return false;
+            }
+
+            // Check for feature number
+            if (this.type === "feature" && actor.system.general.remainingFeatures === 0) {
+                ui.notifications.info(game.i18n.localize("PL1E.TooMuchFeatures"));
+                return false;
+            }
+
+            // Check for feature points
+            if (this.type === "feature" && actor.system.general.remainingFeaturePoints + this.system.attributes.points < 0) {
+                ui.notifications.info(`${game.i18n.localize("PL1E.NotEnoughFeaturePoints")} : ${actor.system.general.remainingFeaturePoints}`);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Add an item ref
      * @param item
      * @returns {Promise<void>}

@@ -10,7 +10,7 @@
                     <div class="item-effect">
                         {{#if (and (eq type "number") (ne ../../this 0))}}
                             <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}">
-                                <label>{{formatNumber ../value signe=true}}</label>
+                                <label>{{formatNumber ../value sign=true}}</label>
                             </i>
                         {{else if (eq type "bool")}}
                             {{#unless (and ../applyIfTrue (not ../value))}}

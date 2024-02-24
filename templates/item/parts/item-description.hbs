@@ -7,44 +7,34 @@
         <fieldset>
             <legend class="section-header">{{localize "PL1E.LinkedItems"}}</legend>
             {{#if (gt (length masters) 0)}}
-                <div class="form-group">
-                    <label class="attribute-name">{{localize "PL1E.Masters"}}</label>
-                    <div class="form-fields align-right">
-                        {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=masters}}
-                    </div>
-                </div>
+                <p>
+                    <label>{{localize "PL1E.Masters"}} : </label>
+                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=masters}}
+                </p>
             {{/if}}
             {{#if (gt (length abilities) 0)}}
-                <div class="form-group">
-                    <label class="attribute-name">{{localize "PL1E.Abilities"}}</label>
-                    <div class="form-fields align-right">
-                        {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=abilities}}
-                    </div>
-                </div>
+                <p>
+                    <label>{{localize "PL1E.Abilities"}} : </label>
+                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=abilities}}
+                </p>
             {{/if}}
             {{#if (gt (length features) 0)}}
-                <div class="form-group">
-                    <label class="attribute-name">{{localize "PL1E.Features"}}</label>
-                    <div class="form-fields align-right">
-                        {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=features}}
-                    </div>
-                </div>
+                <p>
+                    <label>{{localize "PL1E.Features"}} : </label>
+                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=features}}
+                </p>
             {{/if}}
             {{#if (gt (length weapons) 0)}}
-                <div class="form-group">
-                    <label class="attribute-name">{{localize "PL1E.Weapons"}}</label>
-                    <div class="form-fields align-right">
-                        {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=weapons}}
-                    </div>
-                </div>
+                <p>
+                    <label>{{localize "PL1E.Weapons"}} : </label>
+                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=weapons}}
+                </p>
             {{/if}}
             {{#if (gt (length modules) 0)}}
-                <div class="form-group">
-                    <label class="attribute-name">{{localize "PL1E.Modules"}}</label>
-                    <div class="form-fields align-right">
-                        {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=modules}}
-                    </div>
-                </div>
+                <p>
+                    <label>{{localize "PL1E.Modules"}} : </label>
+                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=modules}}
+                </p>
             {{/if}}
         </fieldset>
     {{/if}}

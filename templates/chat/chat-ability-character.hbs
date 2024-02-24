@@ -10,7 +10,7 @@
                             {{#with (config dataGroup data)}}
                                 {{#if (and (eq type "number") (ne ../../this 0))}}
                                     <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}">
-                                        <label>{{formatNumber ../../this signe=true}}</label>
+                                        <label>{{formatNumber ../../this sign=true}}</label>
                                     </i>
                                 {{else if (eq type "bool")}}
                                     {{#unless (and ../applyIfTrue (not ../../this))}}

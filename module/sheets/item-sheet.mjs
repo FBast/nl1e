@@ -87,7 +87,7 @@ export class Pl1eItemSheet extends ItemSheet {
         // context.item = this.item.toObject(false);
 
         // Sheet editable if original or parent is token and user is owner
-        this.options.editable = this.item.isOwner;
+        // this.options.editable = this.item.isOwner;
 
         // Retrieve the roll data for TinyMCE editors.
         context.rollData = {};
