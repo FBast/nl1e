@@ -1,0 +1,39 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+    {{> journalEntryPageHeader}}
+
+    <div class="form-group">
+        <label>{{localize "PL1E.Portrait"}}</label>
+        <div class="form-fields">
+            <input name="system.portrait" type="text" value="{{system.portrait}}"/>
+            {{filePicker target="system.portrait" type="image"}}
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionPortrait"}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "PL1E.Race"}}</label>
+        <div class="form-fields">
+            <input type="text" name="system.race" value="{{system.race}}"/>
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionRace"}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "PL1E.Adjectives"}}</label>
+        <div class="form-fields">
+            <input type="text" name="system.adjectives" value="{{system.adjectives}}"/>
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionAdjectives"}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "PL1E.Content"}}</label>
+        <div class="form-fields">
+            <button class="launch-text-editor" data-target="system.content">
+                <i class="fas fa-edit"></i> {{localize "PL1E.EditContent"}}
+            </button>
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionContent"}}</p>
+    </div>
+
+</form>

@@ -31,7 +31,7 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
         );
 
         // Default system type
-        if (context.system.type === undefined) {
+        if (context.system.type !== undefined) {
             let typeArray = PL1E[`${context.document.type}Types`];
             if (typeArray === undefined) throw new Error(`PL1E | Cannot find any ${context.document.type}Types`);
             await this.document.update({
@@ -40,7 +40,7 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
         }
 
         // Default system subType
-        if (context.system.subType === undefined) {
+        if (context.system.subType !== undefined) {
             let subTypeArray = PL1E[`${context.system.type}Types`];
             if (subTypeArray !== undefined) {
                 await this.document.update({

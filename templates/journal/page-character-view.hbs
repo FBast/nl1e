@@ -1,0 +1,26 @@
+<form class="pl1e {{cssClass}} flexcol" autocomplete="off">
+    <header>
+        <h{{title.level1}}>{{data.name}}</h{{title.level1}}>
+    </header>
+    <div class="flexrow">
+        {{#if (ne system.portrait "")}}
+            <img class="flexshrink" src="{{system.portrait}}" alt="{{localize "PL1E.Portrait"}}"
+                 height="150" width="150" style="border-style: none">
+        {{/if}}
+        <table>
+            {{#if (ne system.race "")}}
+                <tr>
+                    <td><strong>{{localize "PL1E.Race"}}</strong></td>
+                    <td><p>{{system.race}}</p></td>
+                </tr>
+            {{/if}}
+            {{#if (ne system.adjectives "")}}
+                <tr>
+                    <td><strong>{{localize "PL1E.Adjectives"}}</strong></td>
+                    <td><p>{{system.adjectives}}</p></td>
+                </tr>
+            {{/if}}
+        </table>
+    </div>
+    {{{system.content}}}
+</form>

@@ -69,7 +69,7 @@ Hooks.once('init', async function () {
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
     DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", Pl1eJournalPageSheet, {
-        types: ["location", "organization"]
+        types: ["location", "organization", "character"]
     });
 
     // Register configs

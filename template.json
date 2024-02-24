@@ -532,7 +532,7 @@
     }
   },
   "JournalEntryPage": {
-    "types": ["location", "organization"],
+    "types": ["location", "organization", "character"],
     "location": {
       "banner": "",
       "type": "area",
@@ -547,6 +547,12 @@
       "type": "nation",
       "translation": "",
       "power": "",
+      "content": ""
+    },
+    "character": {
+      "portrait": "",
+      "race": "none",
+      "adjectives": "",
       "content": ""
     }
   }
