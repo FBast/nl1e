@@ -1,13 +1,7 @@
 ![Nexus Land Banner](https://github.com/FBast/pl1e/blob/main/assets/imgs/banner.jpg)
 
-# Nexus Land V1 BETA System
-
 ![Foundry v11](https://img.shields.io/badge/foundry-v11-green)
-[![Join our Discord](https://img.shields.io/discord/869899770219780916?color=7289DA&label=Join%20our%20Discord&logo=discord&logoColor=white)](https://discord.gg/HCCGGwYsG4)
-
-[![Join our Discord server](https://discord.com/api/guilds/YourServerID/widget.png)](https://discord.gg/HCCGGwYsG4)
-
-[![Join our Discord server](https://discord.com/api/guilds/1211345195069743165/widget.png)](https://discord.gg/HCCGGwYsG4)
+# Nexus Land V1 BETA System
 
 Welcome to Nexus Land, a tabletop role-playing system set in a rich medieval fantasy world where humanity takes center stage alongside a diverse array of races.
 
