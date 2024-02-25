@@ -4,6 +4,7 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {PL1E} from "../pl1e.mjs";
+import {Pl1eTrade} from "../helpers/trade.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -45,6 +46,18 @@ export class Pl1eActorSheet extends ActorSheet {
     /** @inheritDoc */
     get template() {
         return `systems/pl1e/templates/actor/actor-${this.actor.type}-sheet.hbs`;
+    }
+
+    /** @inheritDoc */
+    get title() {
+        const actorType = Pl1eHelpers.getConfig("actorTypes", this.actor.type);
+        let label = "Unknown";
+        if (actorType) label = game.i18n.localize(actorType.label);
+        if (this.actor.hasPlayerOwner) {
+            const player = game.users.players.find(player => player.character && player.character.id === this.actor.id);
+            if (player) label += ` (${player.name})`;
+        }
+        return label;
     }
 
     /**
@@ -170,8 +183,6 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".button-randomize-item").on("click", ev => this.onRandomizeItemClick(ev));
         html.find(".button-generate-item").on("click", ev => this.onGenerateItemClick(ev));
 
-
-
         // Drag events for macros.
         if (this.actor.isOwner) {
             let handler = ev => this._onDragStart(ev);
@@ -284,20 +295,29 @@ export class Pl1eActorSheet extends ActorSheet {
         // Check item validation
         if (!item.isValidForActor(this.actor)) return;
 
-        // Player to another actor transfer
-        if (!this.actor.isOwner) {
-            if (!Pl1eHelpers.isGMConnected()) {
-                ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
-                return;
+        if (item.isEmbedded) {
+            // Not owned target or not owned item
+            // (should be a player transfer between two actors)
+            if (!this.actor.isOwner || !item.isOwner) {
+                if (!Pl1eHelpers.isGMConnected()) {
+                    ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
+                    return;
+                }
+                // Player transfer item to a not owned actor
+                PL1E.socket.executeAsGM("sendItem", {
+                    sourceActorUuid: item.parent.uuid,
+                    targetActorUuid: this.actor.uuid,
+                    itemId: item.id
+                });
             }
-            // Player transfer item to a not owned actor
-            PL1E.socket.executeAsGM("sendItem", {
-                sourceActorId: game.user.character._id,
-                targetActorId: this.actor._id,
-                itemId: item._id
-            });
+            // The target actor and the item are owned
+            // (should be a GM transfer between two actors)
+            else {
+                await Pl1eTrade.sendItem(item.parent.uuid, this.actor.uuid, item.id);
+            }
         }
-        // Other cases
+        // The item is not embedded
+        // (should be someone who own the item)
         else {
             const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
             await this.actor.addItem(originalItem);

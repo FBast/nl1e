@@ -5,7 +5,7 @@
             {{#unless (eq price undefined)}}
                 {{#each price}}
                     {{#with (config "money" @key)}}
-                        <i class="currency-icon far fa-coins color-{{@key}} hover-green" data-tooltip='{{localize this}}'>
+                        <i class="currency-icon far fa-coins color-{{@key}} hover-green" data-tooltip='{{localize label}}'>
                             <label class="color-black">{{#if (eq @root.transaction "purchase")}}-{{/if}}{{../this}}</label>
                         </i>
                     {{/with}}

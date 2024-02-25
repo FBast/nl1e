@@ -1,15 +1,22 @@
-2024/02/24-22:57:12.170 1ae4 Recovering log #2125
-2024/02/24-22:57:12.171 1ae4 Level-0 table #2127: started
-2024/02/24-22:57:12.172 1ae4 Level-0 table #2127: 22047 bytes OK
-2024/02/24-22:57:12.176 1ae4 Delete type=0 #2125
-2024/02/24-22:57:12.176 1ae4 Delete type=3 #2124
-2024/02/24-22:58:08.820 4f30 Compacting 1@0 + 1@1 files
-2024/02/24-22:58:08.840 4f30 Generated table #2129@0: 505 keys, 398802 bytes
-2024/02/24-22:58:08.840 4f30 Compacted 1@0 + 1@1 files => 398802 bytes
-2024/02/24-22:58:08.841 4f30 compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/02/24-23:26:48.660 4f30 Level-0 table #2131: started
-2024/02/24-23:26:48.660 4f30 Level-0 table #2131: 0 bytes OK
-2024/02/24-23:26:48.661 4f30 Delete type=2 #2123
-2024/02/24-23:26:48.661 4f30 Delete type=2 #2127
-2024/02/24-23:26:48.661 4f30 Delete type=0 #2128
-2024/02/24-23:26:48.663 4f30 Manual compaction at level-0 from '!folders!0Gvc5INZc66WbQxC' @ 72057594037927935 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at (end)
+2024/02/25-20:39:46.886 5dec Recovering log #2135
+2024/02/25-20:39:46.886 5dec Level-0 table #2137: started
+2024/02/25-20:39:46.887 5dec Level-0 table #2137: 8419 bytes OK
+2024/02/25-20:39:46.891 5dec Delete type=0 #2135
+2024/02/25-20:39:46.891 5dec Delete type=3 #2134
+2024/02/25-20:39:53.922 5018 Compacting 1@0 + 1@1 files
+2024/02/25-20:39:53.930 5018 Generated table #2139@0: 505 keys, 398569 bytes
+2024/02/25-20:39:53.930 5018 Compacted 1@0 + 1@1 files => 398569 bytes
+2024/02/25-20:39:53.931 5018 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/02/25-20:39:53.931 5018 Delete type=2 #2129
+2024/02/25-20:39:53.932 5018 Delete type=2 #2137
+2024/02/25-20:58:12.003 5018 Level-0 table #2141: started
+2024/02/25-20:58:12.004 5018 Level-0 table #2141: 1085 bytes OK
+2024/02/25-20:58:12.006 5018 Delete type=0 #2138
+2024/02/25-20:58:12.015 5018 Manual compaction at level-0 from '!folders!0Gvc5INZc66WbQxC' @ 72057594037927935 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at '!items!PvQnxjXV8juMQFAW' @ 17266 : 1
+2024/02/25-20:58:12.015 5018 Compacting 1@0 + 1@1 files
+2024/02/25-20:58:12.022 5018 Generated table #2142@0: 505 keys, 398569 bytes
+2024/02/25-20:58:12.022 5018 Compacted 1@0 + 1@1 files => 398569 bytes
+2024/02/25-20:58:12.023 5018 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/02/25-20:58:12.023 5018 Delete type=2 #2139
+2024/02/25-20:58:12.023 5018 Delete type=2 #2141
+2024/02/25-20:58:12.027 5018 Manual compaction at level-0 from '!items!PvQnxjXV8juMQFAW' @ 17266 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at (end)

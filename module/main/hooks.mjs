@@ -75,11 +75,11 @@ export default class Pl1eHooks {
     static socketLibReady() {
         PL1E.socket = socketlib.registerSystem("pl1e");
         PL1E.socket.register("sendItem", async function (data) {
-            await Pl1eTrade.sendItem(data.sourceActorId, data.targetActorId, data.itemId)
+            await Pl1eTrade.sendItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
         });
-        PL1E.socket.register("sendContenant", async function (data) {
-            await Pl1eTrade.sendContenant(data.sourceActorId, data.targetActorId, data.itemId);
-        });
+        // PL1E.socket.register("sendContenant", async function (data) {
+        //     await Pl1eTrade.sendContenant(data.sourceActorUuid, data.targetActorUuid, data.itemUuid);
+        // });
         PL1E.socket.register("tokenUpdate", async function (data) {
             const token = await Pl1eHelpers.getDocument("Token", data.tokenId, {
                 scene: await Pl1eHelpers.getDocument("Scene", data.sceneId)

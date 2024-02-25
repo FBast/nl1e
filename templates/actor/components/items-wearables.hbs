@@ -34,19 +34,19 @@
                             {{#if system.majorActionUsed}}
                                 <i class="item-info far fa-star hover-green" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
                             {{/if}}
-                            {{#if (gt system.price.gold 0)}}
+                            {{#if (gt system.attributes.goldPrice 0)}}
                                 <i class="item-info far fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
-                                    <label class="color-black">{{system.price.gold}}</label>
+                                    <label class="color-black">{{system.attributes.goldPrice}}</label>
                                 </i>
                             {{/if}}
-                            {{#if (gt system.price.silver 0)}}
+                            {{#if (gt system.attributes.silverPrice 0)}}
                                 <i class="item-info far fa-coins color-silver hover-green" data-tooltip='{{localize "PL1E.Silver"}}'>
-                                    <label class="color-black">{{system.price.silver}}</label>
+                                    <label class="color-black">{{system.attributes.silverPrice}}</label>
                                 </i>
                             {{/if}}
-                            {{#if (gt system.price.copper 0)}}
+                            {{#if (gt system.attributes.copperPrice 0)}}
                                 <i class="item-info far fa-coins color-copper hover-green" data-tooltip='{{localize "PL1E.Copper"}}'>
-                                    <label class="color-black">{{system.price.copper}}</label>
+                                    <label class="color-black">{{system.attributes.copperPrice}}</label>
                                 </i>
                             {{/if}}
                         {{else if (eq @root.actor.type "merchant")}}

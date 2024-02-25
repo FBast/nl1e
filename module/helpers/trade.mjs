@@ -5,15 +5,14 @@ export class Pl1eTrade {
 
     /**
      * Send item from sourceActor to target targetActor
-     * @param {string} sourceActorId the source actor
-     * @param {string} targetActorId the target actor
-     * @param {string} itemId the send item
+     * @param {string} sourceActorUuid the source actor uuid
+     * @param {string} targetActorUuid the target actor uuid
+     * @param {string} itemId the send item id
      */
-    static async sendItem(sourceActorId, targetActorId, itemId) {
+    static async sendItem(sourceActorUuid, targetActorUuid, itemId) {
         // Object are loose in transit, so we need to get them from this client using id
-
-        const sourceActor = await Pl1eHelpers.getDocument("Actor", sourceActorId);
-        const targetActor = await Pl1eHelpers.getDocument("Actor", targetActorId);
+        const sourceActor = await fromUuid(sourceActorUuid);
+        const targetActor = await fromUuid(targetActorUuid);
         const item = sourceActor.items.get(itemId);
 
         if (sourceActor.type === "character" && targetActor.type === "character") {
@@ -49,7 +48,12 @@ export class Pl1eTrade {
      * @param {Pl1eItem} item
      */
     static async sellItem(sellerActor, buyerActor, item) {
-        const priceUnits = Pl1eHelpers.moneyToUnits(item.system.price) * (buyerActor.system.general.sellMultiplier / 100);
+        const price = {
+            gold: item.system.attributes.goldPrice,
+            silver: item.system.attributes.silverPrice,
+            copper: item.system.attributes.copperPrice
+        }
+        const priceUnits = Pl1eHelpers.moneyToUnits(price) * (buyerActor.system.general.sellMultiplier / 100);
         const priceMoney = Pl1eHelpers.unitsToMoney(priceUnits);
         await sellerActor.update({
             ["system.money.gold"]: sellerActor.system.money.gold + priceMoney.gold,

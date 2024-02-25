@@ -383,12 +383,10 @@
         "customName": "",
         "removedUses": 0,
         "attributes": {
-          "uses": 0
-        },
-        "price": {
-          "gold": 0,
-          "silver": 0,
-          "copper": 0
+          "uses": 0,
+          "goldPrice": 0,
+          "silverPrice": 0,
+          "copperPrice": 0
         }
       }
     },

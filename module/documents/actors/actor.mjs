@@ -242,10 +242,6 @@ export class Pl1eActor extends Actor {
         super._onDeleteEmbeddedDocuments(embeddedName, documents, result, options, userId);
     }
 
-    _onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
-        super._onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId);
-    }
-
     /** @inheritDoc
      * Prepare data for the actor. Calling the super version of this executes
      * the following, in order: data reset (to clear active effects),

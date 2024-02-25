@@ -23,7 +23,12 @@ export class Pl1eSynchronizer {
                 renderActor = true;
 
                 // Log and update count
-                console.log(`PL1E | ${item.name} of ${actor.name} is reset`);
+                if (actor.pack) {
+                    console.log(`PL1E | ${item.name} of ${actor.name} from pack ${actor.pack} is reset`);
+                }
+                else {
+                    console.log(`PL1E | ${item.name} of ${actor.name} is reset`);
+                }
                 updateNumber++;
             }
 
@@ -50,7 +55,6 @@ export class Pl1eSynchronizer {
         const itemData = {
             "name": originalItem.name,
             "img": originalItem.img,
-            "system.price": originalItem.system.price,
             "system.description": originalItem.system.description,
             "system.attributes": originalItem.system.attributes
         }
