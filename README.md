@@ -1,4 +1,4 @@
-![Nexus Land Banner]([https://example.com/nexus_land_logo.png](https://github.com/FBast/pl1e/blob/main/assets/imgs/banner.jpg))
+![Nexus Land Banner](https://github.com/FBast/pl1e/blob/main/assets/imgs/banner.jpg)
 
 # Nexus Land V1 BETA System
 
