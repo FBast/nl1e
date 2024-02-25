@@ -1,6 +1,6 @@
 ![Nexus Land Banner](https://github.com/FBast/pl1e/blob/main/assets/imgs/banner.jpg)
 
-[![Discord](https://img.shields.io/discord/1211345195069743165?color=%237289DA&label=Join%20our%20Discord%20Server&logo=discord&style=for-the-badge)](https://discord.gg/HCCGGwYsG4)
+[![Discord](https://img.shields.io/discord/1211345195069743165?color=%237289DA&label=Join%20our%20Discord%20Server&logo=discord)](https://discord.gg/HCCGGwYsG4)
 ![Foundry v11](https://img.shields.io/badge/foundry-v11-green)
 # Nexus Land V1 BETA System
 
