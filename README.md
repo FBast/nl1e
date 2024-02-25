@@ -3,6 +3,7 @@
 # Nexus Land V1 BETA System
 
 ![Foundry v11](https://img.shields.io/badge/foundry-v11-green)
+[![Join our Discord](https://img.shields.io/discord/869899770219780916?color=7289DA&label=Join%20our%20Discord&logo=discord&logoColor=white)](https://discord.gg/HCCGGwYsG4)
 
 Welcome to Nexus Land, a tabletop role-playing system set in a rich medieval fantasy world where humanity takes center stage alongside a diverse array of races.
 
