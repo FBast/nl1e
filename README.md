@@ -32,6 +32,6 @@ Experience Nexus Land in your preferred language, with full support for both Eng
 
 ## Community
 
-Join our vibrant community of players and creators on Discord, where you can share your ideas, seek advice, and collaborate on new content. Your feedback and contributions play a vital role in shaping the future of Nexus Land, so come join us and become part of something truly special.
+Join our community on Discord, where you can share your ideas, seek advice, and collaborate on new content. Your feedback and contributions play a vital role in shaping the future of Nexus Land, so come join us and become part of something truly special.
 
 # Developed for Foundry VTT.
