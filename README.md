@@ -1,29 +1,33 @@
-# Prophetic Legacy V1 System
+# Nexus Land V1 BETA System
 
 ![Foundry v11](https://img.shields.io/badge/foundry-v11-green)
 
-This system is an implementation of Prophetic Legacy, a medieval fantastic world human centered with multiple others races.
+Welcome to Nexus Land, a tabletop role-playing system set in a rich medieval fantasy world where humanity takes center stage alongside a diverse array of races.
+
+## Disclaimer
+
+This system is currently in beta preview, so feel free to test it out and help improve its content by participating in bug fixes and providing feedback!
 
 ## Features
 
-Currently in Beta, this is system is not supposed to be production ready and is in debug/fixes state.
+Embark on your adventures with confidence, knowing that Nexus Land is constantly evolving to provide the best gaming experience possible. Here's what you can expect:
 
 ### Lore
 
-A map of Ekzandia, the main continent of this universe, and multiple cities scenes and journal are here to provide all the lore you need to get a ready to play experience.
+Delve into the depths of Ekzandia, the sprawling continent that serves as the backdrop for your epic tales. Immerse yourself in its vibrant cities, ancient ruins, and untamed wilderness, all meticulously detailed to bring your adventures to life.
 
 ### Items
 
-Multiple items in form of features, abilities, weapons, wearables and consumables are provided to allow players to create unique and customizable characters and for the GM to create interesting NPCs.
+Equip your characters with a vast array of items, each offering unique features and abilities to enhance your gameplay. From powerful weapons and enchanted armor to rare artifacts and mystical potions, Nexus Land provides endless opportunities for customization and strategy.
 
 ### Combat
 
-The combat system implement an extensive automated abilities system with visual and sound effects. Numerous abilities possibilities are available for you to create your owns.
+Engage in thrilling battles with an innovative combat system that combines strategy, skill, and spectacle. Utilize a diverse selection of automated abilities, complete with stunning visual effects and immersive soundscapes, to outmaneuver your foes and emerge victorious.
 
 ### Translation
 
-For know all the system is translated into English and French, but the items description and names are French only. With Babele implementation all will be translated to English in the future.
+Experience Nexus Land in your preferred language, with full support for both English and French. While item descriptions and names are currently available only in French, our ongoing efforts include plans to implement comprehensive English translations using the Babele integration.
 
 ## Community
 
-A discord link and more will be provided in the future tout allow people tout extend the system capabilities and the lore content.
+Join our vibrant community of players and creators on Discord, where you can share your ideas, seek advice, and collaborate on new content. Your feedback and contributions play a vital role in shaping the future of Nexus Land, so come join us and become part of something truly special.
