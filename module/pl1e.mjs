@@ -20,7 +20,6 @@ import {getConfigActor} from "./config/configActors.mjs";
 import {getConfigItems} from "./config/configItems.mjs";
 import {getConfigAspects} from "./config/configAspects.mjs";
 import {getConfigTemplates} from "./config/configTemplates.mjs";
-import {getConfigJournals} from "./config/configJournals.mjs";
 import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
@@ -78,7 +77,6 @@ Hooks.once('init', async function () {
     getConfigItems();
     getConfigAspects();
     getConfigTemplates();
-    getConfigJournals();
 
     // Register custom statuses
     registerStatuses();

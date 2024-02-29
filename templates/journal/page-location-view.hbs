@@ -12,32 +12,53 @@
                 <td><p>{{system.translation}}</p></td>
             </tr>
         {{/if}}
+        {{#if (ne system.type "")}}
+            <tr>
+                <td><strong>{{localize "PL1E.Type"}}</strong></td>
+                <td><p>{{system.type}}</p></td>
+            </tr>
+        {{/if}}
+        {{#if (ne system.culture "")}}
+            <tr>
+                <td><strong>{{localize "PL1E.Culture"}}</strong></td>
+                <td><p>{{system.culture}}</p></td>
+            </tr>
+        {{/if}}
         <tr>
-            <td><strong>{{localize "PL1E.Type"}}</strong></td>
-            <td><p>{{localize (config "locationTypes" system.type)}}</p></td>
+            <td><strong>{{localize "PL1E.Population"}}</strong></td>
+            <td>
+                <p class="flexrow">
+                    {{#range 1 9}}
+                        {{#if (lte this ../system.population)}}
+                            <i class="fas fa-user"></i>
+                        {{else}}
+                            <i class="far fa-user"></i>
+                        {{/if}}
+                    {{/range}}
+                </p>
+            </td>
         </tr>
-        {{#if (ne system.subType undefined)}}
-            <tr>
-                <td><strong>{{localize "PL1E.SubType"}}</strong></td>
-                <td><p>{{localize (config (concat system.type "Types") system.subType)}}</p></td>
-            </tr>
-        {{/if}}
-        {{#if (ne system.type "area")}}
-            <tr>
-                <td><strong>{{localize "PL1E.Ruin"}}</strong></td>
-                <td><p>
-                    {{#if system.ruin}}
-                        {{localize "PL1E.Yes"}}
-                    {{else}}
-                        {{localize "PL1E.No"}}
-                    {{/if}}
-                </p></td>
-            </tr>
-        {{/if}}
-        {{#if (ne system.type "building")}}
+        <tr>
+            <td><strong>{{localize "PL1E.Temperature"}}</strong></td>
+            <td>
+                <div class="temperature-bar-container">
+                    <div class="temperature-bar-gradient"></div> <!-- Static full gradient -->
+                    <div class="temperature-bar-cursor" style="left: {{system.temperaturePercentage}}%;"></div> <!-- Dynamic cursor -->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>{{localize "PL1E.Humidity"}}</strong></td>
+            <td>
+                <div class="water-bar-container">
+                    <div class="water-bar-fill" style="width: {{system.humidityPercentage}}%;"></div> <!-- Dynamic fill based on water level -->
+                </div>
+            </td>
+        </tr>
+        {{#if (ne system.climate "")}}
             <tr>
                 <td><strong>{{localize "PL1E.Climate"}}</strong></td>
-                <td><p>{{localize (config "climates" system.climate)}}</p></td>
+                <td><p>{{system.climate}}</p></td>
             </tr>
         {{/if}}
     </table>

@@ -21,44 +21,53 @@
     <div class="form-group">
         <label>{{localize "PL1E.Type"}}</label>
         <div class="form-fields">
-            <select name="system.type">
-                {{customSelectOptions (config "locationTypes") selected=system.type localize=true}}
-            </select>
+            <input type="text" name="system.type" value="{{system.type}}"/>
         </div>
         <p class="hint">{{localize "PL1E.DescriptionLocationType"}}</p>
     </div>
 
     <div class="form-group">
-        <label>{{localize "PL1E.SubType"}}</label>
+        <label>{{localize "PL1E.Culture"}}</label>
         <div class="form-fields">
-            <select name="system.subType">
-                {{customSelectOptions (config (concat system.type "Types")) selected=system.subType localize=true}}
-            </select>
+            <input type="text" name="system.culture" value="{{system.culture}}"/>
         </div>
-        <p class="hint">{{localize "PL1E.DescriptionLocationSubType"}}</p>
+        <p class="hint">{{localize "PL1E.DescriptionCulture"}}</p>
     </div>
 
-    {{#if (ne system.type "area")}}
-        <div class="form-group">
-            <label>{{localize "PL1E.Ruin"}}</label>
-            <div class="form-fields">
-                <input type="checkbox" name="system.ruin" {{checked system.ruin}} data-dtype="Boolean"/>
-            </div>
-            <p class="hint">{{localize "PL1E.DescriptionRuin"}}</p>
+    <div class="form-group">
+        <label>{{localize "PL1E.Population"}}</label>
+        <div class="form-fields">
+            <input type="range" name="system.population" min="1" max="9" value="{{system.population}}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{system.population}}</output>
         </div>
-    {{/if}}
+        <p class="hint">{{localize "PL1E.DescriptionPopulation"}}</p>
+    </div>
 
-    {{#if (ne system.type "building")}}
-        <div class="form-group">
-            <label>{{localize "PL1E.Climate"}}</label>
-            <div class="form-fields">
-                <select name="system.climate">
-                    {{customSelectOptions (config "climates") selected=system.climate localize=true}}
-                </select>
-            </div>
-            <p class="hint">{{localize "PL1E.DescriptionClimate"}}</p>
+    <div class="form-group">
+        <label>{{localize "PL1E.Temperature"}}</label>
+        <div class="form-fields">
+            <input type="range" name="system.temperature" min="1" max="9" value="{{system.temperature}}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{system.temperature}}</output>
         </div>
-    {{/if}}
+        <p class="hint">{{localize "PL1E.DescriptionTemperature"}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "PL1E.Humidity"}}</label>
+        <div class="form-fields">
+            <input type="range" name="system.humidity" min="1" max="9" value="{{system.humidity}}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{system.humidity}}</output>
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionHumidity"}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "PL1E.Climate"}}</label>
+        <div class="form-fields">
+            <input type="text" name="system.climate" value="{{system.climate}}"/>
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionClimate"}}</p>
+    </div>
 
     <div class="form-group">
         <label>{{localize "PL1E.Content"}}</label>

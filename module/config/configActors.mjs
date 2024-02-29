@@ -68,7 +68,7 @@ export function getConfigActor() {
                 "resources": ["stamina"],
                 "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
             },
-            "icon": "fa-dumbbell",
+            "icon": "fa-fist-raised",
             "type": "number",
             "path": "system.characteristics.strength.mods"
         },
@@ -78,7 +78,7 @@ export function getConfigActor() {
                 "resources": [],
                 "skills": ["reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
             },
-            "icon": "fa-dumbbell",
+            "icon": "fa-running",
             "type": "number",
             "path": "system.characteristics.agility.mods"
         },
@@ -88,7 +88,7 @@ export function getConfigActor() {
                 "resources": [],
                 "skills": ["reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
             },
-            "icon": "fa-dumbbell",
+            "icon": "fa-eye",
             "type": "number",
             "path": "system.characteristics.perception.mods"
         },
@@ -98,7 +98,7 @@ export function getConfigActor() {
                 "resources": ["health", "stamina"],
                 "skills": ["parry", "vigor", "athletics"]
             },
-            "icon": "fa-dumbbell",
+            "icon": "fa-fort",
             "type": "number",
             "path": "system.characteristics.constitution.mods"
         },
@@ -108,7 +108,7 @@ export function getConfigActor() {
                 "resources": ["mana"],
                 "skills": ["resilience", "diplomacy", "bluff", "erudition", "nature"]
             },
-            "icon": "fa-dumbbell",
+            "icon": "fa-brain",
             "type": "number",
             "path": "system.characteristics.intellect.mods"
         },
@@ -118,7 +118,7 @@ export function getConfigActor() {
                 "resources": [],
                 "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "occultism"]
             },
-            "icon": "fa-dumbbell",
+            "icon": "fa-user-secret",
             "type": "number",
             "path": "system.characteristics.cunning.mods"
         },
@@ -128,7 +128,7 @@ export function getConfigActor() {
                 "resources": [],
                 "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "nature"]
             },
-            "icon": "fa-dumbbell",
+            "icon": "fa-book-open",
             "type": "number",
             "path": "system.characteristics.wisdom.mods"
         },
@@ -138,7 +138,7 @@ export function getConfigActor() {
                 "resources": ["health", "mana"],
                 "skills": ["resilience", "performance", "occultism"]
             },
-            "icon": "fa-dumbbell",
+            "icon": "fa-anchor",
             "type": "number",
             "path": "system.characteristics.will.mods"
         }

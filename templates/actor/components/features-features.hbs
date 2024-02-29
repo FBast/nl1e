@@ -22,11 +22,6 @@
                     </i>
                 </div>
                 <div class="item-controls grid-span-2">
-                    {{#if (eq @root.actor.type "merchant")}}
-                        <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Take"}}'>
-                            <i class="fas fa-hand"></i>
-                        </a>
-                    {{/if}}
                     {{#if @root.actor.isOwner}}
                         {{#if flags.pl1e.childId}}
                             <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>

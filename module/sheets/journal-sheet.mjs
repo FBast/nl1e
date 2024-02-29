@@ -30,23 +30,31 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
             Array.fromRange(4, 1).map(n => [`level${n}`, context.data.title.level + n - 1])
         );
 
-        // Default system type
-        if (context.system.type !== undefined) {
-            let typeArray = PL1E[`${context.document.type}Types`];
-            if (typeArray === undefined) throw new Error(`PL1E | Cannot find any ${context.document.type}Types`);
-            await this.document.update({
-                "system.type": Object.keys(typeArray)[0]
-            });
+        if (context.system.temperature) {
+            // Translate temperature value from 1-9 scale to 5%-95% scale
+            context.system.temperaturePercentage = ((context.system.temperature - 1) / (9 - 1)) * (95 - 5) + 5;
         }
 
-        // Default system subType
-        if (context.system.subType !== undefined) {
-            let subTypeArray = PL1E[`${context.system.type}Types`];
-            if (subTypeArray !== undefined) {
-                await this.document.update({
-                    "system.subType": Object.keys(subTypeArray)[0]
-                });
+        if (context.system.humidity) {
+            // Translate water level value from 1-9 scale to 10%-100% scale
+            context.system.humidityPercentage = ((context.system.humidity - 1) / (9 - 1)) * (100 - 10) + 10;
+        }
+
+        if (context.system.humidity) {
+            let humidityLevel = context.system.humidity;
+            let humidityHtml = '';
+
+            for (let i = 1; i <= 10; i++) {
+                if (i <= 3) {
+                    humidityHtml += i <= humidityLevel ? '<i class="fas fa-tint-slash"></i>' : '<i class="far fa-tint-slash"></i>';
+                } else if (i <= 7) {
+                    humidityHtml += i <= humidityLevel ? '<i class="fas fa-tint"></i>' : '<i class="far fa-tint"></i>';
+                } else {
+                    humidityHtml += i <= humidityLevel ? '<i class="fas fa-cloud-rain"></i>' : '<i class="far fa-cloud-rain"></i>';
+                }
             }
+
+            context.humidityIcons = humidityHtml;
         }
 
         return context;

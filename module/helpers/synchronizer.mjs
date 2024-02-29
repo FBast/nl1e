@@ -50,97 +50,68 @@ export class Pl1eSynchronizer {
      */
     static async _resetItem(actor, item, originalItem) {
         if (!item.isEmbedded)
-            throw new Error(`PL1E | Item ${item.name} should not be reset because not embedded`)
+            throw new Error(`PL1E | Item ${item.name} should not be reset because not embedded`);
+
+        const updateProperty = (propertyType, item, originalItem, actor = null) => {
+            const itemData = {};
+            const originalProperties = originalItem.system[propertyType] || {};
+            const currentProperties = item.system[propertyType] || {};
+
+            // Remove obsolete properties
+            for (const id of Object.keys(currentProperties)) {
+                if (!(id in originalProperties)) {
+                    itemData[`system.${propertyType}.-=${id}`] = null;
+                    if (propertyType === 'passiveAspects' && item.isEnabled) {
+                        const effect = actor.effects.find(e => e.getFlag("pl1e", "aspectId") === id);
+                        if (effect) Pl1eAspect.removePassiveEffect(currentProperties[id], id, actor);
+                    }
+                }
+            }
+
+            // Add new or updated properties
+            for (const [id, property] of Object.entries(originalProperties)) {
+                itemData[`system.${propertyType}.${id}`] = property;
+                if (propertyType === 'passiveAspects' && property.createEffect && item.isEnabled) {
+                    Pl1eAspect.applyPassiveEffect(property, id, actor, item);
+                }
+            }
+
+            return itemData;
+        };
+
+        const handleRefItems = async (actor, item, refItems) => {
+            // Add the refItems in item which are not present in the actor
+            for (const refItem of refItems) {
+                if (actor.items.find(i => i.sourceId === refItem.itemId)) continue;
+                const itemChildren = Pl1eHelpers.getConfig("actorTypes", actor.type, "itemChildren");
+                if (!itemChildren.includes(refItem.item.type)) continue;
+
+                await actor.addItem(refItem.item, item.parentId);
+            }
+            // Remove the item of the actor which use the same parentId and are not present in the item
+            for (const otherItem of actor.items) {
+                if (otherItem.childId !== item.parentId) continue;
+                if (refItems.find(refItem => refItem.itemId === otherItem.sourceId)) continue;
+
+                await actor.removeItem(otherItem);
+            }
+        };
 
         const itemData = {
             "name": originalItem.name,
             "img": originalItem.img,
             "system.description": originalItem.system.description,
-            "system.attributes": originalItem.system.attributes
-        }
-
-        // Remove obsolete ref items
-        for (const [instanceId, refItem] of Object.entries(item.system.refItems)) {
-            if (!refItem.synchronized) continue;
-            if (!Object.keys(originalItem.system.refItems).some(refItemInstanceId => refItemInstanceId === instanceId)) {
-                itemData[`system.refItems.-=${instanceId}`] = null;
-            }
-        }
-
-        // Add new ref items
-        for (const [instanceId, refItem] of Object.entries(originalItem.system.refItems)) {
-            if (!refItem.synchronized) continue;
-            itemData[`system.refItems.${instanceId}`] = refItem;
-        }
-
-        // Remove obsolete passive aspects
-        if (item.system.passiveAspects) {
-            for (const [id, aspect] of Object.entries(item.system.passiveAspects)) {
-                if (!Object.keys(originalItem.system.passiveAspects).some(aspectId => aspectId === id)) {
-                    itemData[`system.passiveAspects.-=${id}`] = null;
-                }
-
-                // Remove the associated effect (updated aspect are removed too)
-                const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === id);
-                if (effect !== undefined && item.isEnabled) {
-                    await Pl1eAspect.removePassiveEffect(aspect, id, actor);
-                }
-            }
-        }
-
-        // Add new passive aspects
-        if (originalItem.system.passiveAspects) {
-            for (const [id, aspect] of Object.entries(originalItem.system.passiveAspects)) {
-                itemData[`system.passiveAspects.${id}`] = aspect;
-
-                // Add the associated effect
-                if (aspect.createEffect && item.isEnabled) {
-                    await Pl1eAspect.applyPassiveEffect(aspect, id, actor, item);
-                }
-            }
-        }
-
-        // Remove obsolete active aspects
-        if (item.system.activeAspects) {
-            for (const [id, aspect] of Object.entries(item.system.activeAspects)) {
-                if (!Object.keys(originalItem.system.activeAspects).some(aspectId => aspectId === id)) {
-                    itemData[`system.activeAspects.-=${id}`] = null;
-                }
-            }
-        }
-
-        // Update the active aspects
-        if (originalItem.system.activeAspects) {
-            for (const [id, aspect] of Object.entries(originalItem.system.activeAspects)) {
-                itemData[`system.activeAspects.${id}`] = aspect;
-            }
-        }
+            "system.attributes": originalItem.system.attributes,
+            ...updateProperty('refItems', item, originalItem),
+            ...updateProperty('passiveAspects', item, originalItem, actor),
+            ...updateProperty('activeAspects', item, originalItem)
+        };
 
         // Update the item data
         await item.update(itemData);
 
-        const refItems = await item.getRefItems();
-        // Add the refItems in item which are not present in the actor
-        for (const refItem of refItems) {
-            // If we find an item with the same source id then continue
-            if (actor.items.find(item => item.sourceId === refItem.itemId)) continue;
-
-            // Add item child if actor should
-            const itemChildren = Pl1eHelpers.getConfig("actorTypes", actor.type, "itemChildren");
-            if (!itemChildren.includes(refItem.item.type)) continue;
-
-            await actor.addItem(refItem.item, item.parentId);
-        }
-        // Remove the item of the actor which use the same parentId and are not present in the item
-        for (const otherItem of actor.items) {
-            // If the otherItem as a different childId than the item parentId then continue
-            if (otherItem.childId !== item.parentId) continue;
-
-            // If the otherItem id is inside the refItems then continue
-            if (refItems.find(refItem => refItem.itemId === otherItem.sourceId)) continue;
-
-            await actor.removeItem(otherItem);
-        }
+        // Additional logic for refItems in actor
+        await handleRefItems(actor, item, await item.getRefItems());
     }
 
 }

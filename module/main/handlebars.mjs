@@ -58,4 +58,13 @@ export const registerHandlebars = function () {
     Handlebars.registerHelper('contains', function(array, item, options) {
         return Array.isArray(array) && array.indexOf(item) > -1;
     });
+
+    Handlebars.registerHelper('range', function(start, end, options) {
+        let accumulator = "";
+        for (let i = start; i <= end; ++i) {
+            // This adds the block content to the accumulator for each iteration, setting "this" to the current value
+            accumulator += options.fn(i);
+        }
+        return accumulator;
+    });
 }

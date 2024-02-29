@@ -21,67 +21,55 @@
                     <img class="item-image item-edit hover-red" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
                     <label class="item-name item-tooltip-activate">{{realName}}</label>
                 </div>
-                {{#unless (eq @root.actor.type "npc")}}
-                    <div class="item-icons grid-span-6">
-                        {{#each system.combinedPassiveAspects}}
-                            {{#with (config dataGroup data)}}
-                                <i class="item-info far {{icon}} hover-green" data-tooltip="{{localize label}}">
-                                    <label>{{../value}}</label>
-                                </i>
-                            {{/with}}
-                        {{/each}}
-                        {{#if (eq @root.actor.type "character")}}
-                            {{#if system.majorActionUsed}}
-                                <i class="item-info far fa-star hover-green" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
-                            {{/if}}
-                            {{#if (gt system.attributes.goldPrice 0)}}
+                <div class="item-icons grid-span-6">
+                    {{#each system.combinedPassiveAspects}}
+                        {{#with (config dataGroup data)}}
+                            <i class="item-info far {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                <label>{{../value}}</label>
+                            </i>
+                        {{/with}}
+                    {{/each}}
+                    {{#if (eq @root.actor.type "character")}}
+                        {{#if system.majorActionUsed}}
+                            <i class="item-info far fa-star hover-green" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
+                        {{/if}}
+                        {{#if (gt system.attributes.goldPrice 0)}}
+                            <i class="item-info far fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
+                                <label class="color-black">{{system.attributes.goldPrice}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (gt system.attributes.silverPrice 0)}}
+                            <i class="item-info far fa-coins color-silver hover-green" data-tooltip='{{localize "PL1E.Silver"}}'>
+                                <label class="color-black">{{system.attributes.silverPrice}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (gt system.attributes.copperPrice 0)}}
+                            <i class="item-info far fa-coins color-copper hover-green" data-tooltip='{{localize "PL1E.Copper"}}'>
+                                <label class="color-black">{{system.attributes.copperPrice}}</label>
+                            </i>
+                        {{/if}}
+                    {{else if (eq @root.actor.type "merchant")}}
+                        {{#with (lookup ../system.merchantPrices _id)}}
+                            {{#if (gt gold 0)}}
                                 <i class="item-info far fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
-                                    <label class="color-black">{{system.attributes.goldPrice}}</label>
+                                    <label class="color-black">{{gold}}</label>
                                 </i>
                             {{/if}}
-                            {{#if (gt system.attributes.silverPrice 0)}}
+                            {{#if (gt silver 0)}}
                                 <i class="item-info far fa-coins color-silver hover-green" data-tooltip='{{localize "PL1E.Silver"}}'>
-                                    <label class="color-black">{{system.attributes.silverPrice}}</label>
+                                    <label class="color-black">{{silver}}</label>
                                 </i>
                             {{/if}}
-                            {{#if (gt system.attributes.copperPrice 0)}}
+                            {{#if (gt copper 0)}}
                                 <i class="item-info far fa-coins color-copper hover-green" data-tooltip='{{localize "PL1E.Copper"}}'>
-                                    <label class="color-black">{{system.attributes.copperPrice}}</label>
+                                    <label class="color-black">{{copper}}</label>
                                 </i>
                             {{/if}}
-                        {{else if (eq @root.actor.type "merchant")}}
-                            {{#with (lookup ../system.merchantPrices _id)}}
-                                {{#if (gt gold 0)}}
-                                    <i class="item-info far fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
-                                        <label class="color-black">{{gold}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (gt silver 0)}}
-                                    <i class="item-info far fa-coins color-silver hover-green" data-tooltip='{{localize "PL1E.Silver"}}'>
-                                        <label class="color-black">{{silver}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (gt copper 0)}}
-                                    <i class="item-info far fa-coins color-copper hover-green" data-tooltip='{{localize "PL1E.Copper"}}'>
-                                        <label class="color-black">{{copper}}</label>
-                                    </i>
-                                {{/if}}
-                            {{/with}}
-                        {{/if}}
-                    </div>
-                {{/unless}}
+                        {{/with}}
+                    {{/if}}
+                </div>
                 <div class="item-controls grid-span-2">
-                    {{#if (eq @root.actor.type "merchant")}}
-                        {{#if (eq @root.actor.system.general.buyMultiplier 0)}}
-                            <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Take"}}'>
-                                <i class="fas fa-hand"></i>
-                            </a>
-                        {{else}}
-                            <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Buy"}}'>
-                                <i class="fas fa-coins"></i>
-                            </a>
-                        {{/if}}
-                    {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                    {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
                         {{#if (eq system.attributes.slot "garment")}}
                             <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                                 <i class="fas fa-shirt-long-sleeve {{#unless system.isEquipped}}color-grey{{/unless}}"></i>

@@ -15,7 +15,7 @@ export class Pl1eTrade {
         const targetActor = await fromUuid(targetActorUuid);
         const item = sourceActor.items.get(itemId);
 
-        if (sourceActor.type === "character" && targetActor.type === "character") {
+        if (sourceActor.type !== "merchant" && targetActor.type !== "merchant") {
             await Pl1eTrade.giftItem(sourceActor, targetActor, item);
         }
         else if (targetActor.type === "merchant") {

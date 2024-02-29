@@ -21,21 +21,35 @@
     <div class="form-group">
         <label>{{localize "PL1E.Type"}}</label>
         <div class="form-fields">
-            <select name="system.type">
-                {{customSelectOptions (config "organizationTypes") selected=system.type localize=true}}
-            </select>
+            <input type="text" name="system.type" value="{{system.type}}"/>
         </div>
-        <p class="hint">{{localize "PL1E.DescriptionLocationType"}}</p>
+        <p class="hint">{{localize "PL1E.DescriptionType"}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "PL1E.Culture"}}</label>
+        <div class="form-fields">
+            <input type="text" name="system.culture" value="{{system.culture}}"/>
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionCulture"}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "PL1E.Population"}}</label>
+        <div class="form-fields">
+            <input type="range" name="system.population" min="1" max="9" value="{{system.population}}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{system.population}}</output>
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionPopulation"}}</p>
     </div>
 
     <div class="form-group">
         <label>{{localize "PL1E.Power"}}</label>
         <div class="form-fields">
-            <select name="system.power">
-                {{customSelectOptions (config "powers") selected=system.power localize=true}}
-            </select>
+            <input type="range" name="system.power" min="1" max="9" value="{{system.power}}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{system.power}}</output>
         </div>
-        <p class="hint">{{localize "PL1E.DescriptionLocationType"}}</p>
+        <p class="hint">{{localize "PL1E.DescriptionPower"}}</p>
     </div>
 
     <div class="form-group">

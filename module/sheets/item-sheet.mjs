@@ -20,8 +20,7 @@ export class Pl1eItemSheet extends ItemSheet {
             scrollY: [
                 ".scroll-auto"
             ],
-            tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}],
-            dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}]
+            tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}]
         });
     }
 
@@ -54,6 +53,7 @@ export class Pl1eItemSheet extends ItemSheet {
                     const item = await Pl1eHelpers.getDocument("Item", this.item.sourceId);
                     if (item.sheet.rendered) item.sheet.bringToTop();
                     else item.sheet.render(true);
+                    await this.close();
                 }
             });
         }
@@ -152,6 +152,11 @@ export class Pl1eItemSheet extends ItemSheet {
         // Bind event listener for data dropdown change
         html.find("[name^='system.passiveAspects.'][name$='.data']").on('change', event => this._onDataChange(event, html, "passive"));
         html.find("[name^='system.activeAspects.'][name$='.data']").on('change', event => this._onDataChange(event, html, "active"));
+
+        html.find('.sheet-header, .sheet-tabs, .sheet-body').each((i, el) => {
+            el.addEventListener('dragover', event => event.preventDefault());
+            el.addEventListener('drop', this._onDrop.bind(this));
+        });
     }
 
     _onDataGroupChange(event, html, aspectType) {

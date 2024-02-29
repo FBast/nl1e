@@ -17,43 +17,41 @@
                     <label class="item-name item-tooltip-activate">{{system.units}}x {{name}}</label>
                 </div>
                 <div class="item-icons grid-span-6">
-                    {{#unless (eq @root.actor.type "npc")}}
-                        {{#if (or (eq system.attributes.commonType "food"))}}
-                            <i class="item-info far fa-pot-food hover-green" data-tooltip='{{localize "PL1E.Food"}}'></i>
-                            {{#if (ne system.attributes.healthRest 0)}}
-                                <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRest"}}'>
-                                    <label>{{system.attributes.healthRest}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.staminaRest 0)}}
-                                <i class="item-info far fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
-                                    <label>{{system.attributes.staminaRest}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.manaRest 0)}}
-                                <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRest"}}'>
-                                    <label>{{system.attributes.manaRest}}</label>
-                                </i>
-                            {{/if}}
-                        {{else if (eq system.attributes.commonType "drink")}}
-                            <i class="item-info far fa-glass hover-green" data-tooltip='{{localize "PL1E.Drink"}}'></i>
-                            {{#if (ne system.attributes.healthRest 0)}}
-                                <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRest"}}'>
-                                    <label>{{system.attributes.healthRest}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.staminaRest 0)}}
-                                <i class="item-info far fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
-                                    <label>{{system.attributes.staminaRest}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.manaRest 0)}}
-                                <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRest"}}'>
-                                    <label>{{system.attributes.manaRest}}</label>
-                                </i>
-                            {{/if}}
+                    {{#if (or (eq system.attributes.commonType "food"))}}
+                        <i class="item-info far fa-pot-food hover-green" data-tooltip='{{localize "PL1E.Food"}}'></i>
+                        {{#if (ne system.attributes.healthRest 0)}}
+                            <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRest"}}'>
+                                <label>{{system.attributes.healthRest}}</label>
+                            </i>
                         {{/if}}
-                    {{/unless}}
+                        {{#if (ne system.attributes.staminaRest 0)}}
+                            <i class="item-info far fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
+                                <label>{{system.attributes.staminaRest}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.manaRest 0)}}
+                            <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRest"}}'>
+                                <label>{{system.attributes.manaRest}}</label>
+                            </i>
+                        {{/if}}
+                    {{else if (eq system.attributes.commonType "drink")}}
+                        <i class="item-info far fa-glass hover-green" data-tooltip='{{localize "PL1E.Drink"}}'></i>
+                        {{#if (ne system.attributes.healthRest 0)}}
+                            <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthRest"}}'>
+                                <label>{{system.attributes.healthRest}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.staminaRest 0)}}
+                            <i class="item-info far fa-wave-pulse hover-green" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
+                                <label>{{system.attributes.staminaRest}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if (ne system.attributes.manaRest 0)}}
+                            <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaRest"}}'>
+                                <label>{{system.attributes.manaRest}}</label>
+                            </i>
+                        {{/if}}
+                    {{/if}}
                     {{#if (eq @root.actor.type "merchant")}}
                         {{#with (lookup ../system.merchantPrices _id)}}
                             {{#if (gt gold 0)}}
@@ -75,17 +73,6 @@
                     {{/if}}
                 </div>
                 <div class="item-controls grid-span-2">
-                    {{#if (eq @root.actor.type "merchant")}}
-                        {{#if (eq @root.actor.system.general.buyMultiplier 0)}}
-                            <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Take"}}'>
-                                <i class="fas fa-hand"></i>
-                            </a>
-                        {{else}}
-                            <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Buy"}}'>
-                                <i class="fas fa-coins"></i>
-                            </a>
-                        {{/if}}
-                    {{/if}}
                     {{#if @root.actor.isOwner}}
                         {{#if flags.pl1e.childId}}
                             <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>

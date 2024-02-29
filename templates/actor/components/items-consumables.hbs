@@ -17,41 +17,39 @@
                     <label class="item-name item-tooltip-activate">{{#unless ../system.general.unlimitedItems}}{{system.units}}x {{/unless}}{{name}}</label>
                 </div>
                 <div class="item-icons grid-span-6">
-                    {{#unless (eq @root.actor.type "npc")}}
-                        {{#if (gt system.attributes.uses 1)}}
-                            {{#if (eq system.removedUses 0)}}
-                                <i class="item-info far fa-hourglass-start hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                    <label>{{minus system.attributes.uses system.removedUses}}</label>
-                                </i>
-                            {{else if (eq system.removedUses system.attributes.uses)}}
-                                <i class="item-info far fa-hourglass-end hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                    <label>{{minus system.attributes.uses system.removedUses}}</label>
-                                </i>
-                            {{else}}
-                                <i class="item-info far fa-hourglass-half hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                    <label>{{minus system.attributes.uses system.removedUses}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if system.attributes.isReloadable}}
-                                <i class="item-info far fa-repeat hover-green" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
-                            {{/if}}
-                        {{/if}}
-                        {{#if (ne system.attributes.actionCost 0)}}
-                            <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
-                                <label>{{system.attributes.actionCost}}</label>
+                    {{#if (gt system.attributes.uses 1)}}
+                        {{#if (eq system.removedUses 0)}}
+                            <i class="item-info far fa-hourglass-start hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
+                            </i>
+                        {{else if (eq system.removedUses system.attributes.uses)}}
+                            <i class="item-info far fa-hourglass-end hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
+                            </i>
+                        {{else}}
+                            <i class="item-info far fa-hourglass-half hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
                             </i>
                         {{/if}}
-                        {{#if (ne system.attributes.reactionCost 0)}}
-                            <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
-                                <label>{{system.attributes.reactionCost}}</label>
-                            </i>
+                        {{#if system.attributes.isReloadable}}
+                            <i class="item-info far fa-repeat hover-green" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
                         {{/if}}
-                        {{#if (ne system.attributes.range 0)}}
-                            <i class="item-info far fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
-                                <label>{{system.attributes.range}}</label>
-                            </i>
-                        {{/if}}
-                    {{/unless}}
+                    {{/if}}
+                    {{#if (ne system.attributes.actionCost 0)}}
+                        <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+                            <label>{{system.attributes.actionCost}}</label>
+                        </i>
+                    {{/if}}
+                    {{#if (ne system.attributes.reactionCost 0)}}
+                        <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+                            <label>{{system.attributes.reactionCost}}</label>
+                        </i>
+                    {{/if}}
+                    {{#if (ne system.attributes.range 0)}}
+                        <i class="item-info far fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
+                            <label>{{system.attributes.range}}</label>
+                        </i>
+                    {{/if}}
                     {{#if (eq @root.actor.type "character")}}
                         {{#if (gt system.attributes.goldPrice 0)}}
                             <i class="item-info far fa-coins color-gold hover-green" data-tooltip='{{localize "PL1E.Gold"}}'>
@@ -89,17 +87,7 @@
                     {{/if}}
                 </div>
                 <div class="item-controls grid-span-2">
-                    {{#if (eq @root.actor.type "merchant")}}
-                        {{#if (eq @root.actor.system.general.buyMultiplier 0)}}
-                            <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Take"}}'>
-                                <i class="fas fa-hand"></i>
-                            </a>
-                        {{else}}
-                            <a class="item-control item-buy" data-tooltip='{{localize "PL1E.Buy"}}'>
-                                <i class="fas fa-coins"></i>
-                            </a>
-                        {{/if}}
-                    {{else if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                    {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
                         {{#if (and (ne system.removedUses 0) system.attributes.isReloadable)}}
                             <a class="item-control item-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
                                 <i class="fas fa-repeat"></i>

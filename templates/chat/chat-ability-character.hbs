@@ -65,7 +65,7 @@
             </div>
         {{/if}}
     </div>
-    {{#if (gt characterData.result 0)}}
+    {{#if (and (not characterData.noConfirmation) (gt characterData.result 0))}}
         <footer class="card-buttons gm-only">
             <button data-action="launch">{{localize "PL1E.Launch"}}</button>
             <button data-action="counter">{{localize "PL1E.Cancel"}}</button>

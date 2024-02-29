@@ -8,17 +8,51 @@
                  height="200" width="200" style="border-style: none">
         {{/if}}
         <table>
+            {{#if (ne system.translation "")}}
+                <tr>
+                    <td><strong>{{localize "PL1E.Translation"}}</strong></td>
+                    <td><p>{{system.translation}}</p></td>
+                </tr>
+            {{/if}}
+            {{#if (ne system.translation "")}}
+                <tr>
+                    <td><strong>{{localize "PL1E.Type"}}</strong></td>
+                    <td><p>{{system.type}}</p></td>
+                </tr>
+            {{/if}}
+            {{#if (ne system.culture "")}}
+                <tr>
+                    <td><strong>{{localize "PL1E.Culture"}}</strong></td>
+                    <td><p>{{system.culture}}</p></td>
+                </tr>
+            {{/if}}
             <tr>
-                <td><strong>{{localize "PL1E.Translation"}}</strong></td>
-                <td><p>{{system.translation}}</p></td>
-            </tr>
-            <tr>
-                <td><strong>{{localize "PL1E.Type"}}</strong></td>
-                <td><p>{{system.type}}</p></td>
+                <td><strong>{{localize "PL1E.Population"}}</strong></td>
+                <td>
+                    <p class="flexrow">
+                        {{#range 1 9}}
+                            {{#if (lte this ../system.population)}}
+                                <i class="fas fa-user"></i> <!-- Filled star -->
+                            {{else}}
+                                <i class="far fa-user"></i> <!-- Empty star -->
+                            {{/if}}
+                        {{/range}}
+                    </p>
+                </td>
             </tr>
             <tr>
                 <td><strong>{{localize "PL1E.Power"}}</strong></td>
-                <td><p>{{system.power}}</p></td>
+                <td>
+                    <p class="flexrow">
+                        {{#range 1 9}}
+                            {{#if (lte this ../system.power)}}
+                                <i class="fas fa-star"></i> <!-- Filled star -->
+                            {{else}}
+                                <i class="far fa-star"></i> <!-- Empty star -->
+                            {{/if}}
+                        {{/range}}
+                    </p>
+                </td>
             </tr>
         </table>
     </div>

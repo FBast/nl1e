@@ -51,6 +51,8 @@ export class Pl1eItem extends Item {
                 return true;
             case "wearable":
                 return this.system.isEquipped;
+            case "module":
+                return false;
             default:
                 return true;
         }
@@ -118,9 +120,9 @@ export class Pl1eItem extends Item {
             actor: actor,
             actorId: actor._id,
             token: token,
-            tokenId: token._id,
-            scene: token.parent,
-            sceneId: token.parent.id,
+            tokenId: token?._id,
+            scene: token?.parent,
+            sceneId: token?.parent.id,
             item: this,
             itemId: this._id,
             attributes: {...this.system.attributes},
@@ -317,7 +319,7 @@ export class Pl1eItem extends Item {
         super._onUpdate(changed, options, userId);
 
         // If the item is an original
-        if (!this.isEmbedded) {
+        if (!this.isEmbedded && game.user.isGM) {
             // Auto reset actors items on update
             const enableAutoResetActorsItems = game.settings.get("pl1e", "enableAutoResetActorsItems");
             if (enableAutoResetActorsItems) await Pl1eSynchronizer.resetActorsItems(this);
@@ -358,11 +360,20 @@ export class Pl1eItem extends Item {
         const refItems = await this.getRefItems();
 
         let passiveAspectsFromModules = {};
-        refItems.forEach(refItem => {
+        for (const refItem of refItems) {
             if (refItem.item && refItem.item.type === "module") {
-                Object.assign(passiveAspectsFromModules, refItem.item.system.passiveAspects);
+                for (const [key, aspect] of Object.entries(refItem.item.system.passiveAspects)) {
+                    // In case key is already their then merge
+                    if (passiveAspectsFromModules[key]) {
+                        passiveAspectsFromModules[key].value += aspect.value;
+                    }
+                    // Else then add a copy of the aspect
+                    else {
+                        passiveAspectsFromModules[key] = { ...aspect };
+                    }
+                }
             }
-        });
+        }
 
         const allAspects = {...this.system.passiveAspects, ...passiveAspectsFromModules};
         return Pl1eAspect.mergeAspectsObjects(allAspects);
@@ -648,20 +659,26 @@ export class Pl1eItem extends Item {
                 });
             }
         }
-        // If we have no token
-        else {
+        // If we have no token and there is no area shape
+        else if (characterData.attributes.areaShape === "none") {
+            // Disable chat confirmation buttons
+            characterData.noConfirmation = true;
+
             // Display message
             await Pl1eChat.actionRoll(characterData);
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
 
-            // In case of no area shape
-            if (characterData.attributes.areaShape === "none") {
-                await this.resolve(characterData, {
-                    action: "launch"
-                });
-            }
+            // Resolve immediately
+            await this.resolve(characterData, {
+                action: "launch"
+            });
+        }
+        // Else we need a token to proceed
+        else {
+            ui.notifications.info(game.i18n.localize("PL1E.NeedAToken"));
+            return false;
         }
 
         await this._postActivate(characterData);
@@ -675,37 +692,47 @@ export class Pl1eItem extends Item {
      * @protected
      */
     _canActivate(characterData) {
-        const itemAttributes = characterData.attributes;
+        const { attributes: itemAttributes, token, actor } = characterData;
+        const inCombat = token && token.inCombat;
+        const isCurrentTurn = game.combat && game.combat.current.tokenId === characterData.tokenId;
+        const { action, reaction, quickAction } = actor.system.general;
 
-        if (characterData.token.inCombat && itemAttributes.activation === "action") {
-            if (characterData.tokenId !== game.combat.current.tokenId) {
-                ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
-                return false;
-            }
-            if (characterData.actor.system.general.action < itemAttributes.actionCost) {
-                ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
-                return false;
+        // In combat checks
+        if (inCombat) {
+            switch (itemAttributes.activation) {
+                case "action":
+                    if (!isCurrentTurn) {
+                        ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
+                        return false;
+                    }
+                    if (action < itemAttributes.actionCost) {
+                        ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
+                        return false;
+                    }
+                    break;
+                case "reaction":
+                    if (reaction <= 0) {
+                        ui.notifications.info(game.i18n.localize("PL1E.NoMoreReaction"));
+                        return false;
+                    }
+                    break;
+                case "quickAction":
+                    if (!isCurrentTurn) {
+                        ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
+                        return false;
+                    }
+                    if (quickAction <= 0) {
+                        ui.notifications.info(game.i18n.localize("PL1E.NoMoreQuickAction"));
+                        return false;
+                    }
+                    break;
+                case "outOfCombat":
+                    ui.notifications.info(game.i18n.localize("PL1E.OutOfCombatOnly"));
+                    return false;
             }
         }
-        else if (characterData.token.inCombat && itemAttributes.activation === "reaction"
-            && characterData.actor.system.general.reaction <= 0) {
-            ui.notifications.info(game.i18n.localize("PL1E.NoMoreReaction"));
-            return false;
-        }
-        else if (characterData.token.inCombat && itemAttributes.activation === "quickAction") {
-            if (characterData.tokenId !== game.combat.current.tokenId) {
-                ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
-                return false;
-            }
-            if (characterData.actor.system.general.quickAction <= 0) {
-                ui.notifications.info(game.i18n.localize("PL1E.NoMoreQuickAction"));
-                return false;
-            }
-        }
-        else if (characterData.token.inCombat && itemAttributes.activation === "outOfCombat") {
-            ui.notifications.info(game.i18n.localize("PL1E.OutOfCombatOnly"));
-            return false;
-        }
+
+        // Passed all checks
         return true;
     }
 

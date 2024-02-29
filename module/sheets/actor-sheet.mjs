@@ -147,6 +147,24 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".highlight-link").on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
         html.find(".highlight-link").on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
 
+        // Handle drop event on a not owned actor
+        if (!this.actor.isOwner) {
+            html.find('.sheet-header, .sheet-tabs, .sheet-body').each((i, el) => {
+                el.addEventListener('dragover', event => event.preventDefault());
+                el.addEventListener('drop', this._onDrop.bind(this));
+            });
+        }
+
+        // Handle drag event items from owned actor or merchant
+        if (this.actor.isOwner || this.actor.type === "merchant") {
+            let handler = ev => this._onDragStart(ev);
+            html.find('li.item').each((i, li) => {
+                if (li.classList.contains("subItems-header")) return;
+                li.setAttribute("draggable", true);
+                li.addEventListener("dragstart", handler, false);
+            });
+        }
+
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
@@ -182,21 +200,6 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".button-remove-items").on("click", ev => this.onRemoveItemsClick(ev));
         html.find(".button-randomize-item").on("click", ev => this.onRandomizeItemClick(ev));
         html.find(".button-generate-item").on("click", ev => this.onGenerateItemClick(ev));
-
-        // Drag events for macros.
-        if (this.actor.isOwner) {
-            let handler = ev => this._onDragStart(ev);
-            html.find('li.item').each((i, li) => {
-                if (li.classList.contains("subItems-header")) return;
-                li.setAttribute("draggable", true);
-                li.addEventListener("dragstart", handler, false);
-            });
-        }
-
-        const titleElement = html.find(".window-title")[0];
-        if (titleElement) {
-            titleElement.textContent = "New Title";
-        }
     }
 
     /**
@@ -231,15 +234,12 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /** @inheritDoc */
     async _onDrop(event) {
-        // Everything below here is only needed if the sheet is editable
-        if (!this.isEditable) return;
-
         // Check item type and subtype
         const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
         let document = await fromUuid(data.uuid)
 
-        // Check if the user own the dropped document
-        if (!document.isOwner) {
+        // If the document is not embedded and the user does not own it return
+        if (!document.isEmbedded && !document.isOwner) {
             ui.notifications.info(game.i18n.localize("PL1E.NotOwnedDocument"));
             return;
         }
@@ -285,6 +285,9 @@ export class Pl1eActorSheet extends ActorSheet {
      * @private
      */
     async _addItem(item) {
+        // Return if item is childed and cannot be transfer
+        if (item.childId) return;
+
         // Return if same actor
         if (item.parent === this.actor) return;
 
@@ -350,7 +353,7 @@ export class Pl1eActorSheet extends ActorSheet {
             await this._prepareItem(context, item, sourceIdFlags);
         }
 
-        // Apply features and capacities filters
+        // Apply feature and capacities filters
         context.background = this._filterDocuments(context.background, this._filters.background);
         context.features = this._filterDocuments(context.features, this._filters.features);
         context.abilities = this._filterDocuments(context.abilities, this._filters.abilities);

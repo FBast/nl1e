@@ -212,7 +212,8 @@ export function getConfigAspects() {
         "coverNumber": {
             "label": "PL1E.CoverBonus",
             "path": "system.skills.cover.numberMod",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-shield"
         },
         // "coverDice": {
         //     "label": "PL1E.CoverDice",
@@ -222,22 +223,26 @@ export function getConfigAspects() {
         "coverExplosion": {
             "label": "PL1E.CoverExplosion",
             "path": "system.skills.cover.explosion",
-            "type": "bool"
+            "type": "bool",
+            "icon": "fa-shield"
         },
         "coverImplosion": {
             "label": "PL1E.CoverImplosion",
             "path": "system.skills.cover.implosion",
-            "type": "bool"
+            "type": "bool",
+            "icon": "fa-shield"
         },
         "coverUsable": {
             "label": "PL1E.CoverUsable",
             "path": "system.skills.cover.usable",
-            "type": "bool"
+            "type": "bool",
+            "icon": "fa-shield"
         },
         "parryNumber": {
             "label": "PL1E.ParryBonus",
             "path": "system.skills.parry.numberMod",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-swords"
         },
         // "parryDice": {
         //     "label": "PL1E.ParryDice",
@@ -247,22 +252,26 @@ export function getConfigAspects() {
         "parryExplosion": {
             "label": "PL1E.ParryExplosion",
             "path": "system.skills.parry.explosion",
-            "type": "bool"
+            "type": "bool",
+            "icon": "fa-swords"
         },
         "parryImplosion": {
             "label": "PL1E.ParryImplosion",
             "path": "system.skills.parry.implosion",
-            "type": "bool"
+            "type": "bool",
+            "icon": "fa-swords"
         },
         "parryUsable": {
             "label": "PL1E.ParryUsable",
             "path": "system.skills.parry.usable",
-            "type": "bool"
+            "type": "bool",
+            "icon": "fa-swords"
         },
         "reflexNumber": {
             "label": "PL1E.ReflexBonus",
             "path": "system.skills.reflex.numberMod",
-            "type": "number"
+            "type": "number",
+            "icon": "fa-wind"
         },
         // "reflexDice": {
         //     "label": "PL1E.ReflexDice",
@@ -272,12 +281,14 @@ export function getConfigAspects() {
         "reflexExplosion": {
             "label": "PL1E.ReflexExplosion",
             "path": "system.skills.reflex.explosion",
-            "type": "bool"
+            "type": "bool",
+            "icon": "fa-wind"
         },
         "reflexImplosion": {
             "label": "PL1E.ReflexImplosion",
             "path": "system.skills.reflex.implosion",
-            "type": "bool"
+            "type": "bool",
+            "icon": "fa-wind"
         },
         "vigorNumber": {
             "label": "PL1E.VigorBonus",

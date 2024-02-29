@@ -12,7 +12,7 @@
             {{else}}
                 <h1 class="sheet-name"><label>{{item.name}}</label></h1>
             {{/if}}
-            {{#if (and system.attributes.customizable item.isEmbedded)}}
+            {{#if (and system.attributes.customizable item.isEmbedded item.isOwner)}}
                 <h1 class="sheet-name"><input name="system.customName" type="text" value="{{item.system.customName}}" placeholder="Custom name"/></h1>
             {{/if}}
         </div>

@@ -21,10 +21,10 @@
  * @typedef {Object} CharacterData
  * @property {Pl1eActor} actor The actor of the character
  * @property {string} actorId The actor id of the character
- * @property {TokenDocument} token The token of the character
- * @property {string} tokenId The token id of the character
- * @property {Scene} scene The scene where the token is
- * @property {string} sceneId The id of the scene where the token is
+ * @property {TokenDocument | null} token The token of the character
+ * @property {string | null} tokenId The token id of the character
+ * @property {Scene | null} scene The scene where the token is
+ * @property {string | null} sceneId The id of the scene where the token is
  * @property {Pl1eItem} item The item itself
  * @property {string} itemId The item id
  * @property {RollData} rollData The roll data of the character
@@ -36,6 +36,7 @@
  * @property {Pl1eMeasuredTemplate[]} templates The templates of the action
  * @property {string[]} templatesIds The templates ids
  * @property {object} templatePosition The template position
+ * @property {boolean} noConfirmation The action does not need button confirmation
  */
 
 /**
