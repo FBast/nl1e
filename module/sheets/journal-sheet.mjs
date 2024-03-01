@@ -1,5 +1,4 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {PL1E} from "../pl1e.mjs";
 
 export class Pl1eJournalPageSheet extends JournalPageSheet {
 
@@ -8,12 +7,10 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
 
     /** @inheritdoc */
     static get defaultOptions() {
-        const options = foundry.utils.mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             dragDrop: [{dropSelector: ".drop-target"}],
             submitOnChange: true
         });
-        options.classes.push("class-journal");
-        return options;
     }
 
     /** @inheritDoc */
@@ -31,31 +28,21 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
         );
 
         if (context.system.temperature) {
-            // Translate temperature value from 1-9 scale to 5%-95% scale
-            context.system.temperaturePercentage = ((context.system.temperature - 1) / (9 - 1)) * (95 - 5) + 5;
+            // Translate temperature value from 1-9 scale to 1%-98% scale
+            context.temperaturePercentage = ((context.system.temperature - 1) / (9 - 1)) * (98 - 1) + 1;
         }
 
         if (context.system.humidity) {
             // Translate water level value from 1-9 scale to 10%-100% scale
-            context.system.humidityPercentage = ((context.system.humidity - 1) / (9 - 1)) * (100 - 10) + 10;
+            context.humidityPercentage = ((context.system.humidity - 1) / (9 - 1)) * (100 - 10) + 10;
         }
 
-        if (context.system.humidity) {
-            let humidityLevel = context.system.humidity;
-            let humidityHtml = '';
-
-            for (let i = 1; i <= 10; i++) {
-                if (i <= 3) {
-                    humidityHtml += i <= humidityLevel ? '<i class="fas fa-tint-slash"></i>' : '<i class="far fa-tint-slash"></i>';
-                } else if (i <= 7) {
-                    humidityHtml += i <= humidityLevel ? '<i class="fas fa-tint"></i>' : '<i class="far fa-tint"></i>';
-                } else {
-                    humidityHtml += i <= humidityLevel ? '<i class="fas fa-cloud-rain"></i>' : '<i class="far fa-cloud-rain"></i>';
-                }
-            }
-
-            context.humidityIcons = humidityHtml;
-        }
+        // Enriched HTML description
+        context.enriched = await TextEditor.enrichHTML(context.system.content, {
+            secrets: this.document.isOwner,
+            async: true,
+            relativeTo: this.document
+        });
 
         return context;
     }

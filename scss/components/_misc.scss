@@ -33,7 +33,7 @@
     overflow: hidden; /* Ensures nothing spills outside the container */
     margin-top: 5px; // Add top margin
     margin-bottom: 5px; // Add bottom margin
-    margin-right: 20px; // Add right margin
+    margin-right: 8%; // Add right margin
   }
 
   .temperature-bar-gradient {
@@ -52,12 +52,11 @@
             #ff0000 88%, /* hot: red */
             #8b0000 100%); /* extreme hot: dark red */
     position: absolute;
-    top: 0;
-    left: 0;
+    border: 1px solid #000000; /* Black border for visibility */
   }
 
   .temperature-bar-cursor {
-    width: 3px; /* Adjust cursor width as needed */
+    width: 5px; /* Adjust cursor width as needed */
     height: 100%;
     background-color: #000; /* Cursor color */
     position: absolute;
@@ -71,9 +70,9 @@
     height: 20px; /* Same height */
     position: relative;
     overflow: hidden; /* Ensures the fill doesn't spill outside */
-    margin-top: 5px; /* Consistent vertical spacing */
-    margin-bottom: 5px; /* Consistent vertical spacing */
-    margin-right: 20px; /* Consistent horizontal spacing */
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 8%;
   }
 
   .water-bar-fill {

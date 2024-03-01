@@ -37,10 +37,19 @@
     <div class="form-group">
         <label>{{localize "PL1E.Population"}}</label>
         <div class="form-fields">
-            <input type="range" name="system.population" min="1" max="9" value="{{system.population}}" oninput="this.nextElementSibling.value = this.value">
+            <input type="range" name="system.population" min="0" max="9" value="{{system.population}}" oninput="this.nextElementSibling.value = this.value">
             <output>{{system.population}}</output>
         </div>
         <p class="hint">{{localize "PL1E.DescriptionPopulation"}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "PL1E.Dangerosity"}}</label>
+        <div class="form-fields">
+            <input type="range" name="system.dangerosity" min="0" max="9" value="{{system.dangerosity}}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{system.dangerosity}}</output>
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionDangerosity"}}</p>
     </div>
 
     <div class="form-group">
@@ -59,14 +68,6 @@
             <output>{{system.humidity}}</output>
         </div>
         <p class="hint">{{localize "PL1E.DescriptionHumidity"}}</p>
-    </div>
-
-    <div class="form-group">
-        <label>{{localize "PL1E.Climate"}}</label>
-        <div class="form-fields">
-            <input type="text" name="system.climate" value="{{system.climate}}"/>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionClimate"}}</p>
     </div>
 
     <div class="form-group">
