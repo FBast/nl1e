@@ -8,6 +8,12 @@
                  height="150" width="150" style="border-style: none">
         {{/if}}
         <table>
+            {{#if (ne system.nickname "")}}
+                <tr>
+                    <td><strong>{{localize "PL1E.Nickname"}}</strong></td>
+                    <td><p>{{system.nickname}}</p></td>
+                </tr>
+            {{/if}}
             {{#if (ne system.race "")}}
                 <tr>
                     <td><strong>{{localize "PL1E.Race"}}</strong></td>

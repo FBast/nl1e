@@ -26,34 +26,38 @@
                     <td><p>{{system.culture}}</p></td>
                 </tr>
             {{/if}}
-            <tr>
-                <td><strong>{{localize "PL1E.Population"}}</strong></td>
-                <td>
-                    <p class="flexrow">
-                        {{#range 1 9}}
-                            {{#if (lte this ../system.population)}}
-                                <i class="fas fa-user"></i> <!-- Filled star -->
-                            {{else}}
-                                <i class="far fa-user"></i> <!-- Empty star -->
-                            {{/if}}
-                        {{/range}}
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>{{localize "PL1E.Power"}}</strong></td>
-                <td>
-                    <p class="flexrow">
-                        {{#range 1 9}}
-                            {{#if (lte this ../system.power)}}
-                                <i class="fas fa-star"></i> <!-- Filled star -->
-                            {{else}}
-                                <i class="far fa-star"></i> <!-- Empty star -->
-                            {{/if}}
-                        {{/range}}
-                    </p>
-                </td>
-            </tr>
+            {{#if (gt system.population 0)}}
+                <tr>
+                    <td><strong>{{localize "PL1E.Population"}}</strong></td>
+                    <td>
+                        <p class="flexrow">
+                            {{#range 1 9}}
+                                {{#if (lte this ../system.population)}}
+                                    <i class="fas fa-user"></i>
+                                {{else}}
+                                    <i class="far fa-user"></i>
+                                {{/if}}
+                            {{/range}}
+                        </p>
+                    </td>
+                </tr>
+            {{/if}}
+            {{#if (gt system.power 0)}}
+                <tr>
+                    <td><strong>{{localize "PL1E.Power"}}</strong></td>
+                    <td>
+                        <p class="flexrow">
+                            {{#range 1 9}}
+                                {{#if (lte this ../system.power)}}
+                                    <i class="fas fa-star"></i>
+                                {{else}}
+                                    <i class="far fa-star"></i>
+                                {{/if}}
+                            {{/range}}
+                        </p>
+                    </td>
+                </tr>
+            {{/if}}
         </table>
     </div>
     {{{enriched}}}

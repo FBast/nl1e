@@ -578,6 +578,7 @@
   "PL1E.Population": "Population",
   "PL1E.Humidity": "Humidity",
   "PL1E.StatusStunned": "Stunned",
+  "PL1E.Nickname": "Nickname",
   "PL1E.Temperature": "Temperature",
   "PL1E.Dangerosity": "Dangerosity",
   "PL1E.StatusTremorsense": "Tremorsense",
