@@ -580,7 +580,7 @@
   "PL1E.StatusStunned": "Stunned",
   "PL1E.Nickname": "Nickname",
   "PL1E.Temperature": "Temperature",
-  "PL1E.Dangerosity": "Dangerosity",
+  "PL1E.Dangerousness": "Dangerousness",
   "PL1E.StatusTremorsense": "Tremorsense",
   "PL1E.StatusUnconscious": "Unconscious",
   "PL1E.StatusUpgraded": "Upgraded",

@@ -533,11 +533,13 @@
     "types": ["location", "organization", "character"],
     "location": {
       "banner": "",
-      "type": "area",
-      "subType": "forest",
-      "ruin": false,
       "translation": "",
-      "climate": "",
+      "type": "area",
+      "culture": "",
+      "population": "",
+      "dangerousness": "",
+      "temperature": "",
+      "humidity": "",
       "content": ""
     },
     "organization": {
@@ -549,8 +551,9 @@
     },
     "character": {
       "portrait": "",
-      "race": "none",
-      "adjectives": "",
+      "nickname": "",
+      "race": "",
+      "attributes": "",
       "content": ""
     }
   }
