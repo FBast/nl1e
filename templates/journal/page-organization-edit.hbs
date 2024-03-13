@@ -35,6 +35,14 @@
     </div>
 
     <div class="form-group">
+        <label>{{localize "PL1E.Religion"}}</label>
+        <div class="form-fields">
+            <input type="text" name="system.religion" value="{{system.religion}}"/>
+        </div>
+        <p class="hint">{{localize "PL1E.DescriptionReligion"}}</p>
+    </div>
+
+    <div class="form-group">
         <label>{{localize "PL1E.Population"}}</label>
         <div class="form-fields">
             <input type="range" name="system.population" min="0" max="9" value="{{system.population}}" oninput="this.nextElementSibling.value = this.value">
