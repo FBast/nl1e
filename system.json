@@ -52,6 +52,15 @@
       "flags": {}
     },
     {
+      "name": "legacy-utility-macros",
+      "label": "Legacy Utility Macros",
+      "system": "pl1e",
+      "path": "packs/legacy-utility-macros.db",
+      "type": "Macro",
+      "private": true,
+      "flags": {}
+    },
+    {
       "name": "legacy-sequencer-macros",
       "label": "Legacy Sequencer Macros",
       "system": "pl1e",
