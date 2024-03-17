@@ -1,1 +1,5 @@
-2024/03/17-19:10:34.051 560 Delete type=3 #1
+2024/03/17-19:13:45.380 3fc Recovering log #3
+2024/03/17-19:13:45.380 3fc Level-0 table #5: started
+2024/03/17-19:13:45.381 3fc Level-0 table #5: 7724 bytes OK
+2024/03/17-19:13:45.384 3fc Delete type=0 #3
+2024/03/17-19:13:45.385 3fc Delete type=3 #2
