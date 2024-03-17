@@ -1,7 +1,7 @@
 {
   "id": "pl1e",
-  "title": "Pl1e",
-  "description": "The Pl1e system for FoundryVTT!",
+  "title": "Nl1e",
+  "description": "The Nl1e system for FoundryVTT!",
   "version": "0.8.0",
   "compatibility": {
     "minimum": 10,
@@ -115,9 +115,9 @@
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stamina",
   "tertiaryTokenAttribute": "mana",
-  "url": "https://github.com/FBast/pl1e/",
-  "manifest": "https://raw.githubusercontent.com/FBast/pl1e/main/system.json",
-  "download": "https://github.com/FBast/pl1e/archive/refs/tags/0.8.0.zip",
+  "url": "https://github.com/FBast/nl1e/",
+  "manifest": "https://raw.githubusercontent.com/FBast/nl1e/main/system.json",
+  "download": "https://github.com/FBast/nl1e/archive/refs/tags/0.8.0.zip",
   "license": "LICENSE.txt",
   "changelog": "CHANGELOG.md"
 }

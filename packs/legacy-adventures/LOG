@@ -1,28 +1,12 @@
-2024/03/15-20:03:13.726 5bc Recovering log #1761
-2024/03/15-20:03:13.730 5bc Level-0 table #1763: started
-2024/03/15-20:03:13.739 5bc Level-0 table #1763: 490005 bytes OK
-2024/03/15-20:03:13.743 5bc Delete type=0 #1761
-2024/03/15-20:03:13.744 5bc Delete type=3 #1760
-2024/03/15-23:01:17.807 3114 Compacting 3@0 + 1@1 files
-2024/03/15-23:01:17.819 3114 Generated table #1765@0: 2 keys, 490102 bytes
-2024/03/15-23:01:17.819 3114 Compacted 3@0 + 1@1 files => 490102 bytes
-2024/03/15-23:01:17.820 3114 compacted to: files[ 0 1 1 0 0 0 0 ]
-2024/03/15-23:01:17.820 3114 Delete type=2 #1753
-2024/03/15-23:01:17.820 3114 Delete type=2 #1755
-2024/03/15-23:01:17.820 3114 Delete type=2 #1758
-2024/03/15-23:01:17.821 3114 Delete type=2 #1763
-2024/03/15-23:01:18.702 3114 Level-0 table #1767: started
-2024/03/15-23:01:18.723 3114 Level-0 table #1767: 987548 bytes OK
-2024/03/15-23:01:18.724 3114 Delete type=0 #1764
-2024/03/15-23:02:00.255 3114 Level-0 table #1769: started
-2024/03/15-23:02:00.262 3114 Level-0 table #1769: 419741 bytes OK
-2024/03/15-23:02:00.263 3114 Delete type=0 #1766
-2024/03/15-23:02:00.263 3114 Manual compaction at level-0 from '!adventures!b3pxDTwa7eRY58T5' @ 72057594037927935 : 1 .. '!adventures!b3pxDTwa7eRY58T5' @ 0 : 0; will stop at '!adventures!b3pxDTwa7eRY58T5' @ 51 : 1
-2024/03/15-23:02:00.263 3114 Compacting 2@0 + 1@1 files
-2024/03/15-23:02:00.274 3114 Generated table #1770@0: 2 keys, 419838 bytes
-2024/03/15-23:02:00.274 3114 Compacted 2@0 + 1@1 files => 419838 bytes
-2024/03/15-23:02:00.275 3114 compacted to: files[ 0 1 1 0 0 0 0 ]
-2024/03/15-23:02:00.275 3114 Delete type=2 #1765
-2024/03/15-23:02:00.275 3114 Delete type=2 #1767
-2024/03/15-23:02:00.276 3114 Delete type=2 #1769
-2024/03/15-23:02:00.276 3114 Manual compaction at level-0 from '!adventures!b3pxDTwa7eRY58T5' @ 51 : 1 .. '!adventures!b3pxDTwa7eRY58T5' @ 0 : 0; will stop at (end)
+2024/03/17-14:28:24.294 2d34 Recovering log #1781
+2024/03/17-14:28:24.298 2d34 Delete type=0 #1781
+2024/03/17-14:28:24.298 2d34 Delete type=3 #1779
+2024/03/17-15:48:52.212 11ec Level-0 table #1786: started
+2024/03/17-15:48:52.225 11ec Level-0 table #1786: 1071371 bytes OK
+2024/03/17-15:48:52.227 11ec Delete type=0 #1784
+2024/03/17-15:49:13.651 11ec Level-0 table #1788: started
+2024/03/17-15:49:13.665 11ec Level-0 table #1788: 1263908 bytes OK
+2024/03/17-15:49:13.667 11ec Delete type=0 #1785
+2024/03/17-15:52:47.311 11ec Level-0 table #1790: started
+2024/03/17-15:52:47.343 11ec Level-0 table #1790: 1058634 bytes OK
+2024/03/17-15:52:47.344 11ec Delete type=0 #1787
