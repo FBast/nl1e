@@ -103,8 +103,6 @@ export class Pl1eActor extends Actor {
             }
         }
 
-        console.log(game.user.name);
-
         // Add effect based on conditions
         await Pl1eActiveEffect.toggleStatusEffect(this, "dead", this.isDead);
         await Pl1eActiveEffect.toggleStatusEffect(this, "unconscious", this.IsUnconscious);

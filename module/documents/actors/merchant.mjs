@@ -29,7 +29,7 @@ export class Pl1eMerchant extends Pl1eActor {
                 silver: item.system.attributes.silverPrice,
                 copper: item.system.attributes.copperPrice
             }
-            let value = Math.round(Pl1eHelpers.moneyToUnits(price) * (systemData.general.buyMultiplier / 100));
+            let value = Math.round(Pl1eHelpers.moneyToUnits(price) * (systemData.general.sellMultiplier / 100));
             systemData.merchantPrices[item._id] = Pl1eHelpers.unitsToMoney(value);
         }
     }

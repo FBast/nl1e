@@ -1,3 +1,8 @@
-2024/03/20-13:03:17.568 3b38 Recovering log #1069
-2024/03/20-13:03:17.571 3b38 Delete type=0 #1069
-2024/03/20-13:03:17.571 3b38 Delete type=3 #1068
+2024/03/26-14:36:44.358 cec Recovering log #1085
+2024/03/26-14:36:44.363 cec Delete type=0 #1085
+2024/03/26-14:36:44.363 cec Delete type=3 #1084
+2024/03/27-00:26:57.563 20fc Level-0 table #1089: started
+2024/03/27-00:26:57.563 20fc Level-0 table #1089: 0 bytes OK
+2024/03/27-00:26:57.564 20fc Delete type=0 #1087
+2024/03/27-00:26:57.574 20fc Manual compaction at level-0 from '!folders!4HtrtmBSzu5DWuHs' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
+2024/03/27-00:26:57.575 20fc Manual compaction at level-1 from '!folders!4HtrtmBSzu5DWuHs' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)

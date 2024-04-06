@@ -53,7 +53,7 @@ export class Pl1eTrade {
             silver: item.system.attributes.silverPrice,
             copper: item.system.attributes.copperPrice
         }
-        const priceUnits = Pl1eHelpers.moneyToUnits(price) * (buyerActor.system.general.sellMultiplier / 100);
+        const priceUnits = Pl1eHelpers.moneyToUnits(price) * (buyerActor.system.general.buyMultiplier / 100);
         const priceMoney = Pl1eHelpers.unitsToMoney(priceUnits);
         await sellerActor.update({
             ["system.money.gold"]: sellerActor.system.money.gold + priceMoney.gold,
@@ -73,7 +73,7 @@ export class Pl1eTrade {
         await sellerActor.removeItem(item);
 
         // Send message for historic
-        if (buyerActor.system.general.sellMultiplier === 0)
+        if (buyerActor.system.general.buyMultiplier === 0)
             await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "gift");
         else
             await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "sale", priceMoney);
@@ -112,7 +112,7 @@ export class Pl1eTrade {
         if (!sellerActor.system.general.unlimitedItems) await sellerActor.removeItem(item);
 
         // Send message for historic
-        if (!priceMoney || sellerActor.system.general.buyMultiplier === 0)
+        if (!priceMoney || sellerActor.system.general.sellMultiplier === 0)
             await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "take");
         else
             await Pl1eChat.tradeMessage(item, buyerActor, sellerActor, "purchase", priceMoney);

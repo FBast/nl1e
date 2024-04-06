@@ -642,14 +642,16 @@ export class Pl1eActorSheet extends ActorSheet {
      */
     async onRandomizeItemClick(event) {
         let addedItemsNumber = 0;
-        for (const refRollTable of this.actor.system.refRollTables) {
-            const rollTable = await Pl1eHelpers.getDocument("RollTable", refRollTable);
-            const defaultResults = await rollTable.roll();
-            for (const tableResult of defaultResults.results) {
-                const item = await Pl1eHelpers.getDocument("Item", tableResult.documentId);
-                if (item) {
-                    await this.actor.addItem(item);
-                    addedItemsNumber++;
+        for (let i = 0; i < this.actor.system.general.itemPerRoll; i++) {
+            for (const refRollTable of this.actor.system.refRollTables) {
+                const rollTable = await Pl1eHelpers.getDocument("RollTable", refRollTable);
+                const defaultResults = await rollTable.roll();
+                for (const tableResult of defaultResults.results) {
+                    const item = await Pl1eHelpers.getDocument("Item", tableResult.documentId);
+                    if (item) {
+                        await this.actor.addItem(item);
+                        addedItemsNumber++;
+                    }
                 }
             }
         }
