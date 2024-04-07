@@ -1,3 +1,5 @@
+import {PL1E} from "../pl1e.mjs";
+
 export class Pl1eCombat extends Combat {
 
     /** @inheritDoc */
@@ -14,6 +16,12 @@ export class Pl1eCombat extends Combat {
     async nextTurn() {
         /** @type {Combat} */
         const combat = await super.nextTurn();
+        const currentToken = canvas.tokens.get(combat.combatant.tokenId);
+
+        if (currentToken.isOwner) {
+            PL1E.socket.executeForEveryone("centerAndSelectToken", combat.combatant.tokenId);
+        }
+
         await this._applyContinuousEffects(combat.combatant.actor);
         await this._decreaseEffectsDuration(combat.combatant.actor);
 

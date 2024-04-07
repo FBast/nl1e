@@ -153,6 +153,9 @@ export default class Pl1eHooks {
         PL1E.socket.register("displayScrollingText", function (data) {
             Pl1eHelpers.displayScrollingText(data);
         });
+        PL1E.socket.register("centerAndSelectToken", async (tokenId) => {
+            await Pl1eHelpers.centerAndSelectToken(tokenId);
+        });
     }
 
     static dragRulerReady(SpeedProvider) {

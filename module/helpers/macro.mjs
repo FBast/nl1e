@@ -1,5 +1,4 @@
 import {Pl1eResting} from "../apps/resting.mjs";
-import {PL1E} from "../pl1e.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 
 export class Pl1eMacro {
@@ -42,7 +41,7 @@ export class Pl1eMacro {
 
         // Delete each dynamic macro found
         for (let macro of dynamicMacros) {
-            await macro.delete();
+            if (macro.owner) await macro.delete();
         }
     }
 

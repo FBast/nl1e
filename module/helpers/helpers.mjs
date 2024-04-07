@@ -386,6 +386,23 @@ export class Pl1eHelpers {
         canvas.interface.createScrollingText(data.position, data.text, options);
     }
 
+    static async centerAndSelectToken(tokenId) {
+        const token = canvas.tokens.get(tokenId);
+        if (!token) return;
+
+        // Pan camera on the token
+        await canvas.animatePan({
+            x: token.center.x,
+            y: token.center.y,
+            duration: 250
+        });
+
+        // Select token if owner
+        if (token.owner) {
+            token.control({releaseOthers: true});
+        }
+    }
+
     static _levelCaps(actor) {
         const classNumber = Math.max(actor.items.filter(item => item.type === "class").length, 1);
         const key = classNumber === 1 ? "monoClassLevelCaps" : "multiClassLevelCaps";
