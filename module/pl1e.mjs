@@ -114,3 +114,5 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => Pl1eHooks.dragRulerReady(SpeedP
 /* ------------------------------------ */
 
 Hooks.on("renderChatMessage", (app, html, data) => Pl1eHooks.renderChatMessage(app, html, data));
+Hooks.on("controlToken", async (token, isSelected) => Pl1eHooks.controlToken(token, isSelected));
+Hooks.on("getSceneControlButtons", (controls) => Pl1eHooks.getSceneControlButtons(controls));

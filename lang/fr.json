@@ -324,6 +324,7 @@
   "PL1E.Name": "Nom",
   "PL1E.Nature": "Nature",
   "PL1E.NatureBonus": "Bonus de Nature",
+  "PL1E.DynamicHotBar": "HotBar dynamique",
   "PL1E.NatureExplosion": "Explosion sur Nature",
   "PL1E.NatureImplosion": "Implosion sur Nature",
   "PL1E.Necklace": "Collier",

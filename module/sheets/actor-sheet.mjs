@@ -379,31 +379,28 @@ export class Pl1eActorSheet extends ActorSheet {
             return a.name.localeCompare(b.name);
         });
 
-        // Abilities sorting
-        const abilitiesOrder = Object.keys(PL1E.activations);
-        context.abilities = context.abilities.sort((a, b) => {
-            // Compare by level
-            if (a.system.attributes.level < b.system.attributes.level) return -1;
-            if (a.system.attributes.level > b.system.attributes.level) return 1;
+        // Group all items into a documents object
+        let documents = {
+            abilities: context.abilities,
+            features: context.features,
+            weapons: context.weapons,
+            wearables: context.wearables,
+            consumables: context.consumables,
+            commons: context.commons,
+            modules: context.modules
+        };
 
-            // Then Compare by activation using the abilities order
-            let activationComparison = abilitiesOrder.indexOf(a.system.attributes.activation)
-                - abilitiesOrder.indexOf(b.system.attributes.activation);
-            if (activationComparison !== 0) {
-                return activationComparison;
-            }
+        // Sort each type of item
+        documents = Pl1eHelpers.sortDocuments(documents);
 
-            // Then compare by name
-            return a.name.localeCompare(b.name);
-        });
-
-        // Others sorting
-        context.features = context.features.sort((a, b) => b.system.points - a.system.points);
-        context.weapons = context.weapons.sort((a, b) => a.name.localeCompare(b.name));
-        context.wearables = context.wearables.sort((a, b) => a.name.localeCompare(b.name));
-        context.consumables = context.consumables.sort((a, b) => a.name.localeCompare(b.name));
-        context.commons = context.commons.sort((a, b) => a.name.localeCompare(b.name));
-        context.modules = context.modules.sort((a, b) => a.name.localeCompare(b.name));
+        // Update the context with the sorted items
+        context.abilities = documents.abilities;
+        context.features = documents.features;
+        context.weapons = documents.weapons;
+        context.wearables = documents.wearables;
+        context.consumables = documents.consumables;
+        context.commons = documents.commons;
+        context.modules = documents.modules;
     }
 
     async _prepareItem(context, item, sourceIdFlags) {
@@ -701,26 +698,21 @@ export class Pl1eActorSheet extends ActorSheet {
         event.preventDefault();
         event.stopPropagation();
 
-        const itemLink = $(event.currentTarget).closest(".item").data("item-link-id");
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        const item = this.actor.items.get(itemId);
 
-        if (itemLink) {
-            const parentItem = this.actor.items.find(item => item.parentId === itemLink);
-            parentItem.sheet.render(true);
-        }
-        else {
-            const item = this.actor.items.get(itemId);
-
-            // Render multiple parent in case of child stack
-            let sheetPosition = Pl1eHelpers.screenCenter();
-            for (const otherItem of this.actor.items) {
-                const childId = otherItem.childId;
-                if (childId && otherItem.sourceId === item.sourceId) {
-                    const parentItem = this.actor.items.find(item => item.parentId === childId);
-                    parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
-                    sheetPosition.x += 30;
-                    sheetPosition.y += 30;
-                }
+        // Render multiple parent in case of child stack
+        let sheetPosition = Pl1eHelpers.screenCenter();
+        const renderedParentItemSourceIds = [];
+        for (const otherItem of this.actor.items) {
+            const childId = otherItem.childId;
+            if (childId && otherItem.sourceId === item.sourceId) {
+                const parentItem = this.actor.items.find(item => item.parentId === childId);
+                if (renderedParentItemSourceIds.includes(parentItem.sourceId)) continue;
+                parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
+                sheetPosition.x += 30;
+                sheetPosition.y += 30;
+                renderedParentItemSourceIds.push(parentItem.sourceId);
             }
         }
     }

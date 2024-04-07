@@ -1,4 +1,6 @@
 import {Pl1eResting} from "../apps/resting.mjs";
+import {PL1E} from "../pl1e.mjs";
+import {Pl1eHelpers} from "./helpers.mjs";
 
 export class Pl1eMacro {
 
@@ -31,12 +33,80 @@ export class Pl1eMacro {
         if (target) await target.activate();
     }
 
+    static async deleteAllDynamicMacros() {
+        // Retrieve all macros in the game
+        const allMacros = game.macros.contents;
+
+        // Filter to only include macros marked as dynamic
+        const dynamicMacros = allMacros.filter(macro => macro.getFlag('pl1e', 'isDynamic'));
+
+        // Delete each dynamic macro found
+        for (let macro of dynamicMacros) {
+            await macro.delete();
+        }
+    }
+
+    /**
+     * Generate macros for items for a given token based on a filtering function,
+     * ignoring items with commands already in the hotbar.
+     * Items are sorted by level and then by name.
+     * @param {Token} token - The token for which to generate item macros
+     * @return {Promise<void>}
+     */
+    static async generateTokenMacros(token) {
+        let slot = 1; // Start assigning macros from slot 1
+
+        // Filter items based on the provided filter function
+        let abilities = token.actor.items.filter(item => item.type === "ability"
+            && item.system.attributes.activation !== "passive" && item.isEnabled);
+
+        // Process and categorize items
+        let filteredAbilities = [];
+        const sourceIdFlags = [];
+        for (const ability of abilities) {
+            if (sourceIdFlags.includes(ability.sourceId)) continue;
+            filteredAbilities.push(ability);
+            sourceIdFlags.push(ability.sourceId);
+        }
+
+        // Group all items into a documents object
+        let documents = {
+            abilities: filteredAbilities,
+        };
+
+        // Sort each type of item
+        abilities = Pl1eHelpers.sortDocuments(documents).abilities;
+
+        for (let item of abilities) {
+            // Create dropData structure for each filtered item
+            const dropData = {
+                type: "Item",
+                data: item,
+                id: item.id
+            };
+
+            // Proceed to create and assign the macro for this item
+            await Pl1eMacro.createMacro(dropData, slot, {
+                "pl1e.isDynamic": true
+            });
+
+            // Increment slot for the next item/macro, consider logic for slot management here
+            slot++;
+        }
+
+        // Clear other slots
+        for (let i = slot; i <= 50; i++) {
+            await game.user.assignHotbarMacro(null, i);
+        }
+    }
+
     /**
      * Attempt to create a macro.mjs from the dropped data. Will use an existing macro.mjs if one exists.
      * @param {object} dropData     The dropped data
      * @param {number} slot         The hotbar slot to use
+     * @param flags
      */
-    static async createMacro(dropData, slot) {
+    static async createMacro(dropData, slot, flags = {}) {
         const macroData = {type: "script", scope: "actor"};
         if (dropData.type !== "Item") return;
         const itemData = await Item.implementation.fromDropData(dropData);
@@ -45,15 +115,13 @@ export class Pl1eMacro {
             name: itemData.name,
             img: itemData.img,
             command: `game.pl1e.Pl1eMacro.activateItem("${itemData.name}")`,
-            flags: {"pl1e.itemMacro": true}
+            flags: flags
         });
 
         // Assign the macro.mjs to the hotbar
         const macro = game.macros.find(m => (m.name === macroData.name) && (m.command === macroData.command)
-            && m.author.isSelf) || await Macro.create(macroData);
+            && m.author === game.user) || await Macro.create(macroData);
         await game.user.assignHotbarMacro(macro, slot);
-
-        return false;
     }
 
     /**

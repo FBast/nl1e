@@ -392,4 +392,41 @@ export class Pl1eHelpers {
         return game.settings.get("pl1e", key).split(',').map(x => parseInt(x.trim()));
     }
 
+    static sortDocuments(documents) {
+        // Define an object containing specific sorting functions for each type of document
+        const sortFunctions = {
+            abilities: (a, b) => {
+                const abilitiesOrder = Object.keys(PL1E.activations);
+                // Compare by level
+                if (a.system.attributes.level < b.system.attributes.level) return -1;
+                if (a.system.attributes.level > b.system.attributes.level) return 1;
+
+                // Then Compare by activation using the abilities order
+                let activationComparison = abilitiesOrder.indexOf(a.system.attributes.activation)
+                    - abilitiesOrder.indexOf(b.system.attributes.activation);
+                if (activationComparison !== 0) {
+                    return activationComparison;
+                }
+
+                // Then compare by name
+                return a.name.localeCompare(b.name);
+            },
+            features: (a, b) => b.system.points - a.system.points,
+            weapons: (a, b) => a.name.localeCompare(b.name),
+            wearables: (a, b) => a.name.localeCompare(b.name),
+            consumables: (a, b) => a.name.localeCompare(b.name),
+            commons: (a, b) => a.name.localeCompare(b.name),
+            modules: (a, b) => a.name.localeCompare(b.name)
+        };
+
+        // Iterate over each key in documents and apply the corresponding sorting function
+        Object.entries(documents).forEach(([type, items]) => {
+            if (sortFunctions[type]) {
+                documents[type] = items.sort(sortFunctions[type]);
+            }
+        });
+
+        return documents;
+    }
+
 }
