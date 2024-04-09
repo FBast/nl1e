@@ -1,5 +1,14 @@
-2024/04/09-18:30:37.796 513c Recovering log #2323
-2024/04/09-18:30:37.796 513c Level-0 table #2325: started
-2024/04/09-18:30:37.798 513c Level-0 table #2325: 2890 bytes OK
-2024/04/09-18:30:37.801 513c Delete type=0 #2323
-2024/04/09-18:30:37.801 513c Delete type=3 #2322
+2024/04/09-23:00:06.058 5d48 Recovering log #2334
+2024/04/09-23:00:06.062 5d48 Delete type=0 #2334
+2024/04/09-23:00:06.062 5d48 Delete type=3 #2332
+2024/04/10-00:15:12.094 5460 Level-0 table #2339: started
+2024/04/10-00:15:12.095 5460 Level-0 table #2339: 17442 bytes OK
+2024/04/10-00:15:12.097 5460 Delete type=0 #2337
+2024/04/10-00:15:12.098 5460 Manual compaction at level-0 from '!folders!0Gvc5INZc66WbQxC' @ 72057594037927935 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at '!items!OgfWom3JyNOfi6aQ' @ 17778 : 1
+2024/04/10-00:15:12.099 5460 Compacting 1@0 + 1@1 files
+2024/04/10-00:15:12.106 5460 Generated table #2340@0: 437 keys, 357268 bytes
+2024/04/10-00:15:12.106 5460 Compacted 1@0 + 1@1 files => 357268 bytes
+2024/04/10-00:15:12.107 5460 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/04/10-00:15:12.108 5460 Delete type=2 #2331
+2024/04/10-00:15:12.108 5460 Delete type=2 #2339
+2024/04/10-00:15:12.126 5460 Manual compaction at level-0 from '!items!OgfWom3JyNOfi6aQ' @ 17778 : 1 .. '!items!zxMCJqR8ktLLgjWt' @ 0 : 0; will stop at (end)
