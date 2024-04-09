@@ -201,12 +201,12 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         this.document.updateSource({x: templateCenter.x + offset, y: templateCenter.y + offset});
         this.refresh();
 
-        // Target tokens
-        const targets = Pl1eMeasuredTemplate.getTemplateTargets(this.document);
-        for (const token of canvas.tokens.placeables) {
-            // Target the current token and group with others
-            token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
-        }
+        // // Target tokens
+        // const targets = Pl1eMeasuredTemplate.getTemplateTargets(this.document);
+        // for (const token of canvas.tokens.placeables) {
+        //     // Target the current token and group with others
+        //     token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
+        // }
         this.#moveTime = now;
     }
 
@@ -244,12 +244,12 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         this.document.updateSource(update);
         this.refresh();
 
-        // Target tokens
-        const targets = Pl1eMeasuredTemplate.getTemplateTargets(this.document);
-        for (const token of canvas.tokens.placeables) {
-            // Target the current token and group with others
-            token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
-        }
+        // // Target tokens
+        // const targets = Pl1eMeasuredTemplate.getTemplateTargets(this.document);
+        // for (const token of canvas.tokens.placeables) {
+        //     // Target the current token and group with others
+        //     token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
+        // }
     }
 
     /**
@@ -311,14 +311,6 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
 
                 // Check if target position in template
                 if (tokenDocument.x === gridPosition.x && tokenDocument.y === gridPosition.y) {
-                    // // Filter non valid targets
-                    // if (!targetGroups.includes("targets")) {
-                    //     if (!targetGroups.includes("allies") && !targetGroups.includes("alliesAndSelf")
-                    //         && tokenDocument.disposition === actionData.token.disposition) continue;
-                    //     if (!targetGroups.includes("opponents") && !targetGroups.includes("opponentsAndSelf")
-                    //         && tokenDocument.disposition !== actionData.token.disposition) continue;
-                    // }
-
                     // Add to targets array
                     targets.push(tokenDocument);
                 }

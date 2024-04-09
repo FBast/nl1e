@@ -610,12 +610,15 @@ export class Pl1eItem extends Item {
                 // Minimize the actor sheet to facilitate templates creation
                 await characterData.actor.sheet?.minimize();
 
+                // Save the currently selected tokens
+                const selectedTokens = canvas.tokens.controlled;
+
                 // Create templates
                 for (let i = 0; i < characterData.attributes.areaNumber; i++) {
                     const templatePreview = await Pl1eMeasuredTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
                     const template = await templatePreview?.drawPreview();
 
-                    // If we have no template then break
+                    // If we have no template, then break
                     if (!template) break;
 
                     // Need the special position in some cases
@@ -624,6 +627,9 @@ export class Pl1eItem extends Item {
                     characterData.templates.push(template);
                     characterData.templatesIds.push(template.id);
                 }
+
+                // Restore the selection of the user
+                selectedTokens.forEach(token => token.control({ releaseOthers: false }));
 
                 // Maximize the actor sheet
                 await characterData.actor.sheet?.maximize();
