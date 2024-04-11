@@ -54,11 +54,15 @@ export class Pl1eActor extends Actor {
 
         // Some tweak on actors prototypeToken
         docData.prototypeToken = docData.prototypeToken || {};
+
+        // Dispositions constants
         const dispositions = {
             "character": 1,
             "npc": -1,
             "merchant": 0
         }
+
+        // Merging all data
         foundry.utils.mergeObject(
             docData.prototypeToken,
             {

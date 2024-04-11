@@ -4,24 +4,8 @@ import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 export class Pl1eAbility extends Pl1eItem {
 
     /** @inheritDoc */
-    async _preActivate(characterData) {
-        // Get linked attributes
-        return await this._linkItem(characterData);
-    }
-
-    /** @inheritDoc */
-    async _postActivate(characterData) {
-        // If a linked item has no usage limit then reset it's removedUses
-        if (characterData.linkedItem && characterData.linkedItem.system.attributes.uses === 0) {
-            await characterData.linkedItem.update({
-                "system.removedUses": 0
-            })
-        }
-    }
-
-    /** @inheritDoc */
-    _canActivate(characterData) {
-        if (!super._canActivate(characterData)) return false;
+    async _canActivate(characterData) {
+        if (!await super._canActivate(characterData)) return false;
         const itemAttributes = characterData.attributes;
 
         if (this._getLinkableItems(characterData).length === 0) {
@@ -40,15 +24,7 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.info(game.i18n.localize("PL1E.NotEnoughMana"));
             return false;
         }
-        return true;
-    }
 
-    /**
-     * Add item attributes and dynamic attributes if ability link defined
-     * @return {Promise<boolean>}
-     * @private
-     */
-    async _linkItem(characterData) {
         // Get weapons using the same mastery
         const relatedItems = this._getLinkableItems(characterData);
         if (relatedItems.length === 0) {
@@ -61,9 +37,14 @@ export class Pl1eAbility extends Pl1eItem {
         else {
             characterData.linkedItem = await this._itemsDialog(relatedItems);
             if (characterData.linkedItem === null) return false;
+            characterData.linkedItemId = characterData.linkedItem.id;
         }
 
-        // Assuming characterData is already defined
+        return true;
+    }
+
+    /** @inheritDoc */
+    async _linkItem(characterData) {
         const attributes = characterData.attributes;
         const linkedItemAttributes = characterData.linkedItem.system.attributes;
 
@@ -97,7 +78,6 @@ export class Pl1eAbility extends Pl1eItem {
         if (attributes.launchParentActiveAspects) {
             Pl1eHelpers.mergeDeep(characterData.activeAspects, await characterData.linkedItem.getCombinedActiveAspects());
         }
-        return true;
     }
 
     /**
@@ -166,7 +146,7 @@ export class Pl1eAbility extends Pl1eItem {
                 && !parentItem.system.attributes.magicUse) continue;
             // Parent usages are not enough
             if (parentItem.system.attributes.uses !== undefined && parentItem.system.attributes.uses > 0 && parentItem.system.removedUses !== undefined
-                && characterData.attributes.usageCost >= parentItem.system.attributes.uses - parentItem.system.removedUses) continue;
+                && characterData.attributes.usageCost > parentItem.system.attributes.uses - parentItem.system.removedUses) continue;
             // The parent is a valid linkable item
             relatedItems.push(parentItem);
         }

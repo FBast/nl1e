@@ -69,6 +69,8 @@ export default class Pl1eHooks {
     }
 
     static async controlToken(token, isSelected) {
+        if (!token.actor) return;
+
         const dynamicHotbar = game.user.getFlag('pl1e', 'dynamicHotBar');
         if (dynamicHotbar && isSelected && token.actor.isOwner) {
             // Delete previous dynamic macros

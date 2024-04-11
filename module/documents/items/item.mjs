@@ -571,24 +571,19 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Override method before activation launched (returning false prevent activation)
-     * @param characterData
-     * @return {Promise<boolean>}
-     * @protected
-     */
-    async _preActivate(characterData) {
-        return true;
-    }
-
-    /**
      * Activate the item (ability or consumable)
-     * @returns {Promise<boolean>}
      */
     async activate() {
         // Preparation of characterData
         const characterData = await this._getCharacterData();
-        if (!this._canActivate(characterData)) return false;
-        if (!await this._preActivate(characterData)) return false;
+
+        // Activation validation
+        if (!await this._canActivate(characterData)) return false;
+
+        // Linking item
+        if (characterData.linkedItem) {
+            await this._linkItem(characterData);
+        }
 
         // Character rollData if exist
         if (characterData.attributes.roll.length > 0) {
@@ -603,11 +598,11 @@ export class Pl1eItem extends Item {
         characterData.attributes = await this._calculateAttributes(characterData);
 
         let chatMessage = null;
-        // If we have a token then we can process further and apply the effects
+        // If we have a token, then we can process further and apply the effects
         if (characterData.token) {
-            // If shape is target and range equal to 0 then self effect don't need template
+            // If shape is target and range equal to 0, then self-effect doesn't need a template
             if (characterData.attributes.areaShape !== "none" || characterData.attributes.range !== 0) {
-                // Minimize the actor sheet to facilitate templates creation
+                // Minimize the actor sheet to facilitate template creation
                 await characterData.actor.sheet?.minimize();
 
                 // Save the currently selected tokens
@@ -621,7 +616,7 @@ export class Pl1eItem extends Item {
                     // If we have no template, then break
                     if (!template) break;
 
-                    // Need the special position in some cases
+                    // Need a special position in some cases
                     template.specialPosition = Pl1eMeasuredTemplate.getSpecialPosition(template);
 
                     characterData.templates.push(template);
@@ -635,7 +630,7 @@ export class Pl1eItem extends Item {
                 await characterData.actor.sheet?.maximize();
 
                 // Abort if no templates defined
-                if (characterData.templates.length === 0) return false;
+                if (characterData.templates.length === 0) return;
             }
 
             // Find activationMacro (pass for activation)
@@ -658,7 +653,7 @@ export class Pl1eItem extends Item {
             // Add the data to the message
             await chatMessage.setFlag("pl1e", "characterData", Pl1eHelpers.stringifyWithCircular(characterData));
 
-            // If the roll is a total failure then resolve immediately
+            // If the roll is a total failure, then resolve immediately
             if (characterData.result === 0) {
                 await this.resolve(characterData, {
                     action: "launch"
@@ -684,20 +679,25 @@ export class Pl1eItem extends Item {
         // Else we need a token to proceed
         else {
             ui.notifications.info(game.i18n.localize("PL1E.NeedAToken"));
-            return false;
+            return;
         }
 
-        await this._postActivate(characterData);
-        return true;
+        //TODO This is a hack to prevent item with no uses to have removed uses
+        // If the linked item has no usage limit, then reset it's removedUses
+        if (characterData.linkedItem && characterData.linkedItem.system.attributes.uses === 0) {
+            await characterData.linkedItem.update({
+                "system.removedUses": 0
+            })
+        }
     }
 
     /**
      * Check if the item activation is valid
      * @param {CharacterData} characterData
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      * @protected
      */
-    _canActivate(characterData) {
+    async _canActivate(characterData) {
         const { attributes: itemAttributes, token, actor } = characterData;
         const inCombat = token && token.inCombat;
         const isCurrentTurn = game.combat && game.combat.current.tokenId === characterData.tokenId;
@@ -738,9 +738,15 @@ export class Pl1eItem extends Item {
             }
         }
 
-        // Passed all checks
         return true;
     }
+
+    /**
+     * Override method to link item
+     * @param characterData
+     * @protected
+     */
+    async _linkItem(characterData) {}
 
     /**
      * Calculate the attributes (also filter before display)
@@ -821,14 +827,6 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Override method after activation launched
-     * @param characterData
-     * @return {Promise<void>}
-     * @protected
-     */
-    async _postActivate(characterData) {}
-
-    /**
      * Resolve the item effect with an action (ability or consumable)
      * @param {CharacterData} characterData
      * @param options
@@ -858,6 +856,17 @@ export class Pl1eItem extends Item {
         // Release all targets
         for (let token of game.user.targets) {
             token.setTarget(false, {user: game.user, releaseOthers: false, groupSelection: false});
+        }
+
+        // Update for linked item
+        if (characterData.linkedItem) {
+            const linkedItemUses = characterData.linkedItem.system.attributes.uses;
+
+            // If the linked item has no more uses and is not reloadable, then delete it
+            if (linkedItemUses > 0 && characterData.linkedItem.system.removedUses >= linkedItemUses &&
+                !characterData.linkedItem.system.attributes.isReloadable) {
+                await this.actor.removeItem(characterData.linkedItem);
+            }
         }
     }
 

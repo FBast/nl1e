@@ -33,128 +33,183 @@
             <input type="checkbox" name="system.attributes.isReloadable" {{checked system.attributes.isReloadable}} data-dtype="Boolean"/>
         </div>
         <div class="form-group">
-            <label>{{localize "PL1E.OutCombatOnly"}}</label>
-            <input type="checkbox" name="system.attributes.outCombatOnly" {{checked system.attributes.outCombatOnly}} data-dtype="Boolean"/>
+            <label>{{localize "PL1E.MeleeUse"}}</label>
+            <input type="checkbox" name="system.attributes.meleeUse" {{checked system.attributes.meleeUse}} data-dtype="Boolean"/>
         </div>
-        {{#unless system.attributes.outCombatOnly}}
-            <hr>
-            <div class="form-group">
-                <label>{{localize "PL1E.Activation"}}</label>
-                <select name="system.attributes.activation">
-                    {{customSelectOptions (config "activations") selected=system.attributes.activation localize=true}}
-                </select>
-            </div>
-            {{#if (eq system.attributes.activation "action")}}
-                <div class="form-group">
-                    <label>{{localize "PL1E.ActionCost"}}</label>
-                    <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
-                </div>
-            {{else if (eq system.attributes.activation "reaction")}}
-                <div class="form-group">
-                    <label>{{localize "PL1E.ReactionCost"}}</label>
-                    <input type="number" name="system.attributes.reactionCost" value="1" data-dtype="Number" disabled/>
-                </div>
-            {{/if}}
-        {{/unless}}
-        <hr>
         <div class="form-group">
-            <label>{{localize "PL1E.Roll"}}</label>
-            <select name="system.attributes.roll">
-                {{customSelectOptions (config "abilitySkills") selected=system.attributes.roll localize=true}}
-            </select>
+            <label>{{localize "PL1E.RangedUse"}}</label>
+            <input type="checkbox" name="system.attributes.rangedUse" {{checked system.attributes.rangedUse}} data-dtype="Boolean"/>
         </div>
-        {{#unless system.attributes.outCombatOnly}}
-            {{#if (ne (length system.attributes.roll) 0)}}
+        <div class="form-group">
+            <label>{{localize "PL1E.MagicUse"}}</label>
+            <input type="checkbox" name="system.attributes.magicUse" {{checked system.attributes.magicUse}} data-dtype="Boolean"/>
+        </div>
+    </fieldset>
+    {{#if system.attributes.meleeUse}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.Melee"}}</legend>
+            <div class="form-group">
+                <label>{{localize "PL1E.Reach"}}</label>
+                <input type="number" name="system.attributes.reach" value="{{system.attributes.reach}}" data-dtype="Number"/>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MeleeRoll"}}</label>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.meleeRoll}}
+                            <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.MeleeRoll" data-key-path="attributes.meleeRoll"
+                       data-tooltip="{{localize 'PL1E.MeleeRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+            {{#if (gt system.attributes.meleeRoll.length 0)}}
                 <div class="form-group">
-                    <label>{{localize "PL1E.OppositeRoll"}}</label>
+                    <label>{{localize "PL1E.MeleeOppositeRoll"}}</label>
                     <div class="form-fields">
                         <ul>
-                            {{#each system.attributes.oppositeRoll}}
+                            {{#each system.attributes.meleeOppositeRoll}}
                                 <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                             {{/each}}
                         </ul>
-                        <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll"
-                           data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
+                        <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.MeleeOppositeRoll" data-key-path="attributes.meleeOppositeRoll"
+                           data-tooltip="{{localize 'PL1E.MeleeOppositeRollConfig'}}">
                             <i class="fas fa-edit"></i>
                         </a>
                     </div>
                 </div>
             {{/if}}
             <div class="form-group">
-                <label>{{localize "PL1E.AreaShape"}}</label>
-                <select name="system.attributes.areaShape">
-                    {{customSelectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
+                <label>{{localize "PL1E.MeleeActivationMacro"}}</label>
+                <select name="system.attributes.meleeActivationMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleeActivationMacro localize=true}}
                 </select>
             </div>
-            {{#if (ne system.attributes.areaShape "none")}}
-                <div class="form-group">
-                    <label>{{localize "PL1E.Range"}}</label>
-                    <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
-                </div>
-                <div class="form-group">
-                    <label>{{localize "PL1E.AreaNumber"}}</label>
-                    <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
-                </div>
-                {{#if (eq system.attributes.areaShape "circle")}}
-                    <div class="form-group">
-                        <label>{{localize "PL1E.CircleRadius"}}</label>
-                        <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
-                    </div>
-                {{else if (eq system.attributes.areaShape "cone")}}
-                    <div class="form-group">
-                        <label>{{localize "PL1E.ConeLength"}}</label>
-                        <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
-                    </div>
-                    <div class="form-group">
-                        <label>{{localize "PL1E.ConeAngle"}}</label>
-                        <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
-                    </div>
-                {{else if (eq system.attributes.areaShape "ray")}}
-                    <div class="form-group">
-                        <label>{{localize "PL1E.RayLength"}}</label>
-                        <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
-                    </div>
-                {{/if}}
-            {{/if}}
-            <hr>
             <div class="form-group">
-                <label>{{localize "PL1E.CustomMacros"}}</label>
-                <input type="checkbox" name="system.attributes.customMacro" {{checked system.attributes.customMacro}} data-dtype="Boolean"/>
+                <label>{{localize "PL1E.MeleePreLaunchMacro"}}</label>
+                <select name="system.attributes.meleePreLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleePreLaunchMacro localize=true}}
+                </select>
             </div>
-            {{#if system.attributes.customMacro}}
-                <div class="form-group">
-                    <label>{{localize "PL1E.ActivationMacro"}}</label>
-                    <input type="text" name="system.attributes.activationMacro" value="{{system.attributes.activationMacro}}" data-dtype="String"/>
+            <div class="form-group">
+                <label>{{localize "PL1E.MeleePostLaunchMacro"}}</label>
+                <select name="system.attributes.meleePostLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleePostLaunchMacro localize=true}}
+                </select>
+            </div>
+        </fieldset>
+    {{/if}}
+    {{#if system.attributes.rangedUse}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.Ranged"}}</legend>
+            <div class="form-group">
+                <label>{{localize "PL1E.Range"}}</label>
+                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.RangeRoll"}}</label>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.rangeRoll}}
+                            <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.RangeRoll" data-key-path="attributes.rangeRoll"
+                       data-tooltip="{{localize 'PL1E.RangeRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
                 </div>
+            </div>
+            {{#if (gt system.attributes.rangeRoll.length 0)}}
                 <div class="form-group">
-                    <label>{{localize "PL1E.PreLaunchMacro"}}</label>
-                    <input type="text" name="system.attributes.preLaunchMacro" value="{{system.attributes.preLaunchMacro}}" data-dtype="String"/>
-                </div>
-                <div class="form-group">
-                    <label>{{localize "PL1E.PostLaunchMacro"}}</label>
-                    <input type="text" name="system.attributes.postLaunchMacro" value="{{system.attributes.postLaunchMacro}}" data-dtype="String"/>
-                </div>
-            {{else}}
-                <div class="form-group">
-                    <label>{{localize "PL1E.ActivationMacro"}}</label>
-                    <select name="system.attributes.activationMacro">
-                        {{customSelectOptions (config "sequencerMacros") selected=system.attributes.activationMacro localize=true}}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>{{localize "PL1E.PreLaunchMacro"}}</label>
-                    <select name="system.attributes.preLaunchMacro">
-                        {{customSelectOptions (config "sequencerMacros") selected=system.attributes.preLaunchMacro localize=true}}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>{{localize "PL1E.PostLaunchMacro"}}</label>
-                    <select name="system.attributes.postLaunchMacro">
-                        {{customSelectOptions (config "sequencerMacros") selected=system.attributes.postLaunchMacro localize=true}}
-                    </select>
+                    <label>{{localize "PL1E.RangeOppositeRoll"}}</label>
+                    <div class="form-fields">
+                        <ul>
+                            {{#each system.attributes.rangeOppositeRoll}}
+                                <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                            {{/each}}
+                        </ul>
+                        <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.RangeOppositeRoll" data-key-path="attributes.rangeOppositeRoll"
+                           data-tooltip="{{localize 'PL1E.RangeOppositeRollConfig'}}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
                 </div>
             {{/if}}
-        {{/unless}}
-    </fieldset>
-    {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
+            <div class="form-group">
+                <label>{{localize "PL1E.RangeActivationMacro"}}</label>
+                <select name="system.attributes.rangeActivationMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangeActivationMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.RangePreLaunchMacro"}}</label>
+                <select name="system.attributes.rangePreLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangePreLaunchMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.RangePostLaunchMacro"}}</label>
+                <select name="system.attributes.rangePostLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangePostLaunchMacro localize=true}}
+                </select>
+            </div>
+        </fieldset>
+    {{/if}}
+    {{#if system.attributes.magicUse}}
+        <fieldset>
+            <legend class="section-header">{{localize "PL1E.Magic"}}</legend>
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicRoll"}}</label>
+                <div class="form-fields">
+                    <ul>
+                        {{#each system.attributes.magicRoll}}
+                            <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                        {{/each}}
+                    </ul>
+                    <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilitySkills" data-trait-label="PL1E.MagicRoll" data-key-path="attributes.magicRoll"
+                       data-tooltip="{{localize 'PL1E.MagicRollConfig'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+            {{#if (gt system.attributes.magicRoll.length 0)}}
+                <div class="form-group">
+                    <label>{{localize "PL1E.MagicOppositeRoll"}}</label>
+                    <div class="form-fields">
+                        <ul>
+                            {{#each system.attributes.magicOppositeRoll}}
+                                <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                            {{/each}}
+                        </ul>
+                        <a style="flex: 0;" class="trait-selector flexshrink" data-trait="abilityResistances" data-trait-label="PL1E.MagicOppositeRoll" data-key-path="attributes.magicOppositeRoll"
+                           data-tooltip="{{localize 'PL1E.MagicOppositeRollConfig'}}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+            {{/if}}
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicActivationMacro"}}</label>
+                <select name="system.attributes.magicActivationMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicActivationMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicPreLaunchMacro"}}</label>
+                <select name="system.attributes.magicPreLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPreLaunchMacro localize=true}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>{{localize "PL1E.MagicPostLaunchMacro"}}</label>
+                <select name="system.attributes.magicPostLaunchMacro">
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPostLaunchMacro localize=true}}
+                </select>
+            </div>
+        </fieldset>
+    {{/if}}
 </section>

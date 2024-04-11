@@ -500,18 +500,17 @@
       "attributes": {
         "activation": "action",
         "isReloadable": false,
-        "outCombatOnly": false,
-        "actionCost": 0,
-        "reactionCost": 0,
-        "roll": "none",
-        "oppositeRoll": [],
-        "areaShape": "circle",
+        "meleeUse": false,
+        "reach": 0,
+        "meleeRoll": [],
+        "meleeOppositeRoll": [],
+        "rangedUse": false,
         "range": 0,
-        "areaNumber": 1,
-        "circleRadius": 1,
-        "coneLength": 1,
-        "coneAngle": 40,
-        "rayLength": 1
+        "rangeRoll": [],
+        "rangeOppositeRoll": [],
+        "magicUse": false,
+        "magicRoll": [],
+        "magicOppositeRoll": []
       }
     },
     "common": {

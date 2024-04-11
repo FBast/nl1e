@@ -60,7 +60,7 @@ export function getConfigItems() {
         },
         "consumable": {
             "label": "PL1E.Consumable",
-            "droppable": [],
+            "droppable": ["ability"],
             "localDroppable": [],
             "stackable": [],
             "behaviors": ["regular"]
