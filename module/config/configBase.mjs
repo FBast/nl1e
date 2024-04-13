@@ -38,7 +38,7 @@ export function getConfigBase() {
         "necklace": "PL1E.Necklace"
     }
 
-    PL1E.abilityActivations = {
+    PL1E.activations = {
         "passive": "PL1E.Passive",
         "action": "PL1E.Action",
         "quickAction": "PL1E.QuickAction",

@@ -63,14 +63,14 @@ export class Pl1eWeapon extends Pl1eItem {
             });
         }
         else if (options.main) {
-            // Switch hand case
+            // Switch a hand case
             if (!this.system.isEquippedMain && this.system.isEquippedSecondary) {
                 await this.update({"system.isEquippedSecondary": false});
             }
             await this.update({"system.isEquippedMain": !this.system.isEquippedMain})
         }
         else {
-            // Switch hand case
+            // Switch a hand case
             if (!this.system.isEquippedSecondary && this.system.isEquippedMain) {
                 await this.update({["system.isEquippedMain"]: false});
             }
@@ -83,30 +83,30 @@ export class Pl1eWeapon extends Pl1eItem {
             if (otherItem.type !== 'weapon') continue;
             // Ignore if otherItem is this
             if (otherItem === this) continue;
-            // If other item is equipped on main and this item is equipped on main
+            // If the other item is equipped on main and this item is equipped on main
             if (otherItem.system.isEquippedMain && this.system.isEquippedMain) {
-                // If other item is equipped on two hands
+                // If the other item is equipped on two hands
                 if (otherItem.system.attributes.hands === 2) {
                     await otherItem.update({
                         "system.isEquippedMain": false,
                         "system.isEquippedSecondary": false
                     });
                 }
-                // Else other item only equip main hand
+                // Else the other item only equip the main hand
                 else {
                     await otherItem.update({"system.isEquippedMain": false});
                 }
             }
-            // If other item is equipped on secondary and this item is equipped on secondary
+            // If the other item is equipped on secondary and this item is equipped on secondary
             if (otherItem.system.isEquippedSecondary && this.system.isEquippedSecondary) {
-                // If other item is equipped on two hands
+                // If the other item is equipped on two hands
                 if (otherItem.system.attributes.hands === 2) {
                     await otherItem.update({
                         "system.isEquippedMain": false,
                         "system.isEquippedSecondary": false
                     });
                 }
-                // Else other item only equip secondary hand
+                // Else the other item only equip secondary hand
                 else {
                     await otherItem.update({"system.isEquippedSecondary": false});
                 }

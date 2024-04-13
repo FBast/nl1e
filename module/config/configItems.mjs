@@ -313,7 +313,7 @@ export function getConfigItems() {
         "usageCost": {
             "label": "PL1E.UsageCost",
             "type": "number",
-            "document": "linkedItem",
+            "document": "item",
             "dataGroup": "itemBase",
             "data": "removedUses",
             "invertSign": false,

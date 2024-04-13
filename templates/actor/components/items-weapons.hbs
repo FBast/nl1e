@@ -36,9 +36,19 @@
                         </i>
                     {{/if}}
                     {{#if (gt system.attributes.uses 0)}}
-                        <i class="item-info far fa-tally hover-green" data-tooltip="{{localize "PL1E.Uses"}}">
-                            <label>{{minus system.attributes.uses system.removedUses}}</label>
-                        </i>
+                        {{#if (eq system.removedUses 0)}}
+                            <i class="item-info far fa-battery-full hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
+                            </i>
+                        {{else if (eq system.removedUses system.attributes.uses)}}
+                            <i class="item-info far fa-battery-empty hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
+                            </i>
+                        {{else}}
+                            <i class="item-info far fa-battery-half hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
+                            </i>
+                        {{/if}}
                     {{/if}}
                     {{#each system.combinedPassiveAspects}}
                         {{#with (config dataGroup data)}}

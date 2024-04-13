@@ -285,10 +285,8 @@ export class Pl1eHelpers {
             if (typeof key !== "string") continue;
 
             data = data[key];
-            if (data === undefined) {
-                console.warn(`PL1E | config return is undefined with keys ${keys}`);
-                break;
-            }
+            // Break if the key cannot be found and return undefined
+            if (data === undefined) break;
         }
         return data;
     }
@@ -413,7 +411,7 @@ export class Pl1eHelpers {
         // Define an object containing specific sorting functions for each type of document
         const sortFunctions = {
             abilities: (a, b) => {
-                const abilitiesOrder = Object.keys(PL1E.abilityActivations);
+                const abilitiesOrder = Object.keys(PL1E.activations);
                 // Compare by level
                 if (a.system.attributes.level < b.system.attributes.level) return -1;
                 if (a.system.attributes.level > b.system.attributes.level) return 1;
@@ -432,7 +430,7 @@ export class Pl1eHelpers {
             weapons: (a, b) => a.name.localeCompare(b.name),
             wearables: (a, b) => a.name.localeCompare(b.name),
             consumables: (a, b) => {
-                const consumables = Object.keys(PL1E.abilityActivations);
+                const consumables = Object.keys(PL1E.consumableActivations);
 
                 // Compare by activation using the consumable order
                 let activationComparison = consumables.indexOf(a.system.attributes.activation)

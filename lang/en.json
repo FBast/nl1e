@@ -506,6 +506,8 @@
   "PL1E.SearchExplosion": "Search explosion",
   "PL1E.SearchImplosion": "Search implosion",
   "PL1E.SecondaryAttributes": "Secondary Attributes",
+  "PL1E.LinkedUsageCost": "Linked usage cost",
+  "PL1E.IsReloadable": "Is reloadable",
   "PL1E.SelectAnItem": "Select an item",
   "PL1E.Self": "Self",
   "PL1E.SellMultiplier": "Sell multiplier",

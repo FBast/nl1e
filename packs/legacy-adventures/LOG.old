@@ -1,3 +1,7 @@
-2024/04/11-20:54:29.566 2310 Recovering log #1907
-2024/04/11-20:54:29.572 2310 Delete type=0 #1907
-2024/04/11-20:54:29.573 2310 Delete type=3 #1905
+2024/04/13-19:16:13.500 3fa4 Recovering log #1912
+2024/04/13-19:16:13.504 3fa4 Delete type=0 #1912
+2024/04/13-19:16:13.504 3fa4 Delete type=3 #1911
+2024/04/13-19:47:19.961 b74 Level-0 table #1916: started
+2024/04/13-19:47:19.961 b74 Level-0 table #1916: 0 bytes OK
+2024/04/13-19:47:19.964 b74 Delete type=0 #1914
+2024/04/13-19:47:19.969 b74 Manual compaction at level-0 from '!adventures!NVnX5cE0RHCu9lfw' @ 72057594037927935 : 1 .. '!adventures!b3pxDTwa7eRY58T5' @ 0 : 0; will stop at (end)

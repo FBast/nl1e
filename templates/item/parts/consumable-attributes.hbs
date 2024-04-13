@@ -23,6 +23,17 @@
         </div>
     </fieldset>
     <fieldset>
+        <legend class="section-header">{{localize "PL1E.Consumable"}}</legend>
+        <div class="form-group">
+            <label>{{localize "PL1E.Uses"}}</label>
+            <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
+        </div>
+        <div class="form-group">
+            <label>{{localize "PL1E.IsReloadable"}}</label>
+            <input type="checkbox" name="system.attributes.isReloadable" {{checked system.attributes.isReloadable}} data-dtype="Boolean"/>
+        </div>
+    </fieldset>
+    <fieldset>
         <legend class="section-header">{{localize "PL1E.Activation"}}</legend>
         <div class="form-group">
             <label>{{localize "PL1E.Activation"}}</label>

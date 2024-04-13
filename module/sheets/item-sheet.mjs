@@ -349,11 +349,11 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     async _prepareDisplay(context) {
-        // Attributes
+        // Attributes (iterating on config to preserve order)
         const attributesDisplay = {};
-        for (let [key, value] of Object.entries(context.system.attributes)) {
-            const attributeConfig = Pl1eHelpers.getConfig("attributes", key);
-            if (attributeConfig === undefined || !attributeConfig.inDescription) continue;
+        for (let [key, attributeConfig] of Object.entries(PL1E.attributes)) {
+            let value = context.system.attributes[key];
+            if (value === undefined || !attributeConfig.inDescription) continue;
 
             let ignore = false;
             // Type modification

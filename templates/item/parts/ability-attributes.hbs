@@ -17,7 +17,7 @@
         <div class="form-group">
             <label>{{localize "PL1E.Activation"}}</label>
             <select name="system.attributes.activation">
-                {{customSelectOptions (config "abilityActivations") selected=system.attributes.activation localize=true}}
+                {{customSelectOptions (config "activations") selected=system.attributes.activation localize=true}}
             </select>
         </div>
         {{#if (eq system.attributes.activation "action")}}

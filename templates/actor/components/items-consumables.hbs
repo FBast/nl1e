@@ -17,38 +17,64 @@
                     <label class="item-name item-tooltip-activate">{{#unless ../system.general.unlimitedItems}}{{system.units}}x {{/unless}}{{name}}</label>
                 </div>
                 <div class="item-icons grid-span-6">
-                    {{#if (gt system.attributes.uses 1)}}
-                        {{#if (eq system.removedUses 0)}}
-                            <i class="item-info far fa-hourglass-start hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                <label>{{minus system.attributes.uses system.removedUses}}</label>
-                            </i>
-                        {{else if (eq system.removedUses system.attributes.uses)}}
-                            <i class="item-info far fa-hourglass-end hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                <label>{{minus system.attributes.uses system.removedUses}}</label>
-                            </i>
-                        {{else}}
-                            <i class="item-info far fa-hourglass-half hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
-                                <label>{{minus system.attributes.uses system.removedUses}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if system.attributes.isReloadable}}
-                            <i class="item-info far fa-repeat hover-green" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
-                        {{/if}}
-                    {{/if}}
                     {{#if (ne system.attributes.actionCost 0)}}
                         <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
                             <label>{{system.attributes.actionCost}}</label>
                         </i>
                     {{/if}}
                     {{#if (ne system.attributes.reactionCost 0)}}
-                        <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+                        <i class="item-info far fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
                             <label>{{system.attributes.reactionCost}}</label>
                         </i>
                     {{/if}}
-                    {{#if (ne system.attributes.range 0)}}
-                        <i class="item-info far fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
-                            <label>{{system.attributes.range}}</label>
+                    {{#if (ne system.attributes.quickActionCost 0)}}
+                        <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
+                            <label>{{system.attributes.quickActionCost}}</label>
                         </i>
+                    {{/if}}
+                    {{#if (ne system.attributes.healthCost 0)}}
+                        <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthCost"}}'>
+                            <label>{{system.attributes.healthCost}}</label>
+                        </i>
+                    {{/if}}
+                    {{#if (ne system.attributes.staminaCost 0)}}
+                        <i class="item-info far fa-wave-pulse hover-green" data-tooltip="{{localize "PL1E.StaminaCost"}}">
+                            <label>{{system.attributes.staminaCost}}</label>
+                        </i>
+                    {{/if}}
+                    {{#if (ne system.attributes.manaCost 0)}}
+                        <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaCost"}}'>
+                            <label>{{system.attributes.manaCost}}</label>
+                        </i>
+                    {{/if}}
+                    {{#if (ne system.attributes.usageCost 0)}}
+                        <i class="item-info far fa-tally hover-green" data-tooltip='{{localize "PL1E.UsageCost"}}'>
+                            <label>{{system.attributes.usageCost}}</label>
+                        </i>
+                    {{/if}}
+                    {{#if system.attributes.isMajorAction}}
+                        <i class="item-info far fa-star hover-green" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
+                    {{/if}}
+                    {{#if system.attributes.isDangerous}}
+                        <i class="item-info far fa-skull-crossbones hover-green" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
+                    {{/if}}
+                    {{#if (gt system.attributes.uses 0)}}
+                        {{#if (eq system.removedUses 0)}}
+                            <i class="item-info far fa-battery-full hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
+                            </i>
+                        {{else if (eq system.removedUses system.attributes.uses)}}
+                            <i class="item-info far fa-battery-empty hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
+                            </i>
+                        {{else}}
+                            <i class="item-info far fa-battery-half hover-green" data-tooltip='{{localize "PL1E.Uses"}}'>
+                                <label>{{minus system.attributes.uses system.removedUses}}</label>
+                            </i>
+                        {{/if}}
+                        {{#if system.attributes.isReloadable}}
+                            <i class="item-info far fa-repeat hover-green" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
+                        {{/if}}
                     {{/if}}
                     {{#if (eq @root.actor.type "character")}}
                         {{#if (gt system.attributes.goldPrice 0)}}
@@ -93,6 +119,11 @@
                                 <i class="fas fa-repeat"></i>
                             </a>
                         {{/if}}
+                    {{/if}}
+                    {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                        {{#unless (eq system.attributes.uses system.removedUses)}}
+                            <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
+                        {{/unless}}
                     {{/if}}
                     {{#if @root.actor.isOwner}}
                         {{#if flags.pl1e.childId}}

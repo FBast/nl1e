@@ -6,19 +6,21 @@
             {{#each characterData.attributes}}
                 {{#with (config "attributes" @key)}}
                     {{#if (and (ne dataGroup undefined) (ne data undefined))}}
-                        <div class="item-effect">
-                            {{#with (config dataGroup data)}}
-                                {{#if (and (eq type "number") (ne ../../this 0))}}
+                        {{#with (config dataGroup data)}}
+                            {{#if (and (eq type "number") (ne ../../this 0))}}
+                                <div class="item-effect">
                                     <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}">
                                         <label>{{formatNumber ../../this sign=true}}</label>
                                     </i>
-                                {{else if (eq type "bool")}}
-                                    {{#unless (and ../applyIfTrue (not ../../this))}}
+                                </div>
+                            {{else if (eq type "bool")}}
+                                {{#unless (and ../applyIfTrue (not ../../this))}}
+                                    <div class="item-effect">
                                         <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
-                                    {{/unless}}
-                                {{/if}}
-                            {{/with}}
-                        </div>
+                                    </div>
+                                {{/unless}}
+                            {{/if}}
+                        {{/with}}
                     {{/if}}
                 {{/with}}
             {{/each}}

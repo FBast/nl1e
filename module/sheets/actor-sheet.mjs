@@ -515,7 +515,7 @@ export class Pl1eActorSheet extends ActorSheet {
                         break;
                     }
                     case "ability": {
-                        for (const activation of Object.keys(PL1E.abilityActivations)) {
+                        for (const activation of Object.keys(PL1E.activations)) {
                             if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
                         }
                         break;

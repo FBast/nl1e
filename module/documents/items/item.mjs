@@ -506,33 +506,48 @@ export class Pl1eItem extends Item {
      */
     canReload() {
         const token = this.actor.bestToken;
+        const inCombat = token && token.inCombat;
+        const isCurrentTurn = game.combat && game.combat.current.tokenId === token.id;
 
-        if (token !== null && token.inCombat && token.id !== game.combat.current.tokenId) {
-            ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
-            return false;
+        if (inCombat) {
+            if (!isCurrentTurn) {
+                ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
+                return false;
+            }
+            if (this.actor.system.general.action < this.system.attributes.actionCost) {
+                ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
+                return false;
+            }
         }
-        if (token !== null && this.actor.system.general.action <= 0) {
-            ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
-            return false;
-        }
+
         return true;
     }
 
     /**
-     * Reload an item uses (consumable)
+     * Reload an item uses
      * @param options
      * @return {Promise<void>}
      */
     async reload(options = {}) {
+        const token = this.actor.bestToken;
+        const inCombat = token && token.inCombat;
+
+        if (inCombat) {
+            // Remove the action
+            await this.actor.update({
+                ["system.general.action"]: this.actor.system.general.action - 1
+            });
+
+            await Pl1eChat.actionMessage(this.actor, "PL1E.Reload", 1, { item: this });
+        }
+        else {
+            await Pl1eChat.actionMessage(this.actor, "PL1E.Reload", 0, { item: this });
+        }
+
         // Reload the item
         await this.update({
             ["system.removedUses"]: 0
         });
-        // Remove the action
-        await this.actor.update({
-            ["system.general.action"]: this.actor.system.general.action - 1
-        });
-        await Pl1eChat.actionMessage(this.actor, "PL1E.Reload", 1, { item: this });
     }
 
     /**
@@ -548,7 +563,7 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Toggle the item state (ability, weapon or wearable)
+     * Toggle the item state
      * @param options
      * @returns {Promise<void>}
      */
@@ -567,7 +582,7 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Activate the item (ability or consumable)
+     * Activate the item
      */
     async activate() {
         // Preparation of characterData

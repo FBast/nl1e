@@ -89,7 +89,7 @@ export default class Pl1eHooks {
                 name: "dynamicHotBar",
                 title: game.i18n.localize("PL1E.DynamicHotBar"),
                 icon: "fas fa-exchange-alt",
-                active: game.user.getFlag('pl1e', 'dynamicHotBar'),
+                active: game.user.getFlag('pl1e', 'dynamicHotBar') || false,
                 toggle: true,
                 button: true,
                 onClick: async (enable) => {
