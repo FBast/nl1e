@@ -1,3 +1,9 @@
-2024/04/11-20:54:29.548 2310 Recovering log #2356
-2024/04/11-20:54:29.552 2310 Delete type=0 #2356
-2024/04/11-20:54:29.552 2310 Delete type=3 #2354
+2024/04/13-17:55:51.675 2ea4 Recovering log #2360
+2024/04/13-17:55:51.676 2ea4 Level-0 table #2362: started
+2024/04/13-17:55:51.677 2ea4 Level-0 table #2362: 3232 bytes OK
+2024/04/13-17:55:51.681 2ea4 Delete type=0 #2360
+2024/04/13-17:55:51.681 2ea4 Delete type=3 #2359
+2024/04/13-17:56:00.250 3bf4 Compacting 1@0 + 1@1 files
+2024/04/13-17:56:00.257 3bf4 Generated table #2364@0: 438 keys, 359813 bytes
+2024/04/13-17:56:00.257 3bf4 Compacted 1@0 + 1@1 files => 359813 bytes
+2024/04/13-17:56:00.258 3bf4 compacted to: files[ 0 1 0 0 0 0 0 ]

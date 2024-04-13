@@ -515,7 +515,7 @@ export class Pl1eActorSheet extends ActorSheet {
                         break;
                     }
                     case "ability": {
-                        for (const activation of Object.keys(PL1E.activations)) {
+                        for (const activation of Object.keys(PL1E.abilityActivations)) {
                             if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
                         }
                         break;
@@ -535,7 +535,7 @@ export class Pl1eActorSheet extends ActorSheet {
                         break;
                     }
                     case "consumable": {
-                        for (const activation of Object.keys(PL1E.activations)) {
+                        for (const activation of Object.keys(PL1E.consumableActivations)) {
                             if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
                         }
                         break;

@@ -193,7 +193,6 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.quickActionCost = 0;
                 changed.system.attributes.isMajorAction = false;
                 changed.system.attributes.isDangerous = false;
-                changed.system.attributes.useFocus = false;
                 changed.system.attributes.areaShape = "none";
                 changed.system.attributes.launchParentActiveAspects = false;
                 changed.system.attributes.weaponMode = "none";
@@ -226,7 +225,6 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.quickActionCost = 0;
                 changed.system.attributes.isMajorAction = false;
                 changed.system.attributes.isDangerous = false;
-                changed.system.attributes.useFocus = false;
             }
             if (changed.system?.attributes?.activation === "quickAction") {
                 changed.system.attributes.actionCost = 0;
@@ -234,7 +232,6 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.quickActionCost = 1;
                 changed.system.attributes.isMajorAction = false;
                 changed.system.attributes.isDangerous = false;
-                changed.system.attributes.useFocus = false;
             }
             if (changed.system?.attributes?.activation === "outOfCombat") {
                 changed.system.attributes.reactionCost = 0;
@@ -242,7 +239,6 @@ export class Pl1eItem extends Item {
                 changed.system.attributes.quickActionCost = 0;
                 changed.system.attributes.isMajorAction = false;
                 changed.system.attributes.isDangerous = false;
-                changed.system.attributes.useFocus = false;
             }
             // Active parent resets
             if (changed.system?.attributes?.weaponMode === "none") {
@@ -796,6 +792,9 @@ export class Pl1eItem extends Item {
             switch (attributeConfig.document) {
                 case "actor":
                     document = characterData.actor;
+                    break;
+                case "item":
+                    document = characterData.item;
                     break;
                 case "linkedItem":
                     document = characterData.linkedItem;

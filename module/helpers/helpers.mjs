@@ -413,7 +413,7 @@ export class Pl1eHelpers {
         // Define an object containing specific sorting functions for each type of document
         const sortFunctions = {
             abilities: (a, b) => {
-                const abilitiesOrder = Object.keys(PL1E.activations);
+                const abilitiesOrder = Object.keys(PL1E.abilityActivations);
                 // Compare by level
                 if (a.system.attributes.level < b.system.attributes.level) return -1;
                 if (a.system.attributes.level > b.system.attributes.level) return 1;
@@ -431,7 +431,19 @@ export class Pl1eHelpers {
             features: (a, b) => b.system.points - a.system.points,
             weapons: (a, b) => a.name.localeCompare(b.name),
             wearables: (a, b) => a.name.localeCompare(b.name),
-            consumables: (a, b) => a.name.localeCompare(b.name),
+            consumables: (a, b) => {
+                const consumables = Object.keys(PL1E.abilityActivations);
+
+                // Compare by activation using the consumable order
+                let activationComparison = consumables.indexOf(a.system.attributes.activation)
+                    - consumables.indexOf(b.system.attributes.activation);
+                if (activationComparison !== 0) {
+                    return activationComparison;
+                }
+
+                // Then compare by name
+                return a.name.localeCompare(b.name);
+            },
             commons: (a, b) => a.name.localeCompare(b.name),
             modules: (a, b) => a.name.localeCompare(b.name)
         };

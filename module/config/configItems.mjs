@@ -60,7 +60,7 @@ export function getConfigItems() {
         },
         "consumable": {
             "label": "PL1E.Consumable",
-            "droppable": ["ability"],
+            "droppable": [],
             "localDroppable": [],
             "stackable": [],
             "behaviors": ["regular"]
@@ -312,6 +312,15 @@ export function getConfigItems() {
         },
         "usageCost": {
             "label": "PL1E.UsageCost",
+            "type": "number",
+            "document": "linkedItem",
+            "dataGroup": "itemBase",
+            "data": "removedUses",
+            "invertSign": false,
+            "inDescription": true
+        },
+        "linkedUsageCost": {
+            "label": "PL1E.LinkedUsageCost",
             "type": "number",
             "document": "linkedItem",
             "dataGroup": "itemBase",

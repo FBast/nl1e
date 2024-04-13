@@ -17,7 +17,7 @@
         <div class="form-group">
             <label>{{localize "PL1E.Activation"}}</label>
             <select name="system.attributes.activation">
-                {{customSelectOptions (config "activations") selected=system.attributes.activation localize=true}}
+                {{customSelectOptions (config "abilityActivations") selected=system.attributes.activation localize=true}}
             </select>
         </div>
         {{#if (eq system.attributes.activation "action")}}
@@ -139,8 +139,8 @@
                 <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}" data-dtype="Number"/>
             </div>
             <div class="form-group">
-                <label>{{localize "PL1E.UsageCost"}}</label>
-                <input type="number" name="system.attributes.usageCost" value="{{system.attributes.usageCost}}" data-dtype="Number"/>
+                <label>{{localize "PL1E.LinkedUsageCost"}}</label>
+                <input type="number" name="system.attributes.linkedUsageCost" value="{{system.attributes.linkedUsageCost}}" data-dtype="Number"/>
             </div>
         </fieldset>
         <fieldset>
