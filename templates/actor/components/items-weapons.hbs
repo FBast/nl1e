@@ -17,7 +17,12 @@
             <div class="item-content grid grid-12col">
                 <div class="item-title grid-span-4 flexrow">
                     <img class="item-image item-edit hover-red" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
-                    <label class="item-name item-tooltip-activate">{{realName}}</label>
+                    <label class="item-name item-tooltip-activate">
+                        {{#unless (or (ne @root.actor.type "merchant") ../system.general.unlimitedItems)}}
+                            {{system.units}}x
+                        {{/unless}}
+                        {{realName}}
+                    </label>
                 </div>
                 <div class="item-icons grid-span-6">
                     {{#if (ne system.attributes.hands 0)}}

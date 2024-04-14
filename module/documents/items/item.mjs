@@ -614,7 +614,8 @@ export class Pl1eItem extends Item {
             // If shape is target and range equal to 0, then self-effect doesn't need a template
             if (characterData.attributes.areaShape !== "none" || characterData.attributes.range !== 0) {
                 // Minimize the actor sheet to facilitate template creation
-                await characterData.actor.sheet?.minimize();
+                const isActorSheetRendered = characterData.actor.sheet?.rendered;
+                if (isActorSheetRendered) characterData.actor.sheet?.minimize();
 
                 // Save the currently selected tokens
                 const selectedTokens = canvas.tokens.controlled;
@@ -638,7 +639,7 @@ export class Pl1eItem extends Item {
                 selectedTokens.forEach(token => token.control({ releaseOthers: false }));
 
                 // Maximize the actor sheet
-                await characterData.actor.sheet?.maximize();
+                if (isActorSheetRendered) characterData.actor.sheet?.maximize();
 
                 // Abort if no templates defined
                 if (characterData.templates.length === 0) return;

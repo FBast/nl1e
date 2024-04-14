@@ -6,11 +6,13 @@
             {{#each characterData.attributes}}
                 {{#with (config "attributes" @key)}}
                     {{#if (and (ne dataGroup undefined) (ne data undefined))}}
+                        {{log dataGroup}}
+                        {{log data}}
                         {{#with (config dataGroup data)}}
                             {{#if (and (eq type "number") (ne ../../this 0))}}
                                 <div class="item-effect">
                                     <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}">
-                                        <label>{{formatNumber ../../this sign=true}}</label>
+                                        <label>{{../../this}}</label>
                                     </i>
                                 </div>
                             {{else if (eq type "bool")}}

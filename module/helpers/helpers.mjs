@@ -285,8 +285,10 @@ export class Pl1eHelpers {
             if (typeof key !== "string") continue;
 
             data = data[key];
-            // Break if the key cannot be found and return undefined
-            if (data === undefined) break;
+            if (data === undefined) {
+                console.warn(`PL1E | config return is undefined with keys ${keys}`);
+                break;
+            }
         }
         return data;
     }

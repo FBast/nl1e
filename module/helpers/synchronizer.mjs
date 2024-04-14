@@ -102,9 +102,9 @@ export class Pl1eSynchronizer {
             "img": originalItem.img,
             "system.description": originalItem.system.description,
             "system.attributes": originalItem.system.attributes,
-            ...updateProperty('refItems', item, originalItem),
+            ...updateProperty('refItems', item, originalItem, actor),
             ...updateProperty('passiveAspects', item, originalItem, actor),
-            ...updateProperty('activeAspects', item, originalItem)
+            ...updateProperty('activeAspects', item, originalItem, actor)
         };
 
         // Update the item data

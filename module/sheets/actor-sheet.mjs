@@ -441,9 +441,31 @@ export class Pl1eActorSheet extends ActorSheet {
                 context.abilities.push(item);
             }
         } else if (item.type === "weapon") {
-            context.weapons.push(item);
+            if (this.actor.type === "merchant") {
+                // Increase units
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = context.weapons.find(item => item.sourceId === sourceIdFlag);
+                    sameItem.system.units++;
+                } else {
+                    context.weapons.push(item);
+                }
+            }
+            else {
+                context.weapons.push(item);
+            }
         } else if (item.type === "wearable") {
-            context.wearables.push(item);
+            if (this.actor.type === "merchant") {
+                // Increase units
+                if (sourceIdFlags.includes(sourceIdFlag)) {
+                    const sameItem = context.wearables.find(item => item.sourceId === sourceIdFlag);
+                    sameItem.system.units++;
+                } else {
+                    context.wearables.push(item);
+                }
+            }
+            else {
+                context.wearables.push(item);
+            }
         } else if (item.type === "consumable") {
             // Increase units
             if (sourceIdFlags.includes(sourceIdFlag)) {
