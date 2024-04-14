@@ -1,0 +1,25 @@
+.pl1e {
+  .item-selector-dialog {
+    .item-buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: start; // Align items to the start of the container
+      align-items: flex-start; // Align items to the top of the container
+    }
+
+    .item-button {
+      border: none;
+      background: none;
+      padding: 5px;
+      cursor: pointer;
+      width: 100px; // Fixed width for square aspect ratio
+      height: 100px; // Fixed height for square aspect ratio
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; // This prevents distortion of the image
+      }
+    }
+  }
+}

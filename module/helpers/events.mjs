@@ -53,11 +53,6 @@ export class Pl1eEvent {
             const x = token.x;
             const y = token.y;
             await canvas.animatePan({x: x, y: y, scale: 1});
-            const placeable = canvas.tokens.placeables.find(t => t.id === tokenId);
-            if (placeable) {
-                game.user.targets.clear();
-                placeable.setTarget(true, { user: game.user, releaseOthers: true });
-            }
         } else {
             console.warn(`Token with id ${tokenId} not found.`);
         }

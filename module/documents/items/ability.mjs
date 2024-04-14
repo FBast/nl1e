@@ -1,5 +1,6 @@
 import {Pl1eItem} from "./item.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
+import {ItemSelector} from "../../apps/itemSelector.mjs";
 
 export class Pl1eAbility extends Pl1eItem {
 
@@ -39,7 +40,7 @@ export class Pl1eAbility extends Pl1eItem {
             characterData.linkedItemId = relatedItems[0].id;
         }
         else {
-            characterData.linkedItem = await this._itemsDialog(relatedItems);
+            characterData.linkedItem = await ItemSelector.createAndRender(this.actor, relatedItems);
             if (characterData.linkedItem === null) return false;
             characterData.linkedItemId = characterData.linkedItem.id;
         }
@@ -82,46 +83,6 @@ export class Pl1eAbility extends Pl1eItem {
         if (attributes.launchParentActiveAspects) {
             Pl1eHelpers.mergeDeep(characterData.activeAspects, await characterData.linkedItem.getCombinedActiveAspects());
         }
-    }
-
-    /**
-     * @param items
-     * @return {Pl1eItem}
-     * @private
-     */
-    _itemsDialog(items) {
-        // Generate the HTML for the buttons dynamically based on the item data
-        let buttonsHTML = "";
-        for (const key in items) {
-            const item = items[key];
-            const imageSrc = item.img; // Replace with your item image source getter
-            const altText = `Button ${key}`;
-            buttonsHTML += `<button style="width: 100px; height: 100px; margin-right: 10px;" data-action="${key}">
-                    <img style="width: 100%; height: 100%;" src="${imageSrc}" alt="${altText}">
-                </button>`;
-        }
-
-        return new Promise((resolve) => {
-            const dialog = new Dialog({
-                title: `${this.name} : ${game.i18n.localize("PL1E.SelectAnItem")}`,
-                content: `<div style="display: flex;">${buttonsHTML}</div>`,
-                buttons: {},
-                close: (html) => resolve(null),
-                render: (html) => {
-                    html.find("button[data-action]").on("click", (event) => {
-                        const button = event.currentTarget;
-                        const action = button.dataset.action;
-                        resolve(items[Number(action)]);
-                        dialog.close();
-                    });
-                },
-                default: "",
-                closeOnSubmit: false,
-                submitOnClose: false,
-                jQuery: false,
-                resizable: false
-            }).render(true);
-        });
     }
 
     /**

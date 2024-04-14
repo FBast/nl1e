@@ -1,0 +1,9 @@
+<form class="pl1e item-selector-dialog">
+    <div class="item-buttons-container">
+        {{#each items as |item key|}}
+            <button class="item-button" data-action="{{key}}">
+                <img src="{{item.realImg}}" alt="Button {{key}}">
+            </button>
+        {{/each}}
+    </div>
+</form>
