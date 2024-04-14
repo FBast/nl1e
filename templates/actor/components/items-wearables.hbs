@@ -20,10 +20,11 @@
                 <div class="item-title grid-span-4 flexrow">
                     <img class="item-image item-edit hover-red" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
                     <label class="item-name item-tooltip-activate">
-                        {{#unless (or (ne @root.actor.type "merchant") ../system.general.unlimitedItems)}}
-                            {{system.units}}x
-                        {{/unless}}
-                        {{realName}}
+                        {{#if (and (eq @root.actor.type "merchant") (not ../system.general.unlimitedItems))}}
+                            {{system.units}}x {{realName}}
+                        {{else}}
+                            {{realName}}
+                        {{/if}}
                     </label>
                 </div>
                 <div class="item-icons grid-span-6">

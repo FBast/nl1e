@@ -725,16 +725,12 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Render multiple parent in case of child stack
         let sheetPosition = Pl1eHelpers.screenCenter();
-        const renderedParentItemSourceIds = [];
-        for (const otherItem of this.actor.items) {
-            const childId = otherItem.childId;
-            if (childId && otherItem.sourceId === item.sourceId) {
-                const parentItem = this.actor.items.find(item => item.parentId === childId);
-                if (renderedParentItemSourceIds.includes(parentItem.sourceId)) continue;
+        for (/** @type {Pl1eItem} */ const otherItem of this.actor.items) {
+            if (otherItem.sourceId === item.sourceId) {
+                const parentItem = otherItem.rootParentItem;
                 parentItem.sheet.render(true, {left: sheetPosition.x, top: sheetPosition.y});
                 sheetPosition.x += 30;
                 sheetPosition.y += 30;
-                renderedParentItemSourceIds.push(parentItem.sourceId);
             }
         }
     }

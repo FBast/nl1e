@@ -80,15 +80,15 @@ export class Pl1eSynchronizer {
         };
 
         const handleRefItems = async (actor, item, refItems) => {
-            // Add the refItems in item which are not present in the actor
+            // Add the ref items in item which are not present in the actor
             for (const refItem of refItems) {
-                if (actor.items.find(i => i.sourceId === refItem.itemId)) continue;
+                if (actor.items.find(i => i.sourceId === refItem.itemId && i.childId === item.parentId)) continue;
                 const itemChildren = Pl1eHelpers.getConfig("actorTypes", actor.type, "itemChildren");
                 if (!itemChildren.includes(refItem.item.type)) continue;
 
                 await actor.addItem(refItem.item, item.parentId);
             }
-            // Remove the item of the actor which use the same parentId and are not present in the item
+            // Remove the item of the actor which uses the same parentId and is not present in the item
             for (const otherItem of actor.items) {
                 if (otherItem.childId !== item.parentId) continue;
                 if (refItems.find(refItem => refItem.itemId === otherItem.sourceId)) continue;
@@ -110,7 +110,7 @@ export class Pl1eSynchronizer {
         // Update the item data
         await item.update(itemData);
 
-        // Additional logic for refItems in actor
+        // Additional logic for refItems in the actor
         await handleRefItems(actor, item, await item.getRefItems());
     }
 

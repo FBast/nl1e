@@ -90,6 +90,18 @@ export class Pl1eItem extends Item {
         return this.actor.items.find(otherItem => otherItem.parentId === this.childId) || null;
     }
 
+    /**
+     * The root parent item (the highest ancestor) of this item within its actor.
+     * @return {Pl1eItem|null}
+     */
+    get rootParentItem() {
+        let parent = this.parentItem;
+        while (parent && parent.parentItem) {
+            parent = parent.parentItem;
+        }
+        return parent;
+    }
+
     get linkableParentItem() {
         const parentItem = this.parentItem;
         // Return null if no parent
@@ -100,9 +112,7 @@ export class Pl1eItem extends Item {
         if (parentItem.behavior === "key") return null;
         // Jump to next parent if container behavior
         if (parentItem.behavior === "container") return parentItem.linkableParentItem;
-        // Return the parent if regular behavior and linkable
-        // if (parentItem.behavior === "regular" && ["weapon", "wearable"].includes(parentItem.type)) return parentItem;
-        // Return null in last case
+        // Return parent in the last case
         return parentItem;
     }
 
@@ -850,7 +860,6 @@ export class Pl1eItem extends Item {
     async resolve(characterData, options) {
         // Handle launch action
         if (options.action === "launch") await this.launch(characterData);
-        if (options.action === "cancel") return;
 
         // Find activationMacro (pass for deactivation)
         const macroId = characterData.attributes.activationMacro;
