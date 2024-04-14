@@ -24,6 +24,10 @@ export class Pl1eAbility extends Pl1eItem {
             ui.notifications.info(game.i18n.localize("PL1E.NotEnoughMana"));
             return false;
         }
+        if (itemAttributes.healthCost > 0 && itemAttributes.healthCost > characterData.actor.system.resources.health.value) {
+            ui.notifications.info(game.i18n.localize("PL1E.NotEnoughUses"));
+            return false;
+        }
 
         // Get weapons using the same mastery
         const relatedItems = this._getLinkableItems(characterData);
@@ -145,8 +149,9 @@ export class Pl1eAbility extends Pl1eItem {
             if (characterData.attributes.weaponMode === "magic" && parentItem.system.attributes.magicUse !== undefined
                 && !parentItem.system.attributes.magicUse) continue;
             // Parent usages are not enough
-            if (parentItem.system.attributes.uses !== undefined && parentItem.system.attributes.uses > 0 && parentItem.system.removedUses !== undefined
-                && characterData.attributes.usageCost > parentItem.system.attributes.uses - parentItem.system.removedUses) continue;
+            if (parentItem.system.attributes.uses !== undefined && parentItem.system.attributes.uses > 0
+                && parentItem.system.removedUses !== undefined && characterData.attributes.linkedUsageCost > 0
+                && parentItem.system.attributes.uses - parentItem.system.removedUses - characterData.attributes.linkedUsageCost < 0) continue;
             // The parent is a valid linkable item
             relatedItems.push(parentItem);
         }

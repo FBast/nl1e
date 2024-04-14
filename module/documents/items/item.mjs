@@ -872,17 +872,6 @@ export class Pl1eItem extends Item {
         for (let token of game.user.targets) {
             token.setTarget(false, {user: game.user, releaseOthers: false, groupSelection: false});
         }
-
-        // Update for linked item
-        if (characterData.linkedItem) {
-            const linkedItemUses = characterData.linkedItem.system.attributes.uses;
-
-            // If the linked item has no more uses and is not reloadable, then delete it
-            if (linkedItemUses > 0 && characterData.linkedItem.system.removedUses >= linkedItemUses &&
-                !characterData.linkedItem.system.attributes.isReloadable) {
-                await this.actor.removeItem(characterData.linkedItem);
-            }
-        }
     }
 
     /**
