@@ -55,28 +55,23 @@ export class Pl1eMacro {
     static async generateTokenMacros(token) {
         let slot = 1; // Start assigning macros from slot 1
 
-        // Filter items based on the provided filter function
-        let abilities = token.actor.items.filter(item => item.type === "ability"
-            && item.system.attributes.activation !== "passive" && item.isEnabled);
+        // Filter items
+        let items = token.actor.displayedItems.filter(item => (item.type === "ability" || item.type === "consumable")
+            && item.system.attributes.activation !== "passive");
 
-        // Process and categorize items
-        let filteredAbilities = [];
-        const sourceIdFlags = [];
-        for (const ability of abilities) {
-            if (sourceIdFlags.includes(ability.sourceId)) continue;
-            filteredAbilities.push(ability);
-            sourceIdFlags.push(ability.sourceId);
+        // Remove duplicates
+        let uniqueItems = [];
+        const existingSourceId = new Set();
+        for (const ability of items) {
+            if (existingSourceId.has(ability.sourceId)) continue;
+            uniqueItems.push(ability);
+            existingSourceId.add(ability.sourceId);
         }
 
-        // Group all items into a documents object
-        let documents = {
-            abilities: filteredAbilities,
-        };
-
         // Sort each type of item
-        abilities = Pl1eHelpers.sortDocuments(documents).abilities;
+        items = Pl1eHelpers.sortDocuments(uniqueItems);
 
-        for (let item of abilities) {
+        for (let item of items) {
             // Create dropData structure for each filtered item
             const dropData = {
                 type: "Item",

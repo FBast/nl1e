@@ -92,13 +92,11 @@ export class Pl1eAbility extends Pl1eItem {
      */
     _getLinkableItems(characterData) {
         const relatedItems = [];
-        for (/** @type {Pl1eItem} **/ const item of characterData.actor.items) {
-            // Only same source id item provide a valid linkable item
-            if (item.sourceId !== characterData.item.sourceId) continue;
+        for (/** @type {Pl1eItem} **/ const item of characterData.item.sameItems) {
             const parentItem = item.linkableParentItem;
-            // If no parent found then check next sharing source id item
+            // If no parent then skip
             if (!parentItem) continue;
-            // Extra conditions
+            // Need major action that is already used
             if (characterData.attributes.isMajorAction && parentItem.system.majorActionUsed) continue;
             // Weapon mode is melee but parent does not use melee
             if (characterData.attributes.weaponMode === "melee" && parentItem.system.attributes.meleeUse !== undefined

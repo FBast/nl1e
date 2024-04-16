@@ -40,6 +40,34 @@ export class Pl1eActor extends Actor {
         return token;
     }
 
+    /**
+     * Get all displayed items
+     * @return {*[]}
+     */
+    get displayedItems() {
+        const items = [];
+
+        for (/** @type {Pl1eItem} **/ const item of this.items) {
+            if (item.isDisplayedForActor) items.push(item);
+        }
+
+        return items;
+    }
+
+    /**
+     * Get all enabled items
+     * @return {Pl1eItem[]}
+     */
+    get enabledItems() {
+        const items = [];
+
+        for (/** @type {Pl1eItem} **/ const item of this.items) {
+            if (item.isEnabledForActor) items.push(item);
+        }
+
+        return items;
+    }
+
     //region Data management
 
     /** @inheritDoc */
@@ -97,7 +125,7 @@ export class Pl1eActor extends Actor {
             for (/** @type {Pl1eItem} */ const item of this.items.filter(item => item.type === "ability")) {
                 for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                     if (!aspect.createEffect) continue;
-                    if (item.isEnabled) {
+                    if (item.isEnabledForActor) {
                         await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
                     }
                     else {
@@ -117,7 +145,7 @@ export class Pl1eActor extends Actor {
         // Apply passive aspects macros
         for (/** @type {Pl1eItem} */ const item of this.items) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                if (!item.isEnabled) continue;
+                if (!item.isEnabledForActor) continue;
                 if (aspect.name === "macro" && aspect.data !== "none" && aspect.dataGroup === "actorPreUpdate") {
                     await Pl1eAspect.applyPassiveMacro(aspect, id, {
                         actor: this,
@@ -204,7 +232,7 @@ export class Pl1eActor extends Actor {
         if (embeddedName === "Item") {
             for (/** @type {Pl1eItem} */ const item of documents) {
                 for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                    if (!item.isEnabled) continue;
+                    if (!item.isEnabledForActor) continue;
                     if (!aspect.createEffect) continue;
                     await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
                 }
@@ -227,7 +255,7 @@ export class Pl1eActor extends Actor {
         if (embeddedName === "Item") {
             for (/** @type {Pl1eItem} */ const item of documents) {
                 for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                    if (!item.isEnabled) continue;
+                    if (!item.isEnabledForActor) continue;
                     if (!aspect.createEffect) continue;
                     await Pl1eAspect.removePassiveEffect(aspect, id, this);
                 }
@@ -324,9 +352,9 @@ export class Pl1eActor extends Actor {
         const actorSkills = systemData.skills;
 
         // Apply passive values
-        for (/** @type {Pl1eItem} */ const item of this.items) {
+        for (/** @type {Pl1eItem} */ const item of this.enabledItems) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                if (aspect.createEffect || !item.isEnabled) continue;
+                if (aspect.createEffect) continue;
                 Pl1eAspect.applyPassiveValue(aspect, id, this);
             }
         }
@@ -471,20 +499,13 @@ export class Pl1eActor extends Actor {
     async removeItem(item) {
         if (!item) return;
 
-        // Function to recursively gather item IDs
-        const gatherItemIds = (item, ids = []) => {
-            ids.push(item.id); // Add the current item's ID
-            item.childItems.forEach(child => gatherItemIds(child, ids)); // Recurse for children
-            return ids;
-        }
-
-        // Gather IDs for the item and its children
-        const itemIds = gatherItemIds(item);
+        // Get all child IDs including the item itself
+        const allChildItems = [item, ...item.recursiveChildItems];
+        const itemIds = allChildItems.map(child => child.id);
 
         // Delete all items in a single call
         await this.deleteEmbeddedDocuments("Item", itemIds);
     }
-
 
     /**
      * Add a new ref RollTable

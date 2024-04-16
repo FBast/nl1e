@@ -108,7 +108,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // Add the actor's data to context.data for easier access, as well as flags.
         context.system = this.actor.system;
         context.flags = this.actor.flags;
-        context.items = this.actor.items;
+        context.items = this.actor.displayedItems;
         context.effects = this.actor.effects;
         context.inCombat = this.actor.bestToken && this.actor.bestToken.inCombat;
         context.filters = this._filters;
@@ -349,7 +349,6 @@ export class Pl1eActorSheet extends ActorSheet {
         // Process and categorize items
         const sourceIdFlags = [];
         for (const item of context.items) {
-            if (item.parentItem) continue;
             await this._prepareItem(context, item, sourceIdFlags);
         }
 
@@ -404,9 +403,6 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     async _prepareItem(context, item, sourceIdFlags) {
-        // Don't process if container
-        if (item.behavior === "container") return;
-
         const sourceIdFlag = item.sourceId;
 
         // Merge aspects for each item
@@ -430,9 +426,6 @@ export class Pl1eActorSheet extends ActorSheet {
         }
         // Append to abilities.
         else if (item.type === "ability") {
-            // Skip disabled ability
-            if (!item.isEnabled) return;
-
             // Increase units
             if (sourceIdFlags.includes(sourceIdFlag)) {
                 const sameItem = context.abilities.find(item => item.sourceId === sourceIdFlag);
@@ -495,11 +488,6 @@ export class Pl1eActorSheet extends ActorSheet {
         // Handle sourceId flags for duplicates
         if (!sourceIdFlags.includes(sourceIdFlag)) {
             sourceIdFlags.push(sourceIdFlag);
-        }
-
-        // Iterate over children
-        for (const itemChild of item.childItems) {
-            await this._prepareItem(context, itemChild, sourceIdFlags);
         }
     }
 

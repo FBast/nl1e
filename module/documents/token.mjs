@@ -35,7 +35,7 @@ export class Pl1eTokenDocument extends TokenDocument {
         // Apply passive aspects macros
         for (/** @type {Pl1eItem} */ const item of this.actor.items) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                if (!item.isEnabled) continue;
+                if (!item.isEnabledForActor) continue;
                 if (aspect.name === "macro" && aspect.data !== "none" && aspect.dataGroup === "tokenPreUpdate") {
                     await Pl1eAspect.applyPassiveMacro(aspect, id, {
                         actor: this.actor,

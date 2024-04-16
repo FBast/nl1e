@@ -38,24 +38,63 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * The current status of the item, true if enabled else false
+     * Check if the actor has equipped the item
      * @return {boolean}
      */
-    get isEnabled() {
-        switch (this.type) {
-            case "ability":
-                return this.system.attributes.level <= this.actor.system.general.level;
-            case "weapon":
-                if (this.system.attributes.hands > 0)
-                    return this.system.isEquippedMain || this.system.isEquippedSecondary;
-                return true;
-            case "wearable":
-                return this.system.isEquipped;
-            case "module":
-                return false;
-            default:
-                return true;
-        }
+    get isEquippedForActor() {
+        // This should not be used if the item has no associated actor
+        if (!this.actor)
+            throw new Error("PL1E | isEquippedForActor should not be used on an item with no associated actor");
+
+        // Check on the item type
+        if (this.type === "ability" && this.system.attributes.level > this.actor.system.general.level) return false;
+        if (this.type === "weapon" && this.system.attributes.hands > 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) return false;
+        if (this.type === "wearable" && !this.system.isEquipped) return false;
+        if (this.type === "module") return false;
+
+        // Recursive check on parents
+        return this.parentItem ? this.parentItem.isEquippedForActor : true;
+    }
+
+    /**
+     * Check if the item should be displayed on the actor sheet
+     * @return {boolean}
+     */
+    get isDisplayedForActor() {
+        // This should not be used if the item has no associated actor
+        if (!this.actor)
+            throw new Error("PL1E | isEnabledForActor should not be used on an item with no associated actor");
+
+        // If this item is a container, it is never displayed
+        if (this.behavior === "container") return false;
+
+        // Recursive check on parents
+        return this.parentItem ? this.parentItem.isDisplayedForActor : true;
+    }
+
+    /**
+     * Check if the item has effect for the current actor
+     * @return {boolean}
+     */
+    get isEnabledForActor() {
+        // This should not be used if the item has no associated actor
+        if (!this.actor)
+            throw new Error("PL1E | isEnabledForActor should not be used on an item with no associated actor");
+
+        // If this is a key, it is never enabled
+        if (this.behavior === "key") return false;
+
+        // If this is a container, then search for a key
+        if (this.behavior === "container" && !this.sameItems.some(item => item.behavior === "key")) return false;
+
+        // Check on the item type
+        if (this.type === "ability" && this.system.attributes.level > this.actor.system.general.level) return false;
+        if (this.type === "weapon" && this.system.attributes.hands > 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) return false;
+        if (this.type === "wearable" && !this.system.isEquipped) return false;
+        if (this.type === "module") return false;
+
+        // Recursive check on parents
+        return this.parentItem ? this.parentItem.isEnabledForActor : true;
     }
 
     /**
@@ -72,6 +111,35 @@ export class Pl1eItem extends Item {
      */
     get realImg() {
         return this.system.customImg ? this.system.customImg : this.img;
+    }
+
+    /**
+     * Recursively get all child items.
+     * @return {Pl1eItem[]}
+     */
+    get recursiveChildItems() {
+        const getChildItems = (item) => {
+            // Start with direct child items
+            let allChildren = [...item.childItems];
+
+            // Get the children of each child recursively
+            for (const childItem of item.childItems) {
+                allChildren = allChildren.concat(getChildItems(childItem));
+            }
+
+            return allChildren;
+        };
+
+        // Initialize the recursive gathering with this item
+        return getChildItems(this);
+    }
+
+    /**
+     * All items in the actor sharing the same source id
+     * @return {Pl1eItem[]}
+     */
+    get sameItems() {
+        return this.actor.items.filter(otherItem => otherItem.sourceId === this.sourceId) || [];
     }
 
     /**
@@ -107,7 +175,7 @@ export class Pl1eItem extends Item {
         // Return null if no parent
         if (!parentItem) return null;
         // Return null if parent not enabled
-        if (!parentItem.isEnabled) return null;
+        if (!parentItem.isEnabledForActor) return null;
         // Return null if parent is a key and only unlock this item
         if (parentItem.behavior === "key") return null;
         // Jump to next parent if container behavior
@@ -578,7 +646,7 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async toggle(options = {}) {
-        if (this.isEnabled) {
+        if (this.isEnabledForActor) {
             for (const [id, aspect] of Object.entries(await this.getCombinedPassiveAspects())) {
                 if (!aspect.createEffect) continue;
                 await Pl1eAspect.applyPassiveEffect(aspect, id, this.actor, this);
