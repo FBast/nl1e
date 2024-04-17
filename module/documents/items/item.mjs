@@ -38,63 +38,51 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Check if the actor has equipped the item
+     * Check if the item is equipped
      * @return {boolean}
      */
-    get isEquippedForActor() {
-        // This should not be used if the item has no associated actor
-        if (!this.actor)
-            throw new Error("PL1E | isEquippedForActor should not be used on an item with no associated actor");
-
-        // Check on the item type
-        if (this.type === "ability" && this.system.attributes.level > this.actor.system.general.level) return false;
-        if (this.type === "weapon" && this.system.attributes.hands > 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) return false;
-        if (this.type === "wearable" && !this.system.isEquipped) return false;
-        if (this.type === "module") return false;
-
+    get isEquipped() {
         // Recursive check on parents
-        return this.parentItem ? this.parentItem.isEquippedForActor : true;
+        return this.parentItem ? this.parentItem.isEquipped : true;
     }
 
     /**
-     * Check if the item should be displayed on the actor sheet
+     * Check if the actor level is enough
      * @return {boolean}
      */
-    get isDisplayedForActor() {
-        // This should not be used if the item has no associated actor
-        if (!this.actor)
-            throw new Error("PL1E | isEnabledForActor should not be used on an item with no associated actor");
-
-        // If this item is a container, it is never displayed
-        if (this.behavior === "container") return false;
-
+    get isUsableAtLevel() {
         // Recursive check on parents
-        return this.parentItem ? this.parentItem.isDisplayedForActor : true;
+        return this.parentItem ? this.parentItem.isUsableAtLevel : true;
     }
 
     /**
-     * Check if the item has effect for the current actor
+     * Check if the item should be displayed
      * @return {boolean}
      */
-    get isEnabledForActor() {
-        // This should not be used if the item has no associated actor
-        if (!this.actor)
-            throw new Error("PL1E | isEnabledForActor should not be used on an item with no associated actor");
+    get isDisplayed() {
+        // If this is a key, it is not display if container found
+        if (this.behavior === "key" && this.sameItems.some(item => item.behavior === "container")) return false;
 
+        // If this item is a container, it is not display if no key found
+        if (this.behavior === "container" && !this.sameItems.some(item => item.behavior === "key")) return false;
+
+        // Recursive check on parents
+        return this.parentItem ? this.parentItem.isDisplayed : true;
+    }
+
+    /**
+     * Check if the item is effective
+     * @return {boolean}
+     */
+    get isEnabled() {
         // If this is a key, it is never enabled
         if (this.behavior === "key") return false;
 
         // If this is a container, then search for a key
         if (this.behavior === "container" && !this.sameItems.some(item => item.behavior === "key")) return false;
 
-        // Check on the item type
-        if (this.type === "ability" && this.system.attributes.level > this.actor.system.general.level) return false;
-        if (this.type === "weapon" && this.system.attributes.hands > 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) return false;
-        if (this.type === "wearable" && !this.system.isEquipped) return false;
-        if (this.type === "module") return false;
-
         // Recursive check on parents
-        return this.parentItem ? this.parentItem.isEnabledForActor : true;
+        return this.parentItem ? this.parentItem.isEnabled : true;
     }
 
     /**
@@ -139,6 +127,9 @@ export class Pl1eItem extends Item {
      * @return {Pl1eItem[]}
      */
     get sameItems() {
+        if (!this.actor)
+            throw new Error("PL1E | sameItems should not be used on an item with no associated actor");
+
         return this.actor.items.filter(otherItem => otherItem.sourceId === this.sourceId) || [];
     }
 
@@ -147,6 +138,9 @@ export class Pl1eItem extends Item {
      * @return {Pl1eItem[]}
      * */
     get childItems() {
+        if (!this.actor)
+            throw new Error("PL1E | childItems should not be used on an item with no associated actor");
+
         return this.actor.items.filter(otherItem => otherItem.childId === this.parentId) || [];
     }
 
@@ -155,6 +149,9 @@ export class Pl1eItem extends Item {
      * @return {Pl1eItem|null}
      * */
     get parentItem() {
+        if (!this.actor)
+            throw new Error("PL1E | parentItem should not be used on an item with no associated actor");
+
         return this.actor.items.find(otherItem => otherItem.parentId === this.childId) || null;
     }
 
@@ -175,7 +172,7 @@ export class Pl1eItem extends Item {
         // Return null if no parent
         if (!parentItem) return null;
         // Return null if parent not enabled
-        if (!parentItem.isEnabledForActor) return null;
+        if (!parentItem.isEnabled) return null;
         // Return null if parent is a key and only unlock this item
         if (parentItem.behavior === "key") return null;
         // Jump to next parent if container behavior
@@ -646,7 +643,7 @@ export class Pl1eItem extends Item {
      * @returns {Promise<void>}
      */
     async toggle(options = {}) {
-        if (this.isEnabledForActor) {
+        if (this.isEnabled) {
             for (const [id, aspect] of Object.entries(await this.getCombinedPassiveAspects())) {
                 if (!aspect.createEffect) continue;
                 await Pl1eAspect.applyPassiveEffect(aspect, id, this.actor, this);

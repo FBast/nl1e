@@ -166,6 +166,10 @@
       padding: 0 2px; // to align with the header border
       border: 1px solid $colorFaint;
 
+      &.disabled {
+        background-color: $colorBeige;
+      }
+
       .grid {
         margin: 0;
       }

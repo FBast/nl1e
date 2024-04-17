@@ -3,6 +3,20 @@ import {Pl1eChat} from "../../helpers/chat.mjs";
 
 export class Pl1eWeapon extends Pl1eItem {
 
+    /** @inheritDoc **/
+    get isEquipped() {
+        if (this.system.attributes.hands > 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) return false;
+
+        return super.isEquipped;
+    }
+
+    /** @inheritDoc **/
+    get isEnabled() {
+        if (!this.isEquipped) return false;
+
+        return super.isEnabled;
+    }
+
     /** @inheritDoc */
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {
@@ -41,7 +55,7 @@ export class Pl1eWeapon extends Pl1eItem {
             ui.notifications.info(game.i18n.localize("PL1E.NotYourTurn"));
             return false;
         }
-        if (token !== null && this.actor.system.general.action <= 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) {
+        if (token !== null && this.actor.system.general.action <= 0 && !this.isEquipped) {
             ui.notifications.info(game.i18n.localize("PL1E.NoMoreAction"));
             return false;
         }

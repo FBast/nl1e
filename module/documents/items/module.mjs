@@ -2,6 +2,11 @@ import {Pl1eItem} from "./item.mjs";
 
 export class Pl1eModule extends Pl1eItem {
 
+    /** @inheritDoc **/
+    get isEnabled() {
+        return false;
+    }
+
     /** @inheritDoc */
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {

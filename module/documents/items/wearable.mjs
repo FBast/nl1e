@@ -3,6 +3,20 @@ import {Pl1eChat} from "../../helpers/chat.mjs";
 
 export class Pl1eWearable extends Pl1eItem {
 
+    /** @inheritDoc **/
+    get isEquipped() {
+        if (!this.system.isEquipped) return false;
+
+        return super.isEquipped;
+    }
+
+    /** @inheritDoc **/
+    get isEnabled() {
+        if (!this.isEquipped) return false;
+
+        return super.isEnabled;
+    }
+
     /** @override */
     async toggle(options) {
         if (!this._canToggle()) return;

@@ -5,6 +5,20 @@ import {ItemSelector} from "../../apps/itemSelector.mjs";
 export class Pl1eAbility extends Pl1eItem {
 
     /** @inheritDoc */
+    get isUsableAtLevel() {
+        if (this.type === "ability" && this.system.attributes.level > this.actor.system.general.level) return false;
+
+        return super.isUsableAtLevel;
+    }
+
+    /** @inheritDoc **/
+    get isEnabled() {
+        if (!this.isUsableAtLevel) return false;
+
+        return super.isEnabled;
+    }
+
+    /** @inheritDoc */
     async _canActivate(characterData) {
         if (!await super._canActivate(characterData)) return false;
         const itemAttributes = characterData.attributes;

@@ -2,6 +2,7 @@ import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {Pl1eActiveEffect} from "../effect.mjs";
 import {PL1E} from "../../pl1e.mjs";
+import {Pl1eMacro} from "../../helpers/macro.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -48,7 +49,7 @@ export class Pl1eActor extends Actor {
         const items = [];
 
         for (/** @type {Pl1eItem} **/ const item of this.items) {
-            if (item.isDisplayedForActor) items.push(item);
+            if (item.isDisplayed) items.push(item);
         }
 
         return items;
@@ -62,7 +63,7 @@ export class Pl1eActor extends Actor {
         const items = [];
 
         for (/** @type {Pl1eItem} **/ const item of this.items) {
-            if (item.isEnabledForActor) items.push(item);
+            if (item.isEnabled) items.push(item);
         }
 
         return items;
@@ -117,27 +118,34 @@ export class Pl1eActor extends Actor {
     async _onUpdate(changed, options, user) {
         await super._onUpdate(changed, options, user);
 
-        if (!this.isOwner) return;
-
-        // Update actor abilities effects based on level
-        if (changed.system?.general?.experience) {
-            // In case of the level changed then apply or remove effects for enabled or disabled abilities
-            for (/** @type {Pl1eItem} */ const item of this.items.filter(item => item.type === "ability")) {
-                for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                    if (!aspect.createEffect) continue;
-                    if (item.isEnabledForActor) {
-                        await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
-                    }
-                    else {
-                        await Pl1eAspect.removePassiveEffect(aspect, id, this);
+        // Client side only
+        if (game.user.id === user) {
+            // Update the actor based on level
+            if (changed.system?.general?.experience) {
+                // In case of the level changed, then apply or remove effects for enabled or disabled abilities
+                for (/** @type {Pl1eItem} */ const item of this.items.filter(item => item.type === "ability")) {
+                    for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
+                        if (!aspect.createEffect) continue;
+                        if (item.isEnabled) {
+                            await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
+                        }
+                        else {
+                            await Pl1eAspect.removePassiveEffect(aspect, id, this);
+                        }
                     }
                 }
-            }
-        }
 
-        // Add effect based on conditions
-        await Pl1eActiveEffect.toggleStatusEffect(this, "dead", this.isDead);
-        await Pl1eActiveEffect.toggleStatusEffect(this, "unconscious", this.IsUnconscious);
+                // Generate the macros if this actor token is selected
+                const selectedToken = game.canvas.tokens.controlled[0];
+                const token = this.bestToken;
+                if (selectedToken && selectedToken.document === token)
+                    await Pl1eMacro.generateTokenMacros(token);
+            }
+
+            // Add effect based on conditions
+            await Pl1eActiveEffect.toggleStatusEffect(this, "dead", this.isDead);
+            await Pl1eActiveEffect.toggleStatusEffect(this, "unconscious", this.IsUnconscious);
+        }
     }
 
     /** @inheritDoc */
@@ -145,7 +153,7 @@ export class Pl1eActor extends Actor {
         // Apply passive aspects macros
         for (/** @type {Pl1eItem} */ const item of this.items) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                if (!item.isEnabledForActor) continue;
+                if (!item.isEnabled) continue;
                 if (aspect.name === "macro" && aspect.data !== "none" && aspect.dataGroup === "actorPreUpdate") {
                     await Pl1eAspect.applyPassiveMacro(aspect, id, {
                         actor: this,
@@ -210,15 +218,14 @@ export class Pl1eActor extends Actor {
                 fontSize: fontSize,
                 fillColor: fillColor
             }
-            // Display the scrolling text on all client
+            // Display the scrolling text on all clients
             PL1E.socket.executeForEveryone("displayScrollingText", data);
-            Pl1eHelpers.displayScrollingText(data);
         }
     }
 
     /** @inheritDoc */
     async _preDelete(options, user) {
-        // If the actor is the last then update refs
+        // If the actor is the last, then update refs
         for (const item of this.items) {
             await this.removeItem(item);
         }
@@ -227,46 +234,78 @@ export class Pl1eActor extends Actor {
     }
 
     /** @inheritDoc */
+    async _onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
+        super._onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId);
+
+        // Client side only
+        if (game.user.id === userId) {
+            // Generate the macros if this actor token is selected
+            const selectedToken = game.canvas.tokens.controlled[0];
+            const token = this.bestToken;
+            if (selectedToken && selectedToken.document === token)
+                await Pl1eMacro.generateTokenMacros(token);
+        }
+    }
+
+    /** @inheritDoc */
     async _onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
-        // Apply passives effects
-        if (embeddedName === "Item") {
-            for (/** @type {Pl1eItem} */ const item of documents) {
-                for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                    if (!item.isEnabledForActor) continue;
-                    if (!aspect.createEffect) continue;
-                    await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
+        super._onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId);
+
+        // Client side only
+        if (game.user.id === userId) {
+            // Apply passive effects
+            if (embeddedName === "Item") {
+                for (/** @type {Pl1eItem} */ const item of documents) {
+                    for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
+                        if (!item.isEnabled) continue;
+                        if (!aspect.createEffect) continue;
+                        await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
+                    }
                 }
             }
-        }
 
-        // Apply special token effects
-        if (embeddedName === "ActiveEffect") {
-            for (/** @type {Pl1eActiveEffect} */ const activeEffect of documents) {
-                await activeEffect.applyTokenEffect(this);
+            // Apply special token effects
+            if (embeddedName === "ActiveEffect") {
+                for (/** @type {Pl1eActiveEffect} */ const activeEffect of documents) {
+                    await activeEffect.applyTokenEffect(this);
+                }
             }
-        }
 
-        super._onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId);
+            // Generate the macros if this actor token is selected
+            const selectedToken = game.canvas.tokens.controlled[0];
+            const token = this.bestToken;
+            if (selectedToken && selectedToken.document === token)
+                await Pl1eMacro.generateTokenMacros(token);
+        }
     }
 
     /** @inheritDoc */
     async _onDeleteEmbeddedDocuments(embeddedName, documents, result, options, userId) {
-        // Remove passives effects
-        if (embeddedName === "Item") {
-            for (/** @type {Pl1eItem} */ const item of documents) {
-                for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
-                    if (!item.isEnabledForActor) continue;
-                    if (!aspect.createEffect) continue;
-                    await Pl1eAspect.removePassiveEffect(aspect, id, this);
+        // Client side only
+        if (game.user.id === userId) {
+            // Remove passives effects
+            if (embeddedName === "Item") {
+                for (/** @type {Pl1eItem} */ const item of documents) {
+                    for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
+                        if (!item.isEnabled) continue;
+                        if (!aspect.createEffect) continue;
+                        await Pl1eAspect.removePassiveEffect(aspect, id, this);
+                    }
                 }
             }
-        }
 
-        // Remove special token effects
-        if (embeddedName === "ActiveEffect") {
-            for (/** @type {Pl1eActiveEffect} */ const activeEffect of documents) {
-                await activeEffect.removeTokenEffect(this);
+            // Remove special token effects
+            if (embeddedName === "ActiveEffect") {
+                for (/** @type {Pl1eActiveEffect} */ const activeEffect of documents) {
+                    await activeEffect.removeTokenEffect(this);
+                }
             }
+
+            // Generate the macros if this actor token is selected
+            const selectedToken = game.canvas.tokens.controlled[0];
+            const token = this.bestToken;
+            if (selectedToken && selectedToken.document === token)
+                await Pl1eMacro.generateTokenMacros(token);
         }
 
         super._onDeleteEmbeddedDocuments(embeddedName, documents, result, options, userId);

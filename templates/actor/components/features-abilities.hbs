@@ -10,7 +10,7 @@
         </ul>
     </li>
     {{#each abilities}}
-        <li class="item" data-item-id="{{_id}}">
+        <li class="item {{#if (not isEnabled)}}disabled{{/if}}" data-item-id="{{_id}}">
             <div class="item-content grid grid-12col">
                 <div class="item-title grid-span-4 flexrow">
                     <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
@@ -74,9 +74,15 @@
                 </div>
                 <div class="item-controls grid-span-2">
                     {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#unless (eq system.attributes.activation "passive")}}
+                        {{#if (not isUsableAtLevel)}}
+                            <i class="item-control far fa-signal hover-green color-red" data-tooltip="{{localize "PL1E.NotUsableAtYourLevel"}}"></i>
+                        {{/if}}
+                        {{#if (not isEquipped)}}
+                            <i class="item-control far fa-hand hover-green color-red" data-tooltip="{{localize "PL1E.LinkedItemNotEquipped"}}"></i>
+                        {{/if}}
+                        {{#if (and isEnabled (ne system.attributes.activation "passive"))}}
                             <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
-                        {{/unless}}
+                        {{/if}}
                     {{/if}}
                     {{#if @root.actor.isOwner}}
                         {{#if (eq flags.pl1e.childId undefined)}}

@@ -403,85 +403,106 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     async _prepareItem(context, item, sourceIdFlags) {
+        const itemCopy = item.toObject();
         const sourceIdFlag = item.sourceId;
 
         // Merge aspects for each item
-        item.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
-        item.system.combinedActiveAspects = await item.getCombinedActiveAspects();
+        itemCopy.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
+        itemCopy.system.combinedActiveAspects = await item.getCombinedActiveAspects();
 
         // Enriched HTML description
-        item.enriched = await TextEditor.enrichHTML(item.system.description, {
+        itemCopy.enriched = await TextEditor.enrichHTML(item.system.description, {
             secrets: item.isOwner,
             async: true,
             relativeTo: item
         });
 
+        // Base data for the copy
+        itemCopy.sourceId = item.sourceId;
+        itemCopy.realName = item.realName;
+        itemCopy.realImg = item.realImg;
+        itemCopy.units = 1;
+        itemCopy.isEquipped = item.isEquipped;
+        itemCopy.isUsableAtLevel = item.isUsableAtLevel;
+        itemCopy.isEnabled = item.isEnabled;
+
         // Append to background.
         if (["race", "culture", "class", "mastery"].includes(item.type)) {
-            context.background.push(item);
+            context.background.push(itemCopy);
         }
         // Append to features.
         if (item.type === "feature") {
-            context.features.push(item);
+            context.features.push(itemCopy);
         }
         // Append to abilities.
         else if (item.type === "ability") {
             // Increase units
             if (sourceIdFlags.includes(sourceIdFlag)) {
-                const sameItem = context.abilities.find(item => item.sourceId === sourceIdFlag);
-                sameItem.system.units++;
-            } else {
-                context.abilities.push(item);
+                const sameItemCopy = context.abilities.find(item => item.sourceId === sourceIdFlag);
+                sameItemCopy.units++;
             }
-        } else if (item.type === "weapon") {
+            else {
+                context.abilities.push(itemCopy);
+            }
+        }
+        else if (item.type === "weapon") {
             if (this.actor.type === "merchant") {
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = context.weapons.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    context.weapons.push(item);
+                    const sameItemCopy = context.weapons.find(item => item.sourceId === sourceIdFlag);
+                    sameItemCopy.units++;
+                }
+                else {
+                    context.weapons.push(itemCopy);
                 }
             }
             else {
-                context.weapons.push(item);
+                context.weapons.push(itemCopy);
             }
-        } else if (item.type === "wearable") {
+        }
+        else if (item.type === "wearable") {
             if (this.actor.type === "merchant") {
                 // Increase units
                 if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItem = context.wearables.find(item => item.sourceId === sourceIdFlag);
-                    sameItem.system.units++;
-                } else {
-                    context.wearables.push(item);
+                    const sameItemCopy = context.wearables.find(item => item.sourceId === sourceIdFlag);
+                    sameItemCopy.units++;
+                }
+                else {
+                    context.wearables.push(itemCopy);
                 }
             }
             else {
-                context.wearables.push(item);
+                context.wearables.push(itemCopy);
             }
-        } else if (item.type === "consumable") {
+        }
+        else if (item.type === "consumable") {
             // Increase units
             if (sourceIdFlags.includes(sourceIdFlag)) {
-                const sameItem = context.consumables.find(item => item.sourceId === sourceIdFlag);
-                sameItem.system.units++;
-            } else {
-                context.consumables.push(item);
+                const sameItemCopy = context.consumables.find(item => item.sourceId === sourceIdFlag);
+                sameItemCopy.units++;
             }
-        } else if (item.type === "common") {
+            else {
+                context.consumables.push(itemCopy);
+            }
+        }
+        else if (item.type === "common") {
             // Increase units
             if (sourceIdFlags.includes(sourceIdFlag)) {
-                const sameItem = context.commons.find(item => item.sourceId === sourceIdFlag);
-                sameItem.system.units++;
-            } else {
-                context.commons.push(item);
+                const sameItemCopy = context.commons.find(item => item.sourceId === sourceIdFlag);
+                sameItemCopy.units++;
             }
-        } else if (item.type === "module") {
+            else {
+                context.commons.push(itemCopy);
+            }
+        }
+        else if (item.type === "module") {
             // Increase units
             if (sourceIdFlags.includes(sourceIdFlag)) {
-                const sameItem = context.modules.find(item => item.sourceId === sourceIdFlag);
-                sameItem.system.units++;
-            } else {
-                context.modules.push(item);
+                const sameItemCopy = context.modules.find(item => item.sourceId === sourceIdFlag);
+                sameItemCopy.units++;
+            }
+            else {
+                context.modules.push(itemCopy);
             }
         }
 
@@ -493,84 +514,83 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /**
      * Determine whether an Owned Document will be shown based on the current set of filters.
-     * @param {object[]} documents   Copies of documents data to be filtered.
-     * @param {Set<string>} filters  Filters applied to the item list.
-     * @returns {object[]}           Subset of input documents limited by the provided filters.
+     * @param {object[]} documents   Copies of objects data to be filtered.
+     * @param {Set<string>} filters  Filters applied to the object list.
+     * @returns {object[]}           Subset of input objects limited by the provided filters.
      * @protected
      */
     _filterDocuments(documents, filters) {
         return documents.filter(item => {
-            if (item.parentCollection === "items") {
-                switch (item.type) {
-                    case "race": {
-                        if (filters.has("race")) return false;
-                        break;
+            switch (item.type) {
+                case "race": {
+                    if (filters.has("race")) return false;
+                    break;
+                }
+                case "culture": {
+                    if (filters.has("culture")) return false;
+                    break;
+                }
+                case "class": {
+                    if (filters.has("class")) return false;
+                    break;
+                }
+                case "mastery": {
+                    if (filters.has("mastery")) return false;
+                    break;
+                }
+                case "feature": {
+                    for (const featureType of Object.keys(PL1E.featureTypes)) {
+                        if (filters.has(featureType) && (item.system.attributes.featureType === featureType)) return false;
                     }
-                    case "culture": {
-                        if (filters.has("culture")) return false;
-                        break;
+                    break;
+                }
+                case "ability": {
+                    for (const activation of Object.keys(PL1E.activations)) {
+                        if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
                     }
-                    case "class": {
-                        if (filters.has("class")) return false;
-                        break;
+                    break;
+                }
+                case "weapon": {
+                    const isEquipped = item.system.isEquippedMain || item.system.isEquippedSecondary;
+                    if (filters.has("equipped") && isEquipped) return false;
+                    if (filters.has("melee") && item.system.attributes.meleeUse) return false;
+                    if (filters.has("ranged") && item.system.attributes.rangedUse) return false;
+                    if (filters.has("magic") && item.system.attributes.magicUse) return false;
+                    break;
+                }
+                case "wearable": {
+                    if (filters.has("equipped") && item.system.isEquipped) return false;
+                    for (const slot of Object.keys(PL1E.slots)) {
+                        if (filters.has(slot) && (item.system.attributes.slot === slot)) return false;
                     }
-                    case "mastery": {
-                        if (filters.has("mastery")) return false;
-                        break;
+                    break;
+                }
+                case "consumable": {
+                    for (const activation of Object.keys(PL1E.consumableActivations)) {
+                        if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
                     }
-                    case "feature": {
-                        for (const featureType of Object.keys(PL1E.featureTypes)) {
-                            if (filters.has(featureType) && (item.system.attributes.featureType === featureType)) return false;
-                        }
-                        break;
+                    break;
+                }
+                case "common": {
+                    for (const commonType of Object.keys(PL1E.commonTypes)) {
+                        if (filters.has(commonType) && (item.system.attributes.commonType === commonType)) return false;
                     }
-                    case "ability": {
-                        for (const activation of Object.keys(PL1E.activations)) {
-                            if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
-                        }
-                        break;
+                    break;
+                }
+                case "module": {
+                    for (const moduleType of Object.keys(PL1E.moduleTypes)) {
+                        if (filters.has(moduleType) && (item.system.attributes.moduleTypes.includes(moduleType))) return false;
                     }
-                    case "weapon": {
-                        if (filters.has("equipped") && item.isEnabled) return false;
-                        if (filters.has("melee") && item.system.attributes.meleeUse) return false;
-                        if (filters.has("ranged") && item.system.attributes.rangedUse) return false;
-                        if (filters.has("magic") && item.system.attributes.magicUse) return false;
-                        break;
-                    }
-                    case "wearable": {
-                        if (filters.has("equipped") && item.isEnabled) return false;
-                        for (const slot of Object.keys(PL1E.slots)) {
-                            if (filters.has(slot) && (item.system.attributes.slot === slot)) return false;
-                        }
-                        break;
-                    }
-                    case "consumable": {
-                        for (const activation of Object.keys(PL1E.consumableActivations)) {
-                            if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
-                        }
-                        break;
-                    }
-                    case "common": {
-                        for (const commonType of Object.keys(PL1E.commonTypes)) {
-                            if (filters.has(commonType) && (item.system.attributes.commonType === commonType)) return false;
-                        }
-                        break;
-                    }
-                    case "module": {
-                        for (const moduleType of Object.keys(PL1E.moduleTypes)) {
-                            if (filters.has(moduleType) && (item.system.attributes.moduleTypes.includes(moduleType))) return false;
-                        }
-                        break;
-                    }
+                    break;
+                }
+                default: {
+                    if (filters.has("passive") && item.flags?.pl1e?.permanent) return false;
+                    if (filters.has("temporary") && !item.flags?.pl1e?.permanent) return false;
+                    if (filters.has("inactive") && item.disabled) return false;
                 }
             }
-            else if (item.parentCollection === "effects") {
-                if (filters.has("passive") && item.flags?.pl1e?.permanent) return false;
-                if (filters.has("temporary") && item.duration.label) return false;
-                if (filters.has("inactive") && item.disabled) return false;
-            }
             return true;
-        });
+        })
     }
 
     async _prepareRollTables(context) {

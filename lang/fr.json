@@ -17,6 +17,8 @@
   "PL1E.AcrobaticsImplosion": "Implosion sur Acrobatie",
   "PL1E.Action": "Action",
   "PL1E.ActionCost": "Cout en action",
+  "PL1E.LinkedItemNotEquipped": "Objet lié non équipé",
+  "PL1E.NotUsableAtYourLevel": "Non utilisable à votre niveau",
   "PL1E.GMControls": "Contrôles du MJ",
   "PL1E.ManagePlayers": "Gérer les Joueurs",
   "PL1E.StartSleeping": "Commencer un Repos",
