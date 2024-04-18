@@ -56,7 +56,8 @@ export class Pl1eMacro {
         let slot = 1; // Start assigning macros from slot 1
 
         // Filter items
-        let items = token.actor.enabledItems.filter(item => (item.type === "ability" || item.type === "consumable")
+        let items = token.actor.enabledItems.filter(item =>
+            (item.type === "ability" || item.type === "consumable")
             && item.system.attributes.activation !== "passive");
 
         // Remove duplicates

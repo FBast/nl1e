@@ -346,11 +346,26 @@ export class Pl1eActorSheet extends ActorSheet {
         context.commons = [];
         context.modules = [];
 
-        // Process and categorize items
-        const sourceIdFlags = [];
-        for (const item of context.items) {
-            await this._prepareItem(context, item, sourceIdFlags);
-        }
+        const typeToCollectionMap = {
+            'race': 'background',
+            'culture': 'background',
+            'class': 'background',
+            'mastery': 'background',
+            'feature': 'features',
+            'ability': 'abilities',
+            'weapon': 'weapons',
+            'wearable': 'wearables',
+            'consumable': 'consumables',
+            'common': 'commons',
+            'module': 'modules'
+        };
+
+
+        // Categorize all items into their respective collections
+        await this._categorizeItems(context, typeToCollectionMap);
+
+        // Once all items are categorized, proceed to filter them
+        await this._filterItems(context, typeToCollectionMap, this.actor);
 
         // Apply feature and capacities filters
         context.background = this._filterDocuments(context.background, this._filters.background);
@@ -402,113 +417,99 @@ export class Pl1eActorSheet extends ActorSheet {
         context.modules = documents.modules;
     }
 
-    async _prepareItem(context, item, sourceIdFlags) {
-        const itemCopy = item.toObject();
-        const sourceIdFlag = item.sourceId;
+    async _categorizeItems(context, typeToCollectionMap) {
+        for (const item of context.items) {
+            const itemCopy = item.toObject();
+            itemCopy.sourceId = item.sourceId;
+            itemCopy.realName = item.realName;
+            itemCopy.realImg = item.realImg;
+            itemCopy.isEquipped = item.isEquipped;
+            itemCopy.isUsableAtLevel = item.isUsableAtLevel;
+            itemCopy.isEnabled = item.isEnabled;
 
-        // Merge aspects for each item
-        itemCopy.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
-        itemCopy.system.combinedActiveAspects = await item.getCombinedActiveAspects();
+            // Add combined aspects
+            itemCopy.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
+            itemCopy.system.combinedActiveAspects = await item.getCombinedActiveAspects();
 
-        // Enriched HTML description
-        itemCopy.enriched = await TextEditor.enrichHTML(item.system.description, {
-            secrets: item.isOwner,
-            async: true,
-            relativeTo: item
-        });
+            // Add enriched HTML
+            itemCopy.enriched = await TextEditor.enrichHTML(item.system.description, {
+                secrets: item.isOwner,
+                async: true,
+                relativeTo: item
+            });
 
-        // Base data for the copy
-        itemCopy.sourceId = item.sourceId;
-        itemCopy.realName = item.realName;
-        itemCopy.realImg = item.realImg;
-        itemCopy.units = 1;
-        itemCopy.isEquipped = item.isEquipped;
-        itemCopy.isUsableAtLevel = item.isUsableAtLevel;
-        itemCopy.isEnabled = item.isEnabled;
-
-        // Append to background.
-        if (["race", "culture", "class", "mastery"].includes(item.type)) {
-            context.background.push(itemCopy);
-        }
-        // Append to features.
-        if (item.type === "feature") {
-            context.features.push(itemCopy);
-        }
-        // Append to abilities.
-        else if (item.type === "ability") {
-            // Increase units
-            if (sourceIdFlags.includes(sourceIdFlag)) {
-                const sameItemCopy = context.abilities.find(item => item.sourceId === sourceIdFlag);
-                sameItemCopy.units++;
-            }
-            else {
-                context.abilities.push(itemCopy);
+            // Append item copy based on its type to the respective category
+            const collectionKey = typeToCollectionMap[itemCopy.type];
+            if (collectionKey) {
+                context[collectionKey].push(itemCopy);
+            } else {
+                console.warn(`Unrecognized item type: ${itemCopy.type}`);
             }
         }
-        else if (item.type === "weapon") {
-            if (this.actor.type === "merchant") {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItemCopy = context.weapons.find(item => item.sourceId === sourceIdFlag);
-                    sameItemCopy.units++;
+    }
+
+    async _filterItems(context, typeToCollectionMap, actor) {
+        const getItemPriority = (item) => {
+            if (item.isEnabled) return 1;
+            if (item.isEquipped) return 2;
+            if (item.isUsableAtLevel) return 3;
+            return 4; // Lower is higher priority
+        };
+
+        // Comprehensive check for whether to accumulate units
+        const shouldAccumulate = (existingItem, newItem) => {
+            // Define types for which duplicates should not accumulate units if not a merchant
+            const noAccumulateTypes = actor.type !== "merchant" ? ['weapon', 'wearable'] : [];
+
+            // Prevent accumulation for specific types based on an actor type
+            if (noAccumulateTypes.includes(newItem.type)) return false;
+
+            // Extendable checks for other conditions
+            if (existingItem.system.removedUses !== newItem.system.removedUses) return false;
+            if (newItem.system.attributes.customizable) return false;
+
+            return true; // Accumulate by default if none of the conditions apply
+        };
+
+        // Iterate over each type of item collection
+        for (const [type, collectionKey] of Object.entries(typeToCollectionMap)) {
+            const collection = context[collectionKey];
+            if (!collection) continue;
+
+            let processedItems = [];
+
+            // Process each item
+            for (const item of collection) {
+                item.units = 1; // Reset units for each item processed
+                let foundPlace = false;
+
+                for (let i = 0; i < processedItems.length; i++) {
+                    const existingItem = processedItems[i];
+
+                    if (existingItem.sourceId === item.sourceId) {
+                        if (shouldAccumulate(existingItem, item)) {
+                            if (getItemPriority(item) < getItemPriority(existingItem)) {
+                                // Higher priority item found, replace existing item and accumulate units
+                                item.units += existingItem.units;
+                                processedItems[i] = item; // Replace with the new item
+                            } else {
+                                // Accumulate units to the existing item
+                                existingItem.units += item.units;
+                            }
+                            foundPlace = true;
+                            break;
+                        }
+                    }
                 }
-                else {
-                    context.weapons.push(itemCopy);
-                }
-            }
-            else {
-                context.weapons.push(itemCopy);
-            }
-        }
-        else if (item.type === "wearable") {
-            if (this.actor.type === "merchant") {
-                // Increase units
-                if (sourceIdFlags.includes(sourceIdFlag)) {
-                    const sameItemCopy = context.wearables.find(item => item.sourceId === sourceIdFlag);
-                    sameItemCopy.units++;
-                }
-                else {
-                    context.wearables.push(itemCopy);
-                }
-            }
-            else {
-                context.wearables.push(itemCopy);
-            }
-        }
-        else if (item.type === "consumable") {
-            // Increase units
-            if (sourceIdFlags.includes(sourceIdFlag)) {
-                const sameItemCopy = context.consumables.find(item => item.sourceId === sourceIdFlag);
-                sameItemCopy.units++;
-            }
-            else {
-                context.consumables.push(itemCopy);
-            }
-        }
-        else if (item.type === "common") {
-            // Increase units
-            if (sourceIdFlags.includes(sourceIdFlag)) {
-                const sameItemCopy = context.commons.find(item => item.sourceId === sourceIdFlag);
-                sameItemCopy.units++;
-            }
-            else {
-                context.commons.push(itemCopy);
-            }
-        }
-        else if (item.type === "module") {
-            // Increase units
-            if (sourceIdFlags.includes(sourceIdFlag)) {
-                const sameItemCopy = context.modules.find(item => item.sourceId === sourceIdFlag);
-                sameItemCopy.units++;
-            }
-            else {
-                context.modules.push(itemCopy);
-            }
-        }
 
-        // Handle sourceId flags for duplicates
-        if (!sourceIdFlags.includes(sourceIdFlag)) {
-            sourceIdFlags.push(sourceIdFlag);
+                if (!foundPlace) {
+                    // No existing item found to accumulate or replace, add new
+                    processedItems.push(item);
+                }
+            }
+
+            // Update the collection with processed items
+            collection.splice(0, collection.length, ...processedItems);
         }
     }
 
