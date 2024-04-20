@@ -6,16 +6,32 @@ export class Pl1eAbility extends Pl1eItem {
 
     /** @inheritDoc */
     get isUsableAtLevel() {
-        if (this.type === "ability" && this.system.attributes.level > this.actor.system.general.level) return false;
+        if (this.system.attributes.level > this.actor.system.general.level) return false;
 
         return super.isUsableAtLevel;
     }
 
-    /** @inheritDoc **/
+    /** @inheritDoc */
     get isEnabled() {
         if (!this.isUsableAtLevel) return false;
+        if (this.system.attributes.linkedUsageCost > 0 && !this.isReloaded) return false;
+        if (this.system.attributes.isMajorAction && !this.isMajorActionAvailable) return false;
+        if (!this.isActionAvailable) return false;
+        if (!this.isReactionAvailable) return false;
+        if (!this.isQuickActionAvailable) return false;
 
         return super.isEnabled;
+    }
+
+    /** @inheritDoc */
+    get warnings() {
+        const warnings = super.warnings;
+
+        if (!this.isEquipped) warnings.push("PL1E.LinkedItemNotEquipped");
+        if (this.system.attributes.linkedUsageCost > 0 && !this.isReloaded) warnings.push("PL1E.LinkedItemNotReloaded");
+        if (this.system.attributes.isMajorAction && !this.isMajorActionAvailable) warnings.push("PL1E.LinkedItemMajorActionUsed");
+
+        return warnings;
     }
 
     /** @inheritDoc */
@@ -110,7 +126,7 @@ export class Pl1eAbility extends Pl1eItem {
             const parentItem = item.linkableParentItem;
             // If no parent then skip
             if (!parentItem) continue;
-            // Need major action that is already used
+            // Major action is already used
             if (characterData.attributes.isMajorAction && parentItem.system.majorActionUsed) continue;
             // Weapon mode is melee but parent does not use melee
             if (characterData.attributes.weaponMode === "melee" && parentItem.system.attributes.meleeUse !== undefined

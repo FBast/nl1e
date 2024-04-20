@@ -4,16 +4,13 @@
             <label class="item-name">{{localize "PL1E.Weapons"}}</label>
         </div>
         <ul class="item-filter-list grid-span-8" data-filter="weapons">
-            {{#unless (eq @root.actor.type "merchant")}}
-                <li class="item-filter" data-filter="equipped">{{localize "PL1E.Equipped"}}</li>
-            {{/unless}}
             {{#each (config "weaponUsages")}}
                 <li class="item-filter" data-filter="{{@key}}">{{localize this}}</li>
             {{/each}}
         </ul>
     </li>
     {{#each weapons}}
-        <li class="item" data-item-id="{{_id}}">
+        <li class="item {{#if (not isEnabled)}}disabled{{/if}}" data-item-id="{{_id}}">
             <div class="item-content grid grid-12col">
                 <div class="item-title grid-span-4 flexrow">
                     <img class="item-image item-edit hover-red" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
@@ -123,6 +120,9 @@
                 </div>
                 <div class="item-controls grid-span-2">
                     {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                        {{#if (gt (length warnings) 0)}}
+                            <i class="item-control far fa-exclamation-triangle hover-green color-red" data-tooltip="{{join warnings ', ' true}}"></i>
+                        {{/if}}
                         {{#if (gt system.attributes.hands 0)}}
                             <a class="item-control item-toggle" data-main='false' data-tooltip='{{localize "PL1E.EquipSecondary"}}'>
                                 <i class="fas fa-hand icon-flipped {{#unless system.isEquippedSecondary}}color-grey{{/unless}}"></i>

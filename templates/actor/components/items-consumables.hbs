@@ -10,7 +10,7 @@
         </ul>
     </li>
     {{#each consumables}}
-        <li class="item" data-item-id="{{_id}}">
+        <li class="item {{#if (not isEnabled)}}disabled{{/if}}" data-item-id="{{_id}}">
             <div class="item-content grid grid-12col">
                 <div class="item-title grid-span-4 flexrow">
                     <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
@@ -51,11 +51,6 @@
                     {{#if (ne system.attributes.manaCost 0)}}
                         <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaCost"}}'>
                             <label>{{system.attributes.manaCost}}</label>
-                        </i>
-                    {{/if}}
-                    {{#if (ne system.attributes.usageCost 0)}}
-                        <i class="item-info far fa-tally hover-green" data-tooltip='{{localize "PL1E.UsageCost"}}'>
-                            <label>{{system.attributes.usageCost}}</label>
                         </i>
                     {{/if}}
                     {{#if system.attributes.isMajorAction}}
@@ -120,16 +115,17 @@
                 </div>
                 <div class="item-controls grid-span-2">
                     {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                        {{#if (not isReloaded)}}
+                            <i class="item-control far fa-repeat hover-green color-red" data-tooltip="{{localize "PL1E.NotReloaded"}}"></i>
+                        {{/if}}
                         {{#if (and (ne system.removedUses 0) system.attributes.isReloadable)}}
                             <a class="item-control item-reload" data-tooltip='{{localize "PL1E.Reload"}}'>
                                 <i class="fas fa-repeat"></i>
                             </a>
                         {{/if}}
-                    {{/if}}
-                    {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#unless (eq system.attributes.uses system.removedUses)}}
+                        {{#if isEnabled}}
                             <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
-                        {{/unless}}
+                        {{/if}}
                     {{/if}}
                     {{#if @root.actor.isOwner}}
                         {{#if flags.pl1e.childId}}

@@ -63,33 +63,42 @@ export class Pl1eMacro {
         // Remove duplicates
         let uniqueItems = [];
         const existingSourceId = new Set();
-        for (const ability of items) {
-            if (existingSourceId.has(ability.sourceId)) continue;
-            uniqueItems.push(ability);
-            existingSourceId.add(ability.sourceId);
+        for (const item of items) {
+            if (!existingSourceId.has(item.sourceId)) {
+                uniqueItems.push(item);
+                existingSourceId.add(item.sourceId);
+            }
         }
+
+        // Create an object structured appropriately for sortDocuments
+        let documents = {
+            abilities: uniqueItems.filter(item => item.type === "ability"),
+            consumables: uniqueItems.filter(item => item.type === "consumable")
+        };
 
         // Sort each type of item
-        items = Pl1eHelpers.sortDocuments(uniqueItems);
+        documents = Pl1eHelpers.sortDocuments(documents);
 
-        for (let item of items) {
-            // Create dropData structure for each filtered item
-            const dropData = {
-                type: "Item",
-                data: item,
-                id: item.id
-            };
+        // Iterate through sorted items to create macros
+        for (let type in documents) {
+            for (let item of documents[type]) {
+                const dropData = {
+                    type: "Item",
+                    data: item,
+                    id: item.id
+                };
 
-            // Proceed to create and assign the macro for this item
-            await Pl1eMacro.createMacro(dropData, slot, {
-                "pl1e.isDynamic": true
-            });
+                // Create and assign the macro for this item
+                await Pl1eMacro.createMacro(dropData, slot, {
+                    "pl1e.isDynamic": true
+                });
 
-            // Increment slot for the next item/macro, consider logic for slot management here
-            slot++;
+                // Increment the slot for the next item/macro
+                slot++;
+            }
         }
 
-        // Clear other slots
+        // Clear additional slots if necessary
         for (let i = slot; i <= 50; i++) {
             await game.user.assignHotbarMacro(null, i);
         }

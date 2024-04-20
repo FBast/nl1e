@@ -3,6 +3,16 @@ import {Pl1eChat} from "../../helpers/chat.mjs";
 
 export class Pl1eWeapon extends Pl1eItem {
 
+    /**
+     * Check if the item need to be reloaded
+     * @return {*|boolean}
+     */
+    get isReloaded() {
+        if (this.system.attributes.uses > 0 && this.system.removedUses >= this.system.attributes.uses) return false;
+
+        return super.isReloaded;
+    }
+
     /** @inheritDoc **/
     get isEquipped() {
         if (this.system.attributes.hands > 0 && !this.system.isEquippedMain && !this.system.isEquippedSecondary) return false;
@@ -15,6 +25,16 @@ export class Pl1eWeapon extends Pl1eItem {
         if (!this.isEquipped) return false;
 
         return super.isEnabled;
+    }
+
+    /** @inheritDoc */
+    get warnings() {
+        const warnings = super.warnings;
+
+        if (!this.isReloaded) warnings.push("PL1E.NotReloaded");
+        if (!this.isMajorActionAvailable) warnings.push("PL1E.MajorActionUsed");
+
+        return warnings;
     }
 
     /** @inheritDoc */

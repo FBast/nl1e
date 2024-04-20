@@ -4,9 +4,6 @@
             <label class="item-name">{{localize "PL1E.Wearables"}}</label>
         </div>
         <ul class="item-filter-list grid-span-8" data-filter="wearables">
-            {{#unless (eq @root.actor.type "merchant")}}
-                <li class="item-filter" data-filter="equipped">{{localize "PL1E.Equipped"}}</li>
-            {{/unless}}
             <li class="item-filter" data-filter="garment">{{localize "PL1E.Garment"}}</li>
             <li class="item-filter" data-filter="armor">{{localize "PL1E.Armor"}}</li>
             <li class="item-filter" data-filter="ring">{{localize "PL1E.Ring"}}</li>
@@ -15,7 +12,7 @@
         </ul>
     </li>
     {{#each wearables}}
-        <li class="item" data-item-id="{{_id}}">
+        <li class="item {{#if (not isEnabled)}}disabled{{/if}}" data-item-id="{{_id}}">
             <div class="item-content grid grid-12col">
                 <div class="item-title grid-span-4 flexrow">
                     <img class="item-image item-edit hover-red" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
@@ -76,6 +73,9 @@
                 </div>
                 <div class="item-controls grid-span-2">
                     {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                        {{#if (gt (length warnings) 0)}}
+                            <i class="item-control far fa-exclamation-triangle hover-green color-red" data-tooltip="{{join warnings ', ' true}}"></i>
+                        {{/if}}
                         {{#if (eq system.attributes.slot "garment")}}
                             <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
                                 <i class="fas fa-shirt-long-sleeve {{#unless system.isEquipped}}color-grey{{/unless}}"></i>

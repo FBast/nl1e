@@ -27,6 +27,9 @@
                             <i class="fas fa-trash"></i>
                         </a>
                     {{/if}}
+                    {{#if (gt (length warnings) 0)}}
+                        <i class="item-info far fa-exclamation-triangle hover-green color-red" data-tooltip="{{join warnings ', ' true}}"></i>
+                    {{/if}}
                 {{/if}}
             </div>
         {{/each}}

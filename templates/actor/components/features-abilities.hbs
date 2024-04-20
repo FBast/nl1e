@@ -74,14 +74,13 @@
                 </div>
                 <div class="item-controls grid-span-2">
                     {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#if (not isUsableAtLevel)}}
-                            <i class="item-control far fa-signal hover-green color-red" data-tooltip="{{localize "PL1E.NotUsableAtYourLevel"}}"></i>
-                        {{/if}}
-                        {{#if (not isEquipped)}}
-                            <i class="item-control far fa-hand hover-green color-red" data-tooltip="{{localize "PL1E.LinkedItemNotEquipped"}}"></i>
-                        {{/if}}
-                        {{#if (and isEnabled (ne system.attributes.activation "passive"))}}
-                            <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
+                        {{log warnings}}
+                        {{#if isEnabled}}
+                            {{#if (ne system.attributes.activation "passive")}}
+                                <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
+                            {{/if}}
+                        {{else if (gt (length warnings) 0)}}
+                            <i class="item-control far fa-exclamation-triangle hover-green color-red" data-tooltip="{{join warnings ', ' true}}"></i>
                         {{/if}}
                     {{/if}}
                     {{#if @root.actor.isOwner}}

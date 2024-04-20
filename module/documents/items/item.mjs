@@ -56,6 +56,57 @@ export class Pl1eItem extends Item {
     }
 
     /**
+     * Check if the item need to be reloaded
+     * @return {*|boolean}
+     */
+    get isReloaded() {
+        // Recursive check on parents
+        return this.parentItem ? this.parentItem.isReloaded : true;
+    }
+
+    /**
+     * Check if the item major action as been used
+     * @return {*|boolean}
+     */
+    get isMajorActionAvailable() {
+        // If this is a key or a container, it cannot be used for a major action
+        if (this.behavior === "key" && this.behavior === "container") return false;
+
+        // If the major action as been used
+        if (this.system.majorActionUsed) return false;
+
+        // Recursive check on parents
+        return this.parentItem ? this.parentItem.isMajorActionAvailable : true;
+    }
+
+    /**
+     * Check if the item action can be spent
+     * @return {boolean}
+     */
+    get isActionAvailable() {
+        return !(this.system.attributes.activation === "action"
+            && this.actor.system.general.action < this.system.attributes.actionCost);
+    }
+
+    /**
+     * Check if the item reaction can be spent
+     * @return {boolean}
+     */
+    get isReactionAvailable() {
+        return !(this.system.attributes.activation === "reaction"
+            && this.actor.system.general.reaction < this.system.attributes.reactionCost);
+    }
+
+    /**
+     * Check if the item quick action can be spent
+     * @return {boolean}
+     */
+    get isQuickActionAvailable() {
+        return !(this.system.attributes.activation === "quickAction"
+            && this.actor.system.general.quickAction < this.system.attributes.quickActionCost);
+    }
+
+    /**
      * Check if the item should be displayed
      * @return {boolean}
      */
@@ -68,6 +119,21 @@ export class Pl1eItem extends Item {
 
         // Recursive check on parents
         return this.parentItem ? this.parentItem.isDisplayed : true;
+    }
+
+    /**
+     * Get warning about the item
+     * @return {*[]}
+     */
+    get warnings() {
+        const warnings = [];
+
+        if (!this.isUsableAtLevel) warnings.push("PL1E.NotUsableAtYourLevel");
+        if (!this.isActionAvailable) warnings.push("PL1E.NoMoreAction");
+        if (!this.isReactionAvailable) warnings.push("PL1E.NoMoreReaction");
+        if (!this.isQuickActionAvailable) warnings.push("PL1E.NoMoreQuickAction");
+
+        return warnings;
     }
 
     /**

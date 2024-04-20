@@ -211,8 +211,8 @@ export class Pl1eActorSheet extends ActorSheet {
     _initializeFilterItemList(i, ul) {
         const set = this._filters[ul.dataset.filter];
         const filters = ul.querySelectorAll(".item-filter");
-        for ( let li of filters ) {
-            if ( set.has(li.dataset.filter) ) li.classList.add("active");
+        for (let li of filters) {
+            if (set.has(li.dataset.filter)) li.classList.add("active");
         }
     }
 
@@ -423,8 +423,7 @@ export class Pl1eActorSheet extends ActorSheet {
             itemCopy.sourceId = item.sourceId;
             itemCopy.realName = item.realName;
             itemCopy.realImg = item.realImg;
-            itemCopy.isEquipped = item.isEquipped;
-            itemCopy.isUsableAtLevel = item.isUsableAtLevel;
+            itemCopy.warnings = item.warnings;
             itemCopy.isEnabled = item.isEnabled;
 
             // Add combined aspects
@@ -452,8 +451,13 @@ export class Pl1eActorSheet extends ActorSheet {
         const getItemPriority = (item) => {
             if (item.isEnabled) return 1;
             if (item.isEquipped) return 2;
-            if (item.isUsableAtLevel) return 3;
-            return 4; // Lower is higher priority
+            if (item.isReloaded) return 3;
+            if (item.isActionUsed) return 4;
+            if (item.isReactionUsed) return 5;
+            if (item.isQuickActionUsed) return 6;
+            if (item.isMajorActionAvailable) return 7;
+            if (item.isUsableAtLevel) return 8;
+            return 9; // Lower is higher priority
         };
 
         // Comprehensive check for whether to accumulate units
@@ -552,18 +556,17 @@ export class Pl1eActorSheet extends ActorSheet {
                     break;
                 }
                 case "weapon": {
-                    const isEquipped = item.system.isEquippedMain || item.system.isEquippedSecondary;
-                    if (filters.has("equipped") && isEquipped) return false;
                     if (filters.has("melee") && item.system.attributes.meleeUse) return false;
                     if (filters.has("ranged") && item.system.attributes.rangedUse) return false;
                     if (filters.has("magic") && item.system.attributes.magicUse) return false;
+                    if (filters.has("equipped") && item.isEquipped) return false;
                     break;
                 }
                 case "wearable": {
-                    if (filters.has("equipped") && item.system.isEquipped) return false;
                     for (const slot of Object.keys(PL1E.slots)) {
                         if (filters.has(slot) && (item.system.attributes.slot === slot)) return false;
                     }
+                    if (filters.has("equipped") && item.isEquipped) return false;
                     break;
                 }
                 case "consumable": {

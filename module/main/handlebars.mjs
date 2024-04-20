@@ -42,8 +42,9 @@ export const registerHandlebars = function () {
         return Handlebars.helpers.selectOptions(modifiedChoices, options);
     });
 
-    Handlebars.registerHelper('join', function(arr, separator) {
-        return arr.join(separator);
+    Handlebars.registerHelper('join', function(arr, separator, localize = false) {
+        const processedArray = localize ? arr.map(item => game.i18n.localize(item)) : arr;
+        return processedArray.join(separator);
     });
 
     Handlebars.registerHelper('length', function(arr) {
