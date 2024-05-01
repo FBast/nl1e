@@ -266,6 +266,7 @@ export class Pl1eItem extends Item {
             sceneId: token?.parent.id,
             item: this,
             itemId: this._id,
+            userId : game.userId,
             attributes: {...this.system.attributes},
             activeAspects: {...await this.getCombinedActiveAspects()},
             templates: [],

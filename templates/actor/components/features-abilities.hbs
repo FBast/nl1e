@@ -74,7 +74,6 @@
                 </div>
                 <div class="item-controls grid-span-2">
                     {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{log warnings}}
                         {{#if isEnabled}}
                             {{#if (ne system.attributes.activation "passive")}}
                                 <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>

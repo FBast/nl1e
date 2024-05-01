@@ -499,6 +499,12 @@ export class Pl1eAspect {
                 disposition: characterData.token.disposition
             });
 
+            // Set invoker as the owner
+            tokenData.permission = {
+                default: CONST.DOCUMENT_PERMISSION_LEVELS.NONE, // No permission for others
+                [characterData.userId]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER // Full permission for specific user
+            };
+
             // Create the token
             let token = await characterData.scene.createEmbeddedDocuments("Token", [tokenData]);
             token = token[0];

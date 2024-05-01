@@ -27,6 +27,7 @@
  * @property {string | null} sceneId The id of the scene where the token is
  * @property {Pl1eItem} item The item itself
  * @property {string} itemId The item id
+ * @property {string} userId The user id
  * @property {RollData} rollData The roll data of the character
  * @property {number} result The result of the rollData
  * @property {object} attributes The attributes of the item
