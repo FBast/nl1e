@@ -55,45 +55,48 @@ export class Pl1eMacro {
     static async generateTokenMacros(token) {
         let slot = 1; // Start assigning macros from slot 1
 
-        // Filter items
-        let items = token.actor.enabledItems.filter(item => (item.type === "ability"
+        // Generate token macros for character or npc types
+        if (["character", "npc"].includes(token.actor.type)) {
+            // Filter items
+            let items = token.actor.enabledItems.filter(item => (item.type === "ability"
                 && item.system.attributes.activation !== "passive") || item.type === "consumable");
 
-        // Remove duplicates
-        let uniqueItems = [];
-        const existingSourceId = new Set();
-        for (const item of items) {
-            if (!existingSourceId.has(item.sourceId)) {
-                uniqueItems.push(item);
-                existingSourceId.add(item.sourceId);
+            // Remove duplicates
+            let uniqueItems = [];
+            const existingSourceId = new Set();
+            for (const item of items) {
+                if (!existingSourceId.has(item.sourceId)) {
+                    uniqueItems.push(item);
+                    existingSourceId.add(item.sourceId);
+                }
             }
-        }
 
-        // Create an object structured appropriately for sortDocuments
-        let documents = {
-            abilities: uniqueItems.filter(item => item.type === "ability"),
-            consumables: uniqueItems.filter(item => item.type === "consumable")
-        };
+            // Create an object structured appropriately for sortDocuments
+            let documents = {
+                abilities: uniqueItems.filter(item => item.type === "ability"),
+                consumables: uniqueItems.filter(item => item.type === "consumable")
+            };
 
-        // Sort each type of item
-        documents = Pl1eHelpers.sortDocuments(documents);
+            // Sort each type of item
+            documents = Pl1eHelpers.sortDocuments(documents);
 
-        // Iterate through sorted items to create macros
-        for (let type in documents) {
-            for (let item of documents[type]) {
-                const dropData = {
-                    type: "Item",
-                    data: item,
-                    id: item.id
-                };
+            // Iterate through sorted items to create macros
+            for (let type in documents) {
+                for (let item of documents[type]) {
+                    const dropData = {
+                        type: "Item",
+                        data: item,
+                        id: item.id
+                    };
 
-                // Create and assign the macro for this item
-                await Pl1eMacro.createMacro(dropData, slot, {
-                    "pl1e.isDynamic": true
-                });
+                    // Create and assign the macro for this item
+                    await Pl1eMacro.createMacro(dropData, slot, {
+                        "pl1e.isDynamic": true
+                    });
 
-                // Increment the slot for the next item/macro
-                slot++;
+                    // Increment the slot for the next item/macro
+                    slot++;
+                }
             }
         }
 

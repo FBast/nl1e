@@ -115,8 +115,8 @@
                 </div>
                 <div class="item-controls grid-span-2">
                     {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#if (not isReloaded)}}
-                            <i class="item-control far fa-repeat hover-green color-red" data-tooltip="{{localize "PL1E.NotReloaded"}}"></i>
+                        {{#if (gt (length warnings) 0)}}
+                            <i class="item-control far fa-exclamation-triangle hover-green color-red" data-tooltip="{{join warnings ', ' true}}"></i>
                         {{/if}}
                         {{#if (and (ne system.removedUses 0) system.attributes.isReloadable)}}
                             <a class="item-control item-reload" data-tooltip='{{localize "PL1E.Reload"}}'>

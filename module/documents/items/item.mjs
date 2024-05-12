@@ -999,10 +999,12 @@ export class Pl1eItem extends Item {
         const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
 
         // Execute activationMacro
-        if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({
-            characterData: characterData,
-            active: false
-        });
+        if (enableVFXAndSFX && activationMacro !== undefined && characterData.token) {
+            activationMacro.execute({
+                characterData: characterData,
+                active: false
+            });
+        }
 
         // Destroy templates after fetching target with df-template
         for (const template of characterData.templates) {
@@ -1056,10 +1058,12 @@ export class Pl1eItem extends Item {
         const preLaunchMacro = await Pl1eHelpers.getDocument("Macro", preLaunchMacroId);
 
         // Execute pre-launch macro
-        if (enableVFXAndSFX && preLaunchMacro !== undefined) await preLaunchMacro.execute({
-            characterData: characterData,
-            targetsData: targetsData
-        });
+        if (enableVFXAndSFX && preLaunchMacro !== undefined && characterData.token) {
+            await preLaunchMacro.execute({
+                characterData: characterData,
+                targetsData: targetsData
+            });
+        }
 
         // Apply aspects, here we calculate each aspect for all targets
         for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
@@ -1071,10 +1075,12 @@ export class Pl1eItem extends Item {
         const postLaunchMacro = await Pl1eHelpers.getDocument("Macro", postLaunchMacroId);
 
         // Execute post-launch macro
-        if (enableVFXAndSFX && postLaunchMacro !== undefined) await postLaunchMacro.execute({
-            characterData: characterData,
-            targetsData: targetsData
-        });
+        if (enableVFXAndSFX && postLaunchMacro !== undefined && characterData.token) {
+            await postLaunchMacro.execute({
+                characterData: characterData,
+                targetsData: targetsData
+            });
+        }
 
         // Display messages if targets found
         if (targetsData) {
@@ -1104,11 +1110,11 @@ export class Pl1eItem extends Item {
         targetData.actor = actor;
         targetData.actorId = actor.id;
         targetData.scene = characterData.scene;
-        targetData.sceneId = characterData.scene.id;
+        targetData.sceneId = characterData.scene?.id;
         targetData.token = token;
         targetData.tokenId = token?.id;
-        targetData.tokenX = token.x;
-        targetData.tokenY = token.y;
+        targetData.tokenX = token?.x;
+        targetData.tokenY = token?.y;
         targetData.template = template;
         return targetData;
     }
