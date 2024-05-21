@@ -429,10 +429,14 @@ export class Pl1eActor extends Actor {
             for (let misc of skillConfig.weights.misc) {
                 attributesSum += actorMisc[misc];
             }
+
+            skill.numberMod += actorGeneral.bonuses;
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
             skill.number = Math.clamped(skill.number + skill.numberMod + attributesSum, 1, 10);
+
             skill.diceMod += actorGeneral.advantages;
             skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
+
             if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
 
@@ -455,13 +459,37 @@ export class Pl1eActor extends Actor {
      */
     async rollSkill(skillName) {
         const skill = this.system.skills[skillName];
-        let formula = skill.usable ? skill.number + "d" + skill.dice : "0d0";
+
+        // Calculate dice number
+        let diceNumber = 0;
+        if (skill.usable) {
+            diceNumber += skill.number;
+            if (this.type === "character" && this.hasPlayerOwner)
+                diceNumber += game.settings.get("pl1e", "globalBonuses");
+            diceNumber = Math.max(diceNumber, 0);
+        }
+
+        // Calculate dice number
+        let diceType = 0;
+        if (skill.usable) {
+            diceType += skill.dice;
+            if (this.type === "character" && this.hasPlayerOwner)
+                diceType += game.settings.get("pl1e", "globalAdvantages") * 2;
+            diceType = Math.clamped(diceType, 0, 12);
+        }
+
+        // Calculate formula
+        let formula = diceNumber + "d" + diceType;
         formula += skill.explosion ? "xo" + skill.dice : "";
         formula += "cs>=4";
         formula += skill.implosion ? "df=1" : "";
+
+        // Create roll
         let roll = new Roll(formula, this.getRollData());
         roll.skillName = skillName;
-        return  roll.evaluate({async: true});
+
+        // Evaluate roll
+        return roll.evaluate({async: true});
     }
 
     /**

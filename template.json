@@ -303,6 +303,7 @@
           "maxRank": 0,
           "rollBestSkill": true,
           "advantages": 0,
+          "bonuses": 0,
           "statusImmunities": [],
           "action": 2,
           "reaction": 1,

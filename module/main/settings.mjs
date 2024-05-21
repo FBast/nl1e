@@ -85,4 +85,18 @@ export const registerSettings = function () {
         type: String,
         default: "10, 30, 50"
     });
+
+    game.settings.register("pl1e", "globalAdvantages", {
+        scope: "world",
+        config: false,
+        type: Number,
+        default: 0
+    });
+
+    game.settings.register("pl1e", "globalBonuses", {
+        scope: "world",
+        config: false,
+        type: Number,
+        default: 0
+    });
 }

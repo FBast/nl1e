@@ -151,6 +151,7 @@ export default class Pl1eHooks {
                 scene: await Pl1eHelpers.getDocument("Scene", data.sceneId)
             });
             await token.actor.update(data.updateData);
+            //TODO in case of no token for ability directly on actors
         });
         PL1E.socket.register("displayScrollingText", function (data) {
             Pl1eHelpers.displayScrollingText(data);

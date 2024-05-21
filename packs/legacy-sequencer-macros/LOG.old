@@ -1,22 +1,8 @@
-2024/05/12-19:17:44.500 3e8 Recovering log #1220
-2024/05/12-19:17:44.505 3e8 Delete type=0 #1220
-2024/05/12-19:17:44.505 3e8 Delete type=3 #1219
-2024/05/12-19:46:49.250 1f3c Level-0 table #1224: started
-2024/05/12-19:46:49.250 1f3c Level-0 table #1224: 0 bytes OK
-2024/05/12-19:46:49.259 1f3c Delete type=0 #1222
-2024/05/12-19:46:49.263 1f3c Manual compaction at level-0 from '!folders!28ipqOp0xkd8EcTx' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at '!macros!hqQyc29NXlvw9i4e' @ 330 : 1
-2024/05/12-19:46:49.263 1f3c Compacting 2@0 + 0@1 files
-2024/05/12-19:46:49.265 1f3c Generated table #1225@0: 5 keys, 2913 bytes
-2024/05/12-19:46:49.265 1f3c Compacted 2@0 + 0@1 files => 2913 bytes
-2024/05/12-19:46:49.267 1f3c compacted to: files[ 0 1 1 0 0 0 0 ]
-2024/05/12-19:46:49.267 1f3c Delete type=2 #1214
-2024/05/12-19:46:49.267 1f3c Delete type=2 #1217
-2024/05/12-19:46:49.269 1f3c Manual compaction at level-0 from '!macros!hqQyc29NXlvw9i4e' @ 330 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
-2024/05/12-19:46:49.269 1f3c Manual compaction at level-1 from '!folders!28ipqOp0xkd8EcTx' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at '!macros!xRNwRr3DENy6btWs' @ 327 : 1
-2024/05/12-19:46:49.269 1f3c Compacting 1@1 + 1@2 files
-2024/05/12-19:46:49.271 1f3c Generated table #1226@1: 57 keys, 21913 bytes
-2024/05/12-19:46:49.271 1f3c Compacted 1@1 + 1@2 files => 21913 bytes
-2024/05/12-19:46:49.273 1f3c compacted to: files[ 0 0 1 0 0 0 0 ]
-2024/05/12-19:46:49.273 1f3c Delete type=2 #1172
-2024/05/12-19:46:49.273 1f3c Delete type=2 #1225
-2024/05/12-19:46:49.275 1f3c Manual compaction at level-1 from '!macros!xRNwRr3DENy6btWs' @ 327 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
+2024/05/21-23:34:32.877 598c Recovering log #1265
+2024/05/21-23:34:32.883 598c Delete type=0 #1265
+2024/05/21-23:34:32.883 598c Delete type=3 #1263
+2024/05/21-23:35:00.449 1aa8 Level-0 table #1270: started
+2024/05/21-23:35:00.449 1aa8 Level-0 table #1270: 0 bytes OK
+2024/05/21-23:35:00.450 1aa8 Delete type=0 #1268
+2024/05/21-23:35:00.453 1aa8 Manual compaction at level-0 from '!folders!28ipqOp0xkd8EcTx' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
+2024/05/21-23:35:00.453 1aa8 Manual compaction at level-1 from '!folders!28ipqOp0xkd8EcTx' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)

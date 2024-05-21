@@ -24,6 +24,7 @@ import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
 import {Pl1eHelpers} from "./helpers/helpers.mjs";
+import {Pl1eDMTool} from "./apps/dmTool.mjs";
 
 /* -------------------------------------------- */
 /*  Globals                                     */
@@ -88,7 +89,7 @@ Hooks.once('init', async function () {
     registerHandlebars();
 
     // Preload Handlebars templates.
-    return preloadHandlebarsTemplates();
+    await preloadHandlebarsTemplates();
 });
 
 /* ------------------------------------ */
@@ -96,6 +97,9 @@ Hooks.once('init', async function () {
 /* ------------------------------------ */
 
 Hooks.once("ready", async function () {
+    // Initialize tracker
+    await Pl1eDMTool.initialise();
+
     // Register dynamic configs
     PL1E.sequencerMacros = await Pl1eHelpers.getDocumentsDataFromPack("legacy-sequencer-macros", true);
     PL1E.actorPreUpdate = await Pl1eHelpers.getDocumentsDataFromPack("legacy-actor-pre-update-macros", true);
