@@ -1,5 +1,5 @@
 import {Pl1eMacro} from "../helpers/macro.mjs";
-import {Pl1eResting} from "../apps/resting.mjs";
+import {Resting} from "../apps/resting.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eTrade} from "../helpers/trade.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
@@ -45,7 +45,7 @@ export default class Pl1eHooks {
             if (actorSheet.actor.type === "character") {
                 // Refresh the form application
                 const formApp = Object.values(ui.windows)
-                    .find(w => w instanceof Pl1eResting);
+                    .find(w => w instanceof Resting);
                 if (formApp) formApp.render(true);
 
                 // Apply the user color to the sheet

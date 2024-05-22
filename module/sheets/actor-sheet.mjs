@@ -1,5 +1,5 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {Pl1eResting} from "../apps/resting.mjs";
+import {Resting} from "../apps/resting.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
@@ -75,7 +75,7 @@ export class Pl1eActorSheet extends ActorSheet {
                     icon: this.actor.system.general.creationMod ? "fas fa-toggle-on" : "fas fa-toggle-off",
                     onclick: async () => {
                         const appRestingForm = Object.values(ui.windows)
-                            .find(w => w instanceof Pl1eResting);
+                            .find(w => w instanceof Resting);
                         await appRestingForm?.close();
                         await this.actor.update({
                             "system.general.creationMod": !this.actor.system.general.creationMod

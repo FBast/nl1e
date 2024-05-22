@@ -3,6 +3,8 @@ import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {Pl1eActiveEffect} from "../effect.mjs";
 import {PL1E} from "../../pl1e.mjs";
 import {Pl1eMacro} from "../../helpers/macro.mjs";
+import {RollConfig} from "../../apps/rollConfig.mjs";
+import {ItemSelector} from "../../apps/itemSelector.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.

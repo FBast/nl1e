@@ -1,7 +1,7 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 
-export class Pl1eResting extends FormApplication {
+export class Resting extends FormApplication {
 
     constructor(actor, options = {}) {
         super(actor, options);

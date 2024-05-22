@@ -1,16 +1,14 @@
-import {Pl1eEvent} from "../helpers/events.mjs";
-
-export class Pl1eDMTool extends Application {
+export class DMTool extends Application {
 
     constructor(options={}) {
-        if (Pl1eDMTool._instance) {
+        if (DMTool._instance) {
             throw new Error("Pl1eDMTool already has an instance!!!");
         }
 
         super(options);
 
-        Pl1eDMTool._instance = this;
-        Pl1eDMTool.closed = true;
+        DMTool._instance = this;
+        DMTool.closed = true;
 
         this.data = {};
     }
@@ -66,9 +64,9 @@ export class Pl1eDMTool extends Application {
         if (this._instance) return;
 
         console.log("PL1E | Initialising DM Tool");
-        new Pl1eDMTool();
+        new DMTool();
 
-        if (Pl1eDMTool._instance) Pl1eDMTool._instance.render(true);
+        if (DMTool._instance) DMTool._instance.render(true);
         await this.registerSocketEvents();
     }
 

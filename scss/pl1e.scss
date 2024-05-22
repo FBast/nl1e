@@ -15,18 +15,19 @@
 @import 'layout/sheets';
 
 // Components
-@import 'components/dm-tool';
 @import 'components/attributes';
 @import 'components/characteristics';
 @import 'components/chat';
 @import 'components/currency';
+@import 'components/dm-tool';
+@import 'components/item-selector';
 @import 'components/items';
 @import 'components/journal';
 @import 'components/misc';
 @import 'components/resources';
 @import 'components/skills';
 @import 'components/states';
-@import 'components/item-selector';
+
 
 // Shame
 @import 'shame';

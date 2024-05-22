@@ -1,16 +1,17 @@
-export class ItemSelector extends FormApplication {
+export class RollConfig extends FormApplication {
 
-    constructor(items, options = {}) {
+    constructor(actor, skill, options = {}) {
         super(options);
-        this.items = items;
+        this.actor = actor;
+        this.skill = skill;
     }
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            id: 'item-selector',
+            id: 'roll-config',
             classes: ['pl1e'],
-            title: `${game.i18n.localize("PL1E.SelectAnItem")}`,
-            template: 'systems/pl1e/templates/apps/dialog-item-selector.hbs',
+            title: `${game.i18n.localize("PL1E.RollConfig")}`,
+            template: 'systems/pl1e/templates/apps/roll-config.hbs',
             resizable: false,
             width: 'auto',
             height: 'auto'
@@ -18,7 +19,8 @@ export class ItemSelector extends FormApplication {
     }
 
     getData() {
-        return { items: this.items };
+        const data = super.getData();
+        return data;
     }
 
     activateListeners(html) {
@@ -30,9 +32,9 @@ export class ItemSelector extends FormApplication {
         });
     }
 
-    static async createAndRender(actor, items) {
+    static async createAndRender(actor, skill) {
         return new Promise(resolve => {
-            const dialog = new this(items, {
+            const dialog = new this(actor, skill, {
                 close: () => resolve(null)
             });
             dialog.render(true);
