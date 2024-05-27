@@ -1,15 +1,11 @@
-.pl1e {
+.journal-page-content {
 
-  .journal-page-content {
+  .journal-table {
+    border-collapse: collapse;
+    width: 100%;
 
-    .journal-table {
-      border-collapse: collapse;
-      width: 100%;
-
-      th, td {
-        padding: 0 10px;
-      }
+    th, td {
+      padding: 0 10px;
     }
   }
-
 }

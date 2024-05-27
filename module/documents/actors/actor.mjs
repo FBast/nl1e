@@ -4,7 +4,6 @@ import {Pl1eActiveEffect} from "../effect.mjs";
 import {PL1E} from "../../pl1e.mjs";
 import {Pl1eMacro} from "../../helpers/macro.mjs";
 import {RollConfig} from "../../apps/rollConfig.mjs";
-import {ItemSelector} from "../../apps/itemSelector.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -461,6 +460,8 @@ export class Pl1eActor extends Actor {
      */
     async rollSkill(skillName) {
         const skill = this.system.skills[skillName];
+
+        await RollConfig.createAndRender(this, skill);
 
         // Calculate dice number
         let diceNumber = 0;

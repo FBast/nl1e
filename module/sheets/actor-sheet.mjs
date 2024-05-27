@@ -35,7 +35,7 @@ export class Pl1eActorSheet extends ActorSheet {
             classes: ["pl1e", "sheet", "actor"],
             template: "systems/pl1e/templates/actor/actor-sheet.hbs",
             width: 700,
-            height: 730,
+            height: 710,
             scrollY: [
                 ".scroll-auto"
             ],

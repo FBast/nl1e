@@ -1,12 +1,10 @@
-export class DMTool extends Application {
-
-    constructor(options={}) {
+export class DMTool extends FormApplication {
+    constructor(options = {}) {
         if (DMTool._instance) {
             throw new Error("Pl1eDMTool already has an instance!!!");
         }
 
         super(options);
-
         DMTool._instance = this;
         DMTool.closed = true;
 
@@ -14,23 +12,20 @@ export class DMTool extends Application {
     }
 
     static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ["dm-tool"],
+        return mergeObject(super.defaultOptions, {
+            classes: ["pl1e", "dm-tool"],
             height: "auto",
-            id: "dm-tool-app",
             popOut: false,
             resizable: false,
-            template: "systems/pl1e/templates/apps/dm-tool.hbs",
-            title: "MJ Tool",
-            width: "auto",
+            template: "systems/pl1e/templates/apps/dm-tool.hbs"
         });
     }
 
     getData() {
         const data = super.getData();
 
-        data.advantageDisadvantage = game.settings.get("pl1e", "globalAdvantages");
-        data.bonusMalus = game.settings.get("pl1e", "globalBonuses");
+        data.advantages = game.settings.get("pl1e", "globalAdvantages");
+        data.bonuses = game.settings.get("pl1e", "globalBonuses");
         data.game = game;
 
         return data;
@@ -58,12 +53,39 @@ export class DMTool extends Application {
             console.log(`Action ${action} triggered`);
             // Add your action handling logic here
         });
+
+        // Dynamic positioning logic
+        const dmToolForm = html[0]; // This refers to the form element of the DM tool
+        const sidebar = document.querySelector('#sidebar');
+
+        function adjustDmToolPosition() {
+            if (sidebar && sidebar.classList.contains('collapsed')) {
+                dmToolForm.classList.add('left-panel-hidden');
+            } else {
+                dmToolForm.classList.remove('left-panel-hidden');
+            }
+        }
+
+        // Initial adjustment
+        adjustDmToolPosition();
+
+        // Adjust position when the sidebar's class list changes
+        const observer = new MutationObserver((mutationsList) => {
+            for (let mutation of mutationsList) {
+                if (mutation.attributeName === 'class') {
+                    adjustDmToolPosition();
+                }
+            }
+        });
+        observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+
+        // Adjust position on window resize
+        window.addEventListener('resize', adjustDmToolPosition);
     }
 
     static async initialise() {
         if (this._instance) return;
 
-        console.log("PL1E | Initialising DM Tool");
         new DMTool();
 
         if (DMTool._instance) DMTool._instance.render(true);
@@ -71,8 +93,6 @@ export class DMTool extends Application {
     }
 
     static async registerSocketEvents() {
-        console.log("PL1E | Registering MJ Tool socket events");
-
         // Register your socket events here
         // game.socket.on("system.your-system", ev => {
         //     if (ev.operation === "someOperation") {

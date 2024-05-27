@@ -1,21 +1,19 @@
-.pl1e {
-  .skills {
-    padding: 0;
+.skills {
+  padding: 0;
+  margin: 0;
+  .skill {
+    gap: 0;
     margin: 0;
-    .skill {
-      gap: 0;
-      margin: 0;
-      padding: 2px;
-      .skill-label {
-        width: auto;
-        margin-left: 5px;
-        font-size: small;
-      }
-      .skill-rank {
-        display: flex;
-        flex: 2;
-        align-items: center;
-      }
+    padding: 2px;
+    .skill-label {
+      width: auto;
+      margin-left: 5px;
+      font-size: small;
+    }
+    .skill-rank {
+      display: flex;
+      flex: 2;
+      align-items: center;
     }
   }
 }

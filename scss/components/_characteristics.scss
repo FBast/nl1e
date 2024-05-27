@@ -1,9 +1,64 @@
-.pl1e {
-  .characteristics {
-    padding: 0 0.5em 0 0.5em;
+.characteristics {
+  padding: 0 0.5em;
 
-    .characteristic {
-      margin: 0 0 5px 0;
+  .characteristic {
+    margin: 0 0 5px;
+
+    .characteristic-label {
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+      text-align: left;
+      display: block;
+      width: 100%;
+
+      &.hover-green:hover {
+        color: green;
+      }
+    }
+
+    .characteristic-values {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .input-spin {
+        position: relative;
+
+        input[type="number"] {
+          width: 40px;
+          padding: 0.2em;
+          text-align: center;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          background-color: #f5f5f5;
+        }
+
+        span {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 50%;
+          right: -20px;
+          transform: translateY(-50%);
+
+          i {
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 1.2em;
+
+            &.hover-red:hover {
+              color: red;
+            }
+          }
+        }
+      }
+
+      .characteristic-mod {
+        margin-left: 1em;
+        font-weight: bold;
+        font-size: 1.2em;
+      }
     }
   }
 }

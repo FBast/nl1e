@@ -8,14 +8,17 @@ export class RollConfig extends FormApplication {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            id: 'roll-config',
-            classes: ['pl1e'],
-            title: `${game.i18n.localize("PL1E.RollConfig")}`,
-            template: 'systems/pl1e/templates/apps/roll-config.hbs',
+            id: ["roll-config"],
+            classes: ["pl1e"],
             resizable: false,
-            width: 'auto',
-            height: 'auto'
+            title: game.i18n.localize("PL1E.RollConfig"),
+            template: "systems/pl1e/templates/apps/roll-config.hbs"
         });
+    }
+
+
+    submit(button) {
+        super.submit(button);
     }
 
     getData() {
@@ -33,13 +36,16 @@ export class RollConfig extends FormApplication {
     }
 
     static async createAndRender(actor, skill) {
-        return new Promise(resolve => {
-            const dialog = new this(actor, skill, {
-                close: () => resolve(null)
-            });
-            dialog.render(true);
-            dialog.resolve = resolve;
-        });
+        const dialog = new RollConfig(actor, skill);
+        dialog.render(true);
+
+        // return new Promise(resolve => {
+        //     const dialog = new this(actor, skill, {
+        //         close: () => resolve(null)
+        //     });
+        //     dialog.render(true);
+        //     dialog.resolve = resolve;
+        // });
     }
 
 }

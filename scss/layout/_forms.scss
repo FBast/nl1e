@@ -1,95 +1,122 @@
-.pl1e {
+.window-content {
+  overflow-y: hidden;
+  padding: 5px;
 
-  .window-content {
-    overflow-y: hidden;
-    padding: 0;
+  form {
+    height: 100%;
 
-    form {
-      height: 100%;
+    .sheet-header {
+      padding: 5px 5px 0 5px;
+      flex: 0 auto;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      position: sticky;
+      background-color: $colorBeige;
 
-      .sheet-header {
-        padding: 5px 5px 0 5px;
-        flex: 0 auto;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        position: sticky;
-        background-color: $colorBeige;
+      h1.sheet-name {
+        height: 50px;
+        padding: 0;
+        border-bottom: 0;
 
-        h1.sheet-name {
-          height: 50px;
-          padding: 0;
-          border-bottom: 0;
-
-          input {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-          }
-
-          label {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            vertical-align: sub;
-          }
+        input {
+          width: 100%;
+          height: 100%;
+          margin: 0;
         }
 
-        .header-fields {
-          flex: 1;
-
-          .resource-label {
-            text-transform: uppercase;
-            border-bottom-style: none;
-            font-weight: bold;
-          }
-
+        label {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          vertical-align: sub;
         }
-
       }
-      .sheet-tabs {
-        background-color: $colorFaint;
-        margin: 0;
-        flex: 0;
-        a {
+
+      .header-fields {
+        flex: 1;
+
+        .resource-label {
           text-transform: uppercase;
+          border-bottom-style: none;
           font-weight: bold;
         }
+
       }
 
-      .sheet-body {
-        overflow: hidden;
-        padding: 5px;
+    }
+    .sheet-tabs {
+      background-color: $colorFaint;
+      margin: 0;
+      flex: 0;
+      a {
+        text-transform: uppercase;
+        font-weight: bold;
       }
     }
-  }
 
-  .tab {
-    overflow: hidden;
-    height: 100%;
+    .sheet-body {
+      overflow: hidden;
+      padding: 5px;
+    }
   }
+}
 
-  .scroll-hidden {
-    overflow-y: hidden;
-  }
+hr {
+  border: 1px solid $colorTan;
+  height: 1px;
+  background-color: #ccc;
+  margin: 5px 0;
+}
 
-  .scroll-auto {
-    overflow-y: auto;
-    padding-right: 5px;
-  }
+.form-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
 
-  .sheet-body,
-  .sheet-body .tab,
-  .sheet-body .tab .editor {
-    height: 100%;
+  a {
+    display: flex;
+    justify-content: center;
   }
+}
 
-  .fa {
-    line-height: normal;
-  }
+.form-fields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
 
-  fieldset {
-    border: $borderGroove;
-  }
+.tab {
+  overflow: hidden;
+  height: 100%;
+}
+
+.scroll-hidden {
+  overflow-y: hidden;
+}
+
+.scroll-auto {
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.sheet-body,
+.sheet-body .tab,
+.sheet-body .tab .editor {
+  height: 100%;
+}
+
+.fa {
+  line-height: normal;
+}
+
+fieldset {
+  border: $borderGroove;
 }

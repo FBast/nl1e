@@ -1,15 +1,13 @@
-.pl1e {
-  .currency {
-    align-items: center;
-    .currency-icon {
-      padding: 0 5px;
-    }
-    .convert-icon {
-      padding: 0 10px;
-      flex: 0 0 20px;
-    }
-    label {
-      margin: 5px;
-    }
+.currency {
+  align-items: center;
+  .currency-icon {
+    padding: 0 5px;
+  }
+  .convert-icon {
+    padding: 0 10px;
+    flex: 0 0 20px;
+  }
+  label {
+    margin: 5px;
   }
 }

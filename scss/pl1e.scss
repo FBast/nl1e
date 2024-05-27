@@ -1,33 +1,39 @@
 // Add custom fonts by visiting and search https://fonts.google.com
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+// Reset
+//@import 'reset';
+
+// Globals
+@import 'globals/flex';
+@import 'globals/grid';
+
 // Utils
-@import 'utils/colors';
-@import 'utils/mixins';
-@import 'utils/typography';
 @import 'utils/variables';
+@import 'utils/colors';
+@import 'utils/sizes';
+@import 'utils/mixins';
 
-// Layouts
-@import 'layout/flex';
-@import 'layout/forms';
-@import 'layout/grid';
-@import 'layout/minors';
-@import 'layout/sheets';
+.pl1e {
+  // Layouts
+  @import 'layout/dialogs';
+  @import 'layout/forms';
+  @import 'layout/minors';
+  @import 'layout/sheets';
 
-// Components
-@import 'components/attributes';
-@import 'components/characteristics';
-@import 'components/chat';
-@import 'components/currency';
-@import 'components/dm-tool';
-@import 'components/item-selector';
-@import 'components/items';
-@import 'components/journal';
-@import 'components/misc';
-@import 'components/resources';
-@import 'components/skills';
-@import 'components/states';
+  // Components
+  @import 'components/attributes';
+  @import 'components/characteristics';
+  @import 'components/chat';
+  @import 'components/currency';
+  @import 'components/item-selector';
+  @import 'components/items';
+  @import 'components/journal';
+  @import 'components/misc';
+  @import 'components/resources';
+  @import 'components/skills';
+  @import 'components/states';
 
-
-// Shame
-@import 'shame';
+  // Shame
+  @import 'shame';
+}
