@@ -13,12 +13,12 @@
         <li class="item" data-effect-id="{{_id}}" data-item-origin-id="{{origin}}" data-actor-origin-id="{{flags.pl1e.originActor}}">
             <div class="item-content grid grid-12col">
                 <div class="item-title grid-span-4 flexrow">
-                    <img class="item-image effect-edit hover-red" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
+                    <img class="item-image effect-edit hover-action" src="{{icon}}" title="{{localize name}}" width="24" height="24"/>
                     <label class="item-name item-tooltip-activate">{{localize name}}</label>
                 </div>
                 <div class="item-icons grid-span-6">
                     {{#if duration.rounds}}
-                        <i class="item-info far fa-clock hover-green" data-tooltip="{{localize "PL1E.Turn"}}">
+                        <i class="item-info far fa-clock hover-info" data-tooltip="{{localize "PL1E.Turn"}}">
                             <label>{{duration.rounds}}</label>
                         </i>
                     {{/if}}

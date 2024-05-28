@@ -2,16 +2,16 @@
     <fieldset>
         <legend class="section-header">{{localize "PL1E.Money"}}</legend>
         <div class="currency flexrow flex-between">
-            <i class="convert-icon currency-convert fas fa-money-bill-transfer hover-red" data-tooltip='{{localize "PL1E.ConvertCurrency"}}'></i>
+            <i class="convert-icon currency-convert fas fa-money-bill-transfer hover-action" data-tooltip='{{localize "PL1E.ConvertCurrency"}}'></i>
             {{#each system.money}}
                 <div class="input-spin currency">
                     {{#with (config "money" @key)}}
-                        <i class="currency-icon far fa-coins color-{{@key}} hover-green" data-tooltip='{{localize label}}'></i>
+                        <i class="{{@key}}" data-tooltip='{{localize label}}'></i>
                     {{/with}}
                     <input type="number" name="system.money.{{@key}}" value="{{this}}" min="0" {{#unless @root.game.user.isTrusted}}disabled{{/unless}}/>
                     <span>
-                        <i class="spin-number hover-red fa fa-plus-square" data-path="system.money.{{@key}}" data-value="1"></i>
-                        <i class="spin-number hover-red fa fa-minus-square" data-path="system.money.{{@key}}" data-min="0" data-value="-1"></i>
+                        <i class="spin-number hover-action fa fa-plus-square" data-path="system.money.{{@key}}" data-value="1"></i>
+                        <i class="spin-number hover-action fa fa-minus-square" data-path="system.money.{{@key}}" data-min="0" data-value="-1"></i>
                     </span>
                 </div>
             {{/each}}

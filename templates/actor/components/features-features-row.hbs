@@ -15,7 +15,7 @@
     <div class="items-row-content">
         {{#each features}}
             <div class="item" data-item-id="{{_id}}">
-                <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}"/>
+                <img class="item-image item-edit hover-action" src="{{img}}" title="{{name}}"/>
                 {{#if @root.actor.isOwner}}
                     {{#if flags.pl1e.childId}}
                         <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'>

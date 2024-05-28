@@ -267,7 +267,7 @@ export class Pl1eEvent {
             for (let resource of document.getElementsByClassName('resource-label')) {
                 let id = $(resource).closest(".resource").data("resource-id");
                 if (!resources.includes(id)) continue;
-                resource.classList.add('highlight-green');
+                resource.classList.add('highlight-info');
             }
         }
         // characteristics
@@ -275,7 +275,7 @@ export class Pl1eEvent {
             for (let characteristic of document.getElementsByClassName('characteristic-label')) {
                 let id = $(characteristic).closest(".characteristic").data("characteristic-id");
                 if (!characteristics.includes(id)) continue;
-                characteristic.classList.add('highlight-green');
+                characteristic.classList.add('highlight-info');
             }
         }
         // skills
@@ -283,7 +283,7 @@ export class Pl1eEvent {
             for (let skill of document.getElementsByClassName('skill-label')) {
                 let id = $(skill).closest(".skill").data("skill-id");
                 if (!skills.includes(id)) continue;
-                skill.classList.add('highlight-green');
+                skill.classList.add('highlight-info');
             }
         }
     }
@@ -296,13 +296,13 @@ export class Pl1eEvent {
         event.preventDefault();
         event.stopPropagation();
         for (let characteristic of document.getElementsByClassName('characteristic-label')) {
-            characteristic.classList.remove('highlight-green')
+            characteristic.classList.remove('highlight-info')
         }
         for (let resource of document.getElementsByClassName('resource-label')) {
-            resource.classList.remove('highlight-green')
+            resource.classList.remove('highlight-info')
         }
         for (let skill of document.getElementsByClassName('skill-label')) {
-            skill.classList.remove('highlight-green')
+            skill.classList.remove('highlight-info')
         }
     }
 

@@ -1,3 +1,8 @@
-2024/05/26-13:37:41.126 e80 Recovering log #1280
-2024/05/26-13:37:41.131 e80 Delete type=0 #1280
-2024/05/26-13:37:41.131 e80 Delete type=3 #1279
+2024/05/28-20:03:17.062 4dc4 Recovering log #1284
+2024/05/28-20:03:17.068 4dc4 Delete type=0 #1284
+2024/05/28-20:03:17.068 4dc4 Delete type=3 #1283
+2024/05/28-20:28:43.589 3d0c Level-0 table #1288: started
+2024/05/28-20:28:43.589 3d0c Level-0 table #1288: 0 bytes OK
+2024/05/28-20:28:43.591 3d0c Delete type=0 #1286
+2024/05/28-20:28:43.595 3d0c Manual compaction at level-0 from '!folders!28ipqOp0xkd8EcTx' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
+2024/05/28-20:28:43.596 3d0c Manual compaction at level-1 from '!folders!28ipqOp0xkd8EcTx' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)

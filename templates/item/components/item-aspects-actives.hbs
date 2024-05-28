@@ -6,7 +6,7 @@
         <div class="item-controls grid-span-8">
             {{#each activeAspectsObjects}}
                 {{#with (config "aspects" name)}}
-                    <input type="image" class="item-control aspect-add hover-red" src="{{img}}" data-aspect-id="{{@key}}"
+                    <input type="image" class="item-control aspect-add hover-action" src="{{img}}" data-aspect-id="{{@key}}"
                            data-aspect-type="active" data-tooltip='{{localize label}}' width="20" height="20"/>
                 {{/with}}
             {{/each}}

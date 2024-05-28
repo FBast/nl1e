@@ -16,7 +16,7 @@
     <div class="items-row-content">
         {{#each background}}
             <div class="item" data-item-id="{{_id}}">
-                <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" />
+                <img class="item-image item-edit hover-action" src="{{img}}" title="{{name}}" />
                 {{#if @root.actor.isOwner}}
                     {{#if flags.pl1e.childId}}
                         <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'>
@@ -28,7 +28,7 @@
                         </a>
                     {{/if}}
                     {{#if (gt (length warnings) 0)}}
-                        <i class="item-info far fa-exclamation-triangle hover-green color-red" data-tooltip="{{join warnings ', ' true}}"></i>
+                        <i class="item-info far fa-exclamation-triangle hover-info color-warning" data-tooltip="{{join warnings ', ' true}}"></i>
                     {{/if}}
                 {{/if}}
             </div>

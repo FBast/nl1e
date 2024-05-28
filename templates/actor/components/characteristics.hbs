@@ -1,7 +1,7 @@
 {{#each system.characteristics}}
     {{#with (config "characteristics" @key)}}
         <div class="characteristic flex-group-center" data-characteristic-id="{{@key}}">
-            <h3 class="characteristic-label highlight-link hover-green align-left" data-resources="{{weights.resources}}" data-skills="{{weights.skills}}">
+            <h3 class="characteristic-label highlight-link hover-info align-left" data-resources="{{weights.resources}}" data-skills="{{weights.skills}}">
                 {{localize label}}
             </h3>
             <div class="characteristic-values flexrow flex-group-center">
@@ -9,8 +9,8 @@
                     <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" data-dtype="Number" min="0" placeholder="0" disabled/>
                     {{#if (and @root.system.general.creationMod (eq @root.actor.type "character"))}}
                         <span>
-                            <i class="characteristic-control hover-red fa fa-plus-square" data-value="1"></i>
-                            <i class="characteristic-control hover-red fa fa-minus-square" data-value="-1"></i>
+                            <i class="characteristic-control hover-action fa fa-plus-square" data-value="1"></i>
+                            <i class="characteristic-control hover-action fa fa-minus-square" data-value="-1"></i>
                         </span>
                     {{/if}}
                 </div>

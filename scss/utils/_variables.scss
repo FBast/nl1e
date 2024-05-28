@@ -7,6 +7,7 @@ $padding-md: 10px;
 $padding-lg: 20px;
 
 // Colors
+$colorWhite: #ffffff;
 $colorDark: #191813;
 $colorFaint: #c9c7b8;
 $colorBeige: #b5b3a484;
@@ -14,12 +15,13 @@ $colorTan: #7a7971;
 $colorOlive: #4b4a44;
 $colorCrimson: #44191A;
 
-$colorWhite: #ffffff4d;
-$colorSilver: #c0c0c04d;
-
 $colorGold: #c7a700;
 $colorSilver: #9f9f9f;
 $colorCopper: #af5134;
+
+$colorAction: #960000;
+$colorInfo: #00ff03;
+$colorWarning: #ffff00;
 
 // Typography
 $font-primary: 'Roboto', sans-serif;

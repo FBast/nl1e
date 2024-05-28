@@ -13,60 +13,60 @@
         <li class="item {{#if (not isEnabled)}}disabled{{/if}}" data-item-id="{{_id}}">
             <div class="item-content grid grid-12col">
                 <div class="item-title grid-span-4 flexrow">
-                    <img class="item-image item-edit hover-red" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                    <img class="item-image item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
                     <label class="item-name item-tooltip-activate">{{name}}</label>
                 </div>
                 <div class="item-icons grid-span-6">
-                    <i class="item-info far fa-circle-{{system.attributes.level}} hover-green" data-tooltip='{{localize "PL1E.Level"}}'></i>
+                    <i class="{{system.attributes.level}}" data-tooltip='{{localize "PL1E.Level"}}'></i>
                     {{#if (ne system.attributes.actionCost 0)}}
-                        <i class="item-info far fa-clock hover-green" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+                        <i class="item-info far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'>
                             <label>{{system.attributes.actionCost}}</label>
                         </i>
                     {{/if}}
                     {{#if (ne system.attributes.reactionCost 0)}}
-                        <i class="item-info far fa-reply-clock hover-green" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+                        <i class="item-info far fa-reply-clock hover-info" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
                             <label>{{system.attributes.reactionCost}}</label>
                         </i>
                     {{/if}}
                     {{#if (ne system.attributes.quickActionCost 0)}}
-                        <i class="item-info far fa-bell hover-green" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
+                        <i class="item-info far fa-bell hover-info" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
                             <label>{{system.attributes.quickActionCost}}</label>
                         </i>
                     {{/if}}
                     {{#if (ne system.attributes.healthCost 0)}}
-                        <i class="item-info far fa-heart hover-green" data-tooltip='{{localize "PL1E.HealthCost"}}'>
+                        <i class="item-info far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthCost"}}'>
                             <label>{{system.attributes.healthCost}}</label>
                         </i>
                     {{/if}}
                     {{#if (ne system.attributes.staminaCost 0)}}
-                        <i class="item-info far fa-wave-pulse hover-green" data-tooltip="{{localize "PL1E.StaminaCost"}}">
+                        <i class="item-info far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaCost"}}">
                             <label>{{system.attributes.staminaCost}}</label>
                         </i>
                     {{/if}}
                     {{#if (ne system.attributes.manaCost 0)}}
-                        <i class="item-info far fa-sparkles hover-green" data-tooltip='{{localize "PL1E.ManaCost"}}'>
+                        <i class="item-info far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaCost"}}'>
                             <label>{{system.attributes.manaCost}}</label>
                         </i>
                     {{/if}}
                     {{#if (ne system.attributes.usageCost 0)}}
-                        <i class="item-info far fa-tally hover-green" data-tooltip='{{localize "PL1E.UsageCost"}}'>
+                        <i class="item-info far fa-tally hover-info" data-tooltip='{{localize "PL1E.UsageCost"}}'>
                             <label>{{system.attributes.usageCost}}</label>
                         </i>
                     {{/if}}
                     {{#if system.attributes.isMajorAction}}
-                        <i class="item-info far fa-star hover-green" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
+                        <i class="item-info far fa-star hover-info" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
                     {{/if}}
                     {{#if system.attributes.isDangerous}}
-                        <i class="item-info far fa-skull-crossbones hover-green" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
+                        <i class="item-info far fa-skull-crossbones hover-info" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
                     {{/if}}
                     {{#if (eq system.attributes.linkedItem "melee")}}
-                        <i class="item-info far fa-sword hover-green" data-tooltip='{{localize "PL1E.Melee"}}'></i>
+                        <i class="item-info far fa-sword hover-info" data-tooltip='{{localize "PL1E.Melee"}}'></i>
                     {{else if (eq system.attributes.linkedItem "range")}}
-                        <i class="item-info far fa-bow-arrow hover-green" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
+                        <i class="item-info far fa-bow-arrow hover-info" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
                     {{/if}}
                     {{#if (eq system.attributes.linkedItem "none")}}
                         {{#if (ne system.attributes.range 0)}}
-                            <i class="item-info far fa-bullseye hover-green" data-tooltip='{{localize "PL1E.Range"}}'>
+                            <i class="item-info far fa-bullseye hover-info" data-tooltip='{{localize "PL1E.Range"}}'>
                                 <label>{{system.attributes.range}}</label>
                             </i>
                         {{/if}}
@@ -79,7 +79,7 @@
                                 <a class="item-control item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
                             {{/if}}
                         {{else if (gt (length warnings) 0)}}
-                            <i class="item-control far fa-exclamation-triangle hover-green color-red" data-tooltip="{{join warnings ', ' true}}"></i>
+                            <i class="item-control far fa-exclamation-triangle hover-info color-warning" data-tooltip="{{join warnings ', ' true}}"></i>
                         {{/if}}
                     {{/if}}
                     {{#if @root.actor.isOwner}}

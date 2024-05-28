@@ -11,14 +11,14 @@
                         {{#with (config dataGroup data)}}
                             {{#if (and (eq type "number") (ne ../../this 0))}}
                                 <div class="item-effect">
-                                    <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}">
+                                    <i class="{{icon}}" data-tooltip="{{localize label}}">
                                         <label>{{../../this}}</label>
                                     </i>
                                 </div>
                             {{else if (eq type "bool")}}
                                 {{#unless (and ../applyIfTrue (not ../../this))}}
                                     <div class="item-effect">
-                                        <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
+                                        <i class="{{icon}}" data-tooltip="{{localize label}}"></i>
                                     </div>
                                 {{/unless}}
                             {{/if}}

@@ -2,7 +2,7 @@
     {{#each resources}}
         {{#with (config "resources" @key)}}
             <div class="resource box flex-group-center" data-resource-id="{{@key}}">
-                <label class="resource-label highlight-link hover-green" data-characteristics="{{weights.characteristics}}">
+                <label class="resource-label highlight-link hover-info" data-characteristics="{{weights.characteristics}}">
                     {{localize label}}
                 </label>
                 <div class="resource-content flexrow flex-center flex-between">

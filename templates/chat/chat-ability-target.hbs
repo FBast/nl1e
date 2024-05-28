@@ -10,18 +10,18 @@
                 {{#with (config dataGroup data)}}
                     <div class="item-effect">
                         {{#if (and (eq type "number") (ne ../../this 0))}}
-                            <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}">
+                            <i class="{{icon}}" data-tooltip="{{localize label}}">
                                 <label>{{formatNumber ../value sign=true}}</label>
                             </i>
                         {{else if (eq type "bool")}}
                             {{#unless (and ../applyIfTrue (not ../value))}}
-                                <i class="far {{icon}} hover-green" data-tooltip="{{localize label}}"></i>
+                                <i class="{{icon}}" data-tooltip="{{localize label}}"></i>
                             {{/unless}}
                         {{else if (eq type "status")}}
-                            <i class="far fa-flag hover-green" data-tooltip="{{localize label}}"></i>
+                            <i class="far fa-flag hover-info" data-tooltip="{{localize label}}"></i>
                         {{/if}}
                         {{#if ../effectDuration}}
-                            <i class="far fa-clock hover-green" data-tooltip="{{localize "PL1E.Turn"}}">
+                            <i class="far fa-clock hover-info" data-tooltip="{{localize "PL1E.Turn"}}">
                                 <label>{{../effectDuration}}</label>
                             </i>
                         {{/if}}

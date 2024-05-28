@@ -11,10 +11,6 @@
       text-align: left;
       display: block;
       width: 100%;
-
-      &.hover-green:hover {
-        color: green;
-      }
     }
 
     .characteristic-values {
@@ -47,7 +43,7 @@
             transition: color 0.3s;
             font-size: 1.2em;
 
-            &.hover-red:hover {
+            &.hover-action:hover {
               color: red;
             }
           }

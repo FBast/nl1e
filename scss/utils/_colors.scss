@@ -22,10 +22,6 @@
   color: $colorCrimson;
 }
 
-.color-white {
-  color: $colorWhite;
-}
-
 .color-silver {
   color: $colorSilver;
 }
@@ -38,37 +34,38 @@
   color: $colorCopper;
 }
 
-.color-green {
-  color: green;
-}
-
-.color-red {
-  color: red;
+.color-warning {
+  color: $colorWarning;
 }
 
 .color-black {
   color: black;
 }
 
-.color-grey {
-  color: grey;
-}
-
-.hover-red {
+.hover-action {
   &:hover,
   &:focus {
-    text-shadow: 0 0 10px red;
+    color: $colorAction;
     cursor: pointer;
   }
 }
 
-.hover-green {
+.hover-info {
   &:hover,
   &:focus {
-    text-shadow: 0 0 10px green;
+    color: $colorInfo;
   }
 }
 
-.highlight-green {
-  text-shadow: 0 0 10px green;
+@keyframes pulseInfo {
+  0%, 100% {
+    color: $colorInfo;
+  }
+  50% {
+    color: lighten($colorInfo, 20%);
+  }
+}
+
+.highlight-info {
+  animation: pulseInfo 1.5s infinite;
 }
