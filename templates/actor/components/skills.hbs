@@ -69,7 +69,7 @@
                                 <i class="far fa-ban fa-lg hover-info" data-tooltip='{{localize "PL1E.Unusable"}}'></i>
                             {{/if}}
                             {{#if (and @root.system.general.creationMod (eq @root.actor.type "character"))}}
-                                <i class="{{../rank}}" data-skill="{{@key}}"></i>
+                                <i class="rank-control fas fa-circle-{{../rank}} fa-lg hover-action" data-skill="{{@key}}"></i>
                             {{else}}
                                 <i class="far fa-circle-{{../rank}} fa-lg"></i>
                             {{/if}}
