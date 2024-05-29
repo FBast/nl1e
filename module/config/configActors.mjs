@@ -29,6 +29,7 @@ export function getConfigActor() {
                     "will"
                 ]
             },
+            "color": "red",
             "icon": "fa-heart",
             "type": "number",
             "path": "system.resources.health.value"
@@ -42,6 +43,7 @@ export function getConfigActor() {
                     "constitution"
                 ]
             },
+            "color": "green",
             "icon": "fa-wave-pulse",
             "type": "number",
             "path": "system.resources.stamina.value"
@@ -55,6 +57,7 @@ export function getConfigActor() {
                     "will"
                 ]
             },
+            "color": "blue",
             "icon": "fa-sparkles",
             "type": "number",
             "path": "system.resources.mana.value"

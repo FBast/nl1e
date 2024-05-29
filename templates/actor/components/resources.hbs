@@ -1,15 +1,15 @@
-<div class="resources grid grid-3col">
+<div class="resources flexcol">
     {{#each resources}}
         {{#with (config "resources" @key)}}
-            <div class="resource box flex-group-center" data-resource-id="{{@key}}">
+            <div class="resource grid grid-6col" data-resource-id="{{@key}}">
                 <label class="resource-label highlight-link hover-info" data-characteristics="{{weights.characteristics}}">
                     {{localize label}}
                 </label>
-                <div class="resource-content flexrow flex-center flex-between">
-                    <input type="number" name="system.resources.{{@key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
-                    <span> / </span>
-                    <input type="number" name="system.resources.{{@key}}.max" value="{{../max}}" data-dtype="Number" disabled/>
+                <input type="number" name="system.resources.{{@key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
+                <div class="stat-bar {{color}} grid-span-3">
+                    <div class="stat-fill {{color}}" style="width: {{../percentage}}%;"></div>
                 </div>
+                <input type="number" name="system.resources.{{@key}}.max" value="{{../max}}" data-dtype="Number" disabled/>
             </div>
         {{/with}}
     {{/each}}

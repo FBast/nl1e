@@ -415,6 +415,7 @@ export class Pl1eActor extends Actor {
             }
             resource.max *= resourceConfig.multiplier * actorMisc.sizeMultiplier;
             if (resource.value > resource.max) resource.value = resource.max;
+            resource.percentage = resource.value / resource.max * 100;
         }
 
         // Handle actorSkills scores.

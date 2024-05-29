@@ -20,8 +20,11 @@
   @import 'layout/forms';
   @import 'layout/sheets';
   @import 'layout/elements';
+  @import 'layout/scrollbar';
 
   // Components
+  @import 'components/actor';
+  @import 'components/item';
   @import 'components/attributes';
   @import 'components/characteristics';
   @import 'components/chat';

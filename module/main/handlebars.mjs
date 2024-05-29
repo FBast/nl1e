@@ -30,7 +30,7 @@ export const registerHandlebars = function () {
         return Pl1eHelpers.getConfig(...args);
     });
 
-// Register a new helper for custom handling of select options
+    // Register a new helper for custom handling of select options
     Handlebars.registerHelper('customSelectOptions', function(choices, options) {
         const modifiedChoices = {};
         for (const key in choices) {
