@@ -1,56 +1,58 @@
-.skills {
-  padding: 0;
-  margin: 0;
+.pl1e {
+  .skills {
+    padding: 0;
+    margin: 0;
 
-  .skill {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0;
-
-    .skill-roll {
-      flex: 0;
+    .skill {
       display: flex;
       align-items: center;
-      justify-content: center;
-      height: 20px;
-      margin-right: 10px;
+      justify-content: space-between;
+      gap: 0;
 
-      label {
-        margin-left: 5px;
-        font-size: small;
-      }
-    }
+      .skill-roll {
+        flex: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 20px;
+        margin-right: 10px;
 
-    .skill-label {
-      flex: 1;
-      //font-weight: bold;
-      cursor: pointer;
-      transition: color 0.3s;
-      text-align: left;
-
-      &.highlight-link {
-        text-decoration: none;
+        label {
+          margin-left: 5px;
+          font-size: small;
+        }
       }
 
-      &.hover-info:hover {
-        color: green;
-      }
-    }
-
-    .skill-rank {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
-      i {
-        margin-left: 5px;
+      .skill-label {
+        flex: 1;
+        //font-weight: bold;
         cursor: pointer;
         transition: color 0.3s;
-        font-size: 1.2em;
+        text-align: left;
 
-        &.hover-action:hover {
-          color: red;
+        &.highlight-link {
+          text-decoration: none;
+        }
+
+        &.hover-info:hover {
+          color: green;
+        }
+      }
+
+      .skill-rank {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        i {
+          margin-left: 5px;
+          cursor: pointer;
+          transition: color 0.3s;
+          font-size: 1.2em;
+
+          &.hover-action:hover {
+            color: red;
+          }
         }
       }
     }

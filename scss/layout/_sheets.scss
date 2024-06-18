@@ -1,52 +1,54 @@
-&.window-app {
-  font-family: $font-primary;
-}
+.pl1e {
+  .window-app {
+    font-family: $font-primary;
+  }
 
-.sheet-header-container {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: $colorWhite;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 0;
-  flex: 0;
-}
+  .sheet-header-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: $colorWhite;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    flex: 0;
+  }
 
-.sheet-header {
-  margin: 0;
-  padding: 0.5em;
-  flex: 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
+  .sheet-header {
+    margin: 0;
+    padding: 0.5em;
+    flex: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 
-.sheet-tabs {
-  margin: 0 !important;
-  border-top: none !important;
-  border-bottom: none !important;
-  padding: 0.5em;
-  display: flex;
-  justify-content: space-around;
+  .sheet-tabs {
+    margin: 0 !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    padding: 0.5em;
+    display: flex;
+    justify-content: space-around;
 
-  a {
-    text-transform: uppercase;
-    font-weight: bold;
-    text-align: center;
+    a {
+      text-transform: uppercase;
+      font-weight: bold;
+      text-align: center;
 
-    &:hover {
-      color: $colorAction;
-      cursor: pointer;
-    }
+      &:hover {
+        color: $colorAction;
+        cursor: pointer;
+      }
 
-    &.active {
-      color: $colorAction;
-      text-shadow: 0 0 10px $colorAction;
-      text-decoration: underline;
-      text-decoration-color: $colorAction;
+      &.active {
+        color: $colorAction;
+        text-shadow: 0 0 10px $colorAction;
+        text-decoration: underline;
+        text-decoration-color: $colorAction;
+      }
     }
   }
-}
 
-.sheet-body {
-  overflow: hidden;
+  .sheet-body {
+    overflow: hidden;
+  }
 }

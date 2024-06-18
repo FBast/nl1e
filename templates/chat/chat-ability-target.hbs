@@ -1,10 +1,7 @@
-<div class="chat-card item-card pl1e">
+<div class="pl1e chat-card item" data-item-id="{{characterData.itemId}}" data-token-id="{{characterData.tokenId}}" data-scene-id="{{characterData.sceneId}}">
     <header class="card-header flexrow">
-        <img class="left-image token-focus" src="{{characterData.actor.img}}" data-token-id="{{characterData.tokenId}}"
-             data-scene-id="{{characterData.sceneId}}" title="{{characterData.token.name}}" width="36" height="36"/>
-        <img class="left-image item-edit" src="{{characterData.item.realImg}}" data-item-id="{{characterData.item._id}}"
-             data-scene-id="{{characterData.sceneId}}" data-token-id="{{characterData.tokenId}}"
-             title="{{characterData.item.realName}}" width="36" height="36"/>
+        <img class="left-image token-focus" src="{{characterData.actor.img}}" title="{{characterData.token.name}}"/>
+        <img class="left-image item-edit" src="{{characterData.item.realImg}}" title="{{characterData.item.realName}}"/>
         <div class="item-effects-target">
             {{#each targetData.activeAspects}}
                 {{#with (config dataGroup data)}}
@@ -29,8 +26,8 @@
                 {{/with}}
             {{/each}}
         </div>
-        <img class="right-image token-focus" src="{{targetData.actor.img}}" data-token-id="{{targetData.tokenId}}"
-             data-scene-id="{{characterData.sceneId}}" title="{{targetData.token.name}}" width="36" height="36"/>
+        <img class="right-image token-focus" src="{{targetData.actor.img}}" title="{{targetData.token.name}}"
+             data-token-id="{{targetData.tokenId}}" />
     </header>
     <div class="card-content">
         {{#if (gt characterData.attributes.oppositeRoll.length 0)}}

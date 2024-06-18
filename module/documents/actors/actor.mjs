@@ -462,7 +462,7 @@ export class Pl1eActor extends Actor {
     async rollSkill(skillName) {
         const skill = this.system.skills[skillName];
 
-        await RollConfig.createAndRender(this, skill);
+        // await RollConfig.createAndRender(this, skill);
 
         // Calculate dice number
         let diceNumber = 0;

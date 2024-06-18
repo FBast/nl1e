@@ -1,26 +1,32 @@
-.attributes {
-  .attribute {
-    margin: 0;
-    align-items: center;
-    label {
-      font-size: small;
+.pl1e {
+  .attributes {
+    .attribute {
+      margin: 0;
+      align-items: center;
+
+      label {
+        font-size: small;
+      }
     }
   }
-}
 
-.item-attribute-select {
-  padding: 2px 0;
-  a {
-    margin: 5px 10px;
-  }
-}
+  .item-attribute-select {
+    padding: 2px 0;
 
-.item-attribute {
-  padding: 2px 0;
-  a {
-    margin: 5px 10px;
+    a {
+      margin: 5px 10px;
+    }
   }
-  .attribute-name {
-    margin: 5px 0 5px 0;
+
+  .item-attribute {
+    padding: 2px 0;
+
+    a {
+      margin: 5px 10px;
+    }
+
+    .attribute-name {
+      margin: 5px 0 5px 0;
+    }
   }
 }

@@ -14,29 +14,27 @@
 @import 'utils/sizes';
 @import 'utils/mixins';
 
-.pl1e {
-  // Layouts
-  @import 'layout/dialogs';
-  @import 'layout/forms';
-  @import 'layout/sheets';
-  @import 'layout/elements';
-  @import 'layout/scrollbar';
+// Layouts
+@import 'layout/dialogs';
+@import 'layout/forms';
+@import 'layout/sheets';
+@import 'layout/elements';
+@import 'layout/scrollbar';
 
-  // Components
-  @import 'components/actor';
-  @import 'components/item';
-  @import 'components/attributes';
-  @import 'components/characteristics';
-  @import 'components/chat';
-  @import 'components/currency';
-  @import 'components/item-selector';
-  @import 'components/items';
-  @import 'components/journal';
-  @import 'components/misc';
-  @import 'components/resources';
-  @import 'components/skills';
-  @import 'components/states';
+// Components
+@import 'components/actor';
+@import 'components/item';
+@import 'components/attributes';
+@import 'components/characteristics';
+@import 'components/chat';
+@import 'components/currency';
+@import 'components/item-selector';
+@import 'components/items';
+@import 'components/journal';
+@import 'components/misc';
+@import 'components/resources';
+@import 'components/skills';
+@import 'components/states';
 
-  // Shame
-  @import 'shame';
-}
+// Shame
+@import 'shame';

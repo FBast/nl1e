@@ -11,7 +11,7 @@ export class Pl1eEvent {
     /**
      * Handle clickable rolls.
      * @param {Event} event The originating click event
-     * @param {Actor} actor the rolling actor
+     * @param {Pl1eActor} actor the rolling actor
      */
     static async onSkillRoll(event, actor) {
         event.preventDefault();
@@ -21,30 +21,15 @@ export class Pl1eEvent {
     }
 
     /**
-     * Open token sheet
-     * @param event The originating click event
-     */
-    static async onTokenEdit(event) {
-        const tokenId = $(event.currentTarget).data("token-id");
-        const sceneId = $(event.currentTarget).data("scene-id");
-        const token = await Pl1eHelpers.getDocument("Token", tokenId, {
-            scene: await Pl1eHelpers.getDocument("Scene", sceneId)
-        });
-
-        if (token === undefined) throw new Error("PL1E | no token found");
-
-        if (token.actor.sheet.rendered) token.actor.sheet.bringToTop();
-        else token.actor.sheet.render(true);
-    }
-
-    /**
      * Center the screen on a token
      * @param event
      * @return {Promise<void>}
      */
     static async onFocusToken(event) {
-        const tokenId = $(event.currentTarget).data("token-id");
-        const sceneId = $(event.currentTarget).data("scene-id");
+        let tokenId = $(event.currentTarget).data("token-id") ||
+            $(event.currentTarget).closest(".item").data("token-id");
+
+        const sceneId = $(event.currentTarget).closest(".item").data("scene-id");
         const token = await Pl1eHelpers.getDocument("Token", tokenId, {
             scene: await Pl1eHelpers.getDocument("Scene", sceneId)
         });
@@ -76,14 +61,13 @@ export class Pl1eEvent {
      * @param {Actor|Item} document the document of the item
      */
     static async onItemEdit(event, document) {
-        let itemId = $(event.currentTarget).closest(".item").data("item-id");
-        if (itemId === undefined) itemId = $(event.currentTarget).data("item-id");
-        if (itemId === undefined) throw new Error("PL1E | no itemId found");
+        let itemId = $(event.currentTarget).data("item-id") ||
+            $(event.currentTarget).closest(".item").data("item-id");
 
         // Chat message need to retrieve the token actor to find the item
         if (document instanceof ChatMessage) {
-            const sceneId = $(event.currentTarget).data("scene-id");
-            const tokenId = $(event.currentTarget).data("token-id");
+            const sceneId = $(event.currentTarget).closest(".item").data("scene-id");
+            const tokenId = $(event.currentTarget).closest(".item").data("token-id");
             const scene = await Pl1eHelpers.getDocument("Scene", sceneId);
             const token = await Pl1eHelpers.getDocument("Token", tokenId, {
                 scene: scene

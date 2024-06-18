@@ -10,7 +10,7 @@ export class ItemSelector extends FormApplication {
             id: 'item-selector',
             classes: ['pl1e'],
             title: `${game.i18n.localize("PL1E.SelectAnItem")}`,
-            template: 'systems/pl1e/templates/apps/dialog-item-selector.hbs',
+            template: 'systems/pl1e/templates/apps/item-selector.hbs',
             resizable: false,
             width: 'auto',
             height: 'auto'

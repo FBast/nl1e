@@ -1,13 +1,15 @@
-.pointer {
-  &:hover,
-  &:focus {
-    cursor: pointer;
+.pl1e {
+  .pointer {
+    &:hover,
+    &:focus {
+      cursor: pointer;
+    }
   }
-}
 
-.icon-flipped {
-  -moz-transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-  -ms-transform: scaleX(-1);
-  transform: scaleX(-1);
+  .icon-flipped {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
 }

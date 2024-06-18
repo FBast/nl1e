@@ -1,128 +1,133 @@
-.chat-card {
-  font-style: normal;
-  font-size: 12px;
+.pl1e {
+  &.chat-card {
+    font-style: normal;
+    font-size: 12px;
 
-  .card-header {
-    padding: 3px 0;
-    border-top: 2px groove #FFF;
-    justify-content: center;
-    align-items: center;
+    .card-header {
+      padding: 3px 0;
+      border-top: 2px groove #FFF;
+      justify-content: center;
+      align-items: center;
 
-    img {
-      flex: 0 0 36px;
-      transition: .3s ease;
-
-      &:hover{
-        box-shadow: 0 0 0 1px #000000;
+      img {
+        //flex: 0 0 36px;
+        flex: 0;
+        width: 50px;
+        height: 50px;
         transition: .3s ease;
-        cursor: pointer;
+
+        &:hover {
+          box-shadow: 0 0 0 1px #000000;
+          transition: .3s ease;
+          cursor: pointer;
+        }
+
+      }
+
+      h3 {
+        flex: 1;
+        margin: 0;
+        line-height: 36px;
+
+        &:hover {
+          color: #111;
+          text-shadow: 0 0 10px red;
+        }
+      }
+
+      .left-image {
+        margin-right: 5px;
+      }
+
+      .item-effects-character {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+
+        i {
+          padding: 0 5px;
+        }
+      }
+
+      .item-effects-target {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+
+        i {
+          padding: 0 5px;
+        }
+      }
+
+      .item-effect {
+        line-height: 20px;
+        background: rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--color-border-light-2);
+        box-shadow: 0 0 2px #FFF inset;
+      }
+
+      .right-image {
+        margin-left: 5px;
       }
 
     }
 
-    h3 {
-      flex: 1;
-      margin: 0;
-      line-height: 36px;
+    .card-content {
 
-      &:hover {
-        color: #111;
-        text-shadow: 0 0 10px red;
+      h3 {
+        font-size: 12px;
+        margin: 0;
+        font-weight: bold;
+      }
+
+      > * {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+      }
+
+    }
+
+    .card-buttons {
+      display: block;
+      margin: 5px 0 0 0;
+      border-top: 2px groove #FFF;
+
+      button {
+        font-size: 12px;
+        height: 24px;
+        line-height: 20px;
+        margin: 2px 0;
       }
     }
 
-    .left-image {
-      margin-right: 5px;
+    .show-footer {
+      display: block !important;
     }
 
-    .item-effects-character {
-      display: flex;
-      justify-content: left;
-      align-items: center;
-
-      i {
-        padding: 0 5px;
-      }
-    }
-
-    .item-effects-target {
-      display: flex;
-      justify-content: right;
-      align-items: center;
-
-      i {
-        padding: 0 5px;
-      }
-    }
-
-    .item-effect {
-      line-height: 20px;
+    .dice-total {
+      text-align: center;
       background: rgba(0, 0, 0, 0.1);
       border: 1px solid var(--color-border-light-2);
+      border-radius: 3px;
       box-shadow: 0 0 2px #FFF inset;
-    }
-
-    .right-image {
-      margin-left: 5px;
-    }
-
-  }
-
-  .card-content {
-
-    h3 {
-      font-size: 12px;
-      margin: 0;
+      word-break: break-all;
+      font-size: var(--font-size-20);
       font-weight: bold;
+
+      &.success {
+        color: green;
+        background: #c7d0c0;
+        border: 1px solid #006c00;
+      }
+
+      &.failure {
+        color: red;
+        background: #ffdddd;
+        border: 1px solid #6e0000;
+      }
+
     }
-
-    > * {
-      -webkit-user-select: text;
-      -moz-user-select: text;
-      -ms-user-select: text;
-      user-select: text;
-    }
-
-  }
-
-  .card-buttons {
-    display: block;
-    margin: 5px 0 0 0;
-    border-top: 2px groove #FFF;
-
-    button {
-      font-size: 12px;
-      height: 24px;
-      line-height: 20px;
-      margin: 2px 0;
-    }
-  }
-
-  .show-footer {
-    display: block !important;
-  }
-
-  .dice-total {
-    text-align: center;
-    background: rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--color-border-light-2);
-    border-radius: 3px;
-    box-shadow: 0 0 2px #FFF inset;
-    word-break: break-all;
-    font-size: var(--font-size-20);
-    font-weight: bold;
-
-    &.success {
-      color: green;
-      background: #c7d0c0;
-      border: 1px solid #006c00;
-    }
-
-    &.failure {
-      color: red;
-      background: #ffdddd;
-      border: 1px solid #6e0000;
-    }
-
   }
 }
