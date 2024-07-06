@@ -1,17 +1,16 @@
 .pl1e {
   .characteristics {
-    padding: 0 0.5em;
+    flex: 0 0 50px;
 
     .characteristic {
-      margin: 0 0 5px;
+      padding: 0 0 10px;
 
       .characteristic-label {
-        font-weight: bold;
         cursor: pointer;
-        transition: color 0.3s;
         text-align: left;
         display: block;
         width: 100%;
+        margin-bottom: 5px;
       }
 
       .characteristic-values {
@@ -26,9 +25,6 @@
             width: 40px;
             padding: 0.2em;
             text-align: center;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            background-color: #f5f5f5;
           }
 
           span {
@@ -43,10 +39,6 @@
               cursor: pointer;
               transition: color 0.3s;
               font-size: 1.2em;
-
-              &.hover-action:hover {
-                color: red;
-              }
             }
           }
         }

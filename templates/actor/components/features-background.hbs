@@ -1,36 +1,38 @@
-<ol class="items-list">
-    <li class="items-header grid grid-12col">
-        <div class="item-title grid-span-4 flexrow">
-            <label class="item-name">{{localize "PL1E.Background"}}</label>
-        </div>
-        <ul class="item-filter-list grid-span-8" data-filter="background">
-            <li class="item-filter" data-filter="race">{{localize "PL1E.Race"}}</li>
-            <li class="item-filter" data-filter="culture">{{localize "PL1E.Culture"}}</li>
-            <li class="item-filter" data-filter="class">{{localize "PL1E.Class"}}</li>
-            <li class="item-filter" data-filter="mastery">{{localize "PL1E.Mastery"}}</li>
-        </ul>
-    </li>
-    {{#each background}}
-        <li class="item" data-item-id="{{_id}}">
-            <div class="item-content grid grid-12col">
-                <div class="item-title grid-span-4 flexrow">
-                    <img class="item-image item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
-                    <label class="item-name item-tooltip-activate">{{name}}</label>
-                </div>
-                <div class="item-icons grid-span-6">
-
-                </div>
-                <div class="item-controls grid-span-2">
-                    {{#if @root.actor.isOwner}}
-                        {{#if flags.pl1e.childId}}
-                            <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
-                        {{else}}
-                            <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
-                        {{/if}}
-                    {{/if}}
-                </div>
+<div class="main-panel">
+    <ol class="items-list">
+        <li class="items-header grid grid-12col">
+            <div class="item-title grid-span-4 flexrow">
+                <label class="item-name">{{localize "PL1E.Background"}}</label>
             </div>
-            <div class="item-tooltip">{{{enriched}}}</div>
+            <ul class="item-filter-list grid-span-8" data-filter="background">
+                <li class="item-filter" data-filter="race">{{localize "PL1E.Race"}}</li>
+                <li class="item-filter" data-filter="culture">{{localize "PL1E.Culture"}}</li>
+                <li class="item-filter" data-filter="class">{{localize "PL1E.Class"}}</li>
+                <li class="item-filter" data-filter="mastery">{{localize "PL1E.Mastery"}}</li>
+            </ul>
         </li>
-    {{/each}}
-</ol>
+        {{#each background}}
+            <li class="item" data-item-id="{{_id}}">
+                <div class="item-content grid grid-12col">
+                    <div class="item-title grid-span-4 flexrow">
+                        <img class="item-image item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-name item-tooltip-activate">{{name}}</label>
+                    </div>
+                    <div class="item-icons grid-span-6">
+
+                    </div>
+                    <div class="item-controls grid-span-2">
+                        {{#if @root.actor.isOwner}}
+                            {{#if flags.pl1e.childId}}
+                                <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                            {{else}}
+                                <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="item-tooltip">{{{enriched}}}</div>
+            </li>
+        {{/each}}
+    </ol>
+</div>

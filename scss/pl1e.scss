@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 // Reset
-//@import 'reset';
+@import 'reset';
 
 // Globals
 @import 'globals/flex';
@@ -15,11 +15,14 @@
 @import 'utils/mixins';
 
 // Layouts
+@import 'layout/body';
 @import 'layout/dialogs';
 @import 'layout/forms';
-@import 'layout/sheets';
+@import 'layout/headers';
+@import 'layout/panels';
 @import 'layout/elements';
 @import 'layout/scrollbar';
+@import 'layout/sheets';
 
 // Components
 @import 'components/actor';
@@ -32,9 +35,9 @@
 @import 'components/items';
 @import 'components/journal';
 @import 'components/misc';
-@import 'components/resources';
+@import 'components/success-color';
 @import 'components/skills';
-@import 'components/states';
+@import 'components/stats';
 
 // Shame
 @import 'shame';

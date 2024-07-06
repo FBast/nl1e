@@ -1,0 +1,73 @@
+<div class="pl1e chat-card item" data-item-id="{{characterData.itemId}}" data-token-id="{{characterData.tokenId}}" data-scene-id="{{characterData.sceneId}}">
+    <header class="card-header flexrow">
+        <img class="token-focus" src="{{characterData.actor.img}}" title="{{characterData.token.name}}"/>
+        <div class="flexlarge"></div>
+        <img class="item-edit" src="{{characterData.item.realImg}}" title="{{characterData.item.realName}}"/>
+        {{#if characterData.linkedItem}}
+            <img class="item-edit" src="{{characterData.linkedItem.realImg}}"
+                 title="{{characterData.linkedItem.realName}}" data-item-id="{{characterData.linkedItemId}}"/>
+        {{/if}}
+    </header>
+    <div class="card-content">
+        <div class="item-effects-character">
+            {{#each characterData.attributes}}
+                {{#with (config "attributes" @key)}}
+                    {{#if (and (ne dataGroup undefined) (ne data undefined))}}
+                        {{#with (config dataGroup data)}}
+                            {{#if (and (eq type "number") (ne ../../this 0))}}
+                                <div>
+                                    <i class="{{icon}}" data-tooltip="{{localize label}}">
+                                        <label>{{../../this}}</label>
+                                    </i>
+                                </div>
+                            {{else if (eq type "bool")}}
+                                {{#unless (and ../applyIfTrue (not ../../this))}}
+                                    <div>
+                                        <i class="{{icon}}" data-tooltip="{{localize label}}"></i>
+                                    </div>
+                                {{/unless}}
+                            {{/if}}
+                        {{/with}}
+                    {{/if}}
+                {{/with}}
+            {{/each}}
+        </div>
+        <!-- Description of the ability -->
+        {{{characterData.item.system.description}}}
+        <!-- Result of the roll -->
+        {{#if (ne (length characterData.attributes.roll) 0)}}
+            <div class="dice-roll">
+                <div class="dice-result">
+                    <div class="dice-formula">{{rollData.skillName}} : {{rollData.formula}}</div>
+                    <div class="dice-tooltip">
+                        {{#each rollData.dice}}
+                            <section class="tooltip-part">
+                                <div class="dice">
+                                    <header class="part-header flexrow">
+                                        <span class="part-formula">{{number}}d{{faces}}{{join modifiers ""}}</span>
+                                        <span class="part-total">{{total}}</span>
+                                    </header>
+                                    <ol class="dice-rolls">
+                                        {{#each results}}
+                                            <li class="roll die d{{../faces}} {{#if success}}success{{else}}failure{{/if}}
+                                                {{#if (eq result ../faces)}}exploded{{/if}}">{{result}}</li>
+                                        {{/each}}
+                                    </ol>
+                                </div>
+                            </section>
+                        {{/each}}
+                    </div>
+                    <h4 class="dice-total success-color-{{clamp rollData.total 0 5}}">
+                        {{rollData.total}} {{localize "PL1E.Success"}}
+                    </h4>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+    {{#if (and (not characterData.noConfirmation) (gt characterData.result 0))}}
+        <footer class="card-buttons gm-only">
+            <button data-action="launch">{{localize "PL1E.Launch"}}</button>
+            <button data-action="counter">{{localize "PL1E.Counter"}}</button>
+        </footer>
+    {{/if}}
+</div>

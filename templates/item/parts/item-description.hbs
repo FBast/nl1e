@@ -1,11 +1,11 @@
 <section class="scroll-auto">
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.Description"}}</legend>
+    <div class="main-panel">
+        <h3 class="align-left">{{localize "PL1E.Description"}}</h3>
         {{{enriched}}}
-    </fieldset>
+    </div>
     {{#if (gt (length items) 0)}}
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.LinkedItems"}}</legend>
+        <div class="main-panel">
+            <h3 class="align-left">{{localize "PL1E.LinkedItems"}}</h3>
             {{#if (gt (length masters) 0)}}
                 <p>
                     <label>{{localize "PL1E.Masters"}} : </label>
@@ -36,39 +36,39 @@
                     {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=modules}}
                 </p>
             {{/if}}
-        </fieldset>
+        </div>
     {{/if}}
     {{#unless (isEmpty attributesDisplay)}}
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+        <div class="main-panel">
+            <h3 class="align-left">{{localize "PL1E.Attributes"}}</h3>
             {{#each attributesDisplay}}
                 <div class="form-group">
                     <label>{{label}}</label>
                     <label class="align-right">{{value}}</label>
                 </div>
             {{/each}}
-        </fieldset>
+        </div>
     {{/unless}}
     {{#unless (isEmpty passiveAspectsDisplay)}}
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.PassiveAspects"}}</legend>
+        <div class="main-panel">
+            <h3 class="align-left">{{localize "PL1E.PassiveAspects"}}</h3>
             {{#each passiveAspectsDisplay}}
                 <div class="item-attribute flexrow">
                     <label class="attribute-name">{{label}}</label>
                     <label class="attribute-name">{{description}}</label>
                 </div>
             {{/each}}
-        </fieldset>
+        </div>
     {{/unless}}
     {{#unless (isEmpty activeAspectsDisplay)}}
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.ActiveAspects"}}</legend>
+        <div class="main-panel">
+            <h3 class="align-left">{{localize "PL1E.ActiveAspects"}}</h3>
             {{#each activeAspectsDisplay}}
                 <div class="item-attribute flexrow">
                     <label class="attribute-name">{{label}}</label>
                     <label class="attribute-name">{{description}}</label>
                 </div>
             {{/each}}
-        </fieldset>
+        </div>
     {{/unless}}
 </section>

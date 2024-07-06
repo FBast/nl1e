@@ -799,7 +799,7 @@ export class Pl1eItem extends Item {
             });
 
             // Display message
-            chatMessage = await Pl1eChat.actionRoll(characterData);
+            chatMessage = await Pl1eChat.launcherRoll(characterData);
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
@@ -820,7 +820,7 @@ export class Pl1eItem extends Item {
             characterData.noConfirmation = true;
 
             // Display message
-            await Pl1eChat.actionRoll(characterData);
+            await Pl1eChat.launcherRoll(characterData);
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
@@ -1085,7 +1085,7 @@ export class Pl1eItem extends Item {
         // Display messages if targets found
         if (targetsData) {
             for (const targetData of targetsData) {
-                await Pl1eChat.actionRoll(characterData, targetData);
+                await Pl1eChat.targetRoll(characterData, targetData);
             }
         }
     }

@@ -1,0 +1,25 @@
+.pl1e {
+  .sheet-body {
+    overflow: hidden;
+  }
+
+  .sheet-body,
+  .sheet-body .tab,
+  .sheet-body .tab .editor {
+    height: 100%;
+  }
+
+  .sheet-body .tab .horizontal-content {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
+
+  .sheet-body .tab .vertical-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+}

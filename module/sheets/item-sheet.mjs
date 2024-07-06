@@ -15,8 +15,8 @@ export class Pl1eItemSheet extends ItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "item"],
-            width: 520,
-            height: 480,
+            width: 500,
+            height: 500,
             scrollY: [
                 ".scroll-auto"
             ],

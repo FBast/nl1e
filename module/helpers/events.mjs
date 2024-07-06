@@ -35,11 +35,27 @@ export class Pl1eEvent {
         });
 
         if (token) {
+            const currentSceneId = game.scenes.current.id;
+            if (currentSceneId !== sceneId) {
+                const targetScene = game.scenes.get(sceneId);
+                if (targetScene) {
+                    if (targetScene.testUserPermission(game.user, foundry.CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER))
+                        await targetScene.view();
+                    else {
+                        ui.notifications.warn(game.i18n.localize("PL1E.InsufficientScenePermissions"));
+                        return;
+                    }
+                } else {
+                    ui.notifications.warn(game.i18n.localize("PL1E.SceneDoesNotExist"));
+                    return;
+                }
+            }
+
             const x = token.x;
             const y = token.y;
             await canvas.animatePan({x: x, y: y, scale: 1});
         } else {
-            console.warn(`Token with id ${tokenId} not found.`);
+            ui.notifications.warn(game.i18n.localize("PL1E.TokenDoesNotExist"));
         }
     }
 
@@ -248,7 +264,7 @@ export class Pl1eEvent {
         let skills = $(event.currentTarget).data("skills");
         // resources
         if (resources !== undefined) {
-            for (let resource of document.getElementsByClassName('resource-label')) {
+            for (let resource of document.getElementsByClassName('resource-name')) {
                 let id = $(resource).closest(".resource").data("resource-id");
                 if (!resources.includes(id)) continue;
                 resource.classList.add('highlight-info');
@@ -282,7 +298,7 @@ export class Pl1eEvent {
         for (let characteristic of document.getElementsByClassName('characteristic-label')) {
             characteristic.classList.remove('highlight-info')
         }
-        for (let resource of document.getElementsByClassName('resource-label')) {
+        for (let resource of document.getElementsByClassName('resource-name')) {
             resource.classList.remove('highlight-info')
         }
         for (let skill of document.getElementsByClassName('skill-label')) {

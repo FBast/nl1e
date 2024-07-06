@@ -1,113 +1,115 @@
-<ol class="items-list">
-    <li class="items-header grid grid-12col">
-        <div class="item-title grid-span-4 flexrow">
-            <label class="item-name">{{localize "PL1E.Wearables"}}</label>
-        </div>
-        <ul class="item-filter-list grid-span-8" data-filter="wearables">
-            <li class="item-filter" data-filter="garment">{{localize "PL1E.Garment"}}</li>
-            <li class="item-filter" data-filter="armor">{{localize "PL1E.Armor"}}</li>
-            <li class="item-filter" data-filter="ring">{{localize "PL1E.Ring"}}</li>
-            <li class="item-filter" data-filter="necklace">{{localize "PL1E.Necklace"}}</li>
-            <li class="item-filter" data-filter="none">{{localize "PL1E.Others"}}</li>
-        </ul>
-    </li>
-    {{#each wearables}}
-        <li class="item {{#if (not isEnabled)}}disabled{{/if}}" data-item-id="{{_id}}">
-            <div class="item-content grid grid-12col">
-                <div class="item-title grid-span-4 flexrow">
-                    <img class="item-image item-edit hover-action" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
-                    <label class="item-name item-tooltip-activate">
-                        {{#if (and (eq @root.actor.type "merchant") (not ../system.general.unlimitedItems))}}
-                            {{units}}x {{realName}}
-                        {{else}}
-                            {{realName}}
-                        {{/if}}
-                    </label>
-                </div>
-                <div class="item-icons grid-span-6">
-                    {{#each system.combinedPassiveAspects}}
-                        {{#with (config dataGroup data)}}
-                            <i class="{{icon}}" data-tooltip="{{localize label}}">
-                                <label>{{../value}}</label>
-                            </i>
-                        {{/with}}
-                    {{/each}}
-                    {{#if (eq @root.actor.type "character")}}
-                        {{#if system.majorActionUsed}}
-                            <i class="item-info far fa-star hover-info" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
-                        {{/if}}
-                        {{#if (gt system.attributes.goldPrice 0)}}
-                            <i class="item-info far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
-                                <label class="color-black">{{system.attributes.goldPrice}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (gt system.attributes.silverPrice 0)}}
-                            <i class="item-info far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
-                                <label class="color-black">{{system.attributes.silverPrice}}</label>
-                            </i>
-                        {{/if}}
-                        {{#if (gt system.attributes.copperPrice 0)}}
-                            <i class="item-info far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
-                                <label class="color-black">{{system.attributes.copperPrice}}</label>
-                            </i>
-                        {{/if}}
-                    {{else if (eq @root.actor.type "merchant")}}
-                        {{#with (lookup ../system.merchantPrices _id)}}
-                            {{#if (gt gold 0)}}
-                                <i class="item-info far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
-                                    <label class="color-black">{{gold}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (gt silver 0)}}
-                                <i class="item-info far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
-                                    <label class="color-black">{{silver}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (gt copper 0)}}
-                                <i class="item-info far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
-                                    <label class="color-black">{{copper}}</label>
-                                </i>
-                            {{/if}}
-                        {{/with}}
-                    {{/if}}
-                </div>
-                <div class="item-controls grid-span-2">
-                    {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                        {{#if (gt (length warnings) 0)}}
-                            <i class="item-control far fa-exclamation-triangle hover-info color-warning" data-tooltip="{{join warnings ', ' true}}"></i>
-                        {{/if}}
-                        {{#if (eq system.attributes.slot "garment")}}
-                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
-                                <i class="fas fa-shirt-long-sleeve {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
-                            </a>
-                        {{else if (eq system.attributes.slot "armor")}}
-                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
-                                <i class="fas fa-helmet-battle {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
-                            </a>
-                        {{else if (eq system.attributes.slot "ring")}}
-                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
-                                <i class="fas fa-ring {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
-                            </a>
-                        {{else if (eq system.attributes.slot "necklace")}}
-                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
-                                <i class="fas fa-gem {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
-                            </a>
-                        {{else}}
-                            <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
-                                <i class="fas fa-clothes-hanger {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
-                            </a>
-                        {{/if}}
-                    {{/if}}
-                    {{#if @root.actor.isOwner}}
-                        {{#if flags.pl1e.childId}}
-                            <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
-                        {{else}}
-                            <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
-                        {{/if}}
-                    {{/if}}
-                </div>
+<div class="main-panel">
+    <ol class="items-list">
+        <li class="items-header grid grid-12col">
+            <div class="item-title grid-span-4 flexrow">
+                <label class="item-name">{{localize "PL1E.Wearables"}}</label>
             </div>
-            <div class="item-tooltip">{{{enriched}}}</div>
+            <ul class="item-filter-list grid-span-8" data-filter="wearables">
+                <li class="item-filter" data-filter="garment">{{localize "PL1E.Garment"}}</li>
+                <li class="item-filter" data-filter="armor">{{localize "PL1E.Armor"}}</li>
+                <li class="item-filter" data-filter="ring">{{localize "PL1E.Ring"}}</li>
+                <li class="item-filter" data-filter="necklace">{{localize "PL1E.Necklace"}}</li>
+                <li class="item-filter" data-filter="none">{{localize "PL1E.Others"}}</li>
+            </ul>
         </li>
-    {{/each}}
-</ol>
+        {{#each wearables}}
+            <li class="item {{#if (not isEnabled)}}disabled{{/if}}" data-item-id="{{_id}}">
+                <div class="item-content grid grid-12col">
+                    <div class="item-title grid-span-4 flexrow">
+                        <img class="item-image item-edit hover-action" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
+                        <label class="item-name item-tooltip-activate">
+                            {{#if (and (eq @root.actor.type "merchant") (not ../system.general.unlimitedItems))}}
+                                {{units}}x {{realName}}
+                            {{else}}
+                                {{realName}}
+                            {{/if}}
+                        </label>
+                    </div>
+                    <div class="item-icons grid-span-6">
+                        {{#each system.combinedPassiveAspects}}
+                            {{#with (config dataGroup data)}}
+                                <i class="{{icon}}" data-tooltip="{{localize label}}">
+                                    <label>{{../value}}</label>
+                                </i>
+                            {{/with}}
+                        {{/each}}
+                        {{#if (eq @root.actor.type "character")}}
+                            {{#if system.majorActionUsed}}
+                                <i class="item-info far fa-star hover-info" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
+                            {{/if}}
+                            {{#if (gt system.attributes.goldPrice 0)}}
+                                <i class="item-info far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+                                    <label class="color-black">{{system.attributes.goldPrice}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (gt system.attributes.silverPrice 0)}}
+                                <i class="item-info far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+                                    <label class="color-black">{{system.attributes.silverPrice}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (gt system.attributes.copperPrice 0)}}
+                                <i class="item-info far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                                    <label class="color-black">{{system.attributes.copperPrice}}</label>
+                                </i>
+                            {{/if}}
+                        {{else if (eq @root.actor.type "merchant")}}
+                            {{#with (lookup ../system.merchantPrices _id)}}
+                                {{#if (gt gold 0)}}
+                                    <i class="item-info far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+                                        <label class="color-black">{{gold}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (gt silver 0)}}
+                                    <i class="item-info far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+                                        <label class="color-black">{{silver}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (gt copper 0)}}
+                                    <i class="item-info far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                                        <label class="color-black">{{copper}}</label>
+                                    </i>
+                                {{/if}}
+                            {{/with}}
+                        {{/if}}
+                    </div>
+                    <div class="item-controls grid-span-2">
+                        {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                            {{#if (gt (length warnings) 0)}}
+                                <i class="item-control far fa-exclamation-triangle hover-info color-warning" data-tooltip="{{join warnings ', ' true}}"></i>
+                            {{/if}}
+                            {{#if (eq system.attributes.slot "garment")}}
+                                <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                    <i class="fas fa-shirt-long-sleeve {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
+                                </a>
+                            {{else if (eq system.attributes.slot "armor")}}
+                                <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                    <i class="fas fa-helmet-battle {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
+                                </a>
+                            {{else if (eq system.attributes.slot "ring")}}
+                                <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                    <i class="fas fa-ring {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
+                                </a>
+                            {{else if (eq system.attributes.slot "necklace")}}
+                                <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                    <i class="fas fa-gem {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
+                                </a>
+                            {{else}}
+                                <a class="item-control item-toggle" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                    <i class="fas fa-clothes-hanger {{#unless system.isEquipped}}color-grey{{/unless}}"></i>
+                                </a>
+                            {{/if}}
+                        {{/if}}
+                        {{#if @root.actor.isOwner}}
+                            {{#if flags.pl1e.childId}}
+                                <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                            {{else}}
+                                <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="item-tooltip">{{{enriched}}}</div>
+            </li>
+        {{/each}}
+    </ol>
+</div>

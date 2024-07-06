@@ -1,33 +1,10 @@
 <div class="pl1e chat-card item" data-item-id="{{characterData.itemId}}" data-token-id="{{characterData.tokenId}}" data-scene-id="{{characterData.sceneId}}">
     <header class="card-header flexrow">
-        <img class="left-image token-focus" src="{{characterData.actor.img}}" title="{{characterData.token.name}}"/>
-        <img class="left-image item-edit" src="{{characterData.item.realImg}}" title="{{characterData.item.realName}}"/>
-        <div class="item-effects-target">
-            {{#each targetData.activeAspects}}
-                {{#with (config dataGroup data)}}
-                    <div class="item-effect">
-                        {{#if (and (eq type "number") (ne ../../this 0))}}
-                            <i class="{{icon}}" data-tooltip="{{localize label}}">
-                                <label>{{formatNumber ../value sign=true}}</label>
-                            </i>
-                        {{else if (eq type "bool")}}
-                            {{#unless (and ../applyIfTrue (not ../value))}}
-                                <i class="{{icon}}" data-tooltip="{{localize label}}"></i>
-                            {{/unless}}
-                        {{else if (eq type "status")}}
-                            <i class="far fa-flag hover-info" data-tooltip="{{localize label}}"></i>
-                        {{/if}}
-                        {{#if ../effectDuration}}
-                            <i class="far fa-clock hover-info" data-tooltip="{{localize "PL1E.Turn"}}">
-                                <label>{{../effectDuration}}</label>
-                            </i>
-                        {{/if}}
-                    </div>
-                {{/with}}
-            {{/each}}
-        </div>
-        <img class="right-image token-focus" src="{{targetData.actor.img}}" title="{{targetData.token.name}}"
+        <img class="token-focus" src="{{targetData.actor.img}}" title="{{targetData.token.name}}"
              data-token-id="{{targetData.tokenId}}" />
+        <div class="flexlarge"></div>
+        <img class="token-focus" src="{{characterData.actor.img}}" title="{{characterData.token.name}}"/>
+        <img class="item-edit" src="{{characterData.item.realImg}}" title="{{characterData.item.realName}}"/>
     </header>
     <div class="card-content">
         {{#if (gt characterData.attributes.oppositeRoll.length 0)}}
@@ -53,11 +30,34 @@
                             </section>
                         {{/each}}
                     </div>
-                    <h4 class="dice-total {{#if (gt targetData.result 0)}}success{{else}}failure{{/if}}">
-                        {{#if (gt targetData.result 0)}}{{localize "PL1E.Success"}}{{else}}{{localize "PL1E.Failure"}}{{/if}}
-                        ({{characterData.rollData.total}} - {{targetData.rollData.total}} = {{targetData.result}})
+                    <h4 class="dice-total success-color-{{clamp targetData.result 0 5}}">
+                        {{characterData.rollData.total}} - {{targetData.rollData.total}} = {{targetData.result}} {{localize "PL1E.Success"}}
                     </h4>
                 </div>
+            </div>
+        {{/if}}
+        {{#if (gt targetData.activeAspects.length 0)}}
+            <div class="item-effects-target">
+                <ul>
+                    {{#each targetData.activeAspects}}
+                        {{#with (config dataGroup data)}}
+                            <li>
+                                {{#if (and (eq type "number") (ne ../../this 0))}}
+                                    <span>{{localize label}}: {{formatNumber ../value sign=true}}</span>
+                                {{else if (eq type "bool")}}
+                                    {{#unless (and ../applyIfTrue (not ../value))}}
+                                        <span>{{localize label}}</span>
+                                    {{/unless}}
+                                {{else if (eq type "status")}}
+                                    <span>{{localize label}} (Status)</span>
+                                {{/if}}
+                                {{#if ../effectDuration}}
+                                    <span> ({{../effectDuration}} {{localize "PL1E.Turns"}})</span>
+                                {{/if}}
+                            </li>
+                        {{/with}}
+                    {{/each}}
+                </ul>
             </div>
         {{/if}}
     </div>

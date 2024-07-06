@@ -1,13 +1,22 @@
 <form class="pl1e {{cssClass}} {{actor.type}} flexcol" autocomplete="off">
-    <div class="sheet-header-container">
+    <div class="main-panel">
         {{!-- Sheet Header --}}
         <header class="sheet-header">
-            <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-            <div class="header-fields">
-                <h1 class="sheet-name"><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/></h1>
-                <div class="character-stats">
-                    {{> "systems/pl1e/templates/actor/components/resources.hbs" resources=system.resources}}
-                </div>
+            <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+            <div class="header-infos">
+                <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
+                {{#each system.resources}}
+                    {{#with (config "resources" @key)}}
+                        <div class="resource" data-resource-id="{{@key}}">
+                            <span class="resource-name highlight-link hover-info" data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
+                            <input type="number" name="system.resources.{{@key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
+                            <div class="stat-bar">
+                                <div class="stat-fill {{@key}}" style="width: {{../percentage}}%;"></div>
+                            </div>
+                            <input type="number" name="system.resources.{{@key}}.max" value="{{../max}}" data-dtype="Number" disabled/>
+                        </div>
+                    {{/with}}
+                {{/each}}
             </div>
         </header>
         {{!-- Sheet Tab Navigation --}}
@@ -20,16 +29,32 @@
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Stats Tab --}}
-        <div class="tab stats flexcol" data-group="primary" data-tab="stats">
-            {{> "systems/pl1e/templates/actor/parts/character-stats.hbs"}}
+        <div class="tab" data-group="primary" data-tab="stats">
+            <div class="horizontal-content scroll-hidden">
+                {{> "systems/pl1e/templates/actor/components/stats-characteristics.hbs"}}
+                {{> "systems/pl1e/templates/actor/components/stats-skills.hbs"}}
+                {{> "systems/pl1e/templates/actor/components/stats-stats.hbs"}}
+            </div>
         </div>
         {{!-- Features Tab --}}
-        <div class="tab features flexcol" data-group="primary" data-tab="features">
-            {{> "systems/pl1e/templates/actor/parts/character-features.hbs"}}
+        <div class="tab" data-group="primary" data-tab="features">
+            <div class="vertical-content scroll-auto">
+                {{> "systems/pl1e/templates/actor/components/features-background-row.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/features-features-row.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/features-abilities.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/features-effects.hbs" }}
+            </div>
         </div>
         {{!-- Items Tab --}}
-        <div class="tab items flexcol" data-group="primary" data-tab="items">
-            {{> "systems/pl1e/templates/actor/parts/character-items.hbs"}}
+        <div class="tab" data-group="primary" data-tab="items">
+            <div class="vertical-content scroll-auto">
+                {{> "systems/pl1e/templates/actor/components/items-money.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/items-weapons.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/items-wearables.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/items-consumables.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/items-commons.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/items-modules.hbs" }}
+            </div>
         </div>
     </section>
 </form>

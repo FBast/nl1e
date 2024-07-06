@@ -35,10 +35,6 @@
         }
       }
 
-      .left-image {
-        margin-right: 5px;
-      }
-
       .item-effects-character {
         display: flex;
         justify-content: left;
@@ -48,31 +44,29 @@
           padding: 0 5px;
         }
       }
+    }
 
+    .card-content {
       .item-effects-target {
+        margin-top: 5px;
         display: flex;
-        justify-content: right;
+        justify-content: flex-start;
         align-items: center;
+
+        ul {
+          margin: 0;
+          padding-left: 20px;
+        }
+
+        li {
+          line-height: 20px;
+          padding: 2px 5px;
+        }
 
         i {
           padding: 0 5px;
         }
       }
-
-      .item-effect {
-        line-height: 20px;
-        background: rgba(0, 0, 0, 0.1);
-        border: 1px solid var(--color-border-light-2);
-        box-shadow: 0 0 2px #FFF inset;
-      }
-
-      .right-image {
-        margin-left: 5px;
-      }
-
-    }
-
-    .card-content {
 
       h3 {
         font-size: 12px;
@@ -86,7 +80,6 @@
         -ms-user-select: text;
         user-select: text;
       }
-
     }
 
     .card-buttons {

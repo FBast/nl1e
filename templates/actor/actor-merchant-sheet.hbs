@@ -1,32 +1,31 @@
 <form class="pl1e {{cssClass}} {{actor.type}} flexcol" autocomplete="off">
-    <div class="sheet-header-container">
+    <div class="main-panel">
         {{!-- Sheet Header --}}
         <header class="sheet-header">
-            <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-            <div class="header-fields">
-                <h1 class="sheet-name"><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/></h1>
-                <div class="resources grid grid-2col">
-                    <div class="resource box flex-group-center">
-                        {{#if actor.isOwner}}
-                            <label class="resource-label">{{localize "PL1E.SellMultiplier"}}</label>
-                            <div class="form-group resource-content">
-                                {{rangePicker name="system.general.sellMultiplier" value=system.general.sellMultiplier min=0 max=200 step=10}}
-                            </div>
-                        {{else}}
-                            <label class="resource-label">{{localize "PL1E.SellAt"}} {{system.general.sellMultiplier}}%</label>
-                        {{/if}}
+            <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+            <div class="header-infos">
+                <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
+                {{#if actor.isOwner}}
+                    <div class="multiplier">
+                        <span class="multiplier-name">{{localize "PL1E.SellMultiplier"}}</span>
+                        <div class="multiplier-range">
+                            {{rangePicker name="system.general.sellMultiplier" value=system.general.sellMultiplier min=0 max=200 step=10}}
+                        </div>
                     </div>
-                    <div class="resource box flex-group-center">
-                        {{#if actor.isOwner}}
-                            <label class="resource-label">{{localize "PL1E.BuyMultiplier"}}</label>
-                            <div class="form-group resource-content">
-                                {{rangePicker name="system.general.buyMultiplier" value=system.general.buyMultiplier min=0 max=200 step=10}}
-                            </div>
-                        {{else}}
-                        <label class="resource-label">{{localize "PL1E.BuyAt"}} {{system.general.buyMultiplier}}%</label>
-                        {{/if}}
+                    <div class="multiplier">
+                        <span class="multiplier-name">{{localize "PL1E.BuyMultiplier"}}</span>
+                        <div class="multiplier-range">
+                            {{rangePicker name="system.general.buyMultiplier" value=system.general.buyMultiplier min=0 max=200 step=10}}
+                        </div>
                     </div>
-                </div>
+                {{else}}
+                    <div class="multiplier-display">
+                        <span>{{localize "PL1E.SellAt"}} {{system.general.sellMultiplier}}%</span>
+                    </div>
+                    <div class="multiplier-display">
+                        <span>{{localize "PL1E.BuyAt"}} {{system.general.buyMultiplier}}%</span>
+                    </div>
+                {{/if}}
             </div>
         </header>
         {{!-- Sheet Tab Navigation --}}
@@ -40,16 +39,28 @@
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Features Tab --}}
-        <div class="tab features flexcol" data-group="primary" data-tab="features">
-            {{> "systems/pl1e/templates/actor/parts/merchant-features.hbs"}}
+        <div class="tab" data-group="primary" data-tab="features">
+            <div class="vertical-content scroll-auto">
+                {{> "systems/pl1e/templates/actor/components/features-background.hbs"}}
+                {{> "systems/pl1e/templates/actor/components/features-features.hbs"}}
+            </div>
         </div>
         {{!-- Items Tab --}}
-        <div class="tab items flexcol" data-group="primary" data-tab="items">
-            {{> "systems/pl1e/templates/actor/parts/merchant-items.hbs"}}
+        <div class="tab" data-group="primary" data-tab="items">
+            <div class="vertical-content scroll-auto">
+                {{> "systems/pl1e/templates/actor/components/items-weapons.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/items-wearables.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/items-consumables.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/items-commons.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/items-modules.hbs" }}
+            </div>
         </div>
-        {{!-- Stats Tab --}}
-        <div class="tab stats flexcol" data-group="primary" data-tab="config">
-            {{> "systems/pl1e/templates/actor/parts/merchant-config.hbs"}}
+        {{!-- Config Tab --}}
+        <div class="tab" data-group="primary" data-tab="config">
+            <div class="vertical-content scroll-auto">
+                {{> "systems/pl1e/templates/actor/components/config-parameters.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/config-roll-tables.hbs" }}
+            </div>
         </div>
     </section>
 </form>

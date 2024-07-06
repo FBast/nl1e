@@ -68,4 +68,14 @@ export const registerHandlebars = function () {
         }
         return accumulator;
     });
+
+    Handlebars.registerHelper('clamp', function(value, min, max) {
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        } else {
+            return value;
+        }
+    });
 }

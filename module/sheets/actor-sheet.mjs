@@ -34,8 +34,8 @@ export class Pl1eActorSheet extends ActorSheet {
         return mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "actor"],
             template: "systems/pl1e/templates/actor/actor-sheet.hbs",
-            width: 700,
-            height: 710,
+            width: 800,
+            height: 700,
             scrollY: [
                 ".scroll-auto"
             ],
@@ -45,7 +45,10 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /** @inheritDoc */
     get template() {
-        return `systems/pl1e/templates/actor/actor-${this.actor.type}-sheet.hbs`;
+        if (this.actor.type === "merchant") {
+            return `systems/pl1e/templates/actor/actor-merchant-sheet.hbs`;
+        }
+        return `systems/pl1e/templates/actor/actor-character-sheet.hbs`;
     }
 
     /** @inheritDoc */

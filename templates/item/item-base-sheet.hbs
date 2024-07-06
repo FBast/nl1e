@@ -1,20 +1,20 @@
-<form class="pl1e {{cssClass}} flexcol" autocomplete="off">
-    <div class="sheet-header-container">
+<form class="pl1e {{cssClass}} {{item.type}} flexcol" autocomplete="off">
+    <div class="main-panel">
         {{!-- Sheet Header --}}
         <header class="sheet-header">
             {{#if (and system.attributes.customizable item.isEmbedded)}}
-                <img class="profile" src="{{item.realImg}}" data-edit="system.customImg" title="{{item.name}}"/>
+                <img class="profile-item" src="{{item.realImg}}" data-edit="system.customImg" title="{{item.name}}"/>
             {{else}}
-                <img class="profile" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+                <img class="profile-item" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
             {{/if}}
-            <div class="header-fields">
+            <div class="header-infos">
                 {{#if (and @root.game.user.isGM (not item.isEmbedded))}}
-                    <h1 class="sheet-name"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize "PL1E.Name"}}"/></h1>
+                    <input class="sheet-name" name="name" type="text" value="{{item.name}}" placeholder="{{localize "PL1E.Name"}}"/>
                 {{else}}
-                    <h1 class="sheet-name"><label>{{item.name}}</label></h1>
+                    <input class="sheet-name" name="name" type="text" value="{{item.name}}" placeholder="{{localize "PL1E.Name"}}" disabled/>
                 {{/if}}
                 {{#if (and system.attributes.customizable item.isEmbedded item.isOwner)}}
-                    <h1 class="sheet-name"><input name="system.customName" type="text" value="{{item.system.customName}}" placeholder="Custom name"/></h1>
+                    <input class="sheet-name" name="system.customName" type="text" value="{{item.system.customName}}" placeholder="Custom name"/>
                 {{/if}}
             </div>
         </header>

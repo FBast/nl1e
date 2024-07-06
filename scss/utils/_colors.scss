@@ -49,7 +49,7 @@
 .hover-action {
   &:hover,
   &:focus {
-    color: $colorAction;
+    text-shadow: 0 0 10px $colorAction;
     cursor: pointer;
   }
 }
@@ -57,19 +57,10 @@
 .hover-info {
   &:hover,
   &:focus {
-    color: $colorInfo;
-  }
-}
-
-@keyframes pulseInfo {
-  0%, 100% {
-    color: $colorInfo;
-  }
-  50% {
-    color: lighten($colorInfo, 20%);
+    text-shadow: 0 0 10px $colorInfo;
   }
 }
 
 .highlight-info {
-  animation: pulseInfo 1.5s infinite;
+  text-shadow: 0 0 10px $colorInfo;
 }

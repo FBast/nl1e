@@ -88,4 +88,18 @@
     box-shadow: 0 0 3px 3px #ffffff; /* White glow for visibility */
     border: 1px solid #000000; /* Black border for visibility */
   }
+
+  .pointer {
+    &:hover,
+    &:focus {
+      cursor: pointer;
+    }
+  }
+
+  .icon-flipped {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
 }

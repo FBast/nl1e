@@ -200,7 +200,6 @@
   "PL1E.Expert": "Expert",
   "PL1E.Explosion": "Explosion",
   "PL1E.ExtraMovement": "Extra movement",
-  "PL1E.Failure": "Failure",
   "PL1E.Faith": "Faith",
   "PL1E.FaithPower": "Faith power",
   "PL1E.Fast": "Fast",
@@ -623,6 +622,7 @@
   "PL1E.TargetsExceptSelf": "Targets except self",
   "PL1E.TargetsResolution": "Targets resolution",
   "PL1E.Teleport": "Teleport",
+  "PL1E.SubjectTo": "Subject to",
   "PL1E.TempHealth": "Temp health",
   "PL1E.TempMana": "Temp mana",
   "PL1E.TempStamina": "Temp stamina",
@@ -698,5 +698,9 @@
   "PL1E.WisdomMod": "Wisdom Mod.",
   "PL1E.Wizard": "Wizard",
   "PL1E.Yes": "Yes",
-  "PL1E.YouAreParalysed": "You are paralysed"
+  "PL1E.YouAreParalysed": "You are paralysed",
+  "PL1E.SceneDoesNotExist": "Scene does not exist",
+  "PL1E.TokenDoesNotExist": "Token does not exist",
+  "PL1E.InsufficientScenePermissions": "Insufficient permissions to access the scene containing the token",
+  "PL1E.Turns": "Turns"
 }

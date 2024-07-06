@@ -1,0 +1,18 @@
+<div class="main-panel">
+    <h3 class="align-left">{{localize "PL1E.Money"}}</h3>
+    <div class="currency flexrow flex-between">
+        <i class="convert-icon currency-convert fas fa-money-bill-transfer hover-action" data-tooltip='{{localize "PL1E.ConvertCurrency"}}'></i>
+        {{#each system.money}}
+            <div class="input-spin currency">
+                {{#with (config "money" @key)}}
+                    <i class="{{@key}}" data-tooltip='{{localize label}}'></i>
+                {{/with}}
+                <input type="number" name="system.money.{{@key}}" value="{{this}}" min="0" {{#unless @root.game.user.isTrusted}}disabled{{/unless}}/>
+                <span>
+                    <i class="spin-number hover-action fa fa-plus-square" data-path="system.money.{{@key}}" data-value="1"></i>
+                    <i class="spin-number hover-action fa fa-minus-square" data-path="system.money.{{@key}}" data-min="0" data-value="-1"></i>
+                </span>
+            </div>
+        {{/each}}
+    </div>
+</div>

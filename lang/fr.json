@@ -198,7 +198,6 @@
   "PL1E.Expert": "Expert",
   "PL1E.Explosion": "Explosion",
   "PL1E.ExtraMovement": "Movement supplémentaire",
-  "PL1E.Failure": "Echec",
   "PL1E.Faith": "Foi",
   "PL1E.FaithPower": "Pouvoir de la foi",
   "PL1E.Fast": "Rapide",
@@ -595,7 +594,7 @@
   "PL1E.SubTropical": "Subtropical",
   "PL1E.SubType": "Sous-type",
   "PL1E.Subarctic": "Subarctique",
-  "PL1E.Success": "Réussite",
+  "PL1E.Success": "Réussites",
   "PL1E.AreaNumberResolutionType": "Type de résolution du nombre de zone",
   "PL1E.EffectDurationResolutionType": "Type de résolution de durée d'effet",
   "PL1E.Invocation": "Invocation",
@@ -694,5 +693,10 @@
   "PL1E.Wizard": "Magicien",
   "PL1E.Yes": "Oui",
   "PL1E.YouAreParalysed": "Vous êtes paralysé",
-  "Pl1E.NoParents": "Cet objet n'a pas de parents"
+  "Pl1E.NoParents": "Cet objet n'a pas de parents",
+  "PL1E.SceneDoesNotExist": "La scene n'existe pas",
+  "PL1E.TokenDoesNotExist": "Le token n'existe pas",
+  "PL1E.InsufficientScenePermissions": "Permissions insuffisantes pour accéder à la scène contenant le jeton",
+  "PL1E.Turns": "Tours",
+  "PL1E.SubjectTo": "Sujet à"
 }
