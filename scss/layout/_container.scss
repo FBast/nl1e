@@ -1,0 +1,15 @@
+.pl1e {
+  .horizontal-content {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
+
+  .vertical-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+}

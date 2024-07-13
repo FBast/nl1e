@@ -375,13 +375,15 @@ export class Pl1eEvent {
         const tooltip = item.find(".item-tooltip");
         if (tooltip === undefined) return;
 
-        $(tooltip).slideToggle(200);
-        $(tooltip).toggleClass('expanded');
-
         // Store open/closed state in localStorage
         const itemId = item.data("item-id");
-        const tooltipState = $(tooltip).hasClass('expanded') ? 'open' : 'closed';
-        localStorage.setItem(`tooltipState_${itemId}`, tooltipState);
+        if ($(tooltip).hasClass('expanded'))
+            localStorage.removeItem(`pl1e.tooltipState_${itemId}`);
+        else
+            localStorage.setItem(`pl1e.tooltipState_${itemId}`, "open");
+
+        $(tooltip).slideToggle(200);
+        $(tooltip).toggleClass('expanded');
     }
 
     /**

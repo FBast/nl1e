@@ -1,7 +1,7 @@
 {
   "name": "pl1e",
   "version": "1.0.0",
-  "description": "CSS compiler for the Pl1e system",
+  "description": "The Nl1e system for FoundryVTT!",
   "scripts": {
     "build": "gulp build",
     "compile": "gulp css",

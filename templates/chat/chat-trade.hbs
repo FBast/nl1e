@@ -1,7 +1,7 @@
 <div class="pl1e chat-card item">
     <header class="card-header flexrow">
         <img class="actor-edit" src="{{sourceActor.img}}" title="{{sourceActor.name}}" width="36" height="36"/>
-        <div class="flexlarge item-effects-character">
+        <div class="flex-large item-effects-character">
             {{#unless (eq price undefined)}}
                 {{#each price}}
                     {{#with (config "money" @key)}}

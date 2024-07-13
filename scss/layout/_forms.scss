@@ -1,18 +1,10 @@
 .pl1e {
   .window-content {
     overflow-y: hidden;
-    padding: 5px;
 
     form {
       height: 100%;
     }
-  }
-
-  hr {
-    border: 1px solid $colorTan;
-    height: 1px;
-    background-color: #ccc;
-    margin: 5px 0;
   }
 
   .form-group {
@@ -38,26 +30,6 @@
     align-items: center;
     gap: 4px;
   }
-
-  //.tab {
-  //  overflow: hidden;
-  //  height: 100%;
-  //}
-
-  //.scroll-hidden {
-  //  overflow-y: hidden;
-  //}
-  //
-  //.scroll-auto {
-  //  overflow-y: auto;
-  //  padding-right: 5px;
-  //}
-  //
-  //.sheet-body,
-  //.sheet-body .tab,
-  //.sheet-body .tab .editor {
-  //  height: 100%;
-  //}
 
   .fa {
     line-height: normal;

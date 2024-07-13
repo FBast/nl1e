@@ -98,7 +98,7 @@ Hooks.once('init', async function () {
 
 Hooks.once("ready", async function () {
     // Initialize tracker
-    if (game.user.isGM) await DMTool.initialise();
+    // if (game.user.isGM) await DMTool.initialise();
 
     // Register dynamic configs
     PL1E.sequencerMacros = await Pl1eHelpers.getDocumentsDataFromPack("legacy-sequencer-macros", true);

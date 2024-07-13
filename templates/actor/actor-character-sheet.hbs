@@ -1,8 +1,11 @@
-<form class="pl1e {{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="character-sheet {{actor.type}} {{cssClass}}" autocomplete="off">
     <div class="main-panel">
         {{!-- Sheet Header --}}
         <header class="sheet-header">
-            <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+            <div class="profile-container">
+                <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.level}}.png" alt="Frame"/>
+            </div>
             <div class="header-infos">
                 <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
                 {{#each system.resources}}

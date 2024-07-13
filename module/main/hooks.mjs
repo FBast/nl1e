@@ -31,7 +31,7 @@ export default class Pl1eHooks {
 
                 // Check if the tooltip state is in local storage
                 const itemId = item.data("item-id");
-                const tooltipState = localStorage.getItem(`tooltipState_${itemId}`);
+                const tooltipState = localStorage.getItem(`pl1e.tooltipState_${itemId}`);
 
                 // If the tooltip state is in local storage, show/hide the tooltip accordingly
                 if (tooltipState !== null && tooltipState === "open") {
