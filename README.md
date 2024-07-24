@@ -62,4 +62,4 @@ Join our community on Discord, where you can share your ideas, seek advice, and 
 
 ## Installation
 
-This system is not published for now but you can test it while copy pasting this link into your Game Systems > Install System > Manifest URL : https://github.com/FBast/nl1e/blob/8f6f2f794e92528bc133306cb8abfcd05aca0dfd/system.json
+This system is not published for now but you can test it while copy pasting this link into your Game Systems > Install System > Manifest URL : https://raw.githubusercontent.com/FBast/nl1e/main/system.json
