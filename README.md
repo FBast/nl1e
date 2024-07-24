@@ -24,11 +24,11 @@ This map feature more than hundred of journals pins to provide description on ev
 
 ### Interactive City Maps
 
-![Alsatrin City][(https://github.com/FBast/nl1e/blob/main/assets/maps/Alsatrin.jpg)
+![Alsatrin City](https://github.com/FBast/nl1e/blob/main/assets/maps/Alsatrin.jpg)
 
 Graphical arts to represent important city of the world in a top down view.
 
-![Alsatrin City][(https://github.com/FBast/nl1e/blob/main/assets/maps/Alsatrin.jpg)
+![Alsatrin City](https://github.com/FBast/nl1e/blob/main/assets/maps/Alsatrin.jpg)
 
 With multiple points of interests linked to journal and merchants icon to allow the player to discover the city along your description.
 
