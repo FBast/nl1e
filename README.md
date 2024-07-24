@@ -7,7 +7,7 @@ Welcome to **Nexus Land**, a tabletop role-playing system developped for **Found
 
 ## Disclaimer
 
-This system is currently in **beta preview**, so feel free to test it out and help improve its content by participating in bug fixes and providing feedback!
+This system is currently in **BETA PREVIEW**, so feel free to test it out and help improve its content by participating in bug fixes and providing feedback!
 
 ## Features
 
