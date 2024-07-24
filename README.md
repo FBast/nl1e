@@ -22,9 +22,13 @@ Delve into the depths of Ekzandia, the sprawling continent that serves as the ba
 
 ### Interactive Town Scenes
 
+![Ekzandia Continent](https://github.com/FBast/nl1e/blob/main/assets/maps/Ekzandia.jpg)
+
 Graphical arts to represent town of the world, with merchants icon to allow player to buy and sell on the fly with possibility for the GM to configure the merchant.
 
 ### Interactive City Maps
+
+![Ekzandia Continent](https://github.com/FBast/nl1e/blob/main/assets/maps/Ekzandia.jpg)
 
 Graphical arts to represent important city of the world in a top down view, with multiple points of interests linked to journal and merchants icon to allow the player to discover the city along your description.
 
@@ -36,9 +40,13 @@ Equip your characters with a vast array of items, each offering unique features 
 
 Engage in thrilling battles with an innovative combat system that combines strategy, skill, and spectacle. Utilize a diverse selection of automated abilities, complete with stunning visual effects and immersive soundscapes, to outmaneuver your foes and emerge victorious.
 
+This system allow you to create your own abilities or to use the compendium abilities
+
 ### Translation
 
-Experience Nexus Land in your preferred language, with full support for both English and French. While item descriptions and names are currently available only in French, our ongoing efforts include plans to implement comprehensive English translations using the Babele integration.
+Experience Nexus Land in your preferred language, with full support for both English and French. 
+
+While item descriptions and names are currently available only in French, our ongoing efforts include plans to implement comprehensive English translations using the Babele integration.
 
 ## Community
 
