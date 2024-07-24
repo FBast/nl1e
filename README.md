@@ -16,21 +16,27 @@ Embark on your adventures with confidence, knowing that Nexus Land is constantly
 
 ### Continent of Ekzandia
 
-![Ekzandia Continent](https://github.com/FBast/nl1e/blob/main/assets/maps/Ekzandia.jpg)
-
 Delve into the depths of Ekzandia, the sprawling continent that serves as the backdrop for your epic tales. Immerse yourself in its vibrant cities, ancient ruins, and untamed wilderness, all meticulously detailed to bring your adventures to life.
 
-### Interactive Town Scenes
-
 ![Ekzandia Continent](https://github.com/FBast/nl1e/blob/main/assets/maps/Ekzandia.jpg)
 
-Graphical arts to represent town of the world, with merchants icon to allow player to buy and sell on the fly with possibility for the GM to configure the merchant.
+This map feature more than hundred of journals pins to provide description on every interesting places, area and factions.
 
 ### Interactive City Maps
 
-![Ekzandia Continent](https://github.com/FBast/nl1e/blob/main/assets/maps/Ekzandia.jpg)
+![Alsatrin City][(https://github.com/FBast/nl1e/blob/main/assets/maps/Alsatrin.jpg)
 
-Graphical arts to represent important city of the world in a top down view, with multiple points of interests linked to journal and merchants icon to allow the player to discover the city along your description.
+Graphical arts to represent important city of the world in a top down view.
+
+![Alsatrin City][(https://github.com/FBast/nl1e/blob/main/assets/maps/Alsatrin.jpg)
+
+With multiple points of interests linked to journal and merchants icon to allow the player to discover the city along your description.
+
+### Interactive Town Scenes
+
+Graphical arts to represent towns of the world.
+
+Each generate using IA and providing merchants icon to allow player to buy and sell on the fly with possibility for the GM to configure the merchant.
 
 ### Items
 
