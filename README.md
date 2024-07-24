@@ -59,3 +59,7 @@ While item descriptions and names are currently available only in French, our on
 ## Community
 
 Join our community on Discord, where you can share your ideas, seek advice, and collaborate on new content. Your feedback and contributions play a vital role in shaping the future of Nexus Land, so come join us and become part of something truly special.
+
+## Installation
+
+This system is not publied for now but you can test it while copy pasting this link into your manifest input : https://github.com/FBast/nl1e/blob/8f6f2f794e92528bc133306cb8abfcd05aca0dfd/system.json
