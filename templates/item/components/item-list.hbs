@@ -15,35 +15,35 @@
             <li class="item" data-item-id="{{itemId}}" data-instance-id="{{instanceId}}" data-item-type="{{item.type}}">
                 <div class="item-content grid grid-12col">
                     <div class="item-title grid-span-4 flexrow">
-                        <img class="item-image item-edit hover-action" src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
-                        <label class="item-name item-tooltip-activate">{{item.name}}</label>
+                        <img class="item-edit hover-action" src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
+                        <label class="item-tooltip-activate">{{item.name}}</label>
                     </div>
                     <div class="item-icons grid-span-6">
                         {{#if @root.item.isEmbedded}}
                             {{#if (eq behavior "regular")}}
-                                <i class="item-info far fa-cube hover-info" data-tooltip="{{localize "PL1E.Regular"}}"></i>
+                                <i class="far fa-cube hover-info" data-tooltip="{{localize "PL1E.Regular"}}"></i>
                             {{else if (eq behavior "container")}}
-                                <i class="item-info far fa-treasure-chest hover-info" data-tooltip="{{localize "PL1E.Container"}}"></i>
+                                <i class="far fa-treasure-chest hover-info" data-tooltip="{{localize "PL1E.Container"}}"></i>
                             {{else if (eq behavior "key")}}
-                                <i class="item-info far fa-key-skeleton hover-info" data-tooltip="{{localize "PL1E.Key"}}"></i>
+                                <i class="far fa-key-skeleton hover-info" data-tooltip="{{localize "PL1E.Key"}}"></i>
                             {{/if}}
                         {{/if}}
                         {{#if synchronized}}
-                            <i class="item-info far fa-circle-nodes hover-info" data-tooltip="{{localize "PL1E.Synchronized"}}"></i>
+                            <i class="far fa-circle-nodes hover-info" data-tooltip="{{localize "PL1E.Synchronized"}}"></i>
                         {{/if}}
                     </div>
                     <div class="item-controls grid-span-2">
                         {{#unless @root.item.isEmbedded}}
                             {{#if (eq behavior "regular")}}
-                                <a class="item-control item-switch-behavior" data-tooltip='{{localize "PL1E.Regular"}}'><i class="fas fa-cube"></i></a>
+                                <a class="item-switch-behavior" data-tooltip='{{localize "PL1E.Regular"}}'><i class="fas fa-cube"></i></a>
                             {{else if (eq behavior "container")}}
-                                <a class="item-control item-switch-behavior" data-tooltip='{{localize "PL1E.Container"}}'><i class="fas fa-treasure-chest"></i></a>
+                                <a class="item-switch-behavior" data-tooltip='{{localize "PL1E.Container"}}'><i class="fas fa-treasure-chest"></i></a>
                             {{else if (eq behavior "key")}}
-                                <a class="item-control item-switch-behavior" data-tooltip='{{localize "PL1E.Key"}}'><i class="fas fa-key-skeleton"></i></a>
+                                <a class="item-switch-behavior" data-tooltip='{{localize "PL1E.Key"}}'><i class="fas fa-key-skeleton"></i></a>
                             {{/if}}
                         {{/unless}}
                         {{#if (or (and @root.item.isEmbedded (not synchronized)) (and (not @root.item.isEmbedded) synchronized))}}
-                            <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                            <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                         {{/if}}
                     </div>
                 </div>

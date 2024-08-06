@@ -1,35 +1,32 @@
 <div class="main-panel">
-    <div class="items-row">
-        <!-- Container for the filters -->
-        <div class="items-header grid grid-12col">
-            <div class="header-title grid-span-4">
+    <div class="items-list">
+        <div class="items-header">
+            <h3 class="header-title">
                 {{localize "PL1E.Background"}}
-            </div>
-            <!-- Horizontal filter list -->
-            <div class="item-filter-list grid-span-8" data-filter="background">
-                <div class="item-filter" data-filter="race">{{localize "PL1E.Race"}}</div>
-                <div class="item-filter" data-filter="culture">{{localize "PL1E.Culture"}}</div>
-                <div class="item-filter" data-filter="class">{{localize "PL1E.Class"}}</div>
-                <div class="item-filter" data-filter="mastery">{{localize "PL1E.Mastery"}}</div>
-            </div>
+                <div class="item-filter-list" data-filter="background">
+                    <div class="item-filter hover-action enabled-action" data-filter="race">{{localize "PL1E.Race"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="culture">{{localize "PL1E.Culture"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="class">{{localize "PL1E.Class"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="mastery">{{localize "PL1E.Mastery"}}</div>
+                </div>
+            </h3>
         </div>
-        <!-- Content of the row -->
-        <div class="items-row-content">
+        <div class="items-row">
             {{#each background}}
                 <div class="item" data-item-id="{{_id}}">
-                    <img class="item-image item-edit hover-action" src="{{img}}" title="{{name}}" />
+                    <img class="item-edit hover-action" src="{{img}}" title="{{name}}" />
                     {{#if @root.actor.isOwner}}
                         {{#if flags.pl1e.childId}}
-                            <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'>
+                            <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'>
                                 <i class="fas fa-link"></i>
                             </a>
                         {{else}}
-                            <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'>
+                            <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'>
                                 <i class="fas fa-trash"></i>
                             </a>
                         {{/if}}
                         {{#if (gt (length warnings) 0)}}
-                            <i class="item-info far fa-exclamation-triangle hover-info color-warning" data-tooltip="{{join warnings ', ' true}}"></i>
+                            <i class="far fa-exclamation-triangle hover-info color-warning" data-tooltip="{{join warnings ', ' true}}"></i>
                         {{/if}}
                     {{/if}}
                 </div>

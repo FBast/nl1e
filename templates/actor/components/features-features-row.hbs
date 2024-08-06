@@ -1,29 +1,26 @@
 <div class="main-panel">
-    <div class="items-row">
-        <!-- Container for the filters -->
-        <div class="items-header grid grid-12col">
-            <div class="header-title grid-span-4">
+    <div class="items-list">
+        <div class="items-header">
+            <h3 class="header-title">
                 {{localize "PL1E.Traits"}}
-            </div>
-            <!-- Horizontal filter list -->
-            <div class="item-filter-list grid-span-8" data-filter="features">
-                {{#each (config "featureTypes")}}
-                    <li class="item-filter" data-filter="{{@key}}">{{localize this}}</li>
-                {{/each}}
-            </div>
+                <div class="item-filter-list" data-filter="features">
+                    {{#each (config "featureTypes")}}
+                        <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+                    {{/each}}
+                </div>
+            </h3>
         </div>
-        <!-- Content of the row -->
-        <div class="items-row-content">
+        <div class="items-row">
             {{#each features}}
                 <div class="item" data-item-id="{{_id}}">
-                    <img class="item-image item-edit hover-action" src="{{img}}" title="{{name}}"/>
+                    <img class="item-edit hover-action" src="{{img}}" title="{{name}}"/>
                     {{#if @root.actor.isOwner}}
                         {{#if flags.pl1e.childId}}
-                            <a class="item-control item-link" data-tooltip='{{localize "PL1E.Link"}}'>
+                            <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'>
                                 <i class="fas fa-link"></i>
                             </a>
                         {{else}}
-                            <a class="item-control item-remove" data-tooltip='{{localize "PL1E.Delete"}}'>
+                            <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'>
                                 <i class="fas fa-trash"></i>
                             </a>
                         {{/if}}

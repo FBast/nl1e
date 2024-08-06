@@ -20,27 +20,27 @@
                     {{#each foods}}
                         <li class="item" data-item-id="{{_id}}">
                             <div class="flexrow">
-                                <img class="item-image item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
-                                <label class="item-name hover-action">{{name}}</label>
+                                <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                                <label class="hover-action">{{name}}</label>
                                 <div class="item-icons">
                                     {{#if (gt system.attributes.healthRest 0)}}
-                                        <i class="item-info far fa-heart hover-info" data-tooltip="{{localize "PL1E.HealthRest"}}">
+                                        <i class="far fa-heart hover-info" data-tooltip="{{localize "PL1E.HealthRest"}}">
                                             <label>{{system.attributes.healthRest}}</label>
                                         </i>
                                     {{/if}}
                                     {{#if (gt system.attributes.staminaRest 0)}}
-                                        <i class="item-info far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaRest"}}">
+                                        <i class="far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaRest"}}">
                                             <label>{{system.attributes.staminaRest}}</label>
                                         </i>
                                     {{/if}}
                                     {{#if (gt system.attributes.manaRest 0)}}
-                                        <i class="item-info far fa-sparkles hover-info" data-tooltip="{{localize "PL1E.ManaRest"}}">
+                                        <i class="far fa-sparkles hover-info" data-tooltip="{{localize "PL1E.ManaRest"}}">
                                             <label>{{system.attributes.manaRest}}</label>
                                         </i>
                                     {{/if}}
                                 </div>
                                 <div class="item-controls">
-                                    <a class="item-control item-use {{#if (ne _id @root.itemEaten._id)}}color-grey{{/if}}"
+                                    <a class="item-use {{#if (ne _id @root.itemEaten._id)}}color-grey{{/if}}"
                                        data-usage="eaten" data-tooltip='{{localize "PL1E.Eat"}}'><i class="fas fa-fork-knife"></i></a>
                                 </div>
                             </div>
@@ -51,27 +51,27 @@
                     {{#each drinks}}
                         <li class="item" data-item-id="{{_id}}">
                             <div class="flexrow">
-                                <img class="item-image item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
-                                <label class="item-name hover-action">{{name}}</label>
+                                <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                                <label class="hover-action">{{name}}</label>
                                 <div class="item-icons grid-span-2">
                                     {{#if (gt system.attributes.healthRest 0)}}
-                                        <i class="item-info far fa-heart hover-info" data-tooltip="{{localize "PL1E.HealthRest"}}">
+                                        <i class="far fa-heart hover-info" data-tooltip="{{localize "PL1E.HealthRest"}}">
                                             <label>{{system.attributes.healthRest}}</label>
                                         </i>
                                     {{/if}}
                                     {{#if (gt system.attributes.staminaRest 0)}}
-                                        <i class="item-info far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaRest"}}">
+                                        <i class="far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaRest"}}">
                                             <label>{{system.attributes.staminaRest}}</label>
                                         </i>
                                     {{/if}}
                                     {{#if (gt system.attributes.manaRest 0)}}
-                                        <i class="item-info far fa-sparkles hover-info" data-tooltip="{{localize "PL1E.ManaRest"}}">
+                                        <i class="far fa-sparkles hover-info" data-tooltip="{{localize "PL1E.ManaRest"}}">
                                             <label>{{system.attributes.manaRest}}</label>
                                         </i>
                                     {{/if}}
                                 </div>
                                 <div class="item-controls">
-                                    <a class="item-control item-use {{#if (ne _id @root.itemDrink._id)}}color-grey{{/if}}"
+                                    <a class="item-use {{#if (ne _id @root.itemDrink._id)}}color-grey{{/if}}"
                                        data-usage="drink" data-tooltip='{{localize "PL1E.Drink"}}'><i class="fas fa-glass"></i></a>
                                 </div>
                             </div>

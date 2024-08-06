@@ -38,19 +38,19 @@
     {{#unless (eq system.attributes.activation "passive")}}
         <fieldset>
             <legend class="section-header">
-                <i class="item-info far fa-circle-question hover-info" data-tooltip='{{localize "PL1E.TooltipLegendActiveParent"}}'></i>
+                <i class="far fa-circle-question hover-info" data-tooltip='{{localize "PL1E.TooltipLegendActiveParent"}}'></i>
                 {{localize "PL1E.ActiveParent"}}
             </legend>
             <div class="form-group">
                 <label>
-                    <i class="item-info far fa-circle-question hover-info" data-tooltip='{{localize "PL1E.TooltipLaunchParentActiveAspects"}}'></i>
+                    <i class="far fa-circle-question hover-info" data-tooltip='{{localize "PL1E.TooltipLaunchParentActiveAspects"}}'></i>
                     {{localize "PL1E.LaunchParentActiveAspects"}}
                 </label>
                 <input type="checkbox" name="system.attributes.launchParentActiveAspects" {{checked system.attributes.launchParentActiveAspects}} data-dtype="Boolean"/>
             </div>
             <div class="form-group">
                 <label>
-                    <i class="item-info far fa-circle-question hover-info" data-tooltip='{{localize "PL1E.TooltipWeaponMode"}}'></i>
+                    <i class="far fa-circle-question hover-info" data-tooltip='{{localize "PL1E.TooltipWeaponMode"}}'></i>
                     {{localize "PL1E.WeaponMode"}}
                 </label>
                 <select name="system.attributes.weaponMode">

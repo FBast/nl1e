@@ -54,6 +54,12 @@
   }
 }
 
+.enabled-action {
+  &:enabled {
+    color: $colorAction;
+  }
+}
+
 .hover-info {
   &:hover,
   &:focus {
