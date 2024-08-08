@@ -161,10 +161,9 @@ export class Pl1eActorSheet extends ActorSheet {
         // Handle drag event items from owned actor or merchant
         if (this.actor.isOwner || this.actor.type === "merchant") {
             let handler = ev => this._onDragStart(ev);
-            html.find('li.item').each((i, li) => {
-                if (li.classList.contains("subItems-header")) return;
-                li.setAttribute("draggable", true);
-                li.addEventListener("dragstart", handler, false);
+            html.find('.item').each((i, div) => {
+                div.setAttribute("draggable", true);
+                div.addEventListener("dragstart", handler, false);
             });
         }
 

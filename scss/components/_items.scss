@@ -23,6 +23,10 @@
 
           .item-filter {
             padding: 5px 10px;
+
+            &.active {
+              color: $colorGrey;
+            }
           }
         }
       }
@@ -85,12 +89,17 @@
             padding: 0 5px;
             margin-left: auto;
 
-            a, i {
-              cursor: pointer;
+            a {
+              width: 15px;
+              height: 15px;
+            }
 
-              &:hover {
-                color: #007bff;
-              }
+            i {
+              align-content: center;
+              text-align: center;
+              cursor: pointer;
+              width: 100%;
+              height: 100%;
             }
           }
         }

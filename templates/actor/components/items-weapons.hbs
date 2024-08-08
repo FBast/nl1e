@@ -123,7 +123,9 @@
                         <div class="item-controls">
                             {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
                                 {{#if (gt (length warnings) 0)}}
-                                    <i class="far fa-exclamation-triangle hover-info color-warning" data-tooltip="{{join warnings ', ' true}}"></i>
+                                    <a data-tooltip='{{join warnings ', ' true}}'>
+                                        <i class="far fa-exclamation-triangle hover-info color-warning"></i>
+                                    </a>
                                 {{/if}}
                                 {{#if (gt system.attributes.hands 0)}}
                                     <a class="item-toggle" data-main='false' data-tooltip='{{localize "PL1E.EquipSecondary"}}'>

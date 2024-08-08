@@ -81,7 +81,9 @@
                                         <a class="item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
                                     {{/if}}
                                 {{else if (gt (length warnings) 0)}}
-                                    <i class="far fa-exclamation-triangle hover-info color-warning" data-tooltip="{{join warnings ', ' true}}"></i>
+                                    <a data-tooltip='{{join warnings ', ' true}}'>
+                                        <i class="far fa-exclamation-triangle hover-info color-warning"></i>
+                                    </a>
                                 {{/if}}
                             {{/if}}
                             {{#if @root.actor.isOwner}}

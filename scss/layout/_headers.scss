@@ -181,22 +181,11 @@
 
     a {
       text-transform: uppercase;
+      font-size: larger;
       font-weight: bold;
       text-align: center;
       padding: 10px 15px;
       border-radius: 5px;
-      transition: background-color 0.3s, color 0.3s;
-
-      &:hover {
-        text-shadow: 0 0 10px $colorAction;
-        cursor: pointer;
-      }
-
-      &.active {
-        text-shadow: 0 0 10px $colorAction;
-        text-decoration: underline;
-        text-decoration-color: $colorAction;
-      }
     }
   }
 }
