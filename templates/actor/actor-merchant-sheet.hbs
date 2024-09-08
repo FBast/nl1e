@@ -1,44 +1,44 @@
 <form class="pl1e {{cssClass}} {{actor.type}} flexcol" autocomplete="off">
-    <div class="main-panel">
-        {{!-- Sheet Header --}}
-        <header class="sheet-header">
-            <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-            <div class="header-infos">
-                <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
-                {{#if actor.isOwner}}
-                    <div class="multiplier">
-                        <span class="multiplier-name">{{localize "PL1E.SellMultiplier"}}</span>
-                        <div class="multiplier-range">
-                            {{rangePicker name="system.general.sellMultiplier" value=system.general.sellMultiplier min=0 max=200 step=10}}
-                        </div>
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+        <div class="header-infos">
+            <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
+            {{#if actor.isOwner}}
+                <div class="multiplier">
+                    <span class="multiplier-name">{{localize "PL1E.SellMultiplier"}}</span>
+                    <div class="multiplier-range">
+                        {{rangePicker name="system.general.sellMultiplier" value=system.general.sellMultiplier min=0
+                                      max=200 step=10}}
                     </div>
-                    <div class="multiplier">
-                        <span class="multiplier-name">{{localize "PL1E.BuyMultiplier"}}</span>
-                        <div class="multiplier-range">
-                            {{rangePicker name="system.general.buyMultiplier" value=system.general.buyMultiplier min=0 max=200 step=10}}
-                        </div>
+                </div>
+                <div class="multiplier">
+                    <span class="multiplier-name">{{localize "PL1E.BuyMultiplier"}}</span>
+                    <div class="multiplier-range">
+                        {{rangePicker name="system.general.buyMultiplier" value=system.general.buyMultiplier min=0
+                                      max=200 step=10}}
                     </div>
-                {{else}}
-                    <div class="multiplier-display">
-                        <span>{{localize "PL1E.SellAt"}} {{system.general.sellMultiplier}}%</span>
-                    </div>
-                    <div class="multiplier-display">
-                        <span>{{localize "PL1E.BuyAt"}} {{system.general.buyMultiplier}}%</span>
-                    </div>
-                {{/if}}
-            </div>
-        </header>
-        {{!-- Sheet Tab Navigation --}}
-        <nav class="sheet-tabs tabs" data-group="primary">
-            {{#if actor.system.haveFeatures}}
-                <a class="item hover-action enabled-action" data-tab="features">{{localize "PL1E.Features"}}</a>
+                </div>
+            {{else}}
+                <div class="multiplier-display">
+                    <span>{{localize "PL1E.SellAt"}} {{system.general.sellMultiplier}}%</span>
+                </div>
+                <div class="multiplier-display">
+                    <span>{{localize "PL1E.BuyAt"}} {{system.general.buyMultiplier}}%</span>
+                </div>
             {{/if}}
-            <a class="item hover-action enabled-action" data-tab="items">{{localize "PL1E.Items"}}</a>
-            {{#if game.user.isGM}}
-                <a class="item hover-action enabled-action" data-tab="config">{{localize "PL1E.Configuration"}}</a>
-            {{/if}}
-        </nav>
-    </div>
+        </div>
+    </header>
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        {{#if actor.system.haveFeatures}}
+            <a class="item hover-action enabled-action" data-tab="features">{{localize "PL1E.Features"}}</a>
+        {{/if}}
+        <a class="item hover-action enabled-action" data-tab="items">{{localize "PL1E.Items"}}</a>
+        {{#if game.user.isGM}}
+            <a class="item hover-action enabled-action" data-tab="config">{{localize "PL1E.Configuration"}}</a>
+        {{/if}}
+    </nav>
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Features Tab --}}

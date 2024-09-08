@@ -1,7 +1,8 @@
-<div class="pl1e chat-card item" data-item-id="{{characterData.itemId}}" data-token-id="{{characterData.tokenId}}" data-scene-id="{{characterData.sceneId}}">
+<div class="pl1e chat-card item" data-item-id="{{characterData.itemId}}" data-token-id="{{characterData.tokenId}}"
+     data-scene-id="{{characterData.sceneId}}">
     <header class="card-header flexrow">
         <img class="token-focus" src="{{targetData.actor.img}}" title="{{targetData.token.name}}"
-             data-token-id="{{targetData.tokenId}}" />
+             data-token-id="{{targetData.tokenId}}"/>
         <div class="flex-large"></div>
         <img class="token-focus" src="{{characterData.actor.img}}" title="{{characterData.token.name}}"/>
         <img class="item-edit" src="{{characterData.item.realImg}}" title="{{characterData.item.realName}}"/>
@@ -31,7 +32,8 @@
                         {{/each}}
                     </div>
                     <h4 class="dice-total success-color-{{clamp targetData.result 0 5}}">
-                        {{characterData.rollData.total}} - {{targetData.rollData.total}} = {{targetData.result}} {{localize "PL1E.Success"}}
+                        {{characterData.rollData.total}} - {{targetData.rollData.total}}
+                        = {{targetData.result}} {{localize "PL1E.Success"}}
                     </h4>
                 </div>
             </div>

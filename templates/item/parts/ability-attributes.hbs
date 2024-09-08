@@ -9,7 +9,8 @@
         </div>
         <div class="form-group">
             <label>{{localize "PL1E.Level"}}</label>
-            <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" data-dtype="Number"/>
+            <input type="number" name="system.attributes.level" value="{{system.attributes.level}}"
+                   data-dtype="Number"/>
         </div>
     </fieldset>
     <fieldset>
@@ -23,34 +24,41 @@
         {{#if (eq system.attributes.activation "action")}}
             <div class="form-group">
                 <label>{{localize "PL1E.ActionCost"}}</label>
-                <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
+                <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}"
+                       data-dtype="Number"/>
             </div>
             <div class="form-group">
                 <label>{{localize "PL1E.IsMajorAction"}}</label>
-                <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
+                <input type="checkbox" name="system.attributes.isMajorAction" {{checked
+                        system.attributes.isMajorAction}} data-dtype="Boolean"/>
             </div>
             <div class="form-group">
                 <label>{{localize "PL1E.IsDangerous"}}</label>
-                <input type="checkbox" name="system.attributes.isDangerous" {{checked system.attributes.isDangerous}} data-dtype="Boolean"/>
+                <input type="checkbox" name="system.attributes.isDangerous" {{checked system.attributes.isDangerous}}
+                       data-dtype="Boolean"/>
             </div>
         {{/if}}
     </fieldset>
     {{#unless (eq system.attributes.activation "passive")}}
         <fieldset>
             <legend class="section-header">
-                <i class="far fa-circle-question hover-info" data-tooltip='{{localize "PL1E.TooltipLegendActiveParent"}}'></i>
+                <i class="far fa-circle-question hover-info"
+                   data-tooltip='{{localize "PL1E.TooltipLegendActiveParent"}}'></i>
                 {{localize "PL1E.ActiveParent"}}
             </legend>
             <div class="form-group">
                 <label>
-                    <i class="far fa-circle-question hover-info" data-tooltip='{{localize "PL1E.TooltipLaunchParentActiveAspects"}}'></i>
+                    <i class="far fa-circle-question hover-info"
+                       data-tooltip='{{localize "PL1E.TooltipLaunchParentActiveAspects"}}'></i>
                     {{localize "PL1E.LaunchParentActiveAspects"}}
                 </label>
-                <input type="checkbox" name="system.attributes.launchParentActiveAspects" {{checked system.attributes.launchParentActiveAspects}} data-dtype="Boolean"/>
+                <input type="checkbox" name="system.attributes.launchParentActiveAspects" {{checked
+                        system.attributes.launchParentActiveAspects}} data-dtype="Boolean"/>
             </div>
             <div class="form-group">
                 <label>
-                    <i class="far fa-circle-question hover-info" data-tooltip='{{localize "PL1E.TooltipWeaponMode"}}'></i>
+                    <i class="far fa-circle-question hover-info"
+                       data-tooltip='{{localize "PL1E.TooltipWeaponMode"}}'></i>
                     {{localize "PL1E.WeaponMode"}}
                 </label>
                 <select name="system.attributes.weaponMode">
@@ -61,28 +69,34 @@
                 {{#if (ne system.attributes.weaponMode "magic")}}
                     <div class="form-group">
                         <label>{{localize "PL1E.RangeOverride"}}</label>
-                        <input type="checkbox" name="system.attributes.useParentRange" {{checked system.attributes.useParentRange}} data-dtype="Boolean"/>
+                        <input type="checkbox" name="system.attributes.useParentRange" {{checked
+                                system.attributes.useParentRange}} data-dtype="Boolean"/>
                     </div>
                 {{/if}}
                 <div class="form-group">
                     <label>{{localize "PL1E.UseParentRoll"}}</label>
-                    <input type="checkbox" name="system.attributes.useParentRoll" {{checked system.attributes.useParentRoll}} data-dtype="Boolean"/>
+                    <input type="checkbox" name="system.attributes.useParentRoll" {{checked
+                            system.attributes.useParentRoll}} data-dtype="Boolean"/>
                 </div>
                 <div class="form-group">
                     <label>{{localize "PL1E.UseParentOppositeRoll"}}</label>
-                    <input type="checkbox" name="system.attributes.useParentOppositeRoll" {{checked system.attributes.useParentOppositeRoll}} data-dtype="Boolean"/>
+                    <input type="checkbox" name="system.attributes.useParentOppositeRoll" {{checked
+                            system.attributes.useParentOppositeRoll}} data-dtype="Boolean"/>
                 </div>
                 <div class="form-group">
                     <label>{{localize "PL1E.UseParentActivationMacro"}}</label>
-                    <input type="checkbox" name="system.attributes.useParentActivationMacro" {{checked system.attributes.useParentActivationMacro}} data-dtype="Boolean"/>
+                    <input type="checkbox" name="system.attributes.useParentActivationMacro" {{checked
+                            system.attributes.useParentActivationMacro}} data-dtype="Boolean"/>
                 </div>
                 <div class="form-group">
                     <label>{{localize "PL1E.UseParentPreLaunchMacro"}}</label>
-                    <input type="checkbox" name="system.attributes.useParentPreLaunchMacro" {{checked system.attributes.useParentPreLaunchMacro}} data-dtype="Boolean"/>
+                    <input type="checkbox" name="system.attributes.useParentPreLaunchMacro" {{checked
+                            system.attributes.useParentPreLaunchMacro}} data-dtype="Boolean"/>
                 </div>
                 <div class="form-group">
                     <label>{{localize "PL1E.UseParentPostLaunchMacro"}}</label>
-                    <input type="checkbox" name="system.attributes.useParentPostLaunchMacro" {{checked system.attributes.useParentPostLaunchMacro}} data-dtype="Boolean"/>
+                    <input type="checkbox" name="system.attributes.useParentPostLaunchMacro" {{checked
+                            system.attributes.useParentPostLaunchMacro}} data-dtype="Boolean"/>
                 </div>
             {{/if}}
         </fieldset>
@@ -96,7 +110,8 @@
                             <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
                         {{/each}}
                     </ul>
-                    <a style="flex: 0;" class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.Roll" data-key-path="attributes.roll"
+                    <a style="flex: 0;" class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.Roll"
+                       data-key-path="attributes.roll"
                        data-tooltip="{{localize 'PL1E.RollConfig'}}">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -104,7 +119,8 @@
             </div>
             <div class="form-group">
                 <label>{{localize "PL1E.RollAdvantages"}}</label>
-                <input type="number" name="system.attributes.rollAdvantages" value="{{system.attributes.rollAdvantages}}" data-dtype="Number"/>
+                <input type="number" name="system.attributes.rollAdvantages"
+                       value="{{system.attributes.rollAdvantages}}" data-dtype="Number"/>
             </div>
             {{#if (or (gt (length system.attributes.roll) 0) system.attributes.useParentRoll)}}
                 <div class="form-group">
@@ -115,7 +131,8 @@
                                 <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
                             {{/each}}
                         </ul>
-                        <a style="flex: 0;" class="trait-selector flex-shrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll"
+                        <a style="flex: 0;" class="trait-selector flex-shrink" data-trait="abilityResistances"
+                           data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll"
                            data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -123,24 +140,29 @@
                 </div>
                 <div class="form-group">
                     <label>{{localize "PL1E.OppositeRollAdvantages"}}</label>
-                    <input type="number" name="system.attributes.oppositeRollAdvantages" value="{{system.attributes.oppositeRollAdvantages}}" data-dtype="Number"/>
+                    <input type="number" name="system.attributes.oppositeRollAdvantages"
+                           value="{{system.attributes.oppositeRollAdvantages}}" data-dtype="Number"/>
                 </div>
             {{/if}}
             <div class="form-group">
                 <label>{{localize "PL1E.HealthCost"}}</label>
-                <input type="number" name="system.attributes.healthCost" value="{{system.attributes.healthCost}}" data-dtype="Number"/>
+                <input type="number" name="system.attributes.healthCost" value="{{system.attributes.healthCost}}"
+                       data-dtype="Number"/>
             </div>
             <div class="form-group">
                 <label>{{localize "PL1E.StaminaCost"}}</label>
-                <input type="number" name="system.attributes.staminaCost" value="{{system.attributes.staminaCost}}" data-dtype="Number"/>
+                <input type="number" name="system.attributes.staminaCost" value="{{system.attributes.staminaCost}}"
+                       data-dtype="Number"/>
             </div>
             <div class="form-group">
                 <label>{{localize "PL1E.ManaCost"}}</label>
-                <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}" data-dtype="Number"/>
+                <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}"
+                       data-dtype="Number"/>
             </div>
             <div class="form-group">
                 <label>{{localize "PL1E.LinkedUsageCost"}}</label>
-                <input type="number" name="system.attributes.linkedUsageCost" value="{{system.attributes.linkedUsageCost}}" data-dtype="Number"/>
+                <input type="number" name="system.attributes.linkedUsageCost"
+                       value="{{system.attributes.linkedUsageCost}}" data-dtype="Number"/>
             </div>
         </fieldset>
         <fieldset>
@@ -156,9 +178,12 @@
                     <div class="form-group">
                         <label>{{localize "PL1E.Range"}}</label>
                         <div class="form-fields">
-                            <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+                            <input type="number" name="system.attributes.range" value="{{system.attributes.range}}"
+                                   data-dtype="Number"/>
                             <select name="system.attributes.rangeNumberResolutionType">
-                                {{customSelectOptions (config "resolutionTypes") selected=system.attributes.rangeNumberResolutionType localize=true}}
+                                {{customSelectOptions (config "resolutionTypes")
+                                                      selected=system.attributes.rangeNumberResolutionType
+                                                      localize=true}}
                             </select>
                         </div>
                     </div>
@@ -166,10 +191,13 @@
                 <div class="form-group">
                     <label>{{localize "PL1E.AreaNumber"}}</label>
                     <div class="form-fields">
-                        <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
+                        <input type="number" name="system.attributes.areaNumber"
+                               value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
                         {{#if (or system.attributes.useParentRoll (ne (length system.attributes.roll) 0))}}
                             <select name="system.attributes.areaNumberResolutionType">
-                                {{customSelectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                                {{customSelectOptions (config "resolutionTypes")
+                                                      selected=system.attributes.areaNumberResolutionType
+                                                      localize=true}}
                             </select>
                         {{/if}}
                     </div>
@@ -177,27 +205,32 @@
                 {{#if (eq system.attributes.areaShape "circle")}}
                     <div class="form-group">
                         <label>{{localize "PL1E.CircleRadius"}}</label>
-                        <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
+                        <input type="number" name="system.attributes.circleRadius"
+                               value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
                     </div>
                 {{else if (eq system.attributes.areaShape "cone")}}
                     <div class="form-group">
                         <label>{{localize "PL1E.ConeLength"}}</label>
-                        <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
+                        <input type="number" name="system.attributes.coneLength"
+                               value="{{system.attributes.coneLength}}" data-dtype="Number"/>
                     </div>
                     <div class="form-group">
                         <label>{{localize "PL1E.ConeAngle"}}</label>
-                        <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
+                        <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}"
+                               data-dtype="Number"/>
                     </div>
                 {{else if (eq system.attributes.areaShape "ray")}}
                     <div class="form-group">
                         <label>{{localize "PL1E.RayLength"}}</label>
-                        <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
+                        <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}"
+                               data-dtype="Number"/>
                     </div>
                 {{/if}}
             {{/if}}
             <div class="form-group">
                 <label>{{localize "PL1E.IncludeSelf"}}</label>
-                <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}} data-dtype="Boolean"/>
+                <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}}
+                       data-dtype="Boolean"/>
             </div>
         </fieldset>
         <fieldset>
@@ -205,19 +238,22 @@
             <div class="form-group">
                 <label>{{localize "PL1E.ActivationMacro"}}</label>
                 <select name="system.attributes.activationMacro">
-                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.activationMacro localize=true}}
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.activationMacro
+                                          localize=true}}
                 </select>
             </div>
             <div class="form-group">
                 <label>{{localize "PL1E.PreLaunchMacro"}}</label>
                 <select name="system.attributes.preLaunchMacro">
-                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.preLaunchMacro localize=true}}
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.preLaunchMacro
+                                          localize=true}}
                 </select>
             </div>
             <div class="form-group">
                 <label>{{localize "PL1E.PostLaunchMacro"}}</label>
                 <select name="system.attributes.postLaunchMacro">
-                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.postLaunchMacro localize=true}}
+                    {{customSelectOptions (config "sequencerMacros") selected=system.attributes.postLaunchMacro
+                                          localize=true}}
                 </select>
             </div>
         </fieldset>

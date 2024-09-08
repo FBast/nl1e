@@ -10,15 +10,18 @@
         <div class="form-group">
             <label>
                 {{localize "PL1E.GoldPrice"}}
-                <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}" data-dtype="Number"/>
+                <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}"
+                       data-dtype="Number"/>
             </label>
             <label>
                 {{localize "PL1E.SilverPrice"}}
-                <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}" data-dtype="Number"/>
+                <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}"
+                       data-dtype="Number"/>
             </label>
             <label>
                 {{localize "PL1E.CopperPrice"}}
-                <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}" data-dtype="Number"/>
+                <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}"
+                       data-dtype="Number"/>
             </label>
         </div>
     </fieldset>
@@ -32,7 +35,9 @@
                         <li class="tag {{this}}">{{localize (config "moduleTypes" this)}}</li>
                     {{/each}}
                 </ul>
-                <a style="flex: 0;" class="trait-selector align-right" data-trait="moduleTypes" data-trait-label="PL1E.ModuleTypes" data-key-path="attributes.moduleTypes" data-tooltip="{{localize 'PL1E.ModuleTypesConfig'}}">
+                <a style="flex: 0;" class="trait-selector align-right" data-trait="moduleTypes"
+                   data-trait-label="PL1E.ModuleTypes" data-key-path="attributes.moduleTypes"
+                   data-tooltip="{{localize 'PL1E.ModuleTypesConfig'}}">
                     <i class="fas fa-edit"></i>
                 </a>
             </div>

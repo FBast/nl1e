@@ -1,25 +1,47 @@
-<div class="characteristics vertical-content flex-shrink">
-    {{#each system.characteristics}}
-        {{#with (config "characteristics" @key)}}
-            <div class="characteristic flex-group-center" data-characteristic-id="{{@key}}">
-                <h3 class="characteristic-label highlight-link hover-info align-left" data-resources="{{weights.resources}}" data-skills="{{weights.skills}}">
-                    {{localize label}}
-                </h3>
-                <div class="characteristic-values flexrow flex-group-center">
-                    <div class="input-spin">
-                        <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" data-dtype="Number" min="0" placeholder="0" disabled/>
-                        {{#if (and @root.system.general.creationMod (eq @root.actor.type "character"))}}
-                            <span>
-                                <i class="characteristic-control hover-action fa fa-plus-square" data-value="1"></i>
-                                <i class="characteristic-control hover-action fa fa-minus-square" data-value="-1"></i>
+<div class="characteristics-container">
+    <!-- Body -->
+    <div class="characteristics-group">
+        <div class="group-header">
+            <i class="far fa-heart group-icon hover-info" data-tooltip="{{localize "PL1E.Body"}}"></i>
+        </div>
+        <div class="characteristics">
+            {{#each system.characteristics}}
+                {{#with (config "characteristics" @key)}}
+                    {{#if (or (eq @key "strength") (eq @key "agility") (eq @key "constitution") (eq @key "perception"))}}
+                        <div class="characteristic" data-characteristic-id="{{@key}}">
+                            <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
+                                data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
+                            <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
+                            <span class="mod {{#if (gt ../mod 0)}}color-green{{/if}} {{#if (lt ../mod 0)}}color-red{{/if}}">
+                                {{numberFormat ../mod decimals=0 sign=true}}
                             </span>
-                        {{/if}}
-                    </div>
-                    <span class="characteristic-mod {{#if (gt ../mod 0)}}color-green{{/if}} {{#if (lt ../mod 0)}}color-red{{/if}}">
-                        {{numberFormat ../mod decimals=0 sign=true}}
-                    </span>
-                </div>
-            </div>
-        {{/with}}
-    {{/each}}
+                        </div>
+                    {{/if}}
+                {{/with}}
+            {{/each}}
+        </div>
+    </div>
+
+    <!-- Mind -->
+    <div class="characteristics-group">
+        <div class="group-header">
+            <i class="far fa-brain group-icon hover-info" data-tooltip="{{localize "PL1E.Mind"}}"></i>
+        </div>
+        <div class="characteristics">
+            {{#each system.characteristics}}
+                {{#with (config "characteristics" @key)}}
+                    {{#if (or (eq @key "intellect") (eq @key "cunning") (eq @key "wisdom") (eq @key "will"))}}
+                        <div class="characteristic" data-characteristic-id="{{@key}}">
+                            <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
+                                data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
+                            <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
+                            <span class="mod {{#if (gt ../mod 0)}}color-green{{/if}} {{#if (lt ../mod 0)}}color-red{{/if}}">
+                                {{numberFormat ../mod decimals=0 sign=true}}
+                            </span>
+                        </div>
+                    {{/if}}
+                {{/with}}
+            {{/each}}
+        </div>
+    </div>
 </div>

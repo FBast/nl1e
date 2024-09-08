@@ -6,13 +6,15 @@
                 {{#each price}}
                     {{#with (config "money" @key)}}
                         <i class="{{@key}}" data-tooltip='{{localize label}}'>
-                            <label class="color-black">{{#if (eq @root.transaction "purchase")}}-{{/if}}{{../this}}</label>
+                            <label class="color-black">{{#if (eq @root.transaction "purchase")}}
+                                -{{/if}}{{../this}}</label>
                         </i>
                     {{/with}}
                 {{/each}}
             {{/unless}}
         </div>
-        <img class="item-edit" src="{{item.img}}" data-item-id="{{item._id}}" title="{{item.name}}" width="36" height="36"/>
+        <img class="item-edit" src="{{item.img}}" data-item-id="{{item._id}}" title="{{item.name}}" width="36"
+             height="36"/>
         <img class="actor-edit" src="{{targetActor.img}}" title="{{targetActor.name}}" width="36" height="36"/>
     </header>
 </div>

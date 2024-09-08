@@ -38,7 +38,7 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/components/items-wearables.hbs",
         "systems/pl1e/templates/actor/components/stats-characteristics.hbs",
         "systems/pl1e/templates/actor/components/stats-skills.hbs",
-        "systems/pl1e/templates/actor/components/stats-stats.hbs",
+        "systems/pl1e/templates/actor/components/stats-favorites.hbs",
 
         // Item components
         "systems/pl1e/templates/item/components/active-aspect-invocation.hbs",

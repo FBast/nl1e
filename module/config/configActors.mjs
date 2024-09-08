@@ -64,6 +64,7 @@ export function getConfigActor() {
     PL1E.characteristics = {
         "strength": {
             "label": "PL1E.Strength",
+            "short": "PL1E.StrengthShort",
             "weights": {
                 "resources": ["stamina"],
                 "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
@@ -74,6 +75,7 @@ export function getConfigActor() {
         },
         "agility": {
             "label": "PL1E.Agility",
+            "short": "PL1E.AgilityShort",
             "weights": {
                 "resources": [],
                 "skills": ["reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
@@ -84,6 +86,7 @@ export function getConfigActor() {
         },
         "perception": {
             "label": "PL1E.Perception",
+            "short": "PL1E.PerceptionShort",
             "weights": {
                 "resources": [],
                 "skills": ["reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
@@ -94,6 +97,7 @@ export function getConfigActor() {
         },
         "constitution": {
             "label": "PL1E.Constitution",
+            "short": "PL1E.ConstitutionShort",
             "weights": {
                 "resources": ["health", "stamina"],
                 "skills": ["parry", "vigor", "athletics"]
@@ -104,6 +108,7 @@ export function getConfigActor() {
         },
         "intellect": {
             "label": "PL1E.Intellect",
+            "short": "PL1E.IntellectShort",
             "weights": {
                 "resources": ["mana"],
                 "skills": ["resilience", "diplomacy", "bluff", "erudition", "nature"]
@@ -114,6 +119,7 @@ export function getConfigActor() {
         },
         "cunning": {
             "label": "PL1E.Cunning",
+            "short": "PL1E.CunningShort",
             "weights": {
                 "resources": [],
                 "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "occultism"]
@@ -124,6 +130,7 @@ export function getConfigActor() {
         },
         "wisdom": {
             "label": "PL1E.Wisdom",
+            "short": "PL1E.WisdomShort",
             "weights": {
                 "resources": [],
                 "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "nature"]
@@ -134,6 +141,7 @@ export function getConfigActor() {
         },
         "will": {
             "label": "PL1E.Will",
+            "short": "PL1E.WillShort",
             "weights": {
                 "resources": ["health", "mana"],
                 "skills": ["resilience", "performance", "occultism"]

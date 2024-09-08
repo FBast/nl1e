@@ -1,4 +1,5 @@
-<div class="pl1e chat-card item" data-item-id="{{characterData.itemId}}" data-token-id="{{characterData.tokenId}}" data-scene-id="{{characterData.sceneId}}">
+<div class="pl1e chat-card item" data-item-id="{{characterData.itemId}}" data-token-id="{{characterData.tokenId}}"
+     data-scene-id="{{characterData.sceneId}}">
     <header class="card-header flexrow">
         <img class="token-focus" src="{{characterData.actor.img}}" title="{{characterData.token.name}}"/>
         <div class="flex-large"></div>
@@ -49,7 +50,8 @@
                                     </header>
                                     <ol class="dice-rolls">
                                         {{#each results}}
-                                            <li class="roll die d{{../faces}} {{#if success}}success{{else}}failure{{/if}}
+                                            <li class="roll die d{{../faces}} {{#if
+                                                    success}}success{{else}}failure{{/if}}
                                                 {{#if (eq result ../faces)}}exploded{{/if}}">{{result}}</li>
                                         {{/each}}
                                     </ol>

@@ -19,12 +19,14 @@
     </div>
     <div class="item-attribute flexrow">
         <label class="attribute-name">{{localize "PL1E.EffectDuration"}}</label>
-        <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{aspect.effectDuration}}" data-dtype="Number"/>
+        <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration"
+               value="{{aspect.effectDuration}}" data-dtype="Number"/>
     </div>
     <div class="item-attribute flexrow">
         <label class="attribute-name">{{localize "PL1E.EffectDurationResolutionType"}}</label>
         <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
-            {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
+            {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType
+                                  localize=true}}
         </select>
     </div>
 {{/unless}}

@@ -1,61 +1,63 @@
-<div class="main-panel">
-    <div class="items-list">
-        <div class="items-header">
-            <h3 class="header-title">
-                {{localize "PL1E.Modules"}}
-                <div class="item-filter-list" data-filter="modules">
-                    {{#each (config "moduleTypes")}}
-                        <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
-                    {{/each}}
-                </div>
-            </h3>
-        </div>
-        <div class="items-column">
-            {{#each modules}}
-                <div class="item" data-item-id="{{_id}}">
-                    <div class="item-content">
-                        <div class="item-title">
-                            <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
-                            <label class="item-tooltip-activate hover-action">
-                                {{#if ../system.general.unlimitedItems}}
-                                    {{name}}
-                                {{else}}
-                                    {{units}}x {{name}}
-                                {{/if}}
-                            </label>
-                        </div>
-                        <div class="item-icons">
-                            {{#if (eq @root.actor.type "merchant")}}
-                                {{#with (lookup ../system.merchantPrices _id)}}
-                                    {{#if (gt gold 0)}}
-                                        <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
-                                            <label class="color-black">{{gold}}</label>
-                                        </i>
-                                    {{/if}}
-                                    {{#if (gt silver 0)}}
-                                        <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
-                                            <label class="color-black">{{silver}}</label>
-                                        </i>
-                                    {{/if}}
-                                    {{#if (gt copper 0)}}
-                                        <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
-                                            <label class="color-black">{{copper}}</label>
-                                        </i>
-                                    {{/if}}
-                                {{/with}}
+<div class="items-list">
+    <div class="items-header">
+        <h3 class="header-title">
+            {{localize "PL1E.Modules"}}
+            <div class="item-filter-list" data-filter="modules">
+                {{#each (config "moduleTypes")}}
+                    <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+                {{/each}}
+            </div>
+        </h3>
+    </div>
+    <div class="items-column">
+        {{#each modules}}
+            <div class="item" data-item-id="{{_id}}">
+                <div class="item-content">
+                    <div class="item-title">
+                        <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-tooltip-activate hover-action">
+                            {{#if ../system.general.unlimitedItems}}
+                                {{name}}
+                            {{else}}
+                                {{units}}x {{name}}
                             {{/if}}
-                        </div>
-                        <div class="item-controls">
-                            {{#if @root.actor.isOwner}}
-                                {{#unless flags.pl1e.childId}}
-                                    <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
-                                {{/unless}}
-                            {{/if}}
-                        </div>
+                        </label>
                     </div>
-                    <div class="item-tooltip">{{{enriched}}}</div>
+                    <div class="item-icons">
+                        {{#if (eq @root.actor.type "merchant")}}
+                            {{#with (lookup ../system.merchantPrices _id)}}
+                                {{#if (gt gold 0)}}
+                                    <i class="far fa-coins color-gold hover-info"
+                                       data-tooltip='{{localize "PL1E.Gold"}}'>
+                                        <label class="color-black">{{gold}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (gt silver 0)}}
+                                    <i class="far fa-coins color-silver hover-info"
+                                       data-tooltip='{{localize "PL1E.Silver"}}'>
+                                        <label class="color-black">{{silver}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (gt copper 0)}}
+                                    <i class="far fa-coins color-copper hover-info"
+                                       data-tooltip='{{localize "PL1E.Copper"}}'>
+                                        <label class="color-black">{{copper}}</label>
+                                    </i>
+                                {{/if}}
+                            {{/with}}
+                        {{/if}}
+                    </div>
+                    <div class="item-controls">
+                        {{#if @root.actor.isOwner}}
+                            {{#unless flags.pl1e.childId}}
+                                <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i
+                                        class="fas fa-trash"></i></a>
+                            {{/unless}}
+                        {{/if}}
+                    </div>
                 </div>
-            {{/each}}
-        </div>
+                <div class="item-tooltip">{{{enriched}}}</div>
+            </div>
+        {{/each}}
     </div>
 </div>

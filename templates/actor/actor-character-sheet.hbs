@@ -1,42 +1,46 @@
 <form class="character-sheet {{actor.type}} {{cssClass}}" autocomplete="off">
-    <div class="main-panel">
-        {{!-- Sheet Header --}}
-        <header class="sheet-header">
-            <div class="profile-container">
-                <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png" alt="Frame"/>
-            </div>
-            <div class="header-infos">
-                <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
-                {{#each system.resources}}
-                    {{#with (config "resources" @key)}}
-                        <div class="resource" data-resource-id="{{@key}}">
-                            <span class="resource-name highlight-link hover-info" data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
-                            <input type="number" name="system.resources.{{@key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
-                            <div class="stat-bar">
-                                <div class="stat-fill {{@key}}" style="width: {{../percentage}}%;"></div>
-                            </div>
-                            <input type="number" name="system.resources.{{@key}}.max" value="{{../max}}" data-dtype="Number" disabled/>
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <div class="profile-container">
+            <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+            <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"
+                 alt="Frame"/>
+        </div>
+        <div class="header-infos">
+            <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
+            {{#each system.resources}}
+                {{#with (config "resources" @key)}}
+                    <div class="resource" data-resource-id="{{@key}}">
+                        <span class="resource-name highlight-link hover-info"
+                              data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
+                        <input type="number" name="system.resources.{{@key}}.value" value="{{../value}}"
+                               max="{{../max}}" data-dtype="Number"/>
+                        <div class="stat-bar">
+                            <div class="stat-fill {{@key}}" style="width: {{../percentage}}%;"></div>
                         </div>
-                    {{/with}}
-                {{/each}}
-            </div>
-        </header>
-        {{!-- Sheet Tab Navigation --}}
-        <nav class="sheet-tabs tabs" data-group="primary">
-            <a class="item hover-action enabled-action" data-tab="stats">{{localize "PL1E.Stats"}}</a>
-            <a class="item hover-action enabled-action" data-tab="features">{{localize "PL1E.FeaturesAndAbilities"}}</a>
-            <a class="item hover-action enabled-action" data-tab="items">{{localize "PL1E.Items"}}</a>
-        </nav>
-    </div>
+                        <input type="number" name="system.resources.{{@key}}.max" value="{{../max}}" data-dtype="Number"
+                               disabled/>
+                    </div>
+                {{/with}}
+            {{/each}}
+        </div>
+    </header>
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item hover-action enabled-action" data-tab="stats">{{localize "PL1E.Stats"}}</a>
+        <a class="item hover-action enabled-action" data-tab="features">{{localize "PL1E.FeaturesAndAbilities"}}</a>
+        <a class="item hover-action enabled-action" data-tab="items">{{localize "PL1E.Items"}}</a>
+    </nav>
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Stats Tab --}}
         <div class="tab" data-group="primary" data-tab="stats">
-            <div class="horizontal-content scroll-hidden">
+            <div class="vertical-content scroll-hidden">
                 {{> "systems/pl1e/templates/actor/components/stats-characteristics.hbs"}}
-                {{> "systems/pl1e/templates/actor/components/stats-skills.hbs"}}
-                {{> "systems/pl1e/templates/actor/components/stats-stats.hbs"}}
+                <div class="horizontal-content flex-shrink">
+                    {{> "systems/pl1e/templates/actor/components/stats-skills.hbs"}}
+                    {{> "systems/pl1e/templates/actor/components/stats-favorites.hbs"}}
+                </div>
             </div>
         </div>
         {{!-- Features Tab --}}

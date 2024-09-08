@@ -1,50 +1,80 @@
-.pl1e {
-  .characteristics {
-    flex: 0 0 50px;
+.characteristics-container {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
 
-    .characteristic {
-      .characteristic-label {
-        cursor: pointer;
-        text-align: left;
-        display: block;
-        width: 100%;
-        margin-bottom: 5px;
-      }
+  .characteristics-group {
+    flex: 1;
+    width: 48%;
+    padding: 1em;
+    position: relative;
+    border-radius: 8px;
+    background-color: $colorSecondary;
+    border: 1px solid $colorBeige;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 
-      .characteristic-values {
+    .group-header {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      position: absolute;
+      top: -20px;
+
+      .group-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5em;
+        background-color: $colorSecondary;
+        padding: 0 10px;
+        border-radius: 50%;
+        z-index: 1;
+        border: 1px solid $colorBeige;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+      }
+    }
 
-        .input-spin {
-          position: relative;
+    .characteristics {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
 
-          input[type="number"] {
-            width: 40px;
-            padding: 0.2em;
-            text-align: center;
-          }
+      .characteristic {
+        text-align: center;
+        flex: 1;
 
-          span {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 50%;
-            right: -20px;
-            transform: translateY(-50%);
-
-            i {
-              cursor: pointer;
-              transition: color 0.3s;
-              font-size: 1.2em;
-            }
-          }
+        .characteristic-label {
+          margin-bottom: 0;
         }
 
-        .characteristic-mod {
-          margin-left: 1em;
+        input[type="number"] {
+          width: 50px;
+          text-align: center;
           font-weight: bold;
-          font-size: 1.2em;
+          font-size: 1.8em;
+          border: none;
+          background-color: transparent;
+        }
+
+        input[type="number"]:hover,
+        input[type="number"]:focus {
+          border: 1px solid #ccc;
+          background-color: #fff;
+          border-radius: 5px;
+        }
+
+        .mod {
+          &.color-green {
+            color: #28a745;
+          }
+
+          &.color-red {
+            color: #dc3545;
+          }
         }
       }
     }

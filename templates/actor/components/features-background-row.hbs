@@ -1,36 +1,37 @@
-<div class="main-panel">
-    <div class="items-list">
-        <div class="items-header">
-            <h3 class="header-title">
-                {{localize "PL1E.Background"}}
-                <div class="item-filter-list" data-filter="background">
-                    <div class="item-filter hover-action enabled-action" data-filter="race">{{localize "PL1E.Race"}}</div>
-                    <div class="item-filter hover-action enabled-action" data-filter="culture">{{localize "PL1E.Culture"}}</div>
-                    <div class="item-filter hover-action enabled-action" data-filter="class">{{localize "PL1E.Class"}}</div>
-                    <div class="item-filter hover-action enabled-action" data-filter="mastery">{{localize "PL1E.Mastery"}}</div>
-                </div>
-            </h3>
-        </div>
-        <div class="items-row">
-            {{#each background}}
-                <div class="item" data-item-id="{{_id}}">
-                    <img class="item-edit hover-action" src="{{img}}" title="{{name}}" />
-                    {{#if @root.actor.isOwner}}
-                        {{#if flags.pl1e.childId}}
-                            <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'>
-                                <i class="fas fa-link"></i>
-                            </a>
-                        {{else}}
-                            <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'>
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        {{/if}}
-                        {{#if (gt (length warnings) 0)}}
-                            <i class="far fa-exclamation-triangle hover-info color-warning" data-tooltip="{{join warnings ', ' true}}"></i>
-                        {{/if}}
+<div class="items-list">
+    <div class="items-header">
+        <h3 class="header-title">
+            {{localize "PL1E.Background"}}
+            <div class="item-filter-list" data-filter="background">
+                <div class="item-filter hover-action enabled-action" data-filter="race">{{localize "PL1E.Race"}}</div>
+                <div class="item-filter hover-action enabled-action" data-filter="culture">{{localize
+                        "PL1E.Culture"}}</div>
+                <div class="item-filter hover-action enabled-action" data-filter="class">{{localize "PL1E.Class"}}</div>
+                <div class="item-filter hover-action enabled-action" data-filter="mastery">{{localize
+                        "PL1E.Mastery"}}</div>
+            </div>
+        </h3>
+    </div>
+    <div class="items-row">
+        {{#each background}}
+            <div class="item" data-item-id="{{_id}}">
+                <img class="item-edit hover-action" src="{{img}}" title="{{name}}"/>
+                {{#if @root.actor.isOwner}}
+                    {{#if flags.pl1e.childId}}
+                        <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'>
+                            <i class="fas fa-link"></i>
+                        </a>
+                    {{else}}
+                        <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'>
+                            <i class="fas fa-trash"></i>
+                        </a>
                     {{/if}}
-                </div>
-            {{/each}}
-        </div>
+                    {{#if (gt (length warnings) 0)}}
+                        <i class="far fa-exclamation-triangle hover-info color-warning"
+                           data-tooltip="{{join warnings ', ' true}}"></i>
+                    {{/if}}
+                {{/if}}
+            </div>
+        {{/each}}
     </div>
 </div>

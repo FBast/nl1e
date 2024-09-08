@@ -1,74 +1,74 @@
 <section class="scroll-auto">
-    <div class="main-panel">
-        <h3 class="align-left">{{localize "PL1E.Description"}}</h3>
-        {{{enriched}}}
+
+    <h3 class="align-left">{{localize "PL1E.Description"}}</h3>
+    {{{enriched}}}
     </div>
     {{#if (gt (length items) 0)}}
-        <div class="main-panel">
-            <h3 class="align-left">{{localize "PL1E.LinkedItems"}}</h3>
-            {{#if (gt (length masters) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Masters"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=masters}}
-                </p>
-            {{/if}}
-            {{#if (gt (length abilities) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Abilities"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=abilities}}
-                </p>
-            {{/if}}
-            {{#if (gt (length features) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Features"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=features}}
-                </p>
-            {{/if}}
-            {{#if (gt (length weapons) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Weapons"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=weapons}}
-                </p>
-            {{/if}}
-            {{#if (gt (length modules) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Modules"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=modules}}
-                </p>
-            {{/if}}
+
+        <h3 class="align-left">{{localize "PL1E.LinkedItems"}}</h3>
+        {{#if (gt (length masters) 0)}}
+            <p>
+                <label>{{localize "PL1E.Masters"}} : </label>
+                {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=masters}}
+            </p>
+        {{/if}}
+        {{#if (gt (length abilities) 0)}}
+            <p>
+                <label>{{localize "PL1E.Abilities"}} : </label>
+                {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=abilities}}
+            </p>
+        {{/if}}
+        {{#if (gt (length features) 0)}}
+            <p>
+                <label>{{localize "PL1E.Features"}} : </label>
+                {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=features}}
+            </p>
+        {{/if}}
+        {{#if (gt (length weapons) 0)}}
+            <p>
+                <label>{{localize "PL1E.Weapons"}} : </label>
+                {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=weapons}}
+            </p>
+        {{/if}}
+        {{#if (gt (length modules) 0)}}
+            <p>
+                <label>{{localize "PL1E.Modules"}} : </label>
+                {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=modules}}
+            </p>
+        {{/if}}
         </div>
     {{/if}}
     {{#unless (isEmpty attributesDisplay)}}
-        <div class="main-panel">
-            <h3 class="align-left">{{localize "PL1E.Attributes"}}</h3>
-            {{#each attributesDisplay}}
-                <div class="form-group">
-                    <label>{{label}}</label>
-                    <label class="align-right">{{value}}</label>
-                </div>
-            {{/each}}
+
+        <h3 class="align-left">{{localize "PL1E.Attributes"}}</h3>
+        {{#each attributesDisplay}}
+            <div class="form-group">
+                <label>{{label}}</label>
+                <label class="align-right">{{value}}</label>
+            </div>
+        {{/each}}
         </div>
     {{/unless}}
     {{#unless (isEmpty passiveAspectsDisplay)}}
-        <div class="main-panel">
-            <h3 class="align-left">{{localize "PL1E.PassiveAspects"}}</h3>
-            {{#each passiveAspectsDisplay}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{label}}</label>
-                    <label class="attribute-name">{{description}}</label>
-                </div>
-            {{/each}}
+
+        <h3 class="align-left">{{localize "PL1E.PassiveAspects"}}</h3>
+        {{#each passiveAspectsDisplay}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{label}}</label>
+                <label class="attribute-name">{{description}}</label>
+            </div>
+        {{/each}}
         </div>
     {{/unless}}
     {{#unless (isEmpty activeAspectsDisplay)}}
-        <div class="main-panel">
-            <h3 class="align-left">{{localize "PL1E.ActiveAspects"}}</h3>
-            {{#each activeAspectsDisplay}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{label}}</label>
-                    <label class="attribute-name">{{description}}</label>
-                </div>
-            {{/each}}
+
+        <h3 class="align-left">{{localize "PL1E.ActiveAspects"}}</h3>
+        {{#each activeAspectsDisplay}}
+            <div class="item-attribute flexrow">
+                <label class="attribute-name">{{label}}</label>
+                <label class="attribute-name">{{description}}</label>
+            </div>
+        {{/each}}
         </div>
     {{/unless}}
 </section>

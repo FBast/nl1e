@@ -1,35 +1,38 @@
 <form class="pl1e {{cssClass}} {{item.type}} flexcol" autocomplete="off">
-    <div class="main-panel">
-        {{!-- Sheet Header --}}
-        <header class="sheet-header">
-            {{#if (and system.attributes.customizable item.isEmbedded)}}
-                <img class="profile-item" src="{{item.realImg}}" data-edit="system.customImg" title="{{item.name}}"/>
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        {{#if (and system.attributes.customizable item.isEmbedded)}}
+            <img class="profile-item" src="{{item.realImg}}" data-edit="system.customImg" title="{{item.name}}"/>
+        {{else}}
+            <img class="profile-item" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        {{/if}}
+        <div class="header-infos">
+            {{#if (and @root.game.user.isGM (not item.isEmbedded))}}
+                <input class="sheet-name" name="name" type="text" value="{{item.name}}"
+                       placeholder="{{localize "PL1E.Name"}}"/>
             {{else}}
-                <img class="profile-item" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+                <input class="sheet-name" name="name" type="text" value="{{item.name}}"
+                       placeholder="{{localize "PL1E.Name"}}" disabled/>
             {{/if}}
-            <div class="header-infos">
-                {{#if (and @root.game.user.isGM (not item.isEmbedded))}}
-                    <input class="sheet-name" name="name" type="text" value="{{item.name}}" placeholder="{{localize "PL1E.Name"}}"/>
-                {{else}}
-                    <input class="sheet-name" name="name" type="text" value="{{item.name}}" placeholder="{{localize "PL1E.Name"}}" disabled/>
-                {{/if}}
-                {{#if (and system.attributes.customizable item.isEmbedded item.isOwner)}}
-                    <input class="sheet-name" name="system.customName" type="text" value="{{item.system.customName}}" placeholder="Custom name"/>
-                {{/if}}
-            </div>
-        </header>
-        {{!-- Sheet Tab Navigation for GM --}}
-        <nav class="sheet-tabs tabs" data-group="primary">
-            <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
-            {{#if game.user.isGM}}
-                {{#if (not item.isEmbedded)}}
-                    <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
-                {{/if}}
-                {{#if (gt (length system.refItems) 0)}}
-                    <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
-                {{/if}}
+            {{#if (and system.attributes.customizable item.isEmbedded item.isOwner)}}
+                <input class="sheet-name" name="system.customName" type="text" value="{{item.system.customName}}"
+                       placeholder="Custom name"/>
             {{/if}}
-        </nav>
+        </div>
+    </header>
+    {{!-- Sheet Tab Navigation for GM --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
+        {{#if game.user.isGM}}
+            {{#if (not item.isEmbedded)}}
+                <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
+            {{/if}}
+            {{#if (gt (length system.refItems) 0)}}
+                <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
+            {{/if}}
+        {{/if}}
+    </nav>
     </div>
     {{!-- Sheet Body for GM --}}
     <section class="sheet-body">
@@ -64,7 +67,7 @@
             {{/if}}
         </div>
         {{#if (gt (length item.system.refItems) 0)}}
-            {{!-- Linked Items Tab --}}
+        {{!-- Linked Items Tab --}}
             <div class="tab items flexcol" data-group="primary" data-tab="linked-items">
                 {{> "systems/pl1e/templates/item/parts/item-linked.hbs"}}
             </div>
