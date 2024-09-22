@@ -1,24 +1,22 @@
-.pl1e {
-  .sheet-body {
-    overflow: hidden;
-    background-color: white;
-    border-right: 1px solid $colorFaint;
-    border-left: 1px solid $colorFaint;
-    border-bottom: 1px solid $colorFaint;
-    border-radius: 0 0 10px 10px;
-    padding: 10px;
-  }
+.sheet-body {
+  overflow: hidden;
+  background-color: white;
+  border-right: 1px solid $colorFaint;
+  border-left: 1px solid $colorFaint;
+  border-bottom: 1px solid $colorFaint;
+  border-radius: 0 0 10px 10px;
+  padding: 10px;
+}
 
-  .sheet-body,
-  .sheet-body .tab,
-  .sheet-body .tab .editor {
-    height: 100%;
-  }
+.sheet-body,
+.sheet-body .tab,
+.sheet-body .tab .editor {
+  height: 100%;
+}
 
-  .sheet-body {
-    .stats {
-      flex: 1 1 200px;
-      min-width: 300px;
-    }
+.sheet-body {
+  .stats {
+    flex: 1 1 200px;
+    min-width: 300px;
   }
 }

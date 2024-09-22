@@ -1,37 +1,35 @@
-.pl1e {
-  .window-content {
-    overflow-y: hidden;
+.window-content {
+  overflow-y: hidden;
 
-    form {
-      height: 100%;
-    }
+  form {
+    height: 100%;
   }
+}
 
-  .form-group {
+.form-group {
+  display: flex;
+  margin: 0;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+
+  a {
     display: flex;
-    margin: 0;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 4px;
-
-    a {
-      display: flex;
-      justify-content: center;
-    }
+    justify-content: center;
   }
+}
 
-  .form-fields {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 4px;
-  }
+.form-fields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
 
-  .fa {
-    line-height: normal;
-  }
+.fa {
+  line-height: normal;
 }

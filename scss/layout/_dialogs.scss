@@ -1,21 +1,19 @@
-.pl1e {
-  &.dm-tool {
-    position: absolute;
-    bottom: 5px !important;
-    right: 310px !important;
-    z-index: 100;
-    width: 220px;
+&.dm-tool {
+  position: absolute;
+  bottom: 5px !important;
+  right: 310px !important;
+  z-index: 100;
+  width: 220px;
 
-    &.left-panel-hidden {
-      right: 5px !important;
-    }
+  &.left-panel-hidden {
+    right: 5px !important;
   }
+}
 
-  &.roll-config {
-    position: absolute;
-    bottom: 5px !important;
-    right: 10px !important;
-    z-index: 100;
-    width: 300px;
-  }
+&.roll-config {
+  position: absolute;
+  bottom: 5px !important;
+  right: 10px !important;
+  z-index: 100;
+  width: 300px;
 }

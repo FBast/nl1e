@@ -1,61 +1,112 @@
-.pl1e {
+.character-sheet {
   .sheet-header {
     display: flex;
     flex-direction: row;
     gap: 10px;
     padding: 10px;
+    align-items: normal;
 
     .profile-container {
-      position: relative;
-      flex: 0;
-      min-height: 140px;
-      min-width: 140px;
+      flex: 0 0 150px;
+      border: 2px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-      .profile-actor {
-        background: $colorFaint;
-        padding: 5px;
-        max-height: 100%;
-        max-width: 100%;
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
-        display: block;
+      .level-info {
+        height: 20px;
+        font-size: 1.2em;
+        font-weight: bold;
+        text-align: center;
       }
 
-      .profile-frame {
-        position: absolute;
-        top: 0;
-        left: 0;
+      .profile-wrapper {
+        position: relative;
         width: 100%;
-        height: 100%;
-        pointer-events: none;
-        border-radius: 10px;
-        border: none;
+        height: auto;
+
+        .profile-actor {
+          margin: 0;
+          padding: 10px;
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
+
+        .profile-frame {
+          border: none;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+        }
       }
-    }
 
-    //.profile-actor {
-    //  background: $colorFaint;
-    //  height: 140px;
-    //  max-height: 100%;
-    //  max-width: 100%;
-    //  border-radius: 10px;
-    //}
+      .xp-container {
+        position: relative;
+        width: 100%;
+        height: 20px;
 
-    .profile-item {
-      background: $colorFaint;
-      height: 100px;
-      max-height: 100%;
-      max-width: 100%;
-      border-radius: 10px;
+        .xp-bar {
+          margin: 0 auto;
+          width: 80%;
+          height: 100%;
+          background-color: #8b0000;
+          border-radius: 20px;
+          position: relative;
+
+          .xp-fill {
+            height: 100%;
+            background-color: #4caf50;
+            width: 50%;
+            border-radius: 20px;
+            transition: width 0.3s ease;
+          }
+        }
+
+        .xp-modifiers {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          width: 100%;
+          transform: translateY(-50%);
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+
+          button {
+            width: 30px;
+            height: 30px;
+            background-color: #ddd;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2em;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .xp-input {
+            width: 60px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            text-align: center;
+            color: #fff;
+            pointer-events: none;
+          }
+        }
+      }
     }
 
     .header-infos {
       flex: 1;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      gap: 5px;
+      gap: 10px;
 
       .sheet-name {
         height: 40px;
@@ -69,117 +120,125 @@
         transition: border-color 0.3s;
       }
 
-      .resource {
-        flex: 1;
+      .stats-container {
         display: flex;
-        gap: 10px;
-        align-items: center;
+        flex-direction: column;
+        gap: 5px;
 
-        .resource-name {
-          width: 100px;
-          font-size: larger;
-          text-align: right;
-        }
+        .resource {
+          display: flex;
+          align-items: center;
+          gap: 10px;
 
-        input {
-          width: 50px;
-          text-align: center;
-          margin: 0 5px;
-          padding: 0.25em;
-          transition: border-color 0.3s;
-        }
+          .resource-name {
+            width: 100px;
+            font-size: larger;
+            text-align: right;
+          }
 
-        .stat-bar {
-          flex: 1;
-          height: 20px;
-          background-color: #e0e0e0;
-          border-radius: 10px;
-          overflow: hidden;
-          position: relative;
-          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+          input {
+            width: 50px;
+            text-align: center;
+            padding: 0.25em;
+          }
 
-          .stat-fill {
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
-            background-size: 50px 50px;
-            border-radius: 10px 0 0 10px;
-            transition: width 0.5s ease-in-out;
+          .stat-bar {
+            flex: 1;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
             position: relative;
-            animation: liquid 5s linear infinite;
 
-            &::after {
-              content: '';
-              position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              background: rgba(255, 255, 255, 0.3);
-              pointer-events: none;
-              border-radius: inherit;
-            }
+            .stat-fill {
+              height: 100%;
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
+              background-size: 50px 50px;
+              border-radius: 10px 0 0 10px;
+              transition: width 0.5s ease-in-out;
+              animation: liquid 5s linear infinite;
 
-            &.health {
-              background-color: $colorHealth;
-            }
+              &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.3);
+                pointer-events: none;
+                border-radius: inherit;
+              }
 
-            &.stamina {
-              background-color: $colorStamina;
-            }
+              &.health {
+                background-color: $colorHealth;
+              }
 
-            &.mana {
-              background-color: $colorMana;
+              &.stamina {
+                background-color: $colorStamina;
+              }
+
+              &.mana {
+                background-color: $colorMana;
+              }
             }
           }
         }
       }
 
-      .multiplier {
+      .widgets-container {
         display: flex;
         align-items: center;
         gap: 10px;
 
-        .multiplier-name {
-          //min-width: 200px;
-          flex: 0;
-          font-size: larger;
-          text-align: center;
+        .advantage {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+
+          button {
+            width: 30px;
+            height: 30px;
+            background-color: #7a7971;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2em;
+            cursor: pointer;
+          }
+
+          input {
+            width: 50px;
+            text-align: center;
+          }
         }
 
-        input[type="range"] {
-          flex: 1;
-          //max-width: 150px;
+        .rest-button {
+          width: 32px;
+          height: 32px;
+          cursor: pointer;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
 
-        input[type="text"] {
-          flex: 0;
-          width: 50px;
-          text-align: center;
-          padding: 0.25em;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-        }
-      }
+        .icons-stats {
+          display: flex;
+          gap: 5px;
 
-      .multiplier-display {
-        flex: 1;
-        font-weight: bold;
-        text-align: left;
-        background: $colorBeige;
-        border: 1px solid $colorFaint;
-        padding: 5px;
-        border-radius: 5px;
-
-        span {
-          display: block;
+          .stat-icon {
+            font-size: 1.2em;
+          }
         }
       }
     }
   }
 
   nav.sheet-tabs {
+    margin: 0;
     justify-content: space-around;
-    margin-top: 5px;
+    border-bottom: none;
 
     a {
       flex: 1;
@@ -197,5 +256,4 @@
       }
     }
   }
-
 }

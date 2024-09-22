@@ -2,29 +2,72 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header">
         <div class="profile-container">
-            <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-            <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"
-                 alt="Frame"/>
+            <div class="level-info">
+                <span class="level-label">Level {{system.general.level}}</span>
+            </div>
+
+            <div class="profile-wrapper">
+                <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"
+                     alt="Frame"/>
+            </div>
+
+            <div class="xp-container">
+                <div class="xp-bar">
+                    <div class="xp-fill" style="width: {{system.general.xpPercentage}}%;"></div>
+                </div>
+                <div class="xp-modifiers">
+                    <button class="xp-decrease">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="text" class="xp-input" value="10/20" readonly />
+                    <button class="xp-increase">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
         </div>
+
         <div class="header-infos">
             <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
-            {{#each system.resources}}
-                {{#with (config "resources" @key)}}
-                    <div class="resource" data-resource-id="{{@key}}">
-                        <span class="resource-name highlight-link hover-info"
-                              data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
-                        <input type="number" name="system.resources.{{@key}}.value" value="{{../value}}"
-                               max="{{../max}}" data-dtype="Number"/>
-                        <div class="stat-bar">
-                            <div class="stat-fill {{@key}}" style="width: {{../percentage}}%;"></div>
+
+            <div class="stats-container">
+                {{#each system.resources}}
+                    {{#with (config "resources" @key)}}
+                        <div class="resource" data-resource-id="{{@key}}">
+                            <span class="resource-name">{{localize label}}</span>
+                            <input type="number" name="system.resources.{{@key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
+                            <div class="stat-bar">
+                                <div class="stat-fill {{@key}}" style="width: {{../percentage}}%;"></div>
+                            </div>
+                            <input type="number" name="system.resources.{{@key}}.max" value="{{../max}}" data-dtype="Number" disabled/>
                         </div>
-                        <input type="number" name="system.resources.{{@key}}.max" value="{{../max}}" data-dtype="Number"
-                               disabled/>
-                    </div>
-                {{/with}}
-            {{/each}}
+                    {{/with}}
+                {{/each}}
+            </div>
+
+            <div class="widgets-container">
+                <div class="advantage">
+                    <span>Advantage:</span>
+                    <button type="button" class="decrease">-</button>
+                    <input type="number" name="system.advantage" value="{{system.advantage}}" min="-2" max="2" readonly/>
+                    <button type="button" class="increase">+</button>
+                </div>
+
+                <button type="button" class="rest-button" title="Rest">
+                    <img src="systems/pl1e/assets/icons/rest-icon.png" alt="Rest"/>
+                </button>
+
+                <div class="icons-stats">
+                    <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                    <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                    <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
+                    <!-- Ajoute d'autres icônes si nécessaire -->
+                </div>
+            </div>
         </div>
     </header>
+
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item hover-action enabled-action" data-tab="stats">{{localize "PL1E.Stats"}}</a>

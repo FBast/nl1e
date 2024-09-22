@@ -1,15 +1,13 @@
-.pl1e {
-  &.sheet.actor {
-    min-height: 810px;
-    min-width: 700px;
+&.sheet.actor {
+  min-height: 810px;
+  min-width: 700px;
 
-    .character-sheet {
-      display: flex;
-      flex-direction: column;
-    }
+  .character-sheet {
+    display: flex;
+    flex-direction: column;
   }
-  &.sheet.item {
-    min-height: 500px;
-    min-width: 500px;
-  }
+}
+&.sheet.item {
+  min-height: 500px;
+  min-width: 500px;
 }
