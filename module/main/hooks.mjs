@@ -51,7 +51,9 @@ export default class Pl1eHooks {
                 // Apply the user color to the sheet
                 for (const [id, user] of Object.entries(game.users.players)) {
                     if (user.character !== actorSheet.actor) continue;
-                    actorSheet.element.css("background-color", user.color);
+
+                    const colorWithOpacity = Pl1eHelpers.hexToRgba(user.color, 0.5);
+                    actorSheet.element.css("background-color", colorWithOpacity);
                 }
             }
         });
