@@ -5,10 +5,10 @@
     gap: 10px;
     align-items: normal;
     margin-bottom: 10px;
-    color: $colorWhite;
+    color: $colorPrimary;
 
     .profile-container {
-      flex: 0 0 150px;
+      flex: 0 0 180px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -48,21 +48,22 @@
       .xp-container {
         position: relative;
         width: 100%;
-        height: 20px;
+        height: 25px; /* Un peu plus de hauteur pour une meilleure lisibilité */
 
         .xp-bar {
           margin: 0 auto;
-          width: 80%;
+          width: 85%; /* Ajusté pour mieux aligner la barre et les boutons */
           height: 100%;
-          background-color: #8b0000;
+          background-color: $colorPrimaryAlt;
+          border: $colorPrimary solid 2px;
           border-radius: 20px;
           position: relative;
+          overflow: hidden; /* Assure que rien ne déborde */
 
           .xp-fill {
             height: 100%;
-            background-color: #4caf50;
+            background-color: $colorXP;
             width: 50%;
-            border-radius: 20px;
             transition: width 0.3s ease;
           }
         }
@@ -74,33 +75,47 @@
           width: 100%;
           transform: translateY(-50%);
           display: flex;
-          flex-direction: row;
           justify-content: space-between;
           align-items: center;
+          padding: 0 5px; /* Espacement des boutons par rapport aux bords */
 
           button {
-            width: 30px;
-            height: 30px;
-            background-color: #ddd;
-            border: none;
+            width: 35px;
+            height: 35px;
+            color: white;
+            background-color: $colorPrimaryAlt;
+            border: $colorPrimary solid 2px;
             border-radius: 50%;
             font-size: 1.2em;
             cursor: pointer;
-            align-items: center;
+            display: flex;
             justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+
+            &:hover {
+              background-color: #ccc;
+              transform: scale(1.1); /* Légère animation de survol */
+            }
+
+            i {
+              margin: 0;
+            }
           }
 
           .xp-input {
-            width: 60px;
-            height: 20px;
-            background: transparent;
+            width: 70px;
+            height: 25px;
             border: none;
             text-align: center;
             color: #fff;
+            font-weight: bold;
+            font-size: 1em;
             pointer-events: none;
           }
         }
       }
+
     }
 
     .header-infos {
@@ -111,15 +126,20 @@
       margin-top: 7px;
 
       .sheet-name {
+        color: $colorPrimary;
         height: 40px;
         font-size: 2em;
         font-weight: bold;
         padding: 10px;
         margin-bottom: 5px;
-        border: 2px solid #ccc;
-        border-radius: 5px;
+        border: none;
         outline: none;
-        transition: border-color 0.3s;
+
+        &:hover {
+          border: 2px solid #ccc;
+          border-radius: 5px;
+          background-color: $colorPrimaryAlt;
+        }
       }
 
       .stats-container {
@@ -139,15 +159,25 @@
           }
 
           input {
+            color: $colorPrimary;
             width: 50px;
             text-align: center;
             padding: 0.25em;
+            border: none;
+
+            &:hover {
+              border: 2px solid #ccc;
+              border-radius: 5px;
+              background-color: $colorPrimaryAlt;
+
+            }
           }
 
           .stat-bar {
             flex: 1;
             height: 20px;
-            background-color: #e0e0e0;
+            background-color: $colorPrimaryAlt;
+            border: $colorPrimary solid 2px;
             border-radius: 10px;
             overflow: hidden;
             position: relative;
@@ -188,52 +218,64 @@
         }
       }
 
-      .widgets-container {
+      .icons-stats {
         display: flex;
         align-items: center;
         gap: 10px;
 
-        .advantage {
-          display: flex;
-          align-items: center;
-          gap: 5px;
+        .stat-icon {
+          font-size: 1.2em;
+        }
+      }
 
-          button {
-            width: 30px;
-            height: 30px;
-            background-color: #7a7971;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.2em;
-            cursor: pointer;
-          }
+      .exhaustion-wrap {
+        height: 34px;
+        width: 34px;
+        overflow: hidden;
+        border-radius: 20px;
+        transition: width 0.3s ease;
+        background: $colorPrimaryAlt;
+        display: flex;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) inset;
+        border: 1px solid $colorPrimary;
 
-          input {
-            width: 50px;
-            text-align: center;
-          }
+        &:hover {
+          width: 174px;
         }
 
-        .rest-button {
+        .exhaustion-icon {
+          display: block;
+          flex: 0 0 32px;
           width: 32px;
           height: 32px;
-          cursor: pointer;
-
-          img {
-            width: 100%;
-            height: 100%;
-          }
+          line-height: 34px;
+          text-align: center;
+          font-size: 24px;
+          position: relative;
         }
 
-        .icons-stats {
+        .exhaust-level {
+          list-style: none;
+          margin: 0;
+          padding: 0;
           display: flex;
-          gap: 5px;
+          flex: 1;
 
-          .stat-icon {
-            font-size: 1.2em;
+          li {
+            flex: 0 0 20px;
+            text-align: center;
+            line-height: 34px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+
+            &:hover {
+              background: $colorSecondaryAlt !important;
+              color: $colorPrimary;
+            }
           }
         }
       }
+
     }
   }
 
@@ -254,7 +296,7 @@
 
       &.active {
         border-bottom: none;
-        background-color: white;
+        background-color: $colorPrimary;
       }
     }
   }

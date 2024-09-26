@@ -47,25 +47,27 @@
                 {{/each}}
             </div>
 
-            <div class="widgets-container">
-                <div class="advantage">
-                    <span>Advantage:</span>
-                    <button type="button" class="decrease">-</button>
-                    <input type="number" name="system.advantage" value="{{system.advantage}}" min="-2" max="2" readonly/>
-                    <button type="button" class="increase">+</button>
-                </div>
-
-                <button type="button" class="rest-button" title="Rest">
-                    <img src="systems/pl1e/assets/icons/rest-icon.png" alt="Rest"/>
-                </button>
-
-                <div class="icons-stats">
-                    <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                    <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                    <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                    <!-- Ajoute d'autres icônes si nécessaire -->
-                </div>
+            <div class="icons-stats">
+                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
+                <!-- Ajoute d'autres icônes si nécessaire -->
             </div>
+
+            <div class="exhaustion-wrap">
+                <div class="exhaustion-icon">
+                    <i class="far fa-smile"></i> <!-- L'icône principale -->
+                </div>
+                <ul class="exhaust-level">
+                    <li data-elvl="0"><i class="far fa-smile"></i></li>
+                    <li data-elvl="1"><i class="far fa-meh"></i></li>
+                    <li data-elvl="2"><i class="far fa-frown"></i></li>
+                    <li data-elvl="3"><i class="far fa-frown-open"></i></li>
+                    <li data-elvl="4"><i class="far fa-tired"></i></li>
+                    <li data-elvl="5"><i class="far fa-dizzy"></i></li>
+                </ul>
+            </div>
+
         </div>
     </header>
 
