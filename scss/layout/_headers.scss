@@ -2,7 +2,7 @@
   .sheet-header {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 15px;
     align-items: normal;
     margin-bottom: 10px;
     color: $colorPrimary;
@@ -124,6 +124,7 @@
       flex-direction: column;
       gap: 10px;
       margin-top: 7px;
+      margin-right: 15px;
 
       .sheet-name {
         color: $colorPrimary;
@@ -145,40 +146,49 @@
       .stats-container {
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 10px;
 
         .resource {
           display: flex;
           align-items: center;
-          gap: 10px;
 
-          .resource-name {
-            width: 100px;
-            font-size: larger;
-            text-align: right;
-          }
+          .resource-infos {
+            display: flex;
+            align-items: center;
+            height: 25px;
+            background: $colorPrimaryAlt;
+            border: $colorPrimary solid 2px;
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+            padding-left: 20px;
 
-          input {
-            color: $colorPrimary;
-            width: 50px;
-            text-align: center;
-            padding: 0.25em;
-            border: none;
+            .resource-name {
+              width: 100px;
+              font-size: larger;
+              text-align: left;
+            }
 
-            &:hover {
-              border: 2px solid #ccc;
-              border-radius: 5px;
-              background-color: $colorPrimaryAlt;
+            input {
+              border: none;
+              color: $colorPrimary;
+              width: 50px;
+              text-align: center;
+              padding: 0.25em;
 
+              &:not(:disabled):hover {
+                border: 2px solid #ccc;
+                border-radius: 5px;
+                background-color: $colorPrimaryAlt;
+              }
             }
           }
 
           .stat-bar {
             flex: 1;
-            height: 20px;
+            height: 25px;
             background-color: $colorPrimaryAlt;
             border: $colorPrimary solid 2px;
-            border-radius: 10px;
+            border-radius: 0 10px 10px 0;
             overflow: hidden;
             position: relative;
 
@@ -186,7 +196,7 @@
               height: 100%;
               background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
               background-size: 50px 50px;
-              border-radius: 10px 0 0 10px;
+              border-radius: 0 10px 10px 0;
               transition: width 0.5s ease-in-out;
               animation: liquid 5s linear infinite;
 

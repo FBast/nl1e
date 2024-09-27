@@ -36,12 +36,17 @@
                 {{#each system.resources}}
                     {{#with (config "resources" @key)}}
                         <div class="resource" data-resource-id="{{@key}}">
-                            <span class="resource-name">{{localize label}}</span>
-                            <input type="number" name="system.resources.{{@key}}.value" value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
+                            <div class="resource-infos">
+                                <span class="resource-name">{{localize label}}</span>
+                                <input type="number" name="system.resources.{{@key}}.value"
+                                       value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
+                                <span>/</span>
+                                <input type="number" name="system.resources.{{@key}}.max"
+                                       value="{{../max}}" data-dtype="Number" disabled/>
+                            </div>
                             <div class="stat-bar">
                                 <div class="stat-fill {{@key}}" style="width: {{../percentage}}%;"></div>
                             </div>
-                            <input type="number" name="system.resources.{{@key}}.max" value="{{../max}}" data-dtype="Number" disabled/>
                         </div>
                     {{/with}}
                 {{/each}}
