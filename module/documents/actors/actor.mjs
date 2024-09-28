@@ -337,9 +337,15 @@ export class Pl1eActor extends Actor {
 
         actorGeneral.level = Pl1eHelpers.XPToLevel(this, actorGeneral.experience);
         actorGeneral.experienceNeeded = Pl1eHelpers.levelToXP(this, actorGeneral.level + 1);
+        actorGeneral.experienceMax = Pl1eHelpers.levelToXP(this, Pl1eHelpers.levelCaps(this).length);
         const experienceReached = Pl1eHelpers.levelToXP(this, actorGeneral.level);
-        actorGeneral.levelProgression = 100 * (actorGeneral.experience - experienceReached) /
-            (actorGeneral.experienceNeeded - experienceReached);
+        if (actorGeneral.experience === actorGeneral.experienceMax) {
+            actorGeneral.levelProgression = 100; // In case of max XP reached
+        }
+        else {
+            actorGeneral.levelProgression = 100 * (actorGeneral.experience - experienceReached) /
+                (actorGeneral.experienceNeeded - experienceReached);
+        }
         actorGeneral.ranks = actorGeneral.experience;
         actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
     }

@@ -1,0 +1,59 @@
+.dropdown-icons {
+  position: relative;
+  display: inline-block;
+  background-color: $colorPrimaryAlt;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: $colorSecondaryAlt solid 2px;
+
+  &:hover {
+    border-radius: 50% 50% 0 0;
+  }
+
+  .dropdown-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-size: 1.5em;
+  }
+
+  .dropdown-content {
+    border: $colorSecondaryAlt solid 2px;
+    border-top: none;
+    position: absolute;
+    background-color: $colorPrimaryAlt;
+    border-radius: 0 0 20px 20px;
+    flex-direction: column;
+    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+
+    i {
+      display: block;
+      font-size: 1.2em;
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      font-style: normal;
+      height: 40px;
+
+      &:hover {
+        background-color: #555;
+      }
+    }
+  }
+
+  &:hover .dropdown-content {
+    max-height: 500px;
+    opacity: 1;
+  }
+}

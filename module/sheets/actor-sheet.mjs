@@ -191,6 +191,7 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".currency-convert").on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
 
         // Custom controls
+        html.find(".set-number").on("click", ev => Pl1eEvent.onSetNumber(ev, this.actor));
         html.find(".spin-number").on("click", ev => Pl1eEvent.onSpinNumber(ev, this.actor));
         html.find(".characteristic-control").on("click", ev => this.onCharacteristicChange(ev));
         html.find(".rank-control").on("click", ev => this.onRankChange(ev));

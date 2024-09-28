@@ -49,24 +49,27 @@
 .hover-action {
   &:hover,
   &:focus {
-    text-shadow: 0 0 10px $colorAction;
+    color: $colorAction !important;
+    text-shadow: 0 0 10px $colorAction !important;
     cursor: pointer;
   }
 }
 
 .enabled-action {
   &:enabled {
-    color: $colorAction;
+    color: $colorAction !important;
   }
 }
 
 .hover-info {
   &:hover,
   &:focus {
-    text-shadow: 0 0 10px $colorInfo;
+    color: $colorInfo !important;
+    text-shadow: 0 0 10px $colorInfo !important;
   }
 }
 
 .highlight-info {
-  text-shadow: 0 0 10px $colorInfo;
+  color: $colorInfo !important;
+  text-shadow: 0 0 10px $colorInfo !important;
 }

@@ -223,6 +223,7 @@ export class Pl1eEvent {
     static async onSpinNumber(event, document) {
         event.preventDefault();
         event.stopPropagation();
+
         const path = $(event.currentTarget).data("path");
         const value = $(event.currentTarget).data("value");
         const min = $(event.currentTarget).data("min");
@@ -234,6 +235,24 @@ export class Pl1eEvent {
         newValue = max !== undefined ? Math.min(newValue, max) : newValue;
         await document.update({
             [path]: newValue
+        })
+    }
+
+    /**
+     * Handle set number changes
+     * @param {Event} event The originating click event
+     * @param {Actor|Item} document the document to modify
+     */
+    static async onSetNumber(event, document) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const path = $(event.currentTarget).data("path");
+        const value = $(event.currentTarget).data("value");
+        if (value === undefined || !path) return;
+
+        await document.update({
+            [path]: value
         })
     }
 
@@ -259,9 +278,11 @@ export class Pl1eEvent {
     static onCreateHighlights(event) {
         event.preventDefault();
         event.stopPropagation();
+
         let resources = $(event.currentTarget).data("resources");
         let characteristics = $(event.currentTarget).data("characteristics");
         let skills = $(event.currentTarget).data("skills");
+
         // resources
         if (resources !== undefined) {
             for (let resource of document.getElementsByClassName('resource-name')) {

@@ -2,77 +2,135 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header">
         <div class="profile-container">
-
             <div class="profile-wrapper">
                 <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"
-                     alt="Frame"/>
+                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"/>
             </div>
-
-            <div class="xp-container">
-                <div class="xp-bar">
-                    <div class="xp-fill" style="width: {{system.general.xpPercentage}}%;"></div>
+            <div class="xp-bar">
+                <div class="bar">
+                    <div class="fill" style="width: {{system.general.levelProgression}}%;"></div>
                 </div>
-                <div class="xp-modifiers">
-                    <button class="xp-decrease">
+                <div class="modifiers">
+                    <button class="spin-number hover-action" data-path="system.general.experience" data-value="-1" data-min="0">
                         <i class="fas fa-minus"></i>
                     </button>
-                    <input type="text" class="xp-input" value="10/20" readonly />
-                    <button class="xp-increase">
+                    <input type="text" class="input" value="{{system.general.experience}}/{{system.general.experienceNeeded}}" readonly />
+                    <button class="spin-number hover-action" data-path="system.general.experience" data-value="1" data-max="{{system.general.experienceMax}}">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
             </div>
-
-            <div class="level-info">
-                <span class="level-label">Level {{system.general.level}}</span>
-            </div>
         </div>
-
         <div class="header-infos">
-            <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
-
-            <div class="stats-container">
+            <div class="info-container">
+                <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Advantages"}}">
+                        {{#if (eq system.general.advantages 2)}}
+                            <i class="fas fa-laugh" style="color: lawngreen"></i>
+                        {{else if (eq system.general.advantages 1)}}
+                            <i class="fas fa-smile" style="color: lawngreen"></i>
+                        {{else if (eq system.general.advantages 0)}}
+                            <i class="fas fa-meh"></i>
+                        {{else if (eq system.general.advantages -1)}}
+                            <i class="fas fa-frown" style="color: red"></i>
+                        {{else if (eq system.general.advantages -2)}}
+                            <i class="fas fa-tired" style="color: red"></i>
+                        {{/if}}
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="set-number" data-path="system.general.advantages" data-value="2">+2</i>
+                        <i class="set-number" data-path="system.general.advantages" data-value="1">+1</i>
+                        <i class="set-number" data-path="system.general.advantages" data-value="0">0</i>
+                        <i class="set-number" data-path="system.general.advantages" data-value="-1">-1</i>
+                        <i class="set-number" data-path="system.general.advantages" data-value="-2">-2</i>
+                    </div>
+                </div>
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Destiny"}}">
+                        {{#if (eq system.general.destiny 0)}}
+                            <i class="fas fa-ban"></i>
+                        {{else if (eq system.general.destiny 1)}}
+                            <i class="fas fa-dice-one" style="color: lawngreen"></i>
+                        {{else if (eq system.general.destiny 2)}}
+                            <i class="fas fa-dice-two" style="color: lawngreen"></i>
+                        {{else if (eq system.general.destiny 3)}}
+                            <i class="fas fa-dice-three" style="color: lawngreen"></i>
+                        {{else if (eq system.general.destiny 4)}}
+                            <i class="fas fa-dice-four" style="color: lawngreen"></i>
+                        {{else if (eq system.general.destiny 5)}}
+                            <i class="fas fa-dice-five" style="color: lawngreen"></i>
+                        {{/if}}
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="fas fa-ban set-number" data-path="system.general.destiny" data-value="0"></i>
+                        <i class="fas fa-dice-one set-number" data-path="system.general.destiny" data-value="1"></i>
+                        <i class="fas fa-dice-two set-number" data-path="system.general.destiny" data-value="2"></i>
+                        <i class="fas fa-dice-three set-number" data-path="system.general.destiny" data-value="3"></i>
+                        <i class="fas fa-dice-four set-number" data-path="system.general.destiny" data-value="4"></i>
+                        <i class="fas fa-dice-five set-number" data-path="system.general.destiny" data-value="5"></i>
+                    </div>
+                </div>
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Actions"}}">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="fas fa-bed"></i>
+                        <i class="fas fa-hourglass"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="resources">
                 {{#each system.resources}}
                     {{#with (config "resources" @key)}}
-                        <div class="resource" data-resource-id="{{@key}}">
-                            <div class="resource-infos">
-                                <span class="resource-name">{{localize label}}</span>
+                        <div class="resource {{@key}}-bar" data-resource-id="{{@key}}">
+                            <div class="infos">
+                                <span class="resource-name hover-info highlight-link name"
+                                      data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
                                 <input type="number" name="system.resources.{{@key}}.value"
                                        value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
                                 <span>/</span>
                                 <input type="number" name="system.resources.{{@key}}.max"
                                        value="{{../max}}" data-dtype="Number" disabled/>
                             </div>
-                            <div class="stat-bar">
-                                <div class="stat-fill {{@key}}" style="width: {{../percentage}}%;"></div>
+                            <div class="bar">
+                                <div class="fill {{@key}}" style="width: {{../percentage}}%;"></div>
                             </div>
                         </div>
                     {{/with}}
                 {{/each}}
             </div>
-
             <div class="icons-stats">
+                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
+                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
+                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
+                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
+                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
+                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
+                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
+                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
+                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
+                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
                 <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
                 <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
                 <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
                 <!-- Ajoute d'autres icônes si nécessaire -->
             </div>
-
-            <div class="exhaustion-wrap">
-                <div class="exhaustion-icon">
-                    <i class="far fa-smile"></i> <!-- L'icône principale -->
-                </div>
-                <ul class="exhaust-level">
-                    <li data-elvl="0"><i class="far fa-smile"></i></li>
-                    <li data-elvl="1"><i class="far fa-meh"></i></li>
-                    <li data-elvl="2"><i class="far fa-frown"></i></li>
-                    <li data-elvl="3"><i class="far fa-frown-open"></i></li>
-                    <li data-elvl="4"><i class="far fa-tired"></i></li>
-                    <li data-elvl="5"><i class="far fa-dizzy"></i></li>
-                </ul>
-            </div>
-
         </div>
     </header>
 

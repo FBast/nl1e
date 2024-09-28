@@ -4,7 +4,7 @@
     flex-direction: row;
     gap: 15px;
     align-items: normal;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     color: $colorPrimary;
 
     .profile-container {
@@ -13,13 +13,6 @@
       flex-direction: column;
       align-items: center;
       gap: 5px;
-
-      .level-info {
-        height: 20px;
-        font-size: 1.2em;
-        font-weight: bold;
-        text-align: center;
-      }
 
       .profile-wrapper {
         position: relative;
@@ -45,77 +38,9 @@
         }
       }
 
-      .xp-container {
-        position: relative;
-        width: 100%;
-        height: 25px; /* Un peu plus de hauteur pour une meilleure lisibilité */
-
-        .xp-bar {
-          margin: 0 auto;
-          width: 85%; /* Ajusté pour mieux aligner la barre et les boutons */
-          height: 100%;
-          background-color: $colorPrimaryAlt;
-          border: $colorPrimary solid 2px;
-          border-radius: 20px;
-          position: relative;
-          overflow: hidden; /* Assure que rien ne déborde */
-
-          .xp-fill {
-            height: 100%;
-            background-color: $colorXP;
-            width: 50%;
-            transition: width 0.3s ease;
-          }
-        }
-
-        .xp-modifiers {
-          position: absolute;
-          top: 50%;
-          left: 0;
-          width: 100%;
-          transform: translateY(-50%);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 5px; /* Espacement des boutons par rapport aux bords */
-
-          button {
-            width: 35px;
-            height: 35px;
-            color: white;
-            background-color: $colorPrimaryAlt;
-            border: $colorPrimary solid 2px;
-            border-radius: 50%;
-            font-size: 1.2em;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-
-            &:hover {
-              background-color: #ccc;
-              transform: scale(1.1); /* Légère animation de survol */
-            }
-
-            i {
-              margin: 0;
-            }
-          }
-
-          .xp-input {
-            width: 70px;
-            height: 25px;
-            border: none;
-            text-align: center;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1em;
-            pointer-events: none;
-          }
-        }
+      .xp-bar {
+        @include incremental-bar($colorPrimaryAlt, $colorSecondaryAlt, $colorXP, $colorPrimaryAlt);
       }
-
     }
 
     .header-infos {
@@ -124,168 +49,60 @@
       flex-direction: column;
       gap: 10px;
       margin-top: 7px;
-      margin-right: 15px;
+      margin-right: 10px;
 
-      .sheet-name {
-        color: $colorPrimary;
-        height: 40px;
-        font-size: 2em;
-        font-weight: bold;
-        padding: 10px;
-        margin-bottom: 5px;
-        border: none;
-        outline: none;
+      .info-container {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        align-items: center;
+        gap: 10px;
 
-        &:hover {
-          border: 2px solid #ccc;
-          border-radius: 5px;
-          background-color: $colorPrimaryAlt;
+        .sheet-name {
+          color: $colorPrimary;
+          height: 40px;
+          font-size: 2em;
+          font-weight: bold;
+          padding: 10px;
+          border: none;
+          outline: none;
+
+          &:hover {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            background-color: $colorPrimaryAlt;
+          }
         }
       }
 
-      .stats-container {
+      .resources {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 5px;
 
-        .resource {
-          display: flex;
-          align-items: center;
-
-          .resource-infos {
-            display: flex;
-            align-items: center;
-            height: 25px;
-            background: $colorPrimaryAlt;
-            border: $colorPrimary solid 2px;
-            border-radius: 10px 0 0 10px;
-            border-right: none;
-            padding-left: 20px;
-
-            .resource-name {
-              width: 100px;
-              font-size: larger;
-              text-align: left;
-            }
-
-            input {
-              border: none;
-              color: $colorPrimary;
-              width: 50px;
-              text-align: center;
-              padding: 0.25em;
-
-              &:not(:disabled):hover {
-                border: 2px solid #ccc;
-                border-radius: 5px;
-                background-color: $colorPrimaryAlt;
-              }
-            }
-          }
-
-          .stat-bar {
-            flex: 1;
-            height: 25px;
-            background-color: $colorPrimaryAlt;
-            border: $colorPrimary solid 2px;
-            border-radius: 0 10px 10px 0;
-            overflow: hidden;
-            position: relative;
-
-            .stat-fill {
-              height: 100%;
-              background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
-              background-size: 50px 50px;
-              border-radius: 0 10px 10px 0;
-              transition: width 0.5s ease-in-out;
-              animation: liquid 5s linear infinite;
-
-              &::after {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(255, 255, 255, 0.3);
-                pointer-events: none;
-                border-radius: inherit;
-              }
-
-              &.health {
-                background-color: $colorHealth;
-              }
-
-              &.stamina {
-                background-color: $colorStamina;
-              }
-
-              &.mana {
-                background-color: $colorMana;
-              }
-            }
-          }
+        .health-bar {
+          @include info-bar($colorPrimaryAlt, $colorSecondaryAlt, $colorHealth, $colorSecondaryAlt, $colorWhite);
+        }
+        .stamina-bar {
+          @include info-bar($colorPrimaryAlt, $colorSecondaryAlt, $colorStamina, $colorSecondaryAlt, $colorWhite);
+        }
+        .mana-bar {
+          @include info-bar($colorPrimaryAlt, $colorSecondaryAlt, $colorMana, $colorSecondaryAlt, $colorWhite);
         }
       }
 
       .icons-stats {
         display: flex;
+        flex: 2;
+        flex-wrap: wrap;
         align-items: center;
         gap: 10px;
+        margin-top: 10px;
 
         .stat-icon {
           font-size: 1.2em;
         }
       }
-
-      .exhaustion-wrap {
-        height: 34px;
-        width: 34px;
-        overflow: hidden;
-        border-radius: 20px;
-        transition: width 0.3s ease;
-        background: $colorPrimaryAlt;
-        display: flex;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) inset;
-        border: 1px solid $colorPrimary;
-
-        &:hover {
-          width: 174px;
-        }
-
-        .exhaustion-icon {
-          display: block;
-          flex: 0 0 32px;
-          width: 32px;
-          height: 32px;
-          line-height: 34px;
-          text-align: center;
-          font-size: 24px;
-          position: relative;
-        }
-
-        .exhaust-level {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          flex: 1;
-
-          li {
-            flex: 0 0 20px;
-            text-align: center;
-            line-height: 34px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-
-            &:hover {
-              background: $colorSecondaryAlt !important;
-              color: $colorPrimary;
-            }
-          }
-        }
-      }
-
     }
   }
 

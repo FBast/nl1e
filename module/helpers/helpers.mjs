@@ -340,13 +340,13 @@ export class Pl1eHelpers {
 
     static levelToXP(actor, level) {
         if (level === 0) return 0;
-        const levelCaps = this._levelCaps(actor);
+        const levelCaps = this.levelCaps(actor);
         const xp = levelCaps[level - 1];
         return xp === undefined ? levelCaps[levelCaps.length - 1] : xp;
     }
 
     static XPToLevel(actor, xp) {
-        const levelCaps = this._levelCaps(actor);
+        const levelCaps = this.levelCaps(actor);
         let level = 0;
         for (let levelCap of levelCaps) {
             if (levelCap <= xp) level++;
@@ -403,7 +403,7 @@ export class Pl1eHelpers {
         }
     }
 
-    static _levelCaps(actor) {
+    static levelCaps(actor) {
         const classNumber = Math.max(actor.items.filter(item => item.type === "class").length, 1);
         const key = classNumber === 1 ? "monoClassLevelCaps" : "multiClassLevelCaps";
         return game.settings.get("pl1e", key).split(',').map(x => parseInt(x.trim()));

@@ -298,6 +298,7 @@
         "general": {
           "creationMod": true,
           "experience": 10,
+          "destiny": 0,
           "remainingFeatures": 0,
           "remainingFeaturePoints": 0,
           "remainingCharacteristics": 8,

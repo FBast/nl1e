@@ -10,7 +10,10 @@
   @import 'utils/variables';
   @import 'utils/colors';
   @import 'utils/sizes';
-  @import 'utils/mixins';
+
+  // Shared
+  @import 'shared/bars';
+  @import 'shared/dropdowns';
 
   // Layouts
   @import 'layout/body';
