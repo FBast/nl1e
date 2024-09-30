@@ -3,78 +3,64 @@
   gap: 10px;
   flex-direction: row;
 
-  .characteristics-group {
+  .characteristics {
     flex: 1;
-    width: 48%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     padding: 1em;
     position: relative;
     border-radius: 8px;
     background-color: $colorSecondary;
     border: 1px solid $colorBeige;
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    margin-top: 20px;
 
-    .group-header {
+    .group-icon {
+      width: 40px;
+      height: 40px;
+      margin: 5px;
+      font-size: 1.5em;
+      background-color: $colorSecondary;
+      padding: 0 10px;
+      border-radius: 50%;
+      z-index: 1;
+      border: 1px solid $colorBeige;
       display: flex;
+      align-items: center;
       justify-content: center;
-      width: 100%;
-      position: absolute;
-      top: -20px;
-
-      .group-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5em;
-        background-color: $colorSecondary;
-        padding: 0 10px;
-        border-radius: 50%;
-        z-index: 1;
-        border: 1px solid $colorBeige;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
     }
 
-    .characteristics {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
+    .characteristic {
+      text-align: center;
+      flex: 1;
 
-      .characteristic {
+      .characteristic-label {
+        margin-bottom: 0;
+      }
+
+      input[type="number"] {
+        width: 30px;
         text-align: center;
-        flex: 1;
+        font-weight: bold;
+        font-size: 1.5em;
+        border: none;
+        background-color: transparent;
+      }
 
-        .characteristic-label {
-          margin-bottom: 0;
+      input[type="number"]:hover,
+      input[type="number"]:focus {
+        border: 2px solid $colorTertiary;
+        background-color: $colorPrimary;
+        border-radius: 5px;
+      }
+
+      .mod {
+        &.color-green {
+          color: #28a745;
         }
 
-        input[type="number"] {
-          width: 50px;
-          text-align: center;
-          font-weight: bold;
-          font-size: 1.8em;
-          border: none;
-          background-color: transparent;
-        }
-
-        input[type="number"]:hover,
-        input[type="number"]:focus {
-          border: 1px solid #ccc;
-          background-color: #fff;
-          border-radius: 5px;
-        }
-
-        .mod {
-          &.color-green {
-            color: #28a745;
-          }
-
-          &.color-red {
-            color: #dc3545;
-          }
+        &.color-red {
+          color: #dc3545;
         }
       }
     }

@@ -1,47 +1,39 @@
 <div class="characteristics-container">
     <!-- Body -->
-    <div class="characteristics-group">
-        <div class="group-header">
-            <i class="far fa-heart group-icon hover-info" data-tooltip="{{localize "PL1E.Body"}}"></i>
-        </div>
-        <div class="characteristics">
-            {{#each system.characteristics}}
-                {{#with (config "characteristics" @key)}}
-                    {{#if (or (eq @key "strength") (eq @key "agility") (eq @key "constitution") (eq @key "perception"))}}
-                        <div class="characteristic" data-characteristic-id="{{@key}}">
-                            <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
-                                data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
-                            <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
-                            <span class="mod {{#if (gt ../mod 0)}}color-green{{/if}} {{#if (lt ../mod 0)}}color-red{{/if}}">
-                                {{numberFormat ../mod decimals=0 sign=true}}
-                            </span>
-                        </div>
-                    {{/if}}
-                {{/with}}
-            {{/each}}
-        </div>
+    <div class="characteristics">
+        {{#each system.characteristics}}
+            {{#with (config "characteristics" @key)}}
+                {{#if (or (eq @key "strength") (eq @key "agility") (eq @key "constitution") (eq @key "perception"))}}
+                    <div class="characteristic" data-characteristic-id="{{@key}}">
+                        <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
+                            data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
+                        <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
+                        <span class="mod {{#if (gt ../mod 0)}}color-green{{/if}} {{#if (lt ../mod 0)}}color-red{{/if}}">
+                            {{numberFormat ../mod decimals=0 sign=true}}
+                        </span>
+                    </div>
+                {{/if}}
+            {{/with}}
+        {{/each}}
+        <i class="far fa-heart group-icon hover-info" data-tooltip="{{localize "PL1E.Body"}}"></i>
     </div>
 
     <!-- Mind -->
-    <div class="characteristics-group">
-        <div class="group-header">
-            <i class="far fa-brain group-icon hover-info" data-tooltip="{{localize "PL1E.Mind"}}"></i>
-        </div>
-        <div class="characteristics">
-            {{#each system.characteristics}}
-                {{#with (config "characteristics" @key)}}
-                    {{#if (or (eq @key "intellect") (eq @key "cunning") (eq @key "wisdom") (eq @key "will"))}}
-                        <div class="characteristic" data-characteristic-id="{{@key}}">
-                            <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
-                                data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
-                            <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
-                            <span class="mod {{#if (gt ../mod 0)}}color-green{{/if}} {{#if (lt ../mod 0)}}color-red{{/if}}">
-                                {{numberFormat ../mod decimals=0 sign=true}}
-                            </span>
-                        </div>
-                    {{/if}}
-                {{/with}}
-            {{/each}}
-        </div>
+    <div class="characteristics">
+        <i class="far fa-brain group-icon hover-info" data-tooltip="{{localize "PL1E.Mind"}}"></i>
+        {{#each system.characteristics}}
+            {{#with (config "characteristics" @key)}}
+                {{#if (or (eq @key "intellect") (eq @key "cunning") (eq @key "wisdom") (eq @key "will"))}}
+                    <div class="characteristic" data-characteristic-id="{{@key}}">
+                        <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
+                            data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
+                        <input name="characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
+                        <span class="mod {{#if (gt ../mod 0)}}color-green{{/if}} {{#if (lt ../mod 0)}}color-red{{/if}}">
+                            {{numberFormat ../mod decimals=0 sign=true}}
+                        </span>
+                    </div>
+                {{/if}}
+            {{/with}}
+        {{/each}}
     </div>
 </div>
