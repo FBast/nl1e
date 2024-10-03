@@ -1,11 +1,11 @@
 .dropdown-icons {
   position: relative;
   display: inline-block;
-  background-color: $colorPrimaryAlt;
+  background-color: $colorPanelNegative;
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: $colorSecondaryAlt solid 2px;
+  border: $colorBorderNegative solid 2px;
 
   &:hover {
     border-radius: 50% 50% 0 0;
@@ -22,10 +22,10 @@
   }
 
   .dropdown-content {
-    border: $colorSecondaryAlt solid 2px;
+    border: $colorBorderNegative solid 2px;
     border-top: none;
     position: absolute;
-    background-color: $colorPrimaryAlt;
+    background-color: $colorPanelNegative;
     border-radius: 0 0 20px 20px;
     flex-direction: column;
     z-index: 1;
@@ -47,7 +47,7 @@
       height: 40px;
 
       &:hover {
-        background-color: #555;
+        background-color: lighten($colorPanelNegative, 20%);
       }
     }
   }

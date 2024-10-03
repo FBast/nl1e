@@ -18,11 +18,11 @@
       padding: 1px;
 
       &:nth-child(even) {
-        background-color: $colorSecondary;
+        background-color: $colorPanel;
       }
 
       &:nth-child(odd) {
-        background-color: $colorTertiary;
+        background-color: darken($colorPanel, 10%);
       }
 
       .skill-roll {

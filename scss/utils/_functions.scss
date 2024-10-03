@@ -1,0 +1,7 @@
+@function invert-color($color) {
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  @return rgb(255 - $r, 255 - $g, 255 - $b);
+}

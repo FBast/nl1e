@@ -23,14 +23,13 @@ $colorCopper: #af5134;
 $colorText: #ffffff;
 $colorTextAlt: #000000;
 
-$colorPrimary: #ffffff;
-$colorSecondary: #f0f0f0;
-$colorTertiary: #e0e0e0;
+$colorBackground: #ffffff;
+$colorPanel: #e8e8e8;
+$colorBorder: #c3c3c3;
 
-$colorPrimaryAlt: #1a1a1a;
-$colorSecondaryAlt: #2d2d2d;
-$colorTertiaryAlt: #4d4d4d;
-
+$colorBackgroundNegative: invert-color($colorBackground);
+$colorPanelNegative: invert-color($colorPanel);
+$colorBorderNegative: invert-color($colorBorder);
 
 $colorAction: #ff0000;
 $colorInfo: #009602;

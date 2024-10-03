@@ -5,7 +5,7 @@
     gap: 15px;
     align-items: normal;
     margin-bottom: 20px;
-    color: $colorPrimary;
+    color: $colorText;
 
     .profile-container {
       flex: 0 0 180px;
@@ -39,7 +39,7 @@
       }
 
       .xp-bar {
-        @include incremental-bar($colorPrimaryAlt, $colorSecondaryAlt, $colorXP, $colorPrimaryAlt);
+        @include incremental-bar($colorPanelNegative, $colorBorderNegative, $colorXP, $colorPanelNegative);
       }
     }
 
@@ -59,7 +59,7 @@
         gap: 10px;
 
         .sheet-name {
-          color: $colorPrimary;
+          color: $colorText;
           height: 40px;
           font-size: 2em;
           font-weight: bold;
@@ -70,7 +70,7 @@
           &:hover {
             border: 2px solid #ccc;
             border-radius: 5px;
-            background-color: $colorPrimaryAlt;
+            background-color: $colorBackgroundNegative;
           }
         }
       }
@@ -81,13 +81,13 @@
         gap: 5px;
 
         .health-bar {
-          @include info-bar($colorPrimaryAlt, $colorSecondaryAlt, $colorHealth, $colorSecondaryAlt, $colorWhite);
+          @include info-bar($colorPanelNegative, $colorBorderNegative, $colorHealth, $colorBackgroundNegative, $colorWhite);
         }
         .stamina-bar {
-          @include info-bar($colorPrimaryAlt, $colorSecondaryAlt, $colorStamina, $colorSecondaryAlt, $colorWhite);
+          @include info-bar($colorPanelNegative, $colorBorderNegative, $colorStamina, $colorBackgroundNegative, $colorWhite);
         }
         .mana-bar {
-          @include info-bar($colorPrimaryAlt, $colorSecondaryAlt, $colorMana, $colorSecondaryAlt, $colorWhite);
+          @include info-bar($colorPanelNegative, $colorBorderNegative, $colorMana, $colorBackgroundNegative, $colorWhite);
         }
       }
 
@@ -117,13 +117,13 @@
       font-weight: bold;
       text-align: center;
       padding: 10px 15px;
-      border: 1px solid $colorFaint;
+      border: 1px solid $colorBorder;
       border-radius: 5px 5px 0 0;
-      background-color: $colorTertiary;
+      background-color: $colorPanel;
 
       &.active {
         border-bottom: none;
-        background-color: $colorPrimary;
+        background-color: $colorBackground;
       }
     }
   }

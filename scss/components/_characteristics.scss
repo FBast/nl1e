@@ -11,7 +11,7 @@
     padding: 1em;
     position: relative;
     border-radius: 8px;
-    background-color: $colorSecondary;
+    background-color: $colorPanel;
     border: 1px solid $colorBeige;
     align-items: center;
 
@@ -20,7 +20,7 @@
       height: 40px;
       margin: 5px;
       font-size: 1.5em;
-      background-color: $colorSecondary;
+      background-color: $colorPanel;
       padding: 0 10px;
       border-radius: 50%;
       z-index: 1;
@@ -49,8 +49,8 @@
 
       input[type="number"]:hover,
       input[type="number"]:focus {
-        border: 2px solid $colorTertiary;
-        background-color: $colorPrimary;
+        border: 2px solid $colorBorder;
+        background-color: $colorBackground;
         border-radius: 5px;
       }
 
