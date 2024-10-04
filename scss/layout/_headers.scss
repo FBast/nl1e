@@ -12,30 +12,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
-
-      .profile-wrapper {
-        position: relative;
+      gap: 10px;
+      
+      .profile-actor {
+        margin: 0;
         width: 100%;
-        height: auto;
-
-        .profile-actor {
-          margin: 0;
-          padding: 10px;
-          width: 100%;
-          height: 100%;
-          border: none;
-        }
-
-        .profile-frame {
-          border: none;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-        }
+        height: 100%;
       }
 
       .xp-bar {
