@@ -375,42 +375,76 @@ export function getConfigActor() {
     }
 
     PL1E.general = {
+        "level": {
+            "label": "PL1E.Level",
+            "icon": "fa-trophy",
+            "type": "number",
+            "path": "system.general.level",
+            "header": true
+        },
         "experience": {
             "label": "PL1E.Experience",
             "icon": "fa-cube",
             "type": "number",
-            "path": "system.general.experience"
+            "path": "system.general.experience",
+            "header": false
+        },
+        "remainingCharacteristics": {
+            "label": "PL1E.RemainingCharacteristics",
+            "icon": "fa-puzzle-piece",
+            "type": "number",
+            "path": "system.general.remainingCharacteristics",
+            "header": true
+        },
+        "ranks": {
+            "label": "PL1E.Ranks",
+            "icon": "fa-circle-x",
+            "type": "number",
+            "path": "system.general.ranks",
+            "header": true
+        },
+        "maxRank": {
+            "label": "PL1E.MaxRank",
+            "icon": "fa-circle-chevron-up",
+            "type": "number",
+            "path": "system.general.maxRank",
+            "header": true
         },
         "advantages": {
             "label": "PL1E.Advantages",
             "icon": "fa-cube",
             "type": "number",
-            "path": "system.general.advantages"
+            "path": "system.general.advantages",
+            "header": false
         },
         "statusImmunities": {
             "label": "PL1E.StatusImmunities",
             "icon": "fa-swords",
             "type": "array",
             "path": "system.misc.statusImmunities",
-            "select": "statusImmunities"
+            "select": "statusImmunities",
+            "header": false
         },
         "action": {
             "label": "PL1E.Action",
             "icon": "fa-clock",
             "type": "number",
-            "path": "system.general.action"
+            "path": "system.general.action",
+            "header": true
         },
         "reaction": {
             "label": "PL1E.Reaction",
             "icon": "fa-reply-clock",
             "type": "number",
-            "path": "system.general.reaction"
+            "path": "system.general.reaction",
+            "header": true
         },
         "quickAction": {
             "label": "PL1E.QuickAction",
             "icon": "fa-bell",
             "type": "number",
-            "path": "system.general.quickAction"
+            "path": "system.general.quickAction",
+            "header": true
         }
     }
 
@@ -419,49 +453,57 @@ export function getConfigActor() {
             "label": "PL1E.SlashingReduction",
             "icon": "fa-axe-battle",
             "type": "number",
-            "path": "system.reductions.slashing"
+            "path": "system.reductions.slashing",
+            "header": true
         },
         "crushing": {
             "label": "PL1E.CrushingReduction",
             "icon": "fa-hammer-war",
             "type": "number",
-            "path": "system.reductions.crushing"
+            "path": "system.reductions.crushing",
+            "header": true
         },
         "piercing": {
             "label": "PL1E.PiercingReduction",
             "icon": "fa-dagger",
             "type": "number",
-            "path": "system.reductions.piercing"
+            "path": "system.reductions.piercing",
+            "header": true
         },
         "burn": {
             "label": "PL1E.BurnReduction",
             "icon": "fa-fire",
             "type": "number",
-            "path": "system.reductions.burn"
+            "path": "system.reductions.burn",
+            "header": true
         },
         "cold": {
             "label": "PL1E.ColdReduction",
             "icon": "fa-snowflake",
             "type": "number",
-            "path": "system.reductions.cold"
+            "path": "system.reductions.cold",
+            "header": true
         },
         "acid": {
             "label": "PL1E.AcidReduction",
             "icon": "fa-droplet",
             "type": "number",
-            "path": "system.reductions.acid"
+            "path": "system.reductions.acid",
+            "header": true
         },
         "shock": {
             "label": "PL1E.ShockReduction",
             "icon": "fa-bolt",
             "type": "number",
-            "path": "system.reductions.shock"
+            "path": "system.reductions.shock",
+            "header": true
         },
         "entropy": {
             "label": "PL1E.EntropyReduction",
             "icon": "fa-ghost",
             "type": "number",
-            "path": "system.reductions.entropy"
+            "path": "system.reductions.entropy",
+            "header": true
         },
     }
 
@@ -471,68 +513,79 @@ export function getConfigActor() {
             "icon": "fa-arrow-up-big-small",
             "type": "select",
             "path": "system.misc.size",
-            "select": "sizes"
+            "select": "sizes",
+            "header": false
         },
         "sizeMultiplier": {
             "label": "PL1E.SizeMultiplier",
-            "icon": "fa-person-running",
+            "icon": "fa-arrow-up-big-small",
             "type": "number",
-            "path": "system.misc.sizeMultiplier"
+            "path": "system.misc.sizeMultiplier",
+            "header": true
         },
         "tokenSize": {
             "label": "PL1E.TokenSize",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.tokenSize"
+            "path": "system.misc.tokenSize",
+            "header": false
         },
         "speed": {
             "label": "PL1E.Speed",
             "icon": "fa-person-running",
             "type": "select",
             "path": "system.misc.speed",
-            "select": "speeds"
+            "select": "speeds",
+            "header": false
         },
         "movement": {
             "label": "PL1E.Movement",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.movement"
+            "path": "system.misc.movement",
+            "header": true
         },
         "baseInitiative": {
             "label": "PL1E.BaseInitiative",
-            "icon": "fa-person-running",
+            "icon": "fa-flag",
             "type": "number",
-            "path": "system.misc.baseInitiative"
+            "path": "system.misc.baseInitiative",
+            "header": false
         },
         "initiative": {
             "label": "PL1E.Initiative",
-            "icon": "fa-person-running",
+            "icon": "fa-flag",
             "type": "number",
-            "path": "system.misc.initiative"
+            "path": "system.misc.initiative",
+            "header": true
         },
         "unconsciousDoor": {
             "label": "PL1E.UnconsciousDoor",
             "icon": "fa-face-sleeping",
             "type": "number",
-            "path": "system.misc.unconsciousDoor"
+            "path": "system.misc.unconsciousDoor",
+            "header": true
         },
         "deathDoor": {
             "label": "PL1E.DeathDoor",
             "icon": "fa-skull",
             "type": "number",
-            "path": "system.misc.deathDoor"
+            "path": "system.misc.deathDoor",
+            "header": true
         },
         "flexibility": {
             "label": "PL1E.Flexibility",
             "icon": "fa-weight-hanging",
             "type": "number",
-            "path": "system.misc.flexibility"
+            "path": "system.misc.flexibility",
+            "header": true
         },
         "nightVisionRange": {
             "label": "PL1E.NightVisionRange",
             "icon": "fa-eye",
             "type": "number",
-            "path": "system.misc.nightVisionRange"
+            "path": "system.misc.nightVisionRange",
+            "header": true
         }
     }
 

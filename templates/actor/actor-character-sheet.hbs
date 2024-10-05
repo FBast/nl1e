@@ -2,7 +2,10 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header">
         <div class="profile-container">
-            <img class="profile-actor level-{{system.general.level}}" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+            <div class="profile-wrapper">
+                <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"/>
+            </div>
             <div class="xp-bar">
                 <div class="bar">
                     <div class="fill" style="width: {{system.general.levelProgression}}%;"></div>
@@ -99,34 +102,33 @@
                 {{/each}}
             </div>
             <div class="icons-stats">
-                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                <span class="stat-icon" title="Health"><i class="fas fa-heart"></i> {{system.stats.health}}</span>
-                <span class="stat-icon" title="Defense"><i class="fas fa-shield-alt"></i> {{system.stats.defense}}</span>
-                <span class="stat-icon" title="Attack"><i class="fas fa-fist-raised"></i> {{system.stats.attack}}</span>
-                <!-- Ajoute d'autres icônes si nécessaire -->
+                {{#each (config "general")}}
+                    {{#if header}}
+                        {{#with (lookup ../system.general @key)}}
+                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                          <i class="fas {{../icon}}"></i> {{this}}
+                        </span>
+                        {{/with}}
+                    {{/if}}
+                {{/each}}
+                {{#each (config "reductions")}}
+                    {{#if header}}
+                        {{#with (lookup ../system.reductions @key)}}
+                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                              <i class="fas {{../icon}}"></i> {{this}}
+                            </span>
+                        {{/with}}
+                    {{/if}}
+                {{/each}}
+                {{#each (config "misc")}}
+                    {{#if header}}
+                        {{#with (lookup ../system.misc @key)}}
+                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                              <i class="fas {{../icon}}"></i> {{this}}
+                            </span>
+                        {{/with}}
+                    {{/if}}
+                {{/each}}
             </div>
         </div>
     </header>
@@ -134,8 +136,11 @@
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item hover-action enabled-action" data-tab="stats">{{localize "PL1E.Stats"}}</a>
-        <a class="item hover-action enabled-action" data-tab="features">{{localize "PL1E.FeaturesAndAbilities"}}</a>
-        <a class="item hover-action enabled-action" data-tab="items">{{localize "PL1E.Items"}}</a>
+        <a class="item hover-action enabled-action" data-tab="inventory">{{localize "PL1E.Inventory"}}</a>
+        <a class="item hover-action enabled-action" data-tab="features">{{localize "PL1E.Features"}}</a>
+        <a class="item hover-action enabled-action" data-tab="abilities">{{localize "PL1E.Abilities"}}</a>
+        <a class="item hover-action enabled-action" data-tab="effects">{{localize "PL1E.Effects"}}</a>
+        <a class="item hover-action enabled-action" data-tab="journal">{{localize "PL1E.Journal"}}</a>
     </nav>
     {{!-- Sheet Body --}}
     <section class="sheet-body">
@@ -149,17 +154,8 @@
                 </div>
             </div>
         </div>
-        {{!-- Features Tab --}}
-        <div class="tab" data-group="primary" data-tab="features">
-            <div class="vertical-content scroll-auto">
-                {{> "systems/pl1e/templates/actor/components/features-background-row.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/features-features-row.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/features-abilities.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/features-effects.hbs" }}
-            </div>
-        </div>
-        {{!-- Items Tab --}}
-        <div class="tab" data-group="primary" data-tab="items">
+        {{!-- Inventory Tab --}}
+        <div class="tab" data-group="primary" data-tab="inventory">
             <div class="vertical-content scroll-auto">
                 {{> "systems/pl1e/templates/actor/components/items-money.hbs" }}
                 {{> "systems/pl1e/templates/actor/components/items-weapons.hbs" }}
@@ -167,6 +163,31 @@
                 {{> "systems/pl1e/templates/actor/components/items-consumables.hbs" }}
                 {{> "systems/pl1e/templates/actor/components/items-commons.hbs" }}
                 {{> "systems/pl1e/templates/actor/components/items-modules.hbs" }}
+            </div>
+        </div>
+        {{!-- Features Tab --}}
+        <div class="tab" data-group="primary" data-tab="features">
+            <div class="vertical-content scroll-auto">
+                {{> "systems/pl1e/templates/actor/components/features-background.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/features-features.hbs" }}
+            </div>
+        </div>
+        {{!-- Abilities Tab --}}
+        <div class="tab" data-group="primary" data-tab="abilities">
+            <div class="vertical-content scroll-auto">
+                {{> "systems/pl1e/templates/actor/components/features-abilities.hbs" }}
+            </div>
+        </div>
+        {{!-- Effects Tab --}}
+        <div class="tab" data-group="primary" data-tab="effects">
+            <div class="vertical-content scroll-auto">
+                {{> "systems/pl1e/templates/actor/components/features-effects.hbs" }}
+            </div>
+        </div>
+        {{!-- Journal Tab --}}
+        <div class="tab" data-group="primary" data-tab="journal">
+            <div class="vertical-content scroll-auto">
+
             </div>
         </div>
     </section>
