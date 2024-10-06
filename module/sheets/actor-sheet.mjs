@@ -34,8 +34,6 @@ export class Pl1eActorSheet extends ActorSheet {
         return mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "actor"],
             template: "systems/pl1e/templates/actor/actor-sheet.hbs",
-            width: 800,
-            height: 700,
             scrollY: [
                 ".scroll-auto"
             ],
@@ -193,13 +191,15 @@ export class Pl1eActorSheet extends ActorSheet {
         // Custom controls
         html.find(".set-number").on("click", ev => Pl1eEvent.onSetNumber(ev, this.actor));
         html.find(".spin-number").on("click", ev => Pl1eEvent.onSpinNumber(ev, this.actor));
-        html.find(".characteristic-control").on("click", ev => this.onCharacteristicChange(ev));
         html.find(".rank-control").on("click", ev => this.onRankChange(ev));
         html.find(".item-toggle").on("click", ev => Pl1eEvent.onItemToggle(ev, this.actor));
         html.find(".item-use").on("click", ev => this.onItemUse(ev));
         html.find(".item-reload").on("click", ev => this.onItemReload(ev));
 
-        // Button actions
+        // Actor actions
+        html.find('.open-journal').on('click', async ev => this.onOpenJournal(ev));
+
+        // Merchant actions
         html.find(".button-remove-items").on("click", ev => this.onRemoveItemsClick(ev));
         html.find(".button-randomize-item").on("click", ev => this.onRandomizeItemClick(ev));
         html.find(".button-generate-item").on("click", ev => this.onGenerateItemClick(ev));
@@ -798,34 +798,6 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Handle characteristics changes
-     * @param {Event} event The originating click event
-     */
-    async onCharacteristicChange(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const characteristic = $(event.currentTarget).closest(".characteristic").data("characteristic-id");
-        let value = $(event.currentTarget).data("value");
-        if (!value || !characteristic) return;
-
-        let remaining = this.actor.system.general.remainingCharacteristics;
-        if (remaining === 0 && value > 0) return;
-
-        let oldValue = this.actor.system.characteristics[characteristic].base;
-        let newValue = oldValue + value;
-
-        if (newValue < 2 || newValue > 5) return;
-
-        await this.actor.update({
-            ["system.characteristics." + characteristic + ".base"]: newValue,
-            ["system.general.remainingCharacteristics"]: remaining - value
-        });
-
-        this.render(false);
-    }
-
-    /**
      * Handle rank changes
      * @param {Event} event The originating click event
      */
@@ -875,4 +847,41 @@ export class Pl1eActorSheet extends ActorSheet {
         await effect.delete();
     }
 
+    async onOpenJournal(event) {
+        event.preventDefault();
+
+        // Get the user ID of the player who owns the actor
+        const ownerId = game.users.find(u => u.character && u.character.id === this.actor.id)?.id;
+
+        if (!ownerId) {
+            console.error("Owner not found for this actor.");
+            return;
+        }
+
+        // Check if the actor already has a journal entry associated with them
+        const journalId = this.actor.getFlag("pl1e", "journalEntryId");
+
+        // If the journal exists, open it
+        if (journalId) {
+            const journal = game.journal.get(journalId);
+            if (journal) {
+                journal.sheet.render(true);
+                return;
+            }
+        }
+
+        // If no journal exists, create a new one
+        const newJournal = await JournalEntry.create({
+            name: `${this.actor.name}`,
+            folder: null,
+            permission: { [ownerId]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER },
+            flags: { pl1e: { writerId: ownerId } }
+        });
+
+        // Save the new journal's ID to the actor's flags
+        await this.actor.setFlag("pl1e", "journalEntryId", newJournal.id);
+
+        // Open the newly created journal
+        newJournal.sheet.render(true);
+    }
 }

@@ -5,17 +5,18 @@
             <div class="profile-wrapper">
                 <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
                 <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"/>
+                <span class="profil-level">{{system.general.level}}</span>
             </div>
             <div class="xp-bar">
                 <div class="bar">
                     <div class="fill" style="width: {{system.general.levelProgression}}%;"></div>
                 </div>
                 <div class="modifiers">
-                    <button class="spin-number hover-action" data-path="system.general.experience" data-value="-1" data-min="0">
+                    <button class="spin-number hover-action" type="button" data-path="system.general.experience" data-value="-1" data-min="0">
                         <i class="fas fa-minus"></i>
                     </button>
                     <input type="text" class="input" value="{{system.general.experience}}/{{system.general.experienceNeeded}}" readonly />
-                    <button class="spin-number hover-action" data-path="system.general.experience" data-value="1" data-max="{{system.general.experienceMax}}">
+                    <button class="spin-number hover-action" type="button" data-path="system.general.experience" data-value="1" data-max="{{system.general.experienceMax}}">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
@@ -23,7 +24,7 @@
         </div>
         <div class="header-infos">
             <div class="info-container">
-                <input class="sheet-name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
+                <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
                 <div class="dropdown-icons">
                     <div class="dropdown-button" data-tooltip="{{localize "PL1E.Advantages"}}">
                         {{#if (eq system.general.advantages 2)}}
@@ -76,8 +77,9 @@
                         <i class="fas fa-bars"></i>
                     </div>
                     <div class="dropdown-content">
-                        <i class="fas fa-bed"></i>
-                        <i class="fas fa-hourglass"></i>
+                        <i class="fas fa-book-open open-journal" data-tooltip="{{localize "PL1E.Journal"}}"></i>
+                        <i class="fas fa-bed" data-tooltip="{{localize "PL1E.Rest"}}"></i>
+                        <i class="fas fa-hourglass" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
                     </div>
                 </div>
             </div>
@@ -140,7 +142,6 @@
         <a class="item hover-action enabled-action" data-tab="features">{{localize "PL1E.Features"}}</a>
         <a class="item hover-action enabled-action" data-tab="abilities">{{localize "PL1E.Abilities"}}</a>
         <a class="item hover-action enabled-action" data-tab="effects">{{localize "PL1E.Effects"}}</a>
-        <a class="item hover-action enabled-action" data-tab="journal">{{localize "PL1E.Journal"}}</a>
     </nav>
     {{!-- Sheet Body --}}
     <section class="sheet-body">
@@ -157,12 +158,12 @@
         {{!-- Inventory Tab --}}
         <div class="tab" data-group="primary" data-tab="inventory">
             <div class="vertical-content scroll-auto">
-                {{> "systems/pl1e/templates/actor/components/items-money.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/items-weapons.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/items-wearables.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/items-consumables.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/items-commons.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/items-modules.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/inventory-money.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/inventory-weapons.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/inventory-wearables.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/inventory-consumables.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/inventory-commons.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/inventory-modules.hbs" }}
             </div>
         </div>
         {{!-- Features Tab --}}
@@ -175,19 +176,13 @@
         {{!-- Abilities Tab --}}
         <div class="tab" data-group="primary" data-tab="abilities">
             <div class="vertical-content scroll-auto">
-                {{> "systems/pl1e/templates/actor/components/features-abilities.hbs" }}
+                {{> "systems/pl1e/templates/actor/components/abilities.hbs" }}
             </div>
         </div>
         {{!-- Effects Tab --}}
         <div class="tab" data-group="primary" data-tab="effects">
             <div class="vertical-content scroll-auto">
-                {{> "systems/pl1e/templates/actor/components/features-effects.hbs" }}
-            </div>
-        </div>
-        {{!-- Journal Tab --}}
-        <div class="tab" data-group="primary" data-tab="journal">
-            <div class="vertical-content scroll-auto">
-
+                {{> "systems/pl1e/templates/actor/components/effects.hbs" }}
             </div>
         </div>
     </section>

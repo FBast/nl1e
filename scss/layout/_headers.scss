@@ -12,7 +12,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
 
       .profile-wrapper {
         position: relative;
@@ -36,9 +35,29 @@
           height: 100%;
           pointer-events: none;
         }
+
+        .profil-level {
+          display: flex;
+          background-color: $colorPanelNegative;
+          border: $colorBorderNegative solid 2px;
+          border-radius: 20px;
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%); /* Centrage horizontal */
+          width: 40px;
+          height: 40px;
+          pointer-events: none;
+          align-items: center;
+          justify-content: center;
+          font-weight: bolder;
+          font-size: larger;
+          padding-bottom: 10px;
+        }
       }
 
       .xp-bar {
+        margin-top: -5px;
         @include incremental-bar($colorPanelNegative, $colorBorderNegative, $colorXP, $colorPanelNegative);
       }
     }
@@ -49,12 +68,12 @@
       flex-direction: column;
       gap: 10px;
       margin-top: 10px;
-      margin-right: 10px;
+      margin-right: 15px;
 
       .info-container {
         display: flex;
         flex-direction: row;
-        flex: 1;
+        flex: 0;
         align-items: center;
         gap: 10px;
 
@@ -97,6 +116,7 @@
         flex-wrap: wrap;
         align-items: center;
         column-gap: 8px;
+        margin: 0 10px;
 
         .stat-icon {
           font-size: 1.2em;

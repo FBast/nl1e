@@ -380,7 +380,7 @@ export function getConfigActor() {
             "icon": "fa-trophy",
             "type": "number",
             "path": "system.general.level",
-            "header": true
+            "header": false
         },
         "experience": {
             "label": "PL1E.Experience",

@@ -346,6 +346,10 @@
           "remainingMovement": 0,
           "usedMovement": 0,
           "movementAction": 0
+        },
+        "journal": {
+          "pages": [],
+          "selectedPage": 0
         }
       }
     },

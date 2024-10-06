@@ -57,6 +57,19 @@ export default class Pl1eHooks {
                 }
             }
         });
+
+        Hooks.on("renderJournalSheet", (journalSheet, html, data) => {
+            const journal = journalSheet.document;
+            const writerId = journal.getFlag("pl1e", "writerId");
+            if (!writerId) return;
+
+            const user = game.users.get(writerId);
+            if (user) {
+                const colorWithOpacity = Pl1eHelpers.hexToRgba(user.color, 0.5);
+                journalSheet.element.css("background-color", colorWithOpacity);
+            }
+        });
+
     }
 
     static renderChatMessage(app, html, data) {
