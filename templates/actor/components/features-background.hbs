@@ -2,40 +2,45 @@
     <div class="items-header">
         <h3 class="header-title">
             {{localize "PL1E.Background"}}
-            <div class="item-filter-list" data-filter="background">
-                <div class="item-filter hover-action enabled-action" data-filter="race">{{localize "PL1E.Race"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="culture">{{localize
-                        "PL1E.Culture"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="class">{{localize "PL1E.Class"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="mastery">{{localize
-                        "PL1E.Mastery"}}</div>
-            </div>
+            {{#unless favoriteDisplay}}
+                <div class="item-filter-list" data-filter="background">
+                    <div class="item-filter hover-action enabled-action" data-filter="race">{{localize "PL1E.Race"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="culture">{{localize "PL1E.Culture"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="class">{{localize "PL1E.Class"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="mastery">{{localize "PL1E.Mastery"}}</div>
+                </div>
+            {{/unless}}
         </h3>
     </div>
     <div class="items-column">
         {{#each background}}
-            <div class="item" data-item-id="{{_id}}">
-                <div class="item-content">
-                    <div class="item-title">
-                        <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
-                        <label class="item-tooltip-activate hover-action">{{name}}</label>
-                    </div>
-                    <div class="item-icons">
-
-                    </div>
-                    <div class="item-controls">
-                        {{#if @root.actor.isOwner}}
-                            {{#if flags.pl1e.childId}}
-                                <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
-                            {{else}}
-                                <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i
-                                        class="fas fa-trash"></i></a>
+            {{#if (or (not ../favoriteDisplay) (and system.isFavorite ../favoriteDisplay))}}
+                <div class="item" data-item-id="{{_id}}">
+                    <div class="item-content">
+                        <div class="item-title">
+                            <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                            <label class="item-tooltip-activate hover-action">{{name}}</label>
+                        </div>
+                        <div class="item-icons">
+                        </div>
+                        <div class="item-controls">
+                            {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                                <a class="item-favorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                    <i class="fas fa-bookmark {{#unless system.isFavorite}}color-grey{{/unless}}"></i>
+                                </a>
                             {{/if}}
-                        {{/if}}
+                            {{#if @root.actor.isOwner}}
+                                {{#if flags.pl1e.childId}}
+                                    <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                                {{else}}
+                                    <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                                {{/if}}
+                            {{/if}}
+                        </div>
                     </div>
+                    <div class="item-tooltip">{{{enriched}}}</div>
                 </div>
-                <div class="item-tooltip">{{{enriched}}}</div>
-            </div>
+            {{/if}}
         {{/each}}
     </div>
 </div>

@@ -1,61 +1,55 @@
-.skills-container {
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-  margin: 10px 5px 0 0;
+.skills {
+  min-width: 200px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid $colorBeige;
 
-  .skills {
-    min-width: 200px;
-    margin: 0;
-    padding: 0;
-    border: 1px solid $colorBeige;
+  .skill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+    padding: 1px;
 
-    .skill {
+    &:nth-child(even) {
+      background-color: $colorPanel;
+    }
+
+    &:nth-child(odd) {
+      background-color: darken($colorPanel, 10%);
+    }
+
+    .skill-roll {
+      flex: 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 0;
-      padding: 1px;
+      justify-content: center;
+      margin-right: 10px;
 
-      &:nth-child(even) {
-        background-color: $colorPanel;
+      label {
+        margin-left: 5px;
+        font-size: small;
       }
+    }
 
-      &:nth-child(odd) {
-        background-color: darken($colorPanel, 10%);
-      }
+    .skill-label {
+      flex: 1;
+      cursor: pointer;
+      transition: color 0.3s;
+      text-align: left;
+    }
 
-      .skill-roll {
-        flex: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 10px;
+    .skill-rank {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
 
-        label {
-          margin-left: 5px;
-          font-size: small;
-        }
-      }
-
-      .skill-label {
-        flex: 1;
-        cursor: pointer;
-        transition: color 0.3s;
-        text-align: left;
-      }
-
-      .skill-rank {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-
-        i {
-          margin-left: 5px;
-          font-size: 1.2em;
-        }
+      i {
+        margin-left: 5px;
+        font-size: 1.2em;
       }
     }
   }
 }
+

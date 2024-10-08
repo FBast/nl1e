@@ -379,6 +379,7 @@
       "base": {
         "description": "",
         "units": 1,
+        "isFavorite": false,
         "refItems": {},
         "passiveAspects": {},
         "activeAspects": {},

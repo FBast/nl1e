@@ -192,7 +192,8 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".set-number").on("click", ev => Pl1eEvent.onSetNumber(ev, this.actor));
         html.find(".spin-number").on("click", ev => Pl1eEvent.onSpinNumber(ev, this.actor));
         html.find(".rank-control").on("click", ev => this.onRankChange(ev));
-        html.find(".item-toggle").on("click", ev => Pl1eEvent.onItemToggle(ev, this.actor));
+        html.find(".item-favorite").on("click", ev => this.onItemFavorite(ev))
+        html.find(".item-toggle").on("click", ev => this.onItemToggle(ev));
         html.find(".item-use").on("click", ev => this.onItemUse(ev));
         html.find(".item-reload").on("click", ev => this.onItemReload(ev));
 
@@ -817,6 +818,40 @@ export class Pl1eActorSheet extends ActorSheet {
             ["system.skills." + skill + ".rank"]: newValue
         });
         this.render(false);
+    }
+
+    /**
+     * Toggle the item
+     * @param {Event} event The originating click event
+     */
+    async onItemToggle(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+
+        /** @type {Pl1eItem} */
+        const item = this.actor.items.get(itemId);
+        let options = {};
+        const main = $(event.currentTarget).data("main");
+        if (main) options["main"] = main;
+
+        if (item.canToggle()) await item.toggle(options);
+    }
+
+    /**
+     * Favorite the item
+     * @param event
+     * @returns {Promise<void>}
+     */
+    async onItemFavorite(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+
+        /** @type {Pl1eItem} */
+        const item = this.actor.items.get(itemId);
+        await item.favorite();
     }
 
     /**

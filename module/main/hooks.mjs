@@ -16,31 +16,6 @@ export default class Pl1eHooks {
             }
         });
 
-        // Restore tooltip expanded state
-        Hooks.on("renderItemSheet", handleTooltipState);
-        Hooks.on("renderActorSheet", handleTooltipState);
-
-        function handleTooltipState(app, html, data) {
-            const tooltips = html.find('.item-tooltip');
-            tooltips.each(function () {
-                const tooltip = $(this);
-                const item = $(tooltip).closest(".item");
-
-                // Check if tooltip associated
-                if (tooltip === undefined) return;
-
-                // Check if the tooltip state is in local storage
-                const itemId = item.data("item-id");
-                const tooltipState = localStorage.getItem(`pl1e.tooltipState_${itemId}`);
-
-                // If the tooltip state is in local storage, show/hide the tooltip accordingly
-                if (tooltipState !== null && tooltipState === "open") {
-                    $(tooltip).show();
-                    $(tooltip).toggleClass('expanded');
-                }
-            });
-        }
-
         Hooks.on("renderActorSheet", (actorSheet, html, data) => {
             if (actorSheet.actor.type === "character") {
                 // Refresh the form application

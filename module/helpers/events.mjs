@@ -106,24 +106,6 @@ export class Pl1eEvent {
     }
 
     /**
-     * Toggle an ability
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the actor which own the item
-     */
-    static async onItemToggle(event, actor) {
-        event.preventDefault();
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
-
-        /** @type {Pl1eItem} */
-        const item = actor.items.get(itemId);
-        let options = {};
-        const main = $(event.currentTarget).data("main");
-        if (main) options["main"] = main;
-
-        if (item.canToggle()) await item.toggle(options);
-    }
-
-    /**
      * Buy item
      * @param {Event} event The originating click event
      * @param {Pl1eActor} actor the merchant of the item
@@ -395,13 +377,6 @@ export class Pl1eEvent {
         // Check if tooltip associated
         const tooltip = item.find(".item-tooltip");
         if (tooltip === undefined) return;
-
-        // Store open/closed state in localStorage
-        const itemId = item.data("item-id");
-        if ($(tooltip).hasClass('expanded'))
-            localStorage.removeItem(`pl1e.tooltipState_${itemId}`);
-        else
-            localStorage.setItem(`pl1e.tooltipState_${itemId}`, "open");
 
         $(tooltip).slideToggle(200);
         $(tooltip).toggleClass('expanded');

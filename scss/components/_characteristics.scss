@@ -1,67 +1,61 @@
-.characteristics-container {
+.characteristics {
+  flex: 1;
   display: flex;
-  gap: 10px;
   flex-direction: row;
+  justify-content: space-between;
+  padding: 5px;
+  position: relative;
+  border-radius: 8px;
+  background-color: $colorPanel;
+  border: 1px solid $colorBeige;
+  align-items: center;
 
-  .characteristics {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 1em;
-    position: relative;
-    border-radius: 8px;
+  .group-icon {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    font-size: 1.5em;
     background-color: $colorPanel;
+    padding: 0 10px;
+    border-radius: 50%;
+    z-index: 1;
     border: 1px solid $colorBeige;
+    display: flex;
     align-items: center;
+    justify-content: center;
+  }
 
-    .group-icon {
-      width: 40px;
-      height: 40px;
-      margin: 5px;
-      font-size: 1.5em;
-      background-color: $colorPanel;
-      padding: 0 10px;
-      border-radius: 50%;
-      z-index: 1;
-      border: 1px solid $colorBeige;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  .characteristic {
+    text-align: center;
+    flex: 1;
+
+    .characteristic-label {
+      margin-bottom: 0;
     }
 
-    .characteristic {
+    input[type="number"] {
+      width: 30px;
       text-align: center;
-      flex: 1;
+      font-weight: bold;
+      font-size: 1.5em;
+      border: none;
+      background-color: transparent;
+    }
 
-      .characteristic-label {
-        margin-bottom: 0;
+    input[type="number"]:hover,
+    input[type="number"]:focus {
+      border: 2px solid $colorBorder;
+      background-color: $colorBackground;
+      border-radius: 5px;
+    }
+
+    .mod {
+      &.color-green {
+        color: #28a745;
       }
 
-      input[type="number"] {
-        width: 30px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 1.5em;
-        border: none;
-        background-color: transparent;
-      }
-
-      input[type="number"]:hover,
-      input[type="number"]:focus {
-        border: 2px solid $colorBorder;
-        background-color: $colorBackground;
-        border-radius: 5px;
-      }
-
-      .mod {
-        &.color-green {
-          color: #28a745;
-        }
-
-        &.color-red {
-          color: #dc3545;
-        }
+      &.color-red {
+        color: #dc3545;
       }
     }
   }
