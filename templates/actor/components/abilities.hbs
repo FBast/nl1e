@@ -21,67 +21,66 @@
                             <label class="item-tooltip-activate hover-action">{{name}}</label>
                         </div>
                         <div class="item-icons">
-                            <i class="{{system.attributes.level}}" data-tooltip='{{localize "PL1E.Level"}}'></i>
-                            {{#if (ne system.attributes.actionCost 0)}}
-                                <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'>
-                                    <label>{{system.attributes.actionCost}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.reactionCost 0)}}
-                                <i class="far fa-reply-clock hover-info" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
-                                    <label>{{system.attributes.reactionCost}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.quickActionCost 0)}}
-                                <i class="far fa-bell hover-info" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
-                                    <label>{{system.attributes.quickActionCost}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.healthCost 0)}}
-                                <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthCost"}}'>
-                                    <label>{{system.attributes.healthCost}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.staminaCost 0)}}
-                                <i class="far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaCost"}}">
-                                    <label>{{system.attributes.staminaCost}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.manaCost 0)}}
-                                <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaCost"}}'>
-                                    <label>{{system.attributes.manaCost}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if (ne system.attributes.usageCost 0)}}
-                                <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.UsageCost"}}'>
-                                    <label>{{system.attributes.usageCost}}</label>
-                                </i>
-                            {{/if}}
-                            {{#if system.attributes.isMajorAction}}
-                                <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
-                            {{/if}}
-                            {{#if system.attributes.isDangerous}}
-                                <i class="far fa-skull-crossbones hover-info"
-                                   data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
-                            {{/if}}
-                            {{#if (eq system.attributes.linkedItem "melee")}}
-                                <i class="far fa-sword hover-info" data-tooltip='{{localize "PL1E.Melee"}}'></i>
-                            {{else if (eq system.attributes.linkedItem "range")}}
-                                <i class="far fa-bow-arrow hover-info" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
-                            {{/if}}
-                            {{#if (eq system.attributes.linkedItem "none")}}
-                                {{#if (ne system.attributes.range 0)}}
-                                    <i class="far fa-bullseye hover-info" data-tooltip='{{localize "PL1E.Range"}}'>
-                                        <label>{{system.attributes.range}}</label>
+                            {{#unless ../favoriteDisplay}}
+                                <i class="{{system.attributes.level}}" data-tooltip='{{localize "PL1E.Level"}}'></i>
+                                {{#if (ne system.attributes.actionCost 0)}}
+                                    <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+                                        <label>{{system.attributes.actionCost}}</label>
                                     </i>
                                 {{/if}}
-                            {{/if}}
+                                {{#if (ne system.attributes.reactionCost 0)}}
+                                    <i class="far fa-reply-clock hover-info" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+                                        <label>{{system.attributes.reactionCost}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (ne system.attributes.quickActionCost 0)}}
+                                    <i class="far fa-bell hover-info" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
+                                        <label>{{system.attributes.quickActionCost}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (ne system.attributes.healthCost 0)}}
+                                    <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthCost"}}'>
+                                        <label>{{system.attributes.healthCost}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (ne system.attributes.staminaCost 0)}}
+                                    <i class="far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaCost"}}">
+                                        <label>{{system.attributes.staminaCost}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (ne system.attributes.manaCost 0)}}
+                                    <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaCost"}}'>
+                                        <label>{{system.attributes.manaCost}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (ne system.attributes.usageCost 0)}}
+                                    <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.UsageCost"}}'>
+                                        <label>{{system.attributes.usageCost}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if system.attributes.isMajorAction}}
+                                    <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
+                                {{/if}}
+                                {{#if system.attributes.isDangerous}}
+                                    <i class="far fa-skull-crossbones hover-info"
+                                       data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
+                                {{/if}}
+                                {{#if (eq system.attributes.linkedItem "melee")}}
+                                    <i class="far fa-sword hover-info" data-tooltip='{{localize "PL1E.Melee"}}'></i>
+                                {{else if (eq system.attributes.linkedItem "range")}}
+                                    <i class="far fa-bow-arrow hover-info" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
+                                {{/if}}
+                                {{#if (eq system.attributes.linkedItem "none")}}
+                                    {{#if (ne system.attributes.range 0)}}
+                                        <i class="far fa-bullseye hover-info" data-tooltip='{{localize "PL1E.Range"}}'>
+                                            <label>{{system.attributes.range}}</label>
+                                        </i>
+                                    {{/if}}
+                                {{/if}}
+                            {{/unless}}
                         </div>
                         <div class="item-controls">
                             {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                                <a class="item-favorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                    <i class="fas fa-bookmark {{#unless system.isFavorite}}color-grey{{/unless}}"></i>
-                                </a>
                                 {{#if isEnabled}}
                                     {{#if (ne system.attributes.activation "passive")}}
                                         <a class="item-use" data-tooltip='{{localize "PL1E.Use"}}'><i
@@ -93,6 +92,9 @@
                                     </a>
                                 {{/if}}
                             {{/if}}
+                            <a class="item-favorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                <i class="fas fa-bookmark {{#unless system.isFavorite}}color-grey{{/unless}}"></i>
+                            </a>
                             {{#if @root.actor.isOwner}}
                                 {{#if (eq flags.pl1e.childId undefined)}}
                                     <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i

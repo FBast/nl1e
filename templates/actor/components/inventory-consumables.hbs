@@ -85,19 +85,19 @@
                                 {{#if (eq @root.actor.type "character")}}
                                     {{#if (gt system.attributes.goldPrice 0)}}
                                         <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
-                                            <label class="color-black">{{system.attributes.goldPrice}}</label>
+                                            {{system.attributes.goldPrice}}
                                         </i>
                                     {{/if}}
                                     {{#if (gt system.attributes.silverPrice 0)}}
                                         <i class="far fa-coins color-silver hover-info"
                                            data-tooltip='{{localize "PL1E.Silver"}}'>
-                                            <label class="color-black">{{system.attributes.silverPrice}}</label>
+                                            {{system.attributes.silverPrice}}
                                         </i>
                                     {{/if}}
                                     {{#if (gt system.attributes.copperPrice 0)}}
                                         <i class="far fa-coins color-copper hover-info"
                                            data-tooltip='{{localize "PL1E.Copper"}}'>
-                                            <label class="color-black">{{system.attributes.copperPrice}}</label>
+                                            {{system.attributes.copperPrice}}
                                         </i>
                                     {{/if}}
                                 {{else if (eq @root.actor.type "merchant")}}
@@ -105,19 +105,19 @@
                                         {{#if (gt gold 0)}}
                                             <i class="far fa-coins color-gold hover-info"
                                                data-tooltip='{{localize "PL1E.Gold"}}'>
-                                                <label class="color-black">{{gold}}</label>
+                                                {{gold}}
                                             </i>
                                         {{/if}}
                                         {{#if (gt silver 0)}}
                                             <i class="far fa-coins color-silver hover-info"
                                                data-tooltip='{{localize "PL1E.Silver"}}'>
-                                                <label class="color-black">{{silver}}</label>
+                                                {{silver}}
                                             </i>
                                         {{/if}}
                                         {{#if (gt copper 0)}}
                                             <i class="far fa-coins color-copper hover-info"
                                                data-tooltip='{{localize "PL1E.Copper"}}'>
-                                                <label class="color-black">{{copper}}</label>
+                                                {{copper}}
                                             </i>
                                         {{/if}}
                                     {{/with}}
@@ -126,9 +126,6 @@
                         </div>
                         <div class="item-controls">
                             {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                                <a class="item-favorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                    <i class="fas fa-bookmark {{#unless system.isFavorite}}color-grey{{/unless}}"></i>
-                                </a>
                                 {{#if (gt (length warnings) 0)}}
                                     <a data-tooltip='{{join warnings ', ' true}}'>
                                         <i class="far fa-exclamation-triangle hover-info color-warning"></i>
@@ -143,6 +140,9 @@
                                     <a class="item-use" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
                                 {{/if}}
                             {{/if}}
+                            <a class="item-favorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                <i class="fas fa-bookmark {{#unless system.isFavorite}}color-grey{{/unless}}"></i>
+                            </a>
                             {{#if @root.actor.isOwner}}
                                 {{#if flags.pl1e.childId}}
                                     <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>

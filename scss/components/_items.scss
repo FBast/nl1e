@@ -54,6 +54,7 @@
           display: flex;
           align-items: center;
           min-width: 200px;
+          flex: 1;
 
           img {
             width: 32px;
@@ -66,7 +67,7 @@
           display: flex;
           align-items: center;
           justify-content: start;
-          flex: 1;
+          flex: 2;
           gap: 10px;
           flex-wrap: wrap;
 
@@ -82,6 +83,7 @@
         }
 
         .item-controls {
+          flex: 1;
           display: flex;
           align-items: center;
           justify-content: flex-end;
