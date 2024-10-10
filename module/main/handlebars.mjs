@@ -47,6 +47,13 @@ export const registerHandlebars = function () {
         return processedArray.join(separator);
     });
 
+    Handlebars.registerHelper('list', function(arr, localize = false) {
+        const processedArray = localize ? arr.map(item => game.i18n.localize(item)) : arr;
+        const listItems = processedArray.map(item => `<li>${item}</li>`).join('');
+        return new Handlebars.SafeString(`<ul>${listItems}</ul>`);
+    });
+
+
     Handlebars.registerHelper('length', function(arr) {
         if (Array.isArray(arr) || typeof(arr) === "string") return arr.length;
         else return Object.keys(arr).length;

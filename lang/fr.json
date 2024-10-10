@@ -21,6 +21,7 @@
   "PL1E.Enabled": "Activé",
   "PL1E.LinkedItemNotReloaded": "Objet lié non rechargé",
   "PL1E.LinkedItemNotEquipped": "Objet lié non équipé",
+  "PL1E.LinkedItemNotOwned": "Objet lié non possédé",
   "PL1E.NotUsableAtYourLevel": "Non utilisable à votre niveau",
   "PL1E.GMControls": "Contrôles du MJ",
   "PL1E.ManagePlayers": "Gérer les Joueurs",

@@ -16,7 +16,7 @@
     <div class="items-column">
         {{#each wearables}}
             {{#if (or (not ../favoriteDisplay) (and system.isFavorite ../favoriteDisplay))}}
-                <div class="item" data-item-id="{{_id}}">
+                <div class="item {{#if system.isEquipped}}background-info{{/if}}" data-item-id="{{_id}}">
                     <div class="item-content">
                         <div class="item-title">
                             <img class="item-edit hover-action" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
@@ -39,44 +39,39 @@
                                 {{/each}}
                                 {{#if (eq @root.actor.type "character")}}
                                     {{#if system.majorActionUsed}}
-                                        <i class="far fa-star hover-info"
-                                           data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
+                                        <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
                                     {{/if}}
                                     {{#if (gt system.attributes.goldPrice 0)}}
                                         <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
-                                            {{system.attributes.goldPrice}}
+                                            <label>{{system.attributes.goldPrice}}</label>
                                         </i>
                                     {{/if}}
                                     {{#if (gt system.attributes.silverPrice 0)}}
                                         <i class="far fa-coins color-silver hover-info"
                                            data-tooltip='{{localize "PL1E.Silver"}}'>
-                                            {{system.attributes.silverPrice}}
+                                            <label>{{system.attributes.silverPrice}}</label>
                                         </i>
                                     {{/if}}
                                     {{#if (gt system.attributes.copperPrice 0)}}
-                                        <i class="far fa-coins color-copper hover-info"
-                                           data-tooltip='{{localize "PL1E.Copper"}}'>
-                                            {{system.attributes.copperPrice}}
+                                        <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                                            <label>{{system.attributes.copperPrice}}</label>
                                         </i>
                                     {{/if}}
                                 {{else if (eq @root.actor.type "merchant")}}
                                     {{#with (lookup ../system.merchantPrices _id)}}
                                         {{#if (gt gold 0)}}
-                                            <i class="far fa-coins color-gold hover-info"
-                                               data-tooltip='{{localize "PL1E.Gold"}}'>
-                                                {{gold}}
+                                            <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+                                                <label>{{gold}}</label>
                                             </i>
                                         {{/if}}
                                         {{#if (gt silver 0)}}
-                                            <i class="far fa-coins color-silver hover-info"
-                                               data-tooltip='{{localize "PL1E.Silver"}}'>
-                                                {{silver}}
+                                            <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+                                                <label>{{silver}}</label>
                                             </i>
                                         {{/if}}
                                         {{#if (gt copper 0)}}
-                                            <i class="far fa-coins color-copper hover-info"
-                                               data-tooltip='{{localize "PL1E.Copper"}}'>
-                                                {{copper}}
+                                            <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                                                <label>{{copper}}</label>
                                             </i>
                                         {{/if}}
                                     {{/with}}

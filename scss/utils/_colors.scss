@@ -73,3 +73,11 @@
   color: $colorInfo !important;
   text-shadow: 0 0 10px $colorInfo !important;
 }
+
+.background-info {
+  background-color: $colorSelection !important;
+}
+
+.background-disabled {
+  background-color: $colorDisabled !important;
+}

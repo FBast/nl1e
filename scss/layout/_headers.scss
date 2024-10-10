@@ -1,149 +1,158 @@
 .character-sheet {
-  .sheet-header {
+  .profile-container {
+    flex: 0 0 180px;
     display: flex;
-    flex-direction: row;
-    gap: 15px;
-    align-items: normal;
-    margin-bottom: 20px;
-    color: $colorText;
+    flex-direction: column;
+    align-items: center;
+  }
+}
 
-    .profile-container {
-      flex: 0 0 180px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+.item-sheet {
+  .profile-container {
+    flex: 0 0 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
 
-      .profile-wrapper {
-        position: relative;
-        width: 200px;
-        height: auto;
+.sheet-header {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: normal;
+  margin-bottom: 20px;
+  color: $colorText;
 
-        .profile-actor {
-          margin: 0;
-          padding: 10px;
-          width: 100%;
-          height: 100%;
-          border: none;
-        }
+  .profile-wrapper {
+    position: relative;
+    //width: 200px;
+    height: auto;
 
-        .profile-frame {
-          border: none;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-        }
-
-        .profil-level {
-          display: flex;
-          background-color: $colorPanelNegative;
-          border: $colorBorderNegative solid 2px;
-          border-radius: 20px;
-          position: absolute;
-          bottom: -10px;
-          left: 50%;
-          transform: translateX(-50%); /* Centrage horizontal */
-          width: 40px;
-          height: 40px;
-          pointer-events: none;
-          align-items: center;
-          justify-content: center;
-          font-weight: bolder;
-          font-size: larger;
-          padding-bottom: 10px;
-        }
-      }
-
-      .xp-bar {
-        margin-top: -5px;
-        @include incremental-bar($colorPanelNegative, $colorBorderNegative, $colorXP, $colorPanelNegative);
-      }
+    .profile-img {
+      margin: 0;
+      padding: 10px;
+      width: 100%;
+      height: 100%;
+      border: none;
     }
 
-    .header-infos {
-      flex: 1;
+    .profile-frame {
+      border: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .profil-level {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
-      margin-right: 15px;
-
-      .info-container {
-        display: flex;
-        flex-direction: row;
-        flex: 0;
-        align-items: center;
-        gap: 10px;
-
-        .sheet-name {
-          color: $colorText;
-          height: 40px;
-          font-size: 2em;
-          font-weight: bold;
-          padding: 10px;
-          border: none;
-          outline: none;
-
-          &:hover {
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            background-color: $colorBackgroundNegative;
-          }
-        }
-      }
-
-      .resources {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-
-        .health-bar {
-          @include info-bar($colorPanelNegative, $colorBorderNegative, $colorHealth, $colorBackgroundNegative, $colorWhite);
-        }
-        .stamina-bar {
-          @include info-bar($colorPanelNegative, $colorBorderNegative, $colorStamina, $colorBackgroundNegative, $colorWhite);
-        }
-        .mana-bar {
-          @include info-bar($colorPanelNegative, $colorBorderNegative, $colorMana, $colorBackgroundNegative, $colorWhite);
-        }
-      }
-
-      .icons-stats {
-        display: flex;
-        flex: 1;
-        flex-wrap: wrap;
-        align-items: center;
-        column-gap: 8px;
-        margin: 0 10px;
-
-        .stat-icon {
-          font-size: 1.2em;
-        }
-      }
+      background-color: $colorPanelNegative;
+      border: $colorBorderNegative solid 2px;
+      border-radius: 20px;
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%); /* Centrage horizontal */
+      width: 40px;
+      height: 40px;
+      pointer-events: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: bolder;
+      font-size: larger;
+      padding-bottom: 10px;
     }
   }
 
-  nav.sheet-tabs {
-    border: none;
-    margin: 0;
-    justify-content: space-around;
+  .xp-bar {
+    margin-top: -5px;
+    @include incremental-bar($colorPanelNegative, $colorBorderNegative, $colorXP, $colorPanelNegative);
+  }
 
-    a {
-      flex: 1;
-      text-transform: uppercase;
-      font-weight: bold;
-      text-align: center;
-      padding: 10px 15px;
-      border: 1px solid $colorBorder;
-      border-radius: 5px 5px 0 0;
-      background-color: $colorPanel;
+  .header-infos {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    margin-right: 15px;
 
-      &.active {
-        border-bottom: none;
-        background-color: $colorBackground;
+    .info-container {
+      display: flex;
+      flex-direction: row;
+      flex: 0;
+      align-items: center;
+      gap: 10px;
+
+      .sheet-name {
+        color: $colorText;
+        height: 40px;
+        font-size: 2em;
+        font-weight: bold;
+        padding: 10px;
+        border: none;
+        outline: none;
+
+        &:hover {
+          border: 2px solid #ccc;
+          border-radius: 5px;
+          background-color: $colorBackgroundNegative;
+        }
       }
+    }
+
+    .resources {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      .health-bar {
+        @include info-bar($colorPanelNegative, $colorBorderNegative, $colorHealth, $colorBackgroundNegative, $colorWhite);
+      }
+      .stamina-bar {
+        @include info-bar($colorPanelNegative, $colorBorderNegative, $colorStamina, $colorBackgroundNegative, $colorWhite);
+      }
+      .mana-bar {
+        @include info-bar($colorPanelNegative, $colorBorderNegative, $colorMana, $colorBackgroundNegative, $colorWhite);
+      }
+    }
+
+    .icons-stats {
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 0 10px;
+      gap: 8px;
+
+      .stat-icon {
+        font-size: 1.2em;
+      }
+    }
+  }
+}
+
+nav.sheet-tabs {
+  border: none;
+  margin: 0;
+  justify-content: space-around;
+
+  a {
+    flex: 1;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 15px;
+    border: 1px solid $colorBorder;
+    border-radius: 5px 5px 0 0;
+    background-color: $colorPanel;
+
+    &.active {
+      border-bottom: none;
+      background-color: $colorBackground;
     }
   }
 }

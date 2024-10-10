@@ -12,7 +12,10 @@
   }
 }
 &.sheet.item {
-  background: rgba(0, 0, 0, 0.5);
   min-height: 500px;
   min-width: 500px;
+
+  .window-content {
+    background: rgba(0, 0, 0, 0.3);
+  }
 }

@@ -122,21 +122,6 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Get warning about the item
-     * @return {*[]}
-     */
-    get warnings() {
-        const warnings = [];
-
-        if (!this.isUsableAtLevel) warnings.push("PL1E.NotUsableAtYourLevel");
-        if (!this.isActionAvailable) warnings.push("PL1E.NoMoreAction");
-        if (!this.isReactionAvailable) warnings.push("PL1E.NoMoreReaction");
-        if (!this.isQuickActionAvailable) warnings.push("PL1E.NoMoreQuickAction");
-
-        return warnings;
-    }
-
-    /**
      * Check if the item is effective
      * @return {boolean}
      */
@@ -149,6 +134,21 @@ export class Pl1eItem extends Item {
 
         // Recursive check on parents
         return this.parentItem ? this.parentItem.isEnabled : true;
+    }
+
+    /**
+     * Get warning about the item
+     * @return {*[]}
+     */
+    get warnings() {
+        const warnings = [];
+
+        if (!this.isUsableAtLevel) warnings.push("PL1E.NotUsableAtYourLevel");
+        if (!this.isActionAvailable) warnings.push("PL1E.NoMoreAction");
+        if (!this.isReactionAvailable) warnings.push("PL1E.NoMoreReaction");
+        if (!this.isQuickActionAvailable) warnings.push("PL1E.NoMoreQuickAction");
+
+        return warnings;
     }
 
     /**

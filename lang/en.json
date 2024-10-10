@@ -22,6 +22,7 @@
   "PL1E.Enabled": "Enabled",
   "PL1E.LinkedItemNotReloaded": "Linked item not reloaded",
   "PL1E.LinkedItemNotEquipped": "Linked item not equipped",
+  "PL1E.LinkedItemNotOwned": "Linked item not owned",
   "PL1E.NotUsableAtYourLevel": "Not usable at your level",
   "PL1E.GMControls": "GM Controls",
   "PL1E.ManagePlayers": "Manage Players",

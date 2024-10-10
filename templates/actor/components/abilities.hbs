@@ -14,7 +14,7 @@
     <div class="items-column">
         {{#each abilities}}
             {{#if (or (not ../favoriteDisplay) (and system.isFavorite ../favoriteDisplay))}}
-                <div class="item {{#if (not isEnabled)}}disabled{{/if}}" data-item-id="{{_id}}">
+                <div class="item {{#unless isEnabled}}background-disabled{{/unless}}" data-item-id="{{_id}}">
                     <div class="item-content">
                         <div class="item-title">
                             <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
@@ -22,7 +22,9 @@
                         </div>
                         <div class="item-icons">
                             {{#unless ../favoriteDisplay}}
-                                <i class="{{system.attributes.level}}" data-tooltip='{{localize "PL1E.Level"}}'></i>
+                                <i class="far fa-trophy hover-info" data-tooltip='{{localize "PL1E.Level"}}'>
+                                    <label>{{system.attributes.level}}</label>
+                                </i>
                                 {{#if (ne system.attributes.actionCost 0)}}
                                     <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'>
                                         <label>{{system.attributes.actionCost}}</label>
@@ -87,7 +89,7 @@
                                                 class="fas fa-dice-d20"></i></a>
                                     {{/if}}
                                 {{else if (gt (length warnings) 0)}}
-                                    <a data-tooltip='{{join warnings ', ' true}}'>
+                                    <a data-tooltip='{{list warnings ', ' true}}'>
                                         <i class="far fa-exclamation-triangle hover-info color-warning"></i>
                                     </a>
                                 {{/if}}

@@ -3,7 +3,7 @@
     <header class="sheet-header">
         <div class="profile-container">
             <div class="profile-wrapper">
-                <img class="profile-actor" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+                <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
                 <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"/>
                 <span class="profil-level">{{system.general.level}}</span>
             </div>
@@ -108,8 +108,8 @@
                     {{#if header}}
                         {{#with (lookup ../system.general @key)}}
                             <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
-                          <i class="fas {{../icon}}"></i> {{this}}
-                        </span>
+                              <i class="fas {{../icon}}"></i> {{this}}
+                            </span>
                         {{/with}}
                     {{/if}}
                 {{/each}}

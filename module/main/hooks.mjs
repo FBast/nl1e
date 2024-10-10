@@ -16,6 +16,16 @@ export default class Pl1eHooks {
             }
         });
 
+        Hooks.on("renderItemSheet", (itemSheet, html, data) => {
+            // Apply the user color to the sheet
+            for (const [id, user] of Object.entries(game.users.players)) {
+                if (user.character !== itemSheet.item.parent) continue;
+
+                const colorWithOpacity = Pl1eHelpers.hexToRgba(user.color, 0.5);
+                itemSheet.element.css("background-color", colorWithOpacity);
+            }
+        });
+
         Hooks.on("renderActorSheet", (actorSheet, html, data) => {
             if (actorSheet.actor.type === "character") {
                 // Refresh the form application

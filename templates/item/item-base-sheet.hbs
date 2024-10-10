@@ -1,40 +1,78 @@
-<form class="pl1e {{cssClass}} {{item.type}} flexcol" autocomplete="off">
-
+<form class="item-sheet {{item.type}} {{cssClass}}" autocomplete="off">
     {{!-- Sheet Header --}}
     <header class="sheet-header">
-        {{#if (and system.attributes.customizable item.isEmbedded)}}
-            <img class="profile-item" src="{{item.realImg}}" data-edit="system.customImg" title="{{item.name}}"/>
-        {{else}}
-            <img class="profile-item" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-        {{/if}}
+        <div class="profile-container">
+            <div class="profile-wrapper">
+                {{#if (and system.attributes.customizable item.isEmbedded)}}
+                    <img class="profile-img" src="{{item.realImg}}" data-edit="system.customImg" title="{{item.name}}"/>
+                {{else}}
+                    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+                {{/if}}
+            </div>
+            <!-- price of the item ? -->
+        </div>
         <div class="header-infos">
-            {{#if (and @root.game.user.isGM (not item.isEmbedded))}}
-                <input class="sheet-name" name="name" type="text" value="{{item.name}}"
-                       placeholder="{{localize "PL1E.Name"}}"/>
-            {{else}}
-                <input class="sheet-name" name="name" type="text" value="{{item.name}}"
-                       placeholder="{{localize "PL1E.Name"}}" disabled/>
-            {{/if}}
-            {{#if (and system.attributes.customizable item.isEmbedded item.isOwner)}}
-                <input class="sheet-name" name="system.customName" type="text" value="{{item.system.customName}}"
-                       placeholder="Custom name"/>
-            {{/if}}
+            <div class="info-container">
+                {{#if (and @root.game.user.isGM (not item.isEmbedded))}}
+                    <input class="sheet-name" name="name" type="text" value="{{item.name}}"
+                           placeholder="{{localize "PL1E.Name"}}"/>
+                {{else}}
+                    <input class="sheet-name" name="name" type="text" value="{{item.name}}"
+                           placeholder="{{localize "PL1E.Name"}}" disabled/>
+                {{/if}}
+                {{#if (and system.attributes.customizable item.isEmbedded item.isOwner)}}
+                    <input class="sheet-name" name="system.customName" type="text" value="{{item.system.customName}}"
+                           placeholder="Custom name"/>
+                {{/if}}
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Actions"}}">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="fas fa-book-open open-journal" data-tooltip="{{localize "PL1E.Journal"}}"></i>
+                        <i class="fas fa-bed" data-tooltip="{{localize "PL1E.Rest"}}"></i>
+                        <i class="fas fa-hourglass" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="icons-stats">
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+            </div>
         </div>
     </header>
-    {{!-- Sheet Tab Navigation for GM --}}
+    {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">{{localize "PL1E.Description"}}</a>
+        <a class="item hover-action enabled-action" data-tab="description">{{localize "PL1E.Description"}}</a>
         {{#if game.user.isGM}}
             {{#if (not item.isEmbedded)}}
-                <a class="item" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
+                <a class="item hover-action enabled-action" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
             {{/if}}
             {{#if (gt (length system.refItems) 0)}}
-                <a class="item" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
+                <a class="item hover-action enabled-action" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
             {{/if}}
         {{/if}}
     </nav>
-    </div>
-    {{!-- Sheet Body for GM --}}
+    {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Description Tab --}}
         <div class="tab description flexcol" data-group="primary" data-tab="description">
