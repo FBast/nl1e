@@ -238,7 +238,7 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         if (event.ctrlKey) event.preventDefault(); // Avoid zooming the browser window
         if (["square", "circle"].includes(this.document.t)) return;
         event.stopPropagation();
-        let delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
+        let delta = canvas.grid.type > foundry.CONST.GRID_TYPES.SQUARE ? 30 : 15;
         let snap = (event.shiftKey ? delta : 5);
         const update = {direction: this.document.direction + (snap * Math.sign(event.deltaY))};
         this.document.updateSource(update);

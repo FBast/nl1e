@@ -13,7 +13,7 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @inheritDoc */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "item"],
             width: 500,
             height: 500,
@@ -462,7 +462,7 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         await this.item.update({
-            [`system.${target}.${randomID()}`]: aspectsObjects[aspectId]
+            [`system.${target}.${foundry.utils.randomID()}`]: aspectsObjects[aspectId]
         });
 
         if (this.item.compendium) {

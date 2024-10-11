@@ -205,7 +205,7 @@ export class Pl1eActor extends Actor {
      */
     _displayResourceScrollingText(key, value, position) {
         const splitKey = key.split(".");
-        const resourceProperty = getProperty(this.system.resources, splitKey[0]);
+        const resourceProperty = foundry.utils.getProperty(this.system.resources, splitKey[0]);
         const diffValue = value - resourceProperty.value;
         const keyConfig = Pl1eHelpers.getConfig("resources", splitKey[0]);
         const text = `${diffValue} ${game.i18n.localize(keyConfig.label)}`;
@@ -441,10 +441,10 @@ export class Pl1eActor extends Actor {
 
             skill.numberMod += actorGeneral.bonuses;
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
-            skill.number = Math.clamped(skill.number + skill.numberMod + attributesSum, 1, 10);
+            skill.number = Math.clamp(skill.number + skill.numberMod + attributesSum, 1, 10);
 
             skill.diceMod += actorGeneral.advantages;
-            skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
+            skill.dice = Math.clamp((1 + skill.rank + skill.diceMod) * 2, 4, 12);
 
             if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
@@ -486,7 +486,7 @@ export class Pl1eActor extends Actor {
             diceType += skill.dice;
             if (this.type === "character" && this.hasPlayerOwner)
                 diceType += game.settings.get("pl1e", "globalAdvantages") * 2;
-            diceType = Math.clamped(diceType, 0, 12);
+            diceType = Math.clamp(diceType, 0, 12);
         }
 
         // Calculate formula
@@ -541,7 +541,7 @@ export class Pl1eActor extends Actor {
     async addItem(item, childId = undefined) {
         const gatherItemData = async (item, childId, behavior = "regular", data = []) => {
             const itemCopy = item.toObject()
-            const parentId = randomID();
+            const parentId = foundry.utils.randomID();
             itemCopy.flags = {
                 pl1e: {
                     childId: childId || null,  // If childId might be undefined or falsy

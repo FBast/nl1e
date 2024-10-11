@@ -8,22 +8,22 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.quickAction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -41,22 +41,22 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{ // Unconscious health decrease is handled from Combat class
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.quickAction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -88,47 +88,47 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.quickAction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.parry.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.reflex.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.vigor.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.resilience.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.intuition.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -142,22 +142,22 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.quickAction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -171,7 +171,7 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -185,12 +185,12 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
             {
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -2
             }],
             duration: {},
@@ -204,12 +204,12 @@ export const registerStatuses = function () {
             tint: "#00ff00",
             changes: [{
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             },
             {
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 2
             }],
             duration: {},
@@ -223,7 +223,7 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
             duration: {},
@@ -237,7 +237,7 @@ export const registerStatuses = function () {
             tint: "#00ff00",
             changes: [{
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
             duration: {},
@@ -251,17 +251,17 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{
                 key: "system.skills.parry.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
             {
                 key: "system.skills.reflex.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
             {
                 key: "system.skills.vigor.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
             duration: {},
@@ -275,17 +275,17 @@ export const registerStatuses = function () {
             tint: "#00ff00",
             changes: [{
                 key: "system.skills.parry.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             },
             {
                 key: "system.skills.reflex.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             },
             {
                 key: "system.skills.vigor.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
             duration: {},
@@ -299,12 +299,12 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{
                 key: "system.skills.resilience.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
                 {
                     key: "system.skills.intuition.diceMod",
-                    mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                    mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                     value: -1
                 }],
             duration: {},
@@ -318,12 +318,12 @@ export const registerStatuses = function () {
             tint: "#00ff00",
             changes: [{
                 key: "system.skills.resilience.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             },
             {
                 key: "system.skills.intuition.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
             duration: {},
@@ -357,7 +357,7 @@ export const registerStatuses = function () {
             tint: "#ff0000",
             changes: [{
                 key: "system.general.advantages",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
             duration: {},
@@ -371,7 +371,7 @@ export const registerStatuses = function () {
             tint: "#00ff00",
             changes: [{
                 key: "system.general.advantages",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
             duration: {},
@@ -435,7 +435,7 @@ export const registerStatuses = function () {
             tint: "#00ff00",
             changes: [{
                 key: "token.sight.visionMode",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: "tremorsense"
             }],
             duration: {},
@@ -468,7 +468,7 @@ export const registerStatuses = function () {
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.burn",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -482,7 +482,7 @@ export const registerStatuses = function () {
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.cold",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -496,7 +496,7 @@ export const registerStatuses = function () {
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.acid",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -510,7 +510,7 @@ export const registerStatuses = function () {
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.shock",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -524,7 +524,7 @@ export const registerStatuses = function () {
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.slashing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -538,7 +538,7 @@ export const registerStatuses = function () {
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.crushing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -552,7 +552,7 @@ export const registerStatuses = function () {
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.piercing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -566,37 +566,37 @@ export const registerStatuses = function () {
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.slashing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.crushing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.piercing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.burn",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.cold",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.acid",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.shock",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},

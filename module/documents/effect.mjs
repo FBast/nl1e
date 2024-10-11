@@ -133,7 +133,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
         // Check if an existing effect is already active
         const existingStatusEffect = actor.effects.find(effect => effect.statuses.has(statusEffectId));
         if (existingStatusEffect) {
-            const newDuration = mergeObject(existingStatusEffect.duration, statusEffect.duration);
+            const newDuration = foundry.utils.mergeObject(existingStatusEffect.duration, statusEffect.duration);
             await existingStatusEffect.update({
                 "duration": newDuration
             })

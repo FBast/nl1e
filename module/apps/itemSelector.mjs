@@ -6,7 +6,7 @@ export class ItemSelector extends FormApplication {
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: 'item-selector',
             classes: ['pl1e'],
             title: `${game.i18n.localize("PL1E.SelectAnItem")}`,

@@ -18,10 +18,15 @@ export default class Pl1eHooks {
 
         Hooks.on("renderItemSheet", (itemSheet, html, data) => {
             // Apply the user color to the sheet
-            for (const [id, user] of Object.entries(game.users.players)) {
+            for (const user of game.users) {
                 if (user.character !== itemSheet.item.parent) continue;
 
-                const colorWithOpacity = Pl1eHelpers.hexToRgba(user.color, 0.5);
+                let color = user.color;
+                if (typeof color === 'object') {
+                    color = color.toString(); // Convert to string if it's a Color object
+                }
+
+                const colorWithOpacity = Pl1eHelpers.hexToRgba(color, 0.5);
                 itemSheet.element.css("background-color", colorWithOpacity);
             }
         });
@@ -34,10 +39,15 @@ export default class Pl1eHooks {
                 if (formApp) formApp.render(true);
 
                 // Apply the user color to the sheet
-                for (const [id, user] of Object.entries(game.users.players)) {
+                for (const user of game.users) {
                     if (user.character !== actorSheet.actor) continue;
 
-                    const colorWithOpacity = Pl1eHelpers.hexToRgba(user.color, 0.5);
+                    let color = user.color;
+                    if (typeof color === 'object') {
+                        color = color.toString(); // Convert to string if it's a Color object
+                    }
+                    
+                    const colorWithOpacity = Pl1eHelpers.hexToRgba(color, 0.5);
                     actorSheet.element.css("background-color", colorWithOpacity);
                 }
             }
@@ -49,10 +59,15 @@ export default class Pl1eHooks {
             if (!writerId) return;
 
             const user = game.users.get(writerId);
-            if (user) {
-                const colorWithOpacity = Pl1eHelpers.hexToRgba(user.color, 0.5);
-                journalSheet.element.css("background-color", colorWithOpacity);
+            if (!user) return;
+            
+            let color = user.color;
+            if (typeof color === 'object') {
+                color = color.toString(); // Convert to string if it's a Color object
             }
+
+            const colorWithOpacity = Pl1eHelpers.hexToRgba(color, 0.5);
+            journalSheet.element.css("background-color", colorWithOpacity);
         });
 
     }

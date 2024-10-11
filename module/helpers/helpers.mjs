@@ -380,7 +380,7 @@ export class Pl1eHelpers {
         const duration = game.settings.get("pl1e", "scrollingTextDuration");
         const options = {
             duration: duration * 1000,
-            fontSize: Math.clamped(data.fontSize * maxSize, minSize, maxSize),
+            fontSize: Math.clamp(data.fontSize * maxSize, minSize, maxSize),
             fill: data.fillColor,
         }
         canvas.interface.createScrollingText(data.position, data.text, options);

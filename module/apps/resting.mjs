@@ -19,7 +19,7 @@ export class Resting extends FormApplication {
 
     /** @inheritDoc */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["my-apps"],
             template: "systems/pl1e/templates/apps/resting.hbs",
             width: 400,

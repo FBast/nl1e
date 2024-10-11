@@ -31,7 +31,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /** @inheritDoc */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "actor"],
             template: "systems/pl1e/templates/actor/actor-sheet.hbs",
             scrollY: [
@@ -909,7 +909,7 @@ export class Pl1eActorSheet extends ActorSheet {
         const newJournal = await JournalEntry.create({
             name: `${this.actor.name}`,
             folder: null,
-            permission: { [ownerId]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER },
+            permission: { [ownerId]: foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER },
             flags: { pl1e: { writerId: ownerId } }
         });
 

@@ -11,10 +11,21 @@ export class Pl1eItem extends Item {
      * @return {string|*}
      */
     get sourceId() {
-        const sourceId = this.getFlag("core", "sourceId")
-        if (sourceId === undefined) return undefined;
-        const sourceIdArray = sourceId.split(".");
-        return sourceIdArray[sourceIdArray.length - 1];
+        // V12 Method to get the source id
+        const compendiumSource = this._stats?.compendiumSource;
+        if (compendiumSource) {
+            const sourceIdArray = compendiumSource.split(".");
+            return sourceIdArray[sourceIdArray.length - 1];
+        }
+
+        // Deprecated since V12
+        // const deprecatedSourceId = this.getFlag("core", "sourceId");
+        // if (deprecatedSourceId !== undefined) {
+        //     const sourceIdArray = deprecatedSourceId.split(".");
+        //     return sourceIdArray[sourceIdArray.length - 1];
+        // }
+
+        return undefined;
     }
 
     /**

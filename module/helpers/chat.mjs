@@ -27,7 +27,7 @@ export class Pl1eChat {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: characterData.actor}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
             flavor: flavor,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {
@@ -66,7 +66,7 @@ export class Pl1eChat {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: targetData.actor}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
             flavor: flavor,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {
@@ -94,7 +94,7 @@ export class Pl1eChat {
         await roll.toMessage({
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: actor}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
             flavor: `[${game.i18n.localize("PL1E.Skill")}] ${game.i18n.localize(skillConfig.label)}`,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {"core.canPopout": true}
@@ -125,7 +125,7 @@ export class Pl1eChat {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: sourceActor}),
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.OTHER,
             flavor: `[${transactionTypes[transaction]}] ${item.name}`,
             flags: {"core.canPopout": true},
             content: html
@@ -153,7 +153,7 @@ export class Pl1eChat {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: actor}),
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.OTHER,
             flavor: flavor,
             flags: {"core.canPopout": true},
             content: html

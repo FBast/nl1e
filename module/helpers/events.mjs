@@ -39,7 +39,7 @@ export class Pl1eEvent {
             if (currentSceneId !== sceneId) {
                 const targetScene = game.scenes.get(sceneId);
                 if (targetScene) {
-                    if (targetScene.testUserPermission(game.user, foundry.CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER))
+                    if (targetScene.testUserPermission(game.user, foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER))
                         await targetScene.view();
                     else {
                         ui.notifications.warn(game.i18n.localize("PL1E.InsufficientScenePermissions"));
@@ -212,7 +212,7 @@ export class Pl1eEvent {
         const max = $(event.currentTarget).data("max");
         if (!value || !path) return;
 
-        let newValue = getProperty(document, path) + value;
+        let newValue = foundry.utils.getProperty(document, path) + value;
         newValue = min !== undefined ? Math.max(newValue, min) : newValue;
         newValue = max !== undefined ? Math.min(newValue, max) : newValue;
         await document.update({

@@ -12,7 +12,7 @@ export class DMTool extends FormApplication {
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["pl1e", "dm-tool"],
             height: "auto",
             popOut: false,
