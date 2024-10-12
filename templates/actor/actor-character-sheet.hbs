@@ -5,7 +5,7 @@
             <div class="profile-wrapper">
                 <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
                 <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"/>
-                <span class="profil-level">{{system.general.level}}</span>
+                <span class="profile-level">{{system.general.level}}</span>
             </div>
             <div class="xp-bar">
                 <div class="bar">
@@ -148,14 +148,14 @@
         <div class="tab" data-group="primary" data-tab="stats">
             <div class="tab-container">
                 <div class="stats-upper">
-                    {{> "systems/pl1e/templates/actor/components/stats-characteristics.hbs"}}
+                    {{> "systems/pl1e/templates/actor/parts/stats-characteristics.hbs"}}
                 </div>
                 <div class="stats-lower">
                     <div class="skills-container">
-                        {{> "systems/pl1e/templates/actor/components/stats-skills.hbs"}}
+                        {{> "systems/pl1e/templates/actor/parts/stats-skills.hbs"}}
                     </div>
                     <div class="favorites-container scroll-auto">
-                        {{> "systems/pl1e/templates/actor/components/stats-favorites.hbs"}}
+                        {{> "systems/pl1e/templates/actor/parts/stats-favorites.hbs"}}
                     </div>
                 </div>
             </div>
@@ -163,31 +163,31 @@
         {{!-- Inventory Tab --}}
         <div class="tab" data-group="primary" data-tab="inventory">
             <div class="tab-container scroll-auto">
-                {{> "systems/pl1e/templates/actor/components/inventory-money.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/inventory-weapons.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/inventory-wearables.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/inventory-consumables.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/inventory-commons.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/inventory-modules.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-money.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-weapons.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-wearables.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-consumables.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-commons.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-modules.hbs" }}
             </div>
         </div>
         {{!-- Features Tab --}}
         <div class="tab" data-group="primary" data-tab="features">
             <div class="tab-container scroll-auto">
-                {{> "systems/pl1e/templates/actor/components/features-background.hbs" }}
-                {{> "systems/pl1e/templates/actor/components/features-features.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/features-background.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/features-features.hbs" }}
             </div>
         </div>
         {{!-- Abilities Tab --}}
         <div class="tab" data-group="primary" data-tab="abilities">
             <div class="tab-container scroll-auto">
-                {{> "systems/pl1e/templates/actor/components/abilities.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/abilities.hbs" }}
             </div>
         </div>
         {{!-- Effects Tab --}}
         <div class="tab" data-group="primary" data-tab="effects">
             <div class="tab-container scroll-auto">
-                {{> "systems/pl1e/templates/actor/components/effects.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/effects.hbs" }}
             </div>
         </div>
     </section>

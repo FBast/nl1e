@@ -62,52 +62,62 @@
     </header>
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item hover-action enabled-action" data-tab="description">{{localize "PL1E.Description"}}</a>
-        {{#if game.user.isGM}}
-            {{#if (not item.isEmbedded)}}
-                <a class="item hover-action enabled-action" data-tab="attributes">{{localize "PL1E.Attributes"}}</a>
-            {{/if}}
-            {{#if (gt (length system.refItems) 0)}}
-                <a class="item hover-action enabled-action" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
-            {{/if}}
+        <a class="hover-action enabled-action" data-tab="description">{{localize "PL1E.Description"}}</a>
+        {{#if (gt (length system.refItems) 0)}}
+            <a class="hover-action enabled-action" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
+        {{/if}}
+        {{#if (and game.user.isGM (not item.isEmbedded))}}
+            <a class="hover-action enabled-action" data-tab="parameters">{{localize "PL1E.Parameters"}}</a>
         {{/if}}
     </nav>
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Description Tab --}}
-        <div class="tab description flexcol" data-group="primary" data-tab="description">
-            {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
+        <div class="tab" data-group="primary" data-tab="description">
+            <div class="tab-container scroll-auto">
+                {{> "systems/pl1e/templates/item/parts/item-description.hbs"}}
+            </div>
         </div>
         {{!-- Attributes Tab --}}
-        <div class="tab attributes flexcol" data-group="primary" data-tab="attributes">
-            {{#if (eq item.type "race")}}
-                {{> "systems/pl1e/templates/item/parts/race-attributes.hbs"}}
-            {{else if (eq item.type "culture")}}
-                {{> "systems/pl1e/templates/item/parts/culture-attributes.hbs"}}
-            {{else if (eq item.type "class")}}
-                {{> "systems/pl1e/templates/item/parts/class-attributes.hbs"}}
-            {{else if (eq item.type "feature")}}
-                {{> "systems/pl1e/templates/item/parts/feature-attributes.hbs"}}
-            {{else if (eq item.type "mastery")}}
-                {{> "systems/pl1e/templates/item/parts/mastery-attributes.hbs"}}
-            {{else if (eq item.type "ability")}}
-                {{> "systems/pl1e/templates/item/parts/ability-attributes.hbs"}}
-            {{else if (eq item.type "weapon")}}
-                {{> "systems/pl1e/templates/item/parts/weapon-attributes.hbs"}}
-            {{else if (eq item.type "wearable")}}
-                {{> "systems/pl1e/templates/item/parts/wearable-attributes.hbs"}}
-            {{else if (eq item.type "consumable")}}
-                {{> "systems/pl1e/templates/item/parts/consumable-attributes.hbs"}}
-            {{else if (eq item.type "common")}}
-                {{> "systems/pl1e/templates/item/parts/common-attributes.hbs"}}
-            {{else if (eq item.type "module")}}
-                {{> "systems/pl1e/templates/item/parts/module-attributes.hbs"}}
-            {{/if}}
+        <div class="tab" data-group="primary" data-tab="parameters">
+            <div class="tab-container scroll-auto">
+                {{#if (eq item.type "race")}}
+                    {{> "systems/pl1e/templates/item/parts/race-attributes.hbs"}}
+                {{else if (eq item.type "culture")}}
+                    {{> "systems/pl1e/templates/item/parts/culture-attributes.hbs"}}
+                {{else if (eq item.type "class")}}
+                    {{> "systems/pl1e/templates/item/parts/class-attributes.hbs"}}
+                {{else if (eq item.type "feature")}}
+                    {{> "systems/pl1e/templates/item/parts/feature-attributes.hbs"}}
+                {{else if (eq item.type "mastery")}}
+                    {{> "systems/pl1e/templates/item/parts/mastery-attributes.hbs"}}
+                {{else if (eq item.type "ability")}}
+                    {{> "systems/pl1e/templates/item/parts/ability-attributes.hbs"}}
+                {{else if (eq item.type "weapon")}}
+                    {{> "systems/pl1e/templates/item/parts/weapon-attributes.hbs"}}
+                {{else if (eq item.type "wearable")}}
+                    {{> "systems/pl1e/templates/item/parts/wearable-attributes.hbs"}}
+                {{else if (eq item.type "consumable")}}
+                    {{> "systems/pl1e/templates/item/parts/consumable-attributes.hbs"}}
+                {{else if (eq item.type "common")}}
+                    {{> "systems/pl1e/templates/item/parts/common-attributes.hbs"}}
+                {{else if (eq item.type "module")}}
+                    {{> "systems/pl1e/templates/item/parts/module-attributes.hbs"}}
+                {{/if}}
+            </div>
         </div>
-        {{#if (gt (length item.system.refItems) 0)}}
         {{!-- Linked Items Tab --}}
-            <div class="tab items flexcol" data-group="primary" data-tab="linked-items">
-                {{> "systems/pl1e/templates/item/parts/item-linked.hbs"}}
+        {{#if (gt (length item.system.refItems) 0)}}
+            <div class="tab" data-group="primary" data-tab="linked-items">
+                <div class="tab-container scroll-auto">
+                    {{> "systems/pl1e/templates/item/parts/item-linked.hbs" section=masters title="PL1E.Masters"}}
+                    {{> "systems/pl1e/templates/item/parts/item-linked.hbs" section=abilities title="PL1E.Abilities"}}
+                    {{> "systems/pl1e/templates/item/parts/item-linked.hbs" section=features title="PL1E.Features"}}
+                    {{> "systems/pl1e/templates/item/parts/item-linked.hbs" section=weapons title="PL1E.Weapons"}}
+                    {{> "systems/pl1e/templates/item/parts/item-linked.hbs" section=wearables title="PL1E.Wearables"}}
+                    {{> "systems/pl1e/templates/item/parts/item-linked.hbs" section=modules title="PL1E.Modules"}}
+                    {{> "systems/pl1e/templates/item/parts/item-linked.hbs" section=unknowns title="PL1E.Unknowns"}}
+                </div>
             </div>
         {{/if}}
     </section>

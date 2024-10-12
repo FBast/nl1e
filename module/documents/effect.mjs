@@ -15,7 +15,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
             for (const [key, value] of Object.entries(tokenChanges)) {
                 if (Array.isArray(value)) {
                     // Handle arrays: merge with existing array, avoiding duplicates
-                    let existingArray = duplicate(tokenData[key] || []);
+                    let existingArray = foundry.utils.duplicate(tokenData[key] || []);
                     tokenUpdates[key] = [...new Set([...existingArray, ...value])];
                 } else {
                     // For non-array values, just copy them over
@@ -49,7 +49,7 @@ export class Pl1eActiveEffect extends ActiveEffect {
         for (const [key, value] of Object.entries(this.flags.pl1e.tokenChanges)) {
             if (Array.isArray(value)) {
                 // Remove specific items from the array
-                let currentArray = duplicate(actor.isToken ? actor.token[key] : actor.prototypeToken[key]) || [];
+                let currentArray = foundry.utils.duplicate(actor.isToken ? actor.token[key] : actor.prototypeToken[key]) || [];
                 currentArray = currentArray.filter(item => !value.some(val => val.id === item.id));
                 tokenRevertUpdates[key] = currentArray;
             } else {

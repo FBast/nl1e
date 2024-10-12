@@ -1,9 +1,8 @@
 .sheet-body {
   overflow: hidden;
   background-color: $colorBackground;
-  border-right: 1px solid $colorFaint;
-  border-left: 1px solid $colorFaint;
-  border-bottom: 1px solid $colorFaint;
+  border: 1px solid $colorBorder;
+  border-top-color: transparent;
   border-radius: 0 0 10px 10px;
   padding: 10px;
 }
@@ -48,7 +47,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding-right: 5px;
     gap: 10px;
   }
 }

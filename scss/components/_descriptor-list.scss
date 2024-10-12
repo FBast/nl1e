@@ -1,0 +1,41 @@
+.descriptor-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .descriptor-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: $font-size-md;
+  }
+
+  .descriptor-column {
+    display: flex;
+    flex-direction: column;
+
+    .descriptor {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid $colorBorder;
+      font-size: $font-size-sm;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .descriptor-label {
+        font-weight: bold;
+        flex: 1;
+      }
+
+      .descriptor-value {
+        text-align: right;
+        flex: 1;
+      }
+    }
+  }
+}

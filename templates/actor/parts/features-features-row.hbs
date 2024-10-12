@@ -1,0 +1,30 @@
+<div class="item-list">
+    <div class="items-header">
+        <h3 class="header-title">
+            {{localize "PL1E.Features"}}
+            <div class="item-filter-list" data-filter="features">
+                {{#each (config "featureTypes")}}
+                    <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+                {{/each}}
+            </div>
+        </h3>
+    </div>
+    <div class="items-row">
+        {{#each features}}
+            <div class="item" data-item-id="{{_id}}">
+                <img class="item-edit hover-action" src="{{img}}" title="{{name}}"/>
+                {{#if @root.actor.isOwner}}
+                    {{#if flags.pl1e.childId}}
+                        <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'>
+                            <i class="fas fa-link"></i>
+                        </a>
+                    {{else}}
+                        <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'>
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    {{/if}}
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
+</div>

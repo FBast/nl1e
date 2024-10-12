@@ -1,0 +1,97 @@
+<div class="item-list">
+    <div class="items-header">
+        <h3 class="header-title">
+            {{localize "PL1E.Common"}}
+            <div class="item-filter-list" data-filter="commons">
+                {{#each (config "commonTypes")}}
+                    <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+                {{/each}}
+            </div>
+        </h3>
+    </div>
+    <div class="items-column">
+        {{#each commons}}
+            <div class="item" data-item-id="{{_id}}">
+                <div class="item-content">
+                    <div class="item-title">
+                        <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-tooltip-activate hover-action">
+                            {{#if ../system.general.unlimitedItems}}
+                                {{name}}
+                            {{else}}
+                                {{units}}x {{name}}
+                            {{/if}}
+                        </label>
+                    </div>
+                    <div class="item-icons">
+                        {{#if (or (eq system.attributes.commonType "food"))}}
+                            <i class="far fa-pot-food hover-info" data-tooltip='{{localize "PL1E.Food"}}'></i>
+                            {{#if (ne system.attributes.healthRest 0)}}
+                                <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthRest"}}'>
+                                    <label>{{system.attributes.healthRest}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (ne system.attributes.staminaRest 0)}}
+                                <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
+                                    <label>{{system.attributes.staminaRest}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (ne system.attributes.manaRest 0)}}
+                                <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaRest"}}'>
+                                    <label>{{system.attributes.manaRest}}</label>
+                                </i>
+                            {{/if}}
+                        {{else if (eq system.attributes.commonType "drink")}}
+                            <i class="far fa-glass hover-info" data-tooltip='{{localize "PL1E.Drink"}}'></i>
+                            {{#if (ne system.attributes.healthRest 0)}}
+                                <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthRest"}}'>
+                                    <label>{{system.attributes.healthRest}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (ne system.attributes.staminaRest 0)}}
+                                <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
+                                    <label>{{system.attributes.staminaRest}}</label>
+                                </i>
+                            {{/if}}
+                            {{#if (ne system.attributes.manaRest 0)}}
+                                <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaRest"}}'>
+                                    <label>{{system.attributes.manaRest}}</label>
+                                </i>
+                            {{/if}}
+                        {{/if}}
+                        {{#if (eq @root.actor.type "merchant")}}
+                            {{#with (lookup ../system.merchantPrices _id)}}
+                                {{#if (gt gold 0)}}
+                                    <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+                                        <label>{{gold}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (gt silver 0)}}
+                                    <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+                                        <label>{{silver}}</label>
+                                    </i>
+                                {{/if}}
+                                {{#if (gt copper 0)}}
+                                    <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                                        <label>{{copper}}</label>
+                                    </i>
+                                {{/if}}
+                            {{/with}}
+                        {{/if}}
+                    </div>
+                    <div class="item-controls">
+                        {{#if @root.actor.isOwner}}
+                            {{#if flags.pl1e.childId}}
+                                <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                            {{else}}
+                                <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i
+                                        class="fas fa-trash"></i></a>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="item-tooltip">{{{enriched}}}</div>
+            </div>
+        {{/each}}
+    </div>
+</div>

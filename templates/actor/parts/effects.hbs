@@ -1,0 +1,44 @@
+<div class="item-list">
+    <div class="items-header">
+        <h3 class="header-title">
+            {{localize "PL1E.Effects"}}
+            <div class="item-filter-list" data-filter="effects">
+                {{#each (config "effectTypes")}}
+                    <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+                {{/each}}
+            </div>
+        </h3>
+    </div>
+    <div class="items-column">
+        {{#each effects}}
+            <div class="item" data-effect-id="{{_id}}" data-item-origin-id="{{origin}}"
+                 data-actor-origin-id="{{flags.pl1e.originActor}}">
+                <div class="item-content">
+                    <div class="item-title">
+                        <img class="effect-edit hover-action" src="{{icon}}" title="{{localize name}}" width="24"
+                             height="24"/>
+                        <label class="item-tooltip-activate hover-action">{{localize name}}</label>
+                    </div>
+                    <div class="item-icons">
+                        {{#if duration.rounds}}
+                            <i class="far fa-clock hover-info" data-tooltip="{{localize "PL1E.Turn"}}">
+                                <label>{{duration.rounds}}</label>
+                            </i>
+                        {{/if}}
+                    </div>
+                    <div class="item-controls">
+                        {{#if (and origin flags.pl1e.originActor)}}
+                            <a class="item-origin" data-tooltip='{{localize "PL1E.Link"}}'><i
+                                    class="fas fa-link"></i></a>
+                        {{/if}}
+                        {{#if @root.game.user.isGM}}
+                            <a class="effect-remove" data-tooltip="{{localize "PL1E.Delete"}}"><i
+                                    class="fas fa-trash"></i></a>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="item-tooltip"></div>
+            </div>
+        {{/each}}
+    </div>
+</div>

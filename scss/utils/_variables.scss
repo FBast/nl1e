@@ -1,10 +1,20 @@
 $borderGroove: 2px groove #eeede0;
 $sheetBackground: url("../../assets/imgs/background.jpg") repeat;
 
-// Sizes
-$padding-sm: 5px;
-$padding-md: 10px;
-$padding-lg: 20px;
+// Padding
+$padding-sm: 4px;
+$padding-md: 8px;
+$padding-lg: 16px;
+
+// Font Size
+$font-size-sm: 12px;
+$font-size-md: 14px;
+$font-size-lg: 18px;
+$font-size-xlg: 24px;
+
+// Typography
+$font-primary: 'Roboto', sans-serif;
+$font-secondary: 'Roboto', sans-serif;
 
 // Colors
 $colorWhite: #ffffff;
@@ -31,9 +41,12 @@ $colorBackgroundNegative: invert-color($colorBackground);
 $colorPanelNegative: invert-color($colorPanel);
 $colorBorderNegative: invert-color($colorBorder);
 
+$colorMalus: red;
+$colorBonus: green;
+
 $colorAction: #ff0000;
-$colorInfo: #009602;
-$colorSelection: #c8ffc8;
+$colorInfo: #00ff00;
+$colorEnabled: #c8ffc8;
 $colorDisabled: #ffdfe5;
 $colorWarning: #969600;
 
@@ -42,7 +55,3 @@ $colorStamina: #4caf50;
 $colorMana: #2196f3;
 $colorDestiny: #ff00ff;
 $colorXP: #969600;
-
-// Typography
-$font-primary: 'Roboto', sans-serif;
-$font-secondary: 'Roboto', sans-serif;

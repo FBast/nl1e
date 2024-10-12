@@ -46,10 +46,17 @@
   color: black;
 }
 
+.color-malus {
+  color: $colorMalus !important;
+}
+
+.color-bonus {
+  color: $colorBonus !important;
+}
+
 .hover-action {
   &:hover,
   &:focus {
-    color: $colorAction !important;
     text-shadow: 0 0 10px $colorAction !important;
     cursor: pointer;
   }
@@ -64,18 +71,31 @@
 .hover-info {
   &:hover,
   &:focus {
-    color: $colorInfo !important;
     text-shadow: 0 0 10px $colorInfo !important;
+    cursor: help;
   }
 }
 
 .highlight-info {
-  color: $colorInfo !important;
-  text-shadow: 0 0 10px $colorInfo !important;
+  transition: text-shadow 0.5s ease;
+  animation: pulse 1.5s infinite ease-in-out;
 }
 
-.background-info {
-  background-color: $colorSelection !important;
+@keyframes pulse {
+  0% {
+    text-shadow: 0 0 5px $colorInfo, 0 0 10px $colorInfo, 0 0 15px $colorInfo;
+  }
+  50% {
+    text-shadow: 0 0 10px lighten($colorInfo, 20%), 0 0 20px lighten($colorInfo, 20%), 0 0 30px lighten($colorInfo, 20%);
+  }
+  100% {
+    text-shadow: 0 0 5px $colorInfo, 0 0 10px $colorInfo, 0 0 15px $colorInfo;
+  }
+}
+
+
+.background-enabled {
+  background-color: $colorEnabled !important;
 }
 
 .background-disabled {

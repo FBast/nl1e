@@ -83,7 +83,7 @@ export class Pl1eHelpers {
 
         // For each object path (property key) in the object
         for (const objectPath in obj) {
-            // Split path into component parts
+            // Split path into parts parts
             const parts = objectPath.split('.');
 
             // Create sub-objects along path as needed
@@ -332,7 +332,7 @@ export class Pl1eHelpers {
         for (let template of specificTemplates) {
             model = foundry.utils.mergeObject(model, template.Item.templates[template]);
         }
-        let itemCopy = duplicate(item);
+        let itemCopy = foundry.utils.duplicate(item);
         cleanObject(itemCopy.system, model, removed);
         console.log("PL1E | Removed system properties:", removed);
         await item.update({ system: itemCopy.system }, { merge: false });

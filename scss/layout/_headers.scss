@@ -26,7 +26,6 @@
 
   .profile-wrapper {
     position: relative;
-    //width: 200px;
     height: auto;
 
     .profile-img {
@@ -47,7 +46,7 @@
       pointer-events: none;
     }
 
-    .profil-level {
+    .profile-level {
       display: flex;
       background-color: $colorPanelNegative;
       border: $colorBorderNegative solid 2px;
@@ -55,15 +54,15 @@
       position: absolute;
       bottom: -10px;
       left: 50%;
-      transform: translateX(-50%); /* Centrage horizontal */
+      transform: translateX(-50%);
       width: 40px;
       height: 40px;
       pointer-events: none;
       align-items: center;
       justify-content: center;
       font-weight: bolder;
-      font-size: larger;
       padding-bottom: 10px;
+      font-size: $font-size-lg;
     }
   }
 
@@ -90,7 +89,7 @@
       .sheet-name {
         color: $colorText;
         height: 40px;
-        font-size: 2em;
+        font-size: $font-size-xlg;
         font-weight: bold;
         padding: 10px;
         border: none;
@@ -108,6 +107,8 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
+      font-size: $font-size-sm;
+      text-transform: uppercase;
 
       .health-bar {
         @include info-bar($colorPanelNegative, $colorBorderNegative, $colorHealth, $colorBackgroundNegative, $colorWhite);
@@ -127,6 +128,7 @@
       align-items: center;
       margin: 0 10px;
       gap: 8px;
+      font-size: $font-size-md;
 
       .stat-icon {
         font-size: 1.2em;
@@ -144,15 +146,24 @@ nav.sheet-tabs {
     flex: 1;
     text-transform: uppercase;
     font-weight: bold;
+    font-size: $font-size-md;
     text-align: center;
     padding: 10px 15px;
     border: 1px solid $colorBorder;
-    border-radius: 5px 5px 0 0;
+    border-radius: 0; // Reset the border-radius for all tabs
     background-color: $colorPanel;
 
     &.active {
-      border-bottom: none;
+      border-bottom-color: transparent;
       background-color: $colorBackground;
+    }
+
+    &:first-child {
+      border-radius: 5px 0 0 0; // Apply rounding to top-left corner
+    }
+
+    &:last-child {
+      border-radius: 0 5px 0 0; // Apply rounding to top-right corner
     }
   }
 }

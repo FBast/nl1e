@@ -1,5 +1,5 @@
 &.sheet.actor {
-  min-height: 875px;
+  min-height: 840px;
   min-width: 700px;
 
   .window-content {
@@ -11,11 +11,17 @@
     flex-direction: column;
   }
 }
+
 &.sheet.item {
   min-height: 500px;
   min-width: 500px;
 
   .window-content {
     background: rgba(0, 0, 0, 0.3);
+  }
+
+  .item-sheet {
+    display: flex;
+    flex-direction: column;
   }
 }

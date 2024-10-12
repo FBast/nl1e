@@ -1,48 +1,46 @@
-<section class="scroll-auto">
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
-        <div class="form-group">
-            <label>{{localize "PL1E.Description"}}</label>
-            <button class="launch-text-editor" data-target="system.description">
-                <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
-            </button>
+<fieldset>
+    <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+    <div class="form-group">
+        <label>{{localize "PL1E.Description"}}</label>
+        <button class="launch-text-editor" data-target="system.description">
+            <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+        </button>
+    </div>
+    <div class="form-group">
+        <label>
+            {{localize "PL1E.GoldPrice"}}
+            <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}"
+                   data-dtype="Number"/>
+        </label>
+        <label>
+            {{localize "PL1E.SilverPrice"}}
+            <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}"
+                   data-dtype="Number"/>
+        </label>
+        <label>
+            {{localize "PL1E.CopperPrice"}}
+            <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}"
+                   data-dtype="Number"/>
+        </label>
+    </div>
+</fieldset>
+<fieldset>
+    <legend class="section-header">{{localize "PL1E.Module"}}</legend>
+    <div class="form-group">
+        <label>{{localize "PL1E.ModuleTypes"}}</label>
+        <div class="form-fields">
+            <ul>
+                {{#each system.attributes.moduleTypes}}
+                    <li class="tag {{this}}">{{localize (config "moduleTypes" this)}}</li>
+                {{/each}}
+            </ul>
+            <a style="flex: 0;" class="trait-selector align-right" data-trait="moduleTypes"
+               data-trait-label="PL1E.ModuleTypes" data-key-path="attributes.moduleTypes"
+               data-tooltip="{{localize 'PL1E.ModuleTypesConfig'}}">
+                <i class="fas fa-edit"></i>
+            </a>
         </div>
-        <div class="form-group">
-            <label>
-                {{localize "PL1E.GoldPrice"}}
-                <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}"
-                       data-dtype="Number"/>
-            </label>
-            <label>
-                {{localize "PL1E.SilverPrice"}}
-                <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}"
-                       data-dtype="Number"/>
-            </label>
-            <label>
-                {{localize "PL1E.CopperPrice"}}
-                <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}"
-                       data-dtype="Number"/>
-            </label>
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.Module"}}</legend>
-        <div class="form-group">
-            <label>{{localize "PL1E.ModuleTypes"}}</label>
-            <div class="form-fields">
-                <ul>
-                    {{#each system.attributes.moduleTypes}}
-                        <li class="tag {{this}}">{{localize (config "moduleTypes" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a style="flex: 0;" class="trait-selector align-right" data-trait="moduleTypes"
-                   data-trait-label="PL1E.ModuleTypes" data-key-path="attributes.moduleTypes"
-                   data-tooltip="{{localize 'PL1E.ModuleTypesConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </div>
-        </div>
-    </fieldset>
-    {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
-    {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
-</section>
+    </div>
+</fieldset>
+{{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
+{{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
