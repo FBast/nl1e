@@ -24,25 +24,7 @@
                         </label>
                     </div>
                     <div class="item-icons">
-                        {{#if (eq @root.actor.type "merchant")}}
-                            {{#with (lookup ../system.merchantPrices _id)}}
-                                {{#if (gt gold 0)}}
-                                    <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
-                                        <label>{{gold}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (gt silver 0)}}
-                                    <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
-                                        <label>{{silver}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (gt copper 0)}}
-                                    <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
-                                        <label>{{copper}}</label>
-                                    </i>
-                                {{/if}}
-                            {{/with}}
-                        {{/if}}
+                        {{> "systems/pl1e/templates/item/components/icons-module.hbs"}}
                     </div>
                     <div class="item-controls">
                         {{#if @root.actor.isOwner}}

@@ -21,7 +21,15 @@
                         <label class="item-tooltip-activate hover-action">{{name}}</label>
                     </div>
                     <div class="item-icons">
-
+                        {{#if (eq type "race")}}
+                            {{> "systems/pl1e/templates/item/components/icons-race.hbs"}}
+                        {{else if (eq type "class")}}
+                            {{> "systems/pl1e/templates/item/components/icons-class.hbs"}}
+                        {{else if (eq type "culture")}}
+                            {{> "systems/pl1e/templates/item/components/icons-culture.hbs"}}
+                        {{else if (eq type "mastery")}}
+                            {{> "systems/pl1e/templates/item/components/icons-mastery.hbs"}}
+                        {{/if}}
                     </div>
                     <div class="item-controls">
                         {{#if @root.actor.isOwner}}

@@ -3,11 +3,12 @@
     <header class="sheet-header">
         <div class="profile-container">
             <div class="profile-wrapper">
-                {{#if (and system.attributes.customizable item.isEmbedded)}}
+                {{#if (and item.system.attributes.customizable item.isEmbedded item.system.attributes.isCustomized)}}
                     <img class="profile-img" src="{{item.realImg}}" data-edit="system.customImg" title="{{item.name}}"/>
                 {{else}}
-                    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+                    <img class="profile-img" src="{{item.img}}" title="{{item.name}}"/>
                 {{/if}}
+                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-1.png"/>
             </div>
             <!-- price of the item ? -->
         </div>
@@ -16,47 +17,53 @@
                 {{#if (and @root.game.user.isGM (not item.isEmbedded))}}
                     <input class="sheet-name" name="name" type="text" value="{{item.name}}"
                            placeholder="{{localize "PL1E.Name"}}"/>
+                {{else if (and item.system.attributes.customizable item.isEmbedded item.isOwner item.system.attributes.isCustomized)}}
+                    <input class="sheet-name" name="system.customName" type="text" value="{{item.system.customName}}"
+                           placeholder="Custom name"/>
                 {{else}}
                     <input class="sheet-name" name="name" type="text" value="{{item.name}}"
                            placeholder="{{localize "PL1E.Name"}}" disabled/>
-                {{/if}}
-                {{#if (and system.attributes.customizable item.isEmbedded item.isOwner)}}
-                    <input class="sheet-name" name="system.customName" type="text" value="{{item.system.customName}}"
-                           placeholder="Custom name"/>
                 {{/if}}
                 <div class="dropdown-icons">
                     <div class="dropdown-button" data-tooltip="{{localize "PL1E.Actions"}}">
                         <i class="fas fa-bars"></i>
                     </div>
                     <div class="dropdown-content">
-                        <i class="fas fa-book-open open-journal" data-tooltip="{{localize "PL1E.Journal"}}"></i>
-                        <i class="fas fa-bed" data-tooltip="{{localize "PL1E.Rest"}}"></i>
-                        <i class="fas fa-hourglass" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                        {{#if (and item.system.attributes.customizable item.isEmbedded)}}
+                            {{#if item.system.attributes.isCustomized}}
+                                <i class="fas fa-undo switch-customize" data-tooltip="{{localize "PL1E.Uncustomize"}}"></i>
+                            {{else}}
+                                <i class="fas fa-wrench switch-customize" data-tooltip="{{localize "PL1E.Customize"}}"></i>
+                            {{/if}}
+                        {{/if}}
+                        <i class="fas fa-lock" data-tooltip="{{localize "PL1E.Lock"}}"></i>
                     </div>
                 </div>
             </div>
             <div class="icons-stats">
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
-                <i class="fas fa-hourglass stat-icon hover-info" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                {{#if (eq item.type "race")}}
+                    {{> "systems/pl1e/templates/item/components/icons-race.hbs"}}
+                {{else if (eq item.type "culture")}}
+                    {{> "systems/pl1e/templates/item/components/icons-culture.hbs"}}
+                {{else if (eq item.type "class")}}
+                    {{> "systems/pl1e/templates/item/components/icons-class.hbs"}}
+                {{else if (eq item.type "feature")}}
+                    {{> "systems/pl1e/templates/item/components/icons-feature.hbs"}}
+                {{else if (eq item.type "mastery")}}
+                    {{> "systems/pl1e/templates/item/components/icons-mastery.hbs"}}
+                {{else if (eq item.type "ability")}}
+                    {{> "systems/pl1e/templates/item/components/icons-ability.hbs"}}
+                {{else if (eq item.type "weapon")}}
+                    {{> "systems/pl1e/templates/item/components/icons-weapon.hbs"}}
+                {{else if (eq item.type "wearable")}}
+                    {{> "systems/pl1e/templates/item/components/icons-wearable.hbs"}}
+                {{else if (eq item.type "consumable")}}
+                    {{> "systems/pl1e/templates/item/components/icons-consumable.hbs"}}
+                {{else if (eq item.type "common")}}
+                    {{> "systems/pl1e/templates/item/components/icons-common.hbs"}}
+                {{else if (eq item.type "module")}}
+                    {{> "systems/pl1e/templates/item/components/icons-module.hbs"}}
+                {{/if}}
             </div>
         </div>
     </header>

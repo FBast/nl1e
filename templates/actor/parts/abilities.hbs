@@ -14,7 +14,7 @@
     <div class="items-column">
         {{#each abilities}}
             {{#if (or (not ../favoriteDisplay) (and system.isFavorite ../favoriteDisplay))}}
-                <div class="item {{#unless isEnabled}}background-disabled{{/unless}}" data-item-id="{{_id}}">
+                <div class="item {{#unless isEnabled}}background-unavailable{{/unless}}" data-item-id="{{_id}}">
                     <div class="item-content">
                         <div class="item-title">
                             <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
@@ -22,63 +22,7 @@
                         </div>
                         <div class="item-icons">
                             {{#unless ../favoriteDisplay}}
-                                <i class="far fa-trophy hover-info" data-tooltip='{{localize "PL1E.Level"}}'>
-                                    <label>{{system.attributes.level}}</label>
-                                </i>
-                                {{#if (ne system.attributes.actionCost 0)}}
-                                    <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'>
-                                        <label>{{system.attributes.actionCost}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (ne system.attributes.reactionCost 0)}}
-                                    <i class="far fa-reply-clock hover-info" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
-                                        <label>{{system.attributes.reactionCost}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (ne system.attributes.quickActionCost 0)}}
-                                    <i class="far fa-bell hover-info" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
-                                        <label>{{system.attributes.quickActionCost}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (ne system.attributes.healthCost 0)}}
-                                    <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthCost"}}'>
-                                        <label>{{system.attributes.healthCost}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (ne system.attributes.staminaCost 0)}}
-                                    <i class="far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaCost"}}">
-                                        <label>{{system.attributes.staminaCost}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (ne system.attributes.manaCost 0)}}
-                                    <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaCost"}}'>
-                                        <label>{{system.attributes.manaCost}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if (ne system.attributes.usageCost 0)}}
-                                    <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.UsageCost"}}'>
-                                        <label>{{system.attributes.usageCost}}</label>
-                                    </i>
-                                {{/if}}
-                                {{#if system.attributes.isMajorAction}}
-                                    <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
-                                {{/if}}
-                                {{#if system.attributes.isDangerous}}
-                                    <i class="far fa-skull-crossbones hover-info"
-                                       data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
-                                {{/if}}
-                                {{#if (eq system.attributes.linkedItem "melee")}}
-                                    <i class="far fa-sword hover-info" data-tooltip='{{localize "PL1E.Melee"}}'></i>
-                                {{else if (eq system.attributes.linkedItem "range")}}
-                                    <i class="far fa-bow-arrow hover-info" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
-                                {{/if}}
-                                {{#if (eq system.attributes.linkedItem "none")}}
-                                    {{#if (ne system.attributes.range 0)}}
-                                        <i class="far fa-bullseye hover-info" data-tooltip='{{localize "PL1E.Range"}}'>
-                                            <label>{{system.attributes.range}}</label>
-                                        </i>
-                                    {{/if}}
-                                {{/if}}
+                                {{> "systems/pl1e/templates/item/components/icons-ability.hbs"}}
                             {{/unless}}
                         </div>
                         <div class="item-controls">
@@ -95,7 +39,7 @@
                                 {{/if}}
                             {{/if}}
                             <a class="item-favorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                <i class="fas fa-bookmark {{#unless system.isFavorite}}color-grey{{/unless}}"></i>
+                                <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
                             </a>
                             {{#if @root.actor.isOwner}}
                                 {{#if (eq flags.pl1e.childId undefined)}}

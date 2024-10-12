@@ -41,7 +41,7 @@
                                 {{/if}}
                             </div>
                             <div class="item-controls">
-                                <a class="item-use {{#if (ne _id @root.itemEaten._id)}}color-grey{{/if}}"
+                                <a class="item-use {{#if (ne _id @root.itemEaten._id)}}color-disabled{{/if}}"
                                    data-usage="eaten" data-tooltip='{{localize "PL1E.Eat"}}'><i
                                         class="fas fa-fork-knife"></i></a>
                             </div>
@@ -74,7 +74,7 @@
                                 {{/if}}
                             </div>
                             <div class="item-controls">
-                                <a class="item-use {{#if (ne _id @root.itemDrink._id)}}color-grey{{/if}}"
+                                <a class="item-use {{#if (ne _id @root.itemDrink._id)}}color-disabled{{/if}}"
                                    data-usage="drink" data-tooltip='{{localize "PL1E.Drink"}}'><i
                                         class="fas fa-glass"></i></a>
                             </div>

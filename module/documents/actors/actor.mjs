@@ -353,28 +353,7 @@ export class Pl1eActor extends Actor {
     /** @inheritDoc */
     async prepareEmbeddedDocuments() {
         super.prepareEmbeddedDocuments();
-        const systemData = this.system;
-        const actorGeneral = systemData.general;
 
-        // Initialize the sum of points and the base number of features
-        let totalFeaturePoints = 2; // Starting feature points
-        let remainingFeatures = 4; // Max number of features
-
-        // Iterate over each item in the actor
-        for (const item of this.items) {
-            // Check if the item is of type 'feature'
-            if (item.type === 'feature') {
-                // Sum up the points from each feature item
-                totalFeaturePoints += item.system.attributes.points || 0; // Using || 0 to handle undefined points
-                // Decrement the remaining of feature items
-                remainingFeatures -= 1;
-            }
-        }
-
-        // Store the total points
-        actorGeneral.remainingFeaturePoints = totalFeaturePoints;
-        // Store the updated remaining features
-        actorGeneral.remainingFeatures = remainingFeatures;
     }
 
     /**

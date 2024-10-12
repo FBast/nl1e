@@ -299,8 +299,6 @@
           "creationMod": true,
           "level": 1,
           "experience": 10,
-          "remainingFeatures": 0,
-          "remainingFeaturePoints": 0,
           "remainingCharacteristics": 8,
           "destiny": 0,
           "ranks": 0,
@@ -476,6 +474,7 @@
       "majorActionUsed": false,
       "attributes": {
         "customizable": false,
+        "isCustomized": false,
         "modules": 0,
         "hands": 1,
         "meleeUse": false,
@@ -497,6 +496,7 @@
       "majorActionUsed": false,
       "attributes": {
         "customizable": false,
+        "isCustomized": false,
         "modules": 0,
         "slot": "none",
         "magicUse": false,

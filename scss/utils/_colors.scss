@@ -46,6 +46,10 @@
   color: black;
 }
 
+.color-disabled {
+  color: $colorDisabled !important;
+}
+
 .color-malus {
   color: $colorMalus !important;
 }
@@ -94,10 +98,10 @@
 }
 
 
-.background-enabled {
-  background-color: $colorEnabled !important;
+.background-ready {
+  background-color: $colorReady !important;
 }
 
-.background-disabled {
-  background-color: $colorDisabled !important;
+.background-unavailable {
+  background-color: $colorUnavailable !important;
 }

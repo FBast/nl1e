@@ -18,9 +18,7 @@
                         <label class="item-tooltip-activate hover-action">{{name}}</label>
                     </div>
                     <div class="item-icons">
-                        <i class="far fa-receipt hover-info" data-tooltip="{{localize "PL1E.Points"}}">
-                            <label>{{formatNumber system.attributes.points sign=true}}</label>
-                        </i>
+                        {{> "systems/pl1e/templates/item/components/icons-feature.hbs"}}
                     </div>
                     <div class="item-controls">
                         {{#if @root.actor.isOwner}}

@@ -584,18 +584,6 @@ export class Pl1eItem extends Item {
                 ui.notifications.info(game.i18n.localize("PL1E.YouAlreadyHaveThisFeature"));
                 return false;
             }
-
-            // Check for feature number
-            if (this.type === "feature" && actor.system.general.remainingFeatures === 0) {
-                ui.notifications.info(game.i18n.localize("PL1E.TooMuchFeatures"));
-                return false;
-            }
-
-            // Check for feature points
-            if (this.type === "feature" && actor.system.general.remainingFeaturePoints + this.system.attributes.points < 0) {
-                ui.notifications.info(`${game.i18n.localize("PL1E.NotEnoughFeaturePoints")} : ${actor.system.general.remainingFeaturePoints}`);
-                return false;
-            }
         }
 
         return true;

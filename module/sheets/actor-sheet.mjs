@@ -138,10 +138,10 @@ export class Pl1eActorSheet extends ActorSheet {
         // Render the item sheet for viewing/editing prior to the editable check.
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
         html.find(".item-buy").on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
-        html.find(".effect-edit").on("click", ev => this.onEffectEdit(ev));
-        html.find(".effect-remove").on("click", ev => this.onEffectRemove(ev));
-        html.find(".item-link").on("click", ev => this.onItemLink(ev));
-        html.find(".item-origin").on("click", ev => this.onItemOrigin(ev));
+        html.find(".effect-edit").on("click", ev => this._onEffectEdit(ev));
+        html.find(".effect-remove").on("click", ev => this._onEffectRemove(ev));
+        html.find(".item-link").on("click", ev => this._onItemLink(ev));
+        html.find(".item-origin").on("click", ev => this._onItemOrigin(ev));
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
 
         // Highlights indications
@@ -179,8 +179,8 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".item-remove").on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
 
         // RollTable management
-        html.find(".roll-table-edit").on("click", ev => this.onRollTableEdit(ev, this.actor));
-        html.find(".roll-table-remove").on("click", ev => this.onRollTableRemove(ev, this.actor));
+        html.find(".roll-table-edit").on("click", ev => this._onRollTableEdit(ev, this.actor));
+        html.find(".roll-table-remove").on("click", ev => this._onRollTableRemove(ev, this.actor));
 
         // Chat messages
         html.find(".skill-roll").on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
@@ -191,19 +191,19 @@ export class Pl1eActorSheet extends ActorSheet {
         // Custom controls
         html.find(".set-number").on("click", ev => Pl1eEvent.onSetNumber(ev, this.actor));
         html.find(".spin-number").on("click", ev => Pl1eEvent.onSpinNumber(ev, this.actor));
-        html.find(".rank-control").on("click", ev => this.onRankChange(ev));
-        html.find(".item-favorite").on("click", ev => this.onItemFavorite(ev))
-        html.find(".item-toggle").on("click", ev => this.onItemToggle(ev));
-        html.find(".item-use").on("click", ev => this.onItemUse(ev));
-        html.find(".item-reload").on("click", ev => this.onItemReload(ev));
+        html.find(".rank-control").on("click", ev => this._onRankChange(ev));
+        html.find(".item-favorite").on("click", ev => this._onItemFavorite(ev))
+        html.find(".item-toggle").on("click", ev => this._onItemToggle(ev));
+        html.find(".item-use").on("click", ev => this._onItemUse(ev));
+        html.find(".item-reload").on("click", ev => this._onItemReload(ev));
 
         // Actor actions
-        html.find('.open-journal').on('click', async ev => this.onOpenJournal(ev));
+        html.find('.open-journal').on('click', async ev => this._onOpenJournal(ev));
 
         // Merchant actions
-        html.find(".button-remove-items").on("click", ev => this.onRemoveItemsClick(ev));
-        html.find(".button-randomize-item").on("click", ev => this.onRandomizeItemClick(ev));
-        html.find(".button-generate-item").on("click", ev => this.onGenerateItemClick(ev));
+        html.find(".button-remove-items").on("click", ev => this._onRemoveItemsClick(ev));
+        html.find(".button-randomize-item").on("click", ev => this._onRandomizeItemClick(ev));
+        html.find(".button-generate-item").on("click", ev => this._onGenerateItemClick(ev));
     }
 
     /**
@@ -216,7 +216,7 @@ export class Pl1eActorSheet extends ActorSheet {
         const set = this._filters[ul.dataset.filter];
         const filters = ul.querySelectorAll(".item-filter");
         for (let li of filters) {
-            if (set.has(li.dataset.filter)) li.classList.add("active");
+            if (set.has(li.dataset.filter)) li.classList.add("color-disabled");
         }
     }
 
@@ -431,8 +431,8 @@ export class Pl1eActorSheet extends ActorSheet {
             itemCopy.isEnabled = item.isEnabled;
 
             // Add combined aspects
-            itemCopy.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
-            itemCopy.system.combinedActiveAspects = await item.getCombinedActiveAspects();
+            itemCopy.combinedPassiveAspects = await item.getCombinedPassiveAspects();
+            itemCopy.combinedActiveAspects = await item.getCombinedActiveAspects();
 
             // Add enriched HTML
             itemCopy.enriched = await TextEditor.enrichHTML(item.system.description, {
@@ -626,7 +626,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Use an ability
      * @param {Event} event The originating click event
      */
-    async onItemUse(event) {
+    async _onItemUse(event) {
         event.preventDefault();
 
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
@@ -645,7 +645,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Handle reload of an Owned Consumable within the Actor.
      * @param {Event} event The triggering click event.
      */
-    async onItemReload(event) {
+    async _onItemReload(event) {
         event.preventDefault();
 
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
@@ -659,7 +659,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Remove all the items from the merchant
      * @param event
      */
-    async onRemoveItemsClick(event) {
+    async _onRemoveItemsClick(event) {
         ui.notifications.info(`${game.i18n.localize("PL1E.RemovingItems")}...`);
 
         let removedItemsNumber = 0;
@@ -675,7 +675,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      * @return {Promise<void>}
      */
-    async onRandomizeItemClick(event) {
+    async _onRandomizeItemClick(event) {
         let addedItemsNumber = 0;
         for (let i = 0; i < this.actor.system.general.itemPerRoll; i++) {
             for (const refRollTable of this.actor.system.refRollTables) {
@@ -698,7 +698,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      * @return {Promise<void>}
      */
-    async onGenerateItemClick(event) {
+    async _onGenerateItemClick(event) {
         ui.notifications.info(`${game.i18n.localize("PL1E.GeneratingItems")}...`);
 
         let addedItemsNumber = 0;
@@ -732,7 +732,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Render the linked parent item
      * @param {Event} event
      */
-    async onItemLink(event) {
+    async _onItemLink(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -756,7 +756,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      * @return {Promise<void>}
      */
-    async onItemOrigin(event) {
+    async _onItemOrigin(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -774,7 +774,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event The originating click event
      * @param {Actor} actor the actor of the roll table
      */
-    async onRollTableEdit(event, actor) {
+    async _onRollTableEdit(event, actor) {
         let rollTableId = $(event.currentTarget).closest(".item").data("roll-table-id");
         const rollTable = await Pl1eHelpers.getDocument("RollTable", rollTableId);
 
@@ -787,7 +787,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param {Event} event The originating click event
      * @param {Pl1eActor} actor the actor where the roll table is removed
      */
-    async onRollTableRemove(event, actor) {
+    async _onRollTableRemove(event, actor) {
         const rollTableId = $(event.currentTarget).closest(".item").data("roll-table-id");
 
         if (rollTableId) {
@@ -802,7 +802,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Handle rank changes
      * @param {Event} event The originating click event
      */
-    async onRankChange(event) {
+    async _onRankChange(event) {
         event.preventDefault();
         event.stopPropagation();
         const skill = $(event.currentTarget).data("skill");
@@ -824,7 +824,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Toggle the item
      * @param {Event} event The originating click event
      */
-    async onItemToggle(event) {
+    async _onItemToggle(event) {
         event.preventDefault();
         event.stopPropagation();
         const itemId = $(event.currentTarget).closest(".item").data("item-id");
@@ -843,7 +843,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      * @returns {Promise<void>}
      */
-    async onItemFavorite(event) {
+    async _onItemFavorite(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -858,7 +858,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Open effect sheet
      * @param {Event} event
      */
-    onEffectEdit(event) {
+    _onEffectEdit(event) {
         event.preventDefault();
 
         const effectId = $(event.currentTarget).closest(".item").data("effect-id");
@@ -873,7 +873,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Remove effect
      * @param {Event} event
      */
-    async onEffectRemove(event) {
+    async _onEffectRemove(event) {
         event.preventDefault();
 
         const effectId = $(event.currentTarget).closest(".item").data("effect-id");
@@ -882,7 +882,7 @@ export class Pl1eActorSheet extends ActorSheet {
         await effect.delete();
     }
 
-    async onOpenJournal(event) {
+    async _onOpenJournal(event) {
         event.preventDefault();
 
         // Get the user ID of the player who owns the actor

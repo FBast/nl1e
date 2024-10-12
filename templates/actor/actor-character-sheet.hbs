@@ -138,8 +138,8 @@
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="hover-action enabled-action" data-tab="stats">{{localize "PL1E.Stats"}}</a>
         <a class="hover-action enabled-action" data-tab="inventory">{{localize "PL1E.Inventory"}}</a>
-        <a class="hover-action enabled-action" data-tab="features">{{localize "PL1E.Features"}}</a>
         <a class="hover-action enabled-action" data-tab="abilities">{{localize "PL1E.Abilities"}}</a>
+        <a class="hover-action enabled-action" data-tab="features">{{localize "PL1E.Features"}}</a>
         <a class="hover-action enabled-action" data-tab="effects">{{localize "PL1E.Effects"}}</a>
     </nav>
     {{!-- Sheet Body --}}
@@ -171,17 +171,17 @@
                 {{> "systems/pl1e/templates/actor/parts/inventory-modules.hbs" }}
             </div>
         </div>
+        {{!-- Abilities Tab --}}
+        <div class="tab" data-group="primary" data-tab="abilities">
+            <div class="tab-container scroll-auto">
+                {{> "systems/pl1e/templates/actor/parts/abilities.hbs" }}
+            </div>
+        </div>
         {{!-- Features Tab --}}
         <div class="tab" data-group="primary" data-tab="features">
             <div class="tab-container scroll-auto">
                 {{> "systems/pl1e/templates/actor/parts/features-background.hbs" }}
                 {{> "systems/pl1e/templates/actor/parts/features-features.hbs" }}
-            </div>
-        </div>
-        {{!-- Abilities Tab --}}
-        <div class="tab" data-group="primary" data-tab="abilities">
-            <div class="tab-container scroll-auto">
-                {{> "systems/pl1e/templates/actor/parts/abilities.hbs" }}
             </div>
         </div>
         {{!-- Effects Tab --}}
