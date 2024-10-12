@@ -369,7 +369,8 @@ export class Pl1eActorSheet extends ActorSheet {
         await this._categorizeItems(context, typeToCollectionMap);
 
         // Once all items are categorized, proceed to filter them
-        await this._filterItems(context, typeToCollectionMap, this.actor);
+        if (this.actor.type !== "merchant")
+            await this._filterItems(context, typeToCollectionMap, this.actor);
 
         // Apply feature and capacities filters
         context.background = this._filterDocuments(context.background, this._filters.background);
@@ -451,6 +452,7 @@ export class Pl1eActorSheet extends ActorSheet {
         }
     }
 
+    //TODO this method has some problems and call use merchant check to remove
     async _filterItems(context, typeToCollectionMap, actor) {
         const getItemPriority = (item) => {
             if (item.isEnabled) return 1;

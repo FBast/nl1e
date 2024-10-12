@@ -1,28 +1,34 @@
-<h3 class="align-left">{{localize "PL1E.Parameters"}}</h3>
-<div class="form-group">
-    <label class="attribute-name">{{localize "PL1E.UnlimitedItems"}}</label>
-    <div class="form-fields">
-        <input type="checkbox" name="system.general.unlimitedItems" {{checked system.general.unlimitedItems}}
-               data-dtype="Boolean"/>
-    </div>
-</div>
-<div class="form-group">
-    <label class="attribute-name">{{localize "PL1E.RemoveItems"}}</label>
-    <div class="form-fields">
-        <button class="button-remove-items">{{localize "PL1E.Remove"}}</button>
-    </div>
-</div>
-<div class="form-group">
-    <label class="attribute-name">{{localize "PL1E.RandomizeItems"}}</label>
-    <div class="form-fields">
-        <input type="number" name="system.general.itemPerRoll" value="{{system.general.itemPerRoll}}" min="1"
-               data-dtype="Number"/>
-        <button class="button-randomize-item">{{localize "PL1E.Randomize"}}</button>
-    </div>
-</div>
-<div class="form-group">
-    <label class="attribute-name">{{localize "PL1E.GenerateItems"}}</label>
-    <div class="form-fields">
-        <button class="button-generate-item">{{localize "PL1E.Generate"}}</button>
+<div class="control-list">
+    <h3 class="control-header">{{localize "PL1E.Parameters"}}</h3>
+
+    <div class="control-column">
+        <div class="control">
+            <label class="control-label">{{localize "PL1E.UnlimitedItems"}}</label>
+            <div class="control-fields">
+                <input type="checkbox" name="system.general.unlimitedItems" {{checked system.general.unlimitedItems}} data-dtype="Boolean"/>
+            </div>
+        </div>
+
+        <div class="control">
+            <label class="control-label">{{localize "PL1E.RemoveItems"}}</label>
+            <div class="control-fields">
+                <button class="button-remove-items">{{localize "PL1E.Remove"}}</button>
+            </div>
+        </div>
+
+        <div class="control">
+            <label class="control-label">{{localize "PL1E.RandomizeItems"}}</label>
+            <div class="control-fields">
+                <input type="number" name="system.general.itemPerRoll" value="{{system.general.itemPerRoll}}" min="1" data-dtype="Number"/>
+                <button class="button-randomize-item">{{localize "PL1E.Randomize"}}</button>
+            </div>
+        </div>
+
+        <div class="control">
+            <label class="control-label">{{localize "PL1E.GenerateItems"}}</label>
+            <div class="control-fields">
+                <button class="button-generate-item">{{localize "PL1E.Generate"}}</button>
+            </div>
+        </div>
     </div>
 </div>

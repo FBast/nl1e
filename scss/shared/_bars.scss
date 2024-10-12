@@ -60,7 +60,7 @@
   }
 }
 
-@mixin info-bar($bar-color, $border-color, $fill-color, $input-hover-color, $text-color) {
+@mixin input-bar($bar-color, $border-color, $fill-color, $input-hover-color, $text-color) {
   display: flex;
   align-items: center;
 
@@ -68,12 +68,13 @@
     display: flex;
     align-items: center;
     width: 180px;
-    height: 25px;
+    height: 100%;
     background: $bar-color;
     border: $border-color solid 2px;
     border-radius: 10px 0 0 10px;
     border-right: none;
     padding-left: 10px;
+    padding-right: 5px;
 
     .name {
       width: 140px;
@@ -98,7 +99,7 @@
 
   .bar {
     flex: 1;
-    height: 25px;
+    height: 100%;
     background-color: $bar-color;
     border: $border-color solid 2px;
     border-radius: 0 10px 10px 0;

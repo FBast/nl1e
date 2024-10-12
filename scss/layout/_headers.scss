@@ -8,6 +8,16 @@
   }
 }
 
+.merchant-sheet {
+  .profile-container {
+    flex: 0 0 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+}
+
 .item-sheet {
   .profile-container {
     flex: 0 0 140px;
@@ -113,14 +123,27 @@
       text-transform: uppercase;
 
       .health-bar {
-        @include info-bar($colorPanelNegative, $colorBorderNegative, $colorHealth, $colorBackgroundNegative, $colorWhite);
+        @include input-bar($colorPanelNegative, $colorBorderNegative, $colorHealth, $colorBackgroundNegative, $colorWhite);
+        height: 25px;
       }
       .stamina-bar {
-        @include info-bar($colorPanelNegative, $colorBorderNegative, $colorStamina, $colorBackgroundNegative, $colorWhite);
+        @include input-bar($colorPanelNegative, $colorBorderNegative, $colorStamina, $colorBackgroundNegative, $colorWhite);
+        height: 25px;
       }
       .mana-bar {
-        @include info-bar($colorPanelNegative, $colorBorderNegative, $colorMana, $colorBackgroundNegative, $colorWhite);
+        @include input-bar($colorPanelNegative, $colorBorderNegative, $colorMana, $colorBackgroundNegative, $colorWhite);
+        height: 25px;
       }
+    }
+
+    .sell-bar {
+      @include input-bar($colorPanelNegative, $colorBorderNegative, green, $colorBackgroundNegative, $colorWhite);
+      height: 40px;
+    }
+
+    .buy-bar {
+      @include input-bar($colorPanelNegative, $colorBorderNegative, red, $colorBackgroundNegative, $colorWhite);
+      height: 40px;
     }
 
     .icons-stats {

@@ -1,0 +1,68 @@
+.control-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .control-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: $font-size-md;
+  }
+
+  .control-column {
+    display: flex;
+    flex-direction: column;
+
+    .control {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid $colorBorder;
+      font-size: $font-size-sm;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .control-label {
+        font-weight: bold;
+        flex: 1;
+        text-align: left;
+      }
+
+      .control-fields {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        gap: 10px;
+
+        input[type="checkbox"],
+        input[type="number"],
+        button {
+          font-size: inherit;
+          width: 100px;
+          height: 30px;
+          text-align: center;
+          vertical-align: middle;
+        }
+
+        button {
+          background-color: $colorPanel;
+          border: 1px solid $colorBorder;
+          cursor: pointer;
+
+          &:hover {
+            background-color: lighten($colorPanel, 10%);
+          }
+        }
+
+        input[type="number"] {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
