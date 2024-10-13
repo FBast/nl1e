@@ -38,10 +38,10 @@
                                     </a>
                                 {{/if}}
                             {{/if}}
-                            <a class="item-favorite hover-action" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
-                            </a>
                             {{#if @root.actor.isOwner}}
+                                <a class="item-favorite hover-action" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                    <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
+                                </a>
                                 {{#if (eq flags.pl1e.childId undefined)}}
                                     <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                                 {{else}}

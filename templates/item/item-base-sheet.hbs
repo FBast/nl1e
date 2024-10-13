@@ -3,7 +3,9 @@
     <header class="sheet-header">
         <div class="profile-container">
             <div class="profile-wrapper">
-                {{#if (and item.system.attributes.customizable item.isEmbedded item.system.attributes.isCustomized)}}
+                {{#if (not item.isEmbedded)}}
+                    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+                {{else if (and item.system.attributes.customizable item.system.attributes.isCustomized)}}
                     <img class="profile-img" src="{{item.realImg}}" data-edit="system.customImg" title="{{item.name}}"/>
                 {{else}}
                     <img class="profile-img" src="{{item.img}}" title="{{item.name}}"/>

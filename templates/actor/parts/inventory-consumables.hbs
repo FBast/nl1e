@@ -32,25 +32,25 @@
                             {{/unless}}
                         </div>
                         <div class="item-controls">
-                            {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                                {{#if (gt (length warnings) 0)}}
-                                    <a data-tooltip='{{join warnings ', ' true}}'>
-                                        <i class="far fa-exclamation-triangle hover-info color-warning"></i>
-                                    </a>
-                                {{/if}}
-                                {{#if (and (ne system.removedUses 0) system.attributes.isReloadable)}}
-                                    <a class="item-reload hover-action" data-tooltip='{{localize "PL1E.Reload"}}'>
-                                        <i class="fas fa-repeat"></i>
-                                    </a>
-                                {{/if}}
-                                {{#if isEnabled}}
-                                    <a class="item-use hover-action" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
-                                {{/if}}
-                            {{/if}}
-                            <a class="item-favorite hover-action" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
-                            </a>
                             {{#if @root.actor.isOwner}}
+                                {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                                    {{#if (gt (length warnings) 0)}}
+                                        <a data-tooltip='{{join warnings ', ' true}}'>
+                                            <i class="far fa-exclamation-triangle hover-info color-warning"></i>
+                                        </a>
+                                    {{/if}}
+                                    {{#if (and (ne system.removedUses 0) system.attributes.isReloadable)}}
+                                        <a class="item-reload hover-action" data-tooltip='{{localize "PL1E.Reload"}}'>
+                                            <i class="fas fa-repeat"></i>
+                                        </a>
+                                    {{/if}}
+                                    {{#if isEnabled}}
+                                        <a class="item-use hover-action" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
+                                    {{/if}}
+                                {{/if}}
+                                <a class="item-favorite hover-action" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                    <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
+                                </a>
                                 {{#if flags.pl1e.childId}}
                                     <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
                                 {{else}}
