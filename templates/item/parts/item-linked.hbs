@@ -9,7 +9,7 @@
                     <div class="item-content">
                         <div class="item-title">
                             <img class="item-edit hover-action" src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
-                            <label class="item-tooltip-activate hover-action">{{item.name}}</label>
+                            <label class="item-tooltip-activate hover-info">{{item.name}}</label>
                         </div>
                         <div class="item-icons">
                             {{#if @root.item.isEmbedded}}
@@ -28,16 +28,16 @@
                         <div class="item-controls">
                             {{#unless @root.item.isEmbedded}}
                                 {{#if (eq behavior "regular")}}
-                                    <a class="item-switch-behavior" data-tooltip='{{localize "PL1E.Regular"}}'><i class="fas fa-cube"></i></a>
+                                    <a class="item-switch-behavior hover-action" data-tooltip='{{localize "PL1E.Regular"}}'><i class="fas fa-cube"></i></a>
                                 {{else if (eq behavior "container")}}
-                                    <a class="item-switch-behavior" data-tooltip='{{localize "PL1E.Container"}}'><i class="fas fa-treasure-chest"></i></a>
+                                    <a class="item-switch-behavior hover-action" data-tooltip='{{localize "PL1E.Container"}}'><i class="fas fa-treasure-chest"></i></a>
                                 {{else if (eq behavior "key")}}
-                                    <a class="item-switch-behavior" data-tooltip='{{localize "PL1E.Key"}}'><i class="fas fa-key-skeleton"></i></a>
+                                    <a class="item-switch-behavior hover-action" data-tooltip='{{localize "PL1E.Key"}}'><i class="fas fa-key-skeleton"></i></a>
                                 {{/if}}
                             {{/unless}}
                             {{#if @root.game.user.isGM}}
                                 {{#if (or (and @root.item.isEmbedded (not synchronized)) (and (not @root.item.isEmbedded) synchronized))}}
-                                    <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                                    <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                                 {{/if}}
                             {{/if}}
                         </div>

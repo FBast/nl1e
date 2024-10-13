@@ -289,7 +289,7 @@ export class Pl1eItem extends Item {
     static async create(docData, options = {}) {
         // Replace default image
         if (docData.img === undefined) {
-            docData.img = `systems/pl1e/assets/icons/${docData.type}.svg`;
+            docData.img = `systems/pl1e/assets/icons/svg/${docData.type}.svg`;
         }
 
         // Keep id if coming from compendium

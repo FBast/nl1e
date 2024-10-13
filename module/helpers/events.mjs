@@ -221,6 +221,47 @@ export class Pl1eEvent {
     }
 
     /**
+     * Handle number editing changes
+     * @param {Event} event The originating click event
+     * @param {Actor|Item} document The document to modify
+     */
+    static async onEditNumber(event, document) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const path = $(event.currentTarget).data("path");
+        const currentValue = foundry.utils.getProperty(document, path);
+        if (!path) return;
+
+        // Open a dialog for the user to input a new number
+        new Dialog({
+            title: game.i18n.localize("PL1E.Edit"),
+            content: `<form>
+                    <div class="form-group">
+                      <input type="number" name="newValue" value="${currentValue}"/>
+                    </div>
+                  </form>`,
+            buttons: {
+                save: {
+                    label: "Save",
+                    callback: (html) => {
+                        let newValue = Number(html.find('input[name="newValue"]').val());
+                        if (!isNaN(newValue)) {
+                            // Update the document with the new value
+                            document.update({ [path]: newValue });
+                        }
+                    }
+                },
+                cancel: {
+                    label: "Cancel"
+                }
+            },
+            default: "save",
+            close: () => console.log("Edit dialog closed"),
+        }).render(true);
+    }
+
+    /**
      * Handle set number changes
      * @param {Event} event The originating click event
      * @param {Actor|Item} document the document to modify
@@ -236,20 +277,6 @@ export class Pl1eEvent {
         await document.update({
             [path]: value
         })
-    }
-
-    /**
-     * Handle money conversion
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the actor to modify
-     */
-    static async onMoneyConvert(event, actor) {
-        event.preventDefault();
-        event.stopPropagation();
-        let units = Pl1eHelpers.moneyToUnits(actor.system.money);
-        await actor.update({
-            ["system.money"]: Pl1eHelpers.unitsToMoney(units)
-        });
     }
 
     /**

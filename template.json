@@ -333,7 +333,10 @@
           "deathDoor": 10,
           "flexibility": 0,
           "nightVisionRange": 0,
-          "faithPower": false
+          "faithPower": false,
+          "isGoldFavorite": false,
+          "isSilverFavorite": false,
+          "isCopperFavorite": false
         },
         "money": {
           "gold": 50,

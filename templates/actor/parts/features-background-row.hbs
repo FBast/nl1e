@@ -18,11 +18,9 @@
                 <img class="item-edit hover-action" src="{{img}}" title="{{name}}"/>
                 {{#if @root.actor.isOwner}}
                     {{#if flags.pl1e.childId}}
-                        <a class="item-link" data-tooltip='{{localize "PL1E.Link"}}'>
-                            <i class="fas fa-link"></i>
-                        </a>
+                        <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
                     {{else}}
-                        <a class="item-remove" data-tooltip='{{localize "PL1E.Delete"}}'>
+                        <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'>
                             <i class="fas fa-trash"></i>
                         </a>
                     {{/if}}

@@ -4,7 +4,7 @@ export const registerStatuses = function () {
             // Resolve when equal or below deathDoor (default -10)
             id: "dead",
             label: "PL1E.StatusDead",
-            icon: "systems/pl1e/assets/icons/dead.svg",
+            icon: "systems/pl1e/assets/icons/svg/dead.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
@@ -37,7 +37,7 @@ export const registerStatuses = function () {
             // Resolve when equal or below unconsciousDoor (default 0)
             id: "unconscious",
             label: "PL1E.StatusUnconscious",
-            icon: "systems/pl1e/assets/icons/unconscious.svg",
+            icon: "systems/pl1e/assets/icons/svg/unconscious.svg",
             tint: "#ff0000",
             changes: [{ // Unconscious health decrease is handled from Combat class
                 key: "system.misc.movement",
@@ -70,7 +70,7 @@ export const registerStatuses = function () {
             // Resolve when equal or below unconsciousDoor (default 0)
             id: "charmed",
             label: "PL1E.StatusCharmed",
-            icon: "systems/pl1e/assets/icons/charmed.svg",
+            icon: "systems/pl1e/assets/icons/svg/charmed.svg",
             tint: "#ff0000",
             changes: [], // Token disposition is updated in actor
             duration: {},
@@ -84,7 +84,7 @@ export const registerStatuses = function () {
             // No movement, loose all actions, no defenses
             id: "paralysis",
             label: "PL1E.StatusParalysis",
-            icon: "systems/pl1e/assets/icons/paralysis.svg",
+            icon: "systems/pl1e/assets/icons/svg/paralysis.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
@@ -138,7 +138,7 @@ export const registerStatuses = function () {
             // Removed if the character take damage and is replaced by stunned for one turn
             id: "asleep",
             label: "PL1E.StatusAsleep",
-            icon: "systems/pl1e/assets/icons/asleep.svg",
+            icon: "systems/pl1e/assets/icons/svg/asleep.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
@@ -167,7 +167,7 @@ export const registerStatuses = function () {
             // Prevent movement
             id: "restrained",
             label: "PL1E.StatusRestrained",
-            icon: "systems/pl1e/assets/icons/restrained.svg",
+            icon: "systems/pl1e/assets/icons/svg/restrained.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
@@ -181,7 +181,7 @@ export const registerStatuses = function () {
             // Remove one action and decrease movement by two
             id: "slow",
             label: "PL1E.StatusSlow",
-            icon: "systems/pl1e/assets/icons/slow.svg",
+            icon: "systems/pl1e/assets/icons/svg/slow.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.general.action",
@@ -200,7 +200,7 @@ export const registerStatuses = function () {
             // Add one action and increase movement by two
             id: "fast",
             label: "PL1E.StatusFast",
-            icon: "systems/pl1e/assets/icons/fast.svg",
+            icon: "systems/pl1e/assets/icons/svg/fast.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.general.action",
@@ -219,7 +219,7 @@ export const registerStatuses = function () {
             // Remove one reaction
             id: "stunned",
             label: "PL1E.StatusStunned",
-            icon: "systems/pl1e/assets/icons/stunned.svg",
+            icon: "systems/pl1e/assets/icons/svg/stunned.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.general.reaction",
@@ -233,7 +233,7 @@ export const registerStatuses = function () {
             // Add one reaction
             id: "invigorated",
             label: "PL1E.StatusInvigorated",
-            icon: "systems/pl1e/assets/icons/invigorated.svg",
+            icon: "systems/pl1e/assets/icons/svg/invigorated.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.general.reaction",
@@ -247,7 +247,7 @@ export const registerStatuses = function () {
             // Disadvantage on parry, reflex and vigor
             id: "sick",
             label: "PL1E.StatusSick",
-            icon: "systems/pl1e/assets/icons/sick.svg",
+            icon: "systems/pl1e/assets/icons/svg/sick.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.skills.parry.diceMod",
@@ -271,7 +271,7 @@ export const registerStatuses = function () {
             // Advantage on parry, reflex and vigor
             id: "healthy",
             label: "PL1E.StatusHealthy",
-            icon: "systems/pl1e/assets/icons/healthy.svg",
+            icon: "systems/pl1e/assets/icons/svg/healthy.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.skills.parry.diceMod",
@@ -295,7 +295,7 @@ export const registerStatuses = function () {
             // Disadvantage on resilience and intuition
             id: "confused",
             label: "PL1E.StatusConfused",
-            icon: "systems/pl1e/assets/icons/confused.svg",
+            icon: "systems/pl1e/assets/icons/svg/confused.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.skills.resilience.diceMod",
@@ -314,7 +314,7 @@ export const registerStatuses = function () {
             // Advantage on resilience and intuition
             id: "composed",
             label: "PL1E.StatusComposed",
-            icon: "systems/pl1e/assets/icons/composed.svg",
+            icon: "systems/pl1e/assets/icons/svg/composed.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.skills.resilience.diceMod",
@@ -333,7 +333,7 @@ export const registerStatuses = function () {
             // Add 5 health on turn start
             id: "bleeding",
             label: "PL1E.StatusBleeding",
-            icon: "systems/pl1e/assets/icons/bleeding.svg",
+            icon: "systems/pl1e/assets/icons/svg/bleeding.svg",
             tint: "#ff0000",
             changes: [], // Bleeding health decrease is handled from Combat class
             duration: {},
@@ -343,7 +343,7 @@ export const registerStatuses = function () {
             // Remove 1/3 of health damage
             id: "regenerate",
             label: "PL1E.StatusRegenerate",
-            icon: "systems/pl1e/assets/icons/regenerate.svg",
+            icon: "systems/pl1e/assets/icons/svg/regenerate.svg",
             tint: "#00ff00",
             changes: [], // Regenerate health increase is handled from Combat class
             duration: {},
@@ -353,7 +353,7 @@ export const registerStatuses = function () {
             // Add one disadvantage
             id: "downgraded",
             label: "PL1E.StatusDowngraded",
-            icon: "systems/pl1e/assets/icons/downgraded.svg",
+            icon: "systems/pl1e/assets/icons/svg/downgraded.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.general.advantages",
@@ -367,7 +367,7 @@ export const registerStatuses = function () {
             // Add one disadvantage
             id: "upgraded",
             label: "PL1E.StatusUpgraded",
-            icon: "systems/pl1e/assets/icons/upgraded.svg",
+            icon: "systems/pl1e/assets/icons/svg/upgraded.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.general.advantages",
@@ -381,7 +381,7 @@ export const registerStatuses = function () {
             // Prevent token sight
             id: "blind",
             label: "PL1E.StatusBlind",
-            icon: "systems/pl1e/assets/icons/blind.svg",
+            icon: "systems/pl1e/assets/icons/svg/blind.svg",
             tint: "#ff0000",
             changes: [], // Automatic native status
             duration: {},
@@ -391,7 +391,7 @@ export const registerStatuses = function () {
             // Should prevent vocal spell to be launched
             id: "deaf",
             label: "PL1E.StatusDeaf",
-            icon: "systems/pl1e/assets/icons/deaf.svg",
+            icon: "systems/pl1e/assets/icons/svg/deaf.svg",
             tint: "#ff0000",
             changes: [],
             duration: {},
@@ -401,7 +401,7 @@ export const registerStatuses = function () {
             // Remove token from normal sight
             id: "invisible",
             label: "PL1E.StatusInvisible",
-            icon: "systems/pl1e/assets/icons/invisible.svg",
+            icon: "systems/pl1e/assets/icons/svg/invisible.svg",
             tint: "#00ff00",
             changes: [], // Automatic native status
             duration: {},
@@ -411,7 +411,7 @@ export const registerStatuses = function () {
             // Allow token to see invisible
             id: "clairvoyant",
             label: "PL1E.StatusClairvoyant",
-            icon: "systems/pl1e/assets/icons/clairvoyant.svg",
+            icon: "systems/pl1e/assets/icons/svg/clairvoyant.svg",
             tint: "#00ff00",
             changes: [],
             duration: {},
@@ -431,7 +431,7 @@ export const registerStatuses = function () {
             // Grant token tremorsense
             id: "tremorsense",
             label: "PL1E.StatusTremorsense",
-            icon: "systems/pl1e/assets/icons/tremorsense.svg",
+            icon: "systems/pl1e/assets/icons/svg/tremorsense.svg",
             tint: "#00ff00",
             changes: [{
                 key: "token.sight.visionMode",
@@ -455,7 +455,7 @@ export const registerStatuses = function () {
             // The token will expire
             id: "ephemeral",
             label: "PL1E.Ephemeral",
-            icon: "systems/pl1e/assets/icons/ephemeral.svg",
+            icon: "systems/pl1e/assets/icons/svg/ephemeral.svg",
             changes: [], // TODO
             duration: {},
             flags: {}
@@ -464,7 +464,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "fireImmunity",
             label: "PL1E.StatusFireImmunity",
-            icon: "systems/pl1e/assets/icons/fireImmunity.svg",
+            icon: "systems/pl1e/assets/icons/svg/fireImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.burn",
@@ -478,7 +478,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "coldImmunity",
             label: "PL1E.StatusColdImmunity",
-            icon: "systems/pl1e/assets/icons/coldImmunity.svg",
+            icon: "systems/pl1e/assets/icons/svg/coldImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.cold",
@@ -492,7 +492,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "shockImmunity",
             label: "PL1E.StatusShockImmunity",
-            icon: "systems/pl1e/assets/icons/shockImmunity.svg",
+            icon: "systems/pl1e/assets/icons/svg/shockImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.acid",
@@ -506,7 +506,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "acidImmunity",
             label: "PL1E.StatusAcidImmunity",
-            icon: "systems/pl1e/assets/icons/acidImmunity.svg",
+            icon: "systems/pl1e/assets/icons/svg/acidImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.shock",
@@ -520,7 +520,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "slashingImmunity",
             label: "PL1E.StatusSlashingImmunity",
-            icon: "systems/pl1e/assets/icons/slashingImmunity.svg",
+            icon: "systems/pl1e/assets/icons/svg/slashingImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.slashing",
@@ -534,7 +534,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "crushingImmunity",
             label: "PL1E.StatusCrushingImmunity",
-            icon: "systems/pl1e/assets/icons/crushingImmunity.svg",
+            icon: "systems/pl1e/assets/icons/svg/crushingImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.crushing",
@@ -548,7 +548,7 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "piercingImmunity",
             label: "PL1E.StatusPiercingImmunity",
-            icon: "systems/pl1e/assets/icons/piercingImmunity.svg",
+            icon: "systems/pl1e/assets/icons/svg/piercingImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.piercing",
@@ -562,7 +562,7 @@ export const registerStatuses = function () {
             // Grant all immunities
             id: "immortal",
             label: "PL1E.StatusImmortal",
-            icon: "systems/pl1e/assets/icons/immortal.svg",
+            icon: "systems/pl1e/assets/icons/svg/immortal.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.slashing",

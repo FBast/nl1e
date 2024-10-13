@@ -592,152 +592,152 @@ export function getConfigActor() {
     PL1E.statuses = {
         "charmed": {
             "label": "PL1E.StatusCharmed",
-            "img": "systems/pl1e/assets/icons/charmed.svg",
+            "img": "systems/pl1e/assets/icons/svg/charmed.svg",
             "type": "status"
         },
         "paralysis": {
             "label": "PL1E.StatusParalysis",
-            "img": "systems/pl1e/assets/icons/paralysis.svg",
+            "img": "systems/pl1e/assets/icons/svg/paralysis.svg",
             "type": "status"
         },
         "asleep": {
             "label": "PL1E.StatusAsleep",
-            "img": "systems/pl1e/assets/icons/asleep.svg",
+            "img": "systems/pl1e/assets/icons/svg/asleep.svg",
             "type": "status"
         },
         "restrained": {
             "label": "PL1E.StatusRestrained",
-            "img": "systems/pl1e/assets/icons/restrained.svg",
+            "img": "systems/pl1e/assets/icons/svg/restrained.svg",
             "type": "status"
         },
         "slow": {
             "label": "PL1E.StatusSlow",
-            "img": "systems/pl1e/assets/icons/slow.svg",
+            "img": "systems/pl1e/assets/icons/svg/slow.svg",
             "type": "status"
         },
         "fast": {
             "label": "PL1E.StatusFast",
-            "img": "systems/pl1e/assets/icons/fast.svg",
+            "img": "systems/pl1e/assets/icons/svg/fast.svg",
             "type": "status"
         },
         "stunned": {
             "label": "PL1E.StatusStunned",
-            "img": "systems/pl1e/assets/icons/stunned.svg",
+            "img": "systems/pl1e/assets/icons/svg/stunned.svg",
             "type": "status"
         },
         "invigorated": {
             "label": "PL1E.StatusInvigorated",
-            "img": "systems/pl1e/assets/icons/invigorated.svg",
+            "img": "systems/pl1e/assets/icons/svg/invigorated.svg",
             "type": "status"
         },
         "sick": {
             "label": "PL1E.StatusSick",
-            "img": "systems/pl1e/assets/icons/sick.svg",
+            "img": "systems/pl1e/assets/icons/svg/sick.svg",
             "type": "status"
         },
         "healthy": {
             "label": "PL1E.StatusHealthy",
-            "img": "systems/pl1e/assets/icons/healthy.svg",
+            "img": "systems/pl1e/assets/icons/svg/healthy.svg",
             "type": "status"
         },
         "confused": {
             "label": "PL1E.StatusConfused",
-            "img": "systems/pl1e/assets/icons/confused.svg",
+            "img": "systems/pl1e/assets/icons/svg/confused.svg",
             "type": "status"
         },
         "composed": {
             "label": "PL1E.StatusComposed",
-            "img": "systems/pl1e/assets/icons/composed.svg",
+            "img": "systems/pl1e/assets/icons/svg/composed.svg",
             "type": "status"
         },
         "bleeding": {
             "label": "PL1E.StatusBleeding",
-            "img": "systems/pl1e/assets/icons/bleeding.svg",
+            "img": "systems/pl1e/assets/icons/svg/bleeding.svg",
             "type": "status"
         },
         "regenerate": {
             "label": "PL1E.StatusRegenerate",
-            "img": "systems/pl1e/assets/icons/regenerate.svg",
+            "img": "systems/pl1e/assets/icons/svg/regenerate.svg",
             "type": "status"
         },
         "downgraded": {
             "label": "PL1E.StatusDowngraded",
-            "img": "systems/pl1e/assets/icons/downgraded.svg",
+            "img": "systems/pl1e/assets/icons/svg/downgraded.svg",
             "type": "status"
         },
         "upgraded": {
             "label": "PL1E.StatusUpgraded",
-            "img": "systems/pl1e/assets/icons/upgraded.svg",
+            "img": "systems/pl1e/assets/icons/svg/upgraded.svg",
             "type": "status"
         },
         "blind": {
             "label": "PL1E.StatusBlind",
-            "img": "systems/pl1e/assets/icons/blind.svg",
+            "img": "systems/pl1e/assets/icons/svg/blind.svg",
             "type": "status"
         },
         "deaf": {
             "label": "PL1E.StatusDeaf",
-            "img": "systems/pl1e/assets/icons/deaf.svg",
+            "img": "systems/pl1e/assets/icons/svg/deaf.svg",
             "type": "status"
         },
         "invisible": {
             "label": "PL1E.StatusInvisible",
-            "img": "systems/pl1e/assets/icons/invisible.svg",
+            "img": "systems/pl1e/assets/icons/svg/invisible.svg",
             "type": "status"
         },
         "clairvoyant": {
             "label": "PL1E.StatusClairvoyant",
-            "img": "systems/pl1e/assets/icons/clairvoyant.svg",
+            "img": "systems/pl1e/assets/icons/svg/clairvoyant.svg",
             "type": "status"
         },
         "tremorsense": {
             "label": "PL1E.StatusTremorsense",
-            "img": "systems/pl1e/assets/icons/tremorsense.svg",
+            "img": "systems/pl1e/assets/icons/svg/tremorsense.svg",
             "type": "status"
         },
         "focus": {
             "label": "PL1E.StatusFocus",
-            "img": "systems/pl1e/assets/icons/focus.svg",
+            "img": "systems/pl1e/assets/icons/svg/focus.svg",
             "type": "status"
         },
         "slashingImmunity": {
             "label": "PL1E.StatusSlashingImmunity",
-            "img": "systems/pl1e/assets/icons/slashingImmunity.svg",
+            "img": "systems/pl1e/assets/icons/svg/slashingImmunity.svg",
             "type": "status"
         },
         "crushingImmunity": {
             "label": "PL1E.StatusCrushingImmunity",
-            "img": "systems/pl1e/assets/icons/crushingImmunity.svg",
+            "img": "systems/pl1e/assets/icons/svg/crushingImmunity.svg",
             "type": "status"
         },
         "piercingImmunity": {
             "label": "PL1E.StatusPiercingImmunity",
-            "img": "systems/pl1e/assets/icons/piercingImmunity.svg",
+            "img": "systems/pl1e/assets/icons/svg/piercingImmunity.svg",
             "type": "status"
         },
         "fireImmunity": {
             "label": "PL1E.StatusFireImmunity",
-            "img": "systems/pl1e/assets/icons/fire-shield.svg",
+            "img": "systems/pl1e/assets/icons/svg/fire-shield.svg",
             "type": "status"
         },
         "coldImmunity": {
             "label": "PL1E.StatusColdImmunity",
-            "img": "systems/pl1e/assets/icons/ice-shield.svg",
+            "img": "systems/pl1e/assets/icons/svg/ice-shield.svg",
             "type": "status"
         },
         "shockImmunity": {
             "label": "PL1E.StatusShockImmunity",
-            "img": "systems/pl1e/assets/icons/shockImmunity.svg",
+            "img": "systems/pl1e/assets/icons/svg/shockImmunity.svg",
             "type": "status"
         },
         "acidImmunity": {
             "label": "PL1E.StatusAcidImmunity",
-            "img": "systems/pl1e/assets/icons/acidImmunity.svg",
+            "img": "systems/pl1e/assets/icons/svg/acidImmunity.svg",
             "type": "status"
         },
         "immortal": {
             "label": "PL1E.StatusImmortal",
-            "img": "systems/pl1e/assets/icons/immortal.svg",
+            "img": "systems/pl1e/assets/icons/svg/immortal.svg",
             "type": "status"
         }
     }

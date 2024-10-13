@@ -10,8 +10,8 @@
                            data-aspect-type="active" data-tooltip='{{localize label}}' width="20" height="20"/>
                 {{/with}}
             {{/each}}
-            <a class="active-aspects-copy" data-tooltip='{{localize "PL1E.Copy"}}'><i class="fas fa-copy"></i></a>
-            <a class="active-aspects-paste" data-tooltip='{{localize "PL1E.Paste"}}'><i class="fas fa-paste"></i></a>
+            <a class="active-aspects-copy hover-action" data-tooltip='{{localize "PL1E.Copy"}}'><i class="fas fa-copy"></i></a>
+            <a class="active-aspects-paste hover-action" data-tooltip='{{localize "PL1E.Paste"}}'><i class="fas fa-paste"></i></a>
         </div>
     </li>
     {{#each activeAspects}}
@@ -26,7 +26,7 @@
 
                     </div>
                     <div class="item-controls grid-span-2">
-                        <a class="aspect-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        <a class="aspect-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                     </div>
                 </div>
                 <div class="item-tooltip flexcol">

@@ -143,6 +143,7 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".item-link").on("click", ev => this._onItemLink(ev));
         html.find(".item-origin").on("click", ev => this._onItemOrigin(ev));
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find(".convert-currency").on("click", ev => this._onConvertCurrency(ev));
 
         // Highlights indications
         html.find(".highlight-link").on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
@@ -185,14 +186,13 @@ export class Pl1eActorSheet extends ActorSheet {
         // Chat messages
         html.find(".skill-roll").on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
 
-        // Currency
-        html.find(".currency-convert").on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
-
         // Custom controls
         html.find(".set-number").on("click", ev => Pl1eEvent.onSetNumber(ev, this.actor));
         html.find(".spin-number").on("click", ev => Pl1eEvent.onSpinNumber(ev, this.actor));
+        html.find(".edit-number").on("click", ev => Pl1eEvent.onEditNumber(ev, this.actor));
         html.find(".rank-control").on("click", ev => this._onRankChange(ev));
         html.find(".item-favorite").on("click", ev => this._onItemFavorite(ev))
+        html.find(".currency-favorite").on("click", ev => this._onCurrencyFavorite(ev))
         html.find(".item-toggle").on("click", ev => this._onItemToggle(ev));
         html.find(".item-use").on("click", ev => this._onItemUse(ev));
         html.find(".item-reload").on("click", ev => this._onItemReload(ev));
@@ -772,6 +772,55 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
+     * Convert currencies with upgrade or downgrade
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onConvertCurrency(event) {
+        const currencyId = $(event.currentTarget).closest(".item").data("currency-id");
+        const type = $(event.currentTarget).data("type");
+
+        let currentGold = foundry.utils.getProperty(this.actor, "system.money.gold");
+        let currentSilver = foundry.utils.getProperty(this.actor, "system.money.silver");
+        let currentCopper = foundry.utils.getProperty(this.actor, "system.money.copper");
+
+        const actorData = {};
+        switch (currencyId) {
+            case "gold":
+                if (type === "down") {
+                    currentGold -= 1;
+                    currentSilver += 10;
+                }
+                break;
+            case "silver":
+                if (type === "down") {
+                    currentSilver -= 1;
+                    currentCopper += 10;
+                }
+                else if (type === "up") {
+                    currentGold += 1;
+                    currentSilver -= 10;
+                }
+                break;
+            case "copper":
+                if (type === "up") {
+                    currentSilver += 1;
+                    currentCopper -= 10;
+                }
+                break;
+        }
+
+        if (currentGold < 0 || currentSilver < 0 || currentCopper < 0) return;
+
+        await this.actor.update({
+            "system.money.gold": currentGold,
+            "system.money.silver": currentSilver,
+            "system.money.copper": currentCopper
+        });
+    }
+
+    /**
      * Open roll table sheet
      * @param event The originating click event
      * @param {Actor} actor the actor of the roll table
@@ -854,6 +903,25 @@ export class Pl1eActorSheet extends ActorSheet {
         /** @type {Pl1eItem} */
         const item = this.actor.items.get(itemId);
         await item.favorite();
+    }
+
+    /**
+     * Favorite the currency
+     * @param event
+     * @returns {Promise<void>}
+     */
+    async _onCurrencyFavorite(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        let currencyId = $(event.currentTarget).closest(".item").data("currency-id");
+        currencyId = currencyId.charAt(0).toUpperCase() + currencyId.slice(1);
+
+        const currencyPath = `system.misc.is${currencyId}Favorite`;
+        const isFavorite = foundry.utils.getProperty(this.actor, currencyPath);
+        await this.actor.update({
+            [currencyPath]: !isFavorite,
+        });
     }
 
     /**
