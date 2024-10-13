@@ -27,6 +27,7 @@ Graphical arts to represent important city of the world in a top down view creat
 
 ![Alsatrin City](https://github.com/FBast/nl1e/blob/main/assets/maps/Alsatrin.jpg)
 ![Uirsgeul City](https://github.com/FBast/nl1e/blob/main/assets/maps/Uirsgeul.jpg)
+![Tom Khaalga City](https://github.com/FBast/nl1e/blob/main/assets/maps/Tom%20Khaalga.jpg)
 
 With **multiple points of interests linked to journal and merchants** icon to allow the player to discover the city along your description.
 
@@ -34,7 +35,7 @@ With **multiple points of interests linked to journal and merchants** icon to al
 
 Graphical arts to represent towns of the world generate with Leonardo AI.
 
-![Braelcom City](https://github.com/FBast/nl1e/blob/main/assets/scenes/BraelcomScene.jpg)
+![Braelcom City](https://github.com/FBast/nl1e/blob/main/assets/scenes/Braelcom.jpg)
 
 Each generate using IA and providing **merchants icons to allow player to buy and sell** on the fly with possibility for the GM to configure the merchant.
 
