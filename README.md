@@ -34,7 +34,7 @@ With **multiple points of interests linked to journal and merchants** icon to al
 
 Graphical arts to represent towns of the world generate with Leonardo AI.
 
-![Braelcom City](https://github.com/FBast/nl1e/blob/main/assets/scenes/BraelcomScene.jpg)
+![Braelcom City](https://github.com/FBast/nl1e/blob/main/assets/scenes/Braelcom.jpg)
 
 Each generate using IA and providing **merchants icons to allow player to buy and sell** on the fly with possibility for the GM to configure the merchant.
 
