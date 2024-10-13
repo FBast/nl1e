@@ -1,6 +1,58 @@
-$padding-sm: 5px;
-$padding-md: 10px;
-$padding-lg: 20px;
-
 $borderGroove: 2px groove #eeede0;
-$sheetBackground: url("../assets/imgs/background.jpg") repeat;
+$sheetBackground: url("../../assets/imgs/background.jpg") repeat;
+
+// Padding
+$padding-sm: 4px;
+$padding-md: 8px;
+$padding-lg: 16px;
+
+// Font Size
+$font-size-sm: 12px;
+$font-size-md: 14px;
+$font-size-lg: 18px;
+$font-size-xlg: 24px;
+
+// Typography
+$font-primary: 'Roboto', sans-serif;
+$font-secondary: 'Roboto', sans-serif;
+
+// Colors
+$colorWhite: #ffffff;
+$colorDark: #191813;
+$colorGrey: #78788a;
+$colorFaint: #c9c7b8;
+$colorBeige: #b5b3a484;
+$colorTan: #7a7971;
+$colorOlive: #4b4a44;
+$colorCrimson: #44191A;
+
+$colorGold: #c7a700;
+$colorSilver: #9f9f9f;
+$colorCopper: #af5134;
+
+$colorText: #ffffff;
+$colorTextAlt: #000000;
+
+$colorBackground: #ffffff;
+$colorPanel: #e8e8e8;
+$colorBorder: #c3c3c3;
+
+$colorBackgroundNegative: invert-color($colorBackground);
+$colorPanelNegative: invert-color($colorPanel);
+$colorBorderNegative: invert-color($colorBorder);
+
+$colorMalus: red;
+$colorBonus: green;
+
+$colorAction: #ff0000;
+$colorInfo: #00ff00;
+$colorReady: #c8ffc8;
+$colorUnavailable: #ffdfe5;
+$colorWarning: #c8c800;
+$colorDisabled: #c8c8c8;
+
+$colorHealth: #ff4c4c;
+$colorStamina: #4caf50;
+$colorMana: #2196f3;
+$colorDestiny: #ff00ff;
+$colorXP: #969600;

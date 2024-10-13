@@ -1,0 +1,54 @@
+{{#if (or (eq system.attributes.commonType "food"))}}
+    <i class="far fa-pot-food hover-info" data-tooltip='{{localize "PL1E.Food"}}'></i>
+    {{#if (ne system.attributes.healthRest 0)}}
+        <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthRest"}}'>
+            <label>{{system.attributes.healthRest}}</label>
+        </i>
+    {{/if}}
+    {{#if (ne system.attributes.staminaRest 0)}}
+        <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
+            <label>{{system.attributes.staminaRest}}</label>
+        </i>
+    {{/if}}
+    {{#if (ne system.attributes.manaRest 0)}}
+        <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaRest"}}'>
+            <label>{{system.attributes.manaRest}}</label>
+        </i>
+    {{/if}}
+{{else if (eq system.attributes.commonType "drink")}}
+    <i class="far fa-glass hover-info" data-tooltip='{{localize "PL1E.Drink"}}'></i>
+    {{#if (ne system.attributes.healthRest 0)}}
+        <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthRest"}}'>
+            <label>{{system.attributes.healthRest}}</label>
+        </i>
+    {{/if}}
+    {{#if (ne system.attributes.staminaRest 0)}}
+        <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.StaminaRest"}}'>
+            <label>{{system.attributes.staminaRest}}</label>
+        </i>
+    {{/if}}
+    {{#if (ne system.attributes.manaRest 0)}}
+        <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaRest"}}'>
+            <label>{{system.attributes.manaRest}}</label>
+        </i>
+    {{/if}}
+{{/if}}
+{{#if (eq @root.actor.type "merchant")}}
+    {{#with (lookup ../system.merchantPrices _id)}}
+        {{#if (gt gold 0)}}
+            <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+                <label>{{gold}}</label>
+            </i>
+        {{/if}}
+        {{#if (gt silver 0)}}
+            <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+                <label>{{silver}}</label>
+            </i>
+        {{/if}}
+        {{#if (gt copper 0)}}
+            <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                <label>{{copper}}</label>
+            </i>
+        {{/if}}
+    {{/with}}
+{{/if}}

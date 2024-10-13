@@ -24,7 +24,7 @@ export class Pl1eWearable extends Pl1eItem {
 
         // Toggle item slot
         await this.update({
-            ["system.isEquipped"]: !getProperty(this, "system.isEquipped"),
+            ["system.isEquipped"]: !foundry.utils.getProperty(this, "system.isEquipped"),
         });
 
         // Ignore if not using a slot

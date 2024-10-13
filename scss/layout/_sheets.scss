@@ -1,28 +1,32 @@
-.pl1e {
+&.sheet.actor {
+  min-height: 840px;
+  min-width: 700px;
 
-  &.window-app {
-    font-family: $font-primary;
+  .window-content {
+    background: rgba(0, 0, 0, 0.3);
   }
 
-  &.sheet.actor {
-    min-width: 700px;
-    min-height: 720px;
-
-    .profile {
-      width: 120px;
-      height: auto;
-    }
-
+  .character-sheet {
+    display: flex;
+    flex-direction: column;
   }
 
-  &.sheet.item {
-    min-width: 500px;
-    min-height: 500px;
+  .merchant-sheet {
+    display: flex;
+    flex-direction: column;
+  }
+}
 
-    .profile {
-      width: auto;
-      height: 100px;
-    }
+&.sheet.item {
+  min-height: 500px;
+  min-width: 500px;
 
+  .window-content {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .item-sheet {
+    display: flex;
+    flex-direction: column;
   }
 }

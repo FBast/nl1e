@@ -4,14 +4,12 @@ import {Pl1eHelpers} from "./helpers.mjs";
 export class Pl1eChat {
 
     /**
-     * Send a message for an action roll
+     * Send a message for a launcher roll
      * @param {CharacterData} characterData
-     * @param {TargetData} targetData
      * @returns {Promise<ChatMessage>}
      */
-    static async actionRoll(characterData, targetData = undefined) {
-        const rollData = targetData === undefined ? characterData.rollData : targetData.rollData;
-        const template = targetData === undefined ? "character" : "target";
+    static async launcherRoll(characterData) {
+        const rollData = characterData.rollData;
 
         // Localize skill name
         if (rollData !== undefined) {
@@ -20,8 +18,8 @@ export class Pl1eChat {
         }
 
         // Render the chat card template
-        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-${template}.hbs`,
-            {rollData: rollData, characterData: characterData, targetData: targetData});
+        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-launcher.hbs`,
+            {rollData: rollData, characterData: characterData});
 
         let flavor = `[${game.i18n.localize("PL1E.Action")}] ${characterData.item.name}`;
 
@@ -29,7 +27,46 @@ export class Pl1eChat {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: characterData.actor}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
+            flavor: flavor,
+            rollMode: game.settings.get('core', 'rollMode'),
+            flags: {
+                "core.canPopout": true,
+                "pl1e.isResolved": false
+            },
+            content: html
+        };
+
+        // Render message
+        return await ChatMessage.create(chatData);
+    }
+
+    /**
+     * Send a message for a target roll
+     * @param {CharacterData} characterData
+     * @param {TargetData} targetData
+     * @returns {Promise<ChatMessage>}
+     */
+    static async targetRoll(characterData, targetData) {
+        const rollData = targetData.rollData;
+
+        // Localize skill name
+        if (rollData !== undefined) {
+            const skillConfig = Pl1eHelpers.getConfig("skills", rollData.skillName);
+            rollData.skillName = game.i18n.localize(skillConfig.label);
+        }
+
+        // Render the chat card template
+        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-target.hbs`,
+            {rollData: rollData, characterData: characterData, targetData: targetData});
+
+        let flavor = `${game.i18n.localize("PL1E.SubjectTo")} [${game.i18n.localize("PL1E.Action")}] ${characterData.item.name}`;
+
+        // Create the ChatMessage data object
+        const chatData = {
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({actor: targetData.actor}),
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
             flavor: flavor,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {
@@ -57,7 +94,7 @@ export class Pl1eChat {
         await roll.toMessage({
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: actor}),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
             flavor: `[${game.i18n.localize("PL1E.Skill")}] ${game.i18n.localize(skillConfig.label)}`,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {"core.canPopout": true}
@@ -88,7 +125,7 @@ export class Pl1eChat {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: sourceActor}),
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.OTHER,
             flavor: `[${transactionTypes[transaction]}] ${item.name}`,
             flags: {"core.canPopout": true},
             content: html
@@ -116,7 +153,7 @@ export class Pl1eChat {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: actor}),
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            type: foundry.CONST.CHAT_MESSAGE_TYPES.OTHER,
             flavor: flavor,
             flags: {"core.canPopout": true},
             content: html

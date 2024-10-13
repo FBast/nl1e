@@ -1,53 +1,83 @@
-<form class="pl1e {{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="merchant-sheet {{actor.type}} {{cssClass}}" autocomplete="off">
     {{!-- Sheet Header --}}
     <header class="sheet-header">
-        <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-        <div class="header-fields">
-            <h1 class="sheet-name"><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/></h1>
-            <div class="resources grid grid-2col">
-                <div class="resource box flex-group-center">
-                    {{#if actor.isOwner}}
-                        <label class="resource-label">{{localize "PL1E.SellMultiplier"}}</label>
-                        <div class="form-group resource-content">
-                            {{rangePicker name="system.general.sellMultiplier" value=system.general.sellMultiplier min=0 max=200 step=10}}
-                        </div>
-                    {{else}}
-                        <label class="resource-label">{{localize "PL1E.SellAt"}} {{system.general.sellMultiplier}}%</label>
-                    {{/if}}
+        <div class="profile-container">
+            <div class="profile-wrapper">
+                <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-1.png"/>
+            </div>
+        </div>
+        <div class="header-infos">
+            <div class="info-container">
+                <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Actions"}}">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="fas fa-lock" data-tooltip="{{localize "PL1E.Lock"}}"></i>
+                    </div>
                 </div>
-                <div class="resource box flex-group-center">
-                    {{#if actor.isOwner}}
-                        <label class="resource-label">{{localize "PL1E.BuyMultiplier"}}</label>
-                        <div class="form-group resource-content">
-                            {{rangePicker name="system.general.buyMultiplier" value=system.general.buyMultiplier min=0 max=200 step=10}}
-                        </div>
-                    {{else}}
-                    <label class="resource-label">{{localize "PL1E.BuyAt"}} {{system.general.buyMultiplier}}%</label>
-                    {{/if}}
+            </div>
+            <div class="sell-bar">
+                <div class="infos">
+                    <span class="name">{{localize "PL1E.SellMultiplier"}}</span>
+                    <input type="number" name="system.general.sellMultiplier" value="{{system.general.sellMultiplier}}" min="0" max="200"/>
+                    <span>%</span>
+                </div>
+                <div class="bar">
+                    <div class="fill" style="width: {{system.general.sellMultiplier}}%;"></div>
+                </div>
+            </div>
+            <div class="buy-bar">
+                <div class="infos">
+                    <span class="name">{{localize "PL1E.BuyMultiplier"}}</span>
+                    <input type="number" name="system.general.buyMultiplier" value="{{system.general.buyMultiplier}}" min="0" max="200"/>
+                    <span>%</span>
+                </div>
+                <div class="bar">
+                    <div class="fill" style="width: {{system.general.buyMultiplier}}%;"></div>
                 </div>
             </div>
         </div>
     </header>
+
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        {{!-- Default tab is specified in actor-sheet.mjs --}}
-        {{#if actor.system.haveFeatures}}<a class="item" data-tab="features">{{localize "PL1E.Features"}}</a>{{/if}}
-        <a class="item" data-tab="items">{{localize "PL1E.Items"}}</a>
-        {{#if game.user.isGM}}<a class="item" data-tab="config">{{localize "PL1E.Configuration"}}</a>{{/if}}
+        {{#if actor.system.haveFeatures}}
+            <a class="hover-action enabled-action" data-tab="features">{{localize "PL1E.Features"}}</a>
+        {{/if}}
+        <a class="hover-action enabled-action" data-tab="items">{{localize "PL1E.Items"}}</a>
+        {{#if game.user.isGM}}
+            <a class="hover-action enabled-action" data-tab="config">{{localize "PL1E.Configuration"}}</a>
+        {{/if}}
     </nav>
+
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Features Tab --}}
-        <div class="tab features flexcol" data-group="primary" data-tab="features">
-            {{> "systems/pl1e/templates/actor/parts/merchant-features.hbs"}}
+        <div class="tab" data-group="primary" data-tab="features">
+            <div class="tab-container scroll-auto">
+                {{> "systems/pl1e/templates/actor/parts/features-background.hbs"}}
+                {{> "systems/pl1e/templates/actor/parts/features-features.hbs"}}
+            </div>
         </div>
         {{!-- Items Tab --}}
-        <div class="tab items flexcol" data-group="primary" data-tab="items">
-            {{> "systems/pl1e/templates/actor/parts/merchant-items.hbs"}}
+        <div class="tab" data-group="primary" data-tab="items">
+            <div class="tab-container scroll-auto">
+                {{> "systems/pl1e/templates/actor/parts/inventory-weapons.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-wearables.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-consumables.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-commons.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-modules.hbs" }}
+            </div>
         </div>
-        {{!-- Stats Tab --}}
-        <div class="tab stats flexcol" data-group="primary" data-tab="config">
-            {{> "systems/pl1e/templates/actor/parts/merchant-config.hbs"}}
+        {{!-- Config Tab --}}
+        <div class="tab" data-group="primary" data-tab="config">
+            <div class="tab-container scroll-auto">
+                {{> "systems/pl1e/templates/actor/parts/config-parameters.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/config-roll-tables.hbs" }}
+            </div>
         </div>
     </section>
 </form>

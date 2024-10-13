@@ -16,30 +16,20 @@ export default class Pl1eHooks {
             }
         });
 
-        // Restore tooltip expanded state
-        Hooks.on("renderItemSheet", handleTooltipState);
-        Hooks.on("renderActorSheet", handleTooltipState);
+        Hooks.on("renderItemSheet", (itemSheet, html, data) => {
+            // Apply the user color to the sheet
+            for (const user of game.users) {
+                if (user.character !== itemSheet.item.parent) continue;
 
-        function handleTooltipState(app, html, data) {
-            const tooltips = html.find('.item-tooltip');
-            tooltips.each(function () {
-                const tooltip = $(this);
-                const item = $(tooltip).closest(".item");
-
-                // Check if tooltip associated
-                if (tooltip === undefined) return;
-
-                // Check if the tooltip state is in local storage
-                const itemId = item.data("item-id");
-                const tooltipState = localStorage.getItem(`tooltipState_${itemId}`);
-
-                // If the tooltip state is in local storage, show/hide the tooltip accordingly
-                if (tooltipState !== null && tooltipState === "open") {
-                    $(tooltip).show();
-                    $(tooltip).toggleClass('expanded');
+                let color = user.color;
+                if (typeof color === 'object') {
+                    color = color.toString(); // Convert to string if it's a Color object
                 }
-            });
-        }
+
+                const colorWithOpacity = Pl1eHelpers.hexToRgba(color, 0.5);
+                itemSheet.element.css("background-color", colorWithOpacity);
+            }
+        });
 
         Hooks.on("renderActorSheet", (actorSheet, html, data) => {
             if (actorSheet.actor.type === "character") {
@@ -49,12 +39,37 @@ export default class Pl1eHooks {
                 if (formApp) formApp.render(true);
 
                 // Apply the user color to the sheet
-                for (const [id, user] of Object.entries(game.users.players)) {
+                for (const user of game.users) {
                     if (user.character !== actorSheet.actor) continue;
-                    actorSheet.element.css("background-color", user.color);
+
+                    let color = user.color;
+                    if (typeof color === 'object') {
+                        color = color.toString(); // Convert to string if it's a Color object
+                    }
+                    
+                    const colorWithOpacity = Pl1eHelpers.hexToRgba(color, 0.5);
+                    actorSheet.element.css("background-color", colorWithOpacity);
                 }
             }
         });
+
+        Hooks.on("renderJournalSheet", (journalSheet, html, data) => {
+            const journal = journalSheet.document;
+            const writerId = journal.getFlag("pl1e", "writerId");
+            if (!writerId) return;
+
+            const user = game.users.get(writerId);
+            if (!user) return;
+            
+            let color = user.color;
+            if (typeof color === 'object') {
+                color = color.toString(); // Convert to string if it's a Color object
+            }
+
+            const colorWithOpacity = Pl1eHelpers.hexToRgba(color, 0.5);
+            journalSheet.element.css("background-color", colorWithOpacity);
+        });
+
     }
 
     static renderChatMessage(app, html, data) {

@@ -19,7 +19,7 @@ export class Resting extends FormApplication {
 
     /** @inheritDoc */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["my-apps"],
             template: "systems/pl1e/templates/apps/resting.hbs",
             width: 400,
@@ -101,9 +101,7 @@ export class Resting extends FormApplication {
 
         html.find('.item-edit').on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
         html.find('.rank-control').on("click", ev => this._onRankChange(ev));
-        html.find(".item-toggle").on("click", ev => this._onItemMemorize(ev));
         html.find(".item-use").on("click", ev => this._onItemUse(ev));
-
         html.find('.rest-confirm').on("click", ev => this._onRestConfirm(ev));
         html.find('.rest-cancel').on("click", ev => this._onRestCancel(ev));
     }

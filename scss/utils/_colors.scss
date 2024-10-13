@@ -1,13 +1,107 @@
-$colorDark: #191813;
-$colorFaint: #c9c7b8;
-$colorBeige: #b5b3a484;
-$colorTan: #7a7971;
-$colorOlive: #4b4a44;
-$colorCrimson: #44191A;
+.color-dark {
+  color: $colorDark;
+}
 
-$colorWhite: #ffffff4d;
-$colorSilver: #c0c0c04d;
+.color-faint {
+  color: $colorFaint;
+}
 
-$colorGold: #c7a700;
-$colorSilver: #9f9f9f;
-$colorCopper: #af5134;
+.color-beige {
+  color: $colorBeige;
+}
+
+.color-tan {
+  color: $colorTan;
+}
+
+.color-olive {
+  color: $colorOlive;
+}
+
+.color-crimson {
+  color: $colorCrimson;
+}
+
+.color-silver {
+  color: $colorSilver;
+}
+
+.color-gold {
+  color: $colorGold;
+}
+
+.color-copper {
+  color: $colorCopper;
+}
+
+.color-warning {
+  color: $colorWarning;
+}
+
+.color-grey {
+  color: $colorGrey
+}
+
+.color-black {
+  color: black;
+}
+
+.color-disabled {
+  color: $colorDisabled !important;
+}
+
+.color-malus {
+  color: $colorMalus !important;
+}
+
+.color-bonus {
+  color: $colorBonus !important;
+}
+
+.hover-action {
+  &:hover,
+  &:focus {
+    text-shadow: 0 0 10px $colorAction !important;
+    cursor: pointer;
+  }
+}
+
+.enabled-action {
+  &:enabled {
+    color: $colorAction !important;
+  }
+}
+
+.hover-info {
+  &:hover,
+  &:focus {
+    text-shadow: 0 0 10px $colorInfo !important;
+    cursor: help;
+  }
+}
+
+.highlight-info {
+  transition: text-shadow 0.5s ease;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    text-shadow: 0 0 5px $colorInfo, 0 0 10px $colorInfo, 0 0 15px $colorInfo;
+  }
+  50% {
+    text-shadow: 0 0 10px lighten($colorInfo, 20%), 0 0 20px lighten($colorInfo, 20%), 0 0 30px lighten($colorInfo, 20%);
+  }
+  100% {
+    text-shadow: 0 0 5px $colorInfo, 0 0 10px $colorInfo, 0 0 15px $colorInfo;
+  }
+}
+
+
+.background-ready {
+  background-color: $colorReady !important;
+}
+
+.background-unavailable {
+  background-color: $colorUnavailable !important;
+}

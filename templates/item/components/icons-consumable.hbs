@@ -1,0 +1,89 @@
+{{#if (ne system.attributes.actionCost 0)}}
+    <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+        <label>{{system.attributes.actionCost}}</label>
+    </i>
+{{/if}}
+{{#if (ne system.attributes.reactionCost 0)}}
+    <i class="far fa-reply-clock hover-info" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+        <label>{{system.attributes.reactionCost}}</label>
+    </i>
+{{/if}}
+{{#if (ne system.attributes.quickActionCost 0)}}
+    <i class="far fa-bell hover-info" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
+        <label>{{system.attributes.quickActionCost}}</label>
+    </i>
+{{/if}}
+{{#if (ne system.attributes.healthCost 0)}}
+    <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthCost"}}'>
+        <label>{{system.attributes.healthCost}}</label>
+    </i>
+{{/if}}
+{{#if (ne system.attributes.staminaCost 0)}}
+    <i class="far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaCost"}}">
+        <label>{{system.attributes.staminaCost}}</label>
+    </i>
+{{/if}}
+{{#if (ne system.attributes.manaCost 0)}}
+    <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaCost"}}'>
+        <label>{{system.attributes.manaCost}}</label>
+    </i>
+{{/if}}
+{{#if system.attributes.isMajorAction}}
+    <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
+{{/if}}
+{{#if system.attributes.isDangerous}}
+    <i class="far fa-skull-crossbones hover-info" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
+{{/if}}
+{{#if (gt system.attributes.uses 0)}}
+    {{#if (eq system.removedUses 0)}}
+        <i class="far fa-battery-full hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
+            <label>{{minus system.attributes.uses system.removedUses}}</label>
+        </i>
+    {{else if (eq system.removedUses system.attributes.uses)}}
+        <i class="far fa-battery-empty hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
+            <label>{{minus system.attributes.uses system.removedUses}}</label>
+        </i>
+    {{else}}
+        <i class="far fa-battery-half hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
+            <label>{{minus system.attributes.uses system.removedUses}}</label>
+        </i>
+    {{/if}}
+    {{#if system.attributes.isReloadable}}
+        <i class="far fa-repeat hover-info" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
+    {{/if}}
+{{/if}}
+{{#if (eq @root.actor.type "character")}}
+    {{#if (gt system.attributes.goldPrice 0)}}
+        <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+            <label>{{system.attributes.goldPrice}}</label>
+        </i>
+    {{/if}}
+    {{#if (gt system.attributes.silverPrice 0)}}
+        <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+            <label>{{system.attributes.silverPrice}}</label>
+        </i>
+    {{/if}}
+    {{#if (gt system.attributes.copperPrice 0)}}
+        <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+            <label>{{system.attributes.copperPrice}}</label>
+        </i>
+    {{/if}}
+{{else if (eq @root.actor.type "merchant")}}
+    {{#with (lookup ../system.merchantPrices _id)}}
+        {{#if (gt gold 0)}}
+            <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+                <label>{{gold}}</label>
+            </i>
+        {{/if}}
+        {{#if (gt silver 0)}}
+            <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+                <label>{{silver}}</label>
+            </i>
+        {{/if}}
+        {{#if (gt copper 0)}}
+            <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                <label>{{copper}}</label>
+            </i>
+        {{/if}}
+    {{/with}}
+{{/if}}

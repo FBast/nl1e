@@ -1,18 +1,20 @@
-<div class="chat-card item-card pl1e">
+<div class="pl1e chat-card item">
     <header class="card-header flexrow">
-        <img class="left-image actor-edit" src="{{sourceActor.img}}" title="{{sourceActor.name}}" width="36" height="36"/>
-        <div class="item-effects-character">
+        <img class="actor-edit" src="{{sourceActor.img}}" title="{{sourceActor.name}}" width="36" height="36"/>
+        <div class="flex-large item-effects-character">
             {{#unless (eq price undefined)}}
                 {{#each price}}
                     {{#with (config "money" @key)}}
-                        <i class="currency-icon far fa-coins color-{{@key}} hover-green" data-tooltip='{{localize label}}'>
-                            <label class="color-black">{{#if (eq @root.transaction "purchase")}}-{{/if}}{{../this}}</label>
+                        <i class="{{@key}}" data-tooltip='{{localize label}}'>
+                            <label class="color-black">{{#if (eq @root.transaction "purchase")}}
+                                -{{/if}}{{../this}}</label>
                         </i>
                     {{/with}}
                 {{/each}}
             {{/unless}}
         </div>
-        <img class="right-image item-edit" src="{{item.img}}" data-item-id="{{item._id}}" title="{{item.name}}" width="36" height="36"/>
-        <img class="right-image actor-edit" src="{{targetActor.img}}" title="{{targetActor.name}}" width="36" height="36"/>
+        <img class="item-edit" src="{{item.img}}" data-item-id="{{item._id}}" title="{{item.name}}" width="36"
+             height="36"/>
+        <img class="actor-edit" src="{{targetActor.img}}" title="{{targetActor.name}}" width="36" height="36"/>
     </header>
 </div>

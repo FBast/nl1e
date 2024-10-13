@@ -11,10 +11,21 @@ export class Pl1eItem extends Item {
      * @return {string|*}
      */
     get sourceId() {
-        const sourceId = this.getFlag("core", "sourceId")
-        if (sourceId === undefined) return undefined;
-        const sourceIdArray = sourceId.split(".");
-        return sourceIdArray[sourceIdArray.length - 1];
+        // V12 Method to get the source id
+        const compendiumSource = this._stats?.compendiumSource;
+        if (compendiumSource) {
+            const sourceIdArray = compendiumSource.split(".");
+            return sourceIdArray[sourceIdArray.length - 1];
+        }
+
+        // Deprecated since V12
+        // const deprecatedSourceId = this.getFlag("core", "sourceId");
+        // if (deprecatedSourceId !== undefined) {
+        //     const sourceIdArray = deprecatedSourceId.split(".");
+        //     return sourceIdArray[sourceIdArray.length - 1];
+        // }
+
+        return undefined;
     }
 
     /**
@@ -122,21 +133,6 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Get warning about the item
-     * @return {*[]}
-     */
-    get warnings() {
-        const warnings = [];
-
-        if (!this.isUsableAtLevel) warnings.push("PL1E.NotUsableAtYourLevel");
-        if (!this.isActionAvailable) warnings.push("PL1E.NoMoreAction");
-        if (!this.isReactionAvailable) warnings.push("PL1E.NoMoreReaction");
-        if (!this.isQuickActionAvailable) warnings.push("PL1E.NoMoreQuickAction");
-
-        return warnings;
-    }
-
-    /**
      * Check if the item is effective
      * @return {boolean}
      */
@@ -149,6 +145,21 @@ export class Pl1eItem extends Item {
 
         // Recursive check on parents
         return this.parentItem ? this.parentItem.isEnabled : true;
+    }
+
+    /**
+     * Get warning about the item
+     * @return {*[]}
+     */
+    get warnings() {
+        const warnings = [];
+
+        if (!this.isUsableAtLevel) warnings.push("PL1E.NotUsableAtYourLevel");
+        if (!this.isActionAvailable) warnings.push("PL1E.NoMoreAction");
+        if (!this.isReactionAvailable) warnings.push("PL1E.NoMoreReaction");
+        if (!this.isQuickActionAvailable) warnings.push("PL1E.NoMoreQuickAction");
+
+        return warnings;
     }
 
     /**
@@ -278,7 +289,7 @@ export class Pl1eItem extends Item {
     static async create(docData, options = {}) {
         // Replace default image
         if (docData.img === undefined) {
-            docData.img = `systems/pl1e/assets/icons/${docData.type}.svg`;
+            docData.img = `systems/pl1e/assets/svg/${docData.type}.svg`;
         }
 
         // Keep id if coming from compendium
@@ -573,18 +584,6 @@ export class Pl1eItem extends Item {
                 ui.notifications.info(game.i18n.localize("PL1E.YouAlreadyHaveThisFeature"));
                 return false;
             }
-
-            // Check for feature number
-            if (this.type === "feature" && actor.system.general.remainingFeatures === 0) {
-                ui.notifications.info(game.i18n.localize("PL1E.TooMuchFeatures"));
-                return false;
-            }
-
-            // Check for feature points
-            if (this.type === "feature" && actor.system.general.remainingFeaturePoints + this.system.attributes.points < 0) {
-                ui.notifications.info(`${game.i18n.localize("PL1E.NotEnoughFeaturePoints")} : ${actor.system.general.remainingFeaturePoints}`);
-                return false;
-            }
         }
 
         return true;
@@ -724,6 +723,16 @@ export class Pl1eItem extends Item {
     }
 
     /**
+     * Favorite the item
+     * @returns {Promise<void>}
+     */
+    async favorite() {
+        await this.update({
+            "system.isFavorite": !this.system.isFavorite
+        });
+    }
+
+    /**
      * Activate the item
      */
     async activate() {
@@ -799,7 +808,7 @@ export class Pl1eItem extends Item {
             });
 
             // Display message
-            chatMessage = await Pl1eChat.actionRoll(characterData);
+            chatMessage = await Pl1eChat.launcherRoll(characterData);
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
@@ -820,7 +829,7 @@ export class Pl1eItem extends Item {
             characterData.noConfirmation = true;
 
             // Display message
-            await Pl1eChat.actionRoll(characterData);
+            await Pl1eChat.launcherRoll(characterData);
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
@@ -1085,7 +1094,7 @@ export class Pl1eItem extends Item {
         // Display messages if targets found
         if (targetsData) {
             for (const targetData of targetsData) {
-                await Pl1eChat.actionRoll(characterData, targetData);
+                await Pl1eChat.targetRoll(characterData, targetData);
             }
         }
     }

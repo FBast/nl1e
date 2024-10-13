@@ -11,7 +11,7 @@ export class Pl1eEvent {
     /**
      * Handle clickable rolls.
      * @param {Event} event The originating click event
-     * @param {Actor} actor the rolling actor
+     * @param {Pl1eActor} actor the rolling actor
      */
     static async onSkillRoll(event, actor) {
         event.preventDefault();
@@ -21,40 +21,41 @@ export class Pl1eEvent {
     }
 
     /**
-     * Open token sheet
-     * @param event The originating click event
-     */
-    static async onTokenEdit(event) {
-        const tokenId = $(event.currentTarget).data("token-id");
-        const sceneId = $(event.currentTarget).data("scene-id");
-        const token = await Pl1eHelpers.getDocument("Token", tokenId, {
-            scene: await Pl1eHelpers.getDocument("Scene", sceneId)
-        });
-
-        if (token === undefined) throw new Error("PL1E | no token found");
-
-        if (token.actor.sheet.rendered) token.actor.sheet.bringToTop();
-        else token.actor.sheet.render(true);
-    }
-
-    /**
      * Center the screen on a token
      * @param event
      * @return {Promise<void>}
      */
     static async onFocusToken(event) {
-        const tokenId = $(event.currentTarget).data("token-id");
-        const sceneId = $(event.currentTarget).data("scene-id");
+        let tokenId = $(event.currentTarget).data("token-id") ||
+            $(event.currentTarget).closest(".item").data("token-id");
+
+        const sceneId = $(event.currentTarget).closest(".item").data("scene-id");
         const token = await Pl1eHelpers.getDocument("Token", tokenId, {
             scene: await Pl1eHelpers.getDocument("Scene", sceneId)
         });
 
         if (token) {
+            const currentSceneId = game.scenes.current.id;
+            if (currentSceneId !== sceneId) {
+                const targetScene = game.scenes.get(sceneId);
+                if (targetScene) {
+                    if (targetScene.testUserPermission(game.user, foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER))
+                        await targetScene.view();
+                    else {
+                        ui.notifications.warn(game.i18n.localize("PL1E.InsufficientScenePermissions"));
+                        return;
+                    }
+                } else {
+                    ui.notifications.warn(game.i18n.localize("PL1E.SceneDoesNotExist"));
+                    return;
+                }
+            }
+
             const x = token.x;
             const y = token.y;
             await canvas.animatePan({x: x, y: y, scale: 1});
         } else {
-            console.warn(`Token with id ${tokenId} not found.`);
+            ui.notifications.warn(game.i18n.localize("PL1E.TokenDoesNotExist"));
         }
     }
 
@@ -76,14 +77,13 @@ export class Pl1eEvent {
      * @param {Actor|Item} document the document of the item
      */
     static async onItemEdit(event, document) {
-        let itemId = $(event.currentTarget).closest(".item").data("item-id");
-        if (itemId === undefined) itemId = $(event.currentTarget).data("item-id");
-        if (itemId === undefined) throw new Error("PL1E | no itemId found");
+        let itemId = $(event.currentTarget).data("item-id") ||
+            $(event.currentTarget).closest(".item").data("item-id");
 
         // Chat message need to retrieve the token actor to find the item
         if (document instanceof ChatMessage) {
-            const sceneId = $(event.currentTarget).data("scene-id");
-            const tokenId = $(event.currentTarget).data("token-id");
+            const sceneId = $(event.currentTarget).closest(".item").data("scene-id");
+            const tokenId = $(event.currentTarget).closest(".item").data("token-id");
             const scene = await Pl1eHelpers.getDocument("Scene", sceneId);
             const token = await Pl1eHelpers.getDocument("Token", tokenId, {
                 scene: scene
@@ -103,24 +103,6 @@ export class Pl1eEvent {
 
         if (item.sheet.rendered) item.sheet.bringToTop();
         else item.sheet.render(true);
-    }
-
-    /**
-     * Toggle an ability
-     * @param {Event} event The originating click event
-     * @param {Actor} actor the actor which own the item
-     */
-    static async onItemToggle(event, actor) {
-        event.preventDefault();
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
-
-        /** @type {Pl1eItem} */
-        const item = actor.items.get(itemId);
-        let options = {};
-        const main = $(event.currentTarget).data("main");
-        if (main) options["main"] = main;
-
-        if (item.canToggle()) await item.toggle(options);
     }
 
     /**
@@ -160,7 +142,7 @@ export class Pl1eEvent {
         // Get the type of item to create.
         const type = header.dataset.type;
         // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
+        const data = foundry.utils.duplicate(header.dataset);
         // Initialize a default name.
         const name = `New ${type.capitalize()}`;
         // Prepare the item object.
@@ -223,13 +205,14 @@ export class Pl1eEvent {
     static async onSpinNumber(event, document) {
         event.preventDefault();
         event.stopPropagation();
+
         const path = $(event.currentTarget).data("path");
         const value = $(event.currentTarget).data("value");
         const min = $(event.currentTarget).data("min");
         const max = $(event.currentTarget).data("max");
         if (!value || !path) return;
 
-        let newValue = getProperty(document, path) + value;
+        let newValue = foundry.utils.getProperty(document, path) + value;
         newValue = min !== undefined ? Math.max(newValue, min) : newValue;
         newValue = max !== undefined ? Math.min(newValue, max) : newValue;
         await document.update({
@@ -238,17 +221,62 @@ export class Pl1eEvent {
     }
 
     /**
-     * Handle money conversion
+     * Handle number editing changes
      * @param {Event} event The originating click event
-     * @param {Actor} actor the actor to modify
+     * @param {Actor|Item} document The document to modify
      */
-    static async onMoneyConvert(event, actor) {
+    static async onEditNumber(event, document) {
         event.preventDefault();
         event.stopPropagation();
-        let units = Pl1eHelpers.moneyToUnits(actor.system.money);
-        await actor.update({
-            ["system.money"]: Pl1eHelpers.unitsToMoney(units)
-        });
+
+        const path = $(event.currentTarget).data("path");
+        const currentValue = foundry.utils.getProperty(document, path);
+        if (!path) return;
+
+        // Open a dialog for the user to input a new number
+        new Dialog({
+            title: game.i18n.localize("PL1E.Edit"),
+            content: `<form>
+                    <div class="form-group">
+                      <input type="number" name="newValue" value="${currentValue}"/>
+                    </div>
+                  </form>`,
+            buttons: {
+                save: {
+                    label: "Save",
+                    callback: (html) => {
+                        let newValue = Number(html.find('input[name="newValue"]').val());
+                        if (!isNaN(newValue)) {
+                            // Update the document with the new value
+                            document.update({ [path]: newValue });
+                        }
+                    }
+                },
+                cancel: {
+                    label: "Cancel"
+                }
+            },
+            default: "save",
+            close: () => console.log("Edit dialog closed"),
+        }).render(true);
+    }
+
+    /**
+     * Handle set number changes
+     * @param {Event} event The originating click event
+     * @param {Actor|Item} document the document to modify
+     */
+    static async onSetNumber(event, document) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const path = $(event.currentTarget).data("path");
+        const value = $(event.currentTarget).data("value");
+        if (value === undefined || !path) return;
+
+        await document.update({
+            [path]: value
+        })
     }
 
     /**
@@ -259,15 +287,17 @@ export class Pl1eEvent {
     static onCreateHighlights(event) {
         event.preventDefault();
         event.stopPropagation();
+
         let resources = $(event.currentTarget).data("resources");
         let characteristics = $(event.currentTarget).data("characteristics");
         let skills = $(event.currentTarget).data("skills");
+
         // resources
         if (resources !== undefined) {
-            for (let resource of document.getElementsByClassName('resource-label')) {
+            for (let resource of document.getElementsByClassName('resource-name')) {
                 let id = $(resource).closest(".resource").data("resource-id");
                 if (!resources.includes(id)) continue;
-                resource.classList.add('highlight-green');
+                resource.classList.add('highlight-info');
             }
         }
         // characteristics
@@ -275,7 +305,7 @@ export class Pl1eEvent {
             for (let characteristic of document.getElementsByClassName('characteristic-label')) {
                 let id = $(characteristic).closest(".characteristic").data("characteristic-id");
                 if (!characteristics.includes(id)) continue;
-                characteristic.classList.add('highlight-green');
+                characteristic.classList.add('highlight-info');
             }
         }
         // skills
@@ -283,7 +313,7 @@ export class Pl1eEvent {
             for (let skill of document.getElementsByClassName('skill-label')) {
                 let id = $(skill).closest(".skill").data("skill-id");
                 if (!skills.includes(id)) continue;
-                skill.classList.add('highlight-green');
+                skill.classList.add('highlight-info');
             }
         }
     }
@@ -296,13 +326,13 @@ export class Pl1eEvent {
         event.preventDefault();
         event.stopPropagation();
         for (let characteristic of document.getElementsByClassName('characteristic-label')) {
-            characteristic.classList.remove('highlight-green')
+            characteristic.classList.remove('highlight-info')
         }
-        for (let resource of document.getElementsByClassName('resource-label')) {
-            resource.classList.remove('highlight-green')
+        for (let resource of document.getElementsByClassName('resource-name')) {
+            resource.classList.remove('highlight-info')
         }
         for (let skill of document.getElementsByClassName('skill-label')) {
-            skill.classList.remove('highlight-green')
+            skill.classList.remove('highlight-info')
         }
     }
 
@@ -377,11 +407,6 @@ export class Pl1eEvent {
 
         $(tooltip).slideToggle(200);
         $(tooltip).toggleClass('expanded');
-
-        // Store open/closed state in localStorage
-        const itemId = item.data("item-id");
-        const tooltipState = $(tooltip).hasClass('expanded') ? 'open' : 'closed';
-        localStorage.setItem(`tooltipState_${itemId}`, tooltipState);
     }
 
     /**

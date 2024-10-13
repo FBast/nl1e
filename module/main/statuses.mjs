@@ -4,26 +4,26 @@ export const registerStatuses = function () {
             // Resolve when equal or below deathDoor (default -10)
             id: "dead",
             label: "PL1E.StatusDead",
-            icon: "systems/pl1e/assets/icons/dead.svg",
+            icon: "systems/pl1e/assets/svg/dead.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.quickAction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -37,26 +37,26 @@ export const registerStatuses = function () {
             // Resolve when equal or below unconsciousDoor (default 0)
             id: "unconscious",
             label: "PL1E.StatusUnconscious",
-            icon: "systems/pl1e/assets/icons/unconscious.svg",
+            icon: "systems/pl1e/assets/svg/unconscious.svg",
             tint: "#ff0000",
             changes: [{ // Unconscious health decrease is handled from Combat class
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.quickAction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -70,7 +70,7 @@ export const registerStatuses = function () {
             // Resolve when equal or below unconsciousDoor (default 0)
             id: "charmed",
             label: "PL1E.StatusCharmed",
-            icon: "systems/pl1e/assets/icons/charmed.svg",
+            icon: "systems/pl1e/assets/svg/charmed.svg",
             tint: "#ff0000",
             changes: [], // Token disposition is updated in actor
             duration: {},
@@ -84,51 +84,51 @@ export const registerStatuses = function () {
             // No movement, loose all actions, no defenses
             id: "paralysis",
             label: "PL1E.StatusParalysis",
-            icon: "systems/pl1e/assets/icons/paralysis.svg",
+            icon: "systems/pl1e/assets/svg/paralysis.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.quickAction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.parry.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.reflex.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.vigor.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.resilience.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.skills.intuition.number",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -138,26 +138,26 @@ export const registerStatuses = function () {
             // Removed if the character take damage and is replaced by stunned for one turn
             id: "asleep",
             label: "PL1E.StatusAsleep",
-            icon: "systems/pl1e/assets/icons/asleep.svg",
+            icon: "systems/pl1e/assets/svg/asleep.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.quickAction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             },
             {
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -167,11 +167,11 @@ export const registerStatuses = function () {
             // Prevent movement
             id: "restrained",
             label: "PL1E.StatusRestrained",
-            icon: "systems/pl1e/assets/icons/restrained.svg",
+            icon: "systems/pl1e/assets/svg/restrained.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: 0
             }],
             duration: {},
@@ -181,16 +181,16 @@ export const registerStatuses = function () {
             // Remove one action and decrease movement by two
             id: "slow",
             label: "PL1E.StatusSlow",
-            icon: "systems/pl1e/assets/icons/slow.svg",
+            icon: "systems/pl1e/assets/svg/slow.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
             {
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -2
             }],
             duration: {},
@@ -200,16 +200,16 @@ export const registerStatuses = function () {
             // Add one action and increase movement by two
             id: "fast",
             label: "PL1E.StatusFast",
-            icon: "systems/pl1e/assets/icons/fast.svg",
+            icon: "systems/pl1e/assets/svg/fast.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.general.action",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             },
             {
                 key: "system.misc.movement",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 2
             }],
             duration: {},
@@ -219,11 +219,11 @@ export const registerStatuses = function () {
             // Remove one reaction
             id: "stunned",
             label: "PL1E.StatusStunned",
-            icon: "systems/pl1e/assets/icons/stunned.svg",
+            icon: "systems/pl1e/assets/svg/stunned.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
             duration: {},
@@ -233,11 +233,11 @@ export const registerStatuses = function () {
             // Add one reaction
             id: "invigorated",
             label: "PL1E.StatusInvigorated",
-            icon: "systems/pl1e/assets/icons/invigorated.svg",
+            icon: "systems/pl1e/assets/svg/invigorated.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.general.reaction",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
             duration: {},
@@ -247,21 +247,21 @@ export const registerStatuses = function () {
             // Disadvantage on parry, reflex and vigor
             id: "sick",
             label: "PL1E.StatusSick",
-            icon: "systems/pl1e/assets/icons/sick.svg",
+            icon: "systems/pl1e/assets/svg/sick.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.skills.parry.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
             {
                 key: "system.skills.reflex.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
             {
                 key: "system.skills.vigor.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
             duration: {},
@@ -271,21 +271,21 @@ export const registerStatuses = function () {
             // Advantage on parry, reflex and vigor
             id: "healthy",
             label: "PL1E.StatusHealthy",
-            icon: "systems/pl1e/assets/icons/healthy.svg",
+            icon: "systems/pl1e/assets/svg/healthy.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.skills.parry.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             },
             {
                 key: "system.skills.reflex.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             },
             {
                 key: "system.skills.vigor.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
             duration: {},
@@ -295,16 +295,16 @@ export const registerStatuses = function () {
             // Disadvantage on resilience and intuition
             id: "confused",
             label: "PL1E.StatusConfused",
-            icon: "systems/pl1e/assets/icons/confused.svg",
+            icon: "systems/pl1e/assets/svg/confused.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.skills.resilience.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
                 {
                     key: "system.skills.intuition.diceMod",
-                    mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                    mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                     value: -1
                 }],
             duration: {},
@@ -314,16 +314,16 @@ export const registerStatuses = function () {
             // Advantage on resilience and intuition
             id: "composed",
             label: "PL1E.StatusComposed",
-            icon: "systems/pl1e/assets/icons/composed.svg",
+            icon: "systems/pl1e/assets/svg/composed.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.skills.resilience.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             },
             {
                 key: "system.skills.intuition.diceMod",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
             duration: {},
@@ -333,7 +333,7 @@ export const registerStatuses = function () {
             // Add 5 health on turn start
             id: "bleeding",
             label: "PL1E.StatusBleeding",
-            icon: "systems/pl1e/assets/icons/bleeding.svg",
+            icon: "systems/pl1e/assets/svg/bleeding.svg",
             tint: "#ff0000",
             changes: [], // Bleeding health decrease is handled from Combat class
             duration: {},
@@ -343,7 +343,7 @@ export const registerStatuses = function () {
             // Remove 1/3 of health damage
             id: "regenerate",
             label: "PL1E.StatusRegenerate",
-            icon: "systems/pl1e/assets/icons/regenerate.svg",
+            icon: "systems/pl1e/assets/svg/regenerate.svg",
             tint: "#00ff00",
             changes: [], // Regenerate health increase is handled from Combat class
             duration: {},
@@ -353,11 +353,11 @@ export const registerStatuses = function () {
             // Add one disadvantage
             id: "downgraded",
             label: "PL1E.StatusDowngraded",
-            icon: "systems/pl1e/assets/icons/downgraded.svg",
+            icon: "systems/pl1e/assets/svg/downgraded.svg",
             tint: "#ff0000",
             changes: [{
                 key: "system.general.advantages",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             }],
             duration: {},
@@ -367,11 +367,11 @@ export const registerStatuses = function () {
             // Add one disadvantage
             id: "upgraded",
             label: "PL1E.StatusUpgraded",
-            icon: "systems/pl1e/assets/icons/upgraded.svg",
+            icon: "systems/pl1e/assets/svg/upgraded.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.general.advantages",
-                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: 1
             }],
             duration: {},
@@ -381,7 +381,7 @@ export const registerStatuses = function () {
             // Prevent token sight
             id: "blind",
             label: "PL1E.StatusBlind",
-            icon: "systems/pl1e/assets/icons/blind.svg",
+            icon: "systems/pl1e/assets/svg/blind.svg",
             tint: "#ff0000",
             changes: [], // Automatic native status
             duration: {},
@@ -391,7 +391,7 @@ export const registerStatuses = function () {
             // Should prevent vocal spell to be launched
             id: "deaf",
             label: "PL1E.StatusDeaf",
-            icon: "systems/pl1e/assets/icons/deaf.svg",
+            icon: "systems/pl1e/assets/svg/deaf.svg",
             tint: "#ff0000",
             changes: [],
             duration: {},
@@ -401,7 +401,7 @@ export const registerStatuses = function () {
             // Remove token from normal sight
             id: "invisible",
             label: "PL1E.StatusInvisible",
-            icon: "systems/pl1e/assets/icons/invisible.svg",
+            icon: "systems/pl1e/assets/svg/invisible.svg",
             tint: "#00ff00",
             changes: [], // Automatic native status
             duration: {},
@@ -411,7 +411,7 @@ export const registerStatuses = function () {
             // Allow token to see invisible
             id: "clairvoyant",
             label: "PL1E.StatusClairvoyant",
-            icon: "systems/pl1e/assets/icons/clairvoyant.svg",
+            icon: "systems/pl1e/assets/svg/clairvoyant.svg",
             tint: "#00ff00",
             changes: [],
             duration: {},
@@ -431,11 +431,11 @@ export const registerStatuses = function () {
             // Grant token tremorsense
             id: "tremorsense",
             label: "PL1E.StatusTremorsense",
-            icon: "systems/pl1e/assets/icons/tremorsense.svg",
+            icon: "systems/pl1e/assets/svg/tremorsense.svg",
             tint: "#00ff00",
             changes: [{
                 key: "token.sight.visionMode",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: "tremorsense"
             }],
             duration: {},
@@ -455,7 +455,7 @@ export const registerStatuses = function () {
             // The token will expire
             id: "ephemeral",
             label: "PL1E.Ephemeral",
-            icon: "systems/pl1e/assets/icons/ephemeral.svg",
+            icon: "systems/pl1e/assets/svg/ephemeral.svg",
             changes: [], // TODO
             duration: {},
             flags: {}
@@ -464,11 +464,11 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "fireImmunity",
             label: "PL1E.StatusFireImmunity",
-            icon: "systems/pl1e/assets/icons/fireImmunity.svg",
+            icon: "systems/pl1e/assets/svg/fireImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.burn",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -478,11 +478,11 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "coldImmunity",
             label: "PL1E.StatusColdImmunity",
-            icon: "systems/pl1e/assets/icons/coldImmunity.svg",
+            icon: "systems/pl1e/assets/svg/coldImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.cold",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -492,11 +492,11 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "shockImmunity",
             label: "PL1E.StatusShockImmunity",
-            icon: "systems/pl1e/assets/icons/shockImmunity.svg",
+            icon: "systems/pl1e/assets/svg/shockImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.acid",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -506,11 +506,11 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "acidImmunity",
             label: "PL1E.StatusAcidImmunity",
-            icon: "systems/pl1e/assets/icons/acidImmunity.svg",
+            icon: "systems/pl1e/assets/svg/acidImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.shock",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -520,11 +520,11 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "slashingImmunity",
             label: "PL1E.StatusSlashingImmunity",
-            icon: "systems/pl1e/assets/icons/slashingImmunity.svg",
+            icon: "systems/pl1e/assets/svg/slashingImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.slashing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -534,11 +534,11 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "crushingImmunity",
             label: "PL1E.StatusCrushingImmunity",
-            icon: "systems/pl1e/assets/icons/crushingImmunity.svg",
+            icon: "systems/pl1e/assets/svg/crushingImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.crushing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -548,11 +548,11 @@ export const registerStatuses = function () {
             // Grant immunity to related damage type
             id: "piercingImmunity",
             label: "PL1E.StatusPiercingImmunity",
-            icon: "systems/pl1e/assets/icons/piercingImmunity.svg",
+            icon: "systems/pl1e/assets/svg/piercingImmunity.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.piercing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},
@@ -562,41 +562,41 @@ export const registerStatuses = function () {
             // Grant all immunities
             id: "immortal",
             label: "PL1E.StatusImmortal",
-            icon: "systems/pl1e/assets/icons/immortal.svg",
+            icon: "systems/pl1e/assets/svg/immortal.svg",
             tint: "#00bbff",
             changes: [{
                 key: "system.reductions.slashing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.crushing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.piercing",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.burn",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.cold",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.acid",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             },
             {
                 key: "system.reductions.shock",
-                mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
             }],
             duration: {},

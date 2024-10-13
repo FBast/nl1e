@@ -13,10 +13,10 @@ export class Pl1eItemSheet extends ItemSheet {
 
     /** @inheritDoc */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "item"],
-            width: 520,
-            height: 480,
+            width: 500,
+            height: 500,
             scrollY: [
                 ".scroll-auto"
             ],
@@ -144,6 +144,9 @@ export class Pl1eItemSheet extends ItemSheet {
         html[0].querySelectorAll(".launch-text-editor").forEach(e => {
             e.addEventListener("click", ev => Pl1eEvent.onLaunchTextEditor(ev, this.item));
         });
+
+        // Item actions
+        html.find('.switch-customize').on('click', ev => this._onSwitchCustomize(ev));
 
         // Bind event listener for dataGroup dropdown change
         html.find("[name^='system.passiveAspects.'][name$='.dataGroup']").on('change', event => this._onDataGroupChange(event, html, "passive"));
@@ -384,8 +387,9 @@ export class Pl1eItemSheet extends ItemSheet {
         context.attributesDisplay = attributesDisplay;
 
         // Passive aspects
+        context.combinedPassiveAspects = await this.item.getCombinedPassiveAspects();
         const passiveAspectsDisplay = {}
-        for (let [key, aspect] of Object.entries(await this.item.getCombinedPassiveAspects())) {
+        for (let [key, aspect] of Object.entries(context.combinedPassiveAspects)) {
             let aspectCopy = Object.assign({}, aspect);
             const aspectConfig = Pl1eHelpers.getConfig("aspects", aspectCopy.name);
             if (aspectConfig === undefined) continue;
@@ -398,8 +402,9 @@ export class Pl1eItemSheet extends ItemSheet {
         context.passiveAspectsDisplay = passiveAspectsDisplay;
 
         // Active aspects
+        context.combinedPassiveAspects = await this.item.getCombinedActiveAspects();
         const activeAspectsDisplay = {}
-        for (let [key, aspect] of Object.entries(await this.item.getCombinedActiveAspects())) {
+        for (let [key, aspect] of Object.entries(context.combinedPassiveAspects)) {
             let aspectCopy = Object.assign({}, aspect);
             const aspectConfig = Pl1eHelpers.getConfig("aspects", aspectCopy.name);
             if (aspectConfig === undefined) continue;
@@ -462,7 +467,7 @@ export class Pl1eItemSheet extends ItemSheet {
         }
 
         await this.item.update({
-            [`system.${target}.${randomID()}`]: aspectsObjects[aspectId]
+            [`system.${target}.${foundry.utils.randomID()}`]: aspectsObjects[aspectId]
         });
 
         if (this.item.compendium) {
@@ -531,6 +536,26 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${aspectType}Aspects`]: copiedAspects
         });
+    }
+
+    /**
+     * Switch the button to customize the item
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onSwitchCustomize(event) {
+        event.preventDefault();
+
+        const isCustomized = foundry.utils.getProperty(this.item, "system.attributes.isCustomized");
+        const itemData = {
+            "system.attributes.isCustomized": !isCustomized,
+        }
+        if (!isCustomized) {
+            itemData["system.-=customName"] = null;
+            itemData["system.-=customImg"] = null;
+        }
+        await this.item.update(itemData);
     }
 
     async renderAndRestoreState() {

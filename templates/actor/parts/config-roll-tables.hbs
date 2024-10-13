@@ -1,0 +1,28 @@
+<div class="item-list">
+    <div class="items-header">
+        <h3 class="header-title">
+            {{localize "PL1E.RollTables"}}
+        </h3>
+    </div>
+    <div class="items-column">
+        {{#each rollTables}}
+            <div class="item" data-roll-table-id="{{_id}}">
+                <div class="item-content">
+                    <div class="item-title">
+                        <img class="roll-table-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-tooltip-activate hover-info">{{name}}</label>
+                    </div>
+                    <div class="item-icons">
+                        <!-- Empty for now, but placeholder for future icons -->
+                    </div>
+                    <div class="item-controls">
+                        {{#if @root.actor.isOwner}}
+                            <a class="roll-table-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="item-tooltip">{{{system.description}}}</div>
+            </div>
+        {{/each}}
+    </div>
+</div>

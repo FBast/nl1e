@@ -1,31 +1,194 @@
-<form class="pl1e {{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="character-sheet {{actor.type}} {{cssClass}}" autocomplete="off">
     {{!-- Sheet Header --}}
     <header class="sheet-header">
-        <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-        <div class="header-fields">
-            <h1 class="sheet-name"><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/></h1>
-            {{> "systems/pl1e/templates/actor/components/resources.hbs" resources=system.resources}}
+        <div class="profile-container">
+            <div class="profile-wrapper">
+                <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-{{system.general.level}}.png"/>
+                <span class="profile-level">{{system.general.level}}</span>
+            </div>
+            <div class="xp-bar">
+                <div class="bar">
+                    <div class="fill" style="width: {{system.general.levelProgression}}%;"></div>
+                </div>
+                <div class="modifiers">
+                    <button class="spin-number hover-action" type="button" data-path="system.general.experience" data-value="-1" data-min="0">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="text" class="input" value="{{system.general.experience}}/{{system.general.experienceNeeded}}" readonly />
+                    <button class="spin-number hover-action" type="button" data-path="system.general.experience" data-value="1" data-max="{{system.general.experienceMax}}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="header-infos">
+            <div class="info-container">
+                <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Advantages"}}">
+                        {{#if (eq system.general.advantages 2)}}
+                            <i class="fas fa-laugh" style="color: lawngreen"></i>
+                        {{else if (eq system.general.advantages 1)}}
+                            <i class="fas fa-smile" style="color: lawngreen"></i>
+                        {{else if (eq system.general.advantages 0)}}
+                            <i class="fas fa-meh"></i>
+                        {{else if (eq system.general.advantages -1)}}
+                            <i class="fas fa-frown" style="color: red"></i>
+                        {{else if (eq system.general.advantages -2)}}
+                            <i class="fas fa-tired" style="color: red"></i>
+                        {{/if}}
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="set-number" data-path="system.general.advantages" data-value="2">+2</i>
+                        <i class="set-number" data-path="system.general.advantages" data-value="1">+1</i>
+                        <i class="set-number" data-path="system.general.advantages" data-value="0">0</i>
+                        <i class="set-number" data-path="system.general.advantages" data-value="-1">-1</i>
+                        <i class="set-number" data-path="system.general.advantages" data-value="-2">-2</i>
+                    </div>
+                </div>
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Destiny"}}">
+                        {{#if (eq system.general.destiny 0)}}
+                            <i class="fas fa-ban"></i>
+                        {{else if (eq system.general.destiny 1)}}
+                            <i class="fas fa-dice-one" style="color: lawngreen"></i>
+                        {{else if (eq system.general.destiny 2)}}
+                            <i class="fas fa-dice-two" style="color: lawngreen"></i>
+                        {{else if (eq system.general.destiny 3)}}
+                            <i class="fas fa-dice-three" style="color: lawngreen"></i>
+                        {{else if (eq system.general.destiny 4)}}
+                            <i class="fas fa-dice-four" style="color: lawngreen"></i>
+                        {{else if (eq system.general.destiny 5)}}
+                            <i class="fas fa-dice-five" style="color: lawngreen"></i>
+                        {{/if}}
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="fas fa-ban set-number" data-path="system.general.destiny" data-value="0"></i>
+                        <i class="fas fa-dice-one set-number" data-path="system.general.destiny" data-value="1"></i>
+                        <i class="fas fa-dice-two set-number" data-path="system.general.destiny" data-value="2"></i>
+                        <i class="fas fa-dice-three set-number" data-path="system.general.destiny" data-value="3"></i>
+                        <i class="fas fa-dice-four set-number" data-path="system.general.destiny" data-value="4"></i>
+                        <i class="fas fa-dice-five set-number" data-path="system.general.destiny" data-value="5"></i>
+                    </div>
+                </div>
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Actions"}}">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="fas fa-book-open open-journal" data-tooltip="{{localize "PL1E.Journal"}}"></i>
+                        <i class="fas fa-bed" data-tooltip="{{localize "PL1E.Rest"}}"></i>
+                        <i class="fas fa-hourglass" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="resources">
+                {{#each system.resources}}
+                    {{#with (config "resources" @key)}}
+                        <div class="resource {{@key}}-bar" data-resource-id="{{@key}}">
+                            <div class="infos">
+                                <span class="resource-name hover-info highlight-link name"
+                                      data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
+                                <input type="number" name="system.resources.{{@key}}.value"
+                                       value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
+                                <span>/</span>
+                                <input type="number" name="system.resources.{{@key}}.max"
+                                       value="{{../max}}" data-dtype="Number" disabled/>
+                            </div>
+                            <div class="bar">
+                                <div class="fill {{@key}}" style="width: {{../percentage}}%;"></div>
+                            </div>
+                        </div>
+                    {{/with}}
+                {{/each}}
+            </div>
+            <div class="icons-stats">
+                {{#each (config "general")}}
+                    {{#if header}}
+                        {{#with (lookup ../system.general @key)}}
+                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                              <i class="fas {{../icon}}"></i> {{this}}
+                            </span>
+                        {{/with}}
+                    {{/if}}
+                {{/each}}
+                {{#each (config "reductions")}}
+                    {{#if header}}
+                        {{#with (lookup ../system.reductions @key)}}
+                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                              <i class="fas {{../icon}}"></i> {{this}}
+                            </span>
+                        {{/with}}
+                    {{/if}}
+                {{/each}}
+                {{#each (config "misc")}}
+                    {{#if header}}
+                        {{#with (lookup ../system.misc @key)}}
+                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                              <i class="fas {{../icon}}"></i> {{this}}
+                            </span>
+                        {{/with}}
+                    {{/if}}
+                {{/each}}
+            </div>
         </div>
     </header>
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="stats">{{localize "PL1E.Stats"}}</a>
-        <a class="item" data-tab="features">{{localize "PL1E.FeaturesAndAbilities"}}</a>
-        <a class="item" data-tab="items">{{localize "PL1E.Items"}}</a>
+        <a class="hover-action enabled-action" data-tab="stats">{{localize "PL1E.Stats"}}</a>
+        <a class="hover-action enabled-action" data-tab="inventory">{{localize "PL1E.Inventory"}}</a>
+        <a class="hover-action enabled-action" data-tab="abilities">{{localize "PL1E.Abilities"}}</a>
+        <a class="hover-action enabled-action" data-tab="features">{{localize "PL1E.Features"}}</a>
+        <a class="hover-action enabled-action" data-tab="effects">{{localize "PL1E.Effects"}}</a>
     </nav>
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         {{!-- Stats Tab --}}
-        <div class="tab stats flexcol" data-group="primary" data-tab="stats">
-            {{> "systems/pl1e/templates/actor/parts/character-stats.hbs"}}
+        <div class="tab" data-group="primary" data-tab="stats">
+            <div class="tab-container">
+                <div class="stats-upper">
+                    {{> "systems/pl1e/templates/actor/parts/stats-characteristics.hbs"}}
+                </div>
+                <div class="stats-lower">
+                    <div class="skills-container">
+                        {{> "systems/pl1e/templates/actor/parts/stats-skills.hbs"}}
+                    </div>
+                    <div class="favorites-container scroll-auto">
+                        {{> "systems/pl1e/templates/actor/parts/stats-favorites.hbs"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{!-- Inventory Tab --}}
+        <div class="tab" data-group="primary" data-tab="inventory">
+            <div class="tab-container scroll-auto">
+                {{> "systems/pl1e/templates/actor/parts/inventory-money.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-weapons.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-wearables.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-consumables.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-commons.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/inventory-modules.hbs" }}
+            </div>
+        </div>
+        {{!-- Abilities Tab --}}
+        <div class="tab" data-group="primary" data-tab="abilities">
+            <div class="tab-container scroll-auto">
+                {{> "systems/pl1e/templates/actor/parts/abilities.hbs" }}
+            </div>
         </div>
         {{!-- Features Tab --}}
-        <div class="tab features flexcol" data-group="primary" data-tab="features">
-            {{> "systems/pl1e/templates/actor/parts/character-features.hbs"}}
+        <div class="tab" data-group="primary" data-tab="features">
+            <div class="tab-container scroll-auto">
+                {{> "systems/pl1e/templates/actor/parts/features-background.hbs" }}
+                {{> "systems/pl1e/templates/actor/parts/features-features.hbs" }}
+            </div>
         </div>
-        {{!-- Items Tab --}}
-        <div class="tab items flexcol" data-group="primary" data-tab="items">
-            {{> "systems/pl1e/templates/actor/parts/character-items.hbs"}}
+        {{!-- Effects Tab --}}
+        <div class="tab" data-group="primary" data-tab="effects">
+            <div class="tab-container scroll-auto">
+                {{> "systems/pl1e/templates/actor/parts/effects.hbs" }}
+            </div>
         </div>
     </section>
 </form>

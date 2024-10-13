@@ -1,74 +1,43 @@
-<section class="scroll-auto">
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.Description"}}</legend>
-        {{{enriched}}}
-    </fieldset>
-    {{#if (gt (length items) 0)}}
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.LinkedItems"}}</legend>
-            {{#if (gt (length masters) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Masters"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=masters}}
-                </p>
-            {{/if}}
-            {{#if (gt (length abilities) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Abilities"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=abilities}}
-                </p>
-            {{/if}}
-            {{#if (gt (length features) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Features"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=features}}
-                </p>
-            {{/if}}
-            {{#if (gt (length weapons) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Weapons"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=weapons}}
-                </p>
-            {{/if}}
-            {{#if (gt (length modules) 0)}}
-                <p>
-                    <label>{{localize "PL1E.Modules"}} : </label>
-                    {{> "systems/pl1e/templates/item/components/item-tags.hbs" sections=modules}}
-                </p>
-            {{/if}}
-        </fieldset>
-    {{/if}}
-    {{#unless (isEmpty attributesDisplay)}}
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+{{{enriched}}}
+
+{{#unless (isEmpty attributesDisplay)}}
+    <div class="descriptor-list">
+        <h3 class="descriptor-header">{{localize "PL1E.Attributes"}}</h3>
+        <div class="descriptor-column">
             {{#each attributesDisplay}}
-                <div class="form-group">
-                    <label>{{label}}</label>
-                    <label class="align-right">{{value}}</label>
+                <div class="descriptor">
+                    <label class="descriptor-label">{{label}}</label>
+                    <label class="descriptor-value">{{value}}</label>
                 </div>
             {{/each}}
-        </fieldset>
-    {{/unless}}
-    {{#unless (isEmpty passiveAspectsDisplay)}}
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.PassiveAspects"}}</legend>
+        </div>
+    </div>
+{{/unless}}
+
+{{#unless (isEmpty passiveAspectsDisplay)}}
+    <div class="descriptor-list">
+        <h3 class="descriptor-header">{{localize "PL1E.PassiveAspects"}}</h3>
+        <div class="descriptor-column">
             {{#each passiveAspectsDisplay}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{label}}</label>
-                    <label class="attribute-name">{{description}}</label>
+                <div class="descriptor">
+                    <label class="descriptor-label">{{label}}</label>
+                    <label class="descriptor-value">{{description}}</label>
                 </div>
             {{/each}}
-        </fieldset>
-    {{/unless}}
-    {{#unless (isEmpty activeAspectsDisplay)}}
-        <fieldset>
-            <legend class="section-header">{{localize "PL1E.ActiveAspects"}}</legend>
+        </div>
+    </div>
+{{/unless}}
+
+{{#unless (isEmpty activeAspectsDisplay)}}
+    <div class="descriptor-list">
+        <h3 class="descriptor-header">{{localize "PL1E.ActiveAspects"}}</h3>
+        <div class="descriptor-column">
             {{#each activeAspectsDisplay}}
-                <div class="item-attribute flexrow">
-                    <label class="attribute-name">{{label}}</label>
-                    <label class="attribute-name">{{description}}</label>
+                <div class="descriptor">
+                    <label class="descriptor-label">{{label}}</label>
+                    <label class="descriptor-value">{{description}}</label>
                 </div>
             {{/each}}
-        </fieldset>
-    {{/unless}}
-</section>
+        </div>
+    </div>
+{{/unless}}

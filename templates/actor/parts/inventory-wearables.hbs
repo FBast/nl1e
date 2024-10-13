@@ -1,0 +1,83 @@
+<div class="item-list">
+    <div class="items-header">
+        <h3 class="header-title">
+            {{localize "PL1E.Wearables"}}
+            {{#unless favoriteDisplay}}
+                <div class="item-filter-list" data-filter="wearables">
+                    <div class="item-filter hover-action enabled-action" data-filter="garment">{{localize "PL1E.Garment"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="armor">{{localize "PL1E.Armor"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="ring">{{localize "PL1E.Ring"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="necklace">{{localize "PL1E.Necklace"}}</div>
+                    <div class="item-filter hover-action enabled-action" data-filter="none">{{localize "PL1E.Others"}}</div>
+                </div>
+            {{/unless}}
+        </h3>
+    </div>
+    <div class="items-column">
+        {{#each wearables}}
+            {{#if (or (not ../favoriteDisplay) (and system.isFavorite ../favoriteDisplay))}}
+                <div class="item {{#if system.isEquipped}}background-ready{{/if}}" data-item-id="{{_id}}">
+                    <div class="item-content">
+                        <div class="item-title">
+                            <img class="item-edit hover-action" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
+                            <label class="item-tooltip-activate hover-info">
+                                {{#if (and (eq @root.actor.type "merchant") (not ../system.general.unlimitedItems))}}
+                                    {{units}}x {{realName}}
+                                {{else}}
+                                    {{realName}}
+                                {{/if}}
+                            </label>
+                        </div>
+                        <div class="item-icons">
+                            {{#unless ../favoriteDisplay}}
+                                {{> "systems/pl1e/templates/item/components/icons-wearable.hbs"}}
+                            {{/unless}}
+                        </div>
+                        <div class="item-controls">
+                            {{#if @root.actor.isOwner}}
+                                {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                                    {{#if (gt (length warnings) 0)}}
+                                        <a data-tooltip='{{join warnings ', ' true}}'>
+                                            <i class="far fa-exclamation-triangle hover-info color-warning"></i>
+                                        </a>
+                                    {{/if}}
+                                    {{#if (eq system.attributes.slot "garment")}}
+                                        <a class="item-toggle hover-action" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                            <i class="fas fa-shirt-long-sleeve {{#unless system.isEquipped}}color-disabled{{/unless}}"></i>
+                                        </a>
+                                    {{else if (eq system.attributes.slot "armor")}}
+                                        <a class="item-toggle hover-action" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                            <i class="fas fa-helmet-battle {{#unless system.isEquipped}}color-disabled{{/unless}}"></i>
+                                        </a>
+                                    {{else if (eq system.attributes.slot "ring")}}
+                                        <a class="item-toggle hover-action" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                            <i class="fas fa-ring {{#unless system.isEquipped}}color-disabled{{/unless}}"></i>
+                                        </a>
+                                    {{else if (eq system.attributes.slot "necklace")}}
+                                        <a class="item-toggle hover-action" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                            <i class="fas fa-gem {{#unless system.isEquipped}}color-disabled{{/unless}}"></i>
+                                        </a>
+                                    {{else}}
+                                        <a class="item-toggle hover-action" data-tooltip='{{localize "PL1E.Equip"}}'>
+                                            <i class="fas fa-clothes-hanger {{#unless system.isEquipped}}color-disabled{{/unless}}"></i>
+                                        </a>
+                                    {{/if}}
+                                {{/if}}
+                                <a class="item-favorite hover-action" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                    <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
+                                </a>
+                                {{#if flags.pl1e.childId}}
+                                    <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                                {{else}}
+                                    <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i
+                                            class="fas fa-trash"></i></a>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="item-tooltip">{{{enriched}}}</div>
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
+</div>

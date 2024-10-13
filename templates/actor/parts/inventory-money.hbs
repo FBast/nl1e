@@ -1,0 +1,136 @@
+<div class="item-list">
+    <div class="items-header">
+        <h3 class="header-title">{{localize "PL1E.Money"}}</h3>
+    </div>
+    <div class="items-column">
+        {{#if (or (not favoriteDisplay) (and system.misc.isGoldFavorite favoriteDisplay))}}
+            <div class="item" data-currency-id="gold">
+                <div class="item-content">
+                    <div class="item-title">
+                        <img src="systems/pl1e/assets/coins/coins-crown-stack-gold.webp" title="{{localize "PL1E.GoldCoins"}}" width="24" height="24"/>
+                        <label>{{system.money.gold}}x {{localize "PL1E.GoldCoins"}}</label>
+                    </div>
+                    <div class="item-icons">
+                        <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+                            <label>1</label>
+                        </i>
+                        <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+                            <label>10</label>
+                        </i>
+                        <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                            <label>100</label>
+                        </i>
+                    </div>
+                    <div class="item-controls">
+                        {{#if @root.actor.isOwner}}
+                            <a class="convert-currency hover-action" data-type="down" data-tooltip='{{localize "PL1E.ConvertDown"}}'>
+                                <i class="fas fa-arrow-circle-down"></i>
+                            </a>
+                            <a class="spin-number hover-action" data-path="system.money.gold" data-value="1"
+                               data-tooltip='{{localize "PL1E.Increment"}}'>
+                                <i class="fas fa-plus-square"></i>
+                            </a>
+                            <a class="spin-number hover-action" data-path="system.money.gold" data-min="0" data-value="-1"
+                               data-tooltip='{{localize "PL1E.Decrement"}}'>
+                                <i class="fas fa-minus-square"></i>
+                            </a>
+                            <a class="edit-number hover-action" data-tooltip='{{localize "PL1E.Edit"}}' data-path="system.money.gold">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="currency-favorite hover-action" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                <i class="fas fa-bookmark {{#unless system.misc.isGoldFavorite}}color-disabled{{/unless}}"></i>
+                            </a>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+        {{#if (or (not favoriteDisplay) (and system.misc.isSilverFavorite favoriteDisplay))}}
+            <div class="item" data-currency-id="silver">
+                <div class="item-content">
+                    <div class="item-title">
+                        <img src="systems/pl1e/assets/coins/coins-shield-sword-stack-silver.webp" title="{{localize "PL1E.SilverCoins"}}" width="24" height="24"/>
+                        <label>{{system.money.silver}}x {{localize "PL1E.SilverCoins"}}</label>
+                    </div>
+                    <div class="item-icons">
+                        <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+                            <label>0.1</label>
+                        </i>
+                        <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+                            <label>1</label>
+                        </i>
+                        <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                            <label>10</label>
+                        </i>
+                    </div>
+                    <div class="item-controls">
+                        {{#if @root.actor.isOwner}}
+                            <a class="convert-currency hover-action" data-type="up" data-tooltip='{{localize "PL1E.ConvertUp"}}'>
+                                <i class="fas fa-arrow-circle-up"></i>
+                            </a>
+                            <a class="convert-currency hover-action" data-type="down" data-tooltip='{{localize "PL1E.ConvertDown"}}'>
+                                <i class="fas fa-arrow-circle-down"></i>
+                            </a>
+                            <a class="spin-number hover-action" data-path="system.money.silver" data-value="1"
+                               data-tooltip='{{localize "PL1E.Increment"}}'>
+                                <i class="fas fa-plus-square"></i>
+                            </a>
+                            <a class="spin-number hover-action" data-path="system.money.silver" data-min="0" data-value="-1"
+                               data-tooltip='{{localize "PL1E.Decrement"}}'>
+                                <i class="fas fa-minus-square"></i>
+                            </a>
+                            <a class="edit-number hover-action" data-tooltip='{{localize "PL1E.Edit"}}' data-path="system.money.silver">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="currency-favorite hover-action" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                <i class="fas fa-bookmark {{#unless system.misc.isSilverFavorite}}color-disabled{{/unless}}"></i>
+                            </a>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+        {{#if (or (not favoriteDisplay) (and system.misc.isCopperFavorite favoriteDisplay))}}
+            <div class="item" data-currency-id="copper">
+                <div class="item-content">
+                    <div class="item-title">
+                        <img src="systems/pl1e/assets/coins/coins-wheat-stack-copper.webp" title="{{localize "PL1E.CopperCoins"}}" width="24" height="24"/>
+                        <label>{{system.money.copper}}x {{localize "PL1E.CopperCoins"}}</label>
+                    </div>
+                    <div class="item-icons">
+                        <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+                            <label>0.01</label>
+                        </i>
+                        <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+                            <label>0.1</label>
+                        </i>
+                        <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+                            <label>1</label>
+                        </i>
+                    </div>
+                    <div class="item-controls">
+                        {{#if @root.actor.isOwner}}
+                            <a class="convert-currency hover-action" data-type="up" data-tooltip='{{localize "PL1E.ConvertUp"}}'>
+                                <i class="fas fa-arrow-circle-up"></i>
+                            </a>
+                            <a class="spin-number hover-action" data-path="system.money.copper" data-value="1"
+                               data-tooltip='{{localize "PL1E.Increment"}}'>
+                                <i class="fas fa-plus-square"></i>
+                            </a>
+                            <a class="spin-number hover-action" data-path="system.money.copper" data-min="0" data-value="-1"
+                               data-tooltip='{{localize "PL1E.Decrement"}}'>
+                                <i class="fas fa-minus-square"></i>
+                            </a>
+                            <a class="edit-number hover-action" data-tooltip='{{localize "PL1E.Edit"}}' data-path="system.money.copper">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="currency-favorite hover-action" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                <i class="fas fa-bookmark {{#unless system.misc.isCopperFavorite}}color-disabled{{/unless}}"></i>
+                            </a>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</div>

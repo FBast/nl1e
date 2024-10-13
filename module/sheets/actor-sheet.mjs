@@ -31,11 +31,9 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /** @inheritDoc */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["pl1e", "sheet", "actor"],
             template: "systems/pl1e/templates/actor/actor-sheet.hbs",
-            width: 700,
-            height: 730,
             scrollY: [
                 ".scroll-auto"
             ],
@@ -45,7 +43,10 @@ export class Pl1eActorSheet extends ActorSheet {
 
     /** @inheritDoc */
     get template() {
-        return `systems/pl1e/templates/actor/actor-${this.actor.type}-sheet.hbs`;
+        if (this.actor.type === "merchant") {
+            return `systems/pl1e/templates/actor/actor-merchant-sheet.hbs`;
+        }
+        return `systems/pl1e/templates/actor/actor-character-sheet.hbs`;
     }
 
     /** @inheritDoc */
@@ -137,11 +138,12 @@ export class Pl1eActorSheet extends ActorSheet {
         // Render the item sheet for viewing/editing prior to the editable check.
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
         html.find(".item-buy").on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
-        html.find(".effect-edit").on("click", ev => this.onEffectEdit(ev));
-        html.find(".effect-remove").on("click", ev => this.onEffectRemove(ev));
-        html.find(".item-link").on("click", ev => this.onItemLink(ev));
-        html.find(".item-origin").on("click", ev => this.onItemOrigin(ev));
+        html.find(".effect-edit").on("click", ev => this._onEffectEdit(ev));
+        html.find(".effect-remove").on("click", ev => this._onEffectRemove(ev));
+        html.find(".item-link").on("click", ev => this._onItemLink(ev));
+        html.find(".item-origin").on("click", ev => this._onItemOrigin(ev));
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find(".convert-currency").on("click", ev => this._onConvertCurrency(ev));
 
         // Highlights indications
         html.find(".highlight-link").on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
@@ -158,10 +160,9 @@ export class Pl1eActorSheet extends ActorSheet {
         // Handle drag event items from owned actor or merchant
         if (this.actor.isOwner || this.actor.type === "merchant") {
             let handler = ev => this._onDragStart(ev);
-            html.find('li.item').each((i, li) => {
-                if (li.classList.contains("subItems-header")) return;
-                li.setAttribute("draggable", true);
-                li.addEventListener("dragstart", handler, false);
+            html.find('.item').each((i, div) => {
+                div.setAttribute("draggable", true);
+                div.addEventListener("dragstart", handler, false);
             });
         }
 
@@ -179,27 +180,30 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".item-remove").on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
 
         // RollTable management
-        html.find(".roll-table-edit").on("click", ev => this.onRollTableEdit(ev, this.actor));
-        html.find(".roll-table-remove").on("click", ev => this.onRollTableRemove(ev, this.actor));
+        html.find(".roll-table-edit").on("click", ev => this._onRollTableEdit(ev, this.actor));
+        html.find(".roll-table-remove").on("click", ev => this._onRollTableRemove(ev, this.actor));
 
         // Chat messages
         html.find(".skill-roll").on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
 
-        // Currency
-        html.find(".currency-convert").on("click", ev => Pl1eEvent.onMoneyConvert(ev, this.actor));
-
         // Custom controls
+        html.find(".set-number").on("click", ev => Pl1eEvent.onSetNumber(ev, this.actor));
         html.find(".spin-number").on("click", ev => Pl1eEvent.onSpinNumber(ev, this.actor));
-        html.find(".characteristic-control").on("click", ev => this.onCharacteristicChange(ev));
-        html.find(".rank-control").on("click", ev => this.onRankChange(ev));
-        html.find(".item-toggle").on("click", ev => Pl1eEvent.onItemToggle(ev, this.actor));
-        html.find(".item-use").on("click", ev => this.onItemUse(ev));
-        html.find(".item-reload").on("click", ev => this.onItemReload(ev));
+        html.find(".edit-number").on("click", ev => Pl1eEvent.onEditNumber(ev, this.actor));
+        html.find(".rank-control").on("click", ev => this._onRankChange(ev));
+        html.find(".item-favorite").on("click", ev => this._onItemFavorite(ev))
+        html.find(".currency-favorite").on("click", ev => this._onCurrencyFavorite(ev))
+        html.find(".item-toggle").on("click", ev => this._onItemToggle(ev));
+        html.find(".item-use").on("click", ev => this._onItemUse(ev));
+        html.find(".item-reload").on("click", ev => this._onItemReload(ev));
 
-        // Button actions
-        html.find(".button-remove-items").on("click", ev => this.onRemoveItemsClick(ev));
-        html.find(".button-randomize-item").on("click", ev => this.onRandomizeItemClick(ev));
-        html.find(".button-generate-item").on("click", ev => this.onGenerateItemClick(ev));
+        // Actor actions
+        html.find('.open-journal').on('click', async ev => this._onOpenJournal(ev));
+
+        // Merchant actions
+        html.find(".button-remove-items").on("click", ev => this._onRemoveItemsClick(ev));
+        html.find(".button-randomize-item").on("click", ev => this._onRandomizeItemClick(ev));
+        html.find(".button-generate-item").on("click", ev => this._onGenerateItemClick(ev));
     }
 
     /**
@@ -212,7 +216,7 @@ export class Pl1eActorSheet extends ActorSheet {
         const set = this._filters[ul.dataset.filter];
         const filters = ul.querySelectorAll(".item-filter");
         for (let li of filters) {
-            if (set.has(li.dataset.filter)) li.classList.add("active");
+            if (set.has(li.dataset.filter)) li.classList.add("color-disabled");
         }
     }
 
@@ -365,7 +369,8 @@ export class Pl1eActorSheet extends ActorSheet {
         await this._categorizeItems(context, typeToCollectionMap);
 
         // Once all items are categorized, proceed to filter them
-        await this._filterItems(context, typeToCollectionMap, this.actor);
+        if (this.actor.type !== "merchant")
+            await this._filterItems(context, typeToCollectionMap, this.actor);
 
         // Apply feature and capacities filters
         context.background = this._filterDocuments(context.background, this._filters.background);
@@ -427,8 +432,8 @@ export class Pl1eActorSheet extends ActorSheet {
             itemCopy.isEnabled = item.isEnabled;
 
             // Add combined aspects
-            itemCopy.system.combinedPassiveAspects = await item.getCombinedPassiveAspects();
-            itemCopy.system.combinedActiveAspects = await item.getCombinedActiveAspects();
+            itemCopy.combinedPassiveAspects = await item.getCombinedPassiveAspects();
+            itemCopy.combinedActiveAspects = await item.getCombinedActiveAspects();
 
             // Add enriched HTML
             itemCopy.enriched = await TextEditor.enrichHTML(item.system.description, {
@@ -447,6 +452,7 @@ export class Pl1eActorSheet extends ActorSheet {
         }
     }
 
+    //TODO this method has some problems and call use merchant check to remove
     async _filterItems(context, typeToCollectionMap, actor) {
         const getItemPriority = (item) => {
             if (item.isEnabled) return 1;
@@ -622,7 +628,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Use an ability
      * @param {Event} event The originating click event
      */
-    async onItemUse(event) {
+    async _onItemUse(event) {
         event.preventDefault();
 
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
@@ -641,7 +647,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Handle reload of an Owned Consumable within the Actor.
      * @param {Event} event The triggering click event.
      */
-    async onItemReload(event) {
+    async _onItemReload(event) {
         event.preventDefault();
 
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
@@ -655,7 +661,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Remove all the items from the merchant
      * @param event
      */
-    async onRemoveItemsClick(event) {
+    async _onRemoveItemsClick(event) {
         ui.notifications.info(`${game.i18n.localize("PL1E.RemovingItems")}...`);
 
         let removedItemsNumber = 0;
@@ -671,7 +677,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      * @return {Promise<void>}
      */
-    async onRandomizeItemClick(event) {
+    async _onRandomizeItemClick(event) {
         let addedItemsNumber = 0;
         for (let i = 0; i < this.actor.system.general.itemPerRoll; i++) {
             for (const refRollTable of this.actor.system.refRollTables) {
@@ -694,7 +700,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      * @return {Promise<void>}
      */
-    async onGenerateItemClick(event) {
+    async _onGenerateItemClick(event) {
         ui.notifications.info(`${game.i18n.localize("PL1E.GeneratingItems")}...`);
 
         let addedItemsNumber = 0;
@@ -728,7 +734,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Render the linked parent item
      * @param {Event} event
      */
-    async onItemLink(event) {
+    async _onItemLink(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -752,7 +758,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param event
      * @return {Promise<void>}
      */
-    async onItemOrigin(event) {
+    async _onItemOrigin(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -766,11 +772,60 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
+     * Convert currencies with upgrade or downgrade
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onConvertCurrency(event) {
+        const currencyId = $(event.currentTarget).closest(".item").data("currency-id");
+        const type = $(event.currentTarget).data("type");
+
+        let currentGold = foundry.utils.getProperty(this.actor, "system.money.gold");
+        let currentSilver = foundry.utils.getProperty(this.actor, "system.money.silver");
+        let currentCopper = foundry.utils.getProperty(this.actor, "system.money.copper");
+
+        const actorData = {};
+        switch (currencyId) {
+            case "gold":
+                if (type === "down") {
+                    currentGold -= 1;
+                    currentSilver += 10;
+                }
+                break;
+            case "silver":
+                if (type === "down") {
+                    currentSilver -= 1;
+                    currentCopper += 10;
+                }
+                else if (type === "up") {
+                    currentGold += 1;
+                    currentSilver -= 10;
+                }
+                break;
+            case "copper":
+                if (type === "up") {
+                    currentSilver += 1;
+                    currentCopper -= 10;
+                }
+                break;
+        }
+
+        if (currentGold < 0 || currentSilver < 0 || currentCopper < 0) return;
+
+        await this.actor.update({
+            "system.money.gold": currentGold,
+            "system.money.silver": currentSilver,
+            "system.money.copper": currentCopper
+        });
+    }
+
+    /**
      * Open roll table sheet
      * @param event The originating click event
      * @param {Actor} actor the actor of the roll table
      */
-    async onRollTableEdit(event, actor) {
+    async _onRollTableEdit(event, actor) {
         let rollTableId = $(event.currentTarget).closest(".item").data("roll-table-id");
         const rollTable = await Pl1eHelpers.getDocument("RollTable", rollTableId);
 
@@ -783,7 +838,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @param {Event} event The originating click event
      * @param {Pl1eActor} actor the actor where the roll table is removed
      */
-    async onRollTableRemove(event, actor) {
+    async _onRollTableRemove(event, actor) {
         const rollTableId = $(event.currentTarget).closest(".item").data("roll-table-id");
 
         if (rollTableId) {
@@ -795,38 +850,10 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
-     * Handle characteristics changes
-     * @param {Event} event The originating click event
-     */
-    async onCharacteristicChange(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const characteristic = $(event.currentTarget).closest(".characteristic").data("characteristic-id");
-        let value = $(event.currentTarget).data("value");
-        if (!value || !characteristic) return;
-
-        let remaining = this.actor.system.general.remainingCharacteristics;
-        if (remaining === 0 && value > 0) return;
-
-        let oldValue = this.actor.system.characteristics[characteristic].base;
-        let newValue = oldValue + value;
-
-        if (newValue < 2 || newValue > 5) return;
-
-        await this.actor.update({
-            ["system.characteristics." + characteristic + ".base"]: newValue,
-            ["system.general.remainingCharacteristics"]: remaining - value
-        });
-
-        this.render(false);
-    }
-
-    /**
      * Handle rank changes
      * @param {Event} event The originating click event
      */
-    async onRankChange(event) {
+    async _onRankChange(event) {
         event.preventDefault();
         event.stopPropagation();
         const skill = $(event.currentTarget).data("skill");
@@ -845,10 +872,63 @@ export class Pl1eActorSheet extends ActorSheet {
     }
 
     /**
+     * Toggle the item
+     * @param {Event} event The originating click event
+     */
+    async _onItemToggle(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+
+        /** @type {Pl1eItem} */
+        const item = this.actor.items.get(itemId);
+        let options = {};
+        const main = $(event.currentTarget).data("main");
+        if (main) options["main"] = main;
+
+        if (item.canToggle()) await item.toggle(options);
+    }
+
+    /**
+     * Favorite the item
+     * @param event
+     * @returns {Promise<void>}
+     */
+    async _onItemFavorite(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+
+        /** @type {Pl1eItem} */
+        const item = this.actor.items.get(itemId);
+        await item.favorite();
+    }
+
+    /**
+     * Favorite the currency
+     * @param event
+     * @returns {Promise<void>}
+     */
+    async _onCurrencyFavorite(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        let currencyId = $(event.currentTarget).closest(".item").data("currency-id");
+        currencyId = currencyId.charAt(0).toUpperCase() + currencyId.slice(1);
+
+        const currencyPath = `system.misc.is${currencyId}Favorite`;
+        const isFavorite = foundry.utils.getProperty(this.actor, currencyPath);
+        await this.actor.update({
+            [currencyPath]: !isFavorite,
+        });
+    }
+
+    /**
      * Open effect sheet
      * @param {Event} event
      */
-    onEffectEdit(event) {
+    _onEffectEdit(event) {
         event.preventDefault();
 
         const effectId = $(event.currentTarget).closest(".item").data("effect-id");
@@ -863,7 +943,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * Remove effect
      * @param {Event} event
      */
-    async onEffectRemove(event) {
+    async _onEffectRemove(event) {
         event.preventDefault();
 
         const effectId = $(event.currentTarget).closest(".item").data("effect-id");
@@ -872,4 +952,41 @@ export class Pl1eActorSheet extends ActorSheet {
         await effect.delete();
     }
 
+    async _onOpenJournal(event) {
+        event.preventDefault();
+
+        // Get the user ID of the player who owns the actor
+        const ownerId = game.users.find(u => u.character && u.character.id === this.actor.id)?.id;
+
+        if (!ownerId) {
+            console.error("Owner not found for this actor.");
+            return;
+        }
+
+        // Check if the actor already has a journal entry associated with them
+        const journalId = this.actor.getFlag("pl1e", "journalEntryId");
+
+        // If the journal exists, open it
+        if (journalId) {
+            const journal = game.journal.get(journalId);
+            if (journal) {
+                journal.sheet.render(true);
+                return;
+            }
+        }
+
+        // If no journal exists, create a new one
+        const newJournal = await JournalEntry.create({
+            name: `${this.actor.name}`,
+            folder: null,
+            permission: { [ownerId]: foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER },
+            flags: { pl1e: { writerId: ownerId } }
+        });
+
+        // Save the new journal's ID to the actor's flags
+        await this.actor.setFlag("pl1e", "journalEntryId", newJournal.id);
+
+        // Open the newly created journal
+        newJournal.sheet.render(true);
+    }
 }

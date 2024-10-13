@@ -30,7 +30,7 @@ export const registerHandlebars = function () {
         return Pl1eHelpers.getConfig(...args);
     });
 
-// Register a new helper for custom handling of select options
+    // Register a new helper for custom handling of select options
     Handlebars.registerHelper('customSelectOptions', function(choices, options) {
         const modifiedChoices = {};
         for (const key in choices) {
@@ -46,6 +46,13 @@ export const registerHandlebars = function () {
         const processedArray = localize ? arr.map(item => game.i18n.localize(item)) : arr;
         return processedArray.join(separator);
     });
+
+    Handlebars.registerHelper('list', function(arr, localize = false) {
+        const processedArray = localize ? arr.map(item => game.i18n.localize(item)) : arr;
+        const listItems = processedArray.map(item => `<li>${item}</li>`).join('');
+        return new Handlebars.SafeString(`<ul>${listItems}</ul>`);
+    });
+
 
     Handlebars.registerHelper('length', function(arr) {
         if (Array.isArray(arr) || typeof(arr) === "string") return arr.length;
@@ -67,5 +74,15 @@ export const registerHandlebars = function () {
             accumulator += options.fn(i);
         }
         return accumulator;
+    });
+
+    Handlebars.registerHelper('clamp', function(value, min, max) {
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        } else {
+            return value;
+        }
     });
 }

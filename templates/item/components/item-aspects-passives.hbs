@@ -1,17 +1,17 @@
-<ol class="items-list">
+<ol class="item-list">
     <li class="items-header grid grid-12col">
-        <div class="item-title grid-span-4 flexrow">
-            <div class="item-name">{{localize "PL1E.PassiveAspects"}}</div>
+        <div class="header-title grid-span-4 flexrow">
+            {{localize "PL1E.PassiveAspects"}}
         </div>
         <div class="item-controls grid-span-8">
             {{#each passiveAspectsObjects}}
                 {{#with (config "aspects" name)}}
-                    <input type="image" class="item-control aspect-add hover-red" src="{{img}}" data-aspect-id="{{@key}}"
+                    <input type="image" class="aspect-add hover-action" src="{{img}}" data-aspect-id="{{@key}}"
                            data-aspect-type="passive" data-tooltip='{{localize label}}' width="20" height="20"/>
                 {{/with}}
             {{/each}}
-            <a class="item-control active-aspects-copy" data-tooltip='{{localize "PL1E.Copy"}}'><i class="fas fa-copy"></i></a>
-            <a class="item-control active-aspects-paste" data-tooltip='{{localize "PL1E.Paste"}}'><i class="fas fa-paste"></i></a>
+            <a class="active-aspects-copy hover-action" data-tooltip='{{localize "PL1E.Copy"}}'><i class="fas fa-copy"></i></a>
+            <a class="active-aspects-paste hover-action" data-tooltip='{{localize "PL1E.Paste"}}'><i class="fas fa-paste"></i></a>
         </div>
     </li>
     {{#each passiveAspects}}
@@ -20,10 +20,10 @@
                 <div class="item-content grid grid-12col">
                     <div class="item-title grid-span-10 flexrow">
                         <img class="item-image" src="{{img}}" title="{{localize label}}" width="24" height="24"/>
-                        <label class="item-name item-tooltip-activate">{{localize ../description}}</label>
+                        <label class="item-tooltip-activate">{{localize ../description}}</label>
                     </div>
                     <div class="item-controls grid-span-2">
-                        <a class="item-control aspect-remove" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        <a class="aspect-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                     </div>
                 </div>
                 <div class="item-tooltip flexcol">

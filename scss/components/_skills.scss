@@ -1,21 +1,49 @@
-.pl1e {
-  .skills {
-    padding: 0;
-    margin: 0;
-    .skill {
-      gap: 0;
-      margin: 0;
-      padding: 2px;
-      .skill-label {
-        width: auto;
-        margin-left: 5px;
-        font-size: small;
+.skills {
+  min-width: 200px;
+  margin: 0;
+  padding: 0;
+
+  .skill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: $font-size-md;
+    gap: 5px;
+    padding: 0 5px;
+    height: 19px;
+
+    &:nth-child(even) {
+      background-color: $colorPanel;
+    }
+
+    &:nth-child(odd) {
+      background-color: darken($colorPanel, 10%);
+    }
+
+    .skill-roll {
+      flex: 0 0 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+
+      .skill-number {
+        font-weight: bold;
+        font-size: $font-size-lg;
       }
-      .skill-rank {
-        display: flex;
-        flex: 2;
-        align-items: center;
-      }
+    }
+
+    .skill-label {
+      flex: 1;
+      text-transform: lowercase;
+    }
+
+    .skill-rank {
+      flex: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
   }
 }
+

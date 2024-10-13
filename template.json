@@ -7,17 +7,20 @@
           "health": {
             "value": 0,
             "max": 0,
-            "temp": 0
+            "temp": 0,
+            "percentage": 0
           },
           "stamina": {
             "value": 0,
             "max": 0,
-            "temp": 0
+            "temp": 0,
+            "percentage": 0
           },
           "mana": {
             "value": 0,
             "max": 0,
-            "temp": 0
+            "temp": 0,
+            "percentage": 0
           }
         },
         "characteristics": {
@@ -294,11 +297,10 @@
         },
         "general": {
           "creationMod": true,
-          "experience": 10,
-          "remainingFeatures": 0,
-          "remainingFeaturePoints": 0,
-          "remainingCharacteristics": 8,
           "level": 1,
+          "experience": 10,
+          "remainingCharacteristics": 8,
+          "destiny": 0,
           "ranks": 0,
           "maxRank": 0,
           "rollBestSkill": true,
@@ -331,7 +333,10 @@
           "deathDoor": 10,
           "flexibility": 0,
           "nightVisionRange": 0,
-          "faithPower": false
+          "faithPower": false,
+          "isGoldFavorite": false,
+          "isSilverFavorite": false,
+          "isCopperFavorite": false
         },
         "money": {
           "gold": 50,
@@ -342,6 +347,10 @@
           "remainingMovement": 0,
           "usedMovement": 0,
           "movementAction": 0
+        },
+        "journal": {
+          "pages": [],
+          "selectedPage": 0
         }
       }
     },
@@ -371,6 +380,7 @@
       "base": {
         "description": "",
         "units": 1,
+        "isFavorite": false,
         "refItems": {},
         "passiveAspects": {},
         "activeAspects": {},
@@ -467,6 +477,7 @@
       "majorActionUsed": false,
       "attributes": {
         "customizable": false,
+        "isCustomized": false,
         "modules": 0,
         "hands": 1,
         "meleeUse": false,
@@ -488,6 +499,7 @@
       "majorActionUsed": false,
       "attributes": {
         "customizable": false,
+        "isCustomized": false,
         "modules": 0,
         "slot": "none",
         "magicUse": false,

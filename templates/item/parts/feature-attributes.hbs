@@ -1,23 +1,21 @@
-<section class="scroll-auto">
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
-        <div class="form-group">
-            <label>{{localize "PL1E.Description"}}</label>
-            <button class="launch-text-editor" data-target="system.description">
-                <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
-            </button>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.Type"}}</label>
-            <select name="system.attributes.featureType">
-                {{customSelectOptions (config "featureTypes") selected=system.attributes.featureType localize=true}}
-            </select>
-        </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.Points"}}</label>
-            <input type="number" step="1" min="-5" max="5" name="system.attributes.points"
-                   value="{{system.attributes.points}}" data-dtype="Number"/>
-        </div>
-    </fieldset>
-    {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
-</section>
+<fieldset>
+    <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
+    <div class="form-group">
+        <label>{{localize "PL1E.Description"}}</label>
+        <button class="launch-text-editor" data-target="system.description">
+            <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+        </button>
+    </div>
+    <div class="form-group">
+        <label>{{localize "PL1E.Type"}}</label>
+        <select name="system.attributes.featureType">
+            {{customSelectOptions (config "featureTypes") selected=system.attributes.featureType localize=true}}
+        </select>
+    </div>
+    <div class="form-group">
+        <label>{{localize "PL1E.Points"}}</label>
+        <input type="number" step="1" min="-5" max="5" name="system.attributes.points"
+               value="{{system.attributes.points}}" data-dtype="Number"/>
+    </div>
+</fieldset>
+{{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}

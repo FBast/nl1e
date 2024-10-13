@@ -1,9 +1,50 @@
-<section class="scroll-auto">
-    {{> "systems/pl1e/templates/item/components/item-list.hbs" section=masters title="PL1E.Masters"}}
-    {{> "systems/pl1e/templates/item/components/item-list.hbs" section=abilities title="PL1E.Abilities"}}
-    {{> "systems/pl1e/templates/item/components/item-list.hbs" section=features title="PL1E.Features"}}
-    {{> "systems/pl1e/templates/item/components/item-list.hbs" section=weapons title="PL1E.Weapons"}}
-    {{> "systems/pl1e/templates/item/components/item-list.hbs" section=wearables title="PL1E.Wearables"}}
-    {{> "systems/pl1e/templates/item/components/item-list.hbs" section=modules title="PL1E.Modules"}}
-    {{> "systems/pl1e/templates/item/components/item-list.hbs" section=unknowns title="PL1E.Unknowns"}}
-</section>
+{{#if (gt (length section) 0)}}
+    <div class="item-list">
+        <div class="items-header">
+            <h3 class="header-title">{{localize title}}</h3>
+        </div>
+        <div class="items-column">
+            {{#each section}}
+                <div class="item" data-item-id="{{itemId}}" data-instance-id="{{instanceId}}" data-item-type="{{item.type}}">
+                    <div class="item-content">
+                        <div class="item-title">
+                            <img class="item-edit hover-action" src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
+                            <label class="item-tooltip-activate hover-info">{{item.name}}</label>
+                        </div>
+                        <div class="item-icons">
+                            {{#if @root.item.isEmbedded}}
+                                {{#if (eq behavior "regular")}}
+                                    <i class="far fa-cube hover-info" data-tooltip="{{localize "PL1E.Regular"}}"></i>
+                                {{else if (eq behavior "container")}}
+                                    <i class="far fa-treasure-chest hover-info" data-tooltip="{{localize "PL1E.Container"}}"></i>
+                                {{else if (eq behavior "key")}}
+                                    <i class="far fa-key-skeleton hover-info" data-tooltip="{{localize "PL1E.Key"}}"></i>
+                                {{/if}}
+                            {{/if}}
+                            {{#if synchronized}}
+                                <i class="far fa-circle-nodes hover-info" data-tooltip="{{localize "PL1E.Synchronized"}}"></i>
+                            {{/if}}
+                        </div>
+                        <div class="item-controls">
+                            {{#unless @root.item.isEmbedded}}
+                                {{#if (eq behavior "regular")}}
+                                    <a class="item-switch-behavior hover-action" data-tooltip='{{localize "PL1E.Regular"}}'><i class="fas fa-cube"></i></a>
+                                {{else if (eq behavior "container")}}
+                                    <a class="item-switch-behavior hover-action" data-tooltip='{{localize "PL1E.Container"}}'><i class="fas fa-treasure-chest"></i></a>
+                                {{else if (eq behavior "key")}}
+                                    <a class="item-switch-behavior hover-action" data-tooltip='{{localize "PL1E.Key"}}'><i class="fas fa-key-skeleton"></i></a>
+                                {{/if}}
+                            {{/unless}}
+                            {{#if @root.game.user.isGM}}
+                                {{#if (or (and @root.item.isEmbedded (not synchronized)) (and (not @root.item.isEmbedded) synchronized))}}
+                                    <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="item-tooltip">{{{item.system.description}}}</div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{/if}}

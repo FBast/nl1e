@@ -1,0 +1,38 @@
+<div class="item-list">
+    <div class="items-header">
+        <h3 class="header-title">
+            {{localize "PL1E.Features"}}
+            <div class="item-filter-list" data-filter="features">
+                {{#each (config "featureTypes")}}
+                    <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+                {{/each}}
+            </div>
+        </h3>
+    </div>
+    <div class="items-column">
+        {{#each features}}
+            <div class="item" data-item-id="{{_id}}">
+                <div class="item-content">
+                    <div class="item-title">
+                        <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                        <label class="item-tooltip-activate hover-info">{{name}}</label>
+                    </div>
+                    <div class="item-icons">
+                        {{> "systems/pl1e/templates/item/components/icons-feature.hbs"}}
+                    </div>
+                    <div class="item-controls">
+                        {{#if @root.actor.isOwner}}
+                            {{#if flags.pl1e.childId}}
+                                <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                            {{else}}
+                                <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i
+                                        class="fas fa-trash"></i></a>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="item-tooltip">{{{enriched}}}</div>
+            </div>
+        {{/each}}
+    </div>
+</div>

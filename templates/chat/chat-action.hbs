@@ -1,16 +1,16 @@
-<div class="chat-card item-card">
+<div class="pl1e chat-card item">
     <header class="card-header flexrow">
-        <img class="left-image token-edit" src="{{actor.img}}" data-actor-id="{{actor._id}}"
+        <img class="token-edit" src="{{actor.img}}" data-actor-id="{{actor._id}}"
              data-scene-id="{{characterData.sceneId}}" title="{{actor.name}}" width="36" height="36"/>
-        <div class="item-effects-character">
+        <div class="flex-large item-effects-character">
             {{#if (gt actionCost 0)}}
-                <i class="far fa-clock hover-green" data-tooltip="{{localize "PL1E.ActionCost"}}">
+                <i class="far fa-clock hover-info" data-tooltip="{{localize "PL1E.ActionCost"}}">
                     <label>-{{actionCost}}</label>
                 </i>
             {{/if}}
         </div>
         {{#if (ne options.item undefined)}}
-            <img class="right-image item-edit" src="{{options.item.img}}" data-item-id="{{options.item._id}}"
+            <img class="item-edit" src="{{options.item.img}}" data-item-id="{{options.item._id}}"
                  data-actor-id="{{actor._id}}" title="{{options.item.name}}" width="36" height="36"/>
         {{/if}}
     </header>

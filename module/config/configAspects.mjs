@@ -90,7 +90,7 @@ export function getConfigAspects() {
     PL1E.aspects = {
         "modify": {
             "label": "PL1E.Modify",
-            "img": "systems/pl1e/assets/icons/modify.svg",
+            "img": "systems/pl1e/assets/svg/modify.svg",
             "dataGroups": {
                 "aspectsResources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -103,7 +103,7 @@ export function getConfigAspects() {
         },
         "transfer": {
             "label": "PL1E.Transfer",
-            "img": "systems/pl1e/assets/icons/transfer.svg",
+            "img": "systems/pl1e/assets/svg/transfer.svg",
             "dataGroups": {
                 "aspectsResources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -112,28 +112,28 @@ export function getConfigAspects() {
         },
         "status": {
             "label": "PL1E.Status",
-            "img": "systems/pl1e/assets/icons/status.svg",
+            "img": "systems/pl1e/assets/svg/status.svg",
             "dataGroups": {
                 "statuses": "PL1E.Statuses"
             }
         },
         "movement": {
             "label": "PL1E.Movement",
-            "img": "systems/pl1e/assets/icons/movement.svg",
+            "img": "systems/pl1e/assets/svg/movement.svg",
             "dataGroups": {
                 "movements": "PL1E.Movements"
             }
         },
         "invocation": {
             "label": "PL1E.Invocation",
-            "img": "systems/pl1e/assets/icons/invocation.svg",
+            "img": "systems/pl1e/assets/svg/invocation.svg",
             "dataGroups": {
                 "invocations": "PL1E.Invocations"
             }
         },
         "passiveMacro": {
             "label": "PL1E.Macro",
-            "img": "systems/pl1e/assets/icons/dice-target.svg",
+            "img": "systems/pl1e/assets/svg/dice-target.svg",
             "dataGroups": {
                 "actorPreUpdate": "PL1E.ActorPreUpdate",
                 "tokenPreUpdate": "PL1E.TokenPreUpdate"
@@ -141,7 +141,7 @@ export function getConfigAspects() {
         },
         "activeMacro": {
             "label": "PL1E.Macro",
-            "img": "systems/pl1e/assets/icons/dice-target.svg",
+            "img": "systems/pl1e/assets/svg/dice-target.svg",
             "dataGroups": {
                 "targetsResolution": "PL1E.TargetsResolution",
                 "actorPreUpdate": "PL1E.ActorPreUpdate",

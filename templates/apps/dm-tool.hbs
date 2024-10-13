@@ -1,43 +1,36 @@
-<div class="pl1e dm-tool app window-app">
-    <div class="window-header">
+<form class="pl1e dm-tool app window-app">
+    <header class="window-header">
         <h4 class="window-title">{{localize "PL1E.DMTools"}}</h4>
-    </div>
-    <div class="window-content">
-        <div class="resources">
-            <div class="resource advantage-disadvantage flexcol" data-type="globalAdvantages">
+    </header>
+    <section class="window-content">
+        <fieldset>
+            <legend>{{localize "PL1E.Modifiers"}}</legend>
+            <div class="form-group">
+                <label>{{localize "PL1E.Advantages"}}</label>
                 <div class="form-fields">
-                    <label>{{localize "PL1E.Advantages"}} ({{localize "PL1E.PC"}})</label>
-                    {{#if game.user.isGM}}
-                        <a class="item sub"><i class="fas fa-minus"></i></a>
-                        <input type="number" class="input num-short" value="{{advantageDisadvantage}}">
-                        <a class="item add"><i class="fas fa-plus"></i></a>
-                    {{else}}
-                        <label>{{advantageDisadvantage}}</label>
-                    {{/if}}
+                    <a class="item sub hover-action"><i class="fas fa-minus"></i></a>
+                    <input type="number" class="input num-short" value="{{advantages}}">
+                    <a class="item add hover-action"><i class="fas fa-plus"></i></a>
                 </div>
             </div>
-
-            <div class="resource bonus-malus flexcol" data-type="globalBonuses">
+            <div class="form-group">
+                <label>{{localize "PL1E.Bonuses"}}</label>
                 <div class="form-fields">
-                    <label>{{localize "PL1E.Bonuses"}} ({{localize "PL1E.PC"}})</label>
-                    {{#if game.user.isGM}}
-                        <a class="item sub"><i class="fas fa-minus"></i></a>
-                        <input type="number" class="input num-short" value="{{bonusMalus}}">
-                        <a class="item add"><i class="fas fa-plus"></i></a>
-                    {{else}}
-                        <label>{{bonusMalus}}</label>
-                    {{/if}}
+                    <a class="item sub hover-action"><i class="fas fa-minus"></i></a>
+                    <input type="number" class="input num-short" value="{{bonuses}}">
+                    <a class="item add hover-action"><i class="fas fa-plus"></i></a>
                 </div>
             </div>
-        </div>
+        </fieldset>
 
-        {{#if game.user.isGM}}
-            <div class="actions flexrow align-center">
+        <fieldset>
+            <legend>{{localize "PL1E.Actions"}}</legend>
+            <div class="form-group flexrow">
                 <a class="item" data-tooltip='{{localize "PL1E.ShortRest"}}'><i class="fas fa-coffee"></i></a>
                 <a class="item" data-tooltip='{{localize "PL1E.LongRest"}}'><i class="fas fa-bed"></i></a>
                 <a class="item" data-tooltip='{{localize "PL1E.Reward"}}'><i class="fas fa-award"></i></a>
                 <a class="item" data-tooltip='{{localize "PL1E.Reset"}}'><i class="fas fa-sync-alt"></i></a>
             </div>
-        {{/if}}
-    </div>
-</div>
+        </fieldset>
+    </section>
+</form>

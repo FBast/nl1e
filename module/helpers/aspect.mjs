@@ -42,7 +42,7 @@ export class Pl1eAspect {
         if (aspect.value === undefined) return;
         const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
         const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
-        let currentValue = getProperty(actor, dataConfig.path);
+        let currentValue = foundry.utils.getProperty(actor, dataConfig.path);
         switch (aspect.operator) {
             case "add":
             case "remove":
@@ -60,7 +60,7 @@ export class Pl1eAspect {
                 else currentValue = value;
                 break;
         }
-        setProperty(actor, dataConfig.path, currentValue);
+        foundry.utils.setProperty(actor, dataConfig.path, currentValue);
     }
 
     static async applyPassiveMacro(aspect, aspectId, scope) {
@@ -250,7 +250,7 @@ export class Pl1eAspect {
             // Modify aspect value by damage type
             if (aspect.damageType && aspect.damageType !== "raw") {
                 const damageTypeData = PL1E.reductions[aspect.damageType];
-                aspectCopy.value -= getProperty(targetData.actor, damageTypeData.path);
+                aspectCopy.value -= foundry.utils.getProperty(targetData.actor, damageTypeData.path);
                 aspectCopy.value = Math.max(aspectCopy.value, 0);
             }
 
@@ -305,7 +305,7 @@ export class Pl1eAspect {
             // Modify aspect value by damage type
             if (aspect.damageType !== "raw") {
                 const damageTypeData = PL1E.reductions[aspect.damageType];
-                aspectCopy.value -= getProperty(targetData.actor, damageTypeData.path);
+                aspectCopy.value -= foundry.utils.getProperty(targetData.actor, damageTypeData.path);
                 aspectCopy.value = Math.max(aspectCopy.value, 0);
             }
 
@@ -501,8 +501,8 @@ export class Pl1eAspect {
 
             // Set invoker as the owner
             tokenData.permission = {
-                default: CONST.DOCUMENT_PERMISSION_LEVELS.NONE, // No permission for others
-                [characterData.userId]: CONST.DOCUMENT_PERMISSION_LEVELS.OWNER // Full permission for specific user
+                default: foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE, // No permission for others
+                [characterData.userId]: foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER // Full permission for specific user
             };
 
             // Create the token
@@ -586,7 +586,7 @@ export class Pl1eAspect {
      */
     static async _applyTargetAspect(aspect, targetData) {
         const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
-        let currentValue = getProperty(targetData.actor, dataConfig.path);
+        let currentValue = foundry.utils.getProperty(targetData.actor, dataConfig.path);
         currentValue = aspect.operator === "set" ? aspect.value : currentValue + aspect.value;
         if (game.user.isGM) {
             await targetData.actor.update({

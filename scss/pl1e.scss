@@ -1,33 +1,44 @@
 // Add custom fonts by visiting and search https://fonts.google.com
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-// Utils
-@import 'utils/colors';
-@import 'utils/mixins';
-@import 'utils/typography';
-@import 'utils/variables';
+.pl1e {
+  // Globals
+  @import 'globals/flex';
+  @import 'globals/grid';
 
-// Layouts
-@import 'layout/flex';
-@import 'layout/forms';
-@import 'layout/grid';
-@import 'layout/minors';
-@import 'layout/sheets';
+  // Utils
+  @import "utils/functions";
+  @import 'utils/variables';
+  @import 'utils/colors';
+  @import 'utils/sizes';
 
-// Components
-@import 'components/attributes';
-@import 'components/characteristics';
-@import 'components/chat';
-@import 'components/currency';
-@import 'components/dm-tool';
-@import 'components/item-selector';
-@import 'components/items';
-@import 'components/journal';
-@import 'components/misc';
-@import 'components/resources';
-@import 'components/skills';
-@import 'components/states';
+  // Shared
+  @import 'shared/bars';
+  @import 'shared/dropdowns';
 
+  // Layouts
+  @import 'layout/body';
+  @import 'layout/container';
+  @import 'layout/dialogs';
+  @import 'layout/forms';
+  @import 'layout/headers';
+  @import 'layout/elements';
+  @import 'layout/scrollbar';
+  @import 'layout/sheets';
 
-// Shame
-@import 'shame';
+  // Components
+  @import 'components/attributes';
+  @import 'components/characteristics';
+  @import 'components/chat';
+  @import 'components/item-selector';
+  @import 'components/descriptor-list';
+  @import 'components/control-list';
+  @import 'components/item-list';
+  @import 'components/journal';
+  @import 'components/misc';
+  @import 'components/success-color';
+  @import 'components/skills';
+
+  // Shame
+  @import 'shame';
+}

@@ -3,8 +3,6 @@ import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {Pl1eActiveEffect} from "../effect.mjs";
 import {PL1E} from "../../pl1e.mjs";
 import {Pl1eMacro} from "../../helpers/macro.mjs";
-import {RollConfig} from "../../apps/rollConfig.mjs";
-import {ItemSelector} from "../../apps/itemSelector.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -77,7 +75,7 @@ export class Pl1eActor extends Actor {
     static async create(docData, options = {}) {
         // Replace default image
         if (docData.img === undefined) {
-            docData.img = `systems/pl1e/assets/icons/${docData.type}.svg`;
+            docData.img = `systems/pl1e/assets/svg/${docData.type}.svg`;
         }
 
         // Keep id if coming from compendium
@@ -101,7 +99,7 @@ export class Pl1eActor extends Actor {
                 vision: true,
                 disposition: dispositions[docData.type],
                 texture: {
-                    src: `systems/pl1e/assets/icons/${docData.type}.svg`
+                    src: `systems/pl1e/assets/svg/${docData.type}.svg`
                 }
             },
             { overwrite: false }
@@ -207,7 +205,7 @@ export class Pl1eActor extends Actor {
      */
     _displayResourceScrollingText(key, value, position) {
         const splitKey = key.split(".");
-        const resourceProperty = getProperty(this.system.resources, splitKey[0]);
+        const resourceProperty = foundry.utils.getProperty(this.system.resources, splitKey[0]);
         const diffValue = value - resourceProperty.value;
         const keyConfig = Pl1eHelpers.getConfig("resources", splitKey[0]);
         const text = `${diffValue} ${game.i18n.localize(keyConfig.label)}`;
@@ -339,9 +337,15 @@ export class Pl1eActor extends Actor {
 
         actorGeneral.level = Pl1eHelpers.XPToLevel(this, actorGeneral.experience);
         actorGeneral.experienceNeeded = Pl1eHelpers.levelToXP(this, actorGeneral.level + 1);
+        actorGeneral.experienceMax = Pl1eHelpers.levelToXP(this, Pl1eHelpers.levelCaps(this).length);
         const experienceReached = Pl1eHelpers.levelToXP(this, actorGeneral.level);
-        actorGeneral.levelProgression = 100 * (actorGeneral.experience - experienceReached) /
-            (actorGeneral.experienceNeeded - experienceReached);
+        if (actorGeneral.experience === actorGeneral.experienceMax) {
+            actorGeneral.levelProgression = 100; // In case of max XP reached
+        }
+        else {
+            actorGeneral.levelProgression = 100 * (actorGeneral.experience - experienceReached) /
+                (actorGeneral.experienceNeeded - experienceReached);
+        }
         actorGeneral.ranks = actorGeneral.experience;
         actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
     }
@@ -349,28 +353,7 @@ export class Pl1eActor extends Actor {
     /** @inheritDoc */
     async prepareEmbeddedDocuments() {
         super.prepareEmbeddedDocuments();
-        const systemData = this.system;
-        const actorGeneral = systemData.general;
 
-        // Initialize the sum of points and the base number of features
-        let totalFeaturePoints = 2; // Starting feature points
-        let remainingFeatures = 4; // Max number of features
-
-        // Iterate over each item in the actor
-        for (const item of this.items) {
-            // Check if the item is of type 'feature'
-            if (item.type === 'feature') {
-                // Sum up the points from each feature item
-                totalFeaturePoints += item.system.attributes.points || 0; // Using || 0 to handle undefined points
-                // Decrement the remaining of feature items
-                remainingFeatures -= 1;
-            }
-        }
-
-        // Store the total points
-        actorGeneral.remainingFeaturePoints = totalFeaturePoints;
-        // Store the updated remaining features
-        actorGeneral.remainingFeatures = remainingFeatures;
     }
 
     /**
@@ -401,7 +384,9 @@ export class Pl1eActor extends Actor {
         }
 
         // Handle actorCharacteristics scores.
+        actorGeneral.remainingCharacteristics = 24;
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
+            actorGeneral.remainingCharacteristics -= characteristic.base;
             characteristic.mod = characteristic.mods.filter(value => value < 0).reduce((a, b) => a + b, 0)
                 + Math.max(...characteristic.mods.filter(value => value > 0), 0);
             characteristic.value = characteristic.base + characteristic.mod;
@@ -416,6 +401,7 @@ export class Pl1eActor extends Actor {
             }
             resource.max *= resourceConfig.multiplier * actorMisc.sizeMultiplier;
             if (resource.value > resource.max) resource.value = resource.max;
+            resource.percentage = resource.value / resource.max * 100;
         }
 
         // Handle actorSkills scores.
@@ -434,10 +420,10 @@ export class Pl1eActor extends Actor {
 
             skill.numberMod += actorGeneral.bonuses;
             skill.number = Math.floor(characteristicsSum / skillConfig.divider);
-            skill.number = Math.clamped(skill.number + skill.numberMod + attributesSum, 1, 10);
+            skill.number = Math.clamp(skill.number + skill.numberMod + attributesSum, 1, 10);
 
             skill.diceMod += actorGeneral.advantages;
-            skill.dice = Math.clamped((1 + skill.rank + skill.diceMod) * 2, 4, 12);
+            skill.dice = Math.clamp((1 + skill.rank + skill.diceMod) * 2, 4, 12);
 
             if (!skillConfig.fixedRank) actorGeneral.ranks -= (skill.rank * (skill.rank + 1) / 2) - 1;
         }
@@ -462,6 +448,8 @@ export class Pl1eActor extends Actor {
     async rollSkill(skillName) {
         const skill = this.system.skills[skillName];
 
+        // await RollConfig.createAndRender(this, skill);
+
         // Calculate dice number
         let diceNumber = 0;
         if (skill.usable) {
@@ -477,7 +465,7 @@ export class Pl1eActor extends Actor {
             diceType += skill.dice;
             if (this.type === "character" && this.hasPlayerOwner)
                 diceType += game.settings.get("pl1e", "globalAdvantages") * 2;
-            diceType = Math.clamped(diceType, 0, 12);
+            diceType = Math.clamp(diceType, 0, 12);
         }
 
         // Calculate formula
@@ -532,7 +520,7 @@ export class Pl1eActor extends Actor {
     async addItem(item, childId = undefined) {
         const gatherItemData = async (item, childId, behavior = "regular", data = []) => {
             const itemCopy = item.toObject()
-            const parentId = randomID();
+            const parentId = foundry.utils.randomID();
             itemCopy.flags = {
                 pl1e: {
                     childId: childId || null,  // If childId might be undefined or falsy

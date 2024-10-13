@@ -64,6 +64,7 @@ export function getConfigActor() {
     PL1E.characteristics = {
         "strength": {
             "label": "PL1E.Strength",
+            "short": "PL1E.StrengthShort",
             "weights": {
                 "resources": ["stamina"],
                 "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
@@ -74,6 +75,7 @@ export function getConfigActor() {
         },
         "agility": {
             "label": "PL1E.Agility",
+            "short": "PL1E.AgilityShort",
             "weights": {
                 "resources": [],
                 "skills": ["reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
@@ -84,6 +86,7 @@ export function getConfigActor() {
         },
         "perception": {
             "label": "PL1E.Perception",
+            "short": "PL1E.PerceptionShort",
             "weights": {
                 "resources": [],
                 "skills": ["reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
@@ -94,6 +97,7 @@ export function getConfigActor() {
         },
         "constitution": {
             "label": "PL1E.Constitution",
+            "short": "PL1E.ConstitutionShort",
             "weights": {
                 "resources": ["health", "stamina"],
                 "skills": ["parry", "vigor", "athletics"]
@@ -104,6 +108,7 @@ export function getConfigActor() {
         },
         "intellect": {
             "label": "PL1E.Intellect",
+            "short": "PL1E.IntellectShort",
             "weights": {
                 "resources": ["mana"],
                 "skills": ["resilience", "diplomacy", "bluff", "erudition", "nature"]
@@ -114,6 +119,7 @@ export function getConfigActor() {
         },
         "cunning": {
             "label": "PL1E.Cunning",
+            "short": "PL1E.CunningShort",
             "weights": {
                 "resources": [],
                 "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "occultism"]
@@ -124,6 +130,7 @@ export function getConfigActor() {
         },
         "wisdom": {
             "label": "PL1E.Wisdom",
+            "short": "PL1E.WisdomShort",
             "weights": {
                 "resources": [],
                 "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "nature"]
@@ -134,6 +141,7 @@ export function getConfigActor() {
         },
         "will": {
             "label": "PL1E.Will",
+            "short": "PL1E.WillShort",
             "weights": {
                 "resources": ["health", "mana"],
                 "skills": ["resilience", "performance", "occultism"]
@@ -367,42 +375,76 @@ export function getConfigActor() {
     }
 
     PL1E.general = {
+        "level": {
+            "label": "PL1E.Level",
+            "icon": "fa-trophy",
+            "type": "number",
+            "path": "system.general.level",
+            "header": false
+        },
         "experience": {
             "label": "PL1E.Experience",
             "icon": "fa-cube",
             "type": "number",
-            "path": "system.general.experience"
+            "path": "system.general.experience",
+            "header": false
+        },
+        "remainingCharacteristics": {
+            "label": "PL1E.RemainingCharacteristics",
+            "icon": "fa-puzzle-piece",
+            "type": "number",
+            "path": "system.general.remainingCharacteristics",
+            "header": true
+        },
+        "ranks": {
+            "label": "PL1E.Ranks",
+            "icon": "fa-circle-x",
+            "type": "number",
+            "path": "system.general.ranks",
+            "header": true
+        },
+        "maxRank": {
+            "label": "PL1E.MaxRank",
+            "icon": "fa-circle-chevron-up",
+            "type": "number",
+            "path": "system.general.maxRank",
+            "header": true
         },
         "advantages": {
             "label": "PL1E.Advantages",
             "icon": "fa-cube",
             "type": "number",
-            "path": "system.general.advantages"
+            "path": "system.general.advantages",
+            "header": false
         },
         "statusImmunities": {
             "label": "PL1E.StatusImmunities",
             "icon": "fa-swords",
             "type": "array",
             "path": "system.misc.statusImmunities",
-            "select": "statusImmunities"
+            "select": "statusImmunities",
+            "header": false
         },
         "action": {
             "label": "PL1E.Action",
             "icon": "fa-clock",
             "type": "number",
-            "path": "system.general.action"
+            "path": "system.general.action",
+            "header": true
         },
         "reaction": {
             "label": "PL1E.Reaction",
             "icon": "fa-reply-clock",
             "type": "number",
-            "path": "system.general.reaction"
+            "path": "system.general.reaction",
+            "header": true
         },
         "quickAction": {
             "label": "PL1E.QuickAction",
             "icon": "fa-bell",
             "type": "number",
-            "path": "system.general.quickAction"
+            "path": "system.general.quickAction",
+            "header": true
         }
     }
 
@@ -411,49 +453,57 @@ export function getConfigActor() {
             "label": "PL1E.SlashingReduction",
             "icon": "fa-axe-battle",
             "type": "number",
-            "path": "system.reductions.slashing"
+            "path": "system.reductions.slashing",
+            "header": true
         },
         "crushing": {
             "label": "PL1E.CrushingReduction",
             "icon": "fa-hammer-war",
             "type": "number",
-            "path": "system.reductions.crushing"
+            "path": "system.reductions.crushing",
+            "header": true
         },
         "piercing": {
             "label": "PL1E.PiercingReduction",
             "icon": "fa-dagger",
             "type": "number",
-            "path": "system.reductions.piercing"
+            "path": "system.reductions.piercing",
+            "header": true
         },
         "burn": {
             "label": "PL1E.BurnReduction",
             "icon": "fa-fire",
             "type": "number",
-            "path": "system.reductions.burn"
+            "path": "system.reductions.burn",
+            "header": true
         },
         "cold": {
             "label": "PL1E.ColdReduction",
             "icon": "fa-snowflake",
             "type": "number",
-            "path": "system.reductions.cold"
+            "path": "system.reductions.cold",
+            "header": true
         },
         "acid": {
             "label": "PL1E.AcidReduction",
             "icon": "fa-droplet",
             "type": "number",
-            "path": "system.reductions.acid"
+            "path": "system.reductions.acid",
+            "header": true
         },
         "shock": {
             "label": "PL1E.ShockReduction",
             "icon": "fa-bolt",
             "type": "number",
-            "path": "system.reductions.shock"
+            "path": "system.reductions.shock",
+            "header": true
         },
         "entropy": {
             "label": "PL1E.EntropyReduction",
             "icon": "fa-ghost",
             "type": "number",
-            "path": "system.reductions.entropy"
+            "path": "system.reductions.entropy",
+            "header": true
         },
     }
 
@@ -463,220 +513,231 @@ export function getConfigActor() {
             "icon": "fa-arrow-up-big-small",
             "type": "select",
             "path": "system.misc.size",
-            "select": "sizes"
+            "select": "sizes",
+            "header": false
         },
         "sizeMultiplier": {
             "label": "PL1E.SizeMultiplier",
-            "icon": "fa-person-running",
+            "icon": "fa-arrow-up-big-small",
             "type": "number",
-            "path": "system.misc.sizeMultiplier"
+            "path": "system.misc.sizeMultiplier",
+            "header": true
         },
         "tokenSize": {
             "label": "PL1E.TokenSize",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.tokenSize"
+            "path": "system.misc.tokenSize",
+            "header": false
         },
         "speed": {
             "label": "PL1E.Speed",
             "icon": "fa-person-running",
             "type": "select",
             "path": "system.misc.speed",
-            "select": "speeds"
+            "select": "speeds",
+            "header": false
         },
         "movement": {
             "label": "PL1E.Movement",
             "icon": "fa-person-running",
             "type": "number",
-            "path": "system.misc.movement"
+            "path": "system.misc.movement",
+            "header": true
         },
         "baseInitiative": {
             "label": "PL1E.BaseInitiative",
-            "icon": "fa-person-running",
+            "icon": "fa-flag",
             "type": "number",
-            "path": "system.misc.baseInitiative"
+            "path": "system.misc.baseInitiative",
+            "header": false
         },
         "initiative": {
             "label": "PL1E.Initiative",
-            "icon": "fa-person-running",
+            "icon": "fa-flag",
             "type": "number",
-            "path": "system.misc.initiative"
+            "path": "system.misc.initiative",
+            "header": true
         },
         "unconsciousDoor": {
             "label": "PL1E.UnconsciousDoor",
             "icon": "fa-face-sleeping",
             "type": "number",
-            "path": "system.misc.unconsciousDoor"
+            "path": "system.misc.unconsciousDoor",
+            "header": true
         },
         "deathDoor": {
             "label": "PL1E.DeathDoor",
             "icon": "fa-skull",
             "type": "number",
-            "path": "system.misc.deathDoor"
+            "path": "system.misc.deathDoor",
+            "header": true
         },
         "flexibility": {
             "label": "PL1E.Flexibility",
             "icon": "fa-weight-hanging",
             "type": "number",
-            "path": "system.misc.flexibility"
+            "path": "system.misc.flexibility",
+            "header": true
         },
         "nightVisionRange": {
             "label": "PL1E.NightVisionRange",
             "icon": "fa-eye",
             "type": "number",
-            "path": "system.misc.nightVisionRange"
+            "path": "system.misc.nightVisionRange",
+            "header": true
         }
     }
 
     PL1E.statuses = {
         "charmed": {
             "label": "PL1E.StatusCharmed",
-            "img": "systems/pl1e/assets/icons/charmed.svg",
+            "img": "systems/pl1e/assets/svg/charmed.svg",
             "type": "status"
         },
         "paralysis": {
             "label": "PL1E.StatusParalysis",
-            "img": "systems/pl1e/assets/icons/paralysis.svg",
+            "img": "systems/pl1e/assets/svg/paralysis.svg",
             "type": "status"
         },
         "asleep": {
             "label": "PL1E.StatusAsleep",
-            "img": "systems/pl1e/assets/icons/asleep.svg",
+            "img": "systems/pl1e/assets/svg/asleep.svg",
             "type": "status"
         },
         "restrained": {
             "label": "PL1E.StatusRestrained",
-            "img": "systems/pl1e/assets/icons/restrained.svg",
+            "img": "systems/pl1e/assets/svg/restrained.svg",
             "type": "status"
         },
         "slow": {
             "label": "PL1E.StatusSlow",
-            "img": "systems/pl1e/assets/icons/slow.svg",
+            "img": "systems/pl1e/assets/svg/slow.svg",
             "type": "status"
         },
         "fast": {
             "label": "PL1E.StatusFast",
-            "img": "systems/pl1e/assets/icons/fast.svg",
+            "img": "systems/pl1e/assets/svg/fast.svg",
             "type": "status"
         },
         "stunned": {
             "label": "PL1E.StatusStunned",
-            "img": "systems/pl1e/assets/icons/stunned.svg",
+            "img": "systems/pl1e/assets/svg/stunned.svg",
             "type": "status"
         },
         "invigorated": {
             "label": "PL1E.StatusInvigorated",
-            "img": "systems/pl1e/assets/icons/invigorated.svg",
+            "img": "systems/pl1e/assets/svg/invigorated.svg",
             "type": "status"
         },
         "sick": {
             "label": "PL1E.StatusSick",
-            "img": "systems/pl1e/assets/icons/sick.svg",
+            "img": "systems/pl1e/assets/svg/sick.svg",
             "type": "status"
         },
         "healthy": {
             "label": "PL1E.StatusHealthy",
-            "img": "systems/pl1e/assets/icons/healthy.svg",
+            "img": "systems/pl1e/assets/svg/healthy.svg",
             "type": "status"
         },
         "confused": {
             "label": "PL1E.StatusConfused",
-            "img": "systems/pl1e/assets/icons/confused.svg",
+            "img": "systems/pl1e/assets/svg/confused.svg",
             "type": "status"
         },
         "composed": {
             "label": "PL1E.StatusComposed",
-            "img": "systems/pl1e/assets/icons/composed.svg",
+            "img": "systems/pl1e/assets/svg/composed.svg",
             "type": "status"
         },
         "bleeding": {
             "label": "PL1E.StatusBleeding",
-            "img": "systems/pl1e/assets/icons/bleeding.svg",
+            "img": "systems/pl1e/assets/svg/bleeding.svg",
             "type": "status"
         },
         "regenerate": {
             "label": "PL1E.StatusRegenerate",
-            "img": "systems/pl1e/assets/icons/regenerate.svg",
+            "img": "systems/pl1e/assets/svg/regenerate.svg",
             "type": "status"
         },
         "downgraded": {
             "label": "PL1E.StatusDowngraded",
-            "img": "systems/pl1e/assets/icons/downgraded.svg",
+            "img": "systems/pl1e/assets/svg/downgraded.svg",
             "type": "status"
         },
         "upgraded": {
             "label": "PL1E.StatusUpgraded",
-            "img": "systems/pl1e/assets/icons/upgraded.svg",
+            "img": "systems/pl1e/assets/svg/upgraded.svg",
             "type": "status"
         },
         "blind": {
             "label": "PL1E.StatusBlind",
-            "img": "systems/pl1e/assets/icons/blind.svg",
+            "img": "systems/pl1e/assets/svg/blind.svg",
             "type": "status"
         },
         "deaf": {
             "label": "PL1E.StatusDeaf",
-            "img": "systems/pl1e/assets/icons/deaf.svg",
+            "img": "systems/pl1e/assets/svg/deaf.svg",
             "type": "status"
         },
         "invisible": {
             "label": "PL1E.StatusInvisible",
-            "img": "systems/pl1e/assets/icons/invisible.svg",
+            "img": "systems/pl1e/assets/svg/invisible.svg",
             "type": "status"
         },
         "clairvoyant": {
             "label": "PL1E.StatusClairvoyant",
-            "img": "systems/pl1e/assets/icons/clairvoyant.svg",
+            "img": "systems/pl1e/assets/svg/clairvoyant.svg",
             "type": "status"
         },
         "tremorsense": {
             "label": "PL1E.StatusTremorsense",
-            "img": "systems/pl1e/assets/icons/tremorsense.svg",
+            "img": "systems/pl1e/assets/svg/tremorsense.svg",
             "type": "status"
         },
         "focus": {
             "label": "PL1E.StatusFocus",
-            "img": "systems/pl1e/assets/icons/focus.svg",
+            "img": "systems/pl1e/assets/svg/focus.svg",
             "type": "status"
         },
         "slashingImmunity": {
             "label": "PL1E.StatusSlashingImmunity",
-            "img": "systems/pl1e/assets/icons/slashingImmunity.svg",
+            "img": "systems/pl1e/assets/svg/slashingImmunity.svg",
             "type": "status"
         },
         "crushingImmunity": {
             "label": "PL1E.StatusCrushingImmunity",
-            "img": "systems/pl1e/assets/icons/crushingImmunity.svg",
+            "img": "systems/pl1e/assets/svg/crushingImmunity.svg",
             "type": "status"
         },
         "piercingImmunity": {
             "label": "PL1E.StatusPiercingImmunity",
-            "img": "systems/pl1e/assets/icons/piercingImmunity.svg",
+            "img": "systems/pl1e/assets/svg/piercingImmunity.svg",
             "type": "status"
         },
         "fireImmunity": {
             "label": "PL1E.StatusFireImmunity",
-            "img": "systems/pl1e/assets/icons/fire-shield.svg",
+            "img": "systems/pl1e/assets/svg/fire-shield.svg",
             "type": "status"
         },
         "coldImmunity": {
             "label": "PL1E.StatusColdImmunity",
-            "img": "systems/pl1e/assets/icons/ice-shield.svg",
+            "img": "systems/pl1e/assets/svg/ice-shield.svg",
             "type": "status"
         },
         "shockImmunity": {
             "label": "PL1E.StatusShockImmunity",
-            "img": "systems/pl1e/assets/icons/shockImmunity.svg",
+            "img": "systems/pl1e/assets/svg/shockImmunity.svg",
             "type": "status"
         },
         "acidImmunity": {
             "label": "PL1E.StatusAcidImmunity",
-            "img": "systems/pl1e/assets/icons/acidImmunity.svg",
+            "img": "systems/pl1e/assets/svg/acidImmunity.svg",
             "type": "status"
         },
         "immortal": {
             "label": "PL1E.StatusImmortal",
-            "img": "systems/pl1e/assets/icons/immortal.svg",
+            "img": "systems/pl1e/assets/svg/immortal.svg",
             "type": "status"
         }
     }
