@@ -1,19 +1,31 @@
-<form class="rest-manager {{cssClass}}" autocomplete="off">
+<form class="rest-manager flex-horizontal scroll-auto-group" autocomplete="off">
     <!-- Training Panel -->
-    <div class="training-container">
+    <div class="flex-vertical flex-shrink">
         <h3>{{localize "PL1E.Training"}}</h3>
         {{> "systems/pl1e/templates/actor/parts/stats-skills.hbs"}}
     </div>
     
     <!-- Camping Panel -->
-    <div class="camping-container">
-        <h3>{{localize "PL1E.Campement"}}</h3>
-        <div class="camping-context">
-            <img src="systems/pl1e/assets/camp/hostile.jpg">
-            <img src="systems/pl1e/assets/camp/nature.jpg">
-            <img src="systems/pl1e/assets/camp/poorBed.jpg">
-            <img src="systems/pl1e/assets/camp/standardBed.jpg">
-            <img src="systems/pl1e/assets/camp/luxuriousBed.jpg">
+    <div class="flex-vertical flex-large">
+        <div class="flex-vertical">
+            <h3>{{localize "PL1E.Environment"}}</h3>
+            <div class="camping-context">
+                <img src="systems/pl1e/assets/camp/hostile.jpg">
+                <img src="systems/pl1e/assets/camp/nature.jpg">
+                <img src="systems/pl1e/assets/camp/poorBed.jpg">
+                <img src="systems/pl1e/assets/camp/standardBed.jpg">
+                <img src="systems/pl1e/assets/camp/luxuriousBed.jpg">
+            </div>
+        </div>
+        <div class="flex-vertical">
+            <h3>{{localize "PL1E.Service"}}</h3>
+            <div class="flex-horizontal camping-context">
+                <img src="systems/pl1e/assets/camp/hostile.jpg">
+                <img src="systems/pl1e/assets/camp/nature.jpg">
+                <img src="systems/pl1e/assets/camp/poorBed.jpg">
+                <img src="systems/pl1e/assets/camp/standardBed.jpg">
+                <img src="systems/pl1e/assets/camp/luxuriousBed.jpg">
+            </div>
         </div>
     </div>
 </form>

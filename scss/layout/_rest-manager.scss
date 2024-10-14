@@ -1,196 +1,31 @@
-﻿.window-content {
-  background: $colorBackground none;
-}
+﻿.rest-manager {
+  min-height: 840px;
+  min-width: 700px;
 
-.rest-manager {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  gap: 10px;
-  background-color: $colorBackground;
-
-  .training-container {
-    flex: 1%;
+  .camping-context {
     display: flex;
+    flex-direction: row;
     gap: 10px;
-    flex-direction: column;
-  }
+    height: 200px;
 
-  .camping-container {
-    flex: 3;
-    display: flex;
-    gap: 10px;
-    flex-direction: column;
-    
-    .camping-context {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 10px;
-      
-      img {
-        border:  5px outset $colorBorder;
-        flex: 1;
-        max-width: 100px;
-        height: auto;
-        object-fit: cover;
-
-        &:hover {
-          border:  5px outset $colorBorderNegative;
-        }
-
-        &.selected {
-          border:  5px inset $colorBorder;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-      }
-    }
-  }
-  
-  section {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-
-    aside {
-      width: 33%;
-      padding: 10px;
-      background-color: #f0f0f0;
-
-      h3 {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-      }
-
-      p {
-        font-size: 1rem;
-        margin-bottom: 5px;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-
-        li {
-          display: flex;
-          justify-content: space-between;
-          padding: 5px 0;
-          border-bottom: 1px solid #ddd;
-
-          span:first-child {
-            font-weight: bold;
-          }
-
-          span:last-child {
-            color: #555;
-          }
-
-          div {
-            display: flex;
-            gap: 5px;
-          }
-        }
-      }
-    }
-
-    article {
-      width: 67%;
-      padding: 10px;
-
-      h3 {
-        font-size: 1.5rem;
-        margin-bottom: 15px;
-      }
-
-      section {
-        margin-bottom: 20px;
-
-        h4 {
-          font-size: 1.2rem;
-          margin-bottom: 10px;
-        }
-
-        div {
-          display: flex;
-          gap: 10px;
-
-          figure {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-
-            img {
-              width: 50px;
-              height: 50px;
-              object-fit: cover;
-              border-radius: 10px;
-              border: 2px solid #ccc;
-            }
-
-            figcaption {
-              margin-top: 5px;
-              font-size: 0.9rem;
-              color: #666;
-            }
-          }
-        }
-
-        ul {
-          list-style: none;
-          padding: 0;
-
-          li {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid #ddd;
-
-            img {
-              width: 24px;
-              height: 24px;
-            }
-
-            span {
-              font-size: 1rem;
-            }
-
-            div {
-              display: flex;
-              gap: 10px;
-
-              i {
-                display: inline-block;
-                margin-right: 5px;
-                font-size: 1.2rem;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    background-color: #f9f9f9;
-    border-top: 1px solid #ccc;
-
-    button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      background-color: #333;
-      color: white;
-      transition: background-color 0.3s ease;
+    img {
+      width: 100%;
+      height: auto;
+      max-width: 100%; // Empêche les images de déborder du conteneur
+      object-fit: cover;
+      flex-shrink: 1; // Permet aux images de se rétrécir si nécessaire pour s'adapter au conteneur
+      border: 5px outset $colorBorder;
+      box-sizing: border-box; // Assure que les bordures sont prises en compte dans la taille de l'image
 
       &:hover {
-        background-color: #555;
+        border: 5px outset $colorBorderNegative;
+      }
+
+      &.selected {
+        border: 5px inset $colorBorder;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       }
     }
   }
+
 }

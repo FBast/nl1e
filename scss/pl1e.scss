@@ -5,6 +5,7 @@
   // Globals
   @import 'globals/flex';
   @import 'globals/grid';
+  @import 'globals/text';
 
   // Utils
   @import "utils/functions";
@@ -18,7 +19,6 @@
 
   // Layouts
   @import 'layout/body';
-  @import 'layout/container';
   @import 'layout/dialogs';
   @import 'layout/forms';
   @import 'layout/headers';

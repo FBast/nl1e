@@ -22,8 +22,8 @@
                 </div>
             </div>
         </div>
-        <div class="header-infos">
-            <div class="info-container">
+        <div class="flex-vertical header-infos">
+            <div class="flex-horizontal flex-shrink flex-items-center">
                 <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
                 <div class="dropdown-icons">
                     <div class="dropdown-button" data-tooltip="{{localize "PL1E.Advantages"}}">
@@ -83,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div class="resources">
+            <div class="flex-vertical resources">
                 {{#each system.resources}}
                     {{#with (config "resources" @key)}}
                         <div class="resource {{@key}}-bar" data-resource-id="{{@key}}">
@@ -146,49 +146,39 @@
     <section class="sheet-body">
         {{!-- Stats Tab --}}
         <div class="tab" data-group="primary" data-tab="stats">
-            <div class="tab-container">
-                <div class="stats-upper">
-                    {{> "systems/pl1e/templates/actor/parts/stats-characteristics.hbs"}}
+            <div class="flex-horizontal">
+                {{> "systems/pl1e/templates/actor/parts/stats-characteristics.hbs"}}
+            </div>
+            <div class="flex-horizontal scroll-auto-group">
+                <div class="flex-vertical">
+                    {{> "systems/pl1e/templates/actor/parts/stats-skills.hbs"}}
                 </div>
-                <div class="stats-lower">
-                    <div class="training-container">
-                        {{> "systems/pl1e/templates/actor/parts/stats-skills.hbs"}}
-                    </div>
-                    <div class="favorites-container scroll-auto">
-                        {{> "systems/pl1e/templates/actor/parts/stats-favorites.hbs"}}
-                    </div>
+                <div class="flex-basic flex-vertical scroll-auto">
+                    {{> "systems/pl1e/templates/actor/parts/stats-favorites.hbs"}}
                 </div>
             </div>
         </div>
         {{!-- Inventory Tab --}}
-        <div class="tab" data-group="primary" data-tab="inventory">
-            <div class="tab-container scroll-auto">
-                {{> "systems/pl1e/templates/actor/parts/inventory-money.hbs" }}
-                {{> "systems/pl1e/templates/actor/parts/inventory-weapons.hbs" }}
-                {{> "systems/pl1e/templates/actor/parts/inventory-wearables.hbs" }}
-                {{> "systems/pl1e/templates/actor/parts/inventory-consumables.hbs" }}
-                {{> "systems/pl1e/templates/actor/parts/inventory-commons.hbs" }}
-                {{> "systems/pl1e/templates/actor/parts/inventory-modules.hbs" }}
-            </div>
+        <div class="tab scroll-auto" data-group="primary" data-tab="inventory">
+            {{> "systems/pl1e/templates/actor/parts/inventory-money.hbs" }}
+            {{> "systems/pl1e/templates/actor/parts/inventory-weapons.hbs" }}
+            {{> "systems/pl1e/templates/actor/parts/inventory-wearables.hbs" }}
+            {{> "systems/pl1e/templates/actor/parts/inventory-consumables.hbs" }}
+            {{> "systems/pl1e/templates/actor/parts/inventory-commons.hbs" }}
+            {{> "systems/pl1e/templates/actor/parts/inventory-modules.hbs" }}
         </div>
         {{!-- Abilities Tab --}}
-        <div class="tab" data-group="primary" data-tab="abilities">
-            <div class="tab-container scroll-auto">
+        <div class="tab scroll-auto" data-group="primary" data-tab="abilities">
                 {{> "systems/pl1e/templates/actor/parts/abilities.hbs" }}
-            </div>
         </div>
         {{!-- Features Tab --}}
-        <div class="tab" data-group="primary" data-tab="features">
-            <div class="tab-container scroll-auto">
-                {{> "systems/pl1e/templates/actor/parts/features-background.hbs" }}
-                {{> "systems/pl1e/templates/actor/parts/features-features.hbs" }}
-            </div>
+        <div class="tab scroll-auto" data-group="primary" data-tab="features">
+            {{> "systems/pl1e/templates/actor/parts/features-background.hbs" }}
+            {{> "systems/pl1e/templates/actor/parts/features-features.hbs" }}
         </div>
         {{!-- Effects Tab --}}
-        <div class="tab" data-group="primary" data-tab="effects">
-            <div class="tab-container scroll-auto">
-                {{> "systems/pl1e/templates/actor/parts/effects.hbs" }}
-            </div>
+        <div class="tab scroll-auto" data-group="primary" data-tab="effects">
+            {{> "systems/pl1e/templates/actor/parts/effects.hbs" }}
         </div>
     </section>
 </form>
