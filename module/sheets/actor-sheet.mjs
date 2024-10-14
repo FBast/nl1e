@@ -1,10 +1,11 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {Resting} from "../apps/resting.mjs";
+import {RestManager} from "../apps/restManager.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {Pl1eTrade} from "../helpers/trade.mjs";
+import {Pl1eMacro} from "../helpers/macro.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -76,7 +77,7 @@ export class Pl1eActorSheet extends ActorSheet {
                     icon: this.actor.system.general.creationMod ? "fas fa-toggle-on" : "fas fa-toggle-off",
                     onclick: async () => {
                         const appRestingForm = Object.values(ui.windows)
-                            .find(w => w instanceof Resting);
+                            .find(w => w instanceof RestManager);
                         await appRestingForm?.close();
                         await this.actor.update({
                             "system.general.creationMod": !this.actor.system.general.creationMod
@@ -199,6 +200,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Actor actions
         html.find('.open-journal').on('click', async ev => this._onOpenJournal(ev));
+        html.find('.launch-rest').on('click', async ev => this._onLaunchRest(ev));
 
         // Merchant actions
         html.find(".button-remove-items").on("click", ev => this._onRemoveItemsClick(ev));
@@ -952,6 +954,12 @@ export class Pl1eActorSheet extends ActorSheet {
         await effect.delete();
     }
 
+    /**
+     * Open the character journal or create if not existing
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
     async _onOpenJournal(event) {
         event.preventDefault();
 
@@ -988,5 +996,18 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Open the newly created journal
         newJournal.sheet.render(true);
+    }
+
+    /**
+     * Open the rest window
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onLaunchRest(event) {
+        const app = new RestManager(this.actor, {
+            title: `${game.i18n.localize("PL1E.Rest")} : ${this.actor.name}`
+        });
+        app.render(true);
     }
 }
