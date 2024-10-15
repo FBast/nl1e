@@ -9,22 +9,39 @@
     <div class="flex-vertical flex-large">
         <div class="flex-vertical">
             <h3>{{localize "PL1E.Environment"}}</h3>
-            <div class="camping-context">
-                <img src="systems/pl1e/assets/camp/hostile.jpg">
-                <img src="systems/pl1e/assets/camp/nature.jpg">
-                <img src="systems/pl1e/assets/camp/poorBed.jpg">
-                <img src="systems/pl1e/assets/camp/standardBed.jpg">
-                <img src="systems/pl1e/assets/camp/luxuriousBed.jpg">
+            <div class="toggle-group">
+                <div class="toggle-item" data-value="1">
+                    <img src="systems/pl1e/assets/rest/exteriorHostile.jpg" alt="Hostile" />
+                </div>
+                <div class="toggle-item" data-value="2">
+                    <img src="systems/pl1e/assets/rest/exteriorCalm.jpg" alt="Nature" />
+                </div>
+                <div class="toggle-item" data-value="3">
+                    <img src="systems/pl1e/assets/rest/interiorPoor.jpg" alt="Poor Bed" />
+                </div>
+                <div class="toggle-item" data-value="4">
+                    <img src="systems/pl1e/assets/rest/interiorStandard.jpg" alt="Standard Bed" />
+                </div>
+                <div class="toggle-item" data-value="5">
+                    <img src="systems/pl1e/assets/rest/interiorLuxurious.jpg" alt="Luxurious Bed" />
+                </div>
             </div>
         </div>
         <div class="flex-vertical">
             <h3>{{localize "PL1E.Service"}}</h3>
-            <div class="flex-horizontal camping-context">
-                <img src="systems/pl1e/assets/camp/hostile.jpg">
-                <img src="systems/pl1e/assets/camp/nature.jpg">
-                <img src="systems/pl1e/assets/camp/poorBed.jpg">
-                <img src="systems/pl1e/assets/camp/standardBed.jpg">
-                <img src="systems/pl1e/assets/camp/luxuriousBed.jpg">
+            <div class="toggle-group scroll-auto">
+                <div class="toggle-item" data-value="1">
+                    <img src="systems/pl1e/assets/rest/mealNothing.jpg" alt="Hostile" />
+                </div>
+                <div class="toggle-item" data-value="2">
+                    <img src="systems/pl1e/assets/rest/mealFrugal.jpg" alt="Nature" />
+                </div>
+                <div class="toggle-item" data-value="3">
+                    <img src="systems/pl1e/assets/rest/mealNormal.jpg" alt="Poor Bed" />
+                </div>
+                <div class="toggle-item" data-value="4">
+                    <img src="systems/pl1e/assets/rest/mealGood.jpg" alt="Standard Bed" />
+                </div>
             </div>
         </div>
     </div>

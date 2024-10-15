@@ -2,30 +2,31 @@
   min-height: 840px;
   min-width: 700px;
 
-  .camping-context {
+  .toggle-group {
     display: flex;
-    flex-direction: row;
     gap: 10px;
-    height: 200px;
-
-    img {
-      width: 100%;
-      height: auto;
-      max-width: 100%; // Empêche les images de déborder du conteneur
-      object-fit: cover;
-      flex-shrink: 1; // Permet aux images de se rétrécir si nécessaire pour s'adapter au conteneur
-      border: 5px outset $colorBorder;
-      box-sizing: border-box; // Assure que les bordures sont prises en compte dans la taille de l'image
-
-      &:hover {
-        border: 5px outset $colorBorderNegative;
-      }
-
-      &.selected {
-        border: 5px inset $colorBorder;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      }
-    }
   }
 
+  .toggle-item {
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border 0.3s ease-in-out, box-shadow 0.3s ease;
+
+    img {
+      width: 200px;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    &:hover img {
+      filter: brightness(1.2);
+    }
+
+    &.selected {
+      border: 5px solid #ff9800;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    }
+  }
 }

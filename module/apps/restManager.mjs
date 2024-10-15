@@ -43,5 +43,12 @@ export class RestManager extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Ajoute un écouteur d'événements à chaque élément avec la classe .toggle-item
+        html.find('.toggle-item').on('click', function () {
+            // Supprime la classe 'selected' de tous les éléments .toggle-item
+            html.find('.toggle-item').removeClass('selected');
+            // Ajoute la classe 'selected' à l'élément cliqué
+            $(this).addClass('selected');
+        });
     }
 }
