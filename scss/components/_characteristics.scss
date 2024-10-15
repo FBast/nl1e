@@ -22,23 +22,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: $font-size-lg;
+    font-size: $font-size-md;
   }
 
   .characteristic {
     text-align: center;
     flex: 1;
 
-    .characteristic-label {
-      margin-bottom: 0;
-      font-size: $font-size-md;
-    }
-
     input[type="number"] {
       width: 30px;
       text-align: center;
       font-weight: bold;
-      font-size: $font-size-xlg;
+      font-size: $font-size-lg;
       border: none;
       background-color: transparent;
     }
@@ -51,7 +46,7 @@
     }
 
     .mod {
-      font-size: $font-size-sm;
+      font-size: $font-size-xsm;
 
       &.color-green {
         color: #28a745;

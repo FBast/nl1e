@@ -1,6 +1,6 @@
 {{#if (eq actor.type "npc")}}
-    <div class="flex-vertical flex-shrink">
-        <h3 class="align-left">{{localize "PL1E.Parameters"}}</h3>
+    <div class="flex-vertical gap-md flex-shrink">
+        <h5 class="align-left">{{localize "PL1E.Parameters"}}</h5>
         <div class="form-group attribute">
             <select name="system.general.NPCTemplate">
                 {{customSelectOptions (config "NPCTemplates") selected=system.general.NPCTemplate localize=true}}

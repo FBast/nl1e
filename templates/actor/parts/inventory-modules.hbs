@@ -1,13 +1,13 @@
 <div class="item-list">
     <div class="items-header">
-        <h3 class="header-title">
+        <h5 class="header-title">
             {{localize "PL1E.Modules"}}
             <div class="item-filter-list" data-filter="modules">
                 {{#each (config "moduleTypes")}}
                     <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
                 {{/each}}
             </div>
-        </h3>
+        </h5>
     </div>
     <div class="items-column">
         {{#each modules}}

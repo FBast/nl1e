@@ -31,10 +31,10 @@
                             </section>
                         {{/each}}
                     </div>
-                    <h4 class="dice-total success-color-{{clamp targetData.result 0 5}}">
+                    <h6 class="dice-total success-color-{{clamp targetData.result 0 5}}">
                         {{characterData.rollData.total}} - {{targetData.rollData.total}}
                         = {{targetData.result}} {{localize "PL1E.Success"}}
-                    </h4>
+                    </h6>
                 </div>
             </div>
         {{/if}}
