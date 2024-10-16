@@ -1,6 +1,6 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
-export class RestManager extends FormApplication {
+export class RestForm extends FormApplication {
 
     constructor(actor, options = {}) {
         super(actor, options);
@@ -37,13 +37,12 @@ export class RestManager extends FormApplication {
     /** @inheritDoc */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ["pl1e"],
-            template: "systems/pl1e/templates/apps/rest-manager.hbs",
-            width: "auto",
-            height: "auto",
+            classes: ["pl1e", "form", "rest"],
+            template: "systems/pl1e/templates/rest/rest-form.hbs",
             scrollY: [
                 ".scroll-auto"
             ],
+            tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "training"}],
             resizable: true
         });
     }

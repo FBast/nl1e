@@ -1,0 +1,20 @@
+<form class="pl1e rest-form" autocomplete="off">
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="hover-action enabled-action" data-tab="training">{{localize "PL1E.Training"}}</a>
+        <a class="hover-action enabled-action" data-tab="camp-rest">{{localize "PL1E.CampAndRest"}}</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- Training Tab --}}
+        <div class="tab scroll-auto" data-group="primary" data-tab="training">
+            {{> "systems/pl1e/templates/rest/parts/training.hbs"}}
+        </div>
+
+        {{!-- Camp and Rest Tab --}}
+        <div class="tab scroll-auto" data-group="primary" data-tab="camp-rest">
+            {{> "systems/pl1e/templates/rest/parts/camp.hbs"}}
+        </div>
+    </section>
+</form>

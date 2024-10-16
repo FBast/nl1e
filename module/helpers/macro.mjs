@@ -1,4 +1,4 @@
-import {RestManager} from "../apps/restManager.mjs";
+import {RestForm} from "../apps/restForm.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 
 export class Pl1eMacro {
@@ -163,7 +163,7 @@ export class Pl1eMacro {
      * Display the sleeping window for the actor
      */
     static displayRestWindow(actor) {
-        const app = new RestManager(actor, {
+        const app = new RestForm(actor, {
             title: `${game.i18n.localize("PL1E.Rest")} : ${actor.name}`
         });
         app.render(true);

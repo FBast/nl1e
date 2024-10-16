@@ -2,6 +2,10 @@ body {
   font-family: $font-primary;
 }
 
+form {
+  height: 100%;
+}
+
 fieldset {
   border: 1px solid #ddd;
   border-radius: 8px;

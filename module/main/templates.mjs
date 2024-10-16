@@ -63,6 +63,10 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/item/components/item-aspects-passives.hbs",
         "systems/pl1e/templates/item/components/passive-aspect-macro.hbs",
         "systems/pl1e/templates/item/components/passive-aspect-modify.hbs",
-        "systems/pl1e/templates/item/components/passive-aspect-status.hbs"
+        "systems/pl1e/templates/item/components/passive-aspect-status.hbs",
+        
+        // Rest parts
+        "systems/pl1e/templates/rest/parts/camp.hbs",
+        "systems/pl1e/templates/rest/parts/training.hbs"
     ]);
 };

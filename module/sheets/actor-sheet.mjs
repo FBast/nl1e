@@ -1,5 +1,5 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {RestManager} from "../apps/restManager.mjs";
+import {RestForm} from "../apps/restForm.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
@@ -77,7 +77,7 @@ export class Pl1eActorSheet extends ActorSheet {
                     icon: this.actor.system.general.creationMod ? "fas fa-toggle-on" : "fas fa-toggle-off",
                     onclick: async () => {
                         const appRestingForm = Object.values(ui.windows)
-                            .find(w => w instanceof RestManager);
+                            .find(w => w instanceof RestForm);
                         await appRestingForm?.close();
                         await this.actor.update({
                             "system.general.creationMod": !this.actor.system.general.creationMod
@@ -1005,7 +1005,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @private
      */
     async _onLaunchRest(event) {
-        const app = new RestManager(this.actor, {
+        const app = new RestForm(this.actor, {
             title: `${game.i18n.localize("PL1E.Rest")} : ${this.actor.name}`
         });
         app.render(true);

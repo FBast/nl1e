@@ -21,12 +21,11 @@
   @import 'shared/toggles';
 
   // Layouts
-  @import 'layout/body';
   @import 'layout/chat';
   @import 'layout/dialogs';
   @import 'layout/forms';
-  @import 'layout/headers';
   @import 'layout/journal';
+  @import 'layout/layout';
   @import 'layout/sheets';
 
   // Components
@@ -37,6 +36,7 @@
   @import 'components/control-list';
   @import 'components/item-list';
   @import 'components/misc';
+  @import 'components/nav';
   @import 'components/scrollbar';
   @import 'components/skills';
 
