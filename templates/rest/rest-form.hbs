@@ -1,20 +1,99 @@
 <form class="pl1e rest-form" autocomplete="off">
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <div class="profile-container">
+            <div class="profile-wrapper">
+                <img class="profile-img" src="systems/pl1e/assets/svg/campfire.svg"/>
+                <img class="profile-frame" src="systems/pl1e/assets/frames/frame-level-0.png"/>
+            </div>
+        </div>
+        <div class="flex-vertical gap-md header-infos">
+            <div class="flex-horizontal gap-md flex-shrink flex-items-center">
+                <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}" disabled/>
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Actions"}}">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="fas fa-check confirm-rest" data-tooltip="{{localize "PL1E.Confirm"}}"></i>
+                        <i class="fas fa-times cancel-rest" data-tooltip="{{localize "PL1E.Cancel"}}"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-vertical gap-md resources">
+                {{#each system.resources}}
+                    {{#with (config "resources" @key)}}
+                        <div class="resource {{@key}}-bar" data-resource-id="{{@key}}">
+                            <div class="infos">
+                                <span class="resource-name hover-info highlight-link name"
+                                      data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
+                                <input type="number" name="system.resources.{{@key}}.value"
+                                       value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
+                                <span>/</span>
+                                <input type="number" name="system.resources.{{@key}}.max"
+                                       value="{{../max}}" data-dtype="Number" disabled/>
+                            </div>
+                            <div class="bar">
+                                <div class="fill {{@key}}" style="width: {{../percentage}}%;"></div>
+                            </div>
+                        </div>
+                    {{/with}}
+                {{/each}}
+            </div>
+            <div class="icons-stats">
+                {{#each (config "general")}}
+                    {{#if header}}
+                        {{#with (lookup ../system.general @key)}}
+                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                              <i class="fas {{../icon}}"></i> {{this}}
+                            </span>
+                        {{/with}}
+                    {{/if}}
+                {{/each}}
+                {{#each (config "reductions")}}
+                    {{#if header}}
+                        {{#with (lookup ../system.reductions @key)}}
+                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                              <i class="fas {{../icon}}"></i> {{this}}
+                            </span>
+                        {{/with}}
+                    {{/if}}
+                {{/each}}
+                {{#each (config "misc")}}
+                    {{#if header}}
+                        {{#with (lookup ../system.misc @key)}}
+                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                              <i class="fas {{../icon}}"></i> {{this}}
+                            </span>
+                        {{/with}}
+                    {{/if}}
+                {{/each}}
+            </div>
+        </div>
+    </header>
+
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="hover-action enabled-action" data-tab="training">{{localize "PL1E.Training"}}</a>
-        <a class="hover-action enabled-action" data-tab="camp-rest">{{localize "PL1E.CampAndRest"}}</a>
+        <a class="hover-action enabled-action" data-tab="sleep-and-meal">{{localize "PL1E.SleepAndMeal"}}</a>
+        <a class="hover-action enabled-action">{{localize "PL1E.Training"}}</a>
+        <a class="hover-action enabled-action">{{localize "PL1E.Crafting"}}</a>
     </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
+        {{!-- Sleep and Meal Tab --}}
+        <div class="tab scroll-auto" data-group="primary" data-tab="sleep-and-meal">
+            {{> "systems/pl1e/templates/rest/parts/sleep-and-meal.hbs"}}
+        </div>
+
         {{!-- Training Tab --}}
         <div class="tab scroll-auto" data-group="primary" data-tab="training">
             {{> "systems/pl1e/templates/rest/parts/training.hbs"}}
         </div>
 
-        {{!-- Camp and Rest Tab --}}
-        <div class="tab scroll-auto" data-group="primary" data-tab="camp-rest">
-            {{> "systems/pl1e/templates/rest/parts/camp.hbs"}}
+        {{!-- Crafting Tab --}}
+        <div class="tab scroll-auto" data-group="primary" data-tab="crafting">
+            {{> "systems/pl1e/templates/rest/parts/crafting.hbs"}}
         </div>
     </section>
 </form>

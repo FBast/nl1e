@@ -1,0 +1,48 @@
+﻿.window-content {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.character-sheet,
+.merchant-sheet,
+.item-sheet,
+.rest-form {
+  display: flex;
+  flex-direction: column;
+}
+
+&.sheet.actor {
+  height: 840px;
+  width: 700px;
+  min-height: 840px;
+  min-width: 700px;
+
+  .character-sheet .profile-container {
+    flex: 0 0 180px;
+  }
+
+  .merchant-sheet .profile-container {
+    flex: 0 0 160px;
+  }
+}
+
+&.sheet.item {
+  height: 500px;
+  width: 500px;
+  min-height: 500px;
+  min-width: 500px;
+
+  .item-sheet .profile-container {
+    flex: 0 0 100px;
+  }
+}
+
+&.form.rest {
+  height: 840px;
+  width: 700px;
+  min-height: 840px;
+  min-width: 700px;
+
+  .rest-form .profile-container {
+    flex: 0 0 220px;
+  }
+}

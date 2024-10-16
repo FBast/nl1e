@@ -5,7 +5,6 @@ import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {Pl1eTrade} from "../helpers/trade.mjs";
-import {Pl1eMacro} from "../helpers/macro.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -200,7 +199,7 @@ export class Pl1eActorSheet extends ActorSheet {
 
         // Actor actions
         html.find('.open-journal').on('click', async ev => this._onOpenJournal(ev));
-        html.find('.launch-rest').on('click', async ev => this._onLaunchRest(ev));
+        html.find('.open-rest').on('click', async ev => this._onOpenRest(ev));
 
         // Merchant actions
         html.find(".button-remove-items").on("click", ev => this._onRemoveItemsClick(ev));
@@ -1004,7 +1003,7 @@ export class Pl1eActorSheet extends ActorSheet {
      * @returns {Promise<void>}
      * @private
      */
-    async _onLaunchRest(event) {
+    async _onOpenRest(event) {
         const app = new RestForm(this.actor, {
             title: `${game.i18n.localize("PL1E.Rest")} : ${this.actor.name}`
         });

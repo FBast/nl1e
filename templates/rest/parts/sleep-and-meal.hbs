@@ -1,0 +1,38 @@
+<div class="toggle-section">
+    <h5 class="toggle-title underline">
+        {{localize "PL1E.Environment"}}
+        <i class="fas fa-question-circle help-icon" data-tooltip="{{localize 'PL1E.EnvironmentTooltip'}}"></i>
+    </h5>
+    <div class="toggle-group environment-toggle">
+        {{#each exteriorOptions}}
+            <div class="toggle-item" data-value="{{this.value}}" data-tooltip="{{localize this.tooltip}}">
+                <img src="{{this.img}}" alt="{{this.tooltip}}" />
+            </div>
+        {{/each}}
+    </div>
+    <div class="toggle-group environment-toggle">
+        {{#each interiorOptions}}
+            <div class="toggle-item" data-value="{{this.value}}" data-tooltip="{{localize this.tooltip}}">
+                <img src="{{this.img}}" alt="{{this.tooltip}}" />
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+<!-- Service Section -->
+<div class="toggle-section">
+    <h5 class="toggle-title underline">
+        {{localize "PL1E.Service"}}
+        <i class="fas fa-question-circle help-icon" data-tooltip="{{localize 'PL1E.ServiceTooltip'}}"></i>
+    </h5>
+    <div class="toggle-group service-toggle">
+        {{#each serviceOptions}}
+            <div class="toggle-item" data-value="{{this.value}}" data-tooltip="{{localize this.tooltip}}">
+                <img src="{{this.img}}" alt="{{this.tooltip}}" />
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+<!-- Inventory Section -->
+{{> "systems/pl1e/templates/actor/parts/inventory-commons.hbs" }}
