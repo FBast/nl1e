@@ -12,7 +12,7 @@
     padding: 10px 15px;
     border: 1px solid $colorBorder;
     border-radius: 0; // Reset the border-radius for all tabs
-    background-color: $colorPanel;
+    background-color: $colorPanelAccent;
 
     &.active {
       border-bottom-color: transparent;

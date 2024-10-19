@@ -757,7 +757,7 @@ export function getConfigAspects() {
         "sick": "PL1E.StatusSick",
         "healthy": "PL1E.StatusHealthy",
         "confused": "PL1E.StatusConfused",
-        "composed": "PL1E.StatusComposed",
+        "focused": "PL1E.StatusFocused",
         "bleeding": "PL1E.StatusBleeding",
         "regenerate": "PL1E.StatusRegenerate",
         "downgraded": "PL1E.StatusDowngraded",

@@ -32,19 +32,22 @@ $colorGold: #c7a700;
 $colorSilver: #9f9f9f;
 $colorCopper: #af5134;
 
-$colorText: #ffffff;
-$colorTextAlt: #000000;
+$colorText: #1e1e1e;
+$colorTextAlt: invert-color($colorText);
 
+$colorUser: red;
 $colorBackground: #ffffff;
-$colorPanel: #e8e8e8;
-$colorBorder: #c3c3c3;
+$colorPanel: #e6e6e6;
+$colorPanelAccent : #b4b4b4;
+$colorBorder: #8c8c8c;
 
 $colorBackgroundNegative: invert-color($colorBackground);
 $colorPanelNegative: invert-color($colorPanel);
+$colorPanelAccentNegative: invert-color($colorPanelAccent);
 $colorBorderNegative: invert-color($colorBorder);
 
-$colorMalus: red;
-$colorBonus: green;
+$colorMalus: #c80000;
+$colorBonus: #00c800;
 
 $colorAction: #ff0000;
 $colorInfo: #00ff00;
@@ -58,3 +61,6 @@ $colorStamina: #4caf50;
 $colorMana: #2196f3;
 $colorDestiny: #ff00ff;
 $colorXP: #969600;
+
+// Shadows
+$shadowStandard: 0 0 5px rgba(0, 0, 0, 0.5);

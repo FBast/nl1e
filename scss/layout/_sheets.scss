@@ -4,7 +4,7 @@
   gap: 5px;
   align-items: normal;
   margin-bottom: 25px;
-  color: $colorText;
+  color: $colorTextAlt;
 
   .profile-container {
     display: flex;
@@ -66,15 +66,16 @@
     height: 100%;
 
     .sheet-name {
-      color: $colorText;
+      color: $colorTextAlt;
       height: 40px;
-      font-size: $font-size-lg;
+      font-size: $font-size-md;
+      text-overflow: ellipsis;
       font-weight: bold;
       padding: 10px;
       border: none;
       outline: none;
 
-      &:hover {
+      &:not([disabled]):hover {
         border: 2px solid #ccc;
         border-radius: 5px;
         background-color: $colorBackgroundNegative;

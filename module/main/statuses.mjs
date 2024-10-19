@@ -302,19 +302,19 @@ export const registerStatuses = function () {
                 mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
                 value: -1
             },
-                {
-                    key: "system.skills.intuition.diceMod",
-                    mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
-                    value: -1
-                }],
+            {
+                key: "system.skills.intuition.diceMod",
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: -1
+            }],
             duration: {},
             flags: {}
         },
         {
             // Advantage on resilience and intuition
-            id: "composed",
-            label: "PL1E.StatusComposed",
-            icon: "systems/pl1e/assets/svg/composed.svg",
+            id: "focused",
+            label: "PL1E.StatusFocused",
+            icon: "systems/pl1e/assets/svg/focused.svg",
             tint: "#00ff00",
             changes: [{
                 key: "system.skills.resilience.diceMod",

@@ -20,11 +20,11 @@ import {getConfigActor} from "./config/configActors.mjs";
 import {getConfigItems} from "./config/configItems.mjs";
 import {getConfigAspects} from "./config/configAspects.mjs";
 import {getConfigTemplates} from "./config/configTemplates.mjs";
+import {getConfigRest} from "./config/configRest.mjs";
 import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
 import {Pl1eHelpers} from "./helpers/helpers.mjs";
-import {DMTool} from "./apps/dmTool.mjs";
 
 /* -------------------------------------------- */
 /*  Globals                                     */
@@ -78,6 +78,7 @@ Hooks.once('init', async function () {
     getConfigItems();
     getConfigAspects();
     getConfigTemplates();
+    getConfigRest();
 
     // Register custom statuses
     registerStatuses();

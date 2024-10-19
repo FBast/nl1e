@@ -26,17 +26,61 @@
             <div class="flex-horizontal gap-md flex-shrink flex-items-center">
                 <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
                 <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Satiety"}}">
+                        {{#if (eq system.general.satiety 2)}}
+                            <i class="fas fa-drumstick"></i>
+                        {{else if (eq system.general.satiety 1)}}
+                            <i class="fas fa-apple-alt"></i>
+                        {{else if (eq system.general.satiety 0)}}
+                            <i class="fas fa-utensils"></i>
+                        {{else if (eq system.general.satiety -1)}}
+                            <i class="fas fa-bone color-malus"></i>
+                        {{else if (eq system.general.satiety -2)}}
+                            <i class="fas fa-skull-crossbones color-malus"></i>
+                        {{/if}}
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="set-number" data-path="system.general.satiety" data-value="2">2</i>
+                        <i class="set-number" data-path="system.general.satiety" data-value="1">1</i>
+                        <i class="set-number" data-path="system.general.satiety" data-value="0">0</i>
+                        <i class="set-number" data-path="system.general.satiety" data-value="-1">-1</i>
+                        <i class="set-number" data-path="system.general.satiety" data-value="-2">-2</i>
+                    </div>
+                </div>
+                <div class="dropdown-icons">
+                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Tranquility"}}">
+                        {{#if (eq system.general.tranquility 2)}}
+                            <i class="fas fa-laugh"></i>
+                        {{else if (eq system.general.tranquility 1)}}
+                            <i class="fas fa-smile"></i>
+                        {{else if (eq system.general.tranquility 0)}}
+                            <i class="fas fa-meh"></i>
+                        {{else if (eq system.general.tranquility -1)}}
+                            <i class="fas fa-frown color-malus"></i>
+                        {{else if (eq system.general.tranquility -2)}}
+                            <i class="fas fa-tired color-malus"></i>
+                        {{/if}}
+                    </div>
+                    <div class="dropdown-content">
+                        <i class="set-number" data-path="system.general.tranquility" data-value="2">2</i>
+                        <i class="set-number" data-path="system.general.tranquility" data-value="1">1</i>
+                        <i class="set-number" data-path="system.general.tranquility" data-value="0">0</i>
+                        <i class="set-number" data-path="system.general.tranquility" data-value="-1">-1</i>
+                        <i class="set-number" data-path="system.general.tranquility" data-value="-2">-2</i>
+                    </div>
+                </div>
+                <div class="dropdown-icons">
                     <div class="dropdown-button" data-tooltip="{{localize "PL1E.Advantages"}}">
                         {{#if (eq system.general.advantages 2)}}
-                            <i class="fas fa-laugh" style="color: lawngreen"></i>
+                            <i class="fas fa-dove color-bonus"></i>
                         {{else if (eq system.general.advantages 1)}}
-                            <i class="fas fa-smile" style="color: lawngreen"></i>
+                            <i class="fas fa-thumbs-up color-bonus"></i>
                         {{else if (eq system.general.advantages 0)}}
-                            <i class="fas fa-meh"></i>
+                            <i class="fas fa-circle"></i>
                         {{else if (eq system.general.advantages -1)}}
-                            <i class="fas fa-frown" style="color: red"></i>
+                            <i class="fas fa-thumbs-down color-malus"></i>
                         {{else if (eq system.general.advantages -2)}}
-                            <i class="fas fa-tired" style="color: red"></i>
+                            <i class="fas fa-crow color-malus"></i>
                         {{/if}}
                     </div>
                     <div class="dropdown-content">
@@ -52,15 +96,15 @@
                         {{#if (eq system.general.destiny 0)}}
                             <i class="fas fa-ban"></i>
                         {{else if (eq system.general.destiny 1)}}
-                            <i class="fas fa-dice-one" style="color: lawngreen"></i>
+                            <i class="fas fa-dice-one color-bonus"></i>
                         {{else if (eq system.general.destiny 2)}}
-                            <i class="fas fa-dice-two" style="color: lawngreen"></i>
+                            <i class="fas fa-dice-two color-bonus"></i>
                         {{else if (eq system.general.destiny 3)}}
-                            <i class="fas fa-dice-three" style="color: lawngreen"></i>
+                            <i class="fas fa-dice-three color-bonus"></i>
                         {{else if (eq system.general.destiny 4)}}
-                            <i class="fas fa-dice-four" style="color: lawngreen"></i>
+                            <i class="fas fa-dice-four color-bonus"></i>
                         {{else if (eq system.general.destiny 5)}}
-                            <i class="fas fa-dice-five" style="color: lawngreen"></i>
+                            <i class="fas fa-dice-five color-bonus"></i>
                         {{/if}}
                     </div>
                     <div class="dropdown-content">
@@ -108,7 +152,7 @@
                     {{#if header}}
                         {{#with (lookup ../system.general @key)}}
                             <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
-                              <i class="fas {{../icon}}"></i> {{this}}
+                              <i class="far {{../icon}}"></i> {{this}}
                             </span>
                         {{/with}}
                     {{/if}}
@@ -116,8 +160,8 @@
                 {{#each (config "reductions")}}
                     {{#if header}}
                         {{#with (lookup ../system.reductions @key)}}
-                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
-                              <i class="fas {{../icon}}"></i> {{this}}
+                            <span class="stat-icon hover-info {{#if (gt this 0)}}color-bonus{{/if}}" data-tooltip="{{localize ../label}}">
+                              <i class="far {{../icon}}"></i> {{this}}
                             </span>
                         {{/with}}
                     {{/if}}
@@ -126,7 +170,7 @@
                     {{#if header}}
                         {{#with (lookup ../system.misc @key)}}
                             <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
-                              <i class="fas {{../icon}}"></i> {{this}}
+                              <i class="far {{../icon}}"></i> {{this}}
                             </span>
                         {{/with}}
                     {{/if}}

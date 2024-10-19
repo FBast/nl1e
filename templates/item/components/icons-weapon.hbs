@@ -75,7 +75,7 @@
         </i>
     {{/if}}
 {{else if (eq @root.actor.type "merchant")}}
-    {{#with (lookup ../system.merchantPrices _id)}}
+    {{#with (lookup @root.system.merchantPrices _id)}}
         {{#if (gt gold 0)}}
             <i class="far fa-coins color-gold hover-info" data-tooltip="{{localize "PL1E.Gold"}}">
                 <label>{{gold}}</label>

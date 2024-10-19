@@ -383,13 +383,38 @@ export class Pl1eActor extends Actor {
             }
         }
 
+        // Handle satiety
+        const satietyAffected = ['strength', 'agility', 'constitution', 'perception'];
+        if (actorGeneral.satiety < 0) {
+            for (let characteristicKey of satietyAffected) {
+                if (actorCharacteristics[characteristicKey]) {
+                    actorCharacteristics[characteristicKey].mods.push(actorGeneral.satiety);
+                }
+            }
+        }
+
+        // Handle satiety and tranquility
+        const tranquilityAffected = ['intellect', 'cunning', 'wisdom', 'will'];
+        if (actorGeneral.tranquility < 0) {
+            for (let characteristicKey of tranquilityAffected) {
+                if (actorCharacteristics[characteristicKey]) {
+                    actorCharacteristics[characteristicKey].mods.push(actorGeneral.tranquility);
+                }
+            }
+        }
+
         // Handle actorCharacteristics scores.
         actorGeneral.remainingCharacteristics = 24;
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {
             actorGeneral.remainingCharacteristics -= characteristic.base;
+
+            // Calcul du mod en additionnant les valeurs négatives et la valeur positive la plus élevée
             characteristic.mod = characteristic.mods.filter(value => value < 0).reduce((a, b) => a + b, 0)
                 + Math.max(...characteristic.mods.filter(value => value > 0), 0);
+
+            // Mise à jour de la valeur finale de la caractéristique
             characteristic.value = characteristic.base + characteristic.mod;
+            characteristic.value = Math.max(characteristic.value, 1);
         }
 
         // Handle actorResources scores.

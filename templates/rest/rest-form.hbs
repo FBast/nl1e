@@ -9,7 +9,7 @@
         </div>
         <div class="flex-vertical gap-md header-infos">
             <div class="flex-horizontal gap-md flex-shrink flex-items-center">
-                <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}" disabled/>
+                <input class="sheet-name" type="text" value="{{localize "PL1E.Rest"}}" disabled/>
                 <div class="dropdown-icons">
                     <div class="dropdown-button" data-tooltip="{{localize "PL1E.Actions"}}">
                         <i class="fas fa-bars"></i>
@@ -28,7 +28,7 @@
                                 <span class="resource-name hover-info highlight-link name"
                                       data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
                                 <input type="number" name="system.resources.{{@key}}.value"
-                                       value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
+                                       value="{{../value}}" max="{{../max}}" data-dtype="Number" disabled/>
                                 <span>/</span>
                                 <input type="number" name="system.resources.{{@key}}.max"
                                        value="{{../max}}" data-dtype="Number" disabled/>
@@ -41,32 +41,10 @@
                 {{/each}}
             </div>
             <div class="icons-stats">
-                {{#each (config "general")}}
-                    {{#if header}}
-                        {{#with (lookup ../system.general @key)}}
-                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
-                              <i class="fas {{../icon}}"></i> {{this}}
-                            </span>
-                        {{/with}}
-                    {{/if}}
-                {{/each}}
-                {{#each (config "reductions")}}
-                    {{#if header}}
-                        {{#with (lookup ../system.reductions @key)}}
-                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
-                              <i class="fas {{../icon}}"></i> {{this}}
-                            </span>
-                        {{/with}}
-                    {{/if}}
-                {{/each}}
-                {{#each (config "misc")}}
-                    {{#if header}}
-                        {{#with (lookup ../system.misc @key)}}
-                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
-                              <i class="fas {{../icon}}"></i> {{this}}
-                            </span>
-                        {{/with}}
-                    {{/if}}
+                {{#each effects}}
+                    <span class="stat-icon hover-info" data-tooltip="{{localize label}}">
+                        <i class="far fa-{{icon}}"></i> {{value}}
+                    </span>
                 {{/each}}
             </div>
         </div>

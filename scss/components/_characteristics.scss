@@ -9,12 +9,14 @@
   background-color: $colorPanel;
   border: 1px solid $colorBorder;
   align-items: center;
+  color: $colorText;
 
   .group-icon {
     width: 40px;
     height: 40px;
     margin: 5px;
-    background-color: $colorPanel;
+    color: $colorText;
+    background-color: $colorPanelAccent;
     padding: 0 10px;
     border-radius: 50%;
     z-index: 1;
@@ -46,15 +48,8 @@
     }
 
     .mod {
-      font-size: $font-size-xsm;
-
-      &.color-green {
-        color: #28a745;
-      }
-
-      &.color-red {
-        color: #dc3545;
-      }
+      font-weight: bold;
+      font-size: $font-size-sm;
     }
   }
 }

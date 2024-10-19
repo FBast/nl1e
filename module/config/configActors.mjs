@@ -645,9 +645,9 @@ export function getConfigActor() {
             "img": "systems/pl1e/assets/svg/confused.svg",
             "type": "status"
         },
-        "composed": {
-            "label": "PL1E.StatusComposed",
-            "img": "systems/pl1e/assets/svg/composed.svg",
+        "focused": {
+            "label": "PL1E.StatusFocused",
+            "img": "systems/pl1e/assets/svg/focused.svg",
             "type": "status"
         },
         "bleeding": {
@@ -693,11 +693,6 @@ export function getConfigActor() {
         "tremorsense": {
             "label": "PL1E.StatusTremorsense",
             "img": "systems/pl1e/assets/svg/tremorsense.svg",
-            "type": "status"
-        },
-        "focus": {
-            "label": "PL1E.StatusFocus",
-            "img": "systems/pl1e/assets/svg/focus.svg",
             "type": "status"
         },
         "slashingImmunity": {
