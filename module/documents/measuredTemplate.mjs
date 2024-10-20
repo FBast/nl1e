@@ -1,23 +1,8 @@
 export class Pl1eMeasuredTemplate extends MeasuredTemplate {
 
-    /**
-     * Track the timestamp when the last mouse move event was captured.
-     * @type {number}
-     */
     #moveTime = 0;
-
-    /**
-     * The initially active CanvasLayer to re-activate after the workflow is complete.
-     * @type {CanvasLayer}
-     */
     #initialLayer;
-
-    /**
-     * Track the bound event handlers so they can be properly canceled later.
-     * @type {object}
-     */
     #events;
-
     template;
 
     /* -------------------------------------------- */
@@ -201,12 +186,6 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         this.document.updateSource({x: templateCenter.x + offset, y: templateCenter.y + offset});
         this.refresh();
 
-        // // Target tokens
-        // const targets = Pl1eMeasuredTemplate.getTemplateTargets(this.document);
-        // for (const token of canvas.tokens.placeables) {
-        //     // Target the current token and group with others
-        //     token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
-        // }
         this.#moveTime = now;
     }
 
@@ -243,13 +222,6 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         const update = {direction: this.document.direction + (snap * Math.sign(event.deltaY))};
         this.document.updateSource(update);
         this.refresh();
-
-        // // Target tokens
-        // const targets = Pl1eMeasuredTemplate.getTemplateTargets(this.document);
-        // for (const token of canvas.tokens.placeables) {
-        //     // Target the current token and group with others
-        //     token.setTarget(targets.includes(token), {user: game.user, releaseOthers: false, groupSelect: false});
-        // }
     }
 
     /**
@@ -322,13 +294,13 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
     /**
      * Return the positions inside a template
      * @param {Pl1eMeasuredTemplate} template
-     * @returns {*[]}
+     * @returns {Array}
      * @private
      */
     static _getGridHighlightPositions(template) {
         const grid = canvas.grid.grid;
         const d = canvas.dimensions;
-        const {x, y, distance} = template;
+        const { x, y, distance } = template;
 
         // Get number of rows and columns
         const [maxRow, maxCol] = grid.getGridPositionFromPixels(d.width, d.height);
@@ -348,9 +320,16 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
             for (let c = -nCols; c < nCols; c++) {
                 const [gx, gy] = grid.getPixelsFromGridPosition(row0 + r, col0 + c);
                 const [testX, testY] = [(gx + hx) - x, (gy + hy) - y];
-                const contains = ((r === 0) && (c === 0) && isCenter) || grid._testShape(testX, testY, template.object.shape);
+
+                // Get the shape from the template object
+                const shape = template.object.shape;
+                const point = new PIXI.Point(testX, testY);
+
+                // Check if the point is within the shape
+                const contains = ((r === 0) && (c === 0) && isCenter) || shape.contains(point.x, point.y);
                 if (!contains) continue;
-                positions.push({x: gx, y: gy});
+
+                positions.push({ x: gx, y: gy });
             }
         }
         return positions;

@@ -12,7 +12,7 @@
         </h5>
     </div>
     <div class="items-column">
-        {{#if consumables.length}}
+        {{#if (gt consumables.length 0)}}
             {{#each consumables}}
                 {{#if (or (not ../favoriteDisplay) (and system.isFavorite ../favoriteDisplay))}}
                     <div class="item" data-item-id="{{_id}}">

@@ -10,7 +10,7 @@
         </h5>
     </div>
     <div class="items-column">
-        {{#if effects.length}}
+        {{#if (gt effects.length 0)}}
             {{#each effects}}
                 <div class="item" data-effect-id="{{_id}}" data-item-origin-id="{{origin}}"
                      data-actor-origin-id="{{flags.pl1e.originActor}}">

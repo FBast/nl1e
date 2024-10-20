@@ -13,37 +13,43 @@
         </h5>
     </div>
     <div class="items-column">
-        {{#each background}}
-            <div class="item" data-item-id="{{_id}}">
-                <div class="item-content">
-                    <div class="item-title">
-                        <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
-                        <label class="item-tooltip-activate hover-info">{{name}}</label>
-                    </div>
-                    <div class="item-icons">
-                        {{#if (eq type "race")}}
-                            {{> "systems/pl1e/templates/item/components/icons-race.hbs"}}
-                        {{else if (eq type "class")}}
-                            {{> "systems/pl1e/templates/item/components/icons-class.hbs"}}
-                        {{else if (eq type "culture")}}
-                            {{> "systems/pl1e/templates/item/components/icons-culture.hbs"}}
-                        {{else if (eq type "mastery")}}
-                            {{> "systems/pl1e/templates/item/components/icons-mastery.hbs"}}
-                        {{/if}}
-                    </div>
-                    <div class="item-controls">
-                        {{#if @root.actor.isOwner}}
-                            {{#if flags.pl1e.childId}}
-                                <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
-                            {{else}}
-                                <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i
-                                        class="fas fa-trash"></i></a>
+        {{#if (gt background.length 0)}}
+            {{#each background}}
+                <div class="item" data-item-id="{{_id}}">
+                    <div class="item-content">
+                        <div class="item-title">
+                            <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
+                            <label class="item-tooltip-activate hover-info">{{name}}</label>
+                        </div>
+                        <div class="item-icons">
+                            {{#if (eq type "race")}}
+                                {{> "systems/pl1e/templates/item/components/icons-race.hbs"}}
+                            {{else if (eq type "class")}}
+                                {{> "systems/pl1e/templates/item/components/icons-class.hbs"}}
+                            {{else if (eq type "culture")}}
+                                {{> "systems/pl1e/templates/item/components/icons-culture.hbs"}}
+                            {{else if (eq type "mastery")}}
+                                {{> "systems/pl1e/templates/item/components/icons-mastery.hbs"}}
                             {{/if}}
-                        {{/if}}
+                        </div>
+                        <div class="item-controls">
+                            {{#if @root.actor.isOwner}}
+                                {{#if flags.pl1e.childId}}
+                                    <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                                {{else}}
+                                    <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i
+                                            class="fas fa-trash"></i></a>
+                                {{/if}}
+                            {{/if}}
+                        </div>
                     </div>
+                    <div class="item-tooltip">{{{enriched}}}</div>
                 </div>
-                <div class="item-tooltip">{{{enriched}}}</div>
+            {{/each}}
+        {{else}}
+            <div class="no-items">
+                {{localize "PL1E.NothingToDisplay"}}
             </div>
-        {{/each}}
+        {{/if}}
     </div>
 </div>

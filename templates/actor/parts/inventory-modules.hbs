@@ -10,7 +10,7 @@
         </h5>
     </div>
     <div class="items-column">
-        {{#if modules.length}}
+        {{#if (gt modules.length 0)}}
             {{#each modules}}
                 <div class="item" data-item-id="{{_id}}">
                     <div class="item-content">

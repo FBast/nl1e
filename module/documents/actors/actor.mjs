@@ -536,6 +536,7 @@ export class Pl1eActor extends Actor {
         }
     }
 
+    //TODO cette methode ne fonctionne plus en V12
     /**
      * Add an item and all child items as embedded documents
      * @param {Pl1eItem} item
@@ -550,10 +551,10 @@ export class Pl1eActor extends Actor {
                 pl1e: {
                     childId: childId || null,  // If childId might be undefined or falsy
                     parentId: parentId,
-                    behavior: behavior
+                    behavior: behavior,
                 },
                 core: {
-                    sourceId: item.uuid
+                    sourceId: item.sourceId
                 }
             };
             data.push(itemCopy);

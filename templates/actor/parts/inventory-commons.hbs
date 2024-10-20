@@ -10,7 +10,7 @@
         </h5>
     </div>
     <div class="items-column">
-        {{#if commons.length}}
+        {{#if (gt commons.length 0)}}
             {{#each commons}}
                 <div class="item" data-item-id="{{_id}}">
                     <div class="item-content">

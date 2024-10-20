@@ -14,7 +14,7 @@
         </h5>
     </div>
     <div class="items-column">
-        {{#if wearables.length}}
+        {{#if (gt wearables.length 0)}}
             {{#each wearables}}
                 {{#if (or (not ../favoriteDisplay) (and system.isFavorite ../favoriteDisplay))}}
                     <div class="item {{#if system.isEquipped}}background-ready{{/if}}" data-item-id="{{_id}}">

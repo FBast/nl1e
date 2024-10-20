@@ -12,7 +12,7 @@
         </h5>
     </div>
     <div class="items-column">
-        {{#if commons.length}}
+        {{#if (gt weapons.length 0)}}
             {{#each weapons}}
                 {{#if (or (not ../favoriteDisplay) (and system.isFavorite ../favoriteDisplay))}}
                     <div class="item {{#if (or system.isEquippedMain system.isEquippedSecondary)}}background-ready{{/if}}" data-item-id="{{_id}}">

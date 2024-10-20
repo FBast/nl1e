@@ -13,6 +13,7 @@ export class Pl1eItem extends Item {
     get sourceId() {
         // V12 Method to get the source id
         //TODO probleme ici le compendiumSource est souvent null
+        //Question ? pourquoi je me prend la tete à récupérer le source id alors que l'id est le même que le compendium...
         const compendiumSource = this._stats?.compendiumSource;
         if (compendiumSource) {
             const sourceIdArray = compendiumSource.split(".");

@@ -13,23 +13,29 @@
         </h5>
     </div>
     <div class="items-row">
-        {{#each background}}
-            <div class="item" data-item-id="{{_id}}">
-                <img class="item-edit hover-action" src="{{img}}" title="{{name}}"/>
-                {{#if @root.actor.isOwner}}
-                    {{#if flags.pl1e.childId}}
-                        <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
-                    {{else}}
-                        <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'>
-                            <i class="fas fa-trash"></i>
-                        </a>
+        {{#if (gt background.length 0)}}
+            {{#each background}}
+                <div class="item" data-item-id="{{_id}}">
+                    <img class="item-edit hover-action" src="{{img}}" title="{{name}}"/>
+                    {{#if @root.actor.isOwner}}
+                        {{#if flags.pl1e.childId}}
+                            <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                        {{else}}
+                            <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'>
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        {{/if}}
+                        {{#if (gt (length warnings) 0)}}
+                            <i class="far fa-exclamation-triangle hover-info color-warning"
+                               data-tooltip="{{join warnings ', ' true}}"></i>
+                        {{/if}}
                     {{/if}}
-                    {{#if (gt (length warnings) 0)}}
-                        <i class="far fa-exclamation-triangle hover-info color-warning"
-                           data-tooltip="{{join warnings ', ' true}}"></i>
-                    {{/if}}
-                {{/if}}
+                </div>
+            {{/each}}
+        {{else}}
+            <div class="no-items">
+                {{localize "PL1E.NothingToDisplay"}}
             </div>
-        {{/each}}
+        {{/if}}
     </div>
 </div>
