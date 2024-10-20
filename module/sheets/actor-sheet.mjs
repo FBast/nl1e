@@ -370,8 +370,7 @@ export class Pl1eActorSheet extends ActorSheet {
         await this._categorizeItems(context, typeToCollectionMap);
 
         // Once all items are categorized, proceed to filter them
-        if (this.actor.type !== "merchant")
-            await this._filterItems(context, typeToCollectionMap, this.actor);
+        await this._filterItems(context, typeToCollectionMap, this.actor);
 
         // Apply feature and capacities filters
         context.background = this._filterDocuments(context.background, this._filters.background);

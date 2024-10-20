@@ -549,12 +549,10 @@ export class Pl1eActor extends Actor {
             const parentId = foundry.utils.randomID();
             itemCopy.flags = {
                 pl1e: {
-                    childId: childId || null,  // If childId might be undefined or falsy
+                    sourceId: item.sourceId || item.id,
+                    childId: childId || null,
                     parentId: parentId,
                     behavior: behavior,
-                },
-                core: {
-                    sourceId: item.sourceId
                 }
             };
             data.push(itemCopy);

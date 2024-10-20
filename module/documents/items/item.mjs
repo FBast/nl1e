@@ -11,23 +11,30 @@ export class Pl1eItem extends Item {
      * @return {string|*}
      */
     get sourceId() {
+        // const deprecatedSourceId = this.getFlag("core", "sourceId");
+        // if (deprecatedSourceId) {
+        //     this.setFlag("pl1e", "sourceId", deprecatedSourceId);
+        //     return deprecatedSourceId;
+        // }
+        return this.getFlag("pl1e", "sourceId");
+
         // V12 Method to get the source id
         //TODO probleme ici le compendiumSource est souvent null
         //Question ? pourquoi je me prend la tete à récupérer le source id alors que l'id est le même que le compendium...
-        const compendiumSource = this._stats?.compendiumSource;
-        if (compendiumSource) {
-            const sourceIdArray = compendiumSource.split(".");
-            return sourceIdArray[sourceIdArray.length - 1];
-        }
-
+        // const compendiumSource = this._stats?.compendiumSource;
+        // if (compendiumSource) {
+        //     const sourceIdArray = compendiumSource.split(".");
+        //     return sourceIdArray[sourceIdArray.length - 1];
+        // }
+        //
         // Deprecated since V12
         // const deprecatedSourceId = this.getFlag("core", "sourceId");
         // if (deprecatedSourceId !== undefined) {
         //     const sourceIdArray = deprecatedSourceId.split(".");
         //     return sourceIdArray[sourceIdArray.length - 1];
         // }
-
-        return undefined;
+        //
+        // return undefined;
     }
 
     /**
