@@ -1,3 +1,8 @@
-2024/10/20-12:40:49.003 1674 Recovering log #1213
-2024/10/20-12:40:49.006 1674 Delete type=0 #1213
-2024/10/20-12:40:49.006 1674 Delete type=3 #1212
+2024/10/20-20:22:25.833 63c4 Recovering log #1219
+2024/10/20-20:22:25.836 63c4 Delete type=0 #1219
+2024/10/20-20:22:25.836 63c4 Delete type=3 #1218
+2024/10/20-20:39:23.746 20dc Level-0 table #1223: started
+2024/10/20-20:39:23.746 20dc Level-0 table #1223: 0 bytes OK
+2024/10/20-20:39:23.746 20dc Delete type=0 #1221
+2024/10/20-20:39:23.749 20dc Manual compaction at level-0 from '!macros!1nXOTXdi47kV3J2J' @ 72057594037927935 : 1 .. '!macros!bQinV9IjUcTLjhaL' @ 0 : 0; will stop at (end)
+2024/10/20-20:39:23.749 20dc Manual compaction at level-1 from '!macros!1nXOTXdi47kV3J2J' @ 72057594037927935 : 1 .. '!macros!bQinV9IjUcTLjhaL' @ 0 : 0; will stop at (end)

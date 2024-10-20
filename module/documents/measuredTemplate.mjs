@@ -30,23 +30,18 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         // Additional type-specific data
         switch (areaShape) {
             case "target":
-                const gridSize = game.system.gridDistance;
                 templateData.t = "rect";
-                templateData.direction = 0;
-                templateData.distance = gridSize;
-                templateData.width = gridSize;
-                templateData.height = gridSize;
                 break;
             case "circle":
-                templateData.distance = attributes.circleRadius * game.system.gridDistance;
+                templateData.distance = attributes.circleRadius * game.system.grid.distance;
                 break;
             case "cone":
-                templateData.distance = attributes.coneLength * game.system.gridDistance;
+                templateData.distance = attributes.coneLength * game.system.grid.distance;
                 templateData.angle = attributes.coneAngle;
                 break;
             case "ray":
-                templateData.width = game.system.gridDistance;
-                templateData.distance = attributes.rayLength * game.system.gridDistance;
+                templateData.width = game.system.grid.distance;
+                templateData.distance = attributes.rayLength * game.system.grid.distance;
                 break;
         }
 
@@ -106,16 +101,15 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         if (!this.isVisible) return;
 
         // Get the highlight layer
-        const grid = canvas.grid;
-        const hl = grid.getHighlightLayer(this.highlightId);
+        const hl = canvas.interface.grid.getHighlightLayer(this.highlightId);
 
         // Get the target highlight position
         const position = Pl1eMeasuredTemplate.getSpecialPosition(this.document);
         const gridSize = canvas.grid.size;
 
-        // Highlight the center grid position with a red square
-        hl.beginFill(0xFF0000, 0.5); // Semi-transparent red
-        hl.drawRect(position.x, position.y, gridSize, gridSize);
+        // Highlight the center grid position with a red square (optional, if you still want this)
+        hl.beginFill(0xFF0000, 1); // Semi-transparent green
+        hl.drawCircle(position.x + gridSize / 2, position.y + gridSize / 2, gridSize / 8);
         hl.endFill();
     }
 
@@ -161,11 +155,6 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         this.#initialLayer.activate();
     }
 
-    /**
-     * Move the template preview when the mouse moves
-     * @param event
-     * @private
-     */
     _onMovePlacement(event) {
         event.stopPropagation();
         let now = Date.now(); // Apply a 20ms throttle
@@ -176,14 +165,20 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         templateCenter.y -= offset;
 
         // Clamp with range
-        const range = this.document.actionData.attributes.range * game.system.gridDistance;
+        const range = this.document.actionData.attributes.range * game.system.grid.distance;
         templateCenter = this._clampVectorRadius(templateCenter, this.document.actionData.token, range * canvas.dimensions.size);
 
         // Snap position
-        templateCenter = canvas.grid.getSnappedPosition(templateCenter.x, templateCenter.y, 1);
+        templateCenter = canvas.grid.getSnappedPoint(templateCenter, { mode: CONST.GRID_SNAPPING_MODES.TOP_LEFT_CORNER });
 
-        // Move position
-        this.document.updateSource({x: templateCenter.x + offset, y: templateCenter.y + offset});
+        // Update the shape's position to align with the template center
+        if (this.shape) {
+            this.shape.x = templateCenter.x - (this.shape.width / 2);
+            this.shape.y = templateCenter.y - (this.shape.height / 2);
+        }
+
+        // Move the template's position
+        this.document.updateSource({ x: templateCenter.x + offset, y: templateCenter.y + offset });
         this.refresh();
 
         this.#moveTime = now;
@@ -194,7 +189,7 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
      * @param source
      * @param destination
      * @param max
-     * @returns {{x: *, y: *}}
+     * @returns {PIXI.Point}
      * @private
      */
     _clampVectorRadius(source, destination, max) {
@@ -202,10 +197,7 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         let y = source.y - destination.y;
         let distance = Math.sqrt(x * x + y * y);
         let clamp = Math.min(distance, max) / distance;
-        return {
-            x: clamp * x + destination.x,
-            y: clamp * y + destination.y
-        }
+        return new PIXI.Point(clamp * x + destination.x, clamp * y + destination.y);
     }
 
     /**
@@ -235,6 +227,7 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         const destination = canvas.grid.getSnappedPosition(this.document.x, this.document.y, 2);
         this.document.updateSource(destination);
         this.template = (await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]))[0];
+
         await this.template.setFlag("pl1e", "actionData", {
             "itemId": this.document.actionData.itemId,
             "sceneId": this.document.actionData.sceneId,
@@ -258,82 +251,66 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         // this.#events.reject();
     }
 
-    /**
-     * Get targets currently inside the template
-     * @param {Pl1eMeasuredTemplate} template
-     * @returns {Token[]}     */
-    static getTemplateTargets(template) {
-        const actionData = template.actionData;
+    static getTokensWithinTemplate(template) {
+        const tokens = template.parent.tokens.contents;
+        const shape = template.object.shape;
+        const containedTokens = [];
 
-        // Get targetGroups for token selection
-        let targetGroups = [];
-        for (const [id, aspect] of Object.entries(actionData.activeAspects)) {
-            if (targetGroups.includes(aspect.targetGroup)) continue;
-            targetGroups.push(aspect.targetGroup);
-        }
+        // Template's position on the canvas
+        const templateX = template.x;
+        const templateY = template.y;
 
-        const targets = [];
-        if (template.object.shape === undefined) return targets;
-        const gridPositions = this._getGridHighlightPositions(template);
+        tokens.forEach(token => {
+            // Token's center position on the canvas
+            const tokenX = token.x;
+            const tokenY = token.y;
+            const gridSize = canvas.grid.size;
 
-        // Target current position
-        for (let gridPosition of gridPositions) {
-            for (let token of canvas.tokens.placeables) {
-                const tokenDocument = token.document;
+            let contains = false;
+            switch (shape.constructor) {
+                case PIXI.Rectangle: {
+                    // Translate the rectangle to the canvas coordinates
 
-                // Check if target position in template
-                if (tokenDocument.x === gridPosition.x && tokenDocument.y === gridPosition.y) {
-                    // Add to targets array
-                    targets.push(tokenDocument);
+                    const translatedShape = new PIXI.Rectangle(
+                        shape.x + templateX - gridSize / 2,
+                        shape.y + templateY - gridSize / 2,
+                        shape.width + gridSize,
+                        shape.height + gridSize
+                    );
+
+                    contains = translatedShape.contains(tokenX, tokenY);
+                    break;
                 }
+                case PIXI.Circle: {
+                    const translatedShape = new PIXI.Circle(
+                        shape.x + templateX - gridSize / 2,
+                        shape.y + templateY - gridSize / 2,
+                        shape.radius
+                    );
+                    contains = translatedShape.contains(tokenX, tokenY);
+                    break;
+                }
+                case PIXI.Polygon: {
+                    const points = shape.points.map((point, index) =>
+                        index % 2 === 0 ? point + templateX - gridSize / 2 : point + templateY - gridSize / 2
+                    );
+                    const translatedShape = new PIXI.Polygon(points);
+                    contains = translatedShape.contains(tokenX, tokenY);
+                    break;
+                }
+                default:
+                    console.warn("Shape type not supported:", shape.constructor);
+                    break;
             }
-        }
-        return targets;
+
+            if (contains) {
+                containedTokens.push(token);
+            }
+        });
+
+        return containedTokens;
     }
 
-    /**
-     * Return the positions inside a template
-     * @param {Pl1eMeasuredTemplate} template
-     * @returns {Array}
-     * @private
-     */
-    static _getGridHighlightPositions(template) {
-        const grid = canvas.grid.grid;
-        const d = canvas.dimensions;
-        const { x, y, distance } = template;
-
-        // Get number of rows and columns
-        const [maxRow, maxCol] = grid.getGridPositionFromPixels(d.width, d.height);
-        let nRows = Math.ceil(((distance * 1.5) / d.distance) / (d.size / grid.h));
-        let nCols = Math.ceil(((distance * 1.5) / d.distance) / (d.size / grid.w));
-        [nRows, nCols] = [Math.min(nRows, maxRow), Math.min(nCols, maxCol)];
-
-        // Get the offset of the template origin relative to the top-left grid space
-        const [tx, ty] = grid.getTopLeft(x, y);
-        const [row0, col0] = grid.getGridPositionFromPixels(tx, ty);
-        const [hx, hy] = [Math.ceil(grid.w / 2), Math.ceil(grid.h / 2)];
-        const isCenter = (x - tx === hx) && (y - ty === hy);
-
-        // Identify grid coordinates covered by the template Graphics
-        const positions = [];
-        for (let r = -nRows; r < nRows; r++) {
-            for (let c = -nCols; c < nCols; c++) {
-                const [gx, gy] = grid.getPixelsFromGridPosition(row0 + r, col0 + c);
-                const [testX, testY] = [(gx + hx) - x, (gy + hy) - y];
-
-                // Get the shape from the template object
-                const shape = template.object.shape;
-                const point = new PIXI.Point(testX, testY);
-
-                // Check if the point is within the shape
-                const contains = ((r === 0) && (c === 0) && isCenter) || shape.contains(point.x, point.y);
-                if (!contains) continue;
-
-                positions.push({ x: gx, y: gy });
-            }
-        }
-        return positions;
-    }
 
     /**
      * Get the special position of a template (often used for movement or invocation)
@@ -358,8 +335,11 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
             y = center.y - (gridSize / 2);
         }
 
-        // Convert into snapped position
-        return canvas.grid.getSnappedPosition(x, y);
+        // Create a PIXI.Point for snapping
+        const point = new PIXI.Point(x, y);
+
+        // Convert into snapped position with the appropriate mode and resolution
+        return canvas.grid.getSnappedPoint(point, {mode:CONST.GRID_SNAPPING_MODES.TOP_LEFT_CORNER} );
     }
 
 }

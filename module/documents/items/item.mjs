@@ -1060,10 +1060,11 @@ export class Pl1eItem extends Item {
             const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
             targetsData.push(targetData);
         }
+
         if (characterData.attributes.areaShape !== "none") {
             // Populate targetsData
             for (let template of characterData.templates) {
-                for (let token of Pl1eMeasuredTemplate.getTemplateTargets(template)) {
+                for (let token of Pl1eMeasuredTemplate.getTokensWithinTemplate(template)) {
                     const targetData = await this._getTargetData(characterData, token.actor, token, template);
                     targetsData.push(targetData);
                 }

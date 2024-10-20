@@ -1,12 +1,8 @@
-2024/10/20-12:40:48.927 596c Recovering log #2652
-2024/10/20-12:40:48.927 596c Level-0 table #2654: started
-2024/10/20-12:40:48.928 596c Level-0 table #2654: 15598 bytes OK
-2024/10/20-12:40:48.931 596c Delete type=0 #2652
-2024/10/20-12:40:48.932 596c Delete type=3 #2651
-2024/10/20-12:40:49.046 2894 Moved #2654 to level-1 15598 bytes OK: files[ 0 1 1 0 0 0 0 ]
-2024/10/20-12:40:49.046 2894 Compacting 1@1 + 1@2 files
-2024/10/20-12:40:49.057 2894 Generated table #2656@1: 654 keys, 750892 bytes
-2024/10/20-12:40:49.057 2894 Compacted 1@1 + 1@2 files => 750892 bytes
-2024/10/20-12:40:49.060 2894 compacted to: files[ 0 0 1 0 0 0 0 ]
-2024/10/20-12:40:49.060 2894 Delete type=2 #2614
-2024/10/20-12:40:49.061 2894 Delete type=2 #2654
+2024/10/20-20:22:25.755 6ac0 Recovering log #2670
+2024/10/20-20:22:25.758 6ac0 Delete type=0 #2670
+2024/10/20-20:22:25.758 6ac0 Delete type=3 #2668
+2024/10/20-20:39:23.752 20dc Level-0 table #2675: started
+2024/10/20-20:39:23.752 20dc Level-0 table #2675: 0 bytes OK
+2024/10/20-20:39:23.753 20dc Delete type=0 #2673
+2024/10/20-20:39:23.755 20dc Manual compaction at level-0 from '!actors!0QFbExnIYmpClUwO' @ 72057594037927935 : 1 .. '!folders!tdopLp6I6R9tDfdD' @ 0 : 0; will stop at (end)
+2024/10/20-20:39:23.755 20dc Manual compaction at level-1 from '!actors!0QFbExnIYmpClUwO' @ 72057594037927935 : 1 .. '!folders!tdopLp6I6R9tDfdD' @ 0 : 0; will stop at (end)
