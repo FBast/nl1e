@@ -1,13 +1,3 @@
-{{#if (eq actor.type "npc")}}
-    <div class="flex-vertical gap-md flex-shrink">
-        <h5 class="align-left">{{localize "PL1E.Parameters"}}</h5>
-        <div class="form-group attribute">
-            <select name="system.general.NPCTemplate">
-                {{customSelectOptions (config "NPCTemplates") selected=system.general.NPCTemplate localize=true}}
-            </select>
-        </div>
-    </div>
-{{/if}}
 {{> "systems/pl1e/templates/actor/parts/inventory-money.hbs" favoriteDisplay=true}}
 {{> "systems/pl1e/templates/actor/parts/inventory-weapons.hbs" favoriteDisplay=true}}
 {{> "systems/pl1e/templates/actor/parts/inventory-wearables.hbs" favoriteDisplay=true}}

@@ -190,6 +190,7 @@ export class Pl1eActorSheet extends ActorSheet {
         html.find(".set-number").on("click", ev => Pl1eEvent.onSetNumber(ev, this.actor));
         html.find(".spin-number").on("click", ev => Pl1eEvent.onSpinNumber(ev, this.actor));
         html.find(".edit-number").on("click", ev => Pl1eEvent.onEditNumber(ev, this.actor));
+        html.find(".edit-select").on("click", ev => Pl1eEvent.onEditSelect(ev, this.actor));
         html.find(".rank-control").on("click", ev => this._onRankChange(ev));
         html.find(".item-favorite").on("click", ev => this._onItemFavorite(ev))
         html.find(".currency-favorite").on("click", ev => this._onCurrencyFavorite(ev))

@@ -236,14 +236,16 @@ export class Pl1eEvent {
         // Open a dialog for the user to input a new number
         new Dialog({
             title: game.i18n.localize("PL1E.Edit"),
-            content: `<form>
-                    <div class="form-group">
-                      <input type="number" name="newValue" value="${currentValue}"/>
-                    </div>
-                  </form>`,
+            content: `
+                <form>
+                    <form-group>
+                        <input type="number" name="newValue" value="${currentValue}"/>
+                    </form-group>
+                </form>
+            `,
             buttons: {
                 save: {
-                    label: "Save",
+                    label: game.i18n.localize("PL1E.Save"),
                     callback: (html) => {
                         let newValue = Number(html.find('input[name="newValue"]').val());
                         if (!isNaN(newValue)) {
@@ -253,7 +255,63 @@ export class Pl1eEvent {
                     }
                 },
                 cancel: {
-                    label: "Cancel"
+                    label: game.i18n.localize("PL1E.Cancel"),
+                }
+            },
+            default: "save",
+            close: () => console.log("Edit dialog closed"),
+        }).render(true);
+    }
+
+    /**
+     * Handle select editing changes
+     * @param {Event} event The originating click event
+     * @param {Actor|Item} document The document to modify
+     */
+    static async onEditSelect(event, document) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const path = $(event.currentTarget).data("path");
+        let options = $(event.currentTarget).data("options");
+        const currentValue = foundry.utils.getProperty(document, path);
+        if (!path || !options) return;
+
+        options = Pl1eHelpers.getConfig(options);
+        const optionKeys = Object.keys(options);
+
+        // Generate the options HTML
+        const optionsHtml = optionKeys.map(key => {
+            const selected = key === currentValue ? "selected" : "";
+            const label = game.i18n.localize(options[key].label);
+            return `<option value="${key}" ${selected}>${label}</option>`;
+        }).join("");
+
+        // Open a dialog for the user to select a new value
+        new Dialog({
+            title: game.i18n.localize("PL1E.Edit"),
+            content: `
+            <form>
+                <div class="form-group">
+                    <select name="newValue">
+                        ${optionsHtml}
+                    </select>
+                </div>
+            </form>
+        `,
+            buttons: {
+                save: {
+                    label: game.i18n.localize("PL1E.Save"),
+                    callback: (html) => {
+                        const newValue = html.find('select[name="newValue"]').val();
+                        if (newValue) {
+                            // Update the document with the new value
+                            document.update({ [path]: newValue });
+                        }
+                    }
+                },
+                cancel: {
+                    label: game.i18n.localize("PL1E.Cancel")
                 }
             },
             default: "save",

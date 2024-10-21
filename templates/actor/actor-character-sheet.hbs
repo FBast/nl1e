@@ -121,9 +121,15 @@
                         <i class="fas fa-bars"></i>
                     </div>
                     <div class="dropdown-content">
-                        <i class="fas fa-book-open open-journal" data-tooltip="{{localize "PL1E.Journal"}}"></i>
-                        <i class="fas fa-bed open-rest" data-tooltip="{{localize "PL1E.Rest"}}"></i>
+                        {{#if (eq actor.type "character")}}
+                            <i class="fas fa-book-open open-journal" data-tooltip="{{localize "PL1E.Journal"}}"></i>
+                        {{else if (eq actor.type "npc")}}
+                            <i class="fas fa-gear edit-select" data-tooltip="{{localize "PL1E.Templates"}}"
+                               data-path="system.general.NPCTemplate" data-options="NPCTemplates"></i>
+                        {{/if}}
                         <i class="fas fa-hourglass" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                        <i class="fas fa-bed open-rest" data-tooltip="{{localize "PL1E.Rest"}}"></i>
+                        <i class="fas fa-exchange" data-tooltip="{{localize "PL1E.Exchange"}}"></i>
                     </div>
                 </div>
             </div>
