@@ -48,7 +48,7 @@
       }
     }
 
-    .input {
+    input {
       width: 70px;
       height: 25px;
       border: none;
@@ -88,12 +88,6 @@
       text-align: center;
       padding: 0.25em;
       color: $text-color;
-
-      &:not(:disabled):hover {
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        background-color: $input-hover-color;
-      }
     }
   }
 

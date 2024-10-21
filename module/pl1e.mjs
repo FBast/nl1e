@@ -14,6 +14,7 @@ import {Pl1eActiveEffect} from "./documents/effect.mjs";
 import {Pl1eMeasuredTemplate} from "./documents/measuredTemplate.mjs";
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
+import {Pl1eChatMessage} from "./documents/chatMessage.mjs";
 import {Pl1eJournalPageSheet} from "./sheets/journal-sheet.mjs";
 import {getConfigBase} from "./config/configBase.mjs";
 import {getConfigActor} from "./config/configActors.mjs";
@@ -25,6 +26,7 @@ import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
 import {Pl1eHelpers} from "./helpers/helpers.mjs";
+
 
 /* -------------------------------------------- */
 /*  Globals                                     */
@@ -61,6 +63,7 @@ Hooks.once('init', async function () {
     CONFIG.Combat.documentClass = Pl1eCombat;
     CONFIG.Token.documentClass = Pl1eTokenDocument;
     CONFIG.ActiveEffect.documentClass = Pl1eActiveEffect;
+    CONFIG.ChatMessage.documentClass = Pl1eChatMessage;
     CONFIG.MeasuredTemplate.objectClass = Pl1eMeasuredTemplate;
 
     // Register sheet application classes

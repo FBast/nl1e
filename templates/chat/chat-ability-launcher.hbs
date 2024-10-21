@@ -11,26 +11,14 @@
     </header>
     <div class="card-content">
         <div class="item-effects-character">
-            {{#each characterData.attributes}}
-                {{#with (config "attributes" @key)}}
-                    {{#if (and (ne dataGroup undefined) (ne data undefined))}}
-                        {{#with (config dataGroup data)}}
-                            {{#if (and (eq type "number") (ne ../../this 0))}}
-                                <div>
-                                    <i class="{{icon}}" data-tooltip="{{localize label}}">
-                                        <label>{{../../this}}</label>
-                                    </i>
-                                </div>
-                            {{else if (eq type "bool")}}
-                                {{#unless (and ../applyIfTrue (not ../../this))}}
-                                    <div>
-                                        <i class="{{icon}}" data-tooltip="{{localize label}}"></i>
-                                    </div>
-                                {{/unless}}
-                            {{/if}}
-                        {{/with}}
-                    {{/if}}
-                {{/with}}
+            {{#each attributesData}}
+                <div>
+                    <i class="{{icon}}" data-tooltip="{{label}}">
+                        {{#if (eq type "number")}}
+                            <label>{{value}}</label>
+                        {{/if}}
+                    </i>
+                </div>
             {{/each}}
         </div>
         <!-- Description of the ability -->
@@ -50,24 +38,25 @@
                                     </header>
                                     <ol class="dice-rolls">
                                         {{#each results}}
-                                            <li class="roll die d{{../faces}} {{#if
-                                                    success}}success{{else}}failure{{/if}}
-                                                {{#if (eq result ../faces)}}exploded{{/if}}">{{result}}</li>
+                                            <li class="roll die d{{../faces}}
+                                                {{#if success}}success{{else}}failure{{/if}}
+                                                {{#if (eq result ../faces)}}exploded{{/if}}">{{result}}
+                                            </li>
                                         {{/each}}
                                     </ol>
                                 </div>
                             </section>
                         {{/each}}
                     </div>
-                    <h6 class="dice-total success-color-{{clamp rollData.total 0 5}}">
-                        {{rollData.total}} {{localize "PL1E.Success"}}
+                    <h6 class="dice-total">
+                        {{rollData.total}}
                     </h6>
                 </div>
             </div>
         {{/if}}
     </div>
-    {{#if (and (not characterData.noConfirmation) (gt characterData.result 0))}}
-        <footer class="card-buttons gm-only">
+    {{#if (and (not characterData.noConfirmation) (gte characterData.result 0))}}
+        <footer class="card-buttons flex-horizontal gm-only">
             <button data-action="launch">{{localize "PL1E.Launch"}}</button>
             <button data-action="counter">{{localize "PL1E.Counter"}}</button>
         </footer>

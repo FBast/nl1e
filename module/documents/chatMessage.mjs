@@ -1,7 +1,28 @@
-import {Pl1eItem} from "../documents/items/item.mjs";
-import {Pl1eHelpers} from "./helpers.mjs";
+import { Pl1eEvent } from "../helpers/events.mjs";
+import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
-export class Pl1eChat {
+export class Pl1eChatMessage extends ChatMessage {
+
+    constructor(data = {}, options = {}) {
+        super(data, options);
+    }
+
+    /**
+     * Attaches event listeners to the chat message HTML.
+     * @param {jQuery} html - The rendered HTML content of the chat message.
+     */
+    activateListeners(html) {
+        html.find(".token-focus").on("click", ev => Pl1eEvent.onFocusToken(ev));
+        html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this));
+        html.find(".card-buttons button").on("click", ev => Pl1eEvent.onChatCardAction(ev));
+
+        // Show or hide elements based on GM status
+        if (!game.user.isGM) {
+            html.find(".gm-only").hide();
+        } else {
+            html.find(".gm-only").show();
+        }
+    }
 
     /**
      * Send a message for a launcher roll
@@ -17,9 +38,15 @@ export class Pl1eChat {
             rollData.skillName = game.i18n.localize(skillConfig.label);
         }
 
+        // Generate the attributes data
+        const attributesData = Pl1eChatMessage._generateAttributesData(characterData.attributes);
+
         // Render the chat card template
-        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-launcher.hbs`,
-            {rollData: rollData, characterData: characterData});
+        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-ability-launcher.hbs`, {
+            rollData: rollData,
+            characterData: characterData,
+            attributesData: attributesData
+        });
 
         let flavor = `[${game.i18n.localize("PL1E.Action")}] ${characterData.item.name}`;
 
@@ -163,5 +190,32 @@ export class Pl1eChat {
         await ChatMessage.create(chatData);
     }
 
-}
+    /**
+     * Generates attribute data for the chat message (private method).
+     * @param {Object} attributes - The attributes data.
+     * @returns {Array} - An array of objects representing the attributes.
+     * @private
+     */
+    static _generateAttributesData(attributes) {
+        return Object.entries(attributes).map(([key, value]) => {
+            const config = Pl1eHelpers.getConfig("attributes", key);
+            if (!config) return null;
 
+            const attributeConfig = Pl1eHelpers.getConfig(config.dataGroup, config.data);
+            if (!attributeConfig) return null;
+
+            let icon = attributeConfig.icon;
+            let label = game.i18n.localize(attributeConfig.label);
+            let type = attributeConfig.type;
+            let show = false;
+
+            if (type === "number" && value !== 0) {
+                show = true;
+            } else if (type === "bool" && (!attributeConfig.applyIfTrue || value)) {
+                show = true;
+            }
+
+            return show ? { icon, label, value, type } : null;
+        }).filter(attr => attr !== null);
+    }
+}

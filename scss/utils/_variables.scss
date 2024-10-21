@@ -33,13 +33,13 @@ $colorSilver: #9f9f9f;
 $colorCopper: #af5134;
 
 $colorText: #1e1e1e;
-$colorTextAlt: invert-color($colorText);
+$colorTextNegative: invert-color($colorText);
 
-$colorUser: red;
 $colorBackground: #ffffff;
 $colorPanel: #e6e6e6;
 $colorPanelAccent : #b4b4b4;
 $colorBorder: #8c8c8c;
+$colorDisabled: #c8c8c8;
 
 $colorBackgroundNegative: invert-color($colorBackground);
 $colorPanelNegative: invert-color($colorPanel);
@@ -54,7 +54,6 @@ $colorInfo: #00ff00;
 $colorReady: #c8ffc8;
 $colorUnavailable: #ffdfe5;
 $colorWarning: #c8c800;
-$colorDisabled: #c8c8c8;
 
 $colorHealth: #ff4c4c;
 $colorStamina: #4caf50;

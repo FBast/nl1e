@@ -1,6 +1,6 @@
-import {Pl1eChat} from "../helpers/chat.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
+import {Pl1eChatMessage} from "./chatMessage.mjs";
 
 export class Pl1eTokenDocument extends TokenDocument {
 
@@ -102,7 +102,7 @@ export class Pl1eTokenDocument extends TokenDocument {
             actorGeneral.action -= requiredActions;
             actorVariables.remainingMovement += requiredActions * actorMisc.movement;
             actorVariables.movementAction += requiredActions;
-            await Pl1eChat.actionMessage(this.actor, "PL1E.Movement", requiredActions)
+            await Pl1eChatMessage.actionMessage(this.actor, "PL1E.Movement", requiredActions)
         }
 
         // If the distance exceeds the limit, restrict the token's movement

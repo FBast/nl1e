@@ -1,5 +1,4 @@
 import {Pl1eHelpers} from "./helpers.mjs";
-import {Pl1eChat} from "./chat.mjs";
 
 export class Pl1eTrade {
 
@@ -38,7 +37,7 @@ export class Pl1eTrade {
         await sourceActor.removeItem(item);
 
         // Send message for historic
-        await Pl1eChat.tradeMessage(item, sourceActor, targetActor, "gift");
+        await Pl1eChatMessage.tradeMessage(item, sourceActor, targetActor, "gift");
     }
 
     /**
@@ -74,9 +73,9 @@ export class Pl1eTrade {
 
         // Send message for historic
         if (buyerActor.system.general.buyMultiplier === 0)
-            await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "gift");
+            await Pl1eChatMessage.tradeMessage(item, sellerActor, buyerActor, "gift");
         else
-            await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "sale", priceMoney);
+            await Pl1eChatMessage.tradeMessage(item, sellerActor, buyerActor, "sale", priceMoney);
     }
 
     /**
@@ -113,9 +112,9 @@ export class Pl1eTrade {
 
         // Send message for historic
         if (!priceMoney || sellerActor.system.general.sellMultiplier === 0)
-            await Pl1eChat.tradeMessage(item, sellerActor, buyerActor, "take");
+            await Pl1eChatMessage.tradeMessage(item, sellerActor, buyerActor, "take");
         else
-            await Pl1eChat.tradeMessage(item, buyerActor, sellerActor, "purchase", priceMoney);
+            await Pl1eChatMessage.tradeMessage(item, buyerActor, sellerActor, "purchase", priceMoney);
     }
 
 }

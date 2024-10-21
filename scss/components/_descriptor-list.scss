@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  border: $colorBorder solid 1px;
 
   .descriptor-header {
     display: flex;
@@ -9,6 +10,10 @@
     align-items: center;
     text-transform: uppercase;
     font-size: $font-size-sm;
+    background: linear-gradient(to right, $colorPanelAccent , $colorPanel);
+    border-bottom: 1px solid $colorBorder;
+    color: $colorText;
+    padding: 5px 10px;
   }
 
   .descriptor-column {
@@ -19,9 +24,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 5px 0;
-      border-bottom: 1px solid $colorBorder;
+      border-bottom: 1px dashed $colorBorder;
       font-size: $font-size-xsm;
+      padding: $spacing-sm $spacing-md;
+      height: 32px;
 
       &:last-child {
         border-bottom: none;

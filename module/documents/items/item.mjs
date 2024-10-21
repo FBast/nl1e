@@ -1,8 +1,8 @@
 import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eSynchronizer} from "../../helpers/synchronizer.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
-import {Pl1eChat} from "../../helpers/chat.mjs";
 import {Pl1eMeasuredTemplate} from "../measuredTemplate.mjs";
+import {Pl1eChatMessage} from "../chatMessage.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -688,10 +688,10 @@ export class Pl1eItem extends Item {
                 ["system.general.action"]: this.actor.system.general.action - 1
             });
 
-            await Pl1eChat.actionMessage(this.actor, "PL1E.Reload", 1, { item: this });
+            await Pl1eChatMessage.actionMessage(this.actor, "PL1E.Reload", 1, { item: this });
         }
         else {
-            await Pl1eChat.actionMessage(this.actor, "PL1E.Reload", 0, { item: this });
+            await Pl1eChatMessage.actionMessage(this.actor, "PL1E.Reload", 0, { item: this });
         }
 
         // Reload the item
@@ -817,7 +817,7 @@ export class Pl1eItem extends Item {
             });
 
             // Display message
-            chatMessage = await Pl1eChat.launcherRoll(characterData);
+            chatMessage = await Pl1eChatMessage.launcherRoll(characterData);
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
@@ -838,7 +838,7 @@ export class Pl1eItem extends Item {
             characterData.noConfirmation = true;
 
             // Display message
-            await Pl1eChat.launcherRoll(characterData);
+            await Pl1eChatMessage.launcherRoll(characterData);
 
             // Apply the effect on the character
             await this._applyAttributes(characterData);
@@ -1104,7 +1104,7 @@ export class Pl1eItem extends Item {
         // Display messages if targets found
         if (targetsData) {
             for (const targetData of targetsData) {
-                await Pl1eChat.targetRoll(characterData, targetData);
+                await Pl1eChatMessage.targetRoll(characterData, targetData);
             }
         }
     }

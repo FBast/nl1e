@@ -31,9 +31,8 @@
                             </section>
                         {{/each}}
                     </div>
-                    <h6 class="dice-total success-color-{{clamp targetData.result 0 5}}">
-                        {{characterData.rollData.total}} - {{targetData.rollData.total}}
-                        = {{targetData.result}} {{localize "PL1E.Success"}}
+                    <h6 class="dice-total {{#if (gte targetData.result 0)}}success{{else}}failure{{/if}}">
+                        {{characterData.rollData.total}} - {{targetData.rollData.total}} = {{targetData.result}}
                     </h6>
                 </div>
             </div>

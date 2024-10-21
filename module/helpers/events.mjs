@@ -1,10 +1,10 @@
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
-import {Pl1eChat} from "./chat.mjs";
 import {TraitSelector} from "../apps/traitSelector.mjs";
 import {JournalEditor} from "../sheets/journal-editor-sheet.mjs";
 import {PL1E} from "../pl1e.mjs";
+import {Pl1eChatMessage} from "../documents/chatMessage.mjs";
 
 export class Pl1eEvent {
 
@@ -17,7 +17,7 @@ export class Pl1eEvent {
         event.preventDefault();
 
         const skillId = $(event.currentTarget).closest(".skill").data("skillId");
-        await Pl1eChat.skillRoll(actor, skillId);
+        await Pl1eChatMessage.skillRoll(actor, skillId);
     }
 
     /**
@@ -432,7 +432,7 @@ export class Pl1eEvent {
     static onLaunchTextEditor(event, document) {
         event.preventDefault();
         const textKeyPath = event.currentTarget.dataset.target;
-        const label = event.target.closest(".form-group").querySelector("label");
+        const label = event.target.closest("label");
         const editor = new JournalEditor(document, { textKeyPath, title: label?.innerText });
         editor.render(true);
     }

@@ -1,5 +1,4 @@
 import {Pl1eItem} from "./item.mjs";
-import {Pl1eChat} from "../../helpers/chat.mjs";
 
 export class Pl1eWeapon extends Pl1eItem {
 
@@ -153,7 +152,7 @@ export class Pl1eWeapon extends Pl1eItem {
             await this.actor.update({
                 "system.general.action": this.actor.system.general.action - 1
             });
-            await Pl1eChat.actionMessage(this.parent, "PL1E.Equip", 1, { item: this });
+            await ChatMessage.actionMessage(this.parent, "PL1E.Equip", 1, { item: this });
         }
 
         await super.toggle(options);

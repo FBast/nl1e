@@ -15,7 +15,7 @@
                     <button class="spin-number hover-action" type="button" data-path="system.general.experience" data-value="-1" data-min="0">
                         <i class="fas fa-minus"></i>
                     </button>
-                    <input type="text" class="input" value="{{system.general.experience}}/{{system.general.experienceNeeded}}" readonly />
+                    <input type="text" class="color-negative" value="{{system.general.experience}}/{{system.general.experienceNeeded}}" readonly />
                     <button class="spin-number hover-action" type="button" data-path="system.general.experience" data-value="1" data-max="{{system.general.experienceMax}}">
                         <i class="fas fa-plus"></i>
                     </button>
@@ -24,7 +24,7 @@
         </div>
         <div class="flex-vertical gap-md header-infos">
             <div class="flex-horizontal gap-md flex-shrink flex-items-center">
-                <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
+                <input class="sheet-name color-negative" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
                 <div class="dropdown-icons">
                     <div class="dropdown-button" data-tooltip="{{localize "PL1E.Satiety"}}">
                         {{#if (eq system.general.satiety 2)}}
@@ -134,14 +134,15 @@
                             <div class="infos">
                                 <span class="resource-name hover-info highlight-link name"
                                       data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
-                                <input type="number" name="system.resources.{{@key}}.value"
+                                <input class="color-negative" type="number" name="system.resources.{{@key}}.value"
                                        value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
                                 <span>/</span>
-                                <input type="number" name="system.resources.{{@key}}.max"
+                                <input class="color-negative" type="number" name="system.resources.{{@key}}.max"
                                        value="{{../max}}" data-dtype="Number" disabled/>
                             </div>
                             <div class="bar">
-                                <div class="fill {{@key}}" style="width: {{../percentage}}%;"></div>
+                                <div class="fill {{@key}}" style="width: {{#if (gt ../percentage 0)}}
+                                    {{../percentage}}%{{else}}0%{{/if}};"></div>
                             </div>
                         </div>
                     {{/with}}

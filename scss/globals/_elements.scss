@@ -68,7 +68,7 @@ h6 {
 }
 
 p {
-  margin: 0.5em 0;
+  padding: 0.5em 0;
   line-height: 1.4;
 }
 
@@ -77,4 +77,83 @@ hr {
   height: 1px;
   background-color: #ccc;
   margin: 5px 0;
+}
+
+button {
+  background-color: $colorPanel;
+  color: $colorText;
+  font-size: $font-size-sm;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $colorBorder;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover,
+  &:active {
+    background-color: $colorPanelAccent;
+  }
+
+  &:disabled {
+    background-color: $colorDisabled;
+    cursor: not-allowed;
+  }
+}
+
+input {
+  background-color: $colorPanel;
+  color: $colorText;
+  font-size: $font-size-sm;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $colorBorder;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &.color-negative {
+    background-color: transparent;
+    color: $colorTextNegative;
+    border: 2px solid $colorBorderNegative;
+
+    &:not(:disabled):hover,
+    &:active {
+      background-color: $colorBackgroundNegative;
+    }
+  }
+
+  &:not(:disabled):hover,
+  &:active {
+    background-color: $colorBackground;
+  }
+}
+
+select {
+  background-color: $colorPanel;
+  color: $colorText;
+  font-size: $font-size-sm;
+  padding: 0 $spacing-md;
+  border: 1px solid $colorBorder;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 200px;
+
+  &.color-negative {
+    background-color: transparent;
+    color: $colorTextNegative;
+    border: 2px solid $colorBorderNegative;
+
+    &:not(:disabled):hover,
+    &:active {
+      background-color: $colorBackgroundNegative;
+    }
+  }
+
+  &:not(:disabled):hover,
+  &:active {
+    background-color: $colorBackground;
+  }
+
+  &:disabled {
+    background-color: $colorDisabled;
+    cursor: not-allowed;
+  }
 }

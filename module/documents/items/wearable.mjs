@@ -1,5 +1,5 @@
 import {Pl1eItem} from "./item.mjs";
-import {Pl1eChat} from "../../helpers/chat.mjs";
+import {Pl1eChatMessage} from "../chatMessage.mjs";
 
 export class Pl1eWearable extends Pl1eItem {
 
@@ -65,7 +65,7 @@ export class Pl1eWearable extends Pl1eItem {
                 await this.actor.update({
                     "system.general.action": this.actor.system.general.action - 1
                 });
-                await Pl1eChat.actionMessage(this.parent, "PL1E.Equip", 1, { item: this });
+                await Pl1eChatMessage.actionMessage(this.parent, "PL1E.Equip", 1, { item: this });
             }
         }
 
