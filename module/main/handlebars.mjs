@@ -49,7 +49,13 @@ export const registerHandlebars = function () {
 
     Handlebars.registerHelper('list', function(arr, localize = false) {
         const processedArray = localize ? arr.map(item => game.i18n.localize(item)) : arr;
-        const listItems = processedArray.map(item => `<li>${item}</li>`).join('');
+
+        const listItems = processedArray.map(item => {
+            // Use Handles.escapeExpression to escape all special characters
+            const escapedItem = Handlebars.escapeExpression(item);
+            return `<li>${escapedItem}</li>`;
+        }).join('');
+
         return new Handlebars.SafeString(`<ul>${listItems}</ul>`);
     });
 

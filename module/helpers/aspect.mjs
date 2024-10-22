@@ -491,13 +491,11 @@ export class Pl1eAspect {
                 if (invocationActor) invocationActor = await Actor.create(invocationActor, {keepId: true});
             }
 
-            const tokenData = await invocationActor.getTokenData({
-                x: template.specialPosition.x,
-                y: template.specialPosition.y,
-                width: 1,
-                height: 1,
-                disposition: characterData.token.disposition
-            });
+            const tokenDocument = await invocationActor.getTokenDocument();
+            const tokenData = tokenDocument.toObject();
+            tokenData.x = template.specialPosition.x;
+            tokenData.y = template.specialPosition.y;
+            tokenData.disposition = characterData.token.disposition;
 
             // Set invoker as the owner
             tokenData.permission = {

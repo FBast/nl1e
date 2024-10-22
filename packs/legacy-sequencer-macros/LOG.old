@@ -1,3 +1,8 @@
-2024/10/21-11:18:46.412 4cfc Recovering log #1681
-2024/10/21-11:18:46.414 4cfc Delete type=0 #1681
-2024/10/21-11:18:46.415 4cfc Delete type=3 #1680
+2024/10/22-20:02:31.105 5c90 Recovering log #1685
+2024/10/22-20:02:31.108 5c90 Delete type=0 #1685
+2024/10/22-20:02:31.108 5c90 Delete type=3 #1684
+2024/10/22-20:48:49.998 1a5c Level-0 table #1689: started
+2024/10/22-20:48:49.998 1a5c Level-0 table #1689: 0 bytes OK
+2024/10/22-20:48:50.000 1a5c Delete type=0 #1687
+2024/10/22-20:48:50.003 1a5c Manual compaction at level-0 from '!folders!28ipqOp0xkd8EcTx' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
+2024/10/22-20:48:50.013 1a5c Manual compaction at level-1 from '!folders!28ipqOp0xkd8EcTx' @ 72057594037927935 : 1 .. '!macros!xRNwRr3DENy6btWs' @ 0 : 0; will stop at (end)
