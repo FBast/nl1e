@@ -5,6 +5,7 @@ import {TraitSelector} from "../apps/traitSelector.mjs";
 import {JournalEditor} from "../sheets/journal-editor-sheet.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {Pl1eChatMessage} from "../documents/chatMessage.mjs";
+import {Pl1eMeasuredTemplateDocument} from "../documents/measuredTemplateDocument.mjs";
 
 export class Pl1eEvent {
 
@@ -431,10 +432,14 @@ export class Pl1eEvent {
         characterData.linkedItem = token.actor.items.get(characterData.linkedItemId);
         let templates = [];
         for (const templateId of characterData.templatesIds) {
-            let template = await Pl1eHelpers.getDocument("MeasuredTemplate", templateId);
-            templates.push(template.document);
+            let templateDocument = canvas.templates.get(templateId)?.document;
+
+            Object.assign(templateDocument, templateDocument.flags.pl1e);
+
+            templates.push(templateDocument);
         }
         characterData.templates = templates;
+
 
         // Remove all buttons from message content
         const updatedContent = $(message.content).find(".card-buttons").remove().end();

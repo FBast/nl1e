@@ -154,7 +154,7 @@ export class Pl1eHelpers {
      * @param {string} type
      * @param {string} id
      * @param {Object} options
-     * @returns {Promise<Pl1eItem | Pl1eActor | TokenDocument | Macro | Pl1eMeasuredTemplate | RollTable>}
+     * @returns {Promise<Pl1eItem | Pl1eActor | TokenDocument | Macro | RollTable>}
      */
     static async getDocument(type, id, options = {}) {
         let document = undefined;
@@ -180,9 +180,6 @@ export class Pl1eHelpers {
                     break;
                 case "Macro":
                     document = game.macros.get(id);
-                    break;
-                case "MeasuredTemplate":
-                    document = canvas.templates.get(id);
                     break;
                 case "RollTable":
                     document = game.tables.get(id);

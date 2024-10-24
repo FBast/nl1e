@@ -34,7 +34,7 @@
  * @property {object} activeAspects The active aspects of the item
  * @property {Pl1eItem} linkedItem The linked item in case of parent item
  * @property {string} linkedItemId The linked item id
- * @property {Pl1eMeasuredTemplate[]} templates The templates of the action
+ * @property {Pl1eMeasuredTemplateDocument[]} templates The templates of the action
  * @property {string[]} templatesIds The templates ids
  * @property {object} templatePosition The template position
  * @property {boolean} noConfirmation The action does not need button confirmation

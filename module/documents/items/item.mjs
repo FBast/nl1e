@@ -3,6 +3,7 @@ import {Pl1eSynchronizer} from "../../helpers/synchronizer.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {Pl1eMeasuredTemplate} from "../measuredTemplate.mjs";
 import {Pl1eChatMessage} from "../chatMessage.mjs";
+import {Pl1eMeasuredTemplateDocument} from "../measuredTemplateDocument.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -782,17 +783,16 @@ export class Pl1eItem extends Item {
 
                 // Create templates
                 for (let i = 0; i < characterData.attributes.areaNumber; i++) {
-                    const templatePreview = await Pl1eMeasuredTemplate.fromItem(characterData.item, characterData.attributes, characterData.activeAspects);
-                    const template = await templatePreview?.drawPreview();
+                    const placedTemplateDocument = await Pl1eMeasuredTemplateDocument.fromItem(
+                        characterData.item,
+                        characterData.token,
+                        characterData.attributes,
+                        characterData.activeAspects
+                    );
 
-                    // If we have no template, then break
-                    if (!template) break;
-
-                    // Need a special position in some cases
-                    template.specialPosition = Pl1eMeasuredTemplate.getSpecialPosition(template);
-
-                    characterData.templates.push(template);
-                    characterData.templatesIds.push(template.id);
+                    // Add the placed template document to characterData
+                    characterData.templates.push(placedTemplateDocument);
+                    characterData.templatesIds.push(placedTemplateDocument.id);
                 }
 
                 // Restore the selection of the user
@@ -1045,16 +1045,6 @@ export class Pl1eItem extends Item {
         /** @type {TargetData[]} */
         let targetsData = [];
 
-        // Reconstruct templates based on actionData flag
-        for (const template of characterData.templates) {
-            const actionData = template.getFlag("pl1e", "actionData");
-            actionData.token = await Pl1eHelpers.getDocument("Token", actionData.tokenId, {
-                scene: await Pl1eHelpers.getDocument("Scene", actionData.sceneId)
-            });
-            actionData.item = await actionData.token.actor.items.get(actionData.itemId);
-            template.actionData = actionData;
-        }
-
         // Include self
         if (characterData.attributes.includeSelf) {
             const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
@@ -1064,10 +1054,22 @@ export class Pl1eItem extends Item {
         if (characterData.attributes.areaShape !== "none") {
             // Populate targetsData
             for (let template of characterData.templates) {
-                for (let token of Pl1eMeasuredTemplate.getTokensWithinTemplate(template)) {
-                    const targetData = await this._getTargetData(characterData, token.actor, token, template);
-                    targetsData.push(targetData);
+                for (let tokenId of template.tokensWithinTemplate) {
+                    // Retrieve the scene using the sceneId stored in the template
+                    const scene = await Pl1eHelpers.getDocument("Scene", template.sceneId);
+
+                    // Retrieve the token from the scene using the tokenId
+                    const token = await Pl1eHelpers.getDocument("Token", tokenId, { scene });
+
+                    if (token) {
+                        // Get the target data and push it to the targetsData array
+                        const targetData = await this._getTargetData(characterData, token.actor, token, template);
+                        targetsData.push(targetData);
+                    } else {
+                        console.warn(`Token with ID ${tokenId} not found in scene ${scene.id}`);
+                    }
                 }
+
             }
         }
 
