@@ -1,48 +1,15 @@
-.item-list {
+.list-items {
   display: flex;
   flex-direction: column;
   width: 100%;
   border: $colorBorder solid 1px;
 
-  .items-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 10px;
-
-    .header-title {
-      flex: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      text-transform: uppercase;
-      font-size: $font-size-sm;
-      background: linear-gradient(to right, $colorPanelAccent , $colorPanel);
-      border-bottom: 1px solid $colorBorder;
-      color: $colorText;
-      padding: 5px 10px;
-
-      .item-filter-list {
-        display: flex;
-        gap: 20px;
-
-        .item-filter {
-          font-size: $font-size-xsm;
-
-          &.active {
-            color: lightgrey;
-          }
-        }
-      }
-    }
-  }
-
-  .items-column {
+  .list-column {
     display: flex;
     flex-direction: column;
     font-size: $font-size-xsm;
 
-    .no-items {
+    .empty {
       font-style: italic;
       height: 32px;
       align-items: center;
@@ -54,31 +21,50 @@
       display: flex;
       flex-direction: column;
 
+      &.dashed {
+        &:not(:last-child) {
+          border-bottom: $colorBorder dashed 1px;
+        }
+      }
+
       .item-content {
+        flex: 0 0 32px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 20px;
 
-        .item-title {
+        .title {
+          flex: 0 0 200px;
           display: flex;
           align-items: center;
-          flex: 0 0 160px;
 
           img {
-            width: 32px;
+            width: 40px;
             height: auto;
-            margin-right: 10px;
             border-radius: 0;
-            background-color: black;
+            border: $colorBorder solid 1px;
+          }
+
+          label {
+            margin-left: 10px;
+            font-weight: bold;
+            align-items: center;
+            text-align: left;
           }
         }
 
-        .item-icons {
+        .value {
+          flex: 1;
+          margin-right: 10px;
+          text-align: right;
+        }
+
+        .icons {
           display: flex;
           align-items: center;
           justify-content: start;
-          flex: 2;
+          flex: 2 1 200px;
           gap: 10px;
           flex-wrap: wrap;
 
@@ -86,6 +72,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: $font-size-sm;
 
             label {
               margin-left: 5px;
@@ -93,13 +80,13 @@
           }
         }
 
-        .item-controls {
+        .controls {
           flex: 0;
           display: flex;
           align-items: center;
           justify-content: flex-end;
-          gap: 5px;
-          padding: 0 5px;
+          gap: 10px;
+          margin-right: 10px;
           margin-left: auto;
 
           a {
@@ -111,8 +98,47 @@
             align-content: center;
             text-align: center;
             cursor: pointer;
+            font-size: $font-size-sm;
             width: 100%;
             height: 100%;
+          }
+        }
+
+        .fields {
+          display: flex;
+          flex: 1;
+          justify-content: flex-end;
+          gap: 10px;
+          margin-right: 10px;
+
+          > * {
+            flex: 1;
+          }
+
+          input[type="checkbox"] {
+            flex: unset;
+          }
+
+          input[type="checkbox"],
+          input[type="number"],
+          button {
+            font-size: inherit;
+            text-align: center;
+            vertical-align: middle;
+          }
+
+          button {
+            background-color: $colorPanel;
+            border: 1px solid $colorBorder;
+            cursor: pointer;
+
+            &:hover {
+              background-color: lighten($colorPanel, 10%);
+            }
+          }
+
+          input[type="number"] {
+            text-align: center;
           }
         }
       }
@@ -132,7 +158,7 @@
     }
   }
 
-  .items-row {
+  .list-row {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;

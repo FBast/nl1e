@@ -1,57 +1,82 @@
-<div class="control-list">
-    <h5 class="control-header">{{localize "PL1E.Attributes"}}</h5>
-
-    <div class="control-column">
-        <div class="control">
-            <label class="control-label">{{localize "PL1E.Description"}}</label>
-            <div class="control-fields">
-                <button class="launch-text-editor" data-target="system.description">
-                    <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
-                </button>
+<div class="list-items">
+    <div class="list-header">
+        <h5>{{localize "PL1E.Attributes"}}</h5>
+    </div>
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Description"}}</label>
+                </div>
+                <div class="fields">
+                    <button class="launch-text-editor" data-target="system.description">
+                        <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+                    </button>
+                </div>
             </div>
         </div>
-
-        <div class="control">
-            <label class="control-label">{{localize "PL1E.Level"}}</label>
-            <div class="control-fields">
-                <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" data-dtype="Number"/>
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Level"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.level" value="{{system.attributes.level}}" data-dtype="Number"/>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="control-list">
-    <h5 class="control-header">{{localize "PL1E.Activation"}}</h5>
-
-    <div class="control-column">
-        <div class="control">
-            <label class="control-label">{{localize "PL1E.Activation"}}</label>
-            <div class="control-fields">
-                <select name="system.attributes.activation">
-                    {{customSelectOptions (config "activations") selected=system.attributes.activation localize=true}}
-                </select>
+<div class="list-items">
+    <div class="list-header">
+        <h5>{{localize "PL1E.Activation"}}</h5>
+    </div>
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Activation"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.attributes.activation">
+                        {{customSelectOptions (config "activations") selected=system.attributes.activation localize=true}}
+                    </select>
+                </div>
             </div>
         </div>
 
         {{#if (eq system.attributes.activation "action")}}
-            <div class="control">
-                <label class="control-label">{{localize "PL1E.ActionCost"}}</label>
-                <div class="control-fields">
-                    <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.ActionCost"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
+                    </div>
                 </div>
             </div>
 
-            <div class="control">
-                <label class="control-label">{{localize "PL1E.IsMajorAction"}}</label>
-                <div class="control-fields">
-                    <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.IsMajorAction"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
+                    </div>
                 </div>
             </div>
 
-            <div class="control">
-                <label class="control-label">{{localize "PL1E.IsDangerous"}}</label>
-                <div class="control-fields">
-                    <input type="checkbox" name="system.attributes.isDangerous" {{checked system.attributes.isDangerous}} data-dtype="Boolean"/>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.IsDangerous"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="checkbox" name="system.attributes.isDangerous" {{checked system.attributes.isDangerous}} data-dtype="Boolean"/>
+                    </div>
                 </div>
             </div>
         {{/if}}
@@ -59,109 +84,155 @@
 </div>
 
 {{#unless (eq system.attributes.activation "passive")}}
-    <div class="control-list">
-        <h5 class="control-header">{{localize "PL1E.Target"}}</h5>
-
-        <div class="control-column">
-            <div class="control">
-                <label class="control-label">{{localize "PL1E.AreaShape"}}</label>
-                <div class="control-fields">
-                    <select name="system.attributes.areaShape">
-                        {{customSelectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
-                    </select>
+    <div class="list-items">
+        <div class="list-header">
+            <h5>{{localize "PL1E.Target"}}</h5>
+        </div>
+        <div class="list-column">
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.AreaShape"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.attributes.areaShape">
+                            {{customSelectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
+                        </select>
+                    </div>
                 </div>
             </div>
 
             {{#if (ne system.attributes.areaShape "none")}}
                 {{#unless system.attributes.useParentRange}}
-                    <div class="control">
-                        <label class="control-label">{{localize "PL1E.Range"}}</label>
-                        <div class="control-fields">
-                            <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
-                            <select name="system.attributes.rangeNumberResolutionType">
-                                {{customSelectOptions (config "resolutionTypes") selected=system.attributes.rangeNumberResolutionType localize=true}}
-                            </select>
+                    <div class="item">
+                        <div class="item-content">
+                            <div class="title">
+                                <label>{{localize "PL1E.Range"}}</label>
+                            </div>
+                            <div class="fields">
+                                <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+                                <select name="system.attributes.rangeNumberResolutionType">
+                                    {{customSelectOptions (config "resolutionTypes") selected=system.attributes.rangeNumberResolutionType localize=true}}
+                                </select>
+                            </div>
                         </div>
                     </div>
                 {{/unless}}
 
-                <div class="control">
-                    <label class="control-label">{{localize "PL1E.AreaNumber"}}</label>
-                    <div class="control-fields">
-                        <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
-                        {{#if (or system.attributes.useParentRoll (ne (length system.attributes.roll) 0))}}
-                            <select name="system.attributes.areaNumberResolutionType">
-                                {{customSelectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
-                            </select>
-                        {{/if}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.AreaNumber"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
+                            {{#if (or system.attributes.useParentRoll (ne (length system.attributes.roll) 0))}}
+                                <select name="system.attributes.areaNumberResolutionType">
+                                    {{customSelectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                                </select>
+                            {{/if}}
+                        </div>
                     </div>
                 </div>
 
                 {{#if (eq system.attributes.areaShape "circle")}}
-                    <div class="control">
-                        <label class="control-label">{{localize "PL1E.CircleRadius"}}</label>
-                        <div class="control-fields">
-                            <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
+                    <div class="item">
+                        <div class="item-content">
+                            <div class="title">
+                                <label>{{localize "PL1E.CircleRadius"}}</label>
+                            </div>
+                            <div class="fields">
+                                <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
+                            </div>
                         </div>
                     </div>
                 {{else if (eq system.attributes.areaShape "cone")}}
-                    <div class="control">
-                        <label class="control-label">{{localize "PL1E.ConeLength"}}</label>
-                        <div class="control-fields">
-                            <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
+                    <div class="item">
+                        <div class="item-content">
+                            <div class="title">
+                                <label>{{localize "PL1E.ConeLength"}}</label>
+                            </div>
+                            <div class="fields">
+                                <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
+                            </div>
                         </div>
                     </div>
-                    <div class="control">
-                        <label class="control-label">{{localize "PL1E.ConeAngle"}}</label>
-                        <div class="control-fields">
-                            <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
+                    <div class="item">
+                        <div class="item-content">
+                            <div class="title">
+                                <label>{{localize "PL1E.ConeAngle"}}</label>
+                            </div>
+                            <div class="fields">
+                                <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
+                            </div>
                         </div>
                     </div>
                 {{else if (eq system.attributes.areaShape "ray")}}
-                    <div class="control">
-                        <label class="control-label">{{localize "PL1E.RayLength"}}</label>
-                        <div class="control-fields">
-                            <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
+                    <div class="item">
+                        <div class="item-content">
+                            <div class="title">
+                                <label>{{localize "PL1E.RayLength"}}</label>
+                            </div>
+                            <div class="fields">
+                                <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
+                            </div>
                         </div>
                     </div>
                 {{/if}}
             {{/if}}
 
-            <div class="control">
-                <label class="control-label">{{localize "PL1E.IncludeSelf"}}</label>
-                <div class="control-fields">
-                    <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}} data-dtype="Boolean"/>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.IncludeSelf"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}} data-dtype="Boolean"/>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="control-list">
-        <h5 class="control-header">{{localize "PL1E.SequencerMacros"}}</h5>
-
-        <div class="control-column">
-            <div class="control">
-                <label class="control-label">{{localize "PL1E.ActivationMacro"}}</label>
-                <div class="control-fields">
-                    <select name="system.attributes.activationMacro">
-                        {{customSelectOptions (config "sequencerMacros") selected=system.attributes.activationMacro localize=true}}
-                    </select>
+    <div class="list-items">
+        <div class="list-header">
+            <h5>{{localize "PL1E.SequencerMacros"}}</h5>
+        </div>
+        <div class="list-column">
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.ActivationMacro"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.attributes.activationMacro">
+                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.activationMacro localize=true}}
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="control">
-                <label class="control-label">{{localize "PL1E.PreLaunchMacro"}}</label>
-                <div class="control-fields">
-                    <select name="system.attributes.preLaunchMacro">
-                        {{customSelectOptions (config "sequencerMacros") selected=system.attributes.preLaunchMacro localize=true}}
-                    </select>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.PreLaunchMacro"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.attributes.preLaunchMacro">
+                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.preLaunchMacro localize=true}}
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="control">
-                <label class="control-label">{{localize "PL1E.PostLaunchMacro"}}</label>
-                <div class="control-fields">
-                    <select name="system.attributes.postLaunchMacro">
-                        {{customSelectOptions (config "sequencerMacros") selected=system.attributes.postLaunchMacro localize=true}}
-                    </select>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.PostLaunchMacro"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.attributes.postLaunchMacro">
+                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.postLaunchMacro localize=true}}
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,7 +240,7 @@
 {{/unless}}
 
 {{#if (eq system.attributes.activation "passive")}}
-    {{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
+    {{> "systems/pl1e/templates/item/parts/item-aspects-passives.hbs"}}
 {{else}}
-    {{> "systems/pl1e/templates/item/components/item-aspects-actives.hbs"}}
+    {{> "systems/pl1e/templates/item/parts/item-aspects-actives.hbs"}}
 {{/if}}

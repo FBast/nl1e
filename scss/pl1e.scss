@@ -29,12 +29,10 @@
   @import 'layout/sheets';
 
   // Components
-  @import 'components/attributes';
   @import 'components/characteristics';
   @import 'components/item-selector';
-  @import 'components/descriptor-list';
-  @import 'components/control-list';
-  @import 'components/item-list';
+  @import 'components/list-header';
+  @import 'components/list-items';
   @import 'components/misc';
   @import 'components/nav';
   @import 'components/scrollbar';

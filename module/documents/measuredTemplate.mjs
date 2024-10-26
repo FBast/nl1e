@@ -109,11 +109,11 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
                     if (template) {
                         resolve(template);
                     } else {
-                        reject(new Error("Template placement was canceled."));
+                        resolve(null);
                     }
                 },
                 reject: () => {
-                    reject(new Error("Template placement was canceled."));
+                    resolve(null);
                 },
                 rotate: this._onRotatePlacement.bind(this)
             };

@@ -3,27 +3,6 @@
   flex-direction: column;
   border: $colorBorder solid 1px;
 
-  .toggle-title {
-    font-size: $font-size-sm;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    background: linear-gradient(to right, $colorPanelAccent , $colorPanel);
-    color: $colorText;
-    padding: 5px 10px;
-    border-bottom: 1px solid $colorBorder;
-
-    .help-icon {
-      font-size: $font-size-sm;
-      margin-left: 5px;
-      cursor: pointer;
-
-      &:hover {
-        color: #555;
-      }
-    }
-  }
-
   .toggle-group {
     display: grid;
     gap: 20px;

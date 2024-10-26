@@ -1,16 +1,35 @@
-<fieldset>
-    <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
-    <div class="form-group">
-        <label>{{localize "PL1E.Description"}}</label>
-        <button class="launch-text-editor" data-target="system.description">
-            <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
-        </button>
+<div class="list-items">
+    <div class="list-header">
+        <h5>{{localize "PL1E.Attributes"}}</h5>
     </div>
-    <div class="form-group">
-        <label>{{localize "PL1E.ClassType"}}</label>
-        <select name="system.attributes.classType">
-            {{customSelectOptions (config "classTypes") selected=system.attributes.classType localize=true}}
-        </select>
+
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Description"}}</label>
+                </div>
+                <div class="fields">
+                    <button class="launch-text-editor" data-target="system.description">
+                        <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.ClassType"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.attributes.classType">
+                        {{customSelectOptions (config "classTypes") selected=system.attributes.classType localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
-</fieldset>
-{{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
+</div>
+
+{{> "systems/pl1e/templates/item/parts/item-aspects-passives.hbs"}}

@@ -1,0 +1,27 @@
+.list-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: $font-size-sm;
+  background: linear-gradient(to right, $colorPanelAccent, $colorPanel);
+  border-bottom: 1px solid $colorBorder;
+  color: $colorText;
+  padding: 5px 10px;
+  justify-content: space-between;
+
+  .header-actions {
+    display: flex;
+    gap: 20px;
+
+    .action-icon {
+      cursor: pointer;
+      font-size: $font-size-xsm;
+      color: $colorText;
+
+      &:hover {
+        color: lighten($colorText, 20%);
+      }
+    }
+  }
+}

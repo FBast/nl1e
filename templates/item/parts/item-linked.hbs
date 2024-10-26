@@ -1,17 +1,17 @@
 {{#if (gt (length section) 0)}}
-    <div class="item-list">
-        <div class="items-header">
-            <h5 class="header-title">{{localize title}}</h5>
+    <div class="list-items">
+        <div class="list-header">
+            <h5>{{localize title}}</h5>
         </div>
-        <div class="items-column">
+        <div class="list-column">
             {{#each section}}
                 <div class="item" data-item-id="{{itemId}}" data-instance-id="{{instanceId}}" data-item-type="{{item.type}}">
                     <div class="item-content">
-                        <div class="item-title">
+                        <div class="title">
                             <img class="item-edit hover-action" src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
                             <label class="item-tooltip-activate hover-info">{{item.name}}</label>
                         </div>
-                        <div class="item-icons">
+                        <div class="icons">
                             {{#if @root.item.isEmbedded}}
                                 {{#if (eq behavior "regular")}}
                                     <i class="far fa-cube hover-info" data-tooltip="{{localize "PL1E.Regular"}}"></i>
@@ -25,7 +25,7 @@
                                 <i class="far fa-circle-nodes hover-info" data-tooltip="{{localize "PL1E.Synchronized"}}"></i>
                             {{/if}}
                         </div>
-                        <div class="item-controls">
+                        <div class="controls">
                             {{#unless @root.item.isEmbedded}}
                                 {{#if (eq behavior "regular")}}
                                     <a class="item-switch-behavior hover-action" data-tooltip='{{localize "PL1E.Regular"}}'><i class="fas fa-cube"></i></a>

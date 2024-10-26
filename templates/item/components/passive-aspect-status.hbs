@@ -1,12 +1,25 @@
-<div class="item-attribute flexrow">
-    <label class="attribute-name">{{localize "PL1E.DataGroup"}}</label>
-    <select name="system.passiveAspects.{{@key}}.dataGroup">
-        {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
-    </select>
-</div>
-<div class="item-attribute flexrow">
-    <label class="attribute-name">{{localize "PL1E.Data"}}</label>
-    <select name="system.passiveAspects.{{@key}}.data">
-        {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
-    </select>
+<div class="list-items">
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <label class="title">{{localize "PL1E.DataGroup"}}</label>
+                <div class="controls">
+                    <select name="system.passiveAspects.{{@key}}.dataGroup">
+                        {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <label class="title">{{localize "PL1E.Data"}}</label>
+                <div class="controls">
+                    <select name="system.passiveAspects.{{@key}}.data">
+                        {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

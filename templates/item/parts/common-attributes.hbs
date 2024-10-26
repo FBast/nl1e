@@ -1,54 +1,109 @@
-<fieldset>
-    <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
-    <div class="form-group">
-        <label>{{localize "PL1E.Description"}}</label>
-        <button class="launch-text-editor" data-target="system.description">
-            <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
-        </button>
+<div class="list-items">
+    <div class="list-header">
+        <h5>{{localize "PL1E.Attributes"}}</h5>
     </div>
-    <div class="form-group">
-        <label>
-            {{localize "PL1E.GoldPrice"}}
-            <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}"
-                   data-dtype="Number"/>
-        </label>
-        <label>
-            {{localize "PL1E.SilverPrice"}}
-            <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}"
-                   data-dtype="Number"/>
-        </label>
-        <label>
-            {{localize "PL1E.CopperPrice"}}
-            <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}"
-                   data-dtype="Number"/>
-        </label>
-    </div>
-</fieldset>
-<fieldset>
-    <legend class="section-header">{{localize "PL1E.Common"}}</legend>
-    <div class="form-group">
-        <label>{{localize "PL1E.CommonType"}}</label>
-        <select name="system.attributes.commonType">
-            {{customSelectOptions (config "commonTypes") selected=system.attributes.commonType localize=true}}
-        </select>
-    </div>
-    {{#if (or (eq system.attributes.commonType "food") (eq system.attributes.commonType "drink"))}}
-        <div class="form-group">
-            <label>
-                {{localize "PL1E.HealthRest"}}
-                <input type="number" name="system.attributes.healthRest" value="{{system.attributes.healthRest}}"
-                       data-dtype="Number"/>
-            </label>
-            <label>
-                {{localize "PL1E.StaminaRest"}}
-                <input type="number" name="system.attributes.staminaRest" value="{{system.attributes.staminaRest}}"
-                       data-dtype="Number"/>
-            </label>
-            <label>
-                {{localize "PL1E.ManaRest"}}
-                <input type="number" name="system.attributes.manaRest" value="{{system.attributes.manaRest}}"
-                       data-dtype="Number"/>
-            </label>
+
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Description"}}</label>
+                </div>
+                <div class="fields">
+                    <button class="launch-text-editor" data-target="system.description">
+                        <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+                    </button>
+                </div>
+            </div>
         </div>
-    {{/if}}
-</fieldset>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.GoldPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.SilverPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.CopperPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="list-items">
+    <div class="list-header">
+        <h5>{{localize "PL1E.Common"}}</h5>
+    </div>
+
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.CommonType"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.attributes.commonType">
+                        {{customSelectOptions (config "commonTypes") selected=system.attributes.commonType localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        {{#if (or (eq system.attributes.commonType "food") (eq system.attributes.commonType "drink"))}}
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.HealthRest"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.healthRest" value="{{system.attributes.healthRest}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.StaminaRest"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.staminaRest" value="{{system.attributes.staminaRest}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.ManaRest"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.manaRest" value="{{system.attributes.manaRest}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</div>

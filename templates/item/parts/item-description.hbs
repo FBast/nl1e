@@ -1,13 +1,19 @@
 {{{enriched}}}
 
 {{#unless (isEmpty attributesDisplay)}}
-    <div class="descriptor-list">
-        <h5 class="descriptor-header">{{localize "PL1E.Attributes"}}</h5>
-        <div class="descriptor-column">
+    <div class="list-items">
+        <div class="list-header">
+            <h5>{{localize "PL1E.Attributes"}}</h5>
+        </div>
+        <div class="list-column">
             {{#each attributesDisplay}}
-                <div class="descriptor">
-                    <label class="descriptor-label">{{label}}</label>
-                    <label class="descriptor-value">{{value}}</label>
+                <div class="item dashed">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{label}}</label>
+                        </div>
+                        <label class="value">{{value}}</label>
+                    </div>
                 </div>
             {{/each}}
         </div>
@@ -15,13 +21,19 @@
 {{/unless}}
 
 {{#unless (isEmpty passiveAspectsDisplay)}}
-    <div class="descriptor-list">
-        <h5 class="descriptor-header">{{localize "PL1E.PassiveAspects"}}</h5>
-        <div class="descriptor-column">
+    <div class="list-items">
+        <div class="list-header">
+            <h5>{{localize "PL1E.PassiveAspects"}}</h5>
+        </div>
+        <div class="list-column">
             {{#each passiveAspectsDisplay}}
-                <div class="descriptor">
-                    <label class="descriptor-label">{{label}}</label>
-                    <label class="descriptor-value">{{description}}</label>
+                <div class="item dashed">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{label}}</label>
+                        </div>
+                        <label class="value">{{description}}</label>
+                    </div>
                 </div>
             {{/each}}
         </div>
@@ -29,13 +41,19 @@
 {{/unless}}
 
 {{#unless (isEmpty activeAspectsDisplay)}}
-    <div class="descriptor-list">
-        <h5 class="descriptor-header">{{localize "PL1E.ActiveAspects"}}</h5>
-        <div class="descriptor-column">
+    <div class="list-items">
+        <div class="list-header">
+            <h5>{{localize "PL1E.ActiveAspects"}}</h5>
+        </div>
+        <div class="list-column">
             {{#each activeAspectsDisplay}}
-                <div class="descriptor">
-                    <label class="descriptor-label">{{label}}</label>
-                    <label class="descriptor-value">{{description}}</label>
+                <div class="item dashed">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{label}}</label>
+                        </div>
+                        <label class="value">{{description}}</label>
+                    </div>
                 </div>
             {{/each}}
         </div>

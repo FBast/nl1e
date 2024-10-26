@@ -1,15 +1,13 @@
-<div class="item-list">
-    <div class="items-header">
-        <h5 class="header-title">
-            {{localize "PL1E.Features"}}
-            <div class="item-filter-list" data-filter="features">
-                {{#each (config "featureTypes")}}
-                    <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
-                {{/each}}
-            </div>
-        </h5>
+<div class="list-items">
+    <div class="list-header">
+        <h5>{{localize "PL1E.Features"}}</h5>
+        <div class="header-actions item-filter-list" data-filter="features">
+            {{#each (config "featureTypes")}}
+                <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+            {{/each}}
+        </div>
     </div>
-    <div class="items-row">
+    <div class="list-row">
         {{#if (gt features.length 0)}}
             {{#each features}}
                 <div class="item" data-item-id="{{_id}}">
@@ -26,7 +24,7 @@
                 </div>
             {{/each}}
         {{else}}
-            <div class="no-items">
+            <div class="empty">
                 {{localize "PL1E.NothingToDisplay"}}
             </div>
         {{/if}}

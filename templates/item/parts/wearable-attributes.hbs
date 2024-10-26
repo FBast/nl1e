@@ -1,109 +1,165 @@
-<fieldset>
-    <legend class="section-header">{{localize "PL1E.Attributes"}}</legend>
-    <div class="form-group">
-        <label>{{localize "PL1E.Description"}}</label>
-        <button class="launch-text-editor" data-target="system.description">
-            <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
-        </button>
+<div class="list-items">
+    <div class="list-header">
+        <h5>{{localize "PL1E.Attributes"}}</h5>
     </div>
-    <div class="form-group">
-        <label>
-            {{localize "PL1E.GoldPrice"}}
-            <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}"
-                   data-dtype="Number"/>
-        </label>
-        <label>
-            {{localize "PL1E.SilverPrice"}}
-            <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}"
-                   data-dtype="Number"/>
-        </label>
-        <label>
-            {{localize "PL1E.CopperPrice"}}
-            <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}"
-                   data-dtype="Number"/>
-        </label>
-    </div>
-</fieldset>
-<fieldset>
-    <legend class="section-header">{{localize "PL1E.Wearable"}}</legend>
-    <div class="form-group">
-        <label>{{localize "PL1E.Customizable"}}</label>
-        <input type="checkbox" name="system.attributes.customizable" {{checked system.attributes.customizable}}
-               data-dtype="Boolean"/>
-    </div>
-    <div class="form-group">
-        <label>{{localize "PL1E.Modules"}}</label>
-        <input type="number" name="system.attributes.modules" value="{{system.attributes.modules}}"
-               data-dtype="Number"/>
-    </div>
-    <div class="form-group">
-        <label>{{localize "PL1E.Slot"}}</label>
-        <select name="system.attributes.slot">
-            {{customSelectOptions (config "slots") selected=system.attributes.slot localize=true}}
-        </select>
-    </div>
-    <div class="form-group">
-        <label>{{localize "PL1E.MagicUse"}}</label>
-        <input type="checkbox" name="system.attributes.magicUse" {{checked system.attributes.magicUse}}
-               data-dtype="Boolean"/>
-    </div>
-</fieldset>
-{{#if system.attributes.magicUse}}
-    <fieldset>
-        <legend class="section-header">{{localize "PL1E.Magic"}}</legend>
-        <div class="form-group">
-            <label>{{localize "PL1E.MagicRoll"}}</label>
-            <div class="form-fields">
-                <ul>
-                    {{#each system.attributes.magicRoll}}
-                        <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
-                    {{/each}}
-                </ul>
-                <a style="flex: 0;" class="trait-selector flex-shrink" data-trait="abilitySkills"
-                   data-trait-label="PL1E.MagicRoll" data-key-path="attributes.magicRoll"
-                   data-tooltip="{{localize 'PL1E.MagicRollConfig'}}">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </div>
-        </div>
-        {{#if (gt system.attributes.magicRoll.length 0)}}
-            <div class="form-group">
-                <label>{{localize "PL1E.MagicOppositeRoll"}}</label>
-                <div class="form-fields">
-                    <ul>
-                        {{#each system.attributes.magicOppositeRoll}}
-                            <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
-                        {{/each}}
-                    </ul>
-                    <a style="flex: 0;" class="trait-selector flex-shrink" data-trait="abilityResistances"
-                       data-trait-label="PL1E.MagicOppositeRoll" data-key-path="attributes.magicOppositeRoll"
-                       data-tooltip="{{localize 'PL1E.MagicOppositeRollConfig'}}">
-                        <i class="fas fa-edit"></i>
-                    </a>
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Description"}}</label>
+                </div>
+                <div class="fields">
+                    <button class="launch-text-editor" data-target="system.description">
+                        <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+                    </button>
                 </div>
             </div>
-        {{/if}}
-        <div class="form-group">
-            <label>{{localize "PL1E.MagicActivationMacro"}}</label>
-            <select name="system.attributes.magicActivationMacro">
-                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicActivationMacro
-                                      localize=true}}
-            </select>
         </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.MagicPreLaunchMacro"}}</label>
-            <select name="system.attributes.magicPreLaunchMacro">
-                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPreLaunchMacro
-                                      localize=true}}
-            </select>
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.GoldPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}" data-dtype="Number"/>
+                    <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}" data-dtype="Number"/>
+                    <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}" data-dtype="Number"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>{{localize "PL1E.MagicPostLaunchMacro"}}</label>
-            <select name="system.attributes.magicPostLaunchMacro">
-                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPostLaunchMacro
-                                      localize=true}}
-            </select>
+    </div>
+</div>
+
+<div class="list-items">
+    <div class="list-header">
+        <h5>{{localize "PL1E.Wearable"}}</h5>
+    </div>
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Customizable"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="checkbox" name="system.attributes.customizable" {{checked system.attributes.customizable}} data-dtype="Boolean"/>
+                </div>
+            </div>
         </div>
-    </fieldset>
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Modules"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.modules" value="{{system.attributes.modules}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Slot"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.attributes.slot">
+                        {{customSelectOptions (config "slots") selected=system.attributes.slot localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.MagicUse"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="checkbox" name="system.attributes.magicUse" {{checked system.attributes.magicUse}} data-dtype="Boolean"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#if system.attributes.magicUse}}
+    <div class="list-items">
+        <div class="list-header">
+            <h5>{{localize "PL1E.Magic"}}</h5>
+        </div>
+        <div class="list-column">
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.MagicRoll"}}</label>
+                    </div>
+                    <div class="fields">
+                        <ul>
+                            {{#each system.attributes.magicRoll}}
+                                <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                            {{/each}}
+                        </ul>
+                        <a class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.MagicRoll" data-key-path="attributes.magicRoll" data-tooltip="{{localize 'PL1E.MagicRollConfig'}}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{#if (gt system.attributes.magicRoll.length 0)}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MagicOppositeRoll"}}</label>
+                        </div>
+                        <div class="fields">
+                            <ul>
+                                {{#each system.attributes.magicOppositeRoll}}
+                                    <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                                {{/each}}
+                            </ul>
+                            <a class="trait-selector" data-trait="abilityResistances" data-trait-label="PL1E.MagicOppositeRoll" data-key-path="attributes.magicOppositeRoll" data-tooltip="{{localize 'PL1E.MagicOppositeRollConfig'}}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.MagicActivationMacro"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.attributes.magicActivationMacro">
+                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicActivationMacro localize=true}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.MagicPreLaunchMacro"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.attributes.magicPreLaunchMacro">
+                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPreLaunchMacro localize=true}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.MagicPostLaunchMacro"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.attributes.magicPostLaunchMacro">
+                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPostLaunchMacro localize=true}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {{/if}}
-{{> "systems/pl1e/templates/item/components/item-aspects-passives.hbs"}}
+
+{{> "systems/pl1e/templates/item/parts/item-aspects-passives.hbs"}}

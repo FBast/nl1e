@@ -1,0 +1,53 @@
+<div class="list-items">
+    <div class="list-header">
+        <h5 class="header-title">
+            {{localize "PL1E.ActiveAspects"}}
+        </h5>
+        <div class="header-actions item-filter-list" data-filter="abilities">
+            {{#each activeAspectsObjects}}
+                {{#with (config "aspects" name)}}
+                    <input type="image" class="aspect-add hover-action" src="{{img}}" data-aspect-id="{{@key}}"
+                           data-aspect-type="active" data-tooltip='{{localize label}}' width="20" height="20"/>
+                {{/with}}
+            {{/each}}
+            <a class="active-aspects-copy hover-action" data-tooltip='{{localize "PL1E.Copy"}}'><i class="fas fa-copy"></i></a>
+            <a class="active-aspects-paste hover-action" data-tooltip='{{localize "PL1E.Paste"}}'><i class="fas fa-paste"></i></a>
+        </div>
+    </div>
+    <div class="list-column">
+        {{#each activeAspects}}
+            {{#with (config "aspects" name)}}
+                <div class="item" data-aspect-id="{{@key}}" data-aspect-type="active" data-item-id="{{@key}}">
+                    <div class="item-content">
+                        <div class="title">
+                            <img src="{{img}}" title="{{localize label}}" width="24" height="24"/>
+                            <label class="hover-info item-tooltip-activate">{{localize ../description}}</label>
+                        </div>
+                        <div class="icons">
+
+                        </div>
+                        <div class="controls">
+                            <a class="aspect-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                    <div class="item-tooltip">
+                        {{#if (eq ../name "modify")}}
+                            {{> "systems/pl1e/templates/item/components/active-aspect-modify.hbs" this aspect=../this root=@root}}
+                        {{else if (eq ../name "transfer")}}
+                            {{> "systems/pl1e/templates/item/components/active-aspect-transfer.hbs" this aspect=../this root=@root}}
+                        {{else if (eq ../name "movement")}}
+                            {{> "systems/pl1e/templates/item/components/active-aspect-movement.hbs" this aspect=../this root=@root}}
+                        {{else if (eq ../name "invocation")}}
+                            {{> "systems/pl1e/templates/item/components/active-aspect-invocation.hbs" this aspect=../this root=@root}}
+                        {{else if (eq ../name "status")}}
+                            {{> "systems/pl1e/templates/item/components/active-aspect-status.hbs" this aspect=../this root=@root}}
+                        {{else if (eq ../name "activeMacro")}}
+                            {{> "systems/pl1e/templates/item/components/active-aspect-macro.hbs" this aspect=../this root=@root}}
+                        {{/if}}
+                    </div>
+                </div>
+            {{/with}}
+        {{/each}}
+    </div>
+</div>
+
