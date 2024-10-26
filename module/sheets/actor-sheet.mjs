@@ -328,7 +328,7 @@ export class Pl1eActorSheet extends ActorSheet {
         // The item is not embedded
         // (should be someone who own the item)
         else {
-            const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId);
+            const originalItem = item.compendium ? item :await Pl1eHelpers.getDocument("Item", item.sourceId);
             await this.actor.addItem(originalItem);
 
             // If the item is embedded, then delete the source item

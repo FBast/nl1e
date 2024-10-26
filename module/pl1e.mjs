@@ -21,7 +21,7 @@ import {getConfigItems} from "./config/configItems.mjs";
 import {getConfigAspects} from "./config/configAspects.mjs";
 import {getConfigTemplates} from "./config/configTemplates.mjs";
 import {getConfigRest} from "./config/configRest.mjs";
-import {registerStatuses} from "./main/statuses.mjs";
+import {localizeStatuses, registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
 import {Pl1eHelpers} from "./helpers/helpers.mjs";
@@ -102,6 +102,9 @@ Hooks.once('init', async function () {
 Hooks.once("ready", async function () {
     // Initialize tracker
     // if (game.user.isGM) await DMTool.initialise();
+
+    // Localize custom statuses
+    localizeStatuses();
 
     // Register dynamic configs
     PL1E.sequencerMacros = await Pl1eHelpers.getDocumentsDataFromPack("legacy-sequencer-macros", true);
