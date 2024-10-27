@@ -1,135 +1,152 @@
-<div class="list-items">
-    <div class="list-column">
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.DataGroup"}}</label>
-                <div class="controls">
-                    <select name="system.activeAspects.{{@key}}.dataGroup">
-                        {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
-                    </select>
-                </div>
+<div class="list-column">
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.DataGroup"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.dataGroup">
+                    {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
+                </select>
             </div>
         </div>
+    </div>
 
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.Data"}}</label>
-                <div class="controls">
-                    <select name="system.activeAspects.{{@key}}.data">
-                        {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
-                    </select>
-                </div>
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.Data"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.data">
+                    {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
+                </select>
             </div>
         </div>
+    </div>
 
-        {{#with (config aspect.dataGroup aspect.data)}}
-            {{#if (eq type "number")}}
-                <div class="item">
-                    <div class="item-content">
-                        <label class="title">{{localize "PL1E.Operator"}}</label>
-                        <div class="controls">
-                            <select name="system.activeAspects.{{@key}}.operator">
-                                {{customSelectOptions (config "numberOperators") selected=../aspect.operator localize=true}}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            {{/if}}
-
-            {{#if (and (eq ../aspect.operator "remove") (eq type "number"))}}
-                <div class="item">
-                    <div class="item-content">
-                        <label class="title">{{localize "PL1E.DamageType"}}</label>
-                        <div class="controls">
-                            <select name="system.activeAspects.{{@key}}.damageType">
-                                {{customSelectOptions (config "damageTypes") selected=../aspect.damageType localize=true}}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            {{/if}}
-
+    {{#with (config aspect.dataGroup aspect.data)}}
+        {{#if (eq type "number")}}
             <div class="item">
                 <div class="item-content">
-                    <label class="title">{{localize "PL1E.Value"}}</label>
-                    <div class="controls">
-                        {{#if (eq type "number")}}
-                            <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.value"
-                                   value="{{../aspect.value}}" data-dtype="Number"/>
-                        {{else if (eq type "bool")}}
-                            <input type="checkbox" name="system.activeAspects.{{@key}}.value" {{checked ../aspect.value}}
-                                   data-dtype="Boolean"/>
-                        {{else if (eq type "select")}}
-                            <select name="system.activeAspects.{{@key}}.value">
-                                {{customSelectOptions (config select) selected=../aspect.value localize=true}}
-                            </select>
-                        {{else if (eq type "array")}}
-                            <select name="system.activeAspects.{{@key}}.value">
-                                {{customSelectOptions (config select) selected=../aspect.value localize=true}}
-                            </select>
-                        {{/if}}
+                    <div class="title">
+                        <label>{{localize "PL1E.Operator"}}</label>
                     </div>
-                </div>
-            </div>
-        {{/with}}
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.ResolutionType"}}</label>
-                <div class="controls">
-                    <select name="system.activeAspects.{{@key}}.resolutionType">
-                        {{customSelectOptions (config "resolutionTypes") selected=aspect.resolutionType localize=true}}
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.TargetGroup"}}</label>
-                <div class="controls">
-                    <select name="system.activeAspects.{{@key}}.targetGroup">
-                        {{customSelectOptions (config "targetGroups") selected=aspect.targetGroup localize=true}}
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">
-                    <i class="far fa-circle-exclamation hover-info" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'></i>
-                    {{localize "PL1E.CreateEffect"}}
-                </label>
-                <div class="controls">
-                    <input type="checkbox" name="system.activeAspects.{{@key}}.createEffect" {{checked aspect.createEffect}}
-                           data-dtype="Boolean"/>
-                </div>
-            </div>
-        </div>
-
-        {{#if aspect.createEffect}}
-            <div class="item">
-                <div class="item-content">
-                    <label class="title">{{localize "PL1E.EffectDuration"}}</label>
-                    <div class="controls">
-                        <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration"
-                               value="{{aspect.effectDuration}}" data-dtype="Number"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-content">
-                    <label class="title">{{localize "PL1E.EffectDurationResolutionType"}}</label>
-                    <div class="controls">
-                        <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
-                            {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
+                    <div class="fields">
+                        <select name="system.activeAspects.{{@key}}.operator">
+                            {{customSelectOptions (config "numberOperators") selected=../aspect.operator localize=true}}
                         </select>
                     </div>
                 </div>
             </div>
         {{/if}}
+
+        {{#if (and (eq ../aspect.operator "remove") (eq type "number"))}}
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.DamageType"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.activeAspects.{{@key}}.damageType">
+                            {{customSelectOptions (config "damageTypes") selected=../aspect.damageType localize=true}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Value"}}</label>
+                </div>
+                <div class="fields">
+                    {{#if (eq type "number")}}
+                        <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.value"
+                               value="{{../aspect.value}}" data-dtype="Number"/>
+                    {{else if (eq type "bool")}}
+                        <input type="checkbox" name="system.activeAspects.{{@key}}.value" {{checked ../aspect.value}}
+                               data-dtype="Boolean"/>
+                    {{else if (eq type "select")}}
+                        <select name="system.activeAspects.{{@key}}.value">
+                            {{customSelectOptions (config select) selected=../aspect.value localize=true}}
+                        </select>
+                    {{else if (eq type "array")}}
+                        <select name="system.activeAspects.{{@key}}.value">
+                            {{customSelectOptions (config select) selected=../aspect.value localize=true}}
+                        </select>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    {{/with}}
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.ResolutionType"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.resolutionType">
+                    {{customSelectOptions (config "resolutionTypes") selected=aspect.resolutionType localize=true}}
+                </select>
+            </div>
+        </div>
     </div>
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.TargetGroup"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.targetGroup">
+                    {{customSelectOptions (config "targetGroups") selected=aspect.targetGroup localize=true}}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <a class="hover-info" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'>
+                    <i class="far fa-circle-exclamation"></i>
+                </a>
+                <label>{{localize "PL1E.CreateEffect"}}</label>
+            </div>
+            <div class="fields">
+                <input type="checkbox" name="system.activeAspects.{{@key}}.createEffect" {{checked aspect.createEffect}}
+                       data-dtype="Boolean"/>
+            </div>
+        </div>
+    </div>
+
+    {{#if aspect.createEffect}}
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.EffectDuration"}}</label>
+                </div>
+                <div class="fields">
+                    <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration"
+                           value="{{aspect.effectDuration}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.EffectDurationResolutionType"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
+                        {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+    {{/if}}
 </div>

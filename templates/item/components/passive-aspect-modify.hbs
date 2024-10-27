@@ -1,72 +1,80 @@
-<div class="list-items">
-    <div class="list-column">
+<div class="list-column">
 
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.DataGroup"}}</label>
-                <div class="controls">
-                    <select name="system.passiveAspects.{{@key}}.dataGroup">
-                        {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
-                    </select>
-                </div>
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.DataGroup"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.passiveAspects.{{@key}}.dataGroup">
+                    {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
+                </select>
             </div>
         </div>
+    </div>
 
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.Data"}}</label>
-                <div class="controls">
-                    <select name="system.passiveAspects.{{@key}}.data">
-                        {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
-                    </select>
-                </div>
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.Data"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.passiveAspects.{{@key}}.data">
+                    {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
+                </select>
             </div>
         </div>
+    </div>
 
-        {{#with (config aspect.dataGroup aspect.data)}}
-            {{#if (eq type "number")}}
-                <div class="item">
-                    <div class="item-content">
-                        <label class="title">{{localize "PL1E.Operator"}}</label>
-                        <div class="controls">
-                            <select name="system.passiveAspects.{{@key}}.operator">
-                                {{customSelectOptions (config "numberOperators") selected=../aspect.operator localize=true}}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            {{/if}}
-
+    {{#with (config aspect.dataGroup aspect.data)}}
+        {{#if (eq type "number")}}
             <div class="item">
                 <div class="item-content">
-                    <label class="title">{{localize "PL1E.Value"}}</label>
-                    <div class="controls">
-                        {{#if (eq type "number")}}
-                            <input type="number" name="system.passiveAspects.{{@key}}.value" value="{{../aspect.value}}" data-dtype="Number"/>
-                        {{else if (eq type "bool")}}
-                            <input type="checkbox" name="system.passiveAspects.{{@key}}.value" {{checked ../aspect.value}} data-dtype="Boolean"/>
-                        {{else if (eq type "select")}}
-                            <select name="system.passiveAspects.{{@key}}.value">
-                                {{customSelectOptions (config select) selected=../aspect.value localize=true}}
-                            </select>
-                        {{else if (eq type "array")}}
-                            <select name="system.passiveAspects.{{@key}}.value">
-                                {{customSelectOptions (config select) selected=../aspect.value localize=true}}
-                            </select>
-                        {{/if}}
+                    <div class="title">
+                        <label>{{localize "PL1E.Operator"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.passiveAspects.{{@key}}.operator">
+                            {{customSelectOptions (config "numberOperators") selected=../aspect.operator localize=true}}
+                        </select>
                     </div>
                 </div>
             </div>
-        {{/with}}
+        {{/if}}
 
         <div class="item">
             <div class="item-content">
-                <label class="title">{{localize "PL1E.CreateEffect"}}</label>
-                <div class="controls">
-                    <input type="checkbox" name="system.passiveAspects.{{@key}}.createEffect" {{checked aspect.createEffect}} data-dtype="Boolean"/>
+                <div class="title">
+                    <label>{{localize "PL1E.Value"}}</label>
+                </div>
+                <div class="fields">
+                    {{#if (eq type "number")}}
+                        <input type="number" name="system.passiveAspects.{{@key}}.value" value="{{../aspect.value}}" data-dtype="Number"/>
+                    {{else if (eq type "bool")}}
+                        <input type="checkbox" name="system.passiveAspects.{{@key}}.value" {{checked ../aspect.value}} data-dtype="Boolean"/>
+                    {{else if (eq type "select")}}
+                        <select name="system.passiveAspects.{{@key}}.value">
+                            {{customSelectOptions (config select) selected=../aspect.value localize=true}}
+                        </select>
+                    {{else if (eq type "array")}}
+                        <select name="system.passiveAspects.{{@key}}.value">
+                            {{customSelectOptions (config select) selected=../aspect.value localize=true}}
+                        </select>
+                    {{/if}}
                 </div>
             </div>
         </div>
+    {{/with}}
 
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.CreateEffect"}}</label>
+            </div>
+            <div class="fields">
+                <input type="checkbox" name="system.passiveAspects.{{@key}}.createEffect" {{checked aspect.createEffect}} data-dtype="Boolean"/>
+            </div>
+        </div>
     </div>
+
 </div>

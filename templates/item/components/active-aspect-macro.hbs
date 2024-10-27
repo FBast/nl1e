@@ -1,59 +1,67 @@
-<div class="list-items">
-    <div class="list-column">
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.DataGroup"}}</label>
-                <div class="controls">
-                    <select name="system.activeAspects.{{@key}}.dataGroup">
-                        {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
-                    </select>
-                </div>
+<div class="list-column">
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.DataGroup"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.dataGroup">
+                    {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
+                </select>
             </div>
         </div>
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.Data"}}</label>
-                <div class="controls">
-                    <select name="system.activeAspects.{{@key}}.data">
-                        {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        {{#unless (eq aspect.dataGroup "targetsResolution")}}
-            <div class="item">
-                <div class="item-content">
-                    <label class="title">{{localize "PL1E.TargetGroup"}}</label>
-                    <div class="controls">
-                        <select name="system.activeAspects.{{@key}}.targetGroup">
-                            {{customSelectOptions (config "targetGroups") selected=aspect.targetGroup localize=true}}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-content">
-                    <label class="title">{{localize "PL1E.EffectDuration"}}</label>
-                    <div class="controls">
-                        <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration"
-                               value="{{aspect.effectDuration}}" data-dtype="Number"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-content">
-                    <label class="title">{{localize "PL1E.EffectDurationResolutionType"}}</label>
-                    <div class="controls">
-                        <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
-                            {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
-                        </select>
-                    </div>
-                </div>
-            </div>
-        {{/unless}}
     </div>
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.Data"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.data">
+                    {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    {{#unless (eq aspect.dataGroup "targetsResolution")}}
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.TargetGroup"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.activeAspects.{{@key}}.targetGroup">
+                        {{customSelectOptions (config "targetGroups") selected=aspect.targetGroup localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.EffectDuration"}}</label>
+                </div>
+                <div class="fields">
+                    <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration"
+                           value="{{aspect.effectDuration}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.EffectDurationResolutionType"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
+                        {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+    {{/unless}}
 </div>

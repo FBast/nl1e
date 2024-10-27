@@ -1,36 +1,43 @@
-<div class="list-items">
-    <div class="list-column">
+<div class="list-column">
 
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.DataGroup"}}</label>
-                <div class="controls">
-                    <select name="system.passiveAspects.{{@key}}.dataGroup">
-                        {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
-                    </select>
-                </div>
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.DataGroup"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.passiveAspects.{{@key}}.dataGroup">
+                    {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
+                </select>
             </div>
         </div>
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.Data"}}</label>
-                <div class="controls">
-                    <select name="system.passiveAspects.{{@key}}.data">
-                        {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.CreateEffect"}}</label>
-                <div class="controls">
-                    <input type="checkbox" name="system.passiveAspects.{{@key}}.createEffect" {{checked aspect.createEffect}} data-dtype="Boolean"/>
-                </div>
-            </div>
-        </div>
-
     </div>
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.Data"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.passiveAspects.{{@key}}.data">
+                    {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <a class="hover-info" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'>
+                    <i class="far fa-circle-exclamation"></i>
+                </a>
+                <label>{{localize "PL1E.CreateEffect"}}</label>
+            </div>
+            <div class="fields">
+                <input type="checkbox" name="system.passiveAspects.{{@key}}.createEffect" {{checked aspect.createEffect}} data-dtype="Boolean"/>
+            </div>
+        </div>
+    </div>
+
 </div>

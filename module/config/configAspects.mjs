@@ -91,6 +91,7 @@ export function getConfigAspects() {
         "modify": {
             "label": "PL1E.Modify",
             "img": "systems/pl1e/assets/svg/modify.svg",
+            "icon": "fa-adjust",
             "dataGroups": {
                 "aspectsResources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -104,6 +105,7 @@ export function getConfigAspects() {
         "transfer": {
             "label": "PL1E.Transfer",
             "img": "systems/pl1e/assets/svg/transfer.svg",
+            "icon": "fa-share-alt",
             "dataGroups": {
                 "aspectsResources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -112,6 +114,7 @@ export function getConfigAspects() {
         },
         "status": {
             "label": "PL1E.Status",
+            "icon": "fa-stopwatch",
             "img": "systems/pl1e/assets/svg/status.svg",
             "dataGroups": {
                 "statuses": "PL1E.Statuses"
@@ -120,6 +123,7 @@ export function getConfigAspects() {
         "movement": {
             "label": "PL1E.Movement",
             "img": "systems/pl1e/assets/svg/movement.svg",
+            "icon": "fa-shoe-prints",
             "dataGroups": {
                 "movements": "PL1E.Movements"
             }
@@ -127,6 +131,7 @@ export function getConfigAspects() {
         "invocation": {
             "label": "PL1E.Invocation",
             "img": "systems/pl1e/assets/svg/invocation.svg",
+            "icon": "fa-user-plus",
             "dataGroups": {
                 "invocations": "PL1E.Invocations"
             }
@@ -134,6 +139,7 @@ export function getConfigAspects() {
         "passiveMacro": {
             "label": "PL1E.Macro",
             "img": "systems/pl1e/assets/svg/dice-target.svg",
+            "icon": "fa-terminal",
             "dataGroups": {
                 "actorPreUpdate": "PL1E.ActorPreUpdate",
                 "tokenPreUpdate": "PL1E.TokenPreUpdate"
@@ -142,6 +148,7 @@ export function getConfigAspects() {
         "activeMacro": {
             "label": "PL1E.Macro",
             "img": "systems/pl1e/assets/svg/dice-target.svg",
+            "icon": "fa-terminal",
             "dataGroups": {
                 "targetsResolution": "PL1E.TargetsResolution",
                 "actorPreUpdate": "PL1E.ActorPreUpdate",

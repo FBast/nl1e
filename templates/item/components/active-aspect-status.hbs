@@ -1,72 +1,82 @@
-<div class="list-items">
-    <div class="list-column">
+<div class="list-column">
 
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.DataGroup"}}</label>
-                <div class="controls">
-                    <select name="system.activeAspects.{{@key}}.dataGroup">
-                        {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
-                    </select>
-                </div>
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.DataGroup"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.dataGroup">
+                    {{customSelectOptions dataGroups selected=aspect.dataGroup localize=true}}
+                </select>
             </div>
         </div>
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.Data"}}</label>
-                <div class="controls">
-                    <select name="system.activeAspects.{{@key}}.data">
-                        {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">{{localize "PL1E.TargetGroup"}}</label>
-                <div class="controls">
-                    <select name="system.activeAspects.{{@key}}.targetGroup">
-                        {{customSelectOptions (config "targetGroups") selected=aspect.targetGroup localize=true}}
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="item-content">
-                <label class="title">
-                    <i class="far fa-circle-exclamation hover-info" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'></i>
-                    {{localize "PL1E.CreateEffect"}}
-                </label>
-                <div class="controls">
-                    <input type="checkbox" name="system.activeAspects.{{@key}}.createEffect" {{checked aspect.createEffect}} data-dtype="Boolean"/>
-                </div>
-            </div>
-        </div>
-
-        {{#if aspect.createEffect}}
-            <div class="item">
-                <div class="item-content">
-                    <label class="title">{{localize "PL1E.EffectDuration"}}</label>
-                    <div class="controls">
-                        <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{aspect.effectDuration}}" data-dtype="Number"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-content">
-                    <label class="title">{{localize "PL1E.EffectDurationResolutionType"}}</label>
-                    <div class="controls">
-                        <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
-                            {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
-                        </select>
-                    </div>
-                </div>
-            </div>
-        {{/if}}
-
     </div>
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.Data"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.data">
+                    {{customSelectOptions (config aspect.dataGroup) selected=aspect.data localize=true}}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.TargetGroup"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.targetGroup">
+                    {{customSelectOptions (config "targetGroups") selected=aspect.targetGroup localize=true}}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.CreateEffect"}}</label>
+                <a class="hover-info" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'>
+                    <i class="far fa-circle-exclamation"></i>
+                </a>
+            </div>
+            <div class="fields">
+                <input type="checkbox" name="system.activeAspects.{{@key}}.createEffect" {{checked aspect.createEffect}} data-dtype="Boolean"/>
+            </div>
+        </div>
+    </div>
+
+    {{#if aspect.createEffect}}
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.EffectDuration"}}</label>
+                </div>
+                <div class="fields">
+                    <input class="input-positive-decimal" type="number" name="system.activeAspects.{{@key}}.effectDuration" value="{{aspect.effectDuration}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.EffectDurationResolutionType"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
+                        {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+
 </div>

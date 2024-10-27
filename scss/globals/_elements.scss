@@ -68,7 +68,7 @@ h6 {
 }
 
 p {
-  padding: 0.5em 0;
+  padding: 0.5em;
   line-height: 1.4;
 }
 
@@ -77,6 +77,10 @@ hr {
   height: 1px;
   background-color: #ccc;
   margin: 5px 0;
+}
+
+a {
+  text-shadow: none;
 }
 
 button {

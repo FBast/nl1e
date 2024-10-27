@@ -20,11 +20,8 @@
                 <div class="item" data-aspect-id="{{@key}}" data-aspect-type="passive" data-item-id="{{@key}}">
                     <div class="item-content">
                         <div class="title">
-                            <img src="{{img}}" title="{{localize label}}" width="24" height="24"/>
+                            <a class="hover-info" data-tooltip="{{localize label}}"><i class="far {{icon}}"></i></a>
                             <label class="hover-info item-tooltip-activate">{{localize ../description}}</label>
-                        </div>
-                        <div class="icons">
-                            <!-- Placeholder for icons if needed in the future -->
                         </div>
                         <div class="controls">
                             <a class="aspect-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
