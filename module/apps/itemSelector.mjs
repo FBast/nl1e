@@ -7,13 +7,10 @@ export class ItemSelector extends FormApplication {
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            id: 'item-selector',
-            classes: ['pl1e'],
+            classes: ["pl1e", "item-selector"],
             title: `${game.i18n.localize("PL1E.SelectAnItem")}`,
             template: 'systems/pl1e/templates/apps/item-selector.hbs',
             resizable: false,
-            width: 'auto',
-            height: 'auto'
         });
     }
 
@@ -23,11 +20,13 @@ export class ItemSelector extends FormApplication {
 
     activateListeners(html) {
         super.activateListeners(html);
-        html.find('button[data-action]').click(event => {
-            const action = event.currentTarget.dataset.action;
-            this.resolve(this.items[action]);
-            this.close();
-        });
+        html.find(`.toggle-item`).on("click", this._onSelectItem.bind(this));
+    }
+
+    _onSelectItem(event) {
+        const itemIndex = $(event.currentTarget).data("item-index");
+        this.resolve(this.items[itemIndex]);
+        this.close();
     }
 
     static async createAndRender(actor, items) {
@@ -39,5 +38,4 @@ export class ItemSelector extends FormApplication {
             dialog.resolve = resolve;
         });
     }
-
 }

@@ -5,8 +5,8 @@
 
   .toggle-group {
     display: grid;
-    gap: 20px;
-    margin: 10px 10px;
+    gap: $spacing-md;
+    margin: $spacing-md $spacing-md;
     grid-template-columns: repeat(var(--toggle-columns), 1fr);
 
     &.active {
@@ -16,6 +16,7 @@
     .toggle-item {
       cursor: pointer;
       transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      min-width: 100px;
 
       img {
         width: 100%; // Rempli la colonne dynamiquement

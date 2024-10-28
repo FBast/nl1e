@@ -1,9 +1,12 @@
-<form class="pl1e item-selector">
-    <div class="item-buttons-container">
-        {{#each items as |item key|}}
-            <button class="item-button" data-action="{{key}}">
-                <img src="{{item.realImg}}" alt="Button {{key}}">
-            </button>
-        {{/each}}
+<form>
+    <div class="toggle-section">
+        <div class="toggle-group bed-toggle" style="--toggle-columns: {{items.length}};">
+            {{#each items as |item key|}}
+                <div class="toggle-item"
+                     data-item-index="{{@key}}" data-tooltip="{{item.name}}">
+                    <img src="{{item.img}}" alt="{{item.name}}" />
+                </div>
+            {{/each}}
+        </div>
     </div>
 </form>
