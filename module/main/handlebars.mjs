@@ -91,4 +91,34 @@ export const registerHandlebars = function () {
             return value;
         }
     });
+
+    Handlebars.registerHelper('some', function(array, propertyPath, value) {
+        if (!Array.isArray(array)) return false;
+
+        const properties = propertyPath.split('.');
+
+        return array.some(item => {
+            let prop = item;
+            for (let i = 0; i < properties.length; i++) {
+                if (prop == null) return false;
+                prop = prop[properties[i]];
+            }
+            return prop === value;
+        });
+    });
+
+    Handlebars.registerHelper('all', function(array, propertyPath, value) {
+        if (!Array.isArray(array)) return false;
+
+        const properties = propertyPath.split('.');
+
+        return array.every(item => {
+            let prop = item;
+            for (let i = 0; i < properties.length; i++) {
+                if (prop == null) return false;
+                prop = prop[properties[i]];
+            }
+            return prop === value;
+        });
+    });
 }

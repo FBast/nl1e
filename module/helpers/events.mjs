@@ -222,6 +222,28 @@ export class Pl1eEvent {
     }
 
     /**
+     * Handle switch of a boolean
+     * @param {Event} event The originating click event
+     * @param {Actor|Item} document the document to modify
+     */
+    static async onSwitchBoolean(event, document) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const path = $(event.currentTarget).data("path");
+        if (!path) return;
+
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        if (itemId) document = document.items.get(itemId);
+
+        let newValue = !foundry.utils.getProperty(document, path);
+        await document.update({
+            [path]: newValue
+        })
+    }
+
+
+    /**
      * Handle number editing changes
      * @param {Event} event The originating click event
      * @param {Actor|Item} document The document to modify

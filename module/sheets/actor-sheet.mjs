@@ -1,6 +1,6 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {RestForm} from "../apps/restForm.mjs";
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eHelpers as P1eHelpers, Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {PL1E} from "../pl1e.mjs";
@@ -189,11 +189,10 @@ export class Pl1eActorSheet extends ActorSheet {
         // Custom controls
         html.find(".set-number").on("click", ev => Pl1eEvent.onSetNumber(ev, this.actor));
         html.find(".spin-number").on("click", ev => Pl1eEvent.onSpinNumber(ev, this.actor));
+        html.find(".switch-boolean").on("click", ev => Pl1eEvent.onSwitchBoolean(ev, this.actor))
         html.find(".edit-number").on("click", ev => Pl1eEvent.onEditNumber(ev, this.actor));
         html.find(".edit-select").on("click", ev => Pl1eEvent.onEditSelect(ev, this.actor));
         html.find(".rank-control").on("click", ev => this._onRankChange(ev));
-        html.find(".item-favorite").on("click", ev => this._onItemFavorite(ev))
-        html.find(".currency-favorite").on("click", ev => this._onCurrencyFavorite(ev))
         html.find(".item-toggle").on("click", ev => this._onItemToggle(ev));
         html.find(".item-use").on("click", ev => this._onItemUse(ev));
         html.find(".item-reload").on("click", ev => this._onItemReload(ev));
@@ -421,6 +420,34 @@ export class Pl1eActorSheet extends ActorSheet {
         context.consumables = documents.consumables;
         context.commons = documents.commons;
         context.modules = documents.modules;
+
+        // Update the context with money
+        const moneyConfig = P1eHelpers.getConfig("money");
+        context.money = Object.keys(moneyConfig).map(key => {
+            const currency = moneyConfig[key];
+            return {
+                id: key,
+                amount: getProperty(context, currency.path),
+                label: game.i18n.localize(currency.label),
+                img: currency.img,
+                isFavorite: getProperty(context, currency.isFavoritePath),
+                path: currency.path,
+                isFavoritePath: currency.isFavoritePath,
+                conversions: Object.entries(currency.conversions).map(([targetKey, value]) => ({
+                    icon: moneyConfig[targetKey].icon,
+                    tooltip: game.i18n.localize(moneyConfig[targetKey].label),
+                    label: value
+                })),
+                controls: currency.controls
+            };
+        });
+
+        // Update the context with favorites items
+        context.favoritesAbilities = context.abilities.filter(item => item.system.isFavorite);
+        context.favoritesWeapons = context.weapons.filter(item => item.system.isFavorite);
+        context.favoritesWearables = context.wearables.filter(item => item.system.isFavorite);
+        context.favoritesConsumables = context.consumables.filter(item => item.system.isFavorite);
+        context.favoritesMoney = context.money.filter(currency => currency.isFavorite);
     }
 
     async _categorizeItems(context, typeToCollectionMap) {
@@ -453,7 +480,6 @@ export class Pl1eActorSheet extends ActorSheet {
         }
     }
 
-    //TODO this method has some problems and call use merchant check to remove
     async _filterItems(context, typeToCollectionMap, actor) {
         const getItemPriority = (item) => {
             if (item.isEnabled) return 1;
@@ -786,7 +812,6 @@ export class Pl1eActorSheet extends ActorSheet {
         let currentSilver = foundry.utils.getProperty(this.actor, "system.money.silver");
         let currentCopper = foundry.utils.getProperty(this.actor, "system.money.copper");
 
-        const actorData = {};
         switch (currencyId) {
             case "gold":
                 if (type === "down") {
@@ -888,41 +913,6 @@ export class Pl1eActorSheet extends ActorSheet {
         if (main) options["main"] = main;
 
         if (item.canToggle()) await item.toggle(options);
-    }
-
-    /**
-     * Favorite the item
-     * @param event
-     * @returns {Promise<void>}
-     */
-    async _onItemFavorite(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
-
-        /** @type {Pl1eItem} */
-        const item = this.actor.items.get(itemId);
-        await item.favorite();
-    }
-
-    /**
-     * Favorite the currency
-     * @param event
-     * @returns {Promise<void>}
-     */
-    async _onCurrencyFavorite(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        let currencyId = $(event.currentTarget).closest(".item").data("currency-id");
-        currencyId = currencyId.charAt(0).toUpperCase() + currencyId.slice(1);
-
-        const currencyPath = `system.misc.is${currencyId}Favorite`;
-        const isFavorite = foundry.utils.getProperty(this.actor, currencyPath);
-        await this.actor.update({
-            [currencyPath]: !isFavorite,
-        });
     }
 
     /**

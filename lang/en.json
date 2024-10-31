@@ -26,11 +26,11 @@
   "PL1E.Modifiers": "Modifiers",
   "PL1E.Training": "Training",
   "PL1E.Services": "Services",
-  "PL1E.NothingToDisplay": "Nothing to display",
+  "PL1E.NoItems": "No items",
+  "PL1E.NoFavorites": "No favorites",
   "PL1E.SleepAndMeal": "Sleep and Meal",
   "PL1E.Crafting": "Crafting",
   "PL1E.Confirm": "Confirm",
-
   "PL1E.StatusDeadDescription": "The character is dead and cannot take any actions.",
   "PL1E.StatusUnconsciousDescription": "The character is unconscious, unable to move or take any actions.",
   "PL1E.StatusCharmedDescription": "The character is charmed and may act in favor of the charmer.",
@@ -63,7 +63,6 @@
   "PL1E.StatusCrushingImmunityDescription": "The character is immune to crushing damage.",
   "PL1E.StatusPiercingImmunityDescription": "The character is immune to piercing damage.",
   "PL1E.StatusImmortalDescription": "The character is immortal, immune to all damage types.",
-
   "PL1E.BedNoneTooltip": "No bed, requiring you to prepare a sleeping area from your own equipment.",
   "PL1E.BedPoorTooltip": "A modest interior with basic bedding, suitable for a quick and simple rest.",
   "PL1E.BedNormalTooltip": "A comfortable space with decent bedding, providing a balanced and restful experience.",

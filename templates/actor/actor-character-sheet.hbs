@@ -203,7 +203,11 @@
             <div class="flex-horizontal gap-md scroll-auto-group">
                 {{> "systems/pl1e/templates/actor/parts/stats-skills.hbs"}}
                 <div class="flex-basic flex-vertical gap-md scroll-auto">
-                    {{> "systems/pl1e/templates/actor/parts/stats-favorites.hbs"}}
+                    {{> "systems/pl1e/templates/actor/parts/inventory-money.hbs" favoriteDisplay=true money=favoritesMoney}}
+                    {{> "systems/pl1e/templates/actor/parts/inventory-weapons.hbs" favoriteDisplay=true weapons=favoritesWeapons}}
+                    {{> "systems/pl1e/templates/actor/parts/inventory-wearables.hbs" favoriteDisplay=true wearables=favoritesWearables}}
+                    {{> "systems/pl1e/templates/actor/parts/abilities.hbs" favoriteDisplay=true abilities=favoritesAbilities}}
+                    {{> "systems/pl1e/templates/actor/parts/inventory-consumables.hbs" favoriteDisplay=true consumables=favoritesConsumables}}
                 </div>
             </div>
         </div>

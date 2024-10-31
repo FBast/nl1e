@@ -23,7 +23,6 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/parts/inventory-wearables.hbs",
         "systems/pl1e/templates/actor/parts/stats-characteristics.hbs",
         "systems/pl1e/templates/actor/parts/stats-skills.hbs",
-        "systems/pl1e/templates/actor/parts/stats-favorites.hbs",
 
         // Item parts
         "systems/pl1e/templates/item/parts/ability-attributes.hbs",

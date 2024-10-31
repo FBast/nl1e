@@ -355,24 +355,55 @@ export function getConfigActor() {
 
     PL1E.money = {
         "gold": {
-            "label": "PL1E.Gold",
-            "icon": "fa-cube",
+            "label": "PL1E.GoldCoins",
+            "icon": "far fa-coins color-gold",
             "type": "number",
-            "path": "system.money.gold"
+            "path": "system.money.gold",
+            "favoritePath": "system.misc.isGoldFavorite",
+            "img": "systems/pl1e/assets/coins/coins-crown-stack-gold.webp",
+            "isFavoritePath": "system.misc.isGoldFavorite",
+            "conversions": {
+                "silver": 10,
+                "copper": 100
+            },
+            "controls": {
+                "convertUp": null,
+                "convertDown": "silver"
+            }
         },
         "silver": {
-            "label": "PL1E.Silver",
-            "icon": "fa-cube",
+            "label": "PL1E.SilverCoins",
+            "icon": "far fa-coins color-silver",
             "type": "number",
-            "path": "system.money.silver"
+            "path": "system.money.silver",
+            "img": "systems/pl1e/assets/coins/coins-shield-sword-stack-silver.webp",
+            "isFavoritePath": "system.misc.isSilverFavorite",
+            "conversions": {
+                "gold": 0.1,
+                "copper": 10
+            },
+            "controls": {
+                "convertUp": "gold",
+                "convertDown": "copper"
+            }
         },
         "copper": {
-            "label": "PL1E.Copper",
-            "icon": "fa-cube",
+            "label": "PL1E.CopperCoins",
+            "icon": "far fa-coins color-copper",
             "type": "number",
-            "path": "system.money.copper"
+            "path": "system.money.copper",
+            "img": "systems/pl1e/assets/coins/coins-wheat-stack-copper.webp",
+            "isFavoritePath": "system.misc.isCopperFavorite",
+            "conversions": {
+                "gold": 0.01,
+                "silver": 0.1
+            },
+            "controls": {
+                "convertUp": "silver",
+                "convertDown": null
+            }
         }
-    }
+    };
 
     PL1E.general = {
         "level": {
