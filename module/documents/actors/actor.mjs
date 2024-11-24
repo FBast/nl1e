@@ -383,26 +383,6 @@ export class Pl1eActor extends Actor {
             }
         }
 
-        // Handle satiety
-        const satietyAffected = ['strength', 'agility', 'constitution', 'perception'];
-        if (actorGeneral.satiety < 0) {
-            for (let characteristicKey of satietyAffected) {
-                if (actorCharacteristics[characteristicKey]) {
-                    actorCharacteristics[characteristicKey].mods.push(actorGeneral.satiety);
-                }
-            }
-        }
-
-        // Handle satiety and tranquility
-        const tranquilityAffected = ['intellect', 'cunning', 'wisdom', 'will'];
-        if (actorGeneral.tranquility < 0) {
-            for (let characteristicKey of tranquilityAffected) {
-                if (actorCharacteristics[characteristicKey]) {
-                    actorCharacteristics[characteristicKey].mods.push(actorGeneral.tranquility);
-                }
-            }
-        }
-
         // Handle actorCharacteristics scores.
         actorGeneral.remainingCharacteristics = 24;
         for (let [id, characteristic] of Object.entries(actorCharacteristics)) {

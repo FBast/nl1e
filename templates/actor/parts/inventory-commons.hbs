@@ -25,6 +25,18 @@
                         {{> "systems/pl1e/templates/item/components/icons-common.hbs"}}
                     </div>
                     <div class="controls">
+                        {{#if ../restDisplay}}
+                            {{#if (eq system.attributes.commonType "food")}}
+                                <a class="item-select hover-action" data-tooltip='{{localize "PL1E.Eat"}}'>
+                                    <i class="fas fa-utensils {{#if (ne ../selectedMealItem _id)}}color-disabled{{/if}}"></i>
+                                </a>
+                            {{else if (eq system.attributes.commonType "bed")}}
+                                <a class="item-select hover-action" data-tooltip='{{localize "PL1E.Use"}}'>
+                                    <i class="fas fa-bed {{#if (ne ../selectedBedItem _id)}}color-disabled{{/if}}"></i>
+                                </a>
+                            {{/if}}
+                        {{/if}}
+
                         {{#if @root.actor.isOwner}}
                             {{#if flags.pl1e.childId}}
                                 <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>

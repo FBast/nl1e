@@ -1,3 +1,7 @@
-2024/10/29-21:58:11.929 4db4 Recovering log #1162
-2024/10/29-21:58:11.931 4db4 Delete type=0 #1162
-2024/10/29-21:58:11.931 4db4 Delete type=3 #1161
+2024/11/24-17:18:39.123 198c Recovering log #1184
+2024/11/24-17:18:39.125 198c Delete type=0 #1184
+2024/11/24-17:18:39.125 198c Delete type=3 #1183
+2024/11/24-18:41:21.567 5798 Level-0 table #1188: started
+2024/11/24-18:41:21.567 5798 Level-0 table #1188: 0 bytes OK
+2024/11/24-18:41:21.569 5798 Delete type=0 #1186
+2024/11/24-18:41:21.574 5798 Manual compaction at level-0 from '!macros!Njg4bkfVieXevMCn' @ 72057594037927935 : 1 .. '!macros!mVqiFhELRLUnBVeB' @ 0 : 0; will stop at (end)

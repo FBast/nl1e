@@ -306,8 +306,6 @@
           "rollBestSkill": true,
           "advantages": 0,
           "bonuses": 0,
-          "satiety": 0,
-          "tranquility": 0,
           "statusImmunities": [],
           "action": 2,
           "reaction": 1,

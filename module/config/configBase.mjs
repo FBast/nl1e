@@ -56,7 +56,7 @@ export function getConfigBase() {
     PL1E.commonTypes = {
         "scrap": "PL1E.Scrap",
         "food": "PL1E.Food",
-        "drink": "PL1E.Drink"
+        "bed": "PL1E.Bed"
     }
 
     PL1E.visionMode = {

@@ -1,6 +1,6 @@
 <form class="pl1e rest-form" autocomplete="off">
     {{!-- Sheet Header --}}
-    <header class="sheet-header">
+    <header class="sheet-header color-negative">
         <div class="profile-container">
             <div class="profile-wrapper">
                 <img class="profile-img" src="systems/pl1e/assets/svg/campfire.svg"/>
@@ -43,7 +43,7 @@
             <div class="icons-stats">
                 {{#each effects}}
                     <span class="stat-icon hover-info" data-tooltip="{{localize label}}">
-                        <i class="far fa-{{icon}}"></i> {{value}}
+                        <i class="far {{icon}}"></i> {{value}}
                     </span>
                 {{/each}}
             </div>

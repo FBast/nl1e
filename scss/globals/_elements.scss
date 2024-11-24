@@ -113,17 +113,6 @@ input {
   border-radius: 5px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
-  &.color-negative {
-    background-color: transparent;
-    color: $colorTextNegative;
-    border: 2px solid $colorBorderNegative;
-
-    &:not(:disabled):hover,
-    &:active {
-      background-color: $colorBackgroundNegative;
-    }
-  }
-
   &:not(:disabled):hover,
   &:active {
     background-color: $colorBackground;
@@ -138,7 +127,19 @@ select {
   border-radius: 5px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
-  &.color-negative {
+  &:not(:disabled):hover,
+  &:active {
+    background-color: $colorBackground;
+  }
+
+  &:disabled {
+    background-color: $colorDisabled;
+    cursor: not-allowed;
+  }
+}
+
+.color-negative {
+  select {
     background-color: transparent;
     color: $colorTextNegative;
     border: 2px solid $colorBorderNegative;
@@ -149,13 +150,14 @@ select {
     }
   }
 
-  &:not(:disabled):hover,
-  &:active {
-    background-color: $colorBackground;
-  }
+  input {
+    background-color: transparent;
+    color: $colorTextNegative;
+    border: 2px solid $colorBorderNegative;
 
-  &:disabled {
-    background-color: $colorDisabled;
-    cursor: not-allowed;
+    &:not(:disabled):hover,
+    &:active {
+      background-color: $colorBackgroundNegative;
+    }
   }
 }

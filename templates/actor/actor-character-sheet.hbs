@@ -1,6 +1,6 @@
 <form class="character-sheet {{actor.type}} {{cssClass}}" autocomplete="off">
     {{!-- Sheet Header --}}
-    <header class="sheet-header">
+    <header class="sheet-header color-negative">
         <div class="profile-container">
             <div class="profile-wrapper">
                 <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
@@ -15,7 +15,7 @@
                     <button class="spin-number hover-action" type="button" data-path="system.general.experience" data-value="-1" data-min="0">
                         <i class="fas fa-minus"></i>
                     </button>
-                    <input type="text" class="color-negative" value="{{system.general.experience}}/{{system.general.experienceNeeded}}" readonly />
+                    <input type="text" value="{{system.general.experience}}/{{system.general.experienceNeeded}}" readonly />
                     <button class="spin-number hover-action" type="button" data-path="system.general.experience" data-value="1" data-max="{{system.general.experienceMax}}">
                         <i class="fas fa-plus"></i>
                     </button>
@@ -24,63 +24,19 @@
         </div>
         <div class="flex-vertical gap-md header-infos">
             <div class="flex-horizontal gap-md flex-shrink flex-items-center">
-                <input class="sheet-name color-negative" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
-                <div class="dropdown-icons">
-                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Satiety"}}">
-                        {{#if (eq system.general.satiety 2)}}
-                            <i class="fas fa-drumstick"></i>
-                        {{else if (eq system.general.satiety 1)}}
-                            <i class="fas fa-apple-alt"></i>
-                        {{else if (eq system.general.satiety 0)}}
-                            <i class="fas fa-utensils"></i>
-                        {{else if (eq system.general.satiety -1)}}
-                            <i class="fas fa-bone color-malus"></i>
-                        {{else if (eq system.general.satiety -2)}}
-                            <i class="fas fa-skull-crossbones color-malus"></i>
-                        {{/if}}
-                    </div>
-                    <div class="dropdown-content">
-                        <i class="set-number" data-path="system.general.satiety" data-value="2">2</i>
-                        <i class="set-number" data-path="system.general.satiety" data-value="1">1</i>
-                        <i class="set-number" data-path="system.general.satiety" data-value="0">0</i>
-                        <i class="set-number" data-path="system.general.satiety" data-value="-1">-1</i>
-                        <i class="set-number" data-path="system.general.satiety" data-value="-2">-2</i>
-                    </div>
-                </div>
-                <div class="dropdown-icons">
-                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Tranquility"}}">
-                        {{#if (eq system.general.tranquility 2)}}
-                            <i class="fas fa-laugh"></i>
-                        {{else if (eq system.general.tranquility 1)}}
-                            <i class="fas fa-smile"></i>
-                        {{else if (eq system.general.tranquility 0)}}
-                            <i class="fas fa-meh"></i>
-                        {{else if (eq system.general.tranquility -1)}}
-                            <i class="fas fa-frown color-malus"></i>
-                        {{else if (eq system.general.tranquility -2)}}
-                            <i class="fas fa-tired color-malus"></i>
-                        {{/if}}
-                    </div>
-                    <div class="dropdown-content">
-                        <i class="set-number" data-path="system.general.tranquility" data-value="2">2</i>
-                        <i class="set-number" data-path="system.general.tranquility" data-value="1">1</i>
-                        <i class="set-number" data-path="system.general.tranquility" data-value="0">0</i>
-                        <i class="set-number" data-path="system.general.tranquility" data-value="-1">-1</i>
-                        <i class="set-number" data-path="system.general.tranquility" data-value="-2">-2</i>
-                    </div>
-                </div>
+                <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
                 <div class="dropdown-icons">
                     <div class="dropdown-button" data-tooltip="{{localize "PL1E.Advantages"}}">
                         {{#if (eq system.general.advantages 2)}}
-                            <i class="fas fa-dove color-bonus"></i>
+                            <i class="fas fa-laugh color-bonus"></i>
                         {{else if (eq system.general.advantages 1)}}
-                            <i class="fas fa-thumbs-up color-bonus"></i>
+                            <i class="fas fa-smile color-bonus"></i>
                         {{else if (eq system.general.advantages 0)}}
-                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-meh"></i>
                         {{else if (eq system.general.advantages -1)}}
-                            <i class="fas fa-thumbs-down color-malus"></i>
+                            <i class="fas fa-frown color-malus"></i>
                         {{else if (eq system.general.advantages -2)}}
-                            <i class="fas fa-crow color-malus"></i>
+                            <i class="fas fa-tired color-malus"></i>
                         {{/if}}
                     </div>
                     <div class="dropdown-content">
@@ -140,10 +96,10 @@
                             <div class="infos">
                                 <span class="resource-name hover-info highlight-link name"
                                       data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
-                                <input class="color-negative" type="number" name="system.resources.{{@key}}.value"
+                                <input type="number" name="system.resources.{{@key}}.value"
                                        value="{{../value}}" max="{{../max}}" data-dtype="Number"/>
                                 <span>/</span>
-                                <input class="color-negative" type="number" name="system.resources.{{@key}}.max"
+                                <input type="number" name="system.resources.{{@key}}.max"
                                        value="{{../max}}" data-dtype="Number" disabled/>
                             </div>
                             <div class="bar">
