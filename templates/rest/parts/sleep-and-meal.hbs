@@ -1,9 +1,26 @@
+<!-- Environment Section -->
+<div class="toggle-section">
+    <div class="list-header">
+        <h5 class="header-title">
+            {{localize "PL1E.Environment"}}
+            <i class="fas fa-question-circle help-icon hover-info" data-tooltip="{{localize 'PL1E.EnvironmentTooltip'}}"></i>
+        </h5>
+    </div>
+    <div class="toggle-group environment-toggle" style="--toggle-columns: 3;">
+        {{#each environments}}
+            <div class="toggle-item {{#if (eq ../selectedEnvironment @key)}}selected{{/if}}" data-value="{{@key}}" data-tooltip="{{localize this.tooltip}}">
+                <img src="{{this.img}}" alt="{{this.tooltip}}" />
+            </div>
+        {{/each}}
+    </div>
+</div>
+
 <!-- Service Section -->
 <div class="toggle-section">
     <div class="list-header">
         <h5 class="header-title">
             {{localize "PL1E.Services"}}
-            <i class="fas fa-question-circle help-icon" data-tooltip="{{localize 'PL1E.ServicesTooltip'}}"></i>
+            <i class="fas fa-question-circle help-icon hover-info" data-tooltip="{{localize 'PL1E.ServicesTooltip'}}"></i>
         </h5>
     </div>
     <div class="toggle-group bed-toggle" style="--toggle-columns: 5;">

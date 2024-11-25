@@ -1,11 +1,18 @@
 <div class="list-items">
     <div class="list-header">
-        <h5>{{localize "PL1E.Common"}}</h5>
-        <div class="header-actions item-filter-list" data-filter="commons">
-            {{#each (config "commonTypes")}}
-                <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
-            {{/each}}
-        </div>
+        {{#if restDisplay}}
+            <h5 class="header-title">
+                {{localize "PL1E.Inventory"}}
+                <i class="fas fa-question-circle help-icon hover-info" data-tooltip="{{localize 'PL1E.RestInventoryTooltip'}}"></i>
+            </h5>
+        {{else}}
+            <h5>{{localize "PL1E.Common"}}</h5>
+            <div class="header-actions item-filter-list" data-filter="commons">
+                {{#each (config "commonTypes")}}
+                    <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+                {{/each}}
+            </div>
+        {{/if}}
     </div>
     <div class="list-column">
         {{#each commons}}
@@ -28,20 +35,20 @@
                         {{#if ../restDisplay}}
                             {{#if (eq system.attributes.commonType "food")}}
                                 <a class="item-select hover-action" data-tooltip='{{localize "PL1E.Eat"}}'>
-                                    <i class="fas fa-utensils {{#if (ne ../selectedMealItem _id)}}color-disabled{{/if}}"></i>
+                                    <i class="fas fa-utensils {{#unless (contains ../selectedMealItems _id)}}color-disabled{{/unless}}"></i>
                                 </a>
                             {{else if (eq system.attributes.commonType "bed")}}
                                 <a class="item-select hover-action" data-tooltip='{{localize "PL1E.Use"}}'>
-                                    <i class="fas fa-bed {{#if (ne ../selectedBedItem _id)}}color-disabled{{/if}}"></i>
+                                    <i class="fas fa-bed {{#unless (eq ../selectedBedItem _id)}}color-disabled{{/unless}}"></i>
                                 </a>
                             {{/if}}
-                        {{/if}}
-
-                        {{#if @root.actor.isOwner}}
-                            {{#if flags.pl1e.childId}}
-                                <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
-                            {{else}}
-                                <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                        {{else}}
+                            {{#if @root.actor.isOwner}}
+                                {{#if flags.pl1e.childId}}
+                                    <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
+                                {{else}}
+                                    <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
+                                {{/if}}
                             {{/if}}
                         {{/if}}
                     </div>
