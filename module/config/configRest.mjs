@@ -22,41 +22,49 @@ export function getConfigRest() {
                 "stamina": -20,
                 "mana": -20,
             }
+        },
+        "cursed": {
+            "img": "systems/pl1e/assets/rest/volcano.jpg",
+            "tooltip": "PL1E.EnvironmentCursedTooltip",
+            "effects": {
+                "stamina": -30,
+                "mana": -30,
+            }
         }
     };
 
-    PL1E.beds = {
+    PL1E.rest = {
         "none": {
-            "img": "systems/pl1e/assets/rest/bedNone.jpg",
-            "tooltip": "PL1E.BedNoneTooltip",
-            "effects": {
-                "health": -10
-            }
-        },
-        "poor": {
-            "img": "systems/pl1e/assets/rest/bedPoor.jpg",
-            "tooltip": "PL1E.BedPoorTooltip",
+            "img": "systems/pl1e/assets/rest/restNone.jpg",
+            "tooltip": "PL1E.RestNoneTooltip",
             "effects": {}
         },
+        "poor": {
+            "img": "systems/pl1e/assets/rest/restPoor.jpg",
+            "tooltip": "PL1E.RestPoorTooltip",
+            "effects": {
+                "health": 10
+            }
+        },
         "normal": {
-            "img": "systems/pl1e/assets/rest/bedNormal.jpg",
-            "tooltip": "PL1E.BedNormalTooltip",
+            "img": "systems/pl1e/assets/rest/restNormal.jpg",
+            "tooltip": "PL1E.RestNormalTooltip",
             "effects": {
                 "health": 20
             }
         },
         "good": {
-            "img": "systems/pl1e/assets/rest/bedGood.jpg",
-            "tooltip": "PL1E.BedGoodTooltip",
+            "img": "systems/pl1e/assets/rest/restGood.jpg",
+            "tooltip": "PL1E.RestGoodTooltip",
             "effects": {
-                "health": 30
+                "health": 40
             }
         },
         "luxurious": {
-            "img": "systems/pl1e/assets/rest/bedLuxurious.jpg",
-            "tooltip": "PL1E.BedLuxuriousTooltip",
+            "img": "systems/pl1e/assets/rest/restLuxurious.jpg",
+            "tooltip": "PL1E.RestLuxuriousTooltip",
             "effects": {
-                "health": 40
+                "health": 60
             }
         }
     };
@@ -65,38 +73,38 @@ export function getConfigRest() {
         "none": {
             "img": "systems/pl1e/assets/rest/mealNone.jpg",
             "tooltip": "PL1E.MealNoneTooltip",
-            "effects": {
-                "stamina": -5,
-                "mana": -5
-            }
+            "effects": {}
         },
         "frugal": {
             "img": "systems/pl1e/assets/rest/mealFrugal.jpg",
             "tooltip": "PL1E.MealFrugalTooltip",
-            "effects": {}
+            "effects": {
+                "stamina": 10,
+                "mana": 10
+            }
         },
         "normal": {
             "img": "systems/pl1e/assets/rest/mealNormal.jpg",
             "tooltip": "PL1E.MealNormalTooltip",
             "effects": {
-                "stamina": 10,
-                "mana": 10
+                "stamina": 20,
+                "mana": 20
             }
         },
         "good": {
             "img": "systems/pl1e/assets/rest/mealGood.jpg",
             "tooltip": "PL1E.MealGoodTooltip",
             "effects": {
-                "stamina": 20,
-                "mana": 20
+                "stamina": 40,
+                "mana": 40
             }
         },
         "luxurious": {
             "img": "systems/pl1e/assets/rest/mealLuxurious.jpg",
             "tooltip": "PL1E.MealLuxuriousTooltip",
             "effects": {
-                "health": 40,
-                "stamina": 40
+                "stamina": 60,
+                "mana": 60
             }
         }
     };

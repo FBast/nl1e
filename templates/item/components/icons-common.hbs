@@ -1,8 +1,8 @@
 {{#if (eq system.attributes.commonType "food")}}
     <i class="far fa-pot-food hover-info" data-tooltip='{{localize "PL1E.Food"}}'></i>
 {{/if}}
-{{#if (eq system.attributes.commonType "bed")}}
-    <i class="far fa-bed hover-info" data-tooltip='{{localize "PL1E.Bed"}}'></i>
+{{#if (eq system.attributes.commonType "rest")}}
+    <i class="far fa-campground hover-info" data-tooltip='{{localize "PL1E.Rest"}}'></i>
 {{/if}}
 {{#if (ne system.attributes.healthRest 0)}}
     <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthRest"}}'>
