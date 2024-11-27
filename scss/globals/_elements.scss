@@ -160,4 +160,12 @@ select {
       background-color: $colorBackgroundNegative;
     }
   }
+
+  input[disabled] {
+    user-select: none;
+    pointer-events: none;
+    background-color: transparent;
+    color: inherit;
+    border: none;
+  }
 }

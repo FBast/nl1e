@@ -121,4 +121,8 @@ export const registerHandlebars = function () {
             return prop === value;
         });
     });
+
+    Handlebars.registerHelper('abs', function (value){
+        return Math.abs(value);
+    })
 }

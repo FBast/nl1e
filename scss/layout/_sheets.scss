@@ -3,7 +3,7 @@
   flex-direction: row;
   gap: 5px;
   align-items: normal;
-  margin-bottom: 25px;
+  margin: 5px 5px 20px 5px;
   color: $colorTextNegative;
   height: max-content;
 
@@ -61,8 +61,6 @@
 
   .header-infos {
     flex: 1;
-    margin-top: 10px;
-    margin-right: 15px;
     height: 100%;
 
     .sheet-name {
@@ -74,7 +72,7 @@
       outline: none;
 
       &:not(:disabled):hover,
-      &:active {
+      &:not(:disabled):active {
         border: 2px solid $colorBorderNegative;
       }
     }

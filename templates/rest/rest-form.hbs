@@ -15,29 +15,32 @@
                 </div>
             </div>
             <div class="flex-vertical gap-md resources">
-                {{#each system.resources}}
-                    {{#with (config "resources" @key)}}
-                        <div class="resource {{@key}}-bar" data-resource-id="{{@key}}">
-                            <div class="infos">
-                                <span class="resource-name hover-info highlight-link name"
-                                      data-characteristics="{{weights.characteristics}}">{{localize label}}</span>
-                                <input type="number" name="system.resources.{{@key}}.value"
-                                       value="{{../value}}" max="{{../max}}" data-dtype="Number" disabled/>
-                                <span>/</span>
-                                <input type="number" name="system.resources.{{@key}}.max"
-                                       value="{{../max}}" data-dtype="Number" disabled/>
-                            </div>
-                            <div class="bar">
-                                <div class="fill {{@key}}" style="width: {{../percentage}}%;"></div>
-                            </div>
+                {{#each effects}}
+                    <div class="resource {{attr}}-bar">
+                        <div class="infos">
+                            <span class="name">{{localize label}}</span>
+                            <input type="number" name="system.resources.{{attr}}.value"
+                                   value="{{value}}" max="{{max}}" data-dtype="Number" disabled/>
+                            <span>/</span>
+                            <input type="number" name="system.resources.{{attr}}.max"
+                                   value="{{max}}" data-dtype="Number" disabled/>
                         </div>
-                    {{/with}}
+                        <div class="bar">
+                            <div class="fill {{attr}}" style="width: {{percentage}}%;"></div>
+                            {{#if (gt modifier 0)}}
+                                <div class="prediction {{attr}} positive" style="width: {{predictionPercentage}}%; left: {{percentage}}%;"></div>
+                            {{else if (lt modifier 0)}}
+                                <div class="prediction {{attr}} negative" style="width: {{predictionPercentage}}%; left: {{predictionStart}}%;"></div>
+                            {{/if}}
+                        </div>
+                    </div>
                 {{/each}}
             </div>
             <div class="icons-stats">
                 {{#each effects}}
-                    <span class="stat-icon hover-info" data-tooltip="{{localize label}}">
-                        <i class="far {{icon}}"></i> {{value}}
+                    <span class="stat-icon hover-info {{#if (gt modifier 0)}}color-bonus{{else if (lt modifier 0)}}color-malus{{/if}}"
+                          data-tooltip="{{localize label}}">
+                        <i class="far {{icon}}"></i> {{modifier}}
                     </span>
                 {{/each}}
             </div>
