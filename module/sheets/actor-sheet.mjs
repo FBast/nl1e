@@ -994,9 +994,19 @@ export class Pl1eActorSheet extends ActorSheet {
      * @private
      */
     async _onOpenRest(event) {
+        event.preventDefault();
+
+        // Save the current position of the actor sheet
+        const sheetPosition = this.actor.sheet.position;
+
+        // Close the form after opening the rest
+        await this.close();
+
         const app = new RestForm(this.actor, {
-            title: `${game.i18n.localize("PL1E.Rest")} : ${this.actor.name}`
+            title: `${game.i18n.localize("PL1E.Rest")} : ${this.actor.name}`,
         });
-        app.render(true);
+
+        // Render the rest form at the same position
+        app.render(true, { left: sheetPosition.left, top: sheetPosition.top });
     }
 }

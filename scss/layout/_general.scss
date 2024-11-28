@@ -10,16 +10,15 @@
   flex-direction: column;
 }
 
+&.form.rest,
 &.sheet.actor {
+  height: 860px;
+  width: 800px;
   min-height: 860px;
   min-width: 800px;
 
-  .character-sheet .profile-container {
+  .profile-container {
     flex: 0 0 180px;
-  }
-
-  .merchant-sheet .profile-container {
-    flex: 0 0 160px;
   }
 }
 
@@ -29,18 +28,7 @@
   min-height: 500px;
   min-width: 500px;
 
-  .item-sheet .profile-container {
+  .profile-container {
     flex: 0 0 100px;
-  }
-}
-
-&.form.rest {
-  height: 840px;
-  width: 700px;
-  min-height: 840px;
-  min-width: 700px;
-
-  .rest-form .profile-container {
-    flex: 0 0 220px;
   }
 }

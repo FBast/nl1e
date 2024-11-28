@@ -124,7 +124,7 @@ export class RestForm extends FormApplication {
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find('.confirm-rest').on('click', async ev => this._onConfirmRest(ev));
-        html.find('.cancel-rest').on('click', async ev => await this.close());
+        html.find('.cancel-rest').on('click', async ev => this._onCancelRest(ev));
     }
 
     updateEffects() {
@@ -230,6 +230,25 @@ export class RestForm extends FormApplication {
     }
 
     /**
+     * Cancel the rest
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onCancelRest(event) {
+        event.preventDefault();
+
+        // Save the current position of the actor sheet
+        const sheetPosition = this.position;
+
+        // Close the form after canceling the rest
+        await this.close();
+
+        // Render the actor sheet at the same position
+        this.actor.sheet.render(true, { left: sheetPosition.left, top: sheetPosition.top });
+    }
+
+    /**
      * Confirm the rest
      * @param event
      * @returns {Promise<void>}
@@ -237,6 +256,12 @@ export class RestForm extends FormApplication {
      */
     async _onConfirmRest(event) {
         event.preventDefault();
+
+        // Save the current position of the actor sheet
+        const sheetPosition = this.position;
+
+        // Close the form after confirming the rest
+        await this.close();
 
         const updates = {};
 
@@ -259,7 +284,7 @@ export class RestForm extends FormApplication {
             this.selectedMealItems = [];
         }
 
-        // Close the form after confirming the rest
-        await this.close();
+        // Render the actor sheet at the same position
+        this.actor.sheet.render(true, { left: sheetPosition.left, top: sheetPosition.top });
     }
 }
