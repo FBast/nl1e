@@ -155,7 +155,7 @@ select {
     color: $colorTextNegative;
     border: 2px solid $colorBorderNegative;
 
-    &:not(:disabled):hover,
+    &:hover,
     &:active {
       background-color: $colorBackgroundNegative;
     }

@@ -1,4 +1,4 @@
-import { Pl1eHelpers as pl1eHelpers, Pl1eHelpers } from "../helpers/helpers.mjs";
+import {Pl1eHelpers as pl1eHelpers, Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 
 export class RestForm extends FormApplication {
@@ -123,6 +123,8 @@ export class RestForm extends FormApplication {
         html.find(".item-select").on("click", ev => this._onItemSelect(ev));
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find('.confirm-rest').on('click', async ev => this._onConfirmRest(ev));
+        html.find('.cancel-rest').on('click', async ev => await this.close());
     }
 
     updateEffects() {
@@ -225,5 +227,39 @@ export class RestForm extends FormApplication {
 
         // Re-render to reflect changes
         this.render();
+    }
+
+    /**
+     * Confirm the rest
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onConfirmRest(event) {
+        event.preventDefault();
+
+        const updates = {};
+
+        // Iterate over the calculated effects and apply modifiers
+        for (const effect of this.effects) {
+            updates[`system.resources.${effect.attr}.value`] = effect.prediction;
+        }
+
+        // Apply all resource updates in a single call
+        await this.actor.update(updates);
+
+        // Remove used meal items from the actor's inventory
+        if (this.selectedMealItems.length > 0) {
+            for (const mealItemId of this.selectedMealItems) {
+                const mealItem = this.actor.items.get(mealItemId);
+                if (mealItem) await mealItem.delete();
+            }
+
+            // Clear the selectedMealItems after processing
+            this.selectedMealItems = [];
+        }
+
+        // Close the form after confirming the rest
+        await this.close();
     }
 }
