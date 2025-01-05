@@ -467,7 +467,7 @@
         "coneLength": 0,
         "coneAngle": 0,
         "rayLength": 0,
-        "includeSelf": false
+        "targetSelf": "none"
       }
     },
     "weapon": {
@@ -532,7 +532,7 @@
         "coneLength": 0,
         "coneAngle": 0,
         "rayLength": 0,
-        "includeSelf": false
+        "targetSelf": "none"
       }
     },
     "common": {

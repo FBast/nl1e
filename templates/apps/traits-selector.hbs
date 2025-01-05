@@ -1,15 +1,23 @@
 <form class="pl1e" autocomplete="off" onsubmit="event.preventDefault();">
-    <div class="list-items">
-        {{#each choices}}
-            <div class="item">
-                <div class="title">
-                    <label>{{localize label}}</label>
-                </div>
-                <div class="fields">
-                    <input type="checkbox" name="{{@key}}" {{checked value}} data-dtype="Boolean">
+    <section class="sheet-body">
+        <div class="flex-vertical gap-md">
+            <div class="list-items">
+                <div class="list-column">
+                    {{#each choices}}
+                        <div class="item">
+                            <div class="item-content">
+                                <div class="title">
+                                    <label>{{localize label}}</label>
+                                </div>
+                                <div class="fields">
+                                    <input type="checkbox" name="{{@key}}" {{checked value}} data-dtype="Boolean">
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
                 </div>
             </div>
-        {{/each}}
-    </div>
-    <button type="submit"><i class="fas fa-save"></i> {{localize "PL1E.Save"}}</button>
+            <button type="submit"><i class="fas fa-save"></i> {{localize "PL1E.Save"}}</button>
+        </div>
+    </section>
 </form>

@@ -461,6 +461,12 @@ export function getConfigItems() {
         "multipliedBySuccess": "PL1E.MultipliedBySuccess"
     }
 
+    PL1E.selfTargets = {
+        "none": "PL1E.None",
+        "add": "PL1E.Add",
+        "remove": "PL1E.Remove"
+    }
+
     PL1E.linkOverrides = {
         "none": "PL1E.None",
         "reach": "PL1E.Reach",

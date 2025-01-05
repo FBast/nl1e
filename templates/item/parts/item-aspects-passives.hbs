@@ -6,8 +6,9 @@
         <div class="header-actions item-filter-list" data-filter="abilities">
             {{#each passiveAspectsObjects}}
                 {{#with (config "aspects" name)}}
-                    <input type="image" class="aspect-add hover-action" src="{{img}}" data-aspect-id="{{@key}}"
-                           data-aspect-type="passive" data-tooltip='{{localize label}}' width="20" height="20"/>
+                    <a class="aspect-add hover-action" data-aspect-type="passive" data-aspect-id="{{@key}}" data-tooltip='{{localize label}}'>
+                        <i class="fas {{icon}}"></i>
+                    </a>
                 {{/with}}
             {{/each}}
             <a class="active-aspects-copy hover-action" data-tooltip='{{localize "PL1E.Copy"}}'><i class="fas fa-copy"></i></a>

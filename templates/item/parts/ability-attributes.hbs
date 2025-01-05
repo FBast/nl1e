@@ -86,6 +86,205 @@
 {{#unless (eq system.attributes.activation "passive")}}
     <div class="list-items">
         <div class="list-header">
+            <h5>{{localize "PL1E.Parent"}}</h5>
+        </div>
+        <div class="list-column">
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.LaunchParentActiveAspects"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="checkbox" name="system.attributes.launchParentActiveAspects" {{checked system.attributes.launchParentActiveAspects}} data-dtype="Boolean"/>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.WeaponMode"}}</label>
+                    </div>
+                    <div class="fields">
+                        <select name="system.attributes.weaponMode">
+                            {{customSelectOptions (config "weaponModes") selected=system.attributes.weaponMode localize=true}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            {{#if (ne system.attributes.weaponMode "none")}}
+                {{#if (ne system.attributes.weaponMode "magic")}}
+                    <div class="item">
+                        <div class="item-content">
+                            <div class="title">
+                                <label>{{localize "PL1E.RangeOverride"}}</label>
+                            </div>
+                            <div class="fields">
+                                <input type="checkbox" name="system.attributes.useParentRange" {{checked system.attributes.useParentRange}} data-dtype="Boolean"/>
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.UseParentRoll"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="checkbox" name="system.attributes.useParentRoll" {{checked system.attributes.useParentRoll}} data-dtype="Boolean"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.UseParentOppositeRoll"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="checkbox" name="system.attributes.useParentOppositeRoll" {{checked system.attributes.useParentOppositeRoll}} data-dtype="Boolean"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.UseParentActivationMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="checkbox" name="system.attributes.useParentActivationMacro" {{checked system.attributes.useParentActivationMacro}} data-dtype="Boolean"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.UseParentPreLaunchMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="checkbox" name="system.attributes.useParentPreLaunchMacro" {{checked system.attributes.useParentPreLaunchMacro}} data-dtype="Boolean"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.UseParentPostLaunchMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="checkbox" name="system.attributes.useParentPostLaunchMacro" {{checked system.attributes.useParentPostLaunchMacro}} data-dtype="Boolean"/>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="list-items">
+        <div class="list-header">
+            <h5>{{localize "PL1E.Usage"}}</h5>
+        </div>
+        <div class="list-column">
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.Roll"}}</label>
+                    </div>
+                    <div class="fields">
+                        <ul>
+                            {{#each system.attributes.roll}}
+                                <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                            {{/each}}
+                        </ul>
+                        <a style="flex: 0;" class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.Roll" data-key-path="attributes.roll" data-tooltip="{{localize 'PL1E.RollConfig'}}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.RollAdvantages"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.rollAdvantages" value="{{system.attributes.rollAdvantages}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+            {{#if (or (gt (length system.attributes.roll) 0) system.attributes.useParentRoll)}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.OppositeRoll"}}</label>
+                        </div>
+                        <div class="fields">
+                            <ul>
+                                {{#each system.attributes.oppositeRoll}}
+                                    <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                                {{/each}}
+                            </ul>
+                            <a style="flex: 0;" class="trait-selector flex-shrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll" data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.OppositeRollAdvantages"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="number" name="system.attributes.oppositeRollAdvantages" value="{{system.attributes.oppositeRollAdvantages}}" data-dtype="Number"/>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.HealthCost"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.healthCost" value="{{system.attributes.healthCost}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.StaminaCost"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.staminaCost" value="{{system.attributes.staminaCost}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.ManaCost"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.manaCost" value="{{system.attributes.manaCost}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.LinkedUsageCost"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.linkedUsageCost" value="{{system.attributes.linkedUsageCost}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="list-items">
+        <div class="list-header">
             <h5>{{localize "PL1E.Target"}}</h5>
         </div>
         <div class="list-column">
@@ -184,10 +383,12 @@
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.IncludeSelf"}}</label>
+                        <label>{{localize "PL1E.SelfTarget"}}</label>
                     </div>
                     <div class="fields">
-                        <input type="checkbox" name="system.attributes.includeSelf" {{checked system.attributes.includeSelf}} data-dtype="Boolean"/>
+                        <select name="system.attributes.selfTarget">
+                            {{customSelectOptions (config "selfTargets") selected=system.attributes.selfTarget localize=true}}
+                        </select>
                     </div>
                 </div>
             </div>

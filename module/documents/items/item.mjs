@@ -753,9 +753,7 @@ export class Pl1eItem extends Item {
         if (!await this._canActivate(characterData)) return false;
 
         // Linking item
-        if (characterData.linkedItem) {
-            await this._linkItem(characterData);
-        }
+        await this._linkItem(characterData);
 
         // Character rollData if exist
         if (characterData.attributes.roll.length > 0) {
@@ -1045,12 +1043,6 @@ export class Pl1eItem extends Item {
         /** @type {TargetData[]} */
         let targetsData = [];
 
-        // Include self
-        if (characterData.attributes.includeSelf) {
-            const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
-            targetsData.push(targetData);
-        }
-
         if (characterData.attributes.areaShape !== "none") {
             // Populate targetsData
             for (let template of characterData.templates) {
@@ -1070,6 +1062,17 @@ export class Pl1eItem extends Item {
                     }
                 }
 
+            }
+        }
+
+        // Self target
+        const targetData = await this._getTargetData(characterData, characterData.actor, characterData.token);
+        if (characterData.attributes.selfTarget === "add") {
+            targetsData.push(targetData);
+        } else if (characterData.attributes.selfTarget === "remove") {
+            const index = targetsData.findIndex(target => target.actorId === targetData.actorId);
+            if (index !== -1) {
+                targetsData.splice(index, 1); // Remove the self-target if it exists in the array
             }
         }
 

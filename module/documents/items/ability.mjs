@@ -60,12 +60,16 @@ export class Pl1eAbility extends Pl1eItem {
             return false;
         }
 
+        return true;
+    }
+
+    /** @inheritDoc */
+    async _linkItem(characterData) {
         // Get weapons using the same mastery
         const relatedItems = this._getLinkableItems(characterData);
-        if (relatedItems.length === 0) {
-            return true;
-        }
-        else if (relatedItems.length === 1) {
+        if (relatedItems.length === 0) return;
+
+        if (relatedItems.length === 1) {
             characterData.linkedItem = relatedItems[0];
             characterData.linkedItemId = relatedItems[0].id;
         }
@@ -75,11 +79,6 @@ export class Pl1eAbility extends Pl1eItem {
             characterData.linkedItemId = characterData.linkedItem.id;
         }
 
-        return true;
-    }
-
-    /** @inheritDoc */
-    async _linkItem(characterData) {
         const attributes = characterData.attributes;
         const linkedItemAttributes = characterData.linkedItem.system.attributes;
 

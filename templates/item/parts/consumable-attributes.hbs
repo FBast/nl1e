@@ -17,19 +17,38 @@
             </div>
         </div>
 
-        {{!-- Gold, Silver, Copper Price Inputs --}}
-        {{#each ["GoldPrice", "SilverPrice", "CopperPrice"] as |priceType|}}
-            <div class="item">
-                <div class="item-content">
-                    <div class="title">
-                        <label>{{localize (concat "PL1E." priceType)}}</label>
-                    </div>
-                    <div class="fields">
-                        <input type="number" name="system.attributes.{{lowercase priceType}}" value="{{system.attributes.[(lowercase priceType)]}}" data-dtype="Number"/>
-                    </div>
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.GoldPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}" data-dtype="Number"/>
                 </div>
             </div>
-        {{/each}}
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.SilverPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.CopperPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -83,25 +102,40 @@
         </div>
 
         {{#if (eq system.attributes.activation "action")}}
-            {{#each ["ActionCost", "IsMajorAction", "IsDangerous"] as |actionAttr|}}
-                <div class="item">
-                    <div class="item-content">
-                        <div class="title">
-                            <label>{{localize (concat "PL1E." actionAttr)}}</label>
-                        </div>
-                        <div class="fields">
-                            <input type="{{#if (includes actionAttr "Is")}}checkbox{{else}}number{{/if}}"
-                                   name="system.attributes.{{lowercase actionAttr}}"
-                                {{#if (includes actionAttr "Is")}}{{checked system.attributes.[(lowercase actionAttr)]}}{{/if}}
-                                   value="{{system.attributes.[(lowercase actionAttr)]}}"
-                                   data-dtype="Boolean"/>
-                        </div>
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.ActionCost"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.actionCost" value="{{system.attributes.actionCost}}" data-dtype="Number"/>
                     </div>
                 </div>
-            {{/each}}
+            </div>
+
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.IsMajorAction"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.IsDangerous"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="checkbox" name="system.attributes.isDangerous" {{checked system.attributes.isDangerous}} data-dtype="Boolean"/>
+                    </div>
+                </div>
+            </div>
         {{/if}}
     </div>
 </div>
 
-{{!-- Similar structure for Usage, Target, and Sequencer Macros sections --}}
 {{> "systems/pl1e/templates/item/parts/item-aspects-actives.hbs"}}
