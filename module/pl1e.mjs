@@ -10,7 +10,7 @@ import {Pl1eActorProxy} from "./documents/actors/actorProxy.mjs";
 import {Pl1eItemProxy} from "./documents/items/itemProxy.mjs";
 import {Pl1eCombat} from "./apps/combat.mjs";
 import {Pl1eTokenDocument} from "./documents/token.mjs";
-import {Pl1eActiveEffect} from "./documents/effect.mjs";
+import {Pl1eEffect} from "./documents/effect.mjs";
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 import {Pl1eChatMessage} from "./documents/chatMessage.mjs";
@@ -61,7 +61,7 @@ Hooks.once('init', async function () {
     CONFIG.Item.documentClass = Pl1eItemProxy;
     CONFIG.Combat.documentClass = Pl1eCombat;
     CONFIG.Token.documentClass = Pl1eTokenDocument;
-    CONFIG.ActiveEffect.documentClass = Pl1eActiveEffect;
+    CONFIG.ActiveEffect.documentClass = Pl1eEffect;
     CONFIG.ChatMessage.documentClass = Pl1eChatMessage;
     // CONFIG.MeasuredTemplate.objectClass = Pl1eMeasuredTemplate;
 

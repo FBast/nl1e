@@ -59,7 +59,8 @@ export function getConfigAspects() {
             "dataGroup": "movements",
             "data": "walk",
             "targetGroup": "self",
-            "movementDestination": "all"
+            "movementDestination": "templatePrimary",
+            "templateScope": "ownTemplate"
         },
         {
             "name": "invocation",
@@ -743,13 +744,20 @@ export function getConfigAspects() {
     }
 
     PL1E.targetGroupWithTemplate = {
-        "template": "PL1E.Template",
+        "templatePrimary": "PL1E.TemplatePrimary",
+        "templateSecondary": "PL1E.TemplateSecondary",
         "targets": "PL1E.Targets",
         "self": "PL1E.Self",
         "allies": "PL1E.Allies",
         "alliesAndSelf": "PL1E.AlliesAndSelf",
         "opponents": "PL1E.Opponents",
         "opponentsAndSelf": "PL1E.OpponentsAndSelf"
+    }
+
+    PL1E.templateScopes = {
+        "ownTemplate": "PL1E.OwnTemplate",
+        "otherTemplates": "PL1E.OtherTemplates",
+        "allTemplates": "Pl1E.AllTemplates",
     }
 
     PL1E.statusImmunities = {

@@ -331,7 +331,7 @@ export class Pl1eHelpers {
         }
         let itemCopy = foundry.utils.duplicate(item);
         cleanObject(itemCopy.system, model, removed);
-        console.log("PL1E | Removed system properties:", removed);
+        console.log("PL1E | removed system properties:", removed);
         await item.update({ system: itemCopy.system }, { merge: false });
     }
 
@@ -463,5 +463,65 @@ export class Pl1eHelpers {
         let b = parseInt(hex.substring(4, 6), 16);
 
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    static tokensWithinTemplate(template) {
+        const tokens = template.object.scene.tokens.contents;
+
+        const shape = template.object.shape;
+        const containedTokens = [];
+
+        // Template's position on the canvas
+        const gridSize = template.object.scene.grid.size;
+        const templateX = template.x;
+        const templateY = template.y;
+
+        tokens.forEach(token => {
+            const tokenX = token.x;
+            const tokenY = token.y;
+            let contains = false;
+
+            switch (shape.constructor) {
+                case PIXI.Rectangle: {
+                    // Adjust width and height if they are zero
+                    const width = shape.width === 0 ? gridSize : shape.width;
+                    const height = shape.height === 0 ? gridSize : shape.height;
+
+                    const rect = new PIXI.Rectangle(
+                        shape.x + templateX - gridSize / 2,
+                        shape.y + templateY - gridSize / 2,
+                        width,
+                        height
+                    );
+                    contains = rect.contains(tokenX, tokenY);
+                    break;
+                }
+                case PIXI.Circle: {
+                    const radius = shape.radius === 0 ? gridSize / 2 : shape.radius;
+                    const circle = new PIXI.Circle(
+                        shape.x + templateX - gridSize / 2,
+                        shape.y + templateY - gridSize / 2,
+                        radius
+                    );
+                    contains = circle.contains(tokenX, tokenY);
+                    break;
+                }
+                case PIXI.Polygon: {
+                    const points = shape.points.map((p, i) => i % 2 === 0 ? p + templateX - gridSize / 2 : p + templateY - gridSize / 2);
+                    const poly = new PIXI.Polygon(points);
+                    contains = poly.contains(tokenX, tokenY);
+                    break;
+                }
+                default:
+                    console.warn("Shape type not supported:", shape.constructor);
+                    break;
+            }
+
+            if (contains) {
+                containedTokens.push(token);
+            }
+        });
+
+        return containedTokens;
     }
 }

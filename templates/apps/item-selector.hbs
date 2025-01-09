@@ -1,12 +1,14 @@
-<form>
-    <div class="toggle-section">
-        <div class="toggle-group" style="--toggle-columns: {{items.length}};">
-            {{#each items as |item key|}}
-                <div class="toggle-item"
-                     data-item-index="{{@key}}" data-tooltip="{{item.name}}">
-                    <img src="{{item.img}}" alt="{{item.name}}" />
-                </div>
-            {{/each}}
+<form class="pl1e" autocomplete="off" onsubmit="event.preventDefault();">
+    <section class="modal-body">
+        <div class="toggle-section">
+            <div class="toggle-group" style="--toggle-columns: {{items.length}};">
+                {{#each items as |item key|}}
+                    <div class="toggle-item"
+                         data-item-index="{{@key}}" data-tooltip="{{item.name}}">
+                        <img src="{{item.img}}" alt="{{item.name}}" />
+                    </div>
+                {{/each}}
+            </div>
         </div>
-    </div>
+    </section>
 </form>

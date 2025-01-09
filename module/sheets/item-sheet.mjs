@@ -72,7 +72,7 @@ export class Pl1eItemSheet extends ItemSheet {
                 label: 'PL1E.Debug',
                 class: 'button-debug',
                 icon: 'fas fa-ban-bug',
-                onclick: () => console.log("PL1E | Content of item sheet:", this)
+                onclick: () => console.log("PL1E | content of item sheet:", this)
             });
         }
         return buttons;
@@ -169,7 +169,7 @@ export class Pl1eItemSheet extends ItemSheet {
         // Fetch new options based on dataGroup
         const dataGroupObject = PL1E[selectedDataGroup];
         if (!dataGroupObject) {
-            console.warn(`PL1E | Data group ${selectedDataGroup} not found`);
+            console.warn(`PL1E | data group ${selectedDataGroup} not found`);
             return;
         }
         const newDataOptions = Object.entries(dataGroupObject).map(([key, value]) => ({

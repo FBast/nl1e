@@ -10,6 +10,7 @@ export class ItemSelector extends FormApplication {
             classes: ["pl1e", "item-selector"],
             title: `${game.i18n.localize("PL1E.SelectAnItem")}`,
             template: 'systems/pl1e/templates/apps/item-selector.hbs',
+            height: "auto",
             resizable: false,
         });
     }

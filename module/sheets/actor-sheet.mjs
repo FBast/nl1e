@@ -89,7 +89,7 @@ export class Pl1eActorSheet extends ActorSheet {
                 label: 'PL1E.Debug',
                 class: 'button-debug',
                 icon: 'fas fa-ban-bug',
-                onclick: () => console.log("PL1E | Content of actor sheet:", this)
+                onclick: () => console.log("PL1E | content of actor sheet:", this)
             });
         }
         return buttons;

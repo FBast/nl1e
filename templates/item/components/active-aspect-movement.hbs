@@ -48,8 +48,23 @@
                 <select name="system.activeAspects.{{@key}}.movementDestination">
                     {{customSelectOptions (config "targetGroupWithTemplate") selected=aspect.movementDestination localize=true}}
                 </select>
+
             </div>
         </div>
     </div>
 
+    {{#if (or (eq aspect.movementDestination "templatePrimary") (eq aspect.movementDestination "templateSecondary"))}}
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.TemplateScope"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.activeAspects.{{@key}}.templateScope">
+                        {{customSelectOptions (config "templateScopes") selected=aspect.templateScope localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+    {{/if}}
 </div>

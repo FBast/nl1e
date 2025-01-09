@@ -136,6 +136,16 @@
   padding: 10px;
 }
 
+.modal-body {
+  overflow: hidden;
+  background-color: $colorBackground;
+  border: 1px solid $colorBorder;
+  border-top-color: transparent;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.modal-body,
 .sheet-body,
 .sheet-body .tab,
 .sheet-body .tab .editor {

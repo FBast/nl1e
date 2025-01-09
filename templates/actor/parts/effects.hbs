@@ -22,7 +22,7 @@
                             </i>
                         {{/if}}
                     </div>
-                    <div class="fields">
+                    <div class="controls">
                         {{#if @root.actor.isOwner}}
                             {{#if (and origin flags.pl1e.originActor)}}
                                 <a class="item-origin hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
@@ -33,7 +33,7 @@
                         {{/if}}
                     </div>
                 </div>
-                <div class="item-tooltip">{{description}}</div>
+                <div class="item-tooltip"><p>{{description}}</p></div>
             </div>
         {{/each}}
         {{#if (eq effects.length 0)}}

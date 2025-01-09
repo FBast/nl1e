@@ -1,9 +1,9 @@
 import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eSynchronizer} from "../../helpers/synchronizer.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
-import {Pl1eMeasuredTemplate} from "../measuredTemplate.mjs";
 import {Pl1eChatMessage} from "../chatMessage.mjs";
 import {Pl1eMeasuredTemplateDocument} from "../measuredTemplateDocument.mjs";
+import {Pl1eEffect} from "../effect.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -349,124 +349,133 @@ export class Pl1eItem extends Item {
     /** @inheritDoc */
     _preUpdate(changed, options, user) {
         if (!this.isEmbedded) {
-            // Activation resets
-            if (changed.system?.attributes?.activation === "passive") {
-                changed.system.attributes.actionCost = 0;
-                changed.system.attributes.reactionCost = 0;
-                changed.system.attributes.quickActionCost = 0;
-                changed.system.attributes.isMajorAction = false;
-                changed.system.attributes.isDangerous = false;
-                changed.system.attributes.areaShape = "none";
-                changed.system.attributes.launchParentActiveAspects = false;
-                changed.system.attributes.weaponMode = "none";
-                changed.system.attributes.roll = [];
-                changed.system.attributes.healthCost = 0;
-                changed.system.attributes.staminaCost = 0;
-                changed.system.attributes.manaCost = 0;
-                changed.system.attributes.usageCost = 0;
-                changed.system.attributes.areaShape = "none";
-                changed.system.attributes.meleeActivationMacro = "";
-                changed.system.attributes.rangeActivationMacro = "";
-                changed.system.attributes.magicActivationMacro = "";
-                changed.system.attributes.meleePreLaunchMacro = "";
-                changed.system.attributes.rangePreLaunchMacro = "";
-                changed.system.attributes.magicPreLaunchMacro = "";
-                changed.system.attributes.meleePostLaunchMacro = "";
-                changed.system.attributes.rangePostLaunchMacro = "";
-                changed.system.attributes.magicPostLaunchMacro = "";
-                changed.system.activeAspects = null;
-                changed.system.passiveAspects = null;
-            }
-            if (changed.system?.attributes?.activation === "action") {
-                changed.system.attributes.actionCost = 1;
-                changed.system.attributes.reactionCost = 0;
-                changed.system.attributes.quickActionCost = 0;
-            }
-            if (changed.system?.attributes?.activation === "reaction") {
-                changed.system.attributes.actionCost = 0;
-                changed.system.attributes.reactionCost = 1;
-                changed.system.attributes.quickActionCost = 0;
-                changed.system.attributes.isMajorAction = false;
-                changed.system.attributes.isDangerous = false;
-            }
-            if (changed.system?.attributes?.activation === "quickAction") {
-                changed.system.attributes.actionCost = 0;
-                changed.system.attributes.reactionCost = 0;
-                changed.system.attributes.quickActionCost = 1;
-                changed.system.attributes.isMajorAction = false;
-                changed.system.attributes.isDangerous = false;
-            }
-            if (changed.system?.attributes?.activation === "outOfCombat") {
-                changed.system.attributes.reactionCost = 0;
-                changed.system.attributes.actionCost = 0;
-                changed.system.attributes.quickActionCost = 0;
-                changed.system.attributes.isMajorAction = false;
-                changed.system.attributes.isDangerous = false;
-            }
-            // Active parent resets
-            if (changed.system?.attributes?.weaponMode === "none") {
-                changed.system.attributes.useParentRange = false;
-                changed.system.attributes.useParentRoll = false;
-                changed.system.attributes.useParentOppositeRoll = false;
-                changed.system.attributes.useParentActivationMacro = false;
-                changed.system.attributes.useParentPreLaunchMacro = false;
-                changed.system.attributes.useParentPostLaunchMacro = false;
-            }
-            // Usage resets
-            if (changed.system?.attributes?.roll?.length === 0) {
-                changed.system.attributes.rollAdvantages = 0;
-                changed.system.attributes.oppositeRoll = [];
-            }
-            if (changed.system?.attributes?.oppositeRoll?.length === 0) {
-                changed.system.attributes.oppositeRollAdvantages = 0;
-            }
-            // Target resets
-            if (changed.system?.attributes?.useParentRange === false) {
-                changed.system.attributes.range = 0;
-            }
-            if (changed.system?.attributes?.areaShape === "none") {
-                changed.system.attributes.range = 0;
-                changed.system.attributes.areaNumber = 0;
-                changed.system.attributes.circleRadius = 0;
-                changed.system.attributes.coneLength = 0;
-                changed.system.attributes.coneAngle = 0;
-                changed.system.attributes.rayLength = 0;
-            }
-            if (changed.system?.attributes?.areaShape === "target") {
-                changed.system.attributes.range = 1;
-                changed.system.attributes.areaNumber = 1;
-                changed.system.attributes.circleRadius = 0;
-                changed.system.attributes.coneLength = 0;
-                changed.system.attributes.coneAngle = 0;
-                changed.system.attributes.rayLength = 0;
-            }
-            if (changed.system?.attributes?.areaShape === "circle") {
-                changed.system.attributes.range = 4;
-                changed.system.attributes.areaNumber = 1;
-                changed.system.attributes.coneLength = 0;
-                changed.system.attributes.coneAngle = 0;
-                changed.system.attributes.rayLength = 0;
-            }
-            if (changed.system?.attributes?.areaShape === "cone") {
-                changed.system.attributes.range = 0;
-                changed.system.attributes.areaNumber = 1;
-                changed.system.attributes.circleRadius = 0;
-                changed.system.attributes.rayLength = 0;
-            }
-            if (changed.system?.attributes?.areaShape === "square") {
-                changed.system.attributes.range = 4;
-                changed.system.attributes.areaNumber = 1;
-                changed.system.attributes.circleRadius = 0;
-                changed.system.attributes.coneLength = 0;
-                changed.system.attributes.coneAngle = 0;
-                changed.system.attributes.rayLength = 0;
-            }
-            if (changed.system?.attributes?.areaShape === "ray") {
-                changed.system.attributes.range = 0;
-                changed.system.attributes.areaNumber = 1;
-                changed.system.attributes.circleRadius = 0;
-                changed.system.attributes.coneLength = 0;
-                changed.system.attributes.coneAngle = 0;
+            const currentAttributes = this.system.attributes;
+            const changedAttributes = changed.system?.attributes || {};
+
+            // Generic handlers for default values
+            const defaultsHandlers = {
+                activation: {
+                    passive: {
+                        actionCost: 0,
+                        reactionCost: 0,
+                        quickActionCost: 0,
+                        isMajorAction: false,
+                        isDangerous: false,
+                        areaShape: "none",
+                        launchParentActiveAspects: false,
+                        weaponMode: "none",
+                        roll: [],
+                        healthCost: 0,
+                        staminaCost: 0,
+                        manaCost: 0,
+                        usageCost: 0,
+                        meleeActivationMacro: "",
+                        rangeActivationMacro: "",
+                        magicActivationMacro: "",
+                        meleePreLaunchMacro: "",
+                        rangePreLaunchMacro: "",
+                        magicPreLaunchMacro: "",
+                        meleePostLaunchMacro: "",
+                        rangePostLaunchMacro: "",
+                        magicPostLaunchMacro: "",
+                        activeAspects: null,
+                        passiveAspects: null,
+                    },
+                    action: {
+                        actionCost: 1,
+                        reactionCost: 0,
+                        quickActionCost: 0,
+                    },
+                    reaction: {
+                        actionCost: 0,
+                        reactionCost: 1,
+                        quickActionCost: 0,
+                        isMajorAction: false,
+                        isDangerous: false,
+                    },
+                    quickAction: {
+                        actionCost: 0,
+                        reactionCost: 0,
+                        quickActionCost: 1,
+                        isMajorAction: false,
+                        isDangerous: false,
+                    },
+                    outOfCombat: {
+                        actionCost: 0,
+                        reactionCost: 0,
+                        quickActionCost: 0,
+                        isMajorAction: false,
+                        isDangerous: false,
+                    },
+                },
+                areaShape: {
+                    none: {
+                        range: 0,
+                        areaNumber: 0,
+                        circleRadius: 0,
+                        coneLength: 0,
+                        coneAngle: 0,
+                        rayLength: 0,
+                    },
+                    target: {
+                        circleRadius: 0,
+                        coneLength: 0,
+                        coneAngle: 0,
+                        rayLength: 0,
+                    },
+                    circle: {
+                        coneLength: 0,
+                        coneAngle: 0,
+                        rayLength: 0,
+                    },
+                    cone: {
+                        circleRadius: 0,
+                        rayLength: 0,
+                    },
+                    square: {
+                        circleRadius: 0,
+                        coneLength: 0,
+                        coneAngle: 0,
+                        rayLength: 0,
+                    },
+                    ray: {
+                        circleRadius: 0,
+                        coneLength: 0,
+                        coneAngle: 0,
+                    },
+                },
+                weaponMode: {
+                    none: {
+                        useParentRange: false,
+                        useParentRoll: false,
+                        useParentOppositeRoll: false,
+                        useParentActivationMacro: false,
+                        useParentPreLaunchMacro: false,
+                        useParentPostLaunchMacro: false,
+                    },
+                },
+                roll: {
+                    empty: {
+                        rollAdvantages: 0,
+                        oppositeRoll: [],
+                    },
+                },
+                oppositeRoll: {
+                    empty: {
+                        oppositeRollAdvantages: 0,
+                    },
+                },
+            };
+
+            // Apply handlers dynamically
+            for (const [key, handler] of Object.entries(defaultsHandlers)) {
+                const value = changedAttributes[key];
+
+                if (Array.isArray(value) && value.length === 0 && handler.empty) {
+                    Object.assign(changedAttributes, handler.empty);
+                } else if (handler[value]) {
+                    Object.assign(changedAttributes, handler[value]);
+                }
             }
         }
 
@@ -722,12 +731,12 @@ export class Pl1eItem extends Item {
         if (this.isEnabled) {
             for (const [id, aspect] of Object.entries(await this.getCombinedPassiveAspects())) {
                 if (!aspect.createEffect) continue;
-                await Pl1eAspect.applyPassiveEffect(aspect, id, this.actor, this);
+                await Pl1eEffect.applyPassiveEffect(aspect, id, this.actor, this);
             }
         }
         else {
             for (const [id, aspect] of Object.entries(await this.getCombinedPassiveAspects())) {
-                await Pl1eAspect.removePassiveEffect(aspect, id, this.actor);
+                await Pl1eEffect.removePassiveEffect(aspect, id, this.actor);
             }
         }
     }
@@ -1046,22 +1055,12 @@ export class Pl1eItem extends Item {
         if (characterData.attributes.areaShape !== "none") {
             // Populate targetsData
             for (let template of characterData.templates) {
-                for (let tokenId of template.tokensWithinTemplate) {
-                    // Retrieve the scene using the sceneId stored in the template
-                    const scene = await Pl1eHelpers.getDocument("Scene", template.sceneId);
-
-                    // Retrieve the token from the scene using the tokenId
-                    const token = await Pl1eHelpers.getDocument("Token", tokenId, { scene });
-
-                    if (token) {
-                        // Get the target data and push it to the targetsData array
-                        const targetData = await this._getTargetData(characterData, token.actor, token, template);
-                        targetsData.push(targetData);
-                    } else {
-                        console.warn(`Token with ID ${tokenId} not found in scene ${scene.id}`);
-                    }
+                const tokens = Pl1eHelpers.tokensWithinTemplate(template);
+                for (let token of tokens) {
+                    // Get the target data and push it to the targetsData array
+                    const targetData = await this._getTargetData(characterData, token.actor, token, template);
+                    targetsData.push(targetData);
                 }
-
             }
         }
 
@@ -1091,7 +1090,7 @@ export class Pl1eItem extends Item {
 
         // Apply aspects, here we calculate each aspect for all targets
         for (let [id, aspect] of Object.entries(characterData.activeAspects)) {
-            targetsData = await Pl1eAspect.applyActive(aspect, characterData, targetsData);
+            targetsData = await Pl1eAspect.applyActiveAspect(aspect, characterData, targetsData);
         }
 
         // Find post-launch macro

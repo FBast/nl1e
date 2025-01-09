@@ -14,7 +14,7 @@ export class TraitSelector extends DocumentSheet {
 
     constructor(document, trait, traitLabel, keyPath, options={}) {
         if (!Pl1eHelpers.getConfig(trait))
-            throw new Error(`PL1E | Cannot instantiate TraitSelector with a trait not defined in PL1E: ${trait}.`);
+            throw new Error(`PL1E | cannot instantiate TraitSelector with a trait not defined in PL1E: ${trait}.`);
 
         super(document, options);
 

@@ -1,5 +1,6 @@
 import {Pl1eAspect} from "./aspect.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
+import {Pl1eEffect} from "../documents/effect.mjs";
 
 export class Pl1eSynchronizer {
 
@@ -50,7 +51,7 @@ export class Pl1eSynchronizer {
      */
     static async _resetItem(actor, item, originalItem) {
         if (!item.isEmbedded)
-            throw new Error(`PL1E | Item ${item.name} should not be reset because not embedded`);
+            throw new Error(`PL1E | item ${item.name} should not be reset because not embedded`);
 
         const updateProperty = (propertyType, item, originalItem, actor = null) => {
             const itemData = {};
@@ -63,7 +64,7 @@ export class Pl1eSynchronizer {
                     itemData[`system.${propertyType}.-=${id}`] = null;
                     if (propertyType === 'passiveAspects' && item.isEnabled) {
                         const effect = actor.effects.find(e => e.getFlag("pl1e", "aspectId") === id);
-                        if (effect) Pl1eAspect.removePassiveEffect(currentProperties[id], id, actor);
+                        if (effect) Pl1eEffect.removePassiveEffect(currentProperties[id], id, actor);
                     }
                 }
             }
@@ -72,7 +73,7 @@ export class Pl1eSynchronizer {
             for (const [id, property] of Object.entries(originalProperties)) {
                 itemData[`system.${propertyType}.${id}`] = property;
                 if (propertyType === 'passiveAspects' && property.createEffect && item.isEnabled) {
-                    Pl1eAspect.applyPassiveEffect(property, id, actor, item);
+                    Pl1eEffect.applyPassiveEffect(property, id, actor, item);
                 }
             }
 

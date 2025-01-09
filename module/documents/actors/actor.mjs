@@ -1,6 +1,6 @@
 import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
-import {Pl1eActiveEffect} from "../effect.mjs";
+import {Pl1eEffect} from "../effect.mjs";
 import {PL1E} from "../../pl1e.mjs";
 import {Pl1eMacro} from "../../helpers/macro.mjs";
 
@@ -127,10 +127,10 @@ export class Pl1eActor extends Actor {
                     for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                         if (!aspect.createEffect) continue;
                         if (item.isEnabled) {
-                            await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
+                            await Pl1eEffect.applyPassiveEffect(aspect, id, this, item);
                         }
                         else {
-                            await Pl1eAspect.removePassiveEffect(aspect, id, this);
+                            await Pl1eEffect.removePassiveEffect(aspect, id, this);
                         }
                     }
                 }
@@ -143,8 +143,8 @@ export class Pl1eActor extends Actor {
             }
 
             // Add effect based on conditions
-            await Pl1eActiveEffect.toggleStatusEffect(this, "dead", this.isDead);
-            await Pl1eActiveEffect.toggleStatusEffect(this, "unconscious", this.IsUnconscious);
+            await Pl1eEffect.toggleStatusEffect(this, "dead", this.isDead);
+            await Pl1eEffect.toggleStatusEffect(this, "unconscious", this.IsUnconscious);
         }
     }
 
@@ -166,7 +166,7 @@ export class Pl1eActor extends Actor {
         }
 
         // Apply active effect macro
-        for (/** @type {Pl1eActiveEffect} */ const effect of this.effects) {
+        for (/** @type {Pl1eEffect} */ const effect of this.effects) {
             const macroId = effect.getFlag("pl1e", "actorPreUpdateMacroId");
             if (macroId) {
                 const macro = await Pl1eHelpers.getDocument("Macro", macroId);
@@ -259,14 +259,14 @@ export class Pl1eActor extends Actor {
                     for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                         if (!item.isEnabled) continue;
                         if (!aspect.createEffect) continue;
-                        await Pl1eAspect.applyPassiveEffect(aspect, id, this, item);
+                        await Pl1eEffect.applyPassiveEffect(aspect, id, this, item);
                     }
                 }
             }
 
             // Apply special token effects
             if (embeddedName === "ActiveEffect") {
-                for (/** @type {Pl1eActiveEffect} */ const activeEffect of documents) {
+                for (/** @type {Pl1eEffect} */ const activeEffect of documents) {
                     await activeEffect.applyTokenEffect(this);
                 }
             }
@@ -289,14 +289,14 @@ export class Pl1eActor extends Actor {
                     for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                         if (!item.isEnabled) continue;
                         if (!aspect.createEffect) continue;
-                        await Pl1eAspect.removePassiveEffect(aspect, id, this);
+                        await Pl1eEffect.removePassiveEffect(aspect, id, this);
                     }
                 }
             }
 
             // Remove special token effects
             if (embeddedName === "ActiveEffect") {
-                for (/** @type {Pl1eActiveEffect} */ const activeEffect of documents) {
+                for (/** @type {Pl1eEffect} */ const activeEffect of documents) {
                     await activeEffect.removeTokenEffect(this);
                 }
             }
@@ -379,7 +379,7 @@ export class Pl1eActor extends Actor {
         for (/** @type {Pl1eItem} */ const item of this.enabledItems) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                 if (aspect.createEffect) continue;
-                Pl1eAspect.applyPassiveValue(aspect, id, this);
+                Pl1eAspect.applyPassiveAspect(aspect, id, this);
             }
         }
 

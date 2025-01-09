@@ -1,44 +1,46 @@
 import {Pl1eHelpers} from "./helpers.mjs";
-import {Pl1eActiveEffect} from "../documents/effect.mjs";
 import {PL1E} from "../pl1e.mjs";
+import {ModifyAspectHandler} from "../services/ModifyAspectHandler.mjs";
+import {TransferAspectHandler} from "../services/TransferAspectHandler.mjs";
+import {StatusAspectHandler} from "../services/StatusAspectHandler.mjs";
+import {MovementAspectHandler} from "../services/MovementAspectHandler.mjs";
+import {InvocationAspectHandler} from "../services/InvocationAspectHandler.mjs";
+import {MacroAspectHandler} from "../services/MacroAspectHandler.mjs";
 
 export class Pl1eAspect {
 
     /**
-     * Apply an active aspect
+     * Apply a single aspect
      * @param {Object} aspect
      * @param {CharacterData} characterData
      * @param {TargetData[]} targetsData
+     * @returns {Promise<TargetData[]>}
      */
-    static async applyActive(aspect, characterData, targetsData) {
-        switch (aspect.name) {
-            case "increase":
-            case "decrease":
-            case "set":
-            case "modify":
-                return await this._modify(aspect, characterData, targetsData);
-            case "transfer":
-                return await this._transfer(aspect, characterData, targetsData);
-            case "status":
-                return await this._status(aspect, characterData, targetsData);
-            case "movement":
-                return await this._movement(aspect, characterData, targetsData);
-            case "invocation":
-                return await this._invocation(aspect, characterData, targetsData);
-            case "activeMacro":
-                return await this._macro(aspect, characterData, targetsData);
-            default:
-                throw new Error("PL1E | unknown aspect : " + aspect.name);
+    static async applyActiveAspect(aspect, characterData, targetsData) {
+        const handlers = {
+            modify: new ModifyAspectHandler(),
+            transfer: new TransferAspectHandler(),
+            status: new StatusAspectHandler(),
+            movement: new MovementAspectHandler(),
+            invocation: new InvocationAspectHandler(),
+            activeMacro: new MacroAspectHandler()
+        };
+
+        const handler = handlers[aspect.name];
+        if (!handler) {
+            throw new Error(`PL1E | unknown aspect: ${aspect.name}`);
         }
+
+        return await handler.apply(aspect, characterData, targetsData);
     }
 
     /**
-     * Apply a passive value
+     * Apply a passive aspect
      * @param {Object} aspect
      * @param {string} aspectId
      * @param {Pl1eActor} actor
      */
-    static applyPassiveValue(aspect, aspectId, actor) {
+    static applyPassiveAspect(aspect, aspectId, actor) {
         if (aspect.value === undefined) return;
         const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
         const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
@@ -69,69 +71,6 @@ export class Pl1eAspect {
 
         // Execute actor update macro
         if (macro) macro.execute(scope);
-    }
-
-    /**
-     * Apply a passive effect
-     * @param {Object} aspect
-     * @param {string} aspectId
-     * @param {Pl1eActor} actor
-     * @param {Pl1eItem} item
-     * @returns {Promise<void>}
-     */
-    static async applyPassiveEffect(aspect, aspectId, actor, item) {
-        // Skip if the effect already exist
-        const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === aspectId);
-        if (effect) return;
-
-        if (aspect.name === "status") {
-            await Pl1eActiveEffect.createStatusEffect(actor, aspect.data, {
-                origin: item.id,
-                flags: {
-                    pl1e: {
-                        originActor: actor.id,
-                        aspectId: aspectId,
-                        permanent: true
-                    }
-                }
-            });
-        }
-        else {
-            const value = aspect.operator === "remove" ? -aspect.value : aspect.value;
-            const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
-            const aspectConfig = Pl1eHelpers.getConfig("aspects", aspect.name);
-            const name = `${game.i18n.localize(aspectConfig.label)} (${game.i18n.localize(dataConfig.label)})`;
-            await actor.createEmbeddedDocuments("ActiveEffect", [{
-                name: name,
-                icon: item.img,
-                origin: item.id,
-                changes: [{
-                    key: dataConfig.path,
-                    mode: aspect.operator === "set" ? 5 : 2,
-                    value: value
-                }],
-                flags: {
-                    pl1e: {
-                        originActor: actor.id,
-                        aspectId: aspectId,
-                        permanent: true
-                    }
-                }
-            }]);
-        }
-    }
-
-    /**
-     * Remove a passive aspect
-     * @param {Object} aspect
-     * @param {string} aspectId
-     * @param {Pl1eActor} actor
-     * @returns {Promise<void>}
-     */
-    static async removePassiveEffect(aspect, aspectId, actor) {
-        // Done if the effect exist
-        const effect = actor.effects.find(effect => effect.getFlag("pl1e", "aspectId") === aspectId);
-        if (effect) await actor.deleteEmbeddedDocuments("ActiveEffect", [effect._id])
     }
 
     /**
@@ -228,384 +167,385 @@ export class Pl1eAspect {
     }
 
 
-    /**
-     * Apply the modify aspect
-     * @param aspect
-     * @param characterData
-     * @param targetsData
-     * @returns {Promise<TargetData[]>}
-     * @private
-     */
-    static async _modify(aspect, characterData, targetsData) {
-        for (const targetData of targetsData) {
-            // Check targetGroup validation for aspect
-            if (!this._isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
-
-            // Copy the aspect to calculate the new values
-            let aspectCopy = JSON.parse(JSON.stringify(aspect));
-
-            // Modify aspect value by resolution type
-            aspectCopy.value = Pl1eHelpers.applyResolution(aspectCopy.value, targetData.result, aspect.resolutionType);
-
-            // Modify aspect value by damage type
-            if (aspect.damageType && aspect.damageType !== "raw") {
-                const damageTypeData = PL1E.reductions[aspect.damageType];
-                aspectCopy.value -= foundry.utils.getProperty(targetData.actor, damageTypeData.path);
-                aspectCopy.value = Math.max(aspectCopy.value, 0);
-            }
-
-            // Ignore the aspect if value equal to zero
-            if (aspectCopy.value === 0) continue;
-
-            // Negate the value
-            aspectCopy.value = aspect.operator === "remove" ? -aspectCopy.value : aspectCopy.value
-
-            if (aspectCopy.createEffect) {
-                // Create the effect
-                await Pl1eActiveEffect.createActiveEffect(aspectCopy, characterData, targetData);
-            }
-            else {
-                // Apply the aspect
-                await this._applyTargetAspect(aspectCopy, targetData);
-            }
-
-            // Add label for Sequence
-            aspectCopy.label = game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspectCopy.data, "label"));
-
-            // Push the aspect
-            targetData.activeAspects ??= [];
-            targetData.activeAspects.push(aspectCopy)
-        }
-        return targetsData;
-    }
-
-    /**
-     * Apply the transfer aspect
-     * @param aspect
-     * @param characterData
-     * @param targetsData
-     * @returns {Promise<TargetData[]>}
-     * @private
-     */
-    static async _transfer(aspect, characterData, targetsData) {
-        // Source transfer sum
-        let transferValue = 0;
-
-        // First pass for source
-        for (const targetData of targetsData) {
-            // Check transferSource validation for aspect
-            if (!this._isTargetValid(aspect.transferSource, targetData, characterData)) continue;
-
-            // Copy the aspect to calculate the new values
-            let aspectCopy = JSON.parse(JSON.stringify(aspect));
-
-            // Modify aspect value by resolution type
-            aspectCopy.value = Pl1eHelpers.applyResolution(aspectCopy.value, targetData.result, aspect.resolutionType);
-
-            // Modify aspect value by damage type
-            if (aspect.damageType !== "raw") {
-                const damageTypeData = PL1E.reductions[aspect.damageType];
-                aspectCopy.value -= foundry.utils.getProperty(targetData.actor, damageTypeData.path);
-                aspectCopy.value = Math.max(aspectCopy.value, 0);
-            }
-
-            // Ignore the aspect if value equal to zero
-            if (aspectCopy.value === 0) continue;
-
-            // Negate the value
-            aspectCopy.value = -aspectCopy.value;
-
-            // Add to the sum
-            transferValue+= aspectCopy.value;
-
-            // Check for existing aspect related to same function
-            targetData.activeAspects ??= [];
-            let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
-            existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
-        }
-
-        // Count destination targets
-        const destinationNumber = targetsData.filter(target => {
-            return this._isTargetValid(aspect.transferDestination, target, characterData);
-        }).length;
-
-        // Split sum into destination number
-        transferValue /= destinationNumber;
-        transferValue = Math.floor(transferValue);
-
-        // Second pass for destination
-        for (const targetData of targetsData) {
-            // Check transferSource validation for aspect
-            if (!this._isTargetValid(aspect.transferDestination, targetData, characterData)) continue;
-
-            // Copy the aspect to calculate the new values
-            let aspectCopy = JSON.parse(JSON.stringify(aspect));
-
-            // Define aspect value based on transfer value
-            aspectCopy.value = -transferValue;
-
-            // Check for existing aspect related to same function
-            targetData.activeAspects ??= [];
-            let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
-            existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
-        }
-        return targetsData;
-    }
-
-    /**
-     * Apply the status aspect
-     * @param aspect
-     * @param characterData
-     * @param targetsData
-     * @returns {Promise<TargetData[]>}
-     * @private
-     */
-    static async _status(aspect, characterData, targetsData) {
-        for (const targetData of targetsData) {
-            // Check targetGroup validation for aspect
-            if (!this._isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
-
-            // Copy the aspect to calculate the new values
-            let aspectCopy = JSON.parse(JSON.stringify(aspect));
-
-            // Modify aspect value by resolution type
-            aspectCopy.value = Pl1eHelpers.applyResolution(aspectCopy.value, targetData.result, aspect.resolutionType);
-
-            // Modify aspect value by resolution type
-            aspectCopy.effectDuration = Pl1eHelpers.applyResolution(aspectCopy.effectDuration, targetData.result, aspectCopy.effectDurationResolutionType);
-
-            // Ignore the aspect if effect duration equal to zero
-            if (aspectCopy.effectDuration === 0) continue;
-
-            // Create the status
-            await Pl1eActiveEffect.createStatusEffect(targetData.actor, aspectCopy.data, {
-                duration: {
-                    rounds: aspectCopy.effectDuration
-                },
-                flags: {
-                    core: {
-                        sourceId: characterData.actorId
-                    }
-                }
-            });
-
-            // Add label for Sequence
-            aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);
-
-            // Push the aspect
-            targetData.activeAspects ??= [];
-            targetData.activeAspects.push(aspectCopy)
-        }
-        return targetsData;
-    }
-
-    /**
-     * Apply the movement aspect
-     * @param aspect
-     * @param {CharacterData} characterData
-     * @param {TargetData[]} targetsData
-     * @returns {Promise<TargetData[]>}
-     * @private
-     */
-    static async _movement(aspect, characterData, targetsData) {
-        for (const targetData of targetsData) {
-            // Check targetGroup validation for aspect
-            if (!this._isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
-
-            // Copy the aspect to calculate the new values
-            let aspectCopy = JSON.parse(JSON.stringify(aspect));
-
-            // Filter base on movement destination
-            const possibleDestination = [];
-            if (aspect.movementDestination === "template") {
-                let position = {
-                    x: targetData.template.x,
-                    y: targetData.template.y
-                }
-                if (targetData.template.specialPosition) {
-                    position = {
-                        x: targetData.template.specialPosition.x,
-                        y: targetData.template.specialPosition.y
-                    }
-                }
-                possibleDestination.push(position);
-            }
-            else {
-                for (const otherTargetData of targetsData) {
-                    if (otherTargetData.token === targetData.token) continue;
-                    if (!this._isTargetValid(aspect.movementDestination, otherTargetData, characterData)) continue;
-                    possibleDestination.push({
-                        x: otherTargetData.tokenX,
-                        y: otherTargetData.tokenY
-                    });
-                }
-            }
-
-            // Skip if no destination found
-            if (possibleDestination.length === 0) continue;
-
-            // Take a possible destination at random
-            const destination = possibleDestination[Math.floor(Math.random() * possibleDestination.length)];
-            console.log(`${targetData.token.name} at ${targetData.tokenX}(X) and ${targetData.tokenY}(Y) moves to ${destination.x}(X) and ${destination.y}(Y)`);
-
-            // Move the target on this destination
-            if (aspect.data === "walk") {
-                await targetData.token.update(destination, {animate: true, noRestriction: false});
-            }
-            if (aspect.data === "push") {
-                await targetData.token.update(destination, {animate: true, noRestriction: true});
-            }
-            if (aspect.data === "teleport") {
-                await targetData.token.update(destination, {animate: false, noRestriction: true});
-            }
-
-            // Add label for Sequence
-            aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);
-
-            // Push the aspect
-            targetData.activeAspects ??= [];
-            targetData.activeAspects.push(aspectCopy)
-        }
-        return targetsData;
-    }
-
-    /**
-     * Apply the invocation aspect
-     * @param aspect
-     * @param characterData
-     * @param targetsData
-     * @returns {Promise<TargetData[]>}
-     * @private
-     */
-    static async _invocation(aspect, characterData, targetsData) {
-        for (const template of characterData.templates) {
-            // Copy the aspect to calculate the new values
-            let aspectCopy = JSON.parse(JSON.stringify(aspect));
-
-            // Retrieve the invocation actor
-            let invocationActor = game.actors.get(aspectCopy.data);
-
-            // If the invocation actor is not found, import it from the compendium
-            if (!invocationActor) {
-                invocationActor = await Pl1eHelpers.getDocument("Actor", aspectCopy.data);
-                if (invocationActor) invocationActor = await Actor.create(invocationActor, {keepId: true});
-            }
-
-            const tokenDocument = await invocationActor.getTokenDocument();
-            const tokenData = tokenDocument.toObject();
-            tokenData.x = template.specialPosition.x;
-            tokenData.y = template.specialPosition.y;
-            tokenData.disposition = characterData.token.disposition;
-
-            // Set invoker as the owner
-            tokenData.permission = {
-                default: foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE, // No permission for others
-                [characterData.userId]: foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER // Full permission for specific user
-            };
-
-            // Create the token
-            let token = await characterData.scene.createEmbeddedDocuments("Token", [tokenData]);
-            token = token[0];
-
-            // Apply the ephemeral status effect
-            await Pl1eActiveEffect.createStatusEffect(token.actor, "ephemeral",{
-                duration: {
-                    rounds: aspectCopy.effectDuration
-                },
-                flags: {
-                    core: {
-                        sourceId: characterData.actorId
-                    }
-                }
-            });
-
-            // Add the combatant if in combat
-            if (game.combat) {
-                await game.combat.createEmbeddedDocuments('Combatant', [{
-                    tokenId: token.id,
-                    sceneId: characterData.scene.id,
-                    actorId: invocationActor.id
-                }]);
-            }
-        }
-
-        return targetsData;
-    }
-
-    /**
-     * Apply the macro aspect
-     * @param aspect
-     * @param characterData
-     * @param targetsData
-     * @returns {Promise<TargetData[]>}
-     * @private
-     */
-    static async _macro(aspect, characterData, targetsData) {
-        if (aspect.dataGroup === "targetsResolution") {
-            // Find macro
-            const macro = await Pl1eHelpers.getDocument("Macro", aspect.data);
-
-            // Execute macro
-            if (macro !== undefined) macro.execute({
-                characterData: characterData,
-                targetsData: targetsData
-            });
-        }
-        else {
-            for (const targetData of targetsData) {
-                // Check targetGroup validation for the aspect
-                if (!this._isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
-
-                // Copy the aspect to calculate the new values
-                let aspectCopy = JSON.parse(JSON.stringify(aspect));
-
-                // Modify aspect value by resolution type
-                aspectCopy.effectDuration = Pl1eHelpers.applyResolution(aspectCopy.effectDuration, targetData.result, aspectCopy.effectDurationResolutionType);
-
-                // Ignore the aspect if effect duration equal to zero
-                if (aspectCopy.effectDuration === 0) continue;
-
-                // Create the active effect
-                await Pl1eActiveEffect.createActiveEffect(aspectCopy, characterData, targetData);
-
-                // Push the aspect
-                targetData.activeAspects ??= [];
-                targetData.activeAspects.push(aspectCopy)
-            }
-        }
-    }
-
-    /**
-     *
-     * @param aspect
-     * @param {TargetData} targetData
-     * @return {Promise<void>}
-     * @private
-     */
-    static async _applyTargetAspect(aspect, targetData) {
-        const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
-        let currentValue = foundry.utils.getProperty(targetData.actor, dataConfig.path);
-        currentValue = aspect.operator === "set" ? aspect.value : currentValue + aspect.value;
-        if (game.user.isGM) {
-            await targetData.actor.update({
-                [dataConfig.path]: currentValue
-            });
-        }
-        else {
-            if (Pl1eHelpers.isGMConnected()) {
-                PL1E.socket.executeAsGM('tokenUpdate', {
-                    tokenId: targetData.tokenId,
-                    sceneId: targetData.sceneId,
-                    updateData: {
-                        [dataConfig.path]: currentValue
-                    }
-                });
-            }
-            else {
-                ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
-            }
-        }
-    }
+    // /**
+    //  * Apply the modify aspect
+    //  * @param aspect
+    //  * @param characterData
+    //  * @param targetsData
+    //  * @returns {Promise<TargetData[]>}
+    //  * @private
+    //  */
+    // static async _modify(aspect, characterData, targetsData) {
+    //     for (const targetData of targetsData) {
+    //         // Check targetGroup validation for aspect
+    //         if (!this.isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
+    //
+    //         // Copy the aspect to calculate the new values
+    //         let aspectCopy = JSON.parse(JSON.stringify(aspect));
+    //
+    //         // Modify aspect value by resolution type
+    //         aspectCopy.value = Pl1eHelpers.applyResolution(aspectCopy.value, targetData.result, aspect.resolutionType);
+    //
+    //         // Modify aspect value by damage type
+    //         if (aspect.damageType && aspect.damageType !== "raw") {
+    //             const damageTypeData = PL1E.reductions[aspect.damageType];
+    //             aspectCopy.value -= foundry.utils.getProperty(targetData.actor, damageTypeData.path);
+    //             aspectCopy.value = Math.max(aspectCopy.value, 0);
+    //         }
+    //
+    //         // Ignore the aspect if value equal to zero
+    //         if (aspectCopy.value === 0) continue;
+    //
+    //         // Negate the value
+    //         aspectCopy.value = aspect.operator === "remove" ? -aspectCopy.value : aspectCopy.value
+    //
+    //         if (aspectCopy.createEffect) {
+    //             // Create the effect
+    //             await Pl1eActiveEffect.createActiveEffect(aspectCopy, characterData, targetData);
+    //         }
+    //         else {
+    //             // Apply the aspect
+    //             await this._applyTargetAspect(aspectCopy, targetData);
+    //         }
+    //
+    //         // Add label for Sequence
+    //         aspectCopy.label = game.i18n.localize(Pl1eHelpers.getConfig(aspect.dataGroup, aspectCopy.data, "label"));
+    //
+    //         // Push the aspect
+    //         targetData.activeAspects ??= [];
+    //         targetData.activeAspects.push(aspectCopy)
+    //     }
+    //     return targetsData;
+    // }
+    //
+    // /**
+    //  * Apply the transfer aspect
+    //  * @param aspect
+    //  * @param characterData
+    //  * @param targetsData
+    //  * @returns {Promise<TargetData[]>}
+    //  * @private
+    //  */
+    // static async _transfer(aspect, characterData, targetsData) {
+    //     // Source transfer sum
+    //     let transferValue = 0;
+    //
+    //     // First pass for source
+    //     for (const targetData of targetsData) {
+    //         // Check transferSource validation for aspect
+    //         if (!this.isTargetValid(aspect.transferSource, targetData, characterData)) continue;
+    //
+    //         // Copy the aspect to calculate the new values
+    //         let aspectCopy = JSON.parse(JSON.stringify(aspect));
+    //
+    //         // Modify aspect value by resolution type
+    //         aspectCopy.value = Pl1eHelpers.applyResolution(aspectCopy.value, targetData.result, aspect.resolutionType);
+    //
+    //         // Modify aspect value by damage type
+    //         if (aspect.damageType !== "raw") {
+    //             const damageTypeData = PL1E.reductions[aspect.damageType];
+    //             aspectCopy.value -= foundry.utils.getProperty(targetData.actor, damageTypeData.path);
+    //             aspectCopy.value = Math.max(aspectCopy.value, 0);
+    //         }
+    //
+    //         // Ignore the aspect if value equal to zero
+    //         if (aspectCopy.value === 0) continue;
+    //
+    //         // Negate the value
+    //         aspectCopy.value = -aspectCopy.value;
+    //
+    //         // Add to the sum
+    //         transferValue+= aspectCopy.value;
+    //
+    //         // Check for existing aspect related to same function
+    //         targetData.activeAspects ??= [];
+    //         let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
+    //         existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
+    //     }
+    //
+    //     // Count destination targets
+    //     const destinationNumber = targetsData.filter(target => {
+    //         return this.isTargetValid(aspect.transferDestination, target, characterData);
+    //     }).length;
+    //
+    //     // Split sum into destination number
+    //     transferValue /= destinationNumber;
+    //     transferValue = Math.floor(transferValue);
+    //
+    //     // Second pass for destination
+    //     for (const targetData of targetsData) {
+    //         // Check transferSource validation for aspect
+    //         if (!this.isTargetValid(aspect.transferDestination, targetData, characterData)) continue;
+    //
+    //         // Copy the aspect to calculate the new values
+    //         let aspectCopy = JSON.parse(JSON.stringify(aspect));
+    //
+    //         // Define aspect value based on transfer value
+    //         aspectCopy.value = -transferValue;
+    //
+    //         // Check for existing aspect related to same function
+    //         targetData.activeAspects ??= [];
+    //         let existingAspect = targetData.activeAspects.find(aspect => aspect.name === aspectCopy.name);
+    //         existingAspect === undefined ? targetData.activeAspects.push(aspectCopy) : existingAspect.value += aspectCopy.value;
+    //     }
+    //     return targetsData;
+    // }
+    //
+    // /**
+    //  * Apply the status aspect
+    //  * @param aspect
+    //  * @param characterData
+    //  * @param targetsData
+    //  * @returns {Promise<TargetData[]>}
+    //  * @private
+    //  */
+    // static async _status(aspect, characterData, targetsData) {
+    //     for (const targetData of targetsData) {
+    //         // Check targetGroup validation for aspect
+    //         if (!this.isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
+    //
+    //         // Copy the aspect to calculate the new values
+    //         let aspectCopy = JSON.parse(JSON.stringify(aspect));
+    //
+    //         // Modify aspect value by resolution type
+    //         aspectCopy.value = Pl1eHelpers.applyResolution(aspectCopy.value, targetData.result, aspect.resolutionType);
+    //
+    //         // Modify aspect value by resolution type
+    //         aspectCopy.effectDuration = Pl1eHelpers.applyResolution(aspectCopy.effectDuration, targetData.result, aspectCopy.effectDurationResolutionType);
+    //
+    //         // Ignore the aspect if effect duration equal to zero
+    //         if (aspectCopy.effectDuration === 0) continue;
+    //
+    //         // Create the status
+    //         await Pl1eActiveEffect.createStatusEffect(targetData.actor, aspectCopy.data, {
+    //             duration: {
+    //                 rounds: aspectCopy.effectDuration
+    //             },
+    //             flags: {
+    //                 core: {
+    //                     sourceId: characterData.actorId
+    //                 }
+    //             }
+    //         });
+    //
+    //         // Add label for Sequence
+    //         aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);
+    //
+    //         // Push the aspect
+    //         targetData.activeAspects ??= [];
+    //         targetData.activeAspects.push(aspectCopy)
+    //     }
+    //     return targetsData;
+    // }
+    //
+    // /**
+    //  * Apply the movement aspect
+    //  * @param aspect
+    //  * @param {CharacterData} characterData
+    //  * @param {TargetData[]} targetsData
+    //  * @returns {Promise<TargetData[]>}
+    //  * @private
+    //  */
+    // static async _movement(aspect, characterData, targetsData) {
+    //     for (const targetData of targetsData) {
+    //         // Check targetGroup validation for aspect
+    //         if (!this.isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
+    //
+    //         // Copy the aspect to calculate the new values
+    //         let aspectCopy = JSON.parse(JSON.stringify(aspect));
+    //
+    //         // Filter base on movement destination
+    //         const possibleDestination = [];
+    //         if (aspect.movementDestination === "template") {
+    //             if (!targetData.template) continue;
+    //
+    //             let position = {
+    //                 x: targetData.template.x,
+    //                 y: targetData.template.y
+    //             }
+    //             if (targetData.template.specialPosition) {
+    //                 position = {
+    //                     x: targetData.template.specialPosition.x,
+    //                     y: targetData.template.specialPosition.y
+    //                 }
+    //             }
+    //             possibleDestination.push(position);
+    //         }
+    //         else {
+    //             for (const otherTargetData of targetsData) {
+    //                 if (otherTargetData.token === targetData.token) continue;
+    //                 if (!this.isTargetValid(aspect.movementDestination, otherTargetData, characterData)) continue;
+    //                 possibleDestination.push({
+    //                     x: otherTargetData.tokenX,
+    //                     y: otherTargetData.tokenY
+    //                 });
+    //             }
+    //         }
+    //
+    //         // Skip if no destination found
+    //         if (possibleDestination.length === 0) continue;
+    //
+    //         // Take a possible destination at random
+    //         const destination = possibleDestination[Math.floor(Math.random() * possibleDestination.length)];
+    //
+    //         // Move the target on this destination
+    //         if (aspect.data === "walk") {
+    //             await targetData.token.update(destination, {animate: true, noRestriction: false});
+    //         }
+    //         if (aspect.data === "push") {
+    //             await targetData.token.update(destination, {animate: true, noRestriction: true});
+    //         }
+    //         if (aspect.data === "teleport") {
+    //             await targetData.token.update(destination, {animate: false, noRestriction: true});
+    //         }
+    //
+    //         // Add label for Sequence
+    //         aspectCopy.label = game.i18n.localize(PL1E[aspectCopy.dataGroup][aspectCopy.data].label);
+    //
+    //         // Push the aspect
+    //         targetData.activeAspects ??= [];
+    //         targetData.activeAspects.push(aspectCopy)
+    //     }
+    //     return targetsData;
+    // }
+    //
+    // /**
+    //  * Apply the invocation aspect
+    //  * @param aspect
+    //  * @param characterData
+    //  * @param targetsData
+    //  * @returns {Promise<TargetData[]>}
+    //  * @private
+    //  */
+    // static async _invocation(aspect, characterData, targetsData) {
+    //     for (const template of characterData.templates) {
+    //         // Copy the aspect to calculate the new values
+    //         let aspectCopy = JSON.parse(JSON.stringify(aspect));
+    //
+    //         // Retrieve the invocation actor
+    //         let invocationActor = game.actors.get(aspectCopy.data);
+    //
+    //         // If the invocation actor is not found, import it from the compendium
+    //         if (!invocationActor) {
+    //             invocationActor = await Pl1eHelpers.getDocument("Actor", aspectCopy.data);
+    //             if (invocationActor) invocationActor = await Actor.create(invocationActor, {keepId: true});
+    //         }
+    //
+    //         const tokenDocument = await invocationActor.getTokenDocument();
+    //         const tokenData = tokenDocument.toObject();
+    //         tokenData.x = template.specialPosition.x;
+    //         tokenData.y = template.specialPosition.y;
+    //         tokenData.disposition = characterData.token.disposition;
+    //
+    //         // Set invoker as the owner
+    //         tokenData.permission = {
+    //             default: foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE, // No permission for others
+    //             [characterData.userId]: foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER // Full permission for specific user
+    //         };
+    //
+    //         // Create the token
+    //         let token = await characterData.scene.createEmbeddedDocuments("Token", [tokenData]);
+    //         token = token[0];
+    //
+    //         // Apply the ephemeral status effect
+    //         await Pl1eActiveEffect.createStatusEffect(token.actor, "ephemeral",{
+    //             duration: {
+    //                 rounds: aspectCopy.effectDuration
+    //             },
+    //             flags: {
+    //                 core: {
+    //                     sourceId: characterData.actorId
+    //                 }
+    //             }
+    //         });
+    //
+    //         // Add the combatant if in combat
+    //         if (game.combat) {
+    //             await game.combat.createEmbeddedDocuments('Combatant', [{
+    //                 tokenId: token.id,
+    //                 sceneId: characterData.scene.id,
+    //                 actorId: invocationActor.id
+    //             }]);
+    //         }
+    //     }
+    //
+    //     return targetsData;
+    // }
+    //
+    // /**
+    //  * Apply the macro aspect
+    //  * @param aspect
+    //  * @param characterData
+    //  * @param targetsData
+    //  * @returns {Promise<TargetData[]>}
+    //  * @private
+    //  */
+    // static async _macro(aspect, characterData, targetsData) {
+    //     if (aspect.dataGroup === "targetsResolution") {
+    //         // Find macro
+    //         const macro = await Pl1eHelpers.getDocument("Macro", aspect.data);
+    //
+    //         // Execute macro
+    //         if (macro !== undefined) macro.execute({
+    //             characterData: characterData,
+    //             targetsData: targetsData
+    //         });
+    //     }
+    //     else {
+    //         for (const targetData of targetsData) {
+    //             // Check targetGroup validation for the aspect
+    //             if (!this.isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
+    //
+    //             // Copy the aspect to calculate the new values
+    //             let aspectCopy = JSON.parse(JSON.stringify(aspect));
+    //
+    //             // Modify aspect value by resolution type
+    //             aspectCopy.effectDuration = Pl1eHelpers.applyResolution(aspectCopy.effectDuration, targetData.result, aspectCopy.effectDurationResolutionType);
+    //
+    //             // Ignore the aspect if effect duration equal to zero
+    //             if (aspectCopy.effectDuration === 0) continue;
+    //
+    //             // Create the active effect
+    //             await Pl1eActiveEffect.createActiveEffect(aspectCopy, characterData, targetData);
+    //
+    //             // Push the aspect
+    //             targetData.activeAspects ??= [];
+    //             targetData.activeAspects.push(aspectCopy)
+    //         }
+    //     }
+    // }
+    //
+    // /**
+    //  *
+    //  * @param aspect
+    //  * @param {TargetData} targetData
+    //  * @return {Promise<void>}
+    //  * @private
+    //  */
+    // static async _applyTargetAspect(aspect, targetData) {
+    //     const dataConfig = Pl1eHelpers.getConfig(aspect.dataGroup, aspect.data);
+    //     let currentValue = foundry.utils.getProperty(targetData.actor, dataConfig.path);
+    //     currentValue = aspect.operator === "set" ? aspect.value : currentValue + aspect.value;
+    //     if (game.user.isGM) {
+    //         await targetData.actor.update({
+    //             [dataConfig.path]: currentValue
+    //         });
+    //     }
+    //     else {
+    //         if (Pl1eHelpers.isGMConnected()) {
+    //             PL1E.socket.executeAsGM('tokenUpdate', {
+    //                 tokenId: targetData.tokenId,
+    //                 sceneId: targetData.sceneId,
+    //                 updateData: {
+    //                     [dataConfig.path]: currentValue
+    //                 }
+    //             });
+    //         }
+    //         else {
+    //             ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
+    //         }
+    //     }
+    // }
 
     /**
      *
@@ -613,9 +553,8 @@ export class Pl1eAspect {
      * @param {TargetData} targetData
      * @param {CharacterData} characterData
      * @return {boolean}
-     * @private
      */
-    static _isTargetValid(group, targetData, characterData) {
+    static isTargetValid(group, targetData, characterData) {
         const targetToken = targetData.token;
         const characterToken = characterData.token;
         switch (group) {

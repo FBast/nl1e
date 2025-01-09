@@ -6,69 +6,6 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
     template;
 
     /**
-     * Get tokens within this template.
-     * @returns {Array} An array of tokens contained within the template area.
-     */
-    get tokensWithinTemplate() {
-        const tokens = this.scene.tokens.contents;
-        const shape = this.shape;
-        const containedTokens = [];
-
-        // Template's position on the canvas
-        const templateX = this.document.x;
-        const templateY = this.document.y;
-        const gridSize = canvas.grid.size;
-
-        tokens.forEach(token => {
-            const tokenX = token.x;
-            const tokenY = token.y;
-            let contains = false;
-
-            switch (shape.constructor) {
-                case PIXI.Rectangle: {
-                    // Adjust width and height if they are zero
-                    const width = shape.width === 0 ? gridSize : shape.width;
-                    const height = shape.height === 0 ? gridSize : shape.height;
-
-                    const rect = new PIXI.Rectangle(
-                        shape.x + templateX - gridSize / 2,
-                        shape.y + templateY - gridSize / 2,
-                        width,
-                        height
-                    );
-                    contains = rect.contains(tokenX, tokenY);
-                    break;
-                }
-                case PIXI.Circle: {
-                    const radius = shape.radius === 0 ? gridSize / 2 : shape.radius;
-                    const circle = new PIXI.Circle(
-                        shape.x + templateX - gridSize / 2,
-                        shape.y + templateY - gridSize / 2,
-                        radius
-                    );
-                    contains = circle.contains(tokenX, tokenY);
-                    break;
-                }
-                case PIXI.Polygon: {
-                    const points = shape.points.map((p, i) => i % 2 === 0 ? p + templateX - gridSize / 2 : p + templateY - gridSize / 2);
-                    const poly = new PIXI.Polygon(points);
-                    contains = poly.contains(tokenX, tokenY);
-                    break;
-                }
-                default:
-                    console.warn("Shape type not supported:", shape.constructor);
-                    break;
-            }
-
-            if (contains) {
-                containedTokens.push(token);
-            }
-        });
-
-        return containedTokens;
-    }
-
-    /**
      * Get the special position of a template (often used for movement or invocation)
      * @return {{x: number, y: number}}
      */
@@ -83,8 +20,8 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
             x = this.document.x + Math.cos(rayAngleRadians) * distanceInPixels - gridSize / 2;
             y = this.document.y + Math.sin(rayAngleRadians) * distanceInPixels - gridSize / 2;
         } else {
-            x = center.x - (gridSize / 2);
-            y = center.y - (gridSize / 2);
+            x = this.document.x;
+            y = this.document.y;
         }
 
         const point = new PIXI.Point(x, y);
@@ -185,7 +122,6 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         // Add the additional data directly to the flags
         templateData.flags.pl1e = {
             ...templateData.flags.pl1e,
-            tokensWithinTemplate: this.tokensWithinTemplate.map(token => token.id),
             specialPosition: this.specialPosition
         };
 
