@@ -1,5 +1,6 @@
 import AspectHandler from "./AspectHandler.mjs";
 import { Pl1eAspect } from "../helpers/aspect.mjs";
+import {Pl1eTemplate} from "../helpers/template.mjs";
 
 /**
  * Handler for "movement" aspects.
@@ -42,6 +43,7 @@ export class MovementAspectHandler extends AspectHandler {
      * @param {Object} aspect - The aspect data.
      * @param {CharacterData} characterData - The character applying the aspect.
      * @param {TargetData} target - The target being moved.
+     * @param {TargetData[]} targetsData - An array of the targets.
      * @returns {Object[]} - An array of destinations.
      * @private
      */
@@ -53,11 +55,7 @@ export class MovementAspectHandler extends AspectHandler {
             const templates = this._filterTemplatesByScope(aspect.templateScope, target, characterData.templates);
 
             for (const template of templates) {
-                const destination =
-                    aspect.movementDestination === "templatePrimary"
-                        ? { x: template.x, y: template.y }
-                        : { x: template.specialPosition.x, y: template.specialPosition.y }
-
+                const destination = Pl1eTemplate.getTemplatePosition(template, aspect.movementDestination);
                 if (destination) destinations.push(destination);
             }
         } else {
@@ -80,8 +78,8 @@ export class MovementAspectHandler extends AspectHandler {
      * Filter templates based on the template scope for a single target.
      * @param {string} scope - The scope of templates ("ownTemplate", "otherTemplates", "allTemplates").
      * @param {TargetData} target - The target being moved.
-     * @param {Object[]} templates - The list of all templates.
-     * @returns {Object[]} - The filtered list of templates.
+     * @param {Pl1eMeasuredTemplateDocument[]} templates - The list of all templates.
+     * @returns {Pl1eMeasuredTemplateDocument[]} - The filtered list of templates.
      * @private
      */
     _filterTemplatesByScope(scope, target, templates) {

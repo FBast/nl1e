@@ -1,6 +1,7 @@
 import AspectHandler from "./AspectHandler.mjs";
 import { Pl1eHelpers } from "../helpers/helpers.mjs";
 import { Pl1eEffect } from "../documents/effect.mjs";
+import {Pl1eTemplate} from "../helpers/template.mjs";
 
 /**
  * Handler for "invocation" aspects.
@@ -24,8 +25,8 @@ export class InvocationAspectHandler extends AspectHandler {
                 continue;
             }
 
-            // Determine the position (always available due to fallback logic in specialPosition)
-            const position = this._getTemplatePosition(template, aspect.movementDestination);
+            // Determine the position (always available due to fallback logic in secondaryPosition)
+            const position = Pl1eTemplate.getTemplatePosition(template, aspect.movementDestination);
 
             // Prepare the token data for the invocation
             const tokenData = this._prepareTokenData(invocationActor, position, characterData);
@@ -61,19 +62,6 @@ export class InvocationAspectHandler extends AspectHandler {
         }
 
         return invocationActor;
-    }
-
-    /**
-     * Determine the position on the template based on primary or secondary.
-     * @param {Object} template - The template determining the position.
-     * @param {string} movementDestination - Either "templatePrimary" or "templateSecondary".
-     * @returns {Object} - The position {x, y}.
-     * @private
-     */
-    _getTemplatePosition(template, movementDestination) {
-        return movementDestination === "templatePrimary"
-            ? { x: template.x, y: template.y }
-            : { x: template.specialPosition.x, y: template.specialPosition.y };
     }
 
     /**

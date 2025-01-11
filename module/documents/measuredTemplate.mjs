@@ -1,32 +1,11 @@
+import {Pl1eTemplate} from "../helpers/template.mjs";
+
 export class Pl1eMeasuredTemplate extends MeasuredTemplate {
 
     #moveTime = 0;
     #initialLayer;
     #events;
     template;
-
-    /**
-     * Get the special position of a template (often used for movement or invocation)
-     * @return {{x: number, y: number}}
-     */
-    get specialPosition() {
-        const center = { x: this.document.x, y: this.document.y };
-        const gridSize = canvas.grid.size;
-
-        let x, y;
-        if (this.document.t === "ray" || this.document.t === "cone") {
-            const distanceInPixels = this.document.distance * gridSize;
-            const rayAngleRadians = Math.toRadians(this.document.direction);
-            x = this.document.x + Math.cos(rayAngleRadians) * distanceInPixels - gridSize / 2;
-            y = this.document.y + Math.sin(rayAngleRadians) * distanceInPixels - gridSize / 2;
-        } else {
-            x = this.document.x;
-            y = this.document.y;
-        }
-
-        const point = new PIXI.Point(x, y);
-        return canvas.grid.getSnappedPoint(point, { mode: CONST.GRID_SNAPPING_MODES.TOP_LEFT_CORNER });
-    }
 
     async drawPreview() {
         // Draw the template preview and activate the layer
@@ -68,7 +47,7 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         super.highlightGrid();
         if (!this.isVisible) return;
         const hl = canvas.interface.grid.getHighlightLayer(this.highlightId);
-        const position = this.specialPosition;
+        const position = Pl1eTemplate.getSecondaryPosition(this.document);
         const gridSize = canvas.grid.size;
         hl.beginFill(0xFF0000, 1);
         hl.drawCircle(position.x + gridSize / 2, position.y + gridSize / 2, gridSize / 8);
@@ -121,8 +100,7 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
 
         // Add the additional data directly to the flags
         templateData.flags.pl1e = {
-            ...templateData.flags.pl1e,
-            specialPosition: this.specialPosition
+            ...templateData.flags.pl1e
         };
 
         // Create the document in the scene with the additional data

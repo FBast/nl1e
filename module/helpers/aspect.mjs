@@ -363,10 +363,10 @@ export class Pl1eAspect {
     //                 x: targetData.template.x,
     //                 y: targetData.template.y
     //             }
-    //             if (targetData.template.specialPosition) {
+    //             if (targetData.template.secondaryPosition) {
     //                 position = {
-    //                     x: targetData.template.specialPosition.x,
-    //                     y: targetData.template.specialPosition.y
+    //                     x: targetData.template.secondaryPosition.x,
+    //                     y: targetData.template.secondaryPosition.y
     //                 }
     //             }
     //             possibleDestination.push(position);
@@ -433,8 +433,8 @@ export class Pl1eAspect {
     //
     //         const tokenDocument = await invocationActor.getTokenDocument();
     //         const tokenData = tokenDocument.toObject();
-    //         tokenData.x = template.specialPosition.x;
-    //         tokenData.y = template.specialPosition.y;
+    //         tokenData.x = template.secondaryPosition.x;
+    //         tokenData.y = template.secondaryPosition.y;
     //         tokenData.disposition = characterData.token.disposition;
     //
     //         // Set invoker as the owner
