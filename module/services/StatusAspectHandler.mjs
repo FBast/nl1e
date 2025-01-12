@@ -39,7 +39,8 @@ export class StatusAspectHandler extends AspectHandler {
             // Create the status effect
             await Pl1eEffect.createStatusEffect(targetData.actor, aspectCopy.data, {
                 duration: {
-                    rounds: aspectCopy.effectDuration
+                    rounds: aspectCopy.effectDuration,
+                    turns: aspectCopy.effectDuration
                 },
                 flags: {
                     core: {

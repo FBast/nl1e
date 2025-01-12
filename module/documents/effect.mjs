@@ -2,6 +2,22 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 export class Pl1eEffect extends ActiveEffect {
 
+    /** @inheritDoc */
+    async delete(context) {
+        const isSummon = this.getFlag("pl1e", "summon");
+        const token = isSummon ? this.parent.token : null;
+
+        // Call the parent delete method first
+        const result = await super.delete(context);
+
+        // If this is a summon effect, delete the token after the effect is removed
+        if (isSummon && token) {
+            await token.delete();
+        }
+
+        return result;
+    }
+
     /**
      * Apply a passive effect
      * @param {Object} aspect
@@ -158,7 +174,10 @@ export class Pl1eEffect extends ActiveEffect {
             name,
             icon: characterData.item.img,
             origin: characterData.item._id,
-            duration: { rounds: aspect.effectDuration },
+            duration: {
+                rounds: aspect.effectDuration,
+                turns: aspect.effectDuration
+            },
             flags: {
                 pl1e: {
                     originActor: characterData.actorId,

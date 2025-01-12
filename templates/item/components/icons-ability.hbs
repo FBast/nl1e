@@ -31,7 +31,7 @@
         <label>{{system.attributes.manaCost}}</label>
     </i>
 {{/if}}
-{{#if (ne system.attributes.usageCost 0)}}
+{{#if (and system.attributes.usageCost (ne system.attributes.usageCost 0))}}
     <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.UsageCost"}}'>
         <label>{{system.attributes.usageCost}}</label>
     </i>

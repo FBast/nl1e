@@ -26,10 +26,10 @@ export class InvocationAspectHandler extends AspectHandler {
             }
 
             // Determine the position (always available due to fallback logic in secondaryPosition)
-            const position = Pl1eTemplate.getTemplatePosition(template, aspect.movementDestination);
+            const position = Pl1eTemplate.getTemplatePosition(template, "templatePrimary");
 
             // Prepare the token data for the invocation
-            const tokenData = this._prepareTokenData(invocationActor, position, characterData);
+            const tokenData = await this._prepareTokenData(invocationActor, position, characterData);
 
             // Create the token on the scene
             const token = await this._createInvocationToken(tokenData, characterData);
@@ -72,8 +72,8 @@ export class InvocationAspectHandler extends AspectHandler {
      * @returns {Object} - The token data.
      * @private
      */
-    _prepareTokenData(invocationActor, position, characterData) {
-        const tokenDocument = invocationActor.getTokenDocument();
+    async _prepareTokenData(invocationActor, position, characterData) {
+        const tokenDocument = await invocationActor.getTokenDocument();
         const tokenData = tokenDocument.toObject();
 
         // Set the token position
@@ -115,6 +115,7 @@ export class InvocationAspectHandler extends AspectHandler {
         await Pl1eEffect.createStatusEffect(token.actor, "ephemeral", {
             duration: {
                 rounds: aspect.effectDuration,
+                turns: aspect.effectDuration
             },
             flags: {
                 core: {

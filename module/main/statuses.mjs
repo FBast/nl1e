@@ -480,9 +480,13 @@ export const registerStatuses = function () {
             label: "PL1E.Ephemeral",
             description: "PL1E.EphemeralDescription",
             icon: "systems/pl1e/assets/svg/ephemeral.svg",
-            changes: [], // TODO
+            changes: [],
             duration: {},
-            flags: {}
+            flags: {
+                pl1e: {
+                    summon: true
+                }
+            }
         },
         {
             // Grant immunity to related damage type
