@@ -4,6 +4,7 @@ import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {Pl1eChatMessage} from "../chatMessage.mjs";
 import {Pl1eMeasuredTemplateDocument} from "../measuredTemplateDocument.mjs";
 import {Pl1eEffect} from "../effect.mjs";
+import {Pl1eTemplate} from "../../helpers/template.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -796,6 +797,10 @@ export class Pl1eItem extends Item {
                         characterData.attributes,
                         characterData.activeAspects
                     );
+
+                    // Save primary and secondary positions for macros
+                    placedTemplateDocument.primaryPosition = Pl1eTemplate.getPrimaryPosition(placedTemplateDocument);
+                    placedTemplateDocument.secondaryPosition = Pl1eTemplate.getSecondaryPosition(placedTemplateDocument);
 
                     // Add the placed template document to characterData
                     characterData.templates.push(placedTemplateDocument);

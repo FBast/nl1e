@@ -27,56 +27,6 @@ export class Pl1eMeasuredTemplateDocument extends MeasuredTemplateDocument {
     }
 
     /**
-     * Get the primary position of a template
-     * @return {{x: number, y: number}}
-     */
-    get primaryPosition() {
-        const gridSize = canvas.grid.size;
-
-        let x, y;
-        x = this.x - gridSize / 2;
-        y = this.y - gridSize / 2;
-
-        const point = new PIXI.Point(x, y);
-        return canvas.grid.getSnappedPoint(point, { mode: CONST.GRID_SNAPPING_MODES.TOP_LEFT_CORNER });
-    }
-
-     /**
-     * Get the secondary position of a template (fallback to primary)
-     * @return {{x: number, y: number}}
-     */
-    get secondaryPosition() {
-        const gridSize = canvas.grid.size;
-
-        let x, y;
-        if (this.t === "ray" || this.t === "cone") {
-            const distanceInPixels = this.distance * gridSize;
-            const rayAngleRadians = Math.toRadians(this.direction);
-            x = this.x + Math.cos(rayAngleRadians) * distanceInPixels - gridSize / 2;
-            y = this.y + Math.sin(rayAngleRadians) * distanceInPixels - gridSize / 2;
-        } else {
-            return this.primaryPosition;
-        }
-
-        const point = new PIXI.Point(x, y);
-        return canvas.grid.getSnappedPoint(point, { mode: CONST.GRID_SNAPPING_MODES.TOP_LEFT_CORNER });
-    }
-
-    /**
-     * Determine the position on the template based on primary or secondary.
-     * @param {string} type - Either "templatePrimary" or "templateSecondary".
-     * @returns {Object} - The position {x, y}.
-     */
-    getTemplatePosition(type) {
-        if (type === "templatePrimary") {
-            return this.primaryPosition;
-        }
-        else {
-            return this.secondaryPosition;
-        }
-    }
-
-    /**
      * Creates and places a template directly from item data.
      * @param {Pl1eItem} item - The item to create the template from.
      * @param {TokenDocument} token - The token associated with the item.

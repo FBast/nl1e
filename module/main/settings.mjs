@@ -91,7 +91,7 @@ export const registerSettings = function () {
         hint: "Automatically decrement rounds for effects each turn.",
         scope: "world",
         config: true,
-        default: !isStatusIconCountersActive(),
+        default: true,
         type: Boolean,
     });
 
@@ -100,7 +100,7 @@ export const registerSettings = function () {
         hint: "Automatically decrement turns for effects each turn.",
         scope: "world",
         config: true,
-        default: !isStatusIconCountersActive(),
+        default: true,
         type: Boolean,
     });
 
@@ -118,8 +118,3 @@ export const registerSettings = function () {
         default: 0
     });
 }
-
-const isStatusIconCountersActive = () => {
-    const module = game.modules.get("statuscounter");
-    return module && module.active;
-};
