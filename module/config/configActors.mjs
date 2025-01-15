@@ -425,14 +425,16 @@ export function getConfigActor() {
             "icon": "fa-puzzle-piece",
             "type": "number",
             "path": "system.general.remainingCharacteristics",
-            "header": true
+            "header": true,
+            "default": 0
         },
         "ranks": {
             "label": "PL1E.Ranks",
             "icon": "fa-circle-x",
             "type": "number",
             "path": "system.general.ranks",
-            "header": true
+            "header": true,
+            "default": 0
         },
         "maxRank": {
             "label": "PL1E.MaxRank",
@@ -461,21 +463,24 @@ export function getConfigActor() {
             "icon": "fa-clock",
             "type": "number",
             "path": "system.general.action",
-            "header": true
+            "header": true,
+            "default": 2
         },
         "reaction": {
             "label": "PL1E.Reaction",
             "icon": "fa-reply-clock",
             "type": "number",
             "path": "system.general.reaction",
-            "header": true
+            "header": true,
+            "default": 1
         },
         "quickAction": {
             "label": "PL1E.QuickAction",
             "icon": "fa-bell",
             "type": "number",
             "path": "system.general.quickAction",
-            "header": true
+            "header": true,
+            "default": 1
         }
     }
 
@@ -552,7 +557,8 @@ export function getConfigActor() {
             "icon": "fa-arrow-up-big-small",
             "type": "number",
             "path": "system.misc.sizeMultiplier",
-            "header": true
+            "header": true,
+            "default": 1
         },
         "tokenSize": {
             "label": "PL1E.TokenSize",
@@ -574,14 +580,16 @@ export function getConfigActor() {
             "icon": "fa-person-running",
             "type": "number",
             "path": "system.misc.movement",
-            "header": true
+            "header": true,
+            "default": 4
         },
         "baseInitiative": {
             "label": "PL1E.BaseInitiative",
             "icon": "fa-flag",
             "type": "number",
             "path": "system.misc.baseInitiative",
-            "header": false
+            "header": false,
+            "default": 10
         },
         "initiative": {
             "label": "PL1E.Initiative",
@@ -595,28 +603,32 @@ export function getConfigActor() {
             "icon": "fa-face-sleeping",
             "type": "number",
             "path": "system.misc.unconsciousDoor",
-            "header": true
+            "header": true,
+            "default": 0
         },
         "deathDoor": {
             "label": "PL1E.DeathDoor",
             "icon": "fa-skull",
             "type": "number",
             "path": "system.misc.deathDoor",
-            "header": true
+            "header": true,
+            "default": 10
         },
         "flexibility": {
             "label": "PL1E.Flexibility",
             "icon": "fa-weight-hanging",
             "type": "number",
             "path": "system.misc.flexibility",
-            "header": true
+            "header": true,
+            "default": 0
         },
         "nightVisionRange": {
             "label": "PL1E.NightVisionRange",
             "icon": "fa-eye",
             "type": "number",
             "path": "system.misc.nightVisionRange",
-            "header": true
+            "header": true,
+            "default": 0
         }
     }
 

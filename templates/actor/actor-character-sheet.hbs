@@ -114,7 +114,9 @@
                 {{#each (config "general")}}
                     {{#if header}}
                         {{#with (lookup ../system.general @key)}}
-                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                            <span class="stat-icon hover-info
+                            {{#if (gt this ../default)}}color-bonus{{else if (lt this ../default)}}color-malus{{/if}}"
+                                  data-tooltip="{{localize ../label}}">
                               <i class="far {{../icon}}"></i> {{this}}
                             </span>
                         {{/with}}
@@ -123,7 +125,9 @@
                 {{#each (config "reductions")}}
                     {{#if header}}
                         {{#with (lookup ../system.reductions @key)}}
-                            <span class="stat-icon hover-info {{#if (gt this 0)}}color-bonus{{/if}}" data-tooltip="{{localize ../label}}">
+                            <span class="stat-icon hover-info
+                            {{#if (gt this 0)}}color-bonus{{else if (lt this 0)}}color-malus{{/if}}"
+                                  data-tooltip="{{localize ../label}}">
                               <i class="far {{../icon}}"></i> {{this}}
                             </span>
                         {{/with}}
@@ -132,7 +136,9 @@
                 {{#each (config "misc")}}
                     {{#if header}}
                         {{#with (lookup ../system.misc @key)}}
-                            <span class="stat-icon hover-info" data-tooltip="{{localize ../label}}">
+                            <span class="stat-icon hover-info
+                            {{#if (gt this ../default)}}color-bonus{{else if (lt this ../default)}}color-malus{{/if}}"
+                                  data-tooltip="{{localize ../label}}">
                               <i class="far {{../icon}}"></i> {{this}}
                             </span>
                         {{/with}}

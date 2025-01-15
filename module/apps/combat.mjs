@@ -21,17 +21,21 @@ export class Pl1eCombat extends Combat {
         }
 
         // Decrease turns for all actors' effects with 0 rounds
-        for (const combatant of this.combatants) {
-            const actor = combatant.actor;
-            if (actor) {
-                await this._decreaseEffectsTurn(actor);
+        if (game.settings.get("pl1e", "autoDecreaseTurns")) {
+            for (const combatant of this.combatants) {
+                const actor = combatant.actor;
+                if (actor) {
+                    await this._decreaseEffectsTurn(actor);
+                }
             }
         }
 
         // Decrease turns for the current combatant's effects
         const currentActor = currentCombatant.actor;
         if (currentActor) {
-            await this._decreaseEffectsRound(currentActor);
+            if (game.settings.get("pl1e", "autoDecreaseRounds")) {
+                await this._decreaseEffectsRound(currentActor);
+            }
             await this._applyContinuousEffects(currentActor); // Apply continuous effects for the current combatant
         }
 

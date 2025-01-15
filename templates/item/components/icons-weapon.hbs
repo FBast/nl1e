@@ -14,19 +14,9 @@
     </i>
 {{/if}}
 {{#if (gt system.attributes.uses 0)}}
-    {{#if (eq system.removedUses 0)}}
-        <i class="far fa-battery-full hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
-            <label>{{minus system.attributes.uses system.removedUses}}</label>
-        </i>
-    {{else if (eq system.removedUses system.attributes.uses)}}
-        <i class="far fa-battery-empty hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
-            <label>{{minus system.attributes.uses system.removedUses}}</label>
-        </i>
-    {{else}}
-        <i class="far fa-battery-half hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
-            <label>{{minus system.attributes.uses system.removedUses}}</label>
-        </i>
-    {{/if}}
+    <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
+        <label>{{minus system.attributes.uses system.removedUses}}</label>
+    </i>
 {{/if}}
 {{#each combinedPassiveAspects}}
     {{#with (config dataGroup data)}}

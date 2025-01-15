@@ -86,6 +86,24 @@ export const registerSettings = function () {
         default: "10, 30, 50"
     });
 
+    game.settings.register("pl1e", "autoDecreaseRounds", {
+        name: "Auto Decrease Rounds",
+        hint: "Automatically decrement rounds for effects each turn.",
+        scope: "world",
+        config: true,
+        default: !isStatusIconCountersActive(),
+        type: Boolean,
+    });
+
+    game.settings.register("pl1e", "autoDecreaseTurns", {
+        name: "Auto Decrease Turns",
+        hint: "Automatically decrement turns for effects each turn.",
+        scope: "world",
+        config: true,
+        default: !isStatusIconCountersActive(),
+        type: Boolean,
+    });
+
     game.settings.register("pl1e", "globalAdvantages", {
         scope: "world",
         config: false,
@@ -100,3 +118,8 @@ export const registerSettings = function () {
         default: 0
     });
 }
+
+const isStatusIconCountersActive = () => {
+    const module = game.modules.get("statuscounter");
+    return module && module.active;
+};
