@@ -170,7 +170,7 @@ export class Pl1eActor extends Actor {
             const macroId = effect.getFlag("pl1e", "actorPreUpdateMacroId");
             if (macroId) {
                 const macro = await Pl1eHelpers.getDocument("Macro", macroId);
-                if (macro) macro.execute({
+                if (macro) await macro.execute({
                     actor: this,
                     changed: changed,
                     options: options,

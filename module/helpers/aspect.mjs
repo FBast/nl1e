@@ -70,7 +70,7 @@ export class Pl1eAspect {
         const macro = await Pl1eHelpers.getDocument("Macro", macroId);
 
         // Execute actor update macro
-        if (macro) macro.execute(scope);
+        if (macro) await macro.execute(scope);
     }
 
     /**

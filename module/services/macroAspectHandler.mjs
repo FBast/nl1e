@@ -36,7 +36,7 @@ export class MacroAspectHandler extends AspectHandler {
         const macro = await Pl1eHelpers.getDocument("Macro", aspect.data);
 
         if (macro) {
-            macro.execute({
+            await macro.execute({
                 characterData: characterData,
                 targetsData: targetsData,
             });

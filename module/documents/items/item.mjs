@@ -823,7 +823,7 @@ export class Pl1eItem extends Item {
             const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
 
             // Execute activationMacro
-            if (enableVFXAndSFX && activationMacro !== undefined) activationMacro.execute({
+            if (enableVFXAndSFX && activationMacro !== undefined) await activationMacro.execute({
                 characterData: characterData,
                 active: true
             });
@@ -1030,7 +1030,7 @@ export class Pl1eItem extends Item {
 
         // Execute activationMacro
         if (enableVFXAndSFX && activationMacro !== undefined && characterData.token) {
-            activationMacro.execute({
+            await activationMacro.execute({
                 characterData: characterData,
                 active: false
             });

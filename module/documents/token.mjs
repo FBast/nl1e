@@ -52,7 +52,7 @@ export class Pl1eTokenDocument extends TokenDocument {
             const macroId = effect.getFlag("pl1e", "tokenPreUpdateMacroId");
             if (macroId) {
                 const macro = await Pl1eHelpers.getDocument("Macro", macroId);
-                if (macro) macro.execute({
+                if (macro) await macro.execute({
                     actor: this.actor,
                     data: data,
                     options: options,
