@@ -182,9 +182,9 @@ export class Pl1eAspect {
             case "self":
                 return targetData.actor === characterData.actor;
             case "allies":
-                return targetToken.disposition === characterToken.disposition;
+                return targetToken.disposition === characterToken.disposition && targetData.actor !== characterData.actor;
             case "alliesAndSelf":
-                return targetToken.disposition === characterToken.disposition || targetData.actor === characterData.actor;
+                return targetToken.disposition === characterToken.disposition;
             case "opponents":
                 return targetToken.disposition !== characterToken.disposition;
             case "opponentsAndSelf":

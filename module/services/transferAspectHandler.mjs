@@ -43,7 +43,8 @@ export class TransferAspectHandler extends AspectHandler {
             if (aspectCopy.value === 0) continue;
 
             // Negate the value for transfer (source loses the value)
-            aspectCopy.value = -aspectCopy.value;
+            const negativeAspect = JSON.parse(JSON.stringify(aspectCopy));
+            negativeAspect.value = -aspectCopy.value;
 
             // Accumulate the transfer value
             transferValue += aspectCopy.value;
@@ -52,10 +53,12 @@ export class TransferAspectHandler extends AspectHandler {
             targetData.activeAspects ??= [];
             let existingAspect = targetData.activeAspects.find(a => a.name === aspectCopy.name);
             if (existingAspect) {
-                existingAspect.value += aspectCopy.value;
+                existingAspect.value += negativeAspect.value;
             } else {
-                targetData.activeAspects.push(aspectCopy);
+                targetData.activeAspects.push(negativeAspect);
             }
+
+            await this.applyDirectEffect(negativeAspect, targetData);
         }
 
         // Count valid destination targets
