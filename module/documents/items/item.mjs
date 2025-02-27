@@ -549,20 +549,32 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Get all active aspects including modules related
-     * @return {Promise<Object[]>}
+     * Get all active aspects (module + current item).
+     * If the same key is found multiple times, add their 'value'.
      */
     async getCombinedActiveAspects() {
         const refItems = await this.getRefItems();
+        const activeAspectsFromModules = {};
 
-        let activeAspectsFromModules = {};
-        refItems.forEach(refItem => {
-            if (refItem.item && refItem.item.type === "module") {
-                Object.assign(activeAspectsFromModules, refItem.item.system.activeAspects);
+        for (const refItem of refItems) {
+            if (refItem.item?.type === "module") {
+                // Clone to avoid mutating the original
+                const moduleAspects = JSON.parse(JSON.stringify(refItem.item.system.activeAspects ?? {}));
+                
+                // Sum 'value' on existing keys
+                for (const [key, aspect] of Object.entries(moduleAspects)) {
+                    if (activeAspectsFromModules[key]) {
+                        aspect.value = (aspect.value ?? 0) + (activeAspectsFromModules[key].value ?? 0);
+                    }
+                }
+
+                // Merge in one pass
+                Object.assign(activeAspectsFromModules, moduleAspects);
             }
-        });
+        }
 
-        const allAspects = {...this.system.activeAspects, ...activeAspectsFromModules};
+        // Combine with current item's aspects, then merge
+        const allAspects = { ...this.system.activeAspects, ...activeAspectsFromModules };
         return Pl1eAspect.mergeAspectsObjects(allAspects);
     }
 
