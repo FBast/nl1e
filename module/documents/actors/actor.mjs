@@ -154,7 +154,7 @@ export class Pl1eActor extends Actor {
         for (/** @type {Pl1eItem} */ const item of this.items) {
             for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                 if (!item.isEnabled) continue;
-                if (aspect.name === "macro" && aspect.data !== "none" && aspect.dataGroup === "actorPreUpdate") {
+                if (aspect.name === "passiveMacro" && aspect.data !== "none" && aspect.dataGroup === "actorPreUpdate") {
                     await Pl1eAspect.applyPassiveMacro(aspect, id, {
                         actor: this,
                         changed: changed,
@@ -233,9 +233,10 @@ export class Pl1eActor extends Actor {
         return super._preDelete(options, user);
     }
 
+
     /** @inheritDoc */
-    async _onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
-        super._onUpdateEmbeddedDocuments(embeddedName, documents, result, options, userId);
+    async _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
+        super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
 
         // Client side only
         if (game.user.id === userId) {
@@ -248,13 +249,13 @@ export class Pl1eActor extends Actor {
     }
 
     /** @inheritDoc */
-    async _onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
-        super._onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId);
+    async _onCreateDescendantDocuments(parent, collection, documents, data, options, userId) {
+        super._onCreateDescendantDocuments(parent, collection, documents, data, options, userId);
 
         // Client side only
         if (game.user.id === userId) {
-            // Apply passive effects
-            if (embeddedName === "Item") {
+            // Apply passive effects if items are created
+            if (collection === "items") {
                 for (/** @type {Pl1eItem} */ const item of documents) {
                     for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                         if (!item.isEnabled) continue;
@@ -264,8 +265,8 @@ export class Pl1eActor extends Actor {
                 }
             }
 
-            // Apply special token effects
-            if (embeddedName === "ActiveEffect") {
+            // Apply special token effects if active effects are created
+            if (collection === "effects") {
                 for (/** @type {Pl1eEffect} */ const activeEffect of documents) {
                     await activeEffect.applyTokenEffect(this);
                 }
@@ -280,11 +281,11 @@ export class Pl1eActor extends Actor {
     }
 
     /** @inheritDoc */
-    async _onDeleteEmbeddedDocuments(embeddedName, documents, result, options, userId) {
+    async _onDeleteDescendantDocuments(parent, collection, documents, ids, options, userId) {
         // Client side only
         if (game.user.id === userId) {
-            // Remove passives effects
-            if (embeddedName === "Item") {
+            // Remove passive effects when items are deleted
+            if (collection === "items") {
                 for (/** @type {Pl1eItem} */ const item of documents) {
                     for (const [id, aspect] of Object.entries(await item.getCombinedPassiveAspects())) {
                         if (!item.isEnabled) continue;
@@ -294,8 +295,8 @@ export class Pl1eActor extends Actor {
                 }
             }
 
-            // Remove special token effects
-            if (embeddedName === "ActiveEffect") {
+            // Remove special token effects when active effects are deleted
+            if (collection === "effects") {
                 for (/** @type {Pl1eEffect} */ const activeEffect of documents) {
                     await activeEffect.removeTokenEffect(this);
                 }
@@ -308,7 +309,7 @@ export class Pl1eActor extends Actor {
                 await Pl1eMacro.generateTokenMacros(token);
         }
 
-        super._onDeleteEmbeddedDocuments(embeddedName, documents, result, options, userId);
+        super._onDeleteDescendantDocuments(parent, collection, documents, ids, options, userId);
     }
 
     /** @inheritDoc

@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Foundry Server" type="NodeJSConfigurationType" path-to-js-file="main.js" working-dir="C:/Program Files/Foundry Virtual Tabletop/resources/app">
+    <method v="2" />
+  </configuration>
+</component>

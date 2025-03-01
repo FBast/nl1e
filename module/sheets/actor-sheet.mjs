@@ -385,41 +385,8 @@ export class Pl1eActorSheet extends ActorSheet {
         context.commons = this._filterDocuments(context.commons, this._filters.commons);
         context.modules = this._filterDocuments(context.modules, this._filters.modules);
 
-        // Background sorting
-        const backgroundOrder = ["race", "culture", "class", "mastery"];
-        context.background = context.background.sort((a, b) => {
-            // Compare by type using the background order
-            let typeComparison = backgroundOrder.indexOf(a.type) - backgroundOrder.indexOf(b.type);
-            if (typeComparison !== 0) {
-                return typeComparison;
-            }
-
-            // If types are the same, then compare by name
-            return a.name.localeCompare(b.name);
-        });
-
-        // Group all items into a documents object
-        let documents = {
-            abilities: context.abilities,
-            features: context.features,
-            weapons: context.weapons,
-            wearables: context.wearables,
-            consumables: context.consumables,
-            commons: context.commons,
-            modules: context.modules
-        };
-
         // Sort each type of item
-        documents = Pl1eHelpers.sortDocuments(documents);
-
-        // Update the context with the sorted items
-        context.abilities = documents.abilities;
-        context.features = documents.features;
-        context.weapons = documents.weapons;
-        context.wearables = documents.wearables;
-        context.consumables = documents.consumables;
-        context.commons = documents.commons;
-        context.modules = documents.modules;
+        Pl1eHelpers.sortDocuments(context);
 
         // Update the context with money
         const moneyConfig = P1eHelpers.getConfig("money");

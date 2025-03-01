@@ -1,12 +1,12 @@
 <div class="list-items">
     <div class="list-header">
         {{#if restDisplay}}
-            <h5 class="header-title">
+            <h4 class="header-title">
                 {{localize "PL1E.Inventory"}}
                 <i class="fas fa-question-circle help-icon hover-info" data-tooltip="{{localize 'PL1E.RestInventoryTooltip'}}"></i>
-            </h5>
+            </h4>
         {{else}}
-            <h5>{{localize "PL1E.Common"}}</h5>
+            <h4>{{localize "PL1E.Common"}}</h4>
             <div class="header-actions item-filter-list" data-filter="commons">
                 {{#each (config "commonTypes")}}
                     <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>

@@ -10,6 +10,10 @@
   padding: 5px 10px;
   justify-content: space-between;
 
+  h1, h2, h3, h4, h5, h6 {
+    margin: 5px;
+  }
+
   .header-actions {
     display: flex;
     gap: 20px;

@@ -3,8 +3,8 @@
         {{#with (config "characteristics" @key)}}
             {{#if (or (eq @key "strength") (eq @key "agility") (eq @key "constitution") (eq @key "perception"))}}
                 <div class="characteristic" data-characteristic-id="{{@key}}">
-                    <h5 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
-                        data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h5>
+                    <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
+                        data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
                     <input name="system.characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
                     <span class="mod {{#if (gt ../mod 0)}}color-bonus{{/if}} {{#if (lt ../mod 0)}}color-malus{{/if}}">
                         {{numberFormat ../mod decimals=0 sign=true}}
@@ -21,8 +21,8 @@
         {{#with (config "characteristics" @key)}}
             {{#if (or (eq @key "intellect") (eq @key "cunning") (eq @key "wisdom") (eq @key "will"))}}
                 <div class="characteristic" data-characteristic-id="{{@key}}">
-                    <h5 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
-                        data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h5>
+                    <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
+                        data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
                     <input name="system.characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
                     <span class="mod {{#if (gt ../mod 0)}}color-bonus{{/if}} {{#if (lt ../mod 0)}}color-malus{{/if}}">
                         {{numberFormat ../mod decimals=0 sign=true}}

@@ -107,7 +107,7 @@ export class Pl1eHelpers {
             if (!obj.hasOwnProperty(i)) continue;
 
             if ((typeof obj[i]) == 'object' && obj[i] !== null) {
-                const flatObject = flattenObject(obj[i]);
+                const flatObject = foundry.utils.flattenObject(obj[i]);
                 for (const x in flatObject) {
                     if (!flatObject.hasOwnProperty(x)) continue;
 
@@ -406,11 +406,28 @@ export class Pl1eHelpers {
         return game.settings.get("pl1e", key).split(',').map(x => parseInt(x.trim()));
     }
 
-    static sortDocuments(documents) {
+    static sortDocuments(context) {
         // Define an object containing specific sorting functions for each type of document
         const sortFunctions = {
+            background: (a, b) => {
+                const backgroundOrder = ["race", "culture", "class", "mastery"];
+
+                // Compare using background order
+                let typeComparison = backgroundOrder.indexOf(a.type) - backgroundOrder.indexOf(b.type);
+                if (typeComparison !== 0) {
+                    return typeComparison;
+                }
+
+                // Then compare by name
+                return a.name.localeCompare(b.name);
+            },
             abilities: (a, b) => {
                 const abilitiesOrder = Object.keys(PL1E.activations);
+
+                // Sort enabled abilities first
+                if (a.isEnabled && !b.isEnabled) return -1;
+                if (!a.isEnabled && b.isEnabled) return 1;
+
                 // Compare by level
                 if (a.system.attributes.level < b.system.attributes.level) return -1;
                 if (a.system.attributes.level > b.system.attributes.level) return 1;
@@ -445,14 +462,15 @@ export class Pl1eHelpers {
             modules: (a, b) => a.name.localeCompare(b.name)
         };
 
-        // Iterate over each key in documents and apply the corresponding sorting function
-        Object.entries(documents).forEach(([type, items]) => {
-            if (sortFunctions[type]) {
-                documents[type] = items.sort(sortFunctions[type]);
-            }
-        });
+        // List of object to sort
+        const categories = ["background", "abilities", "features", "weapons", "wearables", "consumables", "commons", "modules"];
 
-        return documents;
+        // Apply sorting on context
+        for (let category of categories) {
+            if (context[category] && sortFunctions[category]) {
+                context[category] = context[category].sort(sortFunctions[category]);
+            }
+        }
     }
 
     static hexToRgba(hex, alpha = 0.5) {

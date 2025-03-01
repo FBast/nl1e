@@ -334,6 +334,9 @@ export class Pl1eItemSheet extends ItemSheet {
             }
         }
 
+        // Sort each type of item
+        Pl1eHelpers.sortDocuments(context);
+
         // Sorting arrays
         context.masters = masters.sort((a, b) => a.item.name.localeCompare(b.item.name));
         context.abilities = abilities.sort((a, b) => a.item.system.attributes.level - b.item.system.attributes.level)
