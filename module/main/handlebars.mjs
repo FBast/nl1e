@@ -125,4 +125,8 @@ export const registerHandlebars = function () {
     Handlebars.registerHelper('abs', function (value){
         return Math.abs(value);
     })
+
+    Handlebars.registerHelper('isInfinite', function(value) {
+        return value === Infinity || value === "Infinity";
+    });
 }

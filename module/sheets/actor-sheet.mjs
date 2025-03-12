@@ -5,12 +5,18 @@ import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {Pl1eTrade} from "../helpers/trade.mjs";
+import {PL1ESheetMixin} from "./sheet.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class Pl1eActorSheet extends ActorSheet {
+export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
+
+    constructor(...args) {
+        super(...args);
+        this.openTooltips = new Set();
+    }
 
     /**
      * Track the set of item filters which are applied

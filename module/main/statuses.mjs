@@ -634,6 +634,11 @@ export const registerStatuses = function () {
                 key: "system.reductions.shock",
                 mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
                 value: Infinity
+            },
+            {
+                key: "system.reductions.entropy",
+                mode: foundry.CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+                value: Infinity
             }],
             duration: {},
             flags: {}

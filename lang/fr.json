@@ -20,6 +20,7 @@
   "PL1E.SleepAndMeal": "Sommeil et Repas",
   "PL1E.NoItems": "Aucun objet",
   "PL1E.NoFavorites": "Aucun favori",
+  "PL1E.FeatureType": "Type de Trait",
   "PL1E.EnvironmentNormalTooltip": "Un environnement calme et accueillant, idéal pour se reposer et récupérer ses forces sans contraintes majeures.",
   "PL1E.EnvironmentHostileTooltip": "Un lieu rude et inhospitalier, où les conditions difficiles épuisent l'endurance et affectent la concentration.",
   "PL1E.EnvironmentExtremeTooltip": "Un environnement implacable, où la survie même exige un effort constant, drainant à la fois le corps et l'esprit.",

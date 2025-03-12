@@ -4,12 +4,17 @@ import {Pl1eFormValidation} from "../main/formValidation.mjs";
 import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
 import {PL1E} from "../pl1e.mjs";
+import {PL1ESheetMixin} from "./sheet.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class Pl1eItemSheet extends ItemSheet {
+export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
+
+    constructor(...args) {
+        super(...args);
+    }
 
     /** @inheritDoc */
     static get defaultOptions() {
@@ -132,7 +137,7 @@ export class Pl1eItemSheet extends ItemSheet {
         html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));
         html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
         html.find(`.item-switch-behavior`).on("click", ev => Pl1eEvent.onItemSwitchBehavior(ev, this.item));
-        html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev, this));
         html.find('.spin-number').on("click", ev => Pl1eEvent.onSpinNumber(ev, this.item));
         html.find(".trait-selector").on("click", ev => Pl1eEvent.onTraitSelector(ev, this.item));
         html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));
@@ -273,7 +278,7 @@ export class Pl1eItemSheet extends ItemSheet {
                 await this.item.addRefItem(document);
             }
 
-            this.render();
+            await this.render();
         };
 
         // Process the dropped item
@@ -420,30 +425,6 @@ export class Pl1eItemSheet extends ItemSheet {
     }
 
     /**
-     * Retrieve a document list for dropdown selection
-     * @param packName
-     * @param includeNone
-     * @return {Promise<{}>}
-     * @private
-     */
-    async _listDocuments(packName, includeNone = false) {
-        const documents = {};
-        if (includeNone) documents[""] = "PL1E.None";
-
-        const pack = game.packs.find(pack => pack.metadata.name === packName);
-        const docs = await pack.getDocuments();
-
-        // Order by name
-        const sortedDocs = docs.sort((a, b) => a.name.localeCompare(b.name));
-
-        for (const document of sortedDocs) {
-            documents[document._id] = document.name;
-        }
-
-        return documents;
-    }
-
-    /**
      * Add an aspect
      * @param event
      * @returns {Promise<void>}
@@ -472,10 +453,6 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.${foundry.utils.randomID()}`]: aspectsObjects[aspectId]
         });
-
-        if (this.item.compendium) {
-            await this.renderAndRestoreState();
-        }
     }
 
     /**
@@ -507,10 +484,6 @@ export class Pl1eItemSheet extends ItemSheet {
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null
         });
-
-        if (this.item.compendium) {
-            await this.renderAndRestoreState();
-        }
     }
 
     /**
@@ -560,34 +533,4 @@ export class Pl1eItemSheet extends ItemSheet {
         }
         await this.item.update(itemData);
     }
-
-    async renderAndRestoreState() {
-        let activeTab = this.element.find('.tabs .active').data('tab');
-        let scrollPosition = this.element.find(`.tab.active .scroll-auto`).scrollTop();
-
-        // Hook into Foundry's render event
-        Hooks.once("renderItemSheet", (app, html, data) => {
-            // Restore tab
-            const tabElement = html.find(`.tabs [data-tab="${activeTab}"]`).get(0);
-            if (tabElement) {
-                const event = new MouseEvent('click', {
-                    'view': window,
-                    'bubbles': true,
-                    'cancelable': true
-                });
-                tabElement.dispatchEvent(event);
-            }
-
-            // Restore the scroll position
-            const scrollContainer = html.find(`.tab.active .scroll-auto`);
-            if (scrollContainer.length) {
-                scrollContainer.scrollTop(scrollPosition);
-            }
-        });
-
-        // Fetch the updated item and render the sheet
-        const updatedItem = await Pl1eHelpers.getDocument("Item", this.item.id);
-        await updatedItem.sheet.render(true);
-    }
-
 }
