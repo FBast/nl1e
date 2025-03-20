@@ -983,3 +983,27 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         app.render(true, { left: sheetPosition.left, top: sheetPosition.top });
     }
 }
+
+Hooks.once("ready", () => {
+    Hooks.on("renderActorSheet", (actorSheet, html, data) => {
+        if (actorSheet.actor.type === "character") {
+            // Refresh the form application
+            const formApp = Object.values(ui.windows)
+                .find(w => w instanceof RestForm);
+            if (formApp) formApp.render(true);
+
+            // Apply the user color to the sheet
+            for (const user of game.users) {
+                if (user.character !== actorSheet.actor) continue;
+
+                let color = user.color;
+                if (typeof color === 'object') {
+                    color = color.toString(); // Convert to string if it's a Color object
+                }
+
+                const colorWithOpacity = Pl1eHelpers.hexToRgba(color, 0.5);
+                actorSheet.element.css("background-color", colorWithOpacity);
+            }
+        }
+    });
+});

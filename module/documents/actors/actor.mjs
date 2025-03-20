@@ -460,8 +460,6 @@ export class Pl1eActor extends Actor {
         let diceNumber = 0;
         if (skill.usable) {
             diceNumber += skill.number;
-            if (this.type === "character" && this.hasPlayerOwner)
-                diceNumber += game.settings.get("pl1e", "globalBonuses");
             diceNumber = Math.max(diceNumber, 0);
         }
 
@@ -469,8 +467,6 @@ export class Pl1eActor extends Actor {
         let diceType = 0;
         if (skill.usable) {
             diceType += skill.dice;
-            if (this.type === "character" && this.hasPlayerOwner)
-                diceType += game.settings.get("pl1e", "globalAdvantages") * 2;
             diceType = Math.clamp(diceType, 0, 12);
         }
 

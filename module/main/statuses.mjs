@@ -645,10 +645,3 @@ export const registerStatuses = function () {
         }
     ];
 }
-
-export const localizeStatuses = function () {
-    for (const statusEffect of CONFIG.statusEffects) {
-        statusEffect.label = game.i18n.localize(statusEffect.label);
-        statusEffect.description = game.i18n.localize(statusEffect.description);
-    }
-}

@@ -103,18 +103,4 @@ export const registerSettings = function () {
         default: true,
         type: Boolean,
     });
-
-    game.settings.register("pl1e", "globalAdvantages", {
-        scope: "world",
-        config: false,
-        type: Number,
-        default: 0
-    });
-
-    game.settings.register("pl1e", "globalBonuses", {
-        scope: "world",
-        config: false,
-        type: Number,
-        default: 0
-    });
 }

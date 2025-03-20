@@ -24,8 +24,6 @@ export class DMTool extends FormApplication {
     getData() {
         const data = super.getData();
 
-        data.advantages = game.settings.get("pl1e", "globalAdvantages");
-        data.bonuses = game.settings.get("pl1e", "globalBonuses");
         data.game = game;
 
         return data;

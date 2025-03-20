@@ -1,0 +1,57 @@
+<div class="token-tooltip-content">
+    <h3>{{localize "PL1E.Weapons"}}</h3>
+    {{#if weapons.length}}
+        <div class="tooltip-stats">
+            {{#each weapons}}
+                <div class="stat-row {{#if equipped}}equipped{{/if}}">
+                    <img class="stat-img" src="{{img}}" alt="{{name}}" />
+                    <i class="far {{icon}} stat-icon"></i>
+                    <span class="stat-label">{{name}}</span>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <span class="no-value">{{localize "PL1E.NoWeapons"}}</span>
+    {{/if}}
+
+    <h3>{{localize "PL1E.Defenses"}}</h3>
+    <div class="tooltip-stats">
+        {{#each defenses}}
+            <div class="stat-row">
+                <span class="stat-value">{{rank}}</span>
+                <i class="far {{icon}} stat-icon"></i>
+                <span class="stat-label">{{localize label}}</span>
+            </div>
+        {{/each}}
+    </div>
+
+    <h3>{{localize "PL1E.Resistances"}}</h3>
+    {{#if resistances.length}}
+        <div class="tooltip-stats">
+            {{#each resistances}}
+                <div class="stat-row">
+                    <span class="stat-value">{{#if (isInfinite value)}}∞{{else}}{{value}}{{/if}}</span>
+                    <i class="far {{icon}} stat-icon"></i>
+                    <span class="stat-label">{{label}}</span>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <span class="no-value">{{localize "PL1E.None"}}</span>
+    {{/if}}
+
+    <h3>{{localize "PL1E.Vulnerabilities"}}</h3>
+    {{#if vulnerabilities.length}}
+        <div class="tooltip-stats">
+            {{#each vulnerabilities}}
+                <div class="stat-row">
+                    <span class="stat-value">{{value}}</span>
+                    <i class="far {{icon}} stat-icon"></i>
+                    <span class="stat-label">{{label}}</span>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <span class="no-value">{{localize "PL1E.None"}}</span>
+    {{/if}}
+</div>
