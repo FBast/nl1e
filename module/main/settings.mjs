@@ -68,31 +68,13 @@ export const registerSettings = function () {
         default: 5
     });
 
-    game.settings.register("pl1e", "monoClassLevelCaps", {
-        name: "Mono class XP level caps",
-        hint: "Enter the XP caps for each levels, separated by commas. E.g., '10, 20, 30, 40, 50'.",
-        scope: "world",
-        config: true,
-        type: String,
-        default: "10, 20, 30, 40, 50"
-    });
-
-    game.settings.register("pl1e", "multiClassLevelCaps", {
-        name: "Multi class XP level caps",
-        hint: "Enter the XP caps for each levels, separated by commas. E.g., '10, 20, 30, 40, 50'.",
-        scope: "world",
-        config: true,
-        type: String,
-        default: "10, 30, 50"
-    });
-
     game.settings.register("pl1e", "autoDecreaseRounds", {
         name: "Auto Decrease Rounds",
         hint: "Automatically decrement rounds for effects each turn.",
         scope: "world",
         config: true,
         default: true,
-        type: Boolean,
+        type: Boolean
     });
 
     game.settings.register("pl1e", "autoDecreaseTurns", {
@@ -101,6 +83,33 @@ export const registerSettings = function () {
         scope: "world",
         config: true,
         default: true,
-        type: Boolean,
+        type: Boolean
+    });
+
+    game.settings.register("pl1e", "autoTokenEnabled", {
+        name: "Activer l’auto-token",
+        hint: "Active ou désactive la génération automatique des tokens avec frame et background.",
+        scope: "world",
+        config: true,
+        default: true,
+        type: Boolean
+    });
+
+    game.settings.register("pl1e", "monoClassLevelCaps", {
+        name: "Mono class XP level caps",
+        hint: "Enter the XP caps for each levels, separated by commas. E.g., '10, 20, 30, 40, 50'.",
+        scope: "world",
+        config: false,
+        type: String,
+        default: "10, 20, 30, 40, 50"
+    });
+
+    game.settings.register("pl1e", "multiClassLevelCaps", {
+        name: "Multi class XP level caps",
+        hint: "Enter the XP caps for each levels, separated by commas. E.g., '10, 20, 30, 40, 50'.",
+        scope: "world",
+        config: false,
+        type: String,
+        default: "10, 30, 50"
     });
 }

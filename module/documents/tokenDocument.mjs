@@ -4,6 +4,8 @@ import {Pl1eChatMessage} from "./chatMessage.mjs";
 
 export class Pl1eTokenDocument extends TokenDocument {
 
+
+
     /** @inheritDoc */
     async _preUpdate(data, options, user) {
         // Restrict the token movement
