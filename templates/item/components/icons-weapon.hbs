@@ -38,8 +38,7 @@
         {{/with}}
     {{else}}
         {{#with (config "reductions" damageType)}}
-            <i class="far {{icon}} hover-info"
-               data-tooltip="{{localize (config "damageTypes" ../damageType)}}">
+            <i class="far {{icon}} hover-info" data-tooltip="{{localize (config "damageTypes" ../damageType)}}">
                 <label>{{../value}}</label>
             </i>
         {{/with}}

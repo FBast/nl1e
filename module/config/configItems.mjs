@@ -448,7 +448,7 @@ export function getConfigItems() {
     }
 
     PL1E.areaShapes = {
-        "none": "PL1E.None",
+        "none": "PL1E.None.M",
         "target": "PL1E.Target",
         "circle": "PL1E.Circle",
         "cone": "PL1E.Cone",
@@ -462,13 +462,13 @@ export function getConfigItems() {
     }
 
     PL1E.selfTargets = {
-        "none": "PL1E.None",
+        "none": "PL1E.None.M",
         "add": "PL1E.Add",
         "remove": "PL1E.Remove"
     }
 
     PL1E.linkOverrides = {
-        "none": "PL1E.None",
+        "none": "PL1E.None.M",
         "reach": "PL1E.Reach",
         "range": "PL1E.Range"
     }

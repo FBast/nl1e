@@ -241,7 +241,7 @@ export class Pl1eHelpers {
     static async getDocumentsDataFromPack(packName, includeNone = false) {
         const documents = {};
         if (includeNone) documents["none"] = {
-            label: "PL1E.None"
+            label: "PL1E.None.M"
         };
 
         const pack = game.packs.find(pack => pack.metadata.name === packName);

@@ -16,14 +16,14 @@ export function getConfigBase() {
     }
 
     PL1E.weaponModes = {
-        "none": "PL1E.None",
+        "none": "PL1E.None.M",
         "melee": "PL1E.Melee",
         "range": "PL1E.Range",
         "magic": "PL1E.Magic"
     }
 
     PL1E.slots = {
-        "none": "PL1E.None",
+        "none": "PL1E.None.M",
         "garment": "PL1E.Garment",
         "armor": "PL1E.Armor",
         "ring": "PL1E.Ring",
