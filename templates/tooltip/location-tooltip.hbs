@@ -1,0 +1,15 @@
+<section class="note-tooltip-content">
+    <h4>{{data.name}}</h4>
+
+    {{#if (ne system.translation "")}}
+        <p><strong>{{localize "PL1E.Translation"}}:</strong> {{system.translation}}</p>
+    {{/if}}
+
+    {{#if (ne system.type "")}}
+        <p><strong>{{localize "PL1E.Type"}}:</strong> {{system.type}}</p>
+    {{/if}}
+
+    {{#if (ne system.culture "")}}
+        <p><strong>{{localize "PL1E.Culture"}}:</strong> {{system.culture}}</p>
+    {{/if}}
+</section>

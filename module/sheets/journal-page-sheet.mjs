@@ -1,5 +1,4 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 export class Pl1eJournalPageSheet extends JournalPageSheet {
 

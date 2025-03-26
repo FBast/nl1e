@@ -1,15 +1,4 @@
-&#token-tooltip {
-  position: absolute;
-  background: rgba($colorDark, 0.85);
-  color: $colorWhite;
-  padding: $spacing-sm;
-  border-radius: $spacing-sm;
-  border: 1px solid $colorBorder;
-  box-shadow: $shadowStandard;
-  font-size: $font-size-xsm;
-  pointer-events: none;
-  z-index: 10000;
-
+&#placeable-tooltip {
   .token-tooltip-content {
     display: flex;
     flex-direction: column;
@@ -38,7 +27,7 @@
         padding: 2px 4px;
         border-radius: 2px;
         justify-content: space-between;
-        min-height: 22px; // Hauteur minimale réduite
+        min-height: 22px;
 
         .stat-value {
           font-weight: bold;
@@ -69,13 +58,6 @@
           overflow: hidden;
           text-overflow: ellipsis;
           padding-right: 5px;
-        }
-
-        .equip-icon {
-          font-size: $font-size-sm;
-          color: $colorInfo; // Vert si équipé
-          min-width: 18px;
-          text-align: center;
         }
       }
     }

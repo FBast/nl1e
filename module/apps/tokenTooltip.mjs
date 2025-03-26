@@ -1,10 +1,9 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
-import {PL1E} from "../pl1e.mjs";
 
 export class TokenTooltip {
     static instance = null;
-    static lastToken = null;
-    static lastActor = null;
+    static lastTarget = null;
+    static lastData = null;
 
     constructor() {
         this.tooltip = this.createTooltip();
@@ -13,8 +12,7 @@ export class TokenTooltip {
     }
 
     createTooltip() {
-        this.content = this.createNode("div", { id: "token-tooltip", css: ["pl1e"] });
-
+        this.content = this.createNode("div", { id: "placeable-tooltip", css: ["pl1e"] });
         return this.content;
     }
 
@@ -28,74 +26,94 @@ export class TokenTooltip {
         return el;
     }
 
-    async setContent(token, actor) {
-        if (!actor) {
+    async setContent(target, data) {
+        if (!data) {
             this.content.innerHTML = "Aucune information disponible";
             return;
         }
 
-        TokenTooltip.lastActor = actor;
-        TokenTooltip.lastToken = token;
+        TokenTooltip.lastTarget = target;
+        TokenTooltip.lastData = data;
 
-        const resistances = [];
-        const vulnerabilities = [];
-        const defenses = [];
-        const weapons = [];
+        if (data.items) {
+            // Actor (Token)
+            const resistances = [];
+            const vulnerabilities = [];
+            const defenses = [];
+            const weapons = [];
 
-        for (const [key, value] of Object.entries(actor.system.reductions)) {
-            const reductionConfig = Pl1eHelpers.getConfig("reductions", key);
-            if (!reductionConfig) continue;
+            for (const [key, value] of Object.entries(data.system.reductions)) {
+                const reductionConfig = Pl1eHelpers.getConfig("reductions", key);
+                const labelConfig = Pl1eHelpers.getConfig("damageTypes", key);
+                if (!reductionConfig || !labelConfig) continue;
 
-            const reductionLabel = Pl1eHelpers.getConfig("damageTypes", key);
-            if (!reductionLabel) continue;
+                const label = game.i18n.localize(labelConfig);
+                const icon = reductionConfig.icon ?? "fa-question-circle";
 
-            const label = game.i18n.localize(reductionLabel);
-            const icon = reductionConfig.icon ?? "fa-question-circle";
-
-            if (value > 0) {
-                resistances.push({ value, icon, label,  });
-            } else if (value < 0) {
-                vulnerabilities.push({ value, icon, label });
+                const entry = { value, icon, label };
+                if (value > 0) resistances.push(entry);
+                else if (value < 0) vulnerabilities.push(entry);
             }
-        }
 
-        for (const item of actor.items.filter(i => i.type === "weapon")) {
-            if (!item.isEquipped) continue;
-            weapons.push({
-                icon: item.system.attributes.range > 0 ? "fa-bow-arrow" : "fa-sword",
-                img: item.img,
-                name: item.name
+            for (const item of data.items.filter(i => i.type === "weapon")) {
+                weapons.push({
+                    icon: item.isEquipped ? "fa-check" : "fa-xmark",
+                    img: item.img,
+                    name: item.name
+                });
+            }
+
+            for (const [key, skill] of Object.entries(data.system.skills)) {
+                const skillConfig = Pl1eHelpers.getConfig("skills", key);
+                if (!skillConfig || !skillConfig.fixedRank) continue;
+
+                defenses.push({
+                    rank: skill.number,
+                    icon: `fa-dice-d${skill.dice}`,
+                    label: game.i18n.localize(skillConfig.label)
+                });
+            }
+
+            this.content.innerHTML = await renderTemplate("systems/pl1e/templates/tooltip/token-tooltip.hbs", {
+                name: target.name ?? "Sans nom",
+                actor: data,
+                weapons,
+                resistances,
+                vulnerabilities,
+                defenses
+            });
+        } else {
+            // Journal (Note)
+            const page = target.document?.page;
+            if (!page) return;
+
+            this.content.innerHTML = await renderTemplate(`systems/pl1e/templates/tooltip/${page.type}-tooltip.hbs`, {
+                page,
+                document: page,
+                system: page.system,
+                data: page,
+                isTooltip: true
             });
         }
-
-        for (const [key, skill] of Object.entries(actor.system.skills)) {
-            const skillConfig = Pl1eHelpers.getConfig("skills", key);
-            if (!skillConfig || !skillConfig.fixedRank) continue;
-
-            defenses.push({
-                rank: skill.number,
-                icon: `fa-dice-d${skill.dice}`,
-                label: game.i18n.localize(skillConfig.label)
-            });
-        }
-
-        this.content.innerHTML = await renderTemplate("systems/pl1e/templates/apps/token-tooltip.hbs", {
-            name: token.name ?? "Sans nom",
-            actor: actor,
-            weapons: weapons,
-            resistances: resistances,
-            vulnerabilities: vulnerabilities,
-            defenses: defenses
-        });
     }
 
-    setPosition(token) {
+    setPosition(target) {
         const scale = canvas.stage.scale.x;
-        const tokenWidth = token.w * scale;
-        const offset = 10;
+        const gap = 10;
 
-        let left = token.worldTransform.tx + tokenWidth + offset;
-        let top = token.worldTransform.ty;
+        let widthOffset = 0;
+        let heightOffset = 0;
+
+        if (target instanceof Token) {
+            widthOffset = (target.w + gap) * scale;
+        }
+        else if (target instanceof Note) {
+            widthOffset = (target.width / 2 + gap) * scale;
+            heightOffset = -target.height / 2 * scale;
+        }
+
+        const left = target.worldTransform.tx + widthOffset;
+        const top = target.worldTransform.ty + heightOffset;
 
         this.tooltip.style.left = `${left}px`;
         this.tooltip.style.top = `${top}px`;
@@ -106,15 +124,17 @@ export class TokenTooltip {
     }
 
     async refresh() {
-        if (TokenTooltip.lastToken) await this.setContent(TokenTooltip.lastToken, TokenTooltip.lastToken.actor);
+        if (TokenTooltip.lastTarget) {
+            await this.setContent(TokenTooltip.lastTarget, TokenTooltip.lastData);
+        }
     }
 
-    static show({ token, actor }) {
+    static async show({target, data}) {
         const tooltip = TokenTooltip.instance;
-        TokenTooltip.lastToken = token;
-        TokenTooltip.lastActor = actor ?? token.actor;
-        tooltip.setPosition(token);
-        tooltip.setContent(token, actor);
+        TokenTooltip.lastTarget = target;
+        TokenTooltip.lastData = data;
+        tooltip.setPosition(target);
+        await tooltip.setContent(target, data);
         tooltip.toggle(true);
     }
 
@@ -125,41 +145,45 @@ export class TokenTooltip {
 
 Hooks.once("ready", () => {
     new TokenTooltip();
-    Hooks.on("hoverToken", onTokenHover);
-    Hooks.on("updateToken", onTokenUpdate);
-    Hooks.on("updateActor", onActorUpdate);
-    Hooks.on("deleteToken", onDeleteToken);
-    Hooks.on("renderTokenHUD", onRenderTokenHud);
 
-    function onTokenHover(token, hovering) {
+    Hooks.on("hoverToken", (token, hovering) => {
         const actor = token?.actor;
-        if (!actor || actor.type === "basic") return TokenTooltip.hide();
-
-        if (hovering && (actor.testUserPermission(game.user, "OBSERVER") || game.user.isGM)) {
-            TokenTooltip.show({ token, actor });
+        if (!actor || (actor.type !== "character" && actor.type !== "npc")) return TokenTooltip.hide();
+        if (hovering) {
+            TokenTooltip.show({ target: token, data: actor });
         } else {
             TokenTooltip.hide();
         }
-    }
+    });
 
-    function onTokenUpdate(token) {
-        if (!TokenTooltip.lastToken || token.id !== TokenTooltip.lastToken.id) return;
+    Hooks.on("hoverNote", (note, hovering) => {
+        if (note.document?.page.type !== "organization" && note.document?.page.type !== "location") return TokenTooltip.hide();
+        const journal = note.document?.entry;
+        if (!journal || !hovering) return TokenTooltip.hide();
+        TokenTooltip.show({ target: note, data: journal });
+    });
+
+    Hooks.on("updateToken", (token) => {
+        if (!TokenTooltip.lastTarget || token.id !== TokenTooltip.lastTarget.id) return;
         TokenTooltip.hide();
-        setTimeout(() => {
-            TokenTooltip.instance.setPosition(token.object);
-            TokenTooltip.instance.toggle(true);
-        }, 100);
-    }
+    });
 
-    function onActorUpdate(actor) {
-        if (TokenTooltip.instance.lastToken?.actor?.id === actor.id) TokenTooltip.instance.refresh();
-    }
+    Hooks.on("updateActor", (actor) => {
+        if (TokenTooltip.instance.lastTarget?.actor?.id === actor.id) {
+            TokenTooltip.instance.refresh();
+        }
+    });
 
-    function onDeleteToken(token) {
-        if (token.id === TokenTooltip.lastToken?.id) TokenTooltip.hide();
-    }
+    Hooks.on("deleteToken", (token) => {
+        if (token.id === TokenTooltip.lastTarget?.id) TokenTooltip.hide();
+    });
 
-    function onRenderTokenHud(tokenhud) {
+    Hooks.on("renderTokenHUD", () => {
         TokenTooltip.hide();
-    }
+    });
+
+    Hooks.on("canvasPan", () => {
+        if (!TokenTooltip.lastTarget) return;
+        TokenTooltip.hide();
+    });
 });
