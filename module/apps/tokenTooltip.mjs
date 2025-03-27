@@ -74,7 +74,7 @@ export class TokenTooltip {
                 });
             }
 
-            this.content.innerHTML = await renderTemplate("systems/pl1e/templates/tooltip/token-tooltip.hbs", {
+            this.content.innerHTML = await renderTemplate("systems/pl1e/templates/apps/token-tooltip.hbs", {
                 name: target.name ?? "Sans nom",
                 actor: data,
                 weapons,
@@ -87,19 +87,18 @@ export class TokenTooltip {
             const page = target.document?.page;
             if (!page) return;
 
-            this.content.innerHTML = await renderTemplate(`systems/pl1e/templates/tooltip/${page.type}-tooltip.hbs`, {
+            this.content.innerHTML = await renderTemplate(`systems/pl1e/templates/apps/note-tooltip.hbs`, {
                 page,
                 document: page,
                 system: page.system,
-                data: page,
-                isTooltip: true
+                data: page
             });
         }
     }
 
     setPosition(target) {
         const scale = canvas.stage.scale.x;
-        const gap = 10;
+        const gap = 5;
 
         let widthOffset = 0;
         let heightOffset = 0;
@@ -157,7 +156,8 @@ Hooks.once("ready", () => {
     });
 
     Hooks.on("hoverNote", (note, hovering) => {
-        if (note.document?.page.type !== "organization" && note.document?.page.type !== "location") return TokenTooltip.hide();
+        if (note.document?.page.type !== "organization" && note.document?.page.type !== "location"
+            && note.document?.page.type !== "character") return TokenTooltip.hide();
         const journal = note.document?.entry;
         if (!journal || !hovering) return TokenTooltip.hide();
         TokenTooltip.show({ target: note, data: journal });
