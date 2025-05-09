@@ -1,47 +1,77 @@
-<form class="{{cssClass}} flexcol" autocomplete="off">
+<form class="pl1e {{cssClass}} flexcol" autocomplete="off">
     {{> journalEntryPageHeader}}
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Portrait"}}</label>
-        <div class="form-fields">
-            <input name="system.portrait" type="text" value="{{system.portrait}}"/>
-            {{filePicker target="system.portrait" type="image"}}
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionPortrait"}}</p>
-    </div>
+    <div class="sheet-body">
+        <div class="list-items">
+            <div class="list-header">
+                <h4>{{localize "PL1E.CharacterDetails"}}</h4>
+            </div>
+            <div class="list-column">
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Nickname"}}</label>
-        <div class="form-fields">
-            <input type="text" name="system.nickname" value="{{system.nickname}}"/>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionNickname"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Portrait"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input name="system.portrait" type="text" value="{{system.portrait}}" />
+                            {{filePicker target="system.portrait" type="image"}}
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionPortrait"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Race"}}</label>
-        <div class="form-fields">
-            <input type="text" name="system.race" value="{{system.race}}"/>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionRace"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Nickname"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="text" name="system.nickname" value="{{system.nickname}}" />
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionNickname"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Attributes"}}</label>
-        <div class="form-fields">
-            <input type="text" name="system.attributes" value="{{system.attributes}}"/>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionAttributes"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Race"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="text" name="system.race" value="{{system.race}}" />
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionRace"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Content"}}</label>
-        <div class="form-fields">
-            <button class="launch-text-editor" data-target="system.content">
-                <i class="fas fa-edit"></i> {{localize "PL1E.EditContent"}}
-            </button>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionContent"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Attributes"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="text" name="system.attributes" value="{{system.attributes}}" />
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionAttributes"}}</p>
+                </div>
 
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Content"}}</label>
+                        </div>
+                        <div class="fields">
+                            <button class="launch-text-editor" data-target="system.content">
+                                <i class="fas fa-edit"></i> {{localize "PL1E.EditContent"}}
+                            </button>
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionContent"}}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </form>

@@ -78,6 +78,9 @@ export class Pl1eEvent {
      * @param {Actor|Item} document the document of the item
      */
     static async onItemEdit(event, document) {
+        event.preventDefault();
+        event.stopPropagation();
+
         let itemId = $(event.currentTarget).data("item-id") ||
             $(event.currentTarget).closest(".item").data("item-id");
 
@@ -98,38 +101,18 @@ export class Pl1eEvent {
         else if (document instanceof Pl1eItem) {
             item = await Pl1eHelpers.getDocument("Item", itemId);
         }
+        else if (document instanceof JournalEntryPage) {
+            const itemsData = document.getFlag("pl1e", "items") || [];
+            const itemData = itemsData.find(i => i._id === itemId);
+            if (!itemData) throw new Error(`PL1E | Item ${itemId} not found in journal page`);
+            item = new CONFIG.Item.documentClass(itemData, { parent: null });
+        }
         else {
             throw new Error(`PL1E | unknown ${document}`);
         }
 
         if (item.sheet.rendered) item.sheet.bringToTop();
         else item.sheet.render(true);
-    }
-
-    /**
-     * Buy item
-     * @param {Event} event The originating click event
-     * @param {Pl1eActor} actor the merchant of the item
-     */
-    static async onItemBuy(event, actor) {
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
-        const item = actor.items.get(itemId);
-
-        if (!Pl1eHelpers.isGMConnected()) {
-            ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
-            return;
-        }
-        if (!game.user.character) {
-            ui.notifications.info(game.i18n.localize("PL1E.NoCharacterAssociated"));
-            return;
-        }
-
-        // Player transfer item to a not owned actor
-        PL1E.socket.executeAsGM("sendItem", {
-            sourceActorUuid: actor.uuid,
-            targetActorUuid: game.user.character.uuid,
-            itemId: item.id
-        });
     }
 
     /**

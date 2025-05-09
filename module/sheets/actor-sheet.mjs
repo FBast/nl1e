@@ -49,9 +49,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
 
     /** @inheritDoc */
     get template() {
-        if (this.actor.type === "merchant") {
-            return `systems/pl1e/templates/actor/actor-merchant-sheet.hbs`;
-        }
         return `systems/pl1e/templates/actor/actor-character-sheet.hbs`;
     }
 
@@ -122,9 +119,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
 
         await this._prepareItems(context);
 
-        if (this.actor.type === "merchant")
-            await this._prepareRollTables(context);
-
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
         // Add the config data
@@ -143,7 +137,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
 
         // Render the item sheet for viewing/editing prior to the editable check.
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
-        html.find(".item-buy").on("click", ev => Pl1eEvent.onItemBuy(ev, this.actor));
         html.find(".effect-edit").on("click", ev => this._onEffectEdit(ev));
         html.find(".effect-remove").on("click", ev => this._onEffectRemove(ev));
         html.find(".item-link").on("click", ev => this._onItemLink(ev));
@@ -164,7 +157,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         }
 
         // Handle drag event items from owned actor or merchant
-        if (this.actor.isOwner || this.actor.type === "merchant") {
+        if (this.actor.isOwner) {
             let handler = ev => this._onDragStart(ev);
             html.find('.item').each((i, div) => {
                 div.setAttribute("draggable", true);
@@ -185,10 +178,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         html.find(".item-create").on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
         html.find(".item-remove").on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
 
-        // RollTable management
-        html.find(".roll-table-edit").on("click", ev => this._onRollTableEdit(ev, this.actor));
-        html.find(".roll-table-remove").on("click", ev => this._onRollTableRemove(ev, this.actor));
-
         // Chat messages
         html.find(".skill-roll").on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
 
@@ -206,11 +195,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         // Actor actions
         html.find('.open-journal').on('click', async ev => this._onOpenJournal(ev));
         html.find('.open-rest').on('click', async ev => this._onOpenRest(ev));
-
-        // Merchant actions
-        html.find(".button-remove-items").on("click", ev => this._onRemoveItemsClick(ev));
-        html.find(".button-randomize-item").on("click", ev => this._onRandomizeItemClick(ev));
-        html.find(".button-generate-item").on("click", ev => this._onGenerateItemClick(ev));
     }
 
     /**
@@ -246,23 +230,31 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
     /** @inheritDoc */
     async _onDrop(event) {
         // Check item type and subtype
-        const data = JSON.parse(event.dataTransfer?.getData("text/plain"));
-        let document = await fromUuid(data.uuid)
+        const rawData = event.dataTransfer?.getData("text/plain");
+        if (!rawData) return;
+        const data = JSON.parse(rawData);
 
-        // If the document is not embedded and the user does not own it return
-        if (!document.isEmbedded && !document.isOwner) {
+        let document = await fromUuid(data.uuid)
+        const fromMerchant = foundry.utils.getProperty(data, "flags.pl1e.fromMerchant");
+        if (!fromMerchant && !document.isEmbedded && !document.isOwner) {
             ui.notifications.info(game.i18n.localize("PL1E.NotOwnedDocument"));
             return;
         }
 
-        // Roll table for merchant only
-        if (data.type === "RollTable" && this.actor.type === "merchant") {
-            await this.actor.addRefRollTable(document);
-        }
-        else if (data.type === "Item") {
-            await this._onDropItem(event, data);
-        }
-        else {
+        if (data.type === "Item") {
+            if (data.flags?.pl1e?.fromMerchant && data.itemData) {
+                const item = new CONFIG.Item.documentClass(data.itemData, { parent: null });
+
+                item.flags = foundry.utils.mergeObject(item.flags ?? {}, {
+                    pl1e: data.flags.pl1e
+                });
+
+                await this._addItem(item);
+            }
+            else {
+                await this._onDropItem(event, data);
+            }
+        } else {
             await super._onDrop(event);
         }
     }
@@ -310,34 +302,32 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         if (!item.isValidForActor(this.actor)) return;
 
         if (item.isEmbedded) {
-            // Not owned target or not owned item
-            // (should be a player transfer between two actors)
+            // Gift between 2 actors
             if (!this.actor.isOwner || !item.isOwner) {
                 if (!Pl1eHelpers.isGMConnected()) {
                     ui.notifications.info(game.i18n.localize("PL1E.NoGMConnected"));
                     return;
                 }
-                // Player transfer item to a not owned actor
-                PL1E.socket.executeAsGM("sendItem", {
+
+                // One is not owned then via socket
+                PL1E.socket.executeAsGM("giftItem", {
                     sourceActorUuid: item.parent.uuid,
                     targetActorUuid: this.actor.uuid,
                     itemId: item.id
                 });
+            } else {
+                // GM or same player dont need socket
+                await Pl1eTrade.giftItem(item.parent, this.actor, item);
             }
-            // The target actor and the item are owned
-            // (should be a GM transfer between two actors)
-            else {
-                await Pl1eTrade.sendItem(item.parent.uuid, this.actor.uuid, item.id);
-            }
-        }
-        // The item is not embedded
-        // (should be someone who own the item)
-        else {
-            const originalItem = item.compendium ? item :await Pl1eHelpers.getDocument("Item", item.sourceId);
-            await this.actor.addItem(originalItem);
+        } else {
+            const originalItem = item.compendium ? item : await Pl1eHelpers.getDocument("Item", item.id);
 
-            // If the item is embedded, then delete the source item
-            if (item.isEmbedded) await item.actor.removeItem(item);
+            // Merchant buy
+            if (foundry.utils.getProperty(item, "flags.pl1e.fromMerchant")) {
+                await Pl1eTrade.buyItem(this.actor, item);
+            } else {
+                await this.actor.addItem(originalItem);
+            }
         }
     }
 
@@ -468,8 +458,8 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
 
         // Comprehensive check for whether to accumulate units
         const shouldAccumulate = (existingItem, newItem) => {
-            // Define types for which duplicates should not accumulate units if not a merchant
-            const noAccumulateTypes = actor.type !== "merchant" ? ['weapon', 'wearable'] : [];
+            // Define types for which duplicates should not accumulate units
+            const noAccumulateTypes = ['weapon', 'wearable'];
 
             // Prevent accumulation for specific types based on an actor type
             if (noAccumulateTypes.includes(newItem.type)) return false;
@@ -603,27 +593,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         })
     }
 
-    async _prepareRollTables(context) {
-        // Initialize container.
-        let rollTables = [];
-
-        for (let i = 0; i < this.actor.system.refRollTables.length; i++) {
-            const id = this.actor.system.refRollTables[i];
-            let rollTable = await Pl1eHelpers.getDocument("RollTable", id);
-            if (!rollTable) {
-                // Create an unknown rollTable for display
-                rollTable = {
-                    type: "unknown",
-                    id: id
-                }
-            }
-            rollTables[i] = rollTable;
-        }
-
-        // Assign and return
-        context.rollTables = rollTables;
-    }
-
     /**
      * Use an ability
      * @param {Event} event The originating click event
@@ -655,79 +624,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         const item = this.actor.items.get(itemId);
 
         if (item.canReload()) await item.reload();
-    }
-
-    /**
-     * Remove all the items from the merchant
-     * @param event
-     */
-    async _onRemoveItemsClick(event) {
-        ui.notifications.info(`${game.i18n.localize("PL1E.RemovingItems")}...`);
-
-        let removedItemsNumber = 0;
-        for (const item of this.actor.items) {
-            await item.delete();
-            removedItemsNumber++;
-        }
-        ui.notifications.info(`${game.i18n.localize("PL1E.NumberOfRemovedItems")} : ${removedItemsNumber}`);
-    }
-
-    /**
-     * Trigger the randomization of items in the merchant based on roll tables
-     * @param event
-     * @return {Promise<void>}
-     */
-    async _onRandomizeItemClick(event) {
-        let addedItemsNumber = 0;
-        for (let i = 0; i < this.actor.system.general.itemPerRoll; i++) {
-            for (const refRollTable of this.actor.system.refRollTables) {
-                const rollTable = await Pl1eHelpers.getDocument("RollTable", refRollTable);
-                const defaultResults = await rollTable.roll();
-                for (const tableResult of defaultResults.results) {
-                    const item = await Pl1eHelpers.getDocument("Item", tableResult.documentId);
-                    if (item) {
-                        await this.actor.addItem(item);
-                        addedItemsNumber++;
-                    }
-                }
-            }
-        }
-        ui.notifications.info(`${game.i18n.localize("PL1E.NumberOfAddedItems")} : ${addedItemsNumber}`);
-    }
-
-    /**
-     * Add all items from roll tables to the actor, including items from nested roll tables.
-     * @param event
-     * @return {Promise<void>}
-     */
-    async _onGenerateItemClick(event) {
-        ui.notifications.info(`${game.i18n.localize("PL1E.GeneratingItems")}...`);
-
-        let addedItemsNumber = 0;
-        // Define a recursive function to handle roll table items and nested roll tables
-        const addItemsFromRollTable = async (id) => {
-            const item = await Pl1eHelpers.getDocument("Item", id);
-            if (item) {
-                await this.actor.addItem(item);
-                addedItemsNumber++;
-            }
-            else {
-                const rollTable = await Pl1eHelpers.getDocument("RollTable", id);
-                if (rollTable) {
-                    for (const tableResult of rollTable.results) {
-                        // Recursive call for nested roll tables
-                        await addItemsFromRollTable(tableResult.documentId);
-                    }
-                }
-            }
-        };
-
-        // Iterate through all referenced roll tables and add their items
-        for (const refRollTable of this.actor.system.refRollTables) {
-            await addItemsFromRollTable(refRollTable);
-        }
-
-        ui.notifications.info(`${game.i18n.localize("PL1E.NumberOfAddedItems")} : ${addedItemsNumber}`);
     }
 
     /**
@@ -817,35 +713,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
             "system.money.silver": currentSilver,
             "system.money.copper": currentCopper
         });
-    }
-
-    /**
-     * Open roll table sheet
-     * @param event The originating click event
-     * @param {Actor} actor the actor of the roll table
-     */
-    async _onRollTableEdit(event, actor) {
-        let rollTableId = $(event.currentTarget).closest(".item").data("roll-table-id");
-        const rollTable = await Pl1eHelpers.getDocument("RollTable", rollTableId);
-
-        if (rollTable.sheet.rendered) rollTable.sheet.bringToTop();
-        else rollTable.sheet.render(true);
-    }
-
-    /**
-     * Handle remove of roll table
-     * @param {Event} event The originating click event
-     * @param {Pl1eActor} actor the actor where the roll table is removed
-     */
-    async _onRollTableRemove(event, actor) {
-        const rollTableId = $(event.currentTarget).closest(".item").data("roll-table-id");
-
-        if (rollTableId) {
-            const rollTable = await Pl1eHelpers.getDocument("RollTable", rollTableId);
-            if (rollTable) await actor.removeRefRollTable(rollTable);
-        }
-
-        actor.sheet.render(actor.sheet.rendered);
     }
 
     /**

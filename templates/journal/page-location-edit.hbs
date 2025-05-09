@@ -1,87 +1,129 @@
-<form class="{{cssClass}} flexcol" autocomplete="off">
+<form class="pl1e {{cssClass}} flexcol" autocomplete="off">
     {{> journalEntryPageHeader}}
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Banner"}}</label>
-        <div class="form-fields">
-            <input name="system.banner" type="text" value="{{system.banner}}"/>
-            {{filePicker target="system.banner" type="image"}}
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionBanner"}}</p>
-    </div>
+    <div class="sheet-body">
+        <div class="list-items">
+            <div class="list-header">
+                <h4>{{localize "PL1E.LocationDetails"}}</h4>
+            </div>
+            <div class="list-column">
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Translation"}}</label>
-        <div class="form-fields">
-            <input type="text" name="system.translation" value="{{system.translation}}"/>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionTranslation"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Banner"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input name="system.banner" type="text" value="{{system.banner}}" />
+                            {{filePicker target="system.banner" type="image"}}
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionBanner"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Type"}}</label>
-        <div class="form-fields">
-            <input type="text" name="system.type" value="{{system.type}}"/>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionLocationType"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Translation"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="text" name="system.translation" value="{{system.translation}}" />
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionTranslation"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Culture"}}</label>
-        <div class="form-fields">
-            <input type="text" name="system.culture" value="{{system.culture}}"/>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionCulture"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Type"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="text" name="system.type" value="{{system.type}}" />
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionLocationType"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Population"}}</label>
-        <div class="form-fields">
-            <input type="range" name="system.population" min="0" max="9" value="{{system.population}}"
-                   oninput="this.nextElementSibling.value = this.value">
-            <output>{{system.population}}</output>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionPopulation"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Culture"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="text" name="system.culture" value="{{system.culture}}" />
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionCulture"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Dangerousness"}}</label>
-        <div class="form-fields">
-            <input type="range" name="system.dangerousness" min="0" max="9" value="{{system.dangerousness}}"
-                   oninput="this.nextElementSibling.value = this.value">
-            <output>{{system.dangerousness}}</output>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionDangerousness"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Population"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="range" name="system.population" min="0" max="9" value="{{system.population}}" oninput="this.nextElementSibling.value = this.value" />
+                            <output>{{system.population}}</output>
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionPopulation"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Temperature"}}</label>
-        <div class="form-fields">
-            <input type="range" name="system.temperature" min="1" max="9" value="{{system.temperature}}"
-                   oninput="this.nextElementSibling.value = this.value">
-            <output>{{system.temperature}}</output>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionTemperature"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Dangerousness"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="range" name="system.dangerousness" min="0" max="9" value="{{system.dangerousness}}" oninput="this.nextElementSibling.value = this.value" />
+                            <output>{{system.dangerousness}}</output>
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionDangerousness"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Humidity"}}</label>
-        <div class="form-fields">
-            <input type="range" name="system.humidity" min="1" max="9" value="{{system.humidity}}"
-                   oninput="this.nextElementSibling.value = this.value">
-            <output>{{system.humidity}}</output>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionHumidity"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Temperature"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="range" name="system.temperature" min="1" max="9" value="{{system.temperature}}" oninput="this.nextElementSibling.value = this.value" />
+                            <output>{{system.temperature}}</output>
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionTemperature"}}</p>
+                </div>
 
-    <div class="form-group">
-        <label>{{localize "PL1E.Content"}}</label>
-        <div class="form-fields">
-            <button class="launch-text-editor" data-target="system.content">
-                <i class="fas fa-edit"></i> {{localize "PL1E.EditContent"}}
-            </button>
-        </div>
-        <p class="hint">{{localize "PL1E.DescriptionContent"}}</p>
-    </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Humidity"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="range" name="system.humidity" min="1" max="9" value="{{system.humidity}}" oninput="this.nextElementSibling.value = this.value" />
+                            <output>{{system.humidity}}</output>
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionHumidity"}}</p>
+                </div>
 
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Content"}}</label>
+                        </div>
+                        <div class="fields">
+                            <button class="launch-text-editor" data-target="system.content">
+                                <i class="fas fa-edit"></i> {{localize "PL1E.EditContent"}}
+                            </button>
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionContent"}}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </form>

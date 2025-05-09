@@ -16,7 +16,7 @@
 
     &.active {
       border-bottom-color: transparent;
-      background-color: $colorBackground;
+      background: url("/ui/parchment.jpg") repeat;
     }
 
     &:first-child {

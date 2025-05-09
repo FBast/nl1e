@@ -158,6 +158,11 @@
         }
       }
 
+      .item-hint {
+        font-size: $font-size-xsm;
+        margin-left: 15px;
+      }
+
       .item-tooltip {
         text-align: justify;
         background-color: $colorPanel;

@@ -69,7 +69,7 @@ Hooks.once('init', async function () {
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
     DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", Pl1eJournalPageSheet, {
-        types: ["location", "organization", "character"]
+        types: ["location", "organization", "character", "merchant"]
     });
 
     // Register configs
@@ -117,8 +117,8 @@ Hooks.once("ready", async function () {
 
 Hooks.once("socketlib.ready", () => {
     PL1E.socket = socketlib.registerSystem("pl1e");
-    PL1E.socket.register("sendItem", async function (data) {
-        await Pl1eTrade.sendItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
+    PL1E.socket.register("giftItem", async function (data) {
+        await Pl1eTrade.giftItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
     });
     // PL1E.socket.register("sendContenant", async function (data) {
     //     await Pl1eTrade.sendContenant(data.sourceActorUuid, data.targetActorUuid, data.itemUuid);

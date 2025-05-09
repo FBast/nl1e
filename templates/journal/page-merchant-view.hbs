@@ -1,0 +1,39 @@
+<form class="pl1e {{cssClass}} flexcol" autocomplete="off">
+    <header class="journal-page-header">
+        <h{{title.level1}}>{{data.name}}</h{{title.level1}}>
+    </header>
+
+    <section class="journal-page-content">
+        {{#if (ne system.banner "")}}
+            <img src="{{system.banner}}" alt="Banner" style="width: 100%">
+        {{/if}}
+
+        <p><strong>{{localize "PL1E.MerchantSellRate" sell=actor.system.general.sellMultiplier}}</strong></p>
+        <p><strong>{{localize "PL1E.MerchantBuyRate" buy=actor.system.general.buyMultiplier}}</strong></p>
+
+        {{{enriched}}}
+
+        <br>
+        <div class="drop-target">
+            {{#if (or document.isOwner weapons.length)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-weapons.hbs }}
+            {{/if}}
+
+            {{#if (or document.isOwner wearables.length)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-wearables.hbs }}
+            {{/if}}
+
+            {{#if (or document.isOwner consumables.length)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-consumables.hbs }}
+            {{/if}}
+
+            {{#if (or document.isOwner commons.length)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
+            {{/if}}
+
+            {{#if (or document.isOwner modules.length)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-modules.hbs }}
+            {{/if}}
+        </div>
+    </section>
+</form>

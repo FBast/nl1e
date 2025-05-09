@@ -5,7 +5,7 @@
 .scroll-auto {
   overflow-y: auto;
   scrollbar-width: auto;
-  scrollbar-color: $colorPanelAccent $colorBackground;
+  scrollbar-color: $colorPanelAccent $colorTransparent;
   -ms-overflow-style: none;
   padding-right: 5px;
 

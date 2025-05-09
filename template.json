@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character", "npc", "merchant"],
+    "types": ["character", "npc"],
     "templates": {
       "base": {
         "resources": {
@@ -362,16 +362,6 @@
       "general": {
         "NPCTemplate": "balanced"
       }
-    },
-    "merchant": {
-      "templates": ["base"],
-      "refRollTables": [],
-      "general": {
-        "sellMultiplier": 100,
-        "buyMultiplier": 50,
-        "unlimitedItems": false,
-        "itemPerRoll": 1
-      }
     }
   },
   "Item": {
@@ -552,7 +542,7 @@
     }
   },
   "JournalEntryPage": {
-    "types": ["location", "organization", "character"],
+    "types": ["location", "organization", "character", "merchant"],
     "location": {
       "banner": "",
       "translation": "",
@@ -579,6 +569,12 @@
       "nickname": "",
       "race": "",
       "attributes": "",
+      "content": ""
+    },
+    "merchant": {
+      "banner": "",
+      "buyMultiplier": 100,
+      "sellMultiplier": 100,
       "content": ""
     }
   }

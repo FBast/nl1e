@@ -1,6 +1,5 @@
 import {Pl1eCharacter} from "./character.mjs";
 import {Pl1eNPC} from "./npc.mjs";
-import {Pl1eMerchant} from "./merchant.mjs";
 import {Pl1eActor} from "./actor.mjs";
 
 const handler = {
@@ -14,8 +13,6 @@ const handler = {
                 return new Pl1eCharacter(...args);
             case "npc":
                 return new Pl1eNPC(...args);
-            case "merchant":
-                return new Pl1eMerchant(...args);
             default:
                 return new Pl1eActor(...args);
         }

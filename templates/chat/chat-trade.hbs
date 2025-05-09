@@ -5,9 +5,8 @@
             {{#unless (eq price undefined)}}
                 {{#each price}}
                     {{#with (config "money" @key)}}
-                        <i class="{{@key}}" data-tooltip='{{localize label}}'>
-                            <label class="color-black">{{#if (eq @root.transaction "purchase")}}
-                                -{{/if}}{{../this}}</label>
+                        <i class="{{icon}}" data-tooltip='{{localize label}}'>
+                            <label class="color-black">{{../this}}</label>
                         </i>
                     {{/with}}
                 {{/each}}

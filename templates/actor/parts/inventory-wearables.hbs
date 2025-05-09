@@ -18,11 +18,7 @@
                     <div class="title">
                         <img class="item-edit hover-action" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>
                         <label class="item-tooltip-activate hover-info">
-                            {{#if (and (eq @root.actor.type "merchant") (not ../system.general.unlimitedItems))}}
-                                {{units}}x {{realName}}
-                            {{else}}
-                                {{realName}}
-                            {{/if}}
+                            {{realName}}
                         </label>
                     </div>
                     <div class="icons">

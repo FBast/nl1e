@@ -87,8 +87,7 @@ export class Pl1eActor extends Actor {
         // Dispositions constants
         const dispositions = {
             "character": 1,
-            "npc": -1,
-            "merchant": 0
+            "npc": -1
         }
 
         // Merging all data
@@ -564,29 +563,4 @@ export class Pl1eActor extends Actor {
         // Delete all items in a single call
         await this.deleteEmbeddedDocuments("Item", itemIds);
     }
-
-    /**
-     * Add a new ref RollTable
-     * @param {RollTable} rollTable
-     * @returns {Promise<void>}
-     */
-    async addRefRollTable(rollTable) {
-        this.system.refRollTables.push(rollTable._id);
-        await this.update({
-            "system.refRollTables": this.system.refRollTables
-        });
-    }
-
-    /**
-     * Remove a ref RollTable
-     * @param {RollTable} rollTable)
-     * @returns {Promise<void>}
-     */
-    async removeRefRollTable(rollTable) {
-        this.system.refRollTables.splice(this.system.refRollTables.indexOf(rollTable._id), 1);
-        await this.update({
-            "system.refRollTables": this.system.refRollTables
-        });
-    }
-
 }
