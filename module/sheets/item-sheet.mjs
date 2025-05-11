@@ -63,16 +63,6 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
             });
         }
         if (game.user.isGM) {
-            if (!this.item.isEmbedded) {
-                buttons.unshift({
-                    label: 'PL1E.ResetActorsItems',
-                    class: 'button-reset',
-                    icon: 'fal fa-clone',
-                    onclick: async () => {
-                        await Pl1eSynchronizer.resetActorsItems(this.item, true);
-                    }
-                });
-            }
             buttons.unshift({
                 label: 'PL1E.Debug',
                 class: 'button-debug',
@@ -126,6 +116,8 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
     activateListeners(html) {
         super.activateListeners(html);
 
+        html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev));
+
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
@@ -133,11 +125,9 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
         Pl1eFormValidation.positiveDecimal();
 
         // Roll handlers, click handlers, etc. would go here.
-        html.find(`.actor-edit`).on("click", ev => Pl1eEvent.onActorEdit(ev, this.item));
-        html.find(`.item-edit`).on("click", ev => Pl1eEvent.onItemEdit(ev, this.item));
         html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
         html.find(`.item-switch-behavior`).on("click", ev => Pl1eEvent.onItemSwitchBehavior(ev, this.item));
-        html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev, this));
+        html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find('.spin-number').on("click", ev => Pl1eEvent.onSpinNumber(ev, this.item));
         html.find(".trait-selector").on("click", ev => Pl1eEvent.onTraitSelector(ev, this.item));
         html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));

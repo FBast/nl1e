@@ -150,23 +150,23 @@ export class Pl1eHelpers {
     }
 
     /**
-     * Get a document from a compendium if not in the game using id
-     * @param {string} type
-     * @param {string} id
-     * @param {Object} options
-     * @returns {Promise<Pl1eItem | Pl1eActor | TokenDocument | Macro | RollTable>}
+     * Get a document from a compendium or from the world by ID
+     * @param {string} type - The document type ("Item", "Actor", "Token", "Macro", etc.)
+     * @param {string} id - The document ID to search
+     * @param {Object} options - Optional parameters (e.g., scene)
+     * @returns {Promise<foundry.abstract.Document>} - The resolved document or undefined
      */
     static async getDocument(type, id, options = {}) {
         let document = undefined;
 
-        // Search inside compendiums
+        // Check compendiums first
         for (const pack of game.packs.filter(pack => pack.documentName === type)) {
             document = await pack.getDocument(id);
             if (document) break;
         }
 
-        if (document === undefined || document === null) {
-            // Search inside current game
+        // Check world collections
+        if (!document) {
             switch (type) {
                 case "Item":
                     document = game.items.get(id);
@@ -175,8 +175,8 @@ export class Pl1eHelpers {
                     document = game.actors.get(id);
                     break;
                 case "Token":
-                    if (!options.scene) throw new Error("PL1E | getDocument with Token type need a scene as options")
-                    document = options.scene.tokens.get(id)
+                    if (!options.scene) throw new Error("PL1E | getDocument with Token type requires a scene in options");
+                    document = options.scene.tokens.get(id);
                     break;
                 case "Macro":
                     document = game.macros.get(id);
@@ -186,6 +186,11 @@ export class Pl1eHelpers {
                     break;
                 case "Scene":
                     document = game.scenes.get(id);
+                    break;
+                case "JournalEntryPage":
+                    document = game.journal.reduce((found, entry) => {
+                        return found || entry.pages.get(id);
+                    }, null);
                     break;
             }
         }

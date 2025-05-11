@@ -15,25 +15,11 @@
 
         <br>
         <div class="drop-target">
-            {{#if (or document.isOwner weapons.length)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-weapons.hbs }}
-            {{/if}}
-
-            {{#if (or document.isOwner wearables.length)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-wearables.hbs }}
-            {{/if}}
-
-            {{#if (or document.isOwner consumables.length)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-consumables.hbs }}
-            {{/if}}
-
-            {{#if (or document.isOwner commons.length)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
-            {{/if}}
-
-            {{#if (or document.isOwner modules.length)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-modules.hbs }}
-            {{/if}}
+            {{> systems/pl1e/templates/actor/parts/inventory-weapons.hbs }}
+            {{> systems/pl1e/templates/actor/parts/inventory-wearables.hbs }}
+            {{> systems/pl1e/templates/actor/parts/inventory-consumables.hbs }}
+            {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
+            {{> systems/pl1e/templates/actor/parts/inventory-modules.hbs }}
         </div>
     </section>
 </form>

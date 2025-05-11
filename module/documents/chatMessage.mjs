@@ -54,7 +54,7 @@ export class Pl1eChatMessage extends ChatMessage {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: characterData.actor}),
-            type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: foundry.CONST.CHAT_MESSAGE_STYLES.OOC,
             flavor: flavor,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {
@@ -93,7 +93,7 @@ export class Pl1eChatMessage extends ChatMessage {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: targetData.actor}),
-            type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: foundry.CONST.CHAT_MESSAGE_STYLES.OOC,
             flavor: flavor,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {
@@ -121,7 +121,7 @@ export class Pl1eChatMessage extends ChatMessage {
         await roll.toMessage({
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: actor}),
-            type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: foundry.CONST.CHAT_MESSAGE_STYLES.OOC,
             flavor: `[${game.i18n.localize("PL1E.Skill")}] ${game.i18n.localize(skillConfig.label)}`,
             rollMode: game.settings.get('core', 'rollMode'),
             flags: {"core.canPopout": true}
@@ -129,17 +129,42 @@ export class Pl1eChatMessage extends ChatMessage {
     }
 
     /**+
-     * Send a message for a trade of an item between two actors
+     * Send a message for a trade of an item between two actor or merchant
      * @param {Pl1eItem} item
-     * @param {Pl1eActor} sourceActor
-     * @param {Pl1eActor} targetActor
+     * @param {Pl1eActor | JournalEntryPage} sourceActor
+     * @param {Pl1eActor | JournalEntryPage} targetActor
      * @param {string} transaction
      * @param {Object} price
      * @returns {Promise<void>}
      */
     static async tradeMessage(item, sourceActor, targetActor, transaction, price = undefined) {
-        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-trade.hbs`,
-            {item: item, sourceActor: sourceActor, targetActor: targetActor, transaction: transaction, price: price});
+        const resolveEntity = (entity) => {
+            if (entity instanceof Actor) {
+                return {
+                    img: entity.img,
+                    name: entity.name,
+                    type: "actor",
+                    id: entity.id
+                };
+            }
+            if (entity instanceof JournalEntryPage) {
+                return {
+                    img: "icons/svg/hanging-sign.svg",
+                    name: entity.name,
+                    type: "journal",
+                    id: entity.id
+                };
+            }
+            return { img: "icons/svg/mystery-man.svg", name: "Unknown", type: "unknown", id: null };
+        };
+
+        const html = await renderTemplate(`systems/pl1e/templates/chat/chat-trade.hbs`, {
+            item,
+            source: resolveEntity(sourceActor),
+            target: resolveEntity(targetActor),
+            transaction,
+            price
+        });
 
         const transactionTypes = {
             'purchase': game.i18n.localize("PL1E.Purchase"),
@@ -149,10 +174,12 @@ export class Pl1eChatMessage extends ChatMessage {
         };
 
         // Create the ChatMessage data object
+        const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: sourceActor}),
-            type: foundry.CONST.CHAT_MESSAGE_TYPES.OTHER,
+            type: foundry.CONST.CHAT_MESSAGE_STYLES.OOC,
+            whisper: [...gmIds],
             flavor: `[${transactionTypes[transaction]}] ${item.name}`,
             flags: {"core.canPopout": true},
             content: html
@@ -180,7 +207,7 @@ export class Pl1eChatMessage extends ChatMessage {
         const chatData = {
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({actor: actor}),
-            type: foundry.CONST.CHAT_MESSAGE_TYPES.OTHER,
+            type: foundry.CONST.CHAT_MESSAGE_STYLES.OOC,
             flavor: flavor,
             flags: {"core.canPopout": true},
             content: html
@@ -221,8 +248,6 @@ export class Pl1eChatMessage extends ChatMessage {
 }
 
 Hooks.on("renderChatMessage", (app, html, data) => {
-    html.find(".token-focus").on("click", ev => Pl1eEvent.onFocusToken(ev));
-    html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, app));
     html.find(".card-buttons button").on("click", ev => Pl1eEvent.onChatCardAction(ev));
     if (!game.user.isGM) {
         html.find(".gm-only").hide(); // Hide the buttons for non-GM users

@@ -1,6 +1,10 @@
 <div class="pl1e chat-card item">
     <header class="card-header flexrow">
-        <img class="actor-edit" src="{{sourceActor.img}}" title="{{sourceActor.name}}" width="36" height="36"/>
+        {{#if source.id}}
+            <img class="{{#if (eq source.type 'actor')}}actor-edit{{else if (eq source.type 'journal')}}entry-page-edit{{/if}}"
+                 src="{{source.img}}" title="{{source.name}}" width="36" height="36" data-{{source.type}}-id="{{source.id}}"/>
+        {{/if}}
+
         <div class="flex-large item-effects-character">
             {{#unless (eq price undefined)}}
                 {{#each price}}
@@ -12,8 +16,14 @@
                 {{/each}}
             {{/unless}}
         </div>
-        <img class="item-edit" src="{{item.img}}" data-item-id="{{item._id}}" title="{{item.name}}" width="36"
-             height="36"/>
-        <img class="actor-edit" src="{{targetActor.img}}" title="{{targetActor.name}}" width="36" height="36"/>
+
+        {{#if item}}
+            <img class="item-edit" src="{{item.img}}" data-item-id="{{item.id}}" title="{{item.name}}" width="36" height="36"/>
+        {{/if}}
+
+        {{#if target.id}}
+            <img class="{{#if (eq target.type 'actor')}}actor-edit{{else if (eq target.type 'journal')}}entry-page-edit{{/if}}"
+                 src="{{target.img}}" title="{{target.name}}" width="36" height="36" data-{{target.type}}-id="{{target.id}}"/>
+        {{/if}}
     </header>
 </div>

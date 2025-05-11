@@ -14,6 +14,9 @@
       height: 50px;
       transition: .3s ease;
       cursor: pointer;
+      background: black;
+      background-clip: content-box;
+      background-origin: content-box;
 
       &:hover {
         filter: brightness(1.2);
@@ -34,7 +37,8 @@
 
     .item-effects-character {
       display: flex;
-      justify-content: left;
+      justify-content: space-evenly;
+      padding: 0 5px;
       align-items: center;
 
       i {

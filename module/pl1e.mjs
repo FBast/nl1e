@@ -22,8 +22,8 @@ import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
 import {Pl1eHelpers} from "./helpers/helpers.mjs";
-import {Pl1eTrade} from "./helpers/trade.mjs";
 import {TokenTooltip} from "./apps/tokenTooltip.mjs";
+import {giftItem} from "./helpers/trade.mjs";
 
 /* -------------------------------------------- */
 /*  Globals                                     */
@@ -118,11 +118,8 @@ Hooks.once("ready", async function () {
 Hooks.once("socketlib.ready", () => {
     PL1E.socket = socketlib.registerSystem("pl1e");
     PL1E.socket.register("giftItem", async function (data) {
-        await Pl1eTrade.giftItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
+        await giftItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
     });
-    // PL1E.socket.register("sendContenant", async function (data) {
-    //     await Pl1eTrade.sendContenant(data.sourceActorUuid, data.targetActorUuid, data.itemUuid);
-    // });
     PL1E.socket.register("tokenUpdate", async function (data) {
         const token = await Pl1eHelpers.getDocument("Token", data.tokenId, {
             scene: await Pl1eHelpers.getDocument("Scene", data.sceneId)

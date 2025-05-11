@@ -1,11 +1,22 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {RestForm} from "../apps/restForm.mjs";
 import {Pl1eHelpers as P1eHelpers, Pl1eHelpers} from "../helpers/helpers.mjs";
-import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {PL1E} from "../pl1e.mjs";
-import {Pl1eTrade} from "../helpers/trade.mjs";
 import {PL1ESheetMixin} from "./sheet.mjs";
+import {filterDocuments, getFilters, toggleFilter} from "../helpers/filterCache.mjs";
+import {buyItem, giftItem} from "../helpers/trade.mjs";
+
+const FILTER_CATEGORIES = [
+    "background", "features", "abilities", "effects",
+    "weapons", "wearables", "consumables", "commons", "modules"
+];
+
+const ITEM_TYPES = new Set([
+    "race", "culture", "class", "mastery",
+    "feature", "ability",
+    "weapon", "wearable", "consumable", "common", "module"
+]);
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -17,23 +28,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         super(...args);
         this.openTooltips = new Set();
     }
-
-    /**
-     * Track the set of item filters which are applied
-     * @type {Object<string, Set>}
-     * @protected
-     */
-    _filters = {
-        background: new Set(),
-        features: new Set(),
-        abilities: new Set(),
-        effects: new Set(),
-        weapons: new Set(),
-        wearables: new Set(),
-        consumables: new Set(),
-        commons: new Set(),
-        modules: new Set()
-    };
 
     /** @inheritDoc */
     static get defaultOptions() {
@@ -115,7 +109,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         context.items = this.actor.displayedItems;
         context.effects = this.actor.effects;
         context.inCombat = this.actor.bestToken && this.actor.bestToken.inCombat;
-        context.filters = this._filters;
+        context.filters = await getFilters(this.actor.id, FILTER_CATEGORIES);
 
         await this._prepareItems(context);
 
@@ -132,36 +126,33 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
     /* -------------------------------------------- */
 
     /** @inheritDoc */
-    activateListeners(html) {
+    async activateListeners(html) {
         super.activateListeners(html);
 
         // Render the item sheet for viewing/editing prior to the editable check.
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.actor));
         html.find(".effect-edit").on("click", ev => this._onEffectEdit(ev));
-        html.find(".effect-remove").on("click", ev => this._onEffectRemove(ev));
         html.find(".item-link").on("click", ev => this._onItemLink(ev));
         html.find(".item-origin").on("click", ev => this._onItemOrigin(ev));
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
-        html.find(".convert-currency").on("click", ev => this._onConvertCurrency(ev));
 
         // Highlights indications
         html.find(".highlight-link").on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));
         html.find(".highlight-link").on("mouseleave", ev => Pl1eEvent.onRemoveHighlights(ev));
 
-        // Handle drop event on a not owned actor
-        if (!this.actor.isOwner) {
-            html.find('.sheet-header, .sheet-tabs, .sheet-body').each((i, el) => {
-                el.addEventListener('dragover', event => event.preventDefault());
-                el.addEventListener('drop', this._onDrop.bind(this));
-            });
-        }
-
-        // Handle drag event items from owned actor or merchant
+        // Handle drag event items from owned actor
         if (this.actor.isOwner) {
             let handler = ev => this._onDragStart(ev);
             html.find('.item').each((i, div) => {
                 div.setAttribute("draggable", true);
                 div.addEventListener("dragstart", handler, false);
+            });
+        }
+        // Handle drop event on a not owned actor
+        else {
+            html.find('.sheet-header, .sheet-tabs, .sheet-body').each((i, el) => {
+                el.addEventListener('dragover', event => event.preventDefault());
+                el.addEventListener('drop', this._onDrop.bind(this));
             });
         }
 
@@ -170,13 +161,17 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         if (!this.isEditable) return;
 
         // Item filters
-        const filterLists = html.find(".item-filter-list");
-        filterLists.each(this._initializeFilterItemList.bind(this));
-        filterLists.on("click", ".item-filter", this._onToggleFilter.bind(this));
+        const filters = await getFilters(this.actor.id, FILTER_CATEGORIES);
+        html.find(".item-filter-list").each((i, ul) => {
+            this._initializeFilterItemList(ul, filters);
+        });
+        html.find(".item-filter").on("click", this._onToggleFilter.bind(this));
 
         // Item management
         html.find(".item-create").on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
         html.find(".item-remove").on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
+        html.find(".effect-remove").on("click", ev => this._onEffectRemove(ev));
+        html.find(".convert-currency").on("click", ev => this._onConvertCurrency(ev));
 
         // Chat messages
         html.find(".skill-roll").on("click", ev => Pl1eEvent.onSkillRoll(ev, this.actor));
@@ -197,34 +192,37 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         html.find('.open-rest').on('click', async ev => this._onOpenRest(ev));
     }
 
-    /**
-     * Initialize Item list filters by activating the set of filters which are currently applied
-     * @param {number} i  Index of the filter in the list.
-     * @param {HTML} ul   HTML object for the list item surrounding the filter.
-     * @private
-     */
-    _initializeFilterItemList(i, ul) {
-        const set = this._filters[ul.dataset.filter];
-        const filters = ul.querySelectorAll(".item-filter");
-        for (let li of filters) {
-            if (set.has(li.dataset.filter)) li.classList.add("color-disabled");
-        }
+    _onDragStart(event) {
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
+        const item = this.actor.items.get(itemId);
+        if (!item) return;
+
+        const dragData = {
+            type: "Item",
+            uuid: item.uuid,
+            sourceId: item.sourceId
+        };
+
+        event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
     }
 
-    /**
-     * Handle toggling of filters to display a different set of owned items.
-     * @param {Event} event     The click event which triggered the toggle.
-     * @returns {Pl1eActorSheet}  This actor sheet with toggled filters.
-     * @private
-     */
-    _onToggleFilter(event) {
+
+    _initializeFilterItemList(ul, filters) {
+        const type = ul.dataset.filter;
+        const set = filters[type] ?? new Set();
+        ul.querySelectorAll(".item-filter").forEach(li => {
+            if (set.has(li.dataset.filter)) li.classList.add("color-disabled");
+        });
+    }
+
+    async _onToggleFilter(event) {
         event.preventDefault();
         const li = event.currentTarget;
-        const set = this._filters[li.parentElement.dataset.filter];
-        const filter = li.dataset.filter;
-        if ( set.has(filter) ) set.delete(filter);
-        else set.add(filter);
-        return this.render();
+        const type = li.parentElement.dataset.filter;
+        const value = li.dataset.filter;
+
+        await toggleFilter(this.actor.id, type, value);
+        this.render();
     }
 
     /** @inheritDoc */
@@ -298,9 +296,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         const droppable = Pl1eHelpers.getConfig("actorTypes", this.actor.type, "droppable");
         if (!droppable.includes(item.type)) return;
 
-        // Check item validation
-        if (!item.isValidForActor(this.actor)) return;
-
         if (item.isEmbedded) {
             // Gift between 2 actors
             if (!this.actor.isOwner || !item.isOwner) {
@@ -317,15 +312,17 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
                 });
             } else {
                 // GM or same player dont need socket
-                await Pl1eTrade.giftItem(item.parent, this.actor, item);
+                await giftItem(item.parent, this.actor, item);
             }
         } else {
-            const originalItem = item.compendium ? item : await Pl1eHelpers.getDocument("Item", item.id);
-
             // Merchant buy
             if (foundry.utils.getProperty(item, "flags.pl1e.fromMerchant")) {
-                await Pl1eTrade.buyItem(this.actor, item);
-            } else {
+                const merchantEntryPage = await Pl1eHelpers.getDocument("JournalEntryPage", item.getFlag("pl1e", "merchantPageId"))
+                await buyItem(this.actor, merchantEntryPage, item);
+            }
+            // New item dropped
+            else {
+                const originalItem = item.compendium ? item : await Pl1eHelpers.getDocument("Item", item.id);
                 await this.actor.addItem(originalItem);
             }
         }
@@ -347,39 +344,22 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         context.commons = [];
         context.modules = [];
 
-        const typeToCollectionMap = {
-            'race': 'background',
-            'culture': 'background',
-            'class': 'background',
-            'mastery': 'background',
-            'feature': 'features',
-            'ability': 'abilities',
-            'weapon': 'weapons',
-            'wearable': 'wearables',
-            'consumable': 'consumables',
-            'common': 'commons',
-            'module': 'modules'
-        };
-
-
         // Categorize all items into their respective collections
-        await this._categorizeItems(context, typeToCollectionMap);
+        await this._categorizeItems(context, PL1E.itemCollections);
 
         // Once all items are categorized, proceed to filter them
-        await this._filterItems(context, typeToCollectionMap, this.actor);
+        await this._filterItems(context, PL1E.itemCollections);
 
-        // Apply feature and capacities filters
-        context.background = this._filterDocuments(context.background, this._filters.background);
-        context.features = this._filterDocuments(context.features, this._filters.features);
-        context.abilities = this._filterDocuments(context.abilities, this._filters.abilities);
-        context.effects = this._filterDocuments(context.effects, this._filters.effects);
+        context.background = filterDocuments(context.background, context.filters.background);
+        context.features = filterDocuments(context.features, context.filters.features);
+        context.abilities = filterDocuments(context.abilities, context.filters.abilities);
+        context.effects = filterDocuments(context.effects, context.filters.effects);
 
-        // Apply inventory filters
-        context.weapons = this._filterDocuments(context.weapons, this._filters.weapons);
-        context.wearables = this._filterDocuments(context.wearables, this._filters.wearables);
-        context.consumables = this._filterDocuments(context.consumables, this._filters.consumables);
-        context.commons = this._filterDocuments(context.commons, this._filters.commons);
-        context.modules = this._filterDocuments(context.modules, this._filters.modules);
+        context.weapons = filterDocuments(context.weapons, context.filters.weapons);
+        context.wearables = filterDocuments(context.wearables, context.filters.wearables);
+        context.consumables = filterDocuments(context.consumables, context.filters.consumables);
+        context.commons = filterDocuments(context.commons, context.filters.commons);
+        context.modules = filterDocuments(context.modules, context.filters.modules);
 
         // Sort each type of item
         Pl1eHelpers.sortDocuments(context);
@@ -443,7 +423,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         }
     }
 
-    async _filterItems(context, typeToCollectionMap, actor) {
+    async _filterItems(context, typeToCollectionMap) {
         const getItemPriority = (item) => {
             if (item.isEnabled) return 1;
             if (item.isEquipped) return 2;
@@ -511,86 +491,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
             // Update the collection with processed items
             collection.splice(0, collection.length, ...processedItems);
         }
-    }
-
-    /**
-     * Determine whether an Owned Document will be shown based on the current set of filters.
-     * @param {object[]} documents   Copies of objects data to be filtered.
-     * @param {Set<string>} filters  Filters applied to the object list.
-     * @returns {object[]}           Subset of input objects limited by the provided filters.
-     * @protected
-     */
-    _filterDocuments(documents, filters) {
-        return documents.filter(item => {
-            switch (item.type) {
-                case "race": {
-                    if (filters.has("race")) return false;
-                    break;
-                }
-                case "culture": {
-                    if (filters.has("culture")) return false;
-                    break;
-                }
-                case "class": {
-                    if (filters.has("class")) return false;
-                    break;
-                }
-                case "mastery": {
-                    if (filters.has("mastery")) return false;
-                    break;
-                }
-                case "feature": {
-                    for (const featureType of Object.keys(PL1E.featureTypes)) {
-                        if (filters.has(featureType) && (item.system.attributes.featureType === featureType)) return false;
-                    }
-                    break;
-                }
-                case "ability": {
-                    for (const activation of Object.keys(PL1E.activations)) {
-                        if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
-                    }
-                    break;
-                }
-                case "weapon": {
-                    if (filters.has("melee") && item.system.attributes.meleeUse) return false;
-                    if (filters.has("ranged") && item.system.attributes.rangedUse) return false;
-                    if (filters.has("magic") && item.system.attributes.magicUse) return false;
-                    if (filters.has("equipped") && item.isEquipped) return false;
-                    break;
-                }
-                case "wearable": {
-                    for (const slot of Object.keys(PL1E.slots)) {
-                        if (filters.has(slot) && (item.system.attributes.slot === slot)) return false;
-                    }
-                    if (filters.has("equipped") && item.isEquipped) return false;
-                    break;
-                }
-                case "consumable": {
-                    for (const activation of Object.keys(PL1E.consumableActivations)) {
-                        if (filters.has(activation) && (item.system.attributes.activation === activation)) return false;
-                    }
-                    break;
-                }
-                case "common": {
-                    for (const commonType of Object.keys(PL1E.commonTypes)) {
-                        if (filters.has(commonType) && (item.system.attributes.commonType === commonType)) return false;
-                    }
-                    break;
-                }
-                case "module": {
-                    for (const moduleType of Object.keys(PL1E.moduleTypes)) {
-                        if (filters.has(moduleType) && (item.system.attributes.moduleTypes.includes(moduleType))) return false;
-                    }
-                    break;
-                }
-                default: {
-                    if (filters.has("passive") && item.flags?.pl1e?.permanent) return false;
-                    if (filters.has("temporary") && !item.flags?.pl1e?.permanent) return false;
-                    if (filters.has("inactive") && item.disabled) return false;
-                }
-            }
-            return true;
-        })
     }
 
     /**

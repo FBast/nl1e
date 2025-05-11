@@ -49,8 +49,6 @@ export function PL1ESheetMixin(Base) {
                 const itemId = $(el).closest(".item").data("item-id");
                 if (itemId) this.persistedState.openTooltips.add(itemId);
             });
-
-            console.log("Stored tooltips:", this.persistedState.openTooltips); // Debugging
         }
 
         /**

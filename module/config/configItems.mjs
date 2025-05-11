@@ -81,6 +81,20 @@ export function getConfigItems() {
         }
     }
 
+    PL1E.itemCollections = {
+        'race': 'background',
+        'culture': 'background',
+        'class': 'background',
+        'mastery': 'background',
+        'feature': 'features',
+        'ability': 'abilities',
+        'weapon': 'weapons',
+        'wearable': 'wearables',
+        'consumable': 'consumables',
+        'common': 'commons',
+        'module': 'modules'
+    }
+
     PL1E.itemBase = {
         "majorActionUsed": {
             "label": "PL1E.MajorActionUsed",

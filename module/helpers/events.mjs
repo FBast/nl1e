@@ -65,7 +65,8 @@ export class Pl1eEvent {
      * @param event The originating click event
      */
     static async onActorEdit(event) {
-        const actorId = $(event.currentTarget).closest(".item").data("actor-id");
+        let actorId = $(event.currentTarget).data("actor-id") ||
+            $(event.currentTarget).closest(".item").data("actor-id");
         const actor = await Pl1eHelpers.getDocument("Actor", actorId);
 
         if (actor.sheet.rendered) actor.sheet.bringToTop();
@@ -75,37 +76,32 @@ export class Pl1eEvent {
     /**
      * Open item sheet
      * @param event The originating click event
-     * @param {Actor|Item} document the document of the item
+     * @param {Actor|JournalEntryPage} document the parent of the item
      */
-    static async onItemEdit(event, document) {
+    static async onItemEdit(event, document= null) {
         event.preventDefault();
         event.stopPropagation();
 
         let itemId = $(event.currentTarget).data("item-id") ||
             $(event.currentTarget).closest(".item").data("item-id");
 
-        // Chat message need to retrieve the token actor to find the item
-        if (document instanceof ChatMessage) {
-            const sceneId = $(event.currentTarget).closest(".item").data("scene-id");
-            const tokenId = $(event.currentTarget).closest(".item").data("token-id");
-            const scene = await Pl1eHelpers.getDocument("Scene", sceneId);
-            const token = await Pl1eHelpers.getDocument("Token", tokenId, {
-                scene: scene
-            });
-            if (token !== undefined) document = token.actor;
-        }
-
         let item;
-        if (document instanceof Pl1eActor)
-            item = document.items.get(itemId);
-        else if (document instanceof Pl1eItem) {
+        if (!document) {
             item = await Pl1eHelpers.getDocument("Item", itemId);
         }
+        else if (document instanceof Pl1eActor)
+            item = document.items.get(itemId);
         else if (document instanceof JournalEntryPage) {
             const itemsData = document.getFlag("pl1e", "items") || [];
             const itemData = itemsData.find(i => i._id === itemId);
             if (!itemData) throw new Error(`PL1E | Item ${itemId} not found in journal page`);
-            item = new CONFIG.Item.documentClass(itemData, { parent: null });
+
+            const rawData = foundry.utils.deepClone(itemData);
+            rawData.ownership = {
+                [game.user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+            };
+
+            item = new CONFIG.Item.documentClass(rawData, { parent: null });
         }
         else {
             throw new Error(`PL1E | unknown ${document}`);

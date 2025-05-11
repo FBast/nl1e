@@ -579,15 +579,6 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Check if the item is valid for a given actor
-     * @param actor
-     * @return {boolean}
-     */
-    isValidForActor(actor) {
-        return true;
-    }
-
-    /**
      * Add an item ref
      * @param item
      * @returns {Promise<void>}
