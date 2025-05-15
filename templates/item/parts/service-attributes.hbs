@@ -1,0 +1,106 @@
+<div class="list-items">
+    <div class="list-header">
+        <h4>{{localize "PL1E.Attributes"}}</h4>
+    </div>
+
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Description"}}</label>
+                </div>
+                <div class="fields">
+                    <button class="launch-text-editor" data-target="system.description">
+                        <i class="fas fa-edit"></i> {{localize "PL1E.EditDescription"}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.GoldPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.goldPrice" value="{{system.attributes.goldPrice}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.SilverPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.silverPrice" value="{{system.attributes.silverPrice}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.CopperPrice"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.copperPrice" value="{{system.attributes.copperPrice}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="list-items">
+    <div class="list-header">
+        <h4>{{localize "PL1E.Service"}}</h4>
+    </div>
+
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.ServiceType"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.attributes.serviceType">
+                        {{customSelectOptions (config "serviceTypes") selected=system.attributes.serviceType localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.HealthGain"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.healthGain" value="{{system.attributes.healthGain}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.StaminaGain"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.staminaGain" value="{{system.attributes.staminaGain}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.ManaGain"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.manaGain" value="{{system.attributes.manaGain}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

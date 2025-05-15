@@ -1,0 +1,62 @@
+<form class="pl1e {{cssClass}} flexcol" autocomplete="off">
+    {{> journalEntryPageHeader}}
+
+    <div class="sheet-body">
+        <div class="list-items">
+            <div class="list-header">
+                <h4>{{localize "PL1E.InnDetails"}}</h4>
+            </div>
+            <div class="list-column">
+
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Banner"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="text" name="system.banner" value="{{system.banner}}" />
+                            {{filePicker target="system.banner" type="image"}}
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionBanner"}}</p>
+                </div>
+
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Content"}}</label>
+                        </div>
+                        <div class="fields">
+                            <button type="button" class="launch-text-editor" data-target="system.content">
+                                <i class="fas fa-edit"></i> {{localize "PL1E.EditContent"}}
+                            </button>
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionContent"}}</p>
+                </div>
+
+                <!-- (Optionnel) Description future des niveaux de chambre -->
+                {{!--
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.DefaultRestLevel"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.defaultRest">
+                                {{#each PL1E.rest}}
+                                    <option value="{{@key}}" {{#if (eq ../system.defaultRest @key)}}selected{{/if}}>
+                                        {{localize this.tooltip}}
+                                    </option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <p class="item-hint">{{localize "PL1E.DescriptionDefaultRestLevel"}}</p>
+                </div>
+                --}}
+
+            </div>
+        </div>
+    </div>
+</form>

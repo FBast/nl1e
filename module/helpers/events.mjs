@@ -2,7 +2,7 @@ import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {Pl1eActor} from "../documents/actors/actor.mjs";
 import {TraitSelector} from "../apps/traitSelector.mjs";
-import {JournalEditor} from "../sheets/journal-editor-sheet.mjs";
+import {JournalEditor} from "../sheets/journal/journal-editor-sheet.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {Pl1eChatMessage} from "../documents/chatMessage.mjs";
 import {Pl1eMeasuredTemplateDocument} from "../documents/measuredTemplateDocument.mjs";

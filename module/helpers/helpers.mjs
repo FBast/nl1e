@@ -195,6 +195,10 @@ export class Pl1eHelpers {
             }
         }
 
+        // Using uuid in last case
+        if (!document)
+            document = await fromUuid(id);
+
         return document;
     }
 

@@ -21,6 +21,7 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/actor/parts/inventory-money.hbs",
         "systems/pl1e/templates/actor/parts/inventory-weapons.hbs",
         "systems/pl1e/templates/actor/parts/inventory-wearables.hbs",
+        "systems/pl1e/templates/actor/parts/inventory-services.hbs",
         "systems/pl1e/templates/actor/parts/stats-characteristics.hbs",
         "systems/pl1e/templates/actor/parts/stats-skills.hbs",
 
@@ -41,6 +42,7 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/item/parts/race-attributes.hbs",
         "systems/pl1e/templates/item/parts/weapon-attributes.hbs",
         "systems/pl1e/templates/item/parts/wearable-attributes.hbs",
+        "systems/pl1e/templates/item/parts/service-attributes.hbs",
 
         // Item parts
         "systems/pl1e/templates/item/components/active-aspect-invocation.hbs",
@@ -60,13 +62,9 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/item/components/icons-race.hbs",
         "systems/pl1e/templates/item/components/icons-weapon.hbs",
         "systems/pl1e/templates/item/components/icons-wearable.hbs",
+        "systems/pl1e/templates/item/components/icons-service.hbs",
         "systems/pl1e/templates/item/components/passive-aspect-macro.hbs",
         "systems/pl1e/templates/item/components/passive-aspect-modify.hbs",
-        "systems/pl1e/templates/item/components/passive-aspect-status.hbs",
-        
-        // Rest parts
-        "systems/pl1e/templates/rest/parts/crafting.hbs",
-        "systems/pl1e/templates/rest/parts/sleep-and-meal.hbs",
-        "systems/pl1e/templates/rest/parts/training.hbs"
+        "systems/pl1e/templates/item/components/passive-aspect-status.hbs"
     ]);
 };

@@ -59,6 +59,11 @@ export function getConfigBase() {
         "rest": "PL1E.Rest"
     }
 
+    PL1E.serviceTypes = {
+        "food": "PL1E.Food",
+        "rest": "PL1E.Rest"
+    }
+
     PL1E.visionMode = {
 
     }

@@ -11,7 +11,7 @@
     text-align: center;
     padding: 10px 15px;
     border: 1px solid $colorBorder;
-    border-radius: 0; // Reset the border-radius for all tabs
+    border-radius: 0;
     background-color: $colorPanelAccent;
 
     &.active {

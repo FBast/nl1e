@@ -78,6 +78,13 @@ export function getConfigItems() {
             "localDroppable": [],
             "stackable": [],
             "behaviors": ["regular"]
+        },
+        "service": {
+            "label": "PL1E.Service",
+            "droppable": [],
+            "localDroppable": [],
+            "stackable": [],
+            "behaviors": ["regular"]
         }
     }
 
@@ -324,6 +331,33 @@ export function getConfigItems() {
             "invertSign": true,
             "inDescription": true
         },
+        "healthGain": {
+            "label": "PL1E.HealthGain",
+            "type": "number",
+            "document": "actor",
+            "dataGroup": "resources",
+            "data": "health",
+            "invertSign": false,
+            "inDescription": true
+        },
+        "staminaGain": {
+            "label": "PL1E.StaminaGain",
+            "type": "number",
+            "document": "actor",
+            "dataGroup": "resources",
+            "data": "stamina",
+            "invertSign": false,
+            "inDescription": true
+        },
+        "manaGain": {
+            "label": "PL1E.ManaGain",
+            "type": "number",
+            "document": "actor",
+            "dataGroup": "resources",
+            "data": "mana",
+            "invertSign": true,
+            "inDescription": true
+        },
         "usageCost": {
             "label": "PL1E.UsageCost",
             "type": "number",
@@ -417,7 +451,7 @@ export function getConfigItems() {
             "type": "bool",
             "inDescription": true
         },
-        // Common Objects
+        // Commons
         "commonType": {
             "label": "PL1E.CommonType",
             "type": "select",
@@ -430,7 +464,14 @@ export function getConfigItems() {
             "type": "select",
             "select": "moduleTypes",
             "inDescription": true
-        }
+        },
+        // Services
+        "serviceType": {
+            "label": "PL1E.ServiceType",
+            "type": "select",
+            "select": "serviceTypes",
+            "inDescription": true
+        },
     }
 
     PL1E.abilitySkills = {

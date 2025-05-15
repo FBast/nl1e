@@ -59,10 +59,17 @@ export const registerHandlebars = function () {
         return new Handlebars.SafeString(`<ul>${listItems}</ul>`);
     });
 
-
-    Handlebars.registerHelper('length', function(arr) {
-        if (Array.isArray(arr) || typeof(arr) === "string") return arr.length;
-        else return Object.keys(arr).length;
+    Handlebars.registerHelper('length', function (value) {
+        if (Array.isArray(value) || typeof value === "string") {
+            return value.length;
+        }
+        if (value instanceof Map || value instanceof Set) {
+            return value.size;
+        }
+        if (typeof value === "object" && value !== null) {
+            return Object.keys(value).length;
+        }
+        return 0;
     });
 
     Handlebars.registerHelper('isEmpty', function(obj) {

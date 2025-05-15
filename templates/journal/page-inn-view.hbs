@@ -1,0 +1,38 @@
+<form class="pl1e {{cssClass}} flexcol" autocomplete="off">
+    <header class="journal-page-header">
+        <h{{title.level1}}>{{data.name}}</h{{title.level1}}>
+    </header>
+
+    <section class="journal-page-content">
+        {{#if (ne system.banner "")}}
+            <img src="{{system.banner}}" alt="Banner" style="width: 100%">
+        {{/if}}
+        {{{enriched}}}
+
+        <br>
+
+        <div class="toggle-section">
+            <div class="list-header">
+                <h4 class="header-title">
+                    {{localize "PL1E.InnBeds"}}
+                    <i class="fas fa-question-circle help-icon hover-info" data-tooltip="{{localize 'PL1E.InnBedsTooltip'}}"></i>
+                </h4>
+            </div>
+            <div class="toggle-group rest-toggle" style="--toggle-columns: 4;">
+                {{#each rest}}
+                    <div class="toggle-item {{#if (eq ../selectedRest @key)}}selected{{/if}}" data-value="{{@key}}" data-tooltip="{{localize this.tooltip}}">
+                        <img src="{{this.img}}" alt="{{this.tooltip}}" />
+                        <div class="label">{{localize this.label}}</div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+        <button class="confirm-rest"><i class="fas fa-bed"></i> {{localize "PL1E.RestHere"}}</button>
+
+        <br>
+
+        <div class="drop-target">
+            {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
+        </div>
+    </section>
+</form>

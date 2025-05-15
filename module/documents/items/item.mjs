@@ -744,7 +744,7 @@ export class Pl1eItem extends Item {
         }
 
         // Calculate attributes
-        characterData.attributes = await this._calculateAttributes(characterData);
+        characterData.attributes = await this.calculateAttributes(characterData);
 
         let chatMessage = null;
         // If we have a token, then we can process further and apply the effects
@@ -801,7 +801,7 @@ export class Pl1eItem extends Item {
             chatMessage = await Pl1eChatMessage.launcherRoll(characterData);
 
             // Apply the effect on the character
-            await this._applyAttributes(characterData);
+            await this.applyAttributes(characterData);
 
             // Add the data to the message
             await chatMessage.setFlag("pl1e", "characterData", Pl1eHelpers.stringifyWithCircular(characterData));
@@ -822,7 +822,7 @@ export class Pl1eItem extends Item {
             await Pl1eChatMessage.launcherRoll(characterData);
 
             // Apply the effect on the character
-            await this._applyAttributes(characterData);
+            await this.applyAttributes(characterData);
 
             // Resolve immediately
             await this.resolve(characterData, {
@@ -905,9 +905,8 @@ export class Pl1eItem extends Item {
      * Calculate the attributes (also filter before display)
      * @param {CharacterData} characterData
      * @returns {Promise<void>}
-     * @private
      */
-    _calculateAttributes(characterData) {
+    calculateAttributes(characterData) {
         // Calculate character attributes
         let calculatedAttributes = {};
         for (let [key, value] of Object.entries(characterData.attributes)) {
@@ -937,9 +936,8 @@ export class Pl1eItem extends Item {
      * Apply the attributes effects
      * @param {CharacterData} characterData
      * @returns {Promise<void>}
-     * @private
      */
-    async _applyAttributes(characterData) {
+    async applyAttributes(characterData) {
         for (const [key, value] of Object.entries(characterData.attributes)) {
             const attributeConfig = Pl1eHelpers.getConfig("attributes", key);
             if (attributeConfig?.data === undefined || value === 0) continue;

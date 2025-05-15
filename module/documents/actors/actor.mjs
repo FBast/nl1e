@@ -512,12 +512,11 @@ export class Pl1eActor extends Actor {
         }
     }
 
-    //TODO cette methode ne fonctionne plus en V12
     /**
      * Add an item and all child items as embedded documents
      * @param {Pl1eItem} item
      * @param {string} childId
-     * @returns {Promise<void>}
+     * @returns {Promise<Array<Document.ConfiguredInstanceForName<Extract<string, Document.Type>>>>}
      */
     async addItem(item, childId = undefined) {
         const gatherItemData = async (item, childId, behavior = "regular", data = []) => {
@@ -539,13 +538,13 @@ export class Pl1eActor extends Actor {
                 const itemChildren = Pl1eHelpers.getConfig("actorTypes", this.type, "itemChildren");
                 if (!itemChildren.includes(refItem.item.type)) continue;
 
-                await gatherItemData(refItem.item, parentId, refItem.behavior, data)
+                await gatherItemData(refItem.item, parentId, refItem.behavior, data);
             }
             return data;
         }
 
         const itemsData = await gatherItemData(item, childId);
-        await this.createEmbeddedDocuments("Item", itemsData);
+        return await this.createEmbeddedDocuments("Item", itemsData);
     }
 
     /**

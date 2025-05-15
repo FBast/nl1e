@@ -1,6 +1,6 @@
+import {preloadHandlebarsTemplates} from "./main/templates.mjs";
 import {Pl1eActor} from "./documents/actors/actor.mjs";
 import {Pl1eItem} from "./documents/items/item.mjs";
-import {preloadHandlebarsTemplates} from "./main/templates.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
 import {Pl1eActorProxy} from "./documents/actors/actorProxy.mjs";
 import {Pl1eItemProxy} from "./documents/items/itemProxy.mjs";
@@ -10,8 +10,11 @@ import {Pl1eToken} from "./documents/token.mjs";
 import {Pl1eEffect} from "./documents/effect.mjs";
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
+import {Pl1eMerchantPageSheet} from "./sheets/journal/merchant-page-sheet.mjs";
+import {Pl1eInnPageSheet} from "./sheets/journal/inn-page-sheet.mjs";
+import {Pl1eJournalPageSheet} from "./sheets/journal/journal-page-sheet.mjs";
 import {Pl1eChatMessage} from "./documents/chatMessage.mjs";
-import {Pl1eJournalPageSheet} from "./sheets/journal-page-sheet.mjs";
+import {Pl1eHelpers} from "./helpers/helpers.mjs";
 import {getConfigBase} from "./config/configBase.mjs";
 import {getConfigActor} from "./config/configActors.mjs";
 import {getConfigItems} from "./config/configItems.mjs";
@@ -21,8 +24,6 @@ import {getConfigRest} from "./config/configRest.mjs";
 import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
-import {Pl1eHelpers} from "./helpers/helpers.mjs";
-import {TokenTooltip} from "./apps/tokenTooltip.mjs";
 import {giftItem} from "./helpers/trade.mjs";
 
 /* -------------------------------------------- */
@@ -69,7 +70,16 @@ Hooks.once('init', async function () {
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("pl1e", Pl1eItemSheet, {makeDefault: true});
     DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", Pl1eJournalPageSheet, {
-        types: ["location", "organization", "character", "merchant"]
+        types: ["location", "organization", "character"],
+        makeDefault: true
+    });
+    DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", Pl1eMerchantPageSheet, {
+        types: ["merchant"],
+        makeDefault: true
+    });
+    DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", Pl1eInnPageSheet, {
+        types: ["inn"],
+        makeDefault: true
     });
 
     // Register configs
@@ -99,9 +109,6 @@ Hooks.once("ready", async function () {
         statusEffect.label = game.i18n.localize(statusEffect.label);
         statusEffect.description = game.i18n.localize(statusEffect.description);
     }
-
-    // Create token tooltip
-    new TokenTooltip();
 
     // Register dynamic configs
     PL1E.sequencerMacros = await Pl1eHelpers.getDocumentsDataFromPack("legacy-sequencer-macros", true);

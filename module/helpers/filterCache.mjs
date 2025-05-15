@@ -63,6 +63,8 @@ export function filterDocuments(documents, filters) {
                 return !Object.keys(PL1E.commonTypes).some(ct => filters.has(ct) && item.system.attributes.commonType === ct);
             case "module":
                 return !Object.keys(PL1E.moduleTypes).some(mt => filters.has(mt) && item.system.attributes.moduleTypes.includes(mt));
+            case "service":
+                return !Object.keys(PL1E.serviceTypes).some(st => filters.has(st) && item.system.attributes.serviceType === st);
             default:
                 if (filters.has("passive") && item.flags?.pl1e?.permanent) return false;
                 if (filters.has("temporary") && !item.flags?.pl1e?.permanent) return false;

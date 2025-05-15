@@ -64,6 +64,8 @@
                     {{> "systems/pl1e/templates/item/components/icons-common.hbs"}}
                 {{else if (eq item.type "module")}}
                     {{> "systems/pl1e/templates/item/components/icons-module.hbs"}}
+                {{else if (eq item.type "service")}}
+                    {{> "systems/pl1e/templates/item/components/icons-service.hbs"}}
                 {{/if}}
             </div>
         </div>
@@ -108,6 +110,8 @@
                 {{> "systems/pl1e/templates/item/parts/common-attributes.hbs"}}
             {{else if (eq item.type "module")}}
                 {{> "systems/pl1e/templates/item/parts/module-attributes.hbs"}}
+            {{else if (eq item.type "service")}}
+                {{> "systems/pl1e/templates/item/parts/service-attributes.hbs"}}
             {{/if}}
         </div>
         {{!-- Linked Items Tab --}}

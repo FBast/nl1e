@@ -10,6 +10,7 @@ import {Pl1eClass} from "./class.mjs";
 import {Pl1eMastery} from "./mastery.mjs";
 import {Pl1eCommon} from "./common.mjs";
 import {Pl1eCulture} from "./culture.mjs";
+import {Pl1eService} from "./service.mjs";
 
 const handler = {
     /**
@@ -40,6 +41,8 @@ const handler = {
                 return new Pl1eCommon(...args);
             case "module":
                 return new Pl1eModule(...args);
+            case "service":
+                return new Pl1eService(...args);
             default:
                 return new Pl1eItem(...args);
         }

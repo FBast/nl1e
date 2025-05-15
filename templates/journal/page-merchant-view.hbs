@@ -14,12 +14,25 @@
         {{{enriched}}}
 
         <br>
-        <div class="drop-target">
-            {{> systems/pl1e/templates/actor/parts/inventory-weapons.hbs }}
-            {{> systems/pl1e/templates/actor/parts/inventory-wearables.hbs }}
-            {{> systems/pl1e/templates/actor/parts/inventory-consumables.hbs }}
-            {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
-            {{> systems/pl1e/templates/actor/parts/inventory-modules.hbs }}
+        <div class="flex-vertical gap-md drop-target">
+            {{#if (ne servicesCount 0)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-services.hbs }}
+            {{/if}}
+            {{#if (ne weaponsCount 0)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-weapons.hbs }}
+            {{/if}}
+            {{#if (ne wearablesCount 0)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-wearables.hbs }}
+            {{/if}}
+            {{#if (ne consumablesCount 0)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-consumables.hbs }}
+            {{/if}}
+            {{#if (ne commonsCount 0)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
+            {{/if}}
+            {{#if (ne modulesCount 0)}}
+                {{> systems/pl1e/templates/actor/parts/inventory-modules.hbs }}
+            {{/if}}
         </div>
     </section>
 </form>

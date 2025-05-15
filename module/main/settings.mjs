@@ -87,8 +87,8 @@ export const registerSettings = function () {
     });
 
     game.settings.register("pl1e", "autoTokenEnabled", {
-        name: "Activer l’auto-token",
-        hint: "Active ou désactive la génération automatique des tokens avec frame et background.",
+        name: "Activate auto-token",
+        hint: "Enables or disables automatic generation of tokens with frame and background.",
         scope: "world",
         config: true,
         default: true,

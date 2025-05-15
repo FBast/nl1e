@@ -365,7 +365,7 @@
     }
   },
   "Item": {
-    "types": ["race", "culture", "class", "mastery", "feature", "ability", "weapon", "wearable", "consumable", "common", "module"],
+    "types": ["race", "culture", "class", "mastery", "feature", "ability", "weapon", "wearable", "consumable", "common", "module", "service"],
     "templates": {
       "base": {
         "description": "",
@@ -539,10 +539,19 @@
       "attributes": {
         "moduleTypes": []
       }
+    },
+    "service": {
+      "templates": ["base", "item"],
+      "attributes": {
+        "serviceType": "food",
+        "healthGain": 0,
+        "staminaGain": 0,
+        "manaGain": 0
+      }
     }
   },
   "JournalEntryPage": {
-    "types": ["location", "organization", "character", "merchant"],
+    "types": ["location", "organization", "character", "merchant", "inn"],
     "location": {
       "banner": "",
       "translation": "",

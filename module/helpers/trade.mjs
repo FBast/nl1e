@@ -75,6 +75,12 @@ export async function buyItem(buyerActor, sellerJournal, item) {
     }
 
     const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId ?? item.id);
-    await buyerActor.addItem(originalItem);
+    const created = await buyerActor.addItem(originalItem);
     await Pl1eChatMessage.tradeMessage(originalItem, sellerJournal, buyerActor, "purchase", price);
+
+    for (const newItem of created) {
+        if (newItem.type === "service") {
+            await newItem.activate();
+        }
+    }
 }

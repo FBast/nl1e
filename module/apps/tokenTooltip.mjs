@@ -9,6 +9,7 @@ export class TokenTooltip {
         this.tooltip = this.createTooltip();
         document.body.append(this.tooltip);
         TokenTooltip.instance = this;
+        TokenTooltip.hide();
     }
 
     createTooltip() {

@@ -34,11 +34,6 @@ export function getConfigRest() {
     };
 
     PL1E.rest = {
-        "none": {
-            "img": "systems/pl1e/assets/rest/restNone.jpg",
-            "tooltip": "PL1E.RestNoneTooltip",
-            "effects": {}
-        },
         "poor": {
             "img": "systems/pl1e/assets/rest/restPoor.jpg",
             "tooltip": "PL1E.RestPoorTooltip",

@@ -12,12 +12,6 @@ const FILTER_CATEGORIES = [
     "weapons", "wearables", "consumables", "commons", "modules"
 ];
 
-const ITEM_TYPES = new Set([
-    "race", "culture", "class", "mastery",
-    "feature", "ability",
-    "weapon", "wearable", "consumable", "common", "module"
-]);
-
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}

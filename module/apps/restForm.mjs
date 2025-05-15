@@ -1,4 +1,4 @@
-import {Pl1eHelpers as pl1eHelpers, Pl1eHelpers} from "../helpers/helpers.mjs";
+import {Pl1eHelpers as Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 
 export class RestForm extends FormApplication {
@@ -17,7 +17,7 @@ export class RestForm extends FormApplication {
 
         this.environments = Pl1eHelpers.getConfig("environments");
         this.rest = Pl1eHelpers.getConfig("rest");
-        this.meals = pl1eHelpers.getConfig("meals");
+        this.meals = Pl1eHelpers.getConfig("meals");
 
         // Initialize selections with options or defaults
         this.selectedEnvironment = options.selectedEnvironment || Object.keys(this.rest).find(key => key === "normal");
