@@ -18,20 +18,18 @@ export class Pl1eService extends Pl1eItem {
                 manaGain: this.system.attributes.manaGain ?? 0
             }
         };
-
-        // Calcul et application des effets
+        
         characterData.attributes = await this.calculateAttributes(characterData);
         await this.applyAttributes(characterData);
-
-        // Gestion de la faim
-        const hungerPath = "system.general.hunger";
-        const hungerMaxPath = "system.general.hungerMax";
+        
+        const hungerPath = "system.misc.hunger";
+        const hungerMaxPath = "system.misc.hungerMax";
         const currentHunger = getProperty(actor, hungerPath) ?? 0;
         const hungerMax = getProperty(actor, hungerMaxPath) ?? 100;
 
         switch (this.system.attributes.serviceType) {
             case "food": {
-                const reduction = characterData.attributes.hungerReduction ?? 0;
+                const reduction = this.system.attributes.hungerReduction ?? 0;
                 const newValue = Math.max(currentHunger - reduction, 0);
                 await actor.update({ [hungerPath]: newValue });
                 break;
@@ -43,15 +41,13 @@ export class Pl1eService extends Pl1eItem {
             }
         }
         
-        // Message chat optionnel
         await ChatMessage.create({
             user: game.user.id,
             speaker: ChatMessage.getSpeaker({ actor }),
             content: game.i18n.format("PL1E.ServiceConsumed", { item: this.name }),
             type: CONST.CHAT_MESSAGE_TYPES.OOC
         });
-
-        // Auto suppression après usage
+        
         await this.delete();
     }
 }

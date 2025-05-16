@@ -138,9 +138,7 @@
                 {{#each (config "misc")}}
                     {{#if header}}
                         {{#with (lookup ../system.misc @key)}}
-                            <span class="stat-icon hover-info
-                            {{#if (gt this ../default)}}color-bonus{{else if (lt this ../default)}}color-malus{{/if}}"
-                                  data-tooltip="{{localize ../label}}">
+                            <span class="stat-icon hover-info data-tooltip="{{localize ../label}}">
                               <i class="far {{../icon}}"></i>
                                 {{#if (isInfinite this)}}∞{{else}}{{this}}{{/if}}
                             </span>

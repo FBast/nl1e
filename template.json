@@ -309,9 +309,7 @@
           "statusImmunities": [],
           "action": 2,
           "reaction": 1,
-          "quickAction": 1,
-          "hunger": 0,
-          "hungerMax": 3
+          "quickAction": 1
         },
         "reductions": {
           "slashing": 0,
@@ -331,6 +329,8 @@
           "movement": 4,
           "baseInitiative": 5,
           "initiative": 0,
+          "hunger": 0,
+          "hungerMax": 3,
           "unconsciousDoor": 0,
           "deathDoor": 10,
           "flexibility": 0,

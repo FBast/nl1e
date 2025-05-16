@@ -362,7 +362,7 @@ export function getConfigItems() {
             "label": "PL1E.HungerReduction",
             "type": "number",
             "document": "actor",
-            "dataGroup": "general",
+            "dataGroup": "misc",
             "data": "hunger",
             "invertSign": false,
             "inDescription": true

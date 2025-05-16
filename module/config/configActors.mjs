@@ -476,14 +476,6 @@ export function getConfigActor() {
             "path": "system.general.quickAction",
             "header": true,
             "default": 1
-        },
-        "hunger": {
-            "label": "PL1E.Hunger",
-            "icon": "fa-stomach",
-            "type": "number",
-            "path": "system.general.hunger",
-            "header": true,
-            "default": 3
         }
     }
 
@@ -600,6 +592,14 @@ export function getConfigActor() {
             "type": "number",
             "path": "system.misc.initiative",
             "header": true
+        },
+        "hunger": {
+            "label": "PL1E.Hunger",
+            "icon": "fa-stomach",
+            "type": "number",
+            "path": "system.misc.hunger",
+            "header": true,
+            "default": 3
         },
         "unconsciousDoor": {
             "label": "PL1E.UnconsciousDoor",

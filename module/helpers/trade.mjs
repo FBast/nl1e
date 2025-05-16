@@ -59,7 +59,7 @@ export async function buyItem(buyerActor, sellerJournal, item) {
     const hungerReduction = item.system.attributes.hungerReduction ?? 0;
 
     if (isService && isFood && hungerReduction > 0) {
-        const currentHunger = buyerActor.system.general.hunger ?? 0;
+        const currentHunger = buyerActor.system.misc.hunger ?? 0;
         if ((currentHunger - hungerReduction) < 0) {
             ui.notifications.warn(game.i18n.localize("PL1E.TooMuchFood"));
             return;
