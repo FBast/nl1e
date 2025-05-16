@@ -476,6 +476,14 @@ export function getConfigActor() {
             "path": "system.general.quickAction",
             "header": true,
             "default": 1
+        },
+        "hunger": {
+            "label": "PL1E.Hunger",
+            "icon": "fa-stomach",
+            "type": "number",
+            "path": "system.general.hunger",
+            "header": true,
+            "default": 3
         }
     }
 

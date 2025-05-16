@@ -10,6 +10,11 @@
 
   .drop-target {
     min-height: 75px;
-    border: 2px dashed grey;
+    border: 2px dashed transparent;
+    transition: border 0.2s ease;
+  }
+
+  .drop-target.drop-ready {
+    border-color: grey;
   }
 }

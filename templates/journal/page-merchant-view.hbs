@@ -14,7 +14,7 @@
         {{{enriched}}}
 
         <br>
-        <div class="flex-vertical gap-md drop-target">
+        <div class="flex-vertical gap-md drop-target"  data-drop-target-uuid="{{document.uuid}}" data-drop-target-type="actor">
             {{#if (ne servicesCount 0)}}
                 {{> systems/pl1e/templates/actor/parts/inventory-services.hbs }}
             {{/if}}

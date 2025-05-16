@@ -1,7 +1,6 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
 import {Pl1eFormValidation} from "../main/formValidation.mjs";
-import {Pl1eSynchronizer} from "../helpers/synchronizer.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {PL1ESheetMixin} from "./sheet.mjs";

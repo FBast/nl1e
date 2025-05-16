@@ -544,7 +544,16 @@ export class Pl1eActor extends Actor {
         }
 
         const itemsData = await gatherItemData(item, childId);
-        return await this.createEmbeddedDocuments("Item", itemsData);
+        const created = await this.createEmbeddedDocuments("Item", itemsData);
+
+        // Auto consume services
+        for (const createdItem of created) {
+            if (createdItem.type === "service") {
+                await createdItem.activate();
+            }
+        }
+
+        return created;
     }
 
     /**

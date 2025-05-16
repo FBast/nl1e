@@ -53,12 +53,25 @@ export async function sellItem(sellerActor, buyerJournal, item, buyMultiplier) {
  * @param {Pl1eItem} item
  */
 export async function buyItem(buyerActor, sellerJournal, item) {
-    const price = foundry.utils.getProperty(item, "flags.pl1e.price");
+    // Hunger check
+    const isService = item.type === "service";
+    const isFood = item.system.attributes.serviceType === "food";
+    const hungerReduction = item.system.attributes.hungerReduction ?? 0;
 
+    if (isService && isFood && hungerReduction > 0) {
+        const currentHunger = buyerActor.system.general.hunger ?? 0;
+        if ((currentHunger - hungerReduction) < 0) {
+            ui.notifications.warn(game.i18n.localize("PL1E.TooMuchFood"));
+            return;
+        }
+    }
+    
+    // Price check
+    const price = foundry.utils.getProperty(item, "flags.pl1e.price");
     if (price) {
         const priceUnits = Pl1eHelpers.moneyToUnits(price);
         const currentUnits = Pl1eHelpers.moneyToUnits(buyerActor.system.money);
-
+        
         if (currentUnits < priceUnits) {
             ui.notifications.warn(game.i18n.localize("PL1E.NotEnoughMoney"));
             return;
@@ -75,12 +88,6 @@ export async function buyItem(buyerActor, sellerJournal, item) {
     }
 
     const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId ?? item.id);
-    const created = await buyerActor.addItem(originalItem);
     await Pl1eChatMessage.tradeMessage(originalItem, sellerJournal, buyerActor, "purchase", price);
-
-    for (const newItem of created) {
-        if (newItem.type === "service") {
-            await newItem.activate();
-        }
-    }
+    await buyerActor.addItem(originalItem);
 }

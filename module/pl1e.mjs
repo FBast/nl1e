@@ -25,6 +25,7 @@ import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
 import {giftItem} from "./helpers/trade.mjs";
+import {registerDragHighlighting} from "./utils/drag-highlight.mjs";
 
 /* -------------------------------------------- */
 /*  Globals                                     */
@@ -116,6 +117,9 @@ Hooks.once("ready", async function () {
     PL1E.tokenPreUpdate = await Pl1eHelpers.getDocumentsDataFromPack("legacy-token-pre-update-macros", true);
     PL1E.targetsResolution = await Pl1eHelpers.getDocumentsDataFromPack("legacy-targets-resolution-macros", true);
     PL1E.invocations = await Pl1eHelpers.getDocumentsDataFromPack("legacy-characters", true);
+    
+    // Highlight drag
+    registerDragHighlighting();
 });
 
 /* ------------------------------------ */

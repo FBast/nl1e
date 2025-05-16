@@ -355,7 +355,16 @@ export function getConfigItems() {
             "document": "actor",
             "dataGroup": "resources",
             "data": "mana",
-            "invertSign": true,
+            "invertSign": false,
+            "inDescription": true
+        },
+        "hungerReduction": {
+            "label": "PL1E.HungerReduction",
+            "type": "number",
+            "document": "actor",
+            "dataGroup": "general",
+            "data": "hunger",
+            "invertSign": false,
             "inDescription": true
         },
         "usageCost": {

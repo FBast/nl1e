@@ -309,7 +309,9 @@
           "statusImmunities": [],
           "action": 2,
           "reaction": 1,
-          "quickAction": 1
+          "quickAction": 1,
+          "hunger": 0,
+          "hungerMax": 3
         },
         "reductions": {
           "slashing": 0,
@@ -546,7 +548,8 @@
         "serviceType": "food",
         "healthGain": 0,
         "staminaGain": 0,
-        "manaGain": 0
+        "manaGain": 0,
+        "hungerReduction": 1
       }
     }
   },

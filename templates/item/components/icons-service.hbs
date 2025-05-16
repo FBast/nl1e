@@ -13,9 +13,9 @@
         <label>{{system.attributes.copperPrice}}</label>
     </i>
 {{/if}}
-{{#if (ne system.attributes.healthGain 0)}}
-    <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthGain"}}'>
-        <label>{{system.attributes.healthGain}}</label>
+{{#if (ne system.attributes.health 0)}}
+    <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.health"}}'>
+        <label>{{system.attributes.health}}</label>
     </i>
 {{/if}}
 {{#if (ne system.attributes.staminaGain 0)}}
