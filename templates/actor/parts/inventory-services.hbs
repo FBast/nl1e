@@ -1,6 +1,6 @@
 <div class="list-items">
     <div class="list-header">
-        <h4>{{localize "PL1E.Service"}}</h4>
+        <h4>{{localize "PL1E.Services"}}</h4>
         <div class="header-actions item-filter-list" data-filter="services">
             {{#each (config "serviceTypes")}}
                 <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
@@ -21,15 +21,6 @@
                         {{> "systems/pl1e/templates/item/components/icons-service.hbs"}}
                     </div>
                     <div class="controls">
-                        {{#if (eq system.attributes.commonType "food")}}
-                            <a class="item-select hover-action" data-tooltip='{{localize "PL1E.Eat"}}'>
-                                <i class="fas fa-utensils {{#unless (contains ../selectedMealItems _id)}}color-disabled{{/unless}}"></i>
-                            </a>
-                        {{else if (eq system.attributes.commonType "rest")}}
-                            <a class="item-select hover-action" data-tooltip='{{localize "PL1E.Use"}}'>
-                                <i class="fas fa-campground {{#unless (contains ../selectedRestItems _id)}}color-disabled{{/unless}}"></i>
-                            </a>
-                        {{/if}}
                         {{#if @root.actor.isOwner}}
                             <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                         {{/if}}

@@ -1,8 +1,8 @@
 import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eSynchronizer} from "../../helpers/synchronizer.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
-import {Pl1eChatMessage} from "../chatMessage.mjs";
-import {Pl1eMeasuredTemplateDocument} from "../measuredTemplateDocument.mjs";
+import {Pl1eChatMessage} from "../chat-message.mjs";
+import {Pl1eMeasuredTemplateDocument} from "../measured-template-document.mjs";
 import {Pl1eEffect} from "../effect.mjs";
 import {Pl1eTemplate} from "../../helpers/template.mjs";
 
@@ -792,7 +792,7 @@ export class Pl1eItem extends Item {
             const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
 
             // Execute activationMacro
-            if (enableVFXAndSFX && activationMacro !== undefined) await activationMacro.execute({
+            if (enableVFXAndSFX && activationMacro !== null) await activationMacro.execute({
                 characterData: characterData,
                 active: true
             });
@@ -1053,7 +1053,7 @@ export class Pl1eItem extends Item {
         const preLaunchMacro = await Pl1eHelpers.getDocument("Macro", preLaunchMacroId);
 
         // Execute pre-launch macro
-        if (enableVFXAndSFX && preLaunchMacro !== undefined && characterData.token) {
+        if (enableVFXAndSFX && preLaunchMacro !== null && characterData.token) {
             await preLaunchMacro.execute({
                 characterData: characterData,
                 targetsData: targetsData
@@ -1070,7 +1070,7 @@ export class Pl1eItem extends Item {
         const postLaunchMacro = await Pl1eHelpers.getDocument("Macro", postLaunchMacroId);
 
         // Execute post-launch macro
-        if (enableVFXAndSFX && postLaunchMacro !== undefined && characterData.token) {
+        if (enableVFXAndSFX && postLaunchMacro !== null && characterData.token) {
             await postLaunchMacro.execute({
                 characterData: characterData,
                 targetsData: targetsData

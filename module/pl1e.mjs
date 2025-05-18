@@ -2,29 +2,36 @@ import {preloadHandlebarsTemplates} from "./main/templates.mjs";
 import {Pl1eActor} from "./documents/actors/actor.mjs";
 import {Pl1eItem} from "./documents/items/item.mjs";
 import {Pl1eMacro} from "./helpers/macro.mjs";
-import {Pl1eActorProxy} from "./documents/actors/actorProxy.mjs";
-import {Pl1eItemProxy} from "./documents/items/itemProxy.mjs";
-import {Pl1eCombat} from "./apps/combat.mjs";
-import {Pl1eTokenDocument} from "./documents/tokenDocument.mjs";
+import {Pl1eActorProxy} from "./documents/actors/actor-proxy.mjs";
+import {Pl1eItemProxy} from "./documents/items/item-proxy.mjs";
+import {Pl1eCombat} from "./documents/combat.mjs";
+import {Pl1eTokenDocument} from "./documents/token-document.mjs";
 import {Pl1eToken} from "./documents/token.mjs";
 import {Pl1eEffect} from "./documents/effect.mjs";
 import {Pl1eActorSheet} from "./sheets/actor-sheet.mjs";
 import {Pl1eItemSheet} from "./sheets/item-sheet.mjs";
 import {Pl1eMerchantPageSheet} from "./sheets/journal/merchant-page-sheet.mjs";
-import {Pl1eInnPageSheet} from "./sheets/journal/inn-page-sheet.mjs";
 import {Pl1eJournalPageSheet} from "./sheets/journal/journal-page-sheet.mjs";
-import {Pl1eChatMessage} from "./documents/chatMessage.mjs";
+import {Pl1eChatMessage} from "./documents/chat-message.mjs";
 import {Pl1eHelpers} from "./helpers/helpers.mjs";
-import {getConfigBase} from "./config/configBase.mjs";
-import {getConfigActor} from "./config/configActors.mjs";
-import {getConfigItems} from "./config/configItems.mjs";
-import {getConfigAspects} from "./config/configAspects.mjs";
-import {getConfigTemplates} from "./config/configTemplates.mjs";
-import {getConfigRest} from "./config/configRest.mjs";
+import {getConfigBase} from "./config/config-base.mjs";
+import {getConfigActor} from "./config/config-actors.mjs";
+import {getConfigItems} from "./config/config-items.mjs";
+import {getConfigAspects} from "./config/config-aspects.mjs";
+import {getConfigTemplates} from "./config/config-templates.mjs";
+import {getConfigRest} from "./config/config-rest.mjs";
 import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
 import {giftItem} from "./helpers/trade.mjs";
+
+/* -------------------------------------------- */
+/*  Utils import                                */
+/* -------------------------------------------- */
+
+import "./utils/placeable-tooltip.mjs";
+import "./utils/token-hotbar.mjs";
+import "./utils/color-sheets.mjs";
 import {registerDragHighlighting} from "./utils/drag-highlight.mjs";
 
 /* -------------------------------------------- */
@@ -76,10 +83,6 @@ Hooks.once('init', async function () {
     });
     DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", Pl1eMerchantPageSheet, {
         types: ["merchant"],
-        makeDefault: true
-    });
-    DocumentSheetConfig.registerSheet(JournalEntryPage, "pl1e", Pl1eInnPageSheet, {
-        types: ["inn"],
         makeDefault: true
     });
 

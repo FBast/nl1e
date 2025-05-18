@@ -551,4 +551,13 @@ export class Pl1eHelpers {
 
         return containedTokens;
     }
+
+    static async templateExists(path) {
+        try {
+            await renderTemplate(path, {});
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
 }

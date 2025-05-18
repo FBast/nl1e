@@ -40,13 +40,14 @@ export class Pl1eService extends Pl1eItem {
                 break;
             }
         }
-        
-        await ChatMessage.create({
-            user: game.user.id,
-            speaker: ChatMessage.getSpeaker({ actor }),
-            content: game.i18n.format("PL1E.ServiceConsumed", { item: this.name }),
-            type: CONST.CHAT_MESSAGE_TYPES.OOC
-        });
+
+        //TODO display recovery
+        // await ChatMessage.create({
+        //     user: game.user.id,
+        //     speaker: ChatMessage.getSpeaker({ actor }),
+        //     content: game.i18n.format("PL1E.ServiceConsumed", { item: this.name }),
+        //     type: CONST.CHAT_MESSAGE_TYPES.OOC
+        // });
         
         await this.delete();
     }

@@ -1,10 +1,9 @@
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {RestForm} from "../apps/restForm.mjs";
 import {Pl1eHelpers as P1eHelpers, Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {PL1ESheetMixin} from "./sheet.mjs";
-import {filterDocuments, getFilters, toggleFilter} from "../helpers/filterCache.mjs";
+import {filterDocuments, getFilters, toggleFilter} from "../helpers/filter-cache.mjs";
 import {buyItem, giftItem} from "../helpers/trade.mjs";
 
 const FILTER_CATEGORIES = [
@@ -66,9 +65,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
                     class: "button-creation-mod",
                     icon: this.actor.system.general.creationMod ? "fas fa-toggle-on" : "fas fa-toggle-off",
                     onclick: async () => {
-                        const appRestingForm = Object.values(ui.windows)
-                            .find(w => w instanceof RestForm);
-                        await appRestingForm?.close();
                         await this.actor.update({
                             "system.general.creationMod": !this.actor.system.general.creationMod
                         });
@@ -183,7 +179,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
 
         // Actor actions
         html.find('.open-journal').on('click', async ev => this._onOpenJournal(ev));
-        html.find('.open-rest').on('click', async ev => this._onOpenRest(ev));
     }
 
     _onDragStart(event) {
@@ -720,51 +715,4 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         // Open the newly created journal
         newJournal.sheet.render(true);
     }
-
-    /**
-     * Open the rest window
-     * @param event
-     * @returns {Promise<void>}
-     * @private
-     */
-    async _onOpenRest(event) {
-        event.preventDefault();
-
-        // Save the current position of the actor sheet
-        const sheetPosition = this.actor.sheet.position;
-
-        // Close the form after opening the rest
-        await this.close();
-
-        const app = new RestForm(this.actor, {
-            title: `${game.i18n.localize("PL1E.Rest")} : ${this.actor.name}`,
-        });
-
-        // Render the rest form at the same position
-        app.render(true, { left: sheetPosition.left, top: sheetPosition.top });
-    }
 }
-
-Hooks.once("ready", () => {
-    Hooks.on("renderActorSheet", (actorSheet, html, data) => {
-        if (actorSheet.actor.type === "character") {
-            // Refresh the form application
-            const formApp = Object.values(ui.windows)
-                .find(w => w instanceof RestForm);
-            if (formApp) formApp.render(true);
-
-            // Apply the user color to the sheet
-            for (const user of game.users) {
-                if (user.character !== actorSheet.actor) continue;
-
-                let color = user.color;
-                if (typeof color === 'object') {
-                    color = color.toString(); // Convert to string if it's a Color object
-                }
-
-                const colorWithOpacity = Pl1eHelpers.hexToRgba(color, 0.5);
-                actorSheet.element.css("background-color", colorWithOpacity);
-            }
-        }
-    });
-});

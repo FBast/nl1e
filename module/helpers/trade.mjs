@@ -1,5 +1,5 @@
 import {Pl1eHelpers} from "./helpers.mjs";
-import {Pl1eChatMessage} from "../documents/chatMessage.mjs";
+import {Pl1eChatMessage} from "../documents/chat-message.mjs";
 
 /**
  * Give an item to another player

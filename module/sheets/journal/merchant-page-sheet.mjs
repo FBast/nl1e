@@ -1,6 +1,6 @@
 import { Pl1eEvent } from "../../helpers/events.mjs";
 import { Pl1eHelpers } from "../../helpers/helpers.mjs";
-import { filterDocuments, getFilters, toggleFilter } from "../../helpers/filterCache.mjs";
+import { filterDocuments, getFilters, toggleFilter } from "../../helpers/filter-cache.mjs";
 import { sellItem } from "../../helpers/trade.mjs";
 import {Pl1eJournalPageSheet} from "./journal-page-sheet.mjs";
 

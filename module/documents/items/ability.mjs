@@ -1,6 +1,6 @@
 import {Pl1eItem} from "./item.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
-import {ItemSelector} from "../../apps/itemSelector.mjs";
+import {ItemSelector} from "../../apps/item-selector.mjs";
 
 export class Pl1eAbility extends Pl1eItem {
 

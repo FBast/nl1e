@@ -1,4 +1,3 @@
-import {RestForm} from "../apps/restForm.mjs";
 import {Pl1eHelpers} from "./helpers.mjs";
 
 export class Pl1eMacro {
@@ -158,15 +157,4 @@ export class Pl1eMacro {
         }
         return documents[0];
     }
-
-    /**
-     * Display the sleeping window for the actor
-     */
-    static displayRestWindow(actor) {
-        const app = new RestForm(actor, {
-            title: `${game.i18n.localize("PL1E.Rest")} : ${actor.name}`
-        });
-        app.render(true);
-    }
-
 }

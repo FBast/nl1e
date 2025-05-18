@@ -1,6 +1,6 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eEvent} from "../helpers/events.mjs";
-import {Pl1eFormValidation} from "../main/formValidation.mjs";
+import {Pl1eFormValidation} from "../main/form-validation.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {PL1ESheetMixin} from "./sheet.mjs";
@@ -523,20 +523,3 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
         await this.item.update(itemData);
     }
 }
-
-Hooks.once("ready", () => {
-    Hooks.on("renderItemSheet", (itemSheet, html, data) => {
-        // Apply the user color to the sheet
-        for (const user of game.users) {
-            if (user.character !== itemSheet.item.parent) continue;
-
-            let color = user.color;
-            if (typeof color === 'object') {
-                color = color.toString(); // Convert to string if it's a Color object
-            }
-
-            const colorWithOpacity = Pl1eHelpers.hexToRgba(color, 0.5);
-            itemSheet.element.css("background-color", colorWithOpacity);
-        }
-    });
-});

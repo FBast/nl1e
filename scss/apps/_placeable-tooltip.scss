@@ -1,0 +1,99 @@
+&#placeable-tooltip {
+  position: absolute;
+  background: rgba($colorDark, 0.85);
+  color: $colorWhite;
+  padding: $spacing-sm;
+  border-radius: $spacing-sm;
+  border: 1px solid $colorBorder;
+  box-shadow: $shadowStandard;
+  font-size: $font-size-xsm;
+  pointer-events: none;
+  z-index: 10000;
+
+  .placeable-tooltip-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    padding: $spacing-sm;
+    max-width: 250px;
+
+    h1,h2,h3,h4,h5,h6 {
+      margin: 0;
+      text-transform: uppercase;
+      color: $colorGold;
+    }
+
+    h1,h2,h3 {
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba($colorWhite, 0.2);
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.3;
+      color: $colorFaint;
+
+      strong {
+        color: $colorWhite;
+        margin-right: 4px;
+      }
+    }
+
+    .tooltip-body {
+      max-height: calc(1.4em * 5);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+    }
+
+    .tooltip-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .stat-row {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        background: rgba($colorWhite, 0.1);
+        padding: 2px 4px;
+        border-radius: 2px;
+        justify-content: space-between;
+        min-height: 22px;
+
+        .stat-value {
+          font-weight: bold;
+          font-size: $font-size-xsm;
+          color: $colorWhite;
+          min-width: 20px;
+          text-align: center;
+        }
+
+        .stat-icon {
+          font-size: $font-size-sm;
+          color: $colorWhite;
+          min-width: 18px;
+          text-align: center;
+        }
+
+        .stat-img {
+          width: 20px;
+          height: 20px;
+        }
+
+        .stat-label {
+          font-size: $font-size-xsm;
+          color: $colorFaint;
+          flex-grow: 1;
+          text-align: left;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding-right: 5px;
+        }
+      }
+    }
+  }
+}
