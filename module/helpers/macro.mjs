@@ -31,80 +31,6 @@ export class Pl1eMacro {
         if (target) await target.activate();
     }
 
-    static async deleteAllDynamicMacros() {
-        // Retrieve all macros in the game
-        const allMacros = game.macros.contents;
-
-        // Filter to only include macros marked as dynamic
-        const dynamicMacros = allMacros.filter(macro => macro.getFlag('pl1e', 'isDynamic'));
-
-        // Delete each dynamic macro found
-        for (let macro of dynamicMacros) {
-            if (macro.owner) await macro.delete();
-        }
-    }
-
-    /**
-     * Generate macros for items for a given token based on a filtering function,
-     * ignoring items with commands already in the hotbar.
-     * Items are sorted by level and then by name.
-     * @param {Token} token - The token for which to generate item macros
-     * @return {Promise<void>}
-     */
-    static async generateTokenMacros(token) {
-        let slot = 1; // Start assigning macros from slot 1
-
-        // Generate token macros for character or npc types
-        if (["character", "npc"].includes(token.actor.type)) {
-            // Filter items
-            let items = token.actor.enabledItems.filter(item => (item.type === "ability"
-                && item.system.attributes.activation !== "passive") || item.type === "consumable");
-
-            // Remove duplicates
-            let uniqueItems = [];
-            const existingSourceId = new Set();
-            for (const item of items) {
-                if (!existingSourceId.has(item.sourceId)) {
-                    uniqueItems.push(item);
-                    existingSourceId.add(item.sourceId);
-                }
-            }
-
-            // Create an object structured appropriately for sortDocuments
-            let documents = {
-                abilities: uniqueItems.filter(item => item.type === "ability"),
-                consumables: uniqueItems.filter(item => item.type === "consumable")
-            };
-
-            // Sort each type of item
-            documents = Pl1eHelpers.sortDocuments(documents);
-
-            // Iterate through sorted items to create macros
-            for (let type in documents) {
-                for (let item of documents[type]) {
-                    const dropData = {
-                        type: "Item",
-                        data: item,
-                        id: item.id
-                    };
-
-                    // Create and assign the macro for this item
-                    await Pl1eMacro.createMacro(dropData, slot, {
-                        "pl1e.isDynamic": true
-                    });
-
-                    // Increment the slot for the next item/macro
-                    slot++;
-                }
-            }
-        }
-
-        // Clear additional slots if necessary
-        for (let i = slot; i <= 50; i++) {
-            await game.user.assignHotbarMacro(null, i);
-        }
-    }
-
     /**
      * Attempt to create a macro.mjs from the dropped data. Will use an existing macro.mjs if one exists.
      * @param {object} dropData     The dropped data
@@ -123,7 +49,7 @@ export class Pl1eMacro {
             flags: flags
         });
 
-        // Assign the macro.mjs to the hotbar
+        // Assign the macro to the hotbar
         const macro = game.macros.find(m => (m.name === macroData.name) && (m.command === macroData.command)
             && m.author === game.user) || await Macro.create(macroData);
         await game.user.assignHotbarMacro(macro, slot);

@@ -24,8 +24,8 @@ export class Pl1eService extends Pl1eItem {
         
         const hungerPath = "system.misc.hunger";
         const hungerMaxPath = "system.misc.hungerMax";
-        const currentHunger = getProperty(actor, hungerPath) ?? 0;
-        const hungerMax = getProperty(actor, hungerMaxPath) ?? 100;
+        const currentHunger = foundry.utils.getProperty(actor, hungerPath) ?? 0;
+        const hungerMax = foundry.utils.getProperty(actor, hungerMaxPath) ?? 100;
 
         switch (this.system.attributes.serviceType) {
             case "food": {

@@ -2,7 +2,6 @@ import {Pl1eAspect} from "../../helpers/aspect.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {Pl1eEffect} from "../effect.mjs";
 import {PL1E} from "../../pl1e.mjs";
-import {Pl1eMacro} from "../../helpers/macro.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -133,12 +132,6 @@ export class Pl1eActor extends Actor {
                         }
                     }
                 }
-
-                // Generate the macros if this actor token is selected
-                const selectedToken = game.canvas.tokens.controlled[0];
-                const token = this.bestToken;
-                if (selectedToken && selectedToken.document === token)
-                    await Pl1eMacro.generateTokenMacros(token);
             }
 
             // Add effect based on conditions
@@ -236,15 +229,6 @@ export class Pl1eActor extends Actor {
     /** @inheritDoc */
     async _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
         super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
-
-        // Client side only
-        if (game.user.id === userId) {
-            // Generate the macros if this actor token is selected
-            const selectedToken = game.canvas.tokens.controlled[0];
-            const token = this.bestToken;
-            if (selectedToken && selectedToken.document === token)
-                await Pl1eMacro.generateTokenMacros(token);
-        }
     }
 
     /** @inheritDoc */
@@ -270,12 +254,6 @@ export class Pl1eActor extends Actor {
                     await activeEffect.applyTokenEffect(this);
                 }
             }
-
-            // Generate the macros if this actor token is selected
-            const selectedToken = game.canvas.tokens.controlled[0];
-            const token = this.bestToken;
-            if (selectedToken && selectedToken.document === token)
-                await Pl1eMacro.generateTokenMacros(token);
         }
     }
 
@@ -300,12 +278,6 @@ export class Pl1eActor extends Actor {
                     await activeEffect.removeTokenEffect(this);
                 }
             }
-
-            // Generate the macros if this actor token is selected
-            const selectedToken = game.canvas.tokens.controlled[0];
-            const token = this.bestToken;
-            if (selectedToken && selectedToken.document === token)
-                await Pl1eMacro.generateTokenMacros(token);
         }
 
         super._onDeleteDescendantDocuments(parent, collection, documents, ids, options, userId);

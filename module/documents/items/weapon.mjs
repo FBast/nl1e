@@ -157,4 +157,12 @@ export class Pl1eWeapon extends Pl1eItem {
 
         await super.toggle(options);
     }
+
+    async activate() {
+        if (this.canToggle()) {
+            await this.toggle({
+                main: true
+            })
+        }
+    }
 }

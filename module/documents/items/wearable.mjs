@@ -18,7 +18,7 @@ export class Pl1eWearable extends Pl1eItem {
     }
 
     /** @override */
-    async toggle(options) {
+    async toggle(options= {}) {
         if (!this._canToggle()) return;
         const slot = this.system.attributes.slot;
 
@@ -95,4 +95,9 @@ export class Pl1eWearable extends Pl1eItem {
         return true;
     }
 
+    async activate() {
+        if (this.canToggle()) {
+            await this.toggle();
+        }
+    }
 }

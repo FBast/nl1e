@@ -712,16 +712,6 @@ export class Pl1eItem extends Item {
     }
 
     /**
-     * Favorite the item
-     * @returns {Promise<void>}
-     */
-    async favorite() {
-        await this.update({
-            "system.isFavorite": !this.system.isFavorite
-        });
-    }
-
-    /**
      * Activate the item
      */
     async activate() {

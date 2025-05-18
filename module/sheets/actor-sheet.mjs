@@ -359,10 +359,10 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
             const currency = moneyConfig[key];
             return {
                 id: key,
-                amount: getProperty(context, currency.path),
+                amount: foundry.utils.getProperty(context, currency.path),
                 label: game.i18n.localize(currency.label),
                 img: currency.img,
-                isFavorite: getProperty(context, currency.isFavoritePath),
+                isFavorite: foundry.utils.getProperty(context, currency.isFavoritePath),
                 path: currency.path,
                 isFavoritePath: currency.isFavoritePath,
                 conversions: Object.entries(currency.conversions).map(([targetKey, value]) => ({
