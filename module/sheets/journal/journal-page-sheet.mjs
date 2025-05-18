@@ -23,7 +23,7 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
         if (context.system.humidity)
             context.humidityPercentage = ((context.system.humidity - 1) / 8) * 90 + 10;
 
-        context.enriched = await TextEditor.enrichHTML(context.system.content, {
+        context.enriched = await TextEditor.enrichHTML(context.data.text.content, {
             secrets: this.document.isOwner,
             async: true,
             relativeTo: this.document

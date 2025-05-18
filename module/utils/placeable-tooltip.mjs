@@ -112,17 +112,20 @@ export class PlaceableTooltip {
 
     setPosition(target) {
         const scale = canvas.stage.scale.x;
-        const gap = 5;
+        const gapX = 10;
+        const gapY = 0;
 
         let widthOffset = 0;
         let heightOffset = 0;
 
         if (target instanceof Token) {
-            widthOffset = (target.w + gap) * scale;
+            widthOffset = (target.w + gapX) * scale;
+            heightOffset = gapY;
         }
         else if (target instanceof Note) {
-            widthOffset = (target.width / 2 + gap) * scale;
-            heightOffset = -target.height / 2 * scale;
+            const iconSize = target.controlIcon.size;
+            widthOffset = (iconSize / 2 + gapX) * scale;
+            heightOffset = (-iconSize / 2 + gapY) * scale;
         }
 
         const left = target.worldTransform.tx + widthOffset;
@@ -162,6 +165,7 @@ Hooks.once("ready", () => {
     Hooks.on("hoverToken", async (token, hovering) => {
         const actor = token?.actor;
         if (!actor || (actor.type !== "character" && actor.type !== "npc")) return PlaceableTooltip.hide();
+
         if (hovering) {
             await PlaceableTooltip.show({target: token, data: actor});
         } else {
@@ -171,8 +175,13 @@ Hooks.once("ready", () => {
 
     Hooks.on("hoverNote", async (note, hovering) => {
         const journal = note.document?.entry;
-        if (!journal || !hovering) return PlaceableTooltip.hide();
-        await PlaceableTooltip.show({target: note, data: journal});
+        if (!journal) return PlaceableTooltip.hide();
+
+        if (hovering) {
+            await PlaceableTooltip.show({target: note, data: journal});
+        } else {
+            PlaceableTooltip.hide();
+        }
     });
 
     Hooks.on("updateToken", (token) => {
