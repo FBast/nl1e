@@ -1,15 +1,13 @@
 <div class="list-items">
     <div class="list-header">
         <h4>{{localize "PL1E.Wearables"}}</h4>
-        {{#unless favoriteDisplay}}
-            <div class="header-actions item-filter-list" data-filter="wearables">
-                <div class="item-filter hover-action enabled-action" data-filter="garment">{{localize "PL1E.Garment"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="armor">{{localize "PL1E.Armor"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="ring">{{localize "PL1E.Ring"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="necklace">{{localize "PL1E.Necklace"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="none">{{localize "PL1E.Others"}}</div>
-            </div>
-        {{/unless}}
+        <div class="header-actions item-filter-list" data-filter="wearables">
+            <div class="item-filter hover-action enabled-action" data-filter="garment">{{localize "PL1E.Garment"}}</div>
+            <div class="item-filter hover-action enabled-action" data-filter="armor">{{localize "PL1E.Armor"}}</div>
+            <div class="item-filter hover-action enabled-action" data-filter="ring">{{localize "PL1E.Ring"}}</div>
+            <div class="item-filter hover-action enabled-action" data-filter="necklace">{{localize "PL1E.Necklace"}}</div>
+            <div class="item-filter hover-action enabled-action" data-filter="none">{{localize "PL1E.Others"}}</div>
+        </div>
     </div>
     <div class="list-column">
         {{#each wearables}}
@@ -22,9 +20,7 @@
                         </label>
                     </div>
                     <div class="icons">
-                        {{#unless ../favoriteDisplay}}
-                            {{> "systems/pl1e/templates/item/components/icons-wearable.hbs"}}
-                        {{/unless}}
+                        {{> "systems/pl1e/templates/item/components/icons-wearable.hbs"}}
                     </div>
                     <div class="controls">
                         {{#if @root.actor.isOwner}}
@@ -56,9 +52,6 @@
                                     </a>
                                 {{/if}}
                             {{/if}}
-                            <a class="switch-boolean hover-action" data-path="system.isFavorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
-                            </a>
                             {{#if flags.pl1e.childId}}
                                 <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
                             {{else}}
@@ -72,11 +65,7 @@
         {{/each}}
         {{#if (eq wearables.length 0)}}
             <div class="empty">
-                {{#if favoriteDisplay}}
-                    {{localize "PL1E.NoFavorites"}}
-                {{else}}
-                    {{localize "PL1E.NoItems"}}
-                {{/if}}
+                {{localize "PL1E.NoItems"}}
             </div>
         {{/if}}
     </div>

@@ -543,4 +543,26 @@ export class Pl1eActor extends Actor {
         // Delete all items in a single call
         await this.deleteEmbeddedDocuments("Item", itemIds);
     }
+
+    getFavoriteIds(type) {
+        const list = this.system.favorites?.[type];
+        if (!Array.isArray(list)) return [];
+        return list;
+    }
+
+    isFavorite(type, id) {
+        return this.getFavoriteIds(type).includes(id);
+    }
+
+    async toggleFavorite(type, id, add = true) {
+        if (!["items", "currencies"].includes(type)) return;
+
+        let current = this.getFavoriteIds(type);
+        const exists = current.includes(id);
+
+        if (add && !exists) current.push(id);
+        if (!add && exists) current = current.filter(entry => entry !== id);
+
+        return this.update({ [`system.favorites.${type}`]: current });
+    }
 }

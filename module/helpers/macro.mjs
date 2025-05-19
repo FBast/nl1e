@@ -53,6 +53,7 @@ export class Pl1eMacro {
         const macro = game.macros.find(m => (m.name === macroData.name) && (m.command === macroData.command)
             && m.author === game.user) || await Macro.create(macroData);
         await game.user.assignHotbarMacro(macro, slot);
+        return macro;
     }
 
     /**

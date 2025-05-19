@@ -40,8 +40,8 @@
                                         <i class="fas fa-hand {{#unless system.isEquippedMain}}color-disabled{{/unless}}"></i>
                                     </a>
                                 {{/if}}
-                                <a class="switch-boolean hover-action" data-path="system.isFavorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                    <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
+                                <a class="item-favorite hover-action" data-favorite-type="items" data-favorite-id="{{sourceId}}" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                    <i class="fas fa-bookmark {{#unless (contains ../system.favorites.items sourceId)}}color-disabled{{/unless}}"></i>
                                 </a>
                             {{/if}}
                             {{#if flags.pl1e.childId}}

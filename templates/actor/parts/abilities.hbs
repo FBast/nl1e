@@ -40,8 +40,8 @@
                             {{/if}}
                         {{/if}}
                         {{#if @root.actor.isOwner}}
-                            <a class="switch-boolean hover-action" data-path="system.isFavorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
+                            <a class="item-favorite hover-action" data-favorite-type="items" data-favorite-id="{{sourceId}}" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                <i class="fas fa-bookmark {{#unless (contains ../system.favorites.items sourceId)}}color-disabled{{/unless}}"></i>
                             </a>
                             {{#if (eq flags.pl1e.childId undefined)}}
                                 <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>

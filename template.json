@@ -353,6 +353,10 @@
         "journal": {
           "pages": [],
           "selectedPage": 0
+        },
+        "favorites": {
+          "items": [],
+          "currencies": []
         }
       }
     },
@@ -372,7 +376,6 @@
       "base": {
         "description": "",
         "units": 1,
-        "isFavorite": false,
         "refItems": {},
         "passiveAspects": {},
         "activeAspects": {},

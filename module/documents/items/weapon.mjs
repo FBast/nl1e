@@ -82,73 +82,70 @@ export class Pl1eWeapon extends Pl1eItem {
     }
 
     /** @inheritDoc */
-    async toggle(options) {
+    async toggle(options = {}) {
         if (!this.canToggle()) return;
 
         const hands = this.system.attributes.hands;
-        const takenHands = (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0);
+        const isMain = this.system.isEquippedMain;
+        const isSecondary = this.system.isEquippedSecondary;
+        const totalBefore = (isMain ? 1 : 0) + (isSecondary ? 1 : 0);
 
-        // Toggle item hands
+        const otherWeapons = this.actor.items.filter(i => i.type === "weapon" && i !== this);
+        const mainFree = !otherWeapons.some(i => i.system.isEquippedMain);
+        const secFree = !otherWeapons.some(i => i.system.isEquippedSecondary);
+
+        // Determine the desired equip state
+        let newMain = false;
+        let newSecondary = false;
+
         if (hands === 2) {
-            await this.update({
-                "system.isEquippedMain": !this.system.isEquippedMain,
-                "system.isEquippedSecondary": !this.system.isEquippedSecondary
-            });
-        }
-        else if (options.main) {
-            // Switch a hand case
-            if (!this.system.isEquippedMain && this.system.isEquippedSecondary) {
-                await this.update({"system.isEquippedSecondary": false});
-            }
-            await this.update({"system.isEquippedMain": !this.system.isEquippedMain})
-        }
-        else {
-            // Switch a hand case
-            if (!this.system.isEquippedSecondary && this.system.isEquippedMain) {
-                await this.update({["system.isEquippedMain"]: false});
-            }
-            await this.update({"system.isEquippedSecondary": !this.system.isEquippedSecondary});
+            const equip = !isMain || !isSecondary;
+            newMain = equip;
+            newSecondary = equip;
+        } else if ("main" in options) {
+            if (options.main) newMain = !isMain;
+            else newSecondary = !isSecondary;
+        } else {
+            if (mainFree) newMain = true;
+            else if (secFree) newSecondary = true;
+            else newMain = true;
         }
 
-        // Unequip other items
-        for (let otherItem of this.actor.items) {
-            // Ignore if otherItem is not a weapon
-            if (otherItem.type !== 'weapon') continue;
-            // Ignore if otherItem is this
-            if (otherItem === this) continue;
-            // If the other item is equipped on main and this item is equipped on main
-            if (otherItem.system.isEquippedMain && this.system.isEquippedMain) {
-                // If the other item is equipped on two hands
-                if (otherItem.system.attributes.hands === 2) {
-                    await otherItem.update({
-                        "system.isEquippedMain": false,
-                        "system.isEquippedSecondary": false
-                    });
-                }
-                // Else the other item only equip the main hand
-                else {
-                    await otherItem.update({"system.isEquippedMain": false});
-                }
-            }
-            // If the other item is equipped on secondary and this item is equipped on secondary
-            if (otherItem.system.isEquippedSecondary && this.system.isEquippedSecondary) {
-                // If the other item is equipped on two hands
-                if (otherItem.system.attributes.hands === 2) {
-                    await otherItem.update({
-                        "system.isEquippedMain": false,
-                        "system.isEquippedSecondary": false
-                    });
-                }
-                // Else the other item only equip secondary hand
-                else {
-                    await otherItem.update({"system.isEquippedSecondary": false});
-                }
+        // Unequip other weapons that share used hands or are 2-handed but no longer valid
+        for (const other of this.actor.items) {
+            if (other.type !== "weapon" || other === this) continue;
+
+            const isTwoHanded = other.system.attributes.hands === 2;
+            const equippedMain = other.system.isEquippedMain;
+            const equippedSec = other.system.isEquippedSecondary;
+
+            // Flag for unequip
+            let unequip = false;
+
+            // If the weapon we're about to equip uses the same hands
+            if (newMain && equippedMain) unequip = true;
+            if (newSecondary && equippedSec) unequip = true;
+
+            // If the other weapon is 2-handed and no longer fully equipped (or soon won't be)
+            if (isTwoHanded && (equippedMain || equippedSec)) unequip = true;
+
+            if (unequip) {
+                await other.update({
+                    "system.isEquippedMain": false,
+                    "system.isEquippedSecondary": false
+                });
             }
         }
 
-        // Remove quick action if in combat and more taken hands than before
-        if (this.parent.bestToken !== null && this.parent.bestToken.inCombat &&
-            takenHands < (this.system.isEquippedMain ? 1 : 0) + (this.system.isEquippedSecondary ? 1 : 0)) {
+        // Equip this item
+        await this.update({
+            "system.isEquippedMain": newMain,
+            "system.isEquippedSecondary": newSecondary
+        });
+
+        // Consume action if necessary
+        const totalAfter = (newMain ? 1 : 0) + (newSecondary ? 1 : 0);
+        if (this.parent.bestToken?.inCombat && totalBefore < totalAfter) {
             await this.actor.update({
                 "system.general.action": this.actor.system.general.action - 1
             });
@@ -160,9 +157,7 @@ export class Pl1eWeapon extends Pl1eItem {
 
     async activate() {
         if (this.canToggle()) {
-            await this.toggle({
-                main: true
-            })
+            await this.toggle();
         }
     }
 }

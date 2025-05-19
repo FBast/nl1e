@@ -13,29 +13,45 @@ async function _generateTokenMacros(token) {
     const actor = token.actor;
     if (!actor) return;
 
-    const consumables = actor.displayedItems.filter(item => item.type === "consumable" && item.system?.isFavorite);
-    const abilities = actor.enabledItems.filter(item => item.type === "ability" && item.system?.isFavorite);
-    const items = [...consumables, ...abilities];
-
-    // Group by type
-    const grouped = {};
-    for (const item of items) {
-        if (!grouped[item.type]) grouped[item.type] = [];
-        grouped[item.type].push(item);
-    }
+    const favoriteSourceIds = actor.getFavoriteIds("items");
+    const items = {
+        weapons: actor.displayedItems.filter(item =>
+            item.type === "weapon" && favoriteSourceIds.includes(item.sourceId)
+        ),
+        consumables: actor.displayedItems.filter(item =>
+            item.type === "consumable" && favoriteSourceIds.includes(item.sourceId)
+        ),
+        abilities: actor.enabledItems.filter(item =>
+            item.type === "ability" && favoriteSourceIds.includes(item.sourceId)
+        )
+    };
 
     // Sort each group
-    Pl1eHelpers.sortDocuments(grouped);
+    Pl1eHelpers.sortDocuments(items);
 
     // Generate macros by group
-    for (const type in grouped) {
-        for (const item of grouped[type]) {
+    for (const category in items) {
+        for (const item of items[category]) {
             const dropData = {
                 type: "Item",
                 data: item,
                 id: item.id
             };
-            await Pl1eMacro.createMacro(dropData, nextSlot);
+
+            const macro = await Pl1eMacro.createMacro(dropData, nextSlot);
+            if (item.type === "weapon") {
+                let equippedType = null;
+                if (item.system.isEquippedMain) equippedType = "main";
+                else if (item.system.isEquippedSecondary) equippedType = "secondary";
+
+                if (equippedType) {
+                    await macro.setFlag("pl1e", "equippedWeapon", equippedType);
+                }
+                else {
+                    await macro.unsetFlag("pl1e", "equippedWeapon");
+                }
+            }
+
             nextSlot++;
         }
     }
@@ -97,6 +113,22 @@ Hooks.once("ready", () => {
             await Pl1eMacro.createMacro(data, slot);
             return false;
         }
+    });
+
+    Hooks.on("renderHotbar", (hotbar, html, data) => {
+        html.find(".macro").each((_, el) => {
+            const slot = el.dataset.slot;
+            const macroId = el.dataset.macroId;
+            const macro = game.macros.get(macroId);
+            if (!macro) return;
+
+            const equipped = macro.getFlag("pl1e", "equippedWeapon");
+            if (equipped === "main") {
+                el.classList.add("equipped-main");
+            } else if (equipped === "secondary") {
+                el.classList.add("equipped-secondary");
+            }
+        });
     });
 
     /**
@@ -168,24 +200,25 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
 });
 
 /**
- * Regenerate macros when an item's favorite status changes.
+ * Regenerate macros when an item's favorite status or equip state changes.
  */
 Hooks.on("updateItem", async (item, changes, options, userId) => {
     const dynamicHotbar = game.user.getFlag('pl1e', 'dynamicHotBar');
     if (!dynamicHotbar) return;
 
-    // Check if any relevant flags were changed
-    const changedFavorite   = foundry.utils.hasProperty(changes, "system.isFavorite");
-    const changedEquippedMain  = foundry.utils.hasProperty(changes, "system.isEquippedMain");
-    const changedEquippedSecondary  = foundry.utils.hasProperty(changes, "system.isEquippedSecondary");
+    // Check if any relevant equip state was changed
+    const changedEquippedMain = foundry.utils.hasProperty(changes, "system.isEquippedMain");
+    const changedEquippedSecondary = foundry.utils.hasProperty(changes, "system.isEquippedSecondary");
 
-    if (!changedFavorite && !changedEquippedMain && !changedEquippedSecondary) return;
+    if (!changedEquippedMain && !changedEquippedSecondary) return;
 
     // Ensure the item belongs to the currently selected token
     const selectedToken = canvas.tokens.controlled[0];
     if (!selectedToken || !selectedToken.actor) return;
-
     if (selectedToken.actor.id !== item.parent?.id) return;
+
+    // Wait 100ms to allow any follow-up updates to settle
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     await _generateTokenMacros(selectedToken);
 });

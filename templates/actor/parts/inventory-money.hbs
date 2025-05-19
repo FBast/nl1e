@@ -40,8 +40,8 @@
                             <a class="edit-number hover-action" data-tooltip='{{localize "PL1E.Edit"}}' data-path="{{path}}">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a class="switch-boolean hover-action" data-path="{{isFavoritePath}}" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                <i class="fas fa-bookmark {{#unless isFavorite}}color-disabled{{/unless}}"></i>
+                            <a class="item-favorite hover-action" data-favorite-type="currencies" data-favorite-id="{{id}}" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                <i class="fas fa-bookmark {{#unless (contains ../system.favorites.currencies id)}}color-disabled{{/unless}}"></i>
                             </a>
                         {{/if}}
                     </div>

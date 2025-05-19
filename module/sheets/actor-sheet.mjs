@@ -160,6 +160,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         // Item management
         html.find(".item-create").on("click", ev => Pl1eEvent.onItemCreate(ev, this.actor));
         html.find(".item-remove").on("click", ev => Pl1eEvent.onItemRemove(ev, this.actor));
+        html.find(".item-favorite").on("click", ev => this._onItemFavorite(ev));
         html.find(".effect-remove").on("click", ev => this._onEffectRemove(ev));
         html.find(".convert-currency").on("click", ev => this._onConvertCurrency(ev));
 
@@ -362,9 +363,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
                 amount: foundry.utils.getProperty(context, currency.path),
                 label: game.i18n.localize(currency.label),
                 img: currency.img,
-                isFavorite: foundry.utils.getProperty(context, currency.isFavoritePath),
                 path: currency.path,
-                isFavoritePath: currency.isFavoritePath,
                 conversions: Object.entries(currency.conversions).map(([targetKey, value]) => ({
                     icon: moneyConfig[targetKey].icon,
                     tooltip: game.i18n.localize(moneyConfig[targetKey].label),
@@ -374,12 +373,16 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
             };
         });
 
-        // Update the context with favorites items
-        context.favoritesAbilities = context.abilities.filter(item => item.system.isFavorite);
-        context.favoritesWeapons = context.weapons.filter(item => item.system.isFavorite);
-        context.favoritesWearables = context.wearables.filter(item => item.system.isFavorite);
-        context.favoritesConsumables = context.consumables.filter(item => item.system.isFavorite);
-        context.favoritesMoney = context.money.filter(currency => currency.isFavorite);
+        // Update the context with favorites items (via new favorite system)
+        context.favoritesAbilities = context.abilities.filter(item => this.actor.isFavorite("items", item.sourceId));
+        context.favoritesWeapons = context.weapons.filter(item => this.actor.isFavorite("items", item.sourceId));
+        context.favoritesWearables = context.wearables.filter(item => this.actor.isFavorite("items", item.sourceId));
+        context.favoritesConsumables = context.consumables.filter(item => this.actor.isFavorite("items", item.sourceId));
+        context.favoritesCommons = context.commons.filter(item => this.actor.isFavorite("items", item.sourceId));
+        context.favoritesModules = context.modules.filter(item => this.actor.isFavorite("items", item.sourceId));
+
+        // Update the context with favorites currencies
+        context.favoritesMoney = context.money.filter(currency => this.actor.isFavorite("currencies", currency.id));
     }
 
     async _categorizeItems(context, typeToCollectionMap) {
@@ -633,15 +636,17 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
     async _onItemToggle(event) {
         event.preventDefault();
         event.stopPropagation();
-        const itemId = $(event.currentTarget).closest(".item").data("item-id");
 
+        const itemId = $(event.currentTarget).closest(".item").data("item-id");
         /** @type {Pl1eItem} */
         const item = this.actor.items.get(itemId);
-        let options = {};
-        const main = $(event.currentTarget).data("main");
-        if (main) options["main"] = main;
 
-        if (item.canToggle()) await item.toggle(options);
+        const main = $(event.currentTarget).data("main");
+        const options = (main !== undefined) ? { main } : {};
+
+        if (item.canToggle()) {
+            await item.toggle(options);
+        }
     }
 
     /**
@@ -657,6 +662,16 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         return effect.sheet.render(true, {
             editable: game.user.isGM
         });
+    }
+
+    async _onItemFavorite(ev) {
+        const type = $(ev.currentTarget).data("favorite-type");
+        const id = $(ev.currentTarget).data("favorite-id");
+        if (!type || !id) return;
+
+        const isFav = this.actor.isFavorite(type, id);
+        await this.actor.toggleFavorite(type, id, !isFav);
+        await this.render();
     }
 
     /**

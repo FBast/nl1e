@@ -356,7 +356,6 @@ export function getConfigActor() {
             "path": "system.money.gold",
             "favoritePath": "system.misc.isGoldFavorite",
             "img": "systems/pl1e/assets/coins/coins-crown-stack-gold.webp",
-            "isFavoritePath": "system.misc.isGoldFavorite",
             "conversions": {
                 "silver": 10,
                 "copper": 100
@@ -372,7 +371,6 @@ export function getConfigActor() {
             "type": "number",
             "path": "system.money.silver",
             "img": "systems/pl1e/assets/coins/coins-shield-sword-stack-silver.webp",
-            "isFavoritePath": "system.misc.isSilverFavorite",
             "conversions": {
                 "gold": 0.1,
                 "copper": 10
@@ -388,7 +386,6 @@ export function getConfigActor() {
             "type": "number",
             "path": "system.money.copper",
             "img": "systems/pl1e/assets/coins/coins-wheat-stack-copper.webp",
-            "isFavoritePath": "system.misc.isCopperFavorite",
             "conversions": {
                 "gold": 0.01,
                 "silver": 0.1

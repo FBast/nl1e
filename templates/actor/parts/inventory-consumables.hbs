@@ -41,8 +41,8 @@
                                     <a class="item-use hover-action" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
                                 {{/if}}
                             {{/if}}
-                            <a class="switch-boolean hover-action" data-path="system.isFavorite" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                <i class="fas fa-bookmark {{#unless system.isFavorite}}color-disabled{{/unless}}"></i>
+                            <a class="item-favorite hover-action" data-favorite-type="items" data-favorite-id="{{sourceId}}" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                <i class="fas fa-bookmark {{#unless (contains ../system.favorites.items sourceId)}}color-disabled{{/unless}}"></i>
                             </a>
                             {{#if flags.pl1e.childId}}
                                 <a class="item-link hover-action" data-tooltip='{{localize "PL1E.Link"}}'><i class="fas fa-link"></i></a>
