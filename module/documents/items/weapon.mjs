@@ -102,13 +102,27 @@ export class Pl1eWeapon extends Pl1eItem {
             const equip = !isMain || !isSecondary;
             newMain = equip;
             newSecondary = equip;
-        } else if ("main" in options) {
-            if (options.main) newMain = !isMain;
-            else newSecondary = !isSecondary;
-        } else {
-            if (mainFree) newMain = true;
-            else if (secFree) newSecondary = true;
-            else newMain = true;
+        }
+        else if ("main" in options) {
+            if (options.main) {
+                newMain = !isMain;
+                newSecondary = false;
+            } else {
+                newMain = false;
+                newSecondary = !isSecondary;
+            }
+        }
+        else {
+            if (isMain || isSecondary) {
+                newMain = false;
+                newSecondary = false;
+            } else if (mainFree) {
+                newMain = true;
+            } else if (secFree) {
+                newSecondary = true;
+            } else {
+                newMain = true;
+            }
         }
 
         // Unequip other weapons that share used hands or are 2-handed but no longer valid

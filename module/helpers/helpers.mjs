@@ -415,6 +415,13 @@ export class Pl1eHelpers {
         return game.settings.get("pl1e", key).split(',').map(x => parseInt(x.trim()));
     }
 
+    /**
+     * Sort categorized items in the context object using type-specific logic.
+     * Each category is sorted with a custom comparator (if defined).
+     *
+     * @param {Object} context - The context object containing categorized items
+     * @returns {Object} The same context object, now sorted
+     */
     static sortDocuments(context) {
         // Define an object containing specific sorting functions for each type of document
         const sortFunctions = {
@@ -480,6 +487,8 @@ export class Pl1eHelpers {
                 context[category] = context[category].sort(sortFunctions[category]);
             }
         }
+
+        return context;
     }
 
     static hexToRgba(hex, alpha = 0.5) {
@@ -559,5 +568,104 @@ export class Pl1eHelpers {
         } catch (e) {
             return false;
         }
+    }
+
+    /**
+     * Categorize a list of items into the provided context object.
+     * Each item is enriched (aspects, HTML, flags) and added to the appropriate array
+     * based on its type, using the `itemCollections` mapping.
+     *
+     * @param {Object} context - The existing context object to populate
+     * @param {Item[]} items - The list of items to categorize (e.g. actor.items)
+     * @returns {Promise<Object>} The same context object, now populated with categorized items
+     */
+    static async categorizeItems(context, items) {
+        for (const item of items) {
+            const itemCopy = item.toObject();
+            itemCopy.sourceId = item.sourceId;
+            itemCopy.realName = item.realName;
+            itemCopy.realImg = item.realImg;
+            itemCopy.warnings = item.warnings;
+            itemCopy.isEnabled = item.isEnabled;
+
+            itemCopy.combinedPassiveAspects = await item.getCombinedPassiveAspects();
+            itemCopy.combinedActiveAspects = await item.getCombinedActiveAspects();
+
+            itemCopy.enriched = await TextEditor.enrichHTML(item.system.description, {
+                secrets: item.isOwner,
+                async: true,
+                relativeTo: item
+            });
+
+            const collectionKey = PL1E.itemCollections[itemCopy.type];
+            if (collectionKey) {
+                context[collectionKey] ??= []; // initialize array if undefined
+                context[collectionKey].push(itemCopy);
+            } else {
+                console.warn(`PL1E | Unrecognized item type: ${itemCopy.type}`);
+            }
+        }
+
+        return context;
+    }
+
+    /**
+     * Reduce each item category to a set of representative items by merging duplicates.
+     * Items are compared by sourceId, and the most "relevant" is kept.
+     * @param {Object} context - Object with categorized item arrays
+     */
+    static async selectRepresentativeItems(context) {
+        for (const [type, collectionKey] of Object.entries(PL1E.itemCollections)) {
+            const collection = context[collectionKey];
+            if (!collection) continue;
+
+            const processedItems = [];
+
+            for (const item of collection) {
+                item.units = 1;
+                let foundPlace = false;
+
+                for (let i = 0; i < processedItems.length; i++) {
+                    const existingItem = processedItems[i];
+                    if (existingItem.sourceId !== item.sourceId) continue;
+                    if (!this.shouldAccumulate(existingItem, item)) continue;
+
+                    if (item.priority < existingItem.priority) {
+                        item.units += existingItem.units;
+                        processedItems[i] = item;
+                    } else {
+                        existingItem.units += item.units;
+                    }
+
+                    foundPlace = true;
+                    break;
+                }
+
+                if (!foundPlace) {
+                    processedItems.push(item);
+                }
+            }
+
+            context[collectionKey] = processedItems;
+        }
+
+        return context;
+    }
+
+    /**
+     * Decide whether two items with the same sourceId should be merged (accumulated).
+     * Items are not accumulated if their type is in the exclusion list (e.g., 'weapon', 'wearable'),
+     * if they have different usage states, or if they are marked as customizable.
+     *
+     * @param {Object} existingItem - The current representative item in the list
+     * @param {Object} newItem - The new incoming item to compare against
+     * @returns {boolean} True if the newItem should be merged with the existingItem
+     */
+    static shouldAccumulate(existingItem, newItem) {
+        const noAccumulateTypes = ['weapon', 'wearable'];
+        if (noAccumulateTypes.includes(newItem.type)) return false;
+        if (existingItem.system.removedUses !== newItem.system.removedUses) return false;
+        if (newItem.system.attributes.customizable) return false;
+        return true;
     }
 }

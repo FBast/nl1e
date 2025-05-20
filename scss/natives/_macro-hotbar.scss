@@ -3,8 +3,7 @@
     z-index: 2;
   }
 
-  .macro.equipped-main img,
-  .macro.equipped-secondary img {
-    filter: drop-shadow(0 0 3px gold) sepia(0.9) saturate(2.5) hue-rotate(-30deg);
+  .macro.equipped img {
+    border: solid 2px gold;
   }
 }

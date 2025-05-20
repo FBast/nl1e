@@ -324,35 +324,26 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
      * @return {undefined}
      */
     async _prepareItems(context) {
-        // Initialize containers.
-        context.background = [];
-        context.features = [];
-        context.abilities = []
-        context.weapons = [];
-        context.wearables = [];
-        context.consumables = [];
-        context.commons = [];
-        context.modules = [];
+        // Initialize expected collections in the context
+        Object.assign(context, {
+            background: [],
+            features: [],
+            abilities: [],
+            weapons: [],
+            wearables: [],
+            consumables: [],
+            commons: [],
+            modules: []
+        });
 
         // Categorize all items into their respective collections
-        await this._categorizeItems(context, PL1E.itemCollections);
+        context = await Pl1eHelpers.categorizeItems(context, this.actor.items);
 
-        // Once all items are categorized, proceed to filter them
-        await this._filterItems(context, PL1E.itemCollections);
-
-        context.background = filterDocuments(context.background, context.filters.background);
-        context.features = filterDocuments(context.features, context.filters.features);
-        context.abilities = filterDocuments(context.abilities, context.filters.abilities);
-        context.effects = filterDocuments(context.effects, context.filters.effects);
-
-        context.weapons = filterDocuments(context.weapons, context.filters.weapons);
-        context.wearables = filterDocuments(context.wearables, context.filters.wearables);
-        context.consumables = filterDocuments(context.consumables, context.filters.consumables);
-        context.commons = filterDocuments(context.commons, context.filters.commons);
-        context.modules = filterDocuments(context.modules, context.filters.modules);
+        // Once all items are categorized, select the representatives
+        context = await Pl1eHelpers.selectRepresentativeItems(context);
 
         // Sort each type of item
-        Pl1eHelpers.sortDocuments(context);
+        context = Pl1eHelpers.sortDocuments(context);
 
         // Update the context with money
         const moneyConfig = P1eHelpers.getConfig("money");
@@ -373,7 +364,10 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
             };
         });
 
-        // Update the context with favorites items (via new favorite system)
+        // Update the context with favorites currencies
+        context.favoritesMoney = context.money.filter(currency => this.actor.isFavorite("currencies", currency.id));
+
+        // Update the context with favorites items
         context.favoritesAbilities = context.abilities.filter(item => this.actor.isFavorite("items", item.sourceId));
         context.favoritesWeapons = context.weapons.filter(item => this.actor.isFavorite("items", item.sourceId));
         context.favoritesWearables = context.wearables.filter(item => this.actor.isFavorite("items", item.sourceId));
@@ -381,108 +375,16 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         context.favoritesCommons = context.commons.filter(item => this.actor.isFavorite("items", item.sourceId));
         context.favoritesModules = context.modules.filter(item => this.actor.isFavorite("items", item.sourceId));
 
-        // Update the context with favorites currencies
-        context.favoritesMoney = context.money.filter(currency => this.actor.isFavorite("currencies", currency.id));
-    }
-
-    async _categorizeItems(context, typeToCollectionMap) {
-        for (const item of context.items) {
-            const itemCopy = item.toObject();
-            itemCopy.sourceId = item.sourceId;
-            itemCopy.realName = item.realName;
-            itemCopy.realImg = item.realImg;
-            itemCopy.warnings = item.warnings;
-            itemCopy.isEnabled = item.isEnabled;
-
-            // Add combined aspects
-            itemCopy.combinedPassiveAspects = await item.getCombinedPassiveAspects();
-            itemCopy.combinedActiveAspects = await item.getCombinedActiveAspects();
-
-            // Add enriched HTML
-            itemCopy.enriched = await TextEditor.enrichHTML(item.system.description, {
-                secrets: item.isOwner,
-                async: true,
-                relativeTo: item
-            });
-
-            // Append item copy based on its type to the respective category
-            const collectionKey = typeToCollectionMap[itemCopy.type];
-            if (collectionKey) {
-                context[collectionKey].push(itemCopy);
-            } else {
-                console.warn(`Unrecognized item type: ${itemCopy.type}`);
-            }
-        }
-    }
-
-    async _filterItems(context, typeToCollectionMap) {
-        const getItemPriority = (item) => {
-            if (item.isEnabled) return 1;
-            if (item.isEquipped) return 2;
-            if (item.isReloaded) return 3;
-            if (item.isActionUsed) return 4;
-            if (item.isReactionUsed) return 5;
-            if (item.isQuickActionUsed) return 6;
-            if (item.isMajorActionAvailable) return 7;
-            if (item.isUsableAtLevel) return 8;
-            return 9; // Lower is higher priority
-        };
-
-        // Comprehensive check for whether to accumulate units
-        const shouldAccumulate = (existingItem, newItem) => {
-            // Define types for which duplicates should not accumulate units
-            const noAccumulateTypes = ['weapon', 'wearable'];
-
-            // Prevent accumulation for specific types based on an actor type
-            if (noAccumulateTypes.includes(newItem.type)) return false;
-
-            // Extendable checks for other conditions
-            if (existingItem.system.removedUses !== newItem.system.removedUses) return false;
-            if (newItem.system.attributes.customizable) return false;
-
-            return true; // Accumulate by default if none of the conditions apply
-        };
-
-        // Iterate over each type of item collection
-        for (const [type, collectionKey] of Object.entries(typeToCollectionMap)) {
-            const collection = context[collectionKey];
-            if (!collection) continue;
-
-            let processedItems = [];
-
-            // Process each item
-            for (const item of collection) {
-                item.units = 1; // Reset units for each item processed
-                let foundPlace = false;
-
-                for (let i = 0; i < processedItems.length; i++) {
-                    const existingItem = processedItems[i];
-
-                    if (existingItem.sourceId === item.sourceId) {
-                        if (shouldAccumulate(existingItem, item)) {
-                            if (getItemPriority(item) < getItemPriority(existingItem)) {
-                                // Higher priority item found, replace existing item and accumulate units
-                                item.units += existingItem.units;
-                                processedItems[i] = item; // Replace with the new item
-                            } else {
-                                // Accumulate units to the existing item
-                                existingItem.units += item.units;
-                            }
-                            foundPlace = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!foundPlace) {
-                    // No existing item found to accumulate or replace, add new
-                    processedItems.push(item);
-                }
-            }
-
-            // Update the collection with processed items
-            collection.splice(0, collection.length, ...processedItems);
-        }
+        // Finish with filters
+        context.background = filterDocuments(context.background, context.filters.background);
+        context.features = filterDocuments(context.features, context.filters.features);
+        context.abilities = filterDocuments(context.abilities, context.filters.abilities);
+        context.effects = filterDocuments(context.effects, context.filters.effects);
+        context.weapons = filterDocuments(context.weapons, context.filters.weapons);
+        context.wearables = filterDocuments(context.wearables, context.filters.wearables);
+        context.consumables = filterDocuments(context.consumables, context.filters.consumables);
+        context.commons = filterDocuments(context.commons, context.filters.commons);
+        context.modules = filterDocuments(context.modules, context.filters.modules);
     }
 
     /**

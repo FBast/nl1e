@@ -89,17 +89,18 @@ export function getConfigItems() {
     }
 
     PL1E.itemCollections = {
-        'race': 'background',
-        'culture': 'background',
-        'class': 'background',
-        'mastery': 'background',
-        'feature': 'features',
-        'ability': 'abilities',
-        'weapon': 'weapons',
-        'wearable': 'wearables',
-        'consumable': 'consumables',
-        'common': 'commons',
-        'module': 'modules'
+        "race": "background",
+        "culture": "background",
+        "class": "background",
+        "mastery": "background",
+        "feature": "features",
+        "ability": "abilities",
+        "weapon": "weapons",
+        "wearable": "wearables",
+        "consumable": "consumables",
+        "common": "commons",
+        "module": "modules",
+        "service": "services"
     }
 
     PL1E.itemBase = {

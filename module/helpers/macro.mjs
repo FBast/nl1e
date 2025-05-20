@@ -32,26 +32,48 @@ export class Pl1eMacro {
     }
 
     /**
-     * Attempt to create a macro.mjs from the dropped data. Will use an existing macro.mjs if one exists.
+     * Attempt to create a macro from the dropped data. Will use an existing macro if one exists.
      * @param {object} dropData     The dropped data
      * @param {number} slot         The hotbar slot to use
-     * @param flags
+     * @param {object} [options]    Additional options
+     * @param {object} [options.flags]      Optional flags to apply to the macro
+     * @param {string} [options.folderName] Optional folder name to place the macro into
      */
-    static async createMacro(dropData, slot, flags = {}) {
-        const macroData = {type: "script", scope: "actor"};
+    static async createMacro(dropData, slot, { flags = {}, folderName = undefined } = {}) {
         if (dropData.type !== "Item") return;
+
         const itemData = await Item.implementation.fromDropData(dropData);
         if (!itemData) return ui.notifications.info(game.i18n.localize("PL1E.Unowned"));
-        foundry.utils.mergeObject(macroData, {
+
+        const macroData = {
+            type: "script",
+            scope: "actor",
             name: itemData.name,
             img: itemData.img,
             command: `game.pl1e.Pl1eMacro.activateItem("${itemData.name}")`,
-            flags: flags
-        });
+            flags
+        };
 
-        // Assign the macro to the hotbar
-        const macro = game.macros.find(m => (m.name === macroData.name) && (m.command === macroData.command)
-            && m.author === game.user) || await Macro.create(macroData);
+        // Automatically find or create the folder if folderName is provided
+        if (folderName) {
+            let folder = game.folders.find(f => f.name === folderName && f.type === "Macro");
+            if (!folder) {
+                folder = await Folder.create({
+                    name: folderName,
+                    type: "Macro",
+                    sorting: "a"
+                });
+            }
+            macroData.folder = folder.id;
+        }
+
+        // Reuse existing macro if same name + command + author
+        const macro = game.macros.find(m =>
+            m.name === macroData.name &&
+            m.command === macroData.command &&
+            m.author === game.user
+        ) || await Macro.create(macroData);
+
         await game.user.assignHotbarMacro(macro, slot);
         return macro;
     }

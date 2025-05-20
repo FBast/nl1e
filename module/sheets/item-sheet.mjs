@@ -329,7 +329,7 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
         }
 
         // Sort each type of item
-        Pl1eHelpers.sortDocuments(context);
+        context = Pl1eHelpers.sortDocuments(context);
 
         // Sorting arrays
         context.masters = masters.sort((a, b) => a.item.name.localeCompare(b.item.name));

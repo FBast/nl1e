@@ -269,6 +269,18 @@ export class Pl1eItem extends Item {
         return parentItem;
     }
 
+     get priority() {
+        if (this.isEnabled) return 1;
+        if (this.isEquipped) return 2;
+        if (this.isReloaded) return 3;
+        if (this.isActionUsed) return 4;
+        if (this.isReactionUsed) return 5;
+        if (this.isQuickActionUsed) return 6;
+        if (this.isMajorActionAvailable) return 7;
+        if (this.isUsableAtLevel) return 8;
+        return 9;
+    }
+
     /**
      * Get the characterData
      * @return {Promise<CharacterData>}

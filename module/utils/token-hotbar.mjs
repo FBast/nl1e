@@ -2,9 +2,9 @@ import {Pl1eMacro} from "../helpers/macro.mjs";
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 
 /**
- * Generate macros for a token's actor based on favorite displayed and enabled items.
- * Only includes favorite consumables and abilities. Sorted by type, level, and name.
- * Fills hotbar slots from 1 to 50, clearing unused slots.
+ * Generate macros for a token's actor based on favorite and relevant items.
+ * Only includes favorite weapons, abilities, and consumables.
+ * Items are categorized, filtered, sorted, and used to fill the hotbar from slot 1 to 50.
  * @param {Token} token - The token whose actor's items will be processed.
  * @returns {Promise<void>}
  */
@@ -13,50 +13,50 @@ async function _generateTokenMacros(token) {
     const actor = token.actor;
     if (!actor) return;
 
-    const favoriteSourceIds = actor.getFavoriteIds("items");
-    const items = {
-        weapons: actor.displayedItems.filter(item =>
-            item.type === "weapon" && favoriteSourceIds.includes(item.sourceId)
-        ),
-        consumables: actor.displayedItems.filter(item =>
-            item.type === "consumable" && favoriteSourceIds.includes(item.sourceId)
-        ),
-        abilities: actor.enabledItems.filter(item =>
-            item.type === "ability" && favoriteSourceIds.includes(item.sourceId)
-        )
+    // Create a temp context and categorize items
+    let context = {
+        weapons: [],
+        abilities: [],
+        consumables: []
     };
 
-    // Sort each group
-    Pl1eHelpers.sortDocuments(items);
+    // Categorize all items into their respective collections
+    context = await Pl1eHelpers.categorizeItems(context, actor.items);
 
-    // Generate macros by group
-    for (const category in items) {
-        for (const item of items[category]) {
-            const dropData = {
-                type: "Item",
-                data: item,
-                id: item.id
-            };
+    // Once all items are categorized, select the representatives
+    context = await Pl1eHelpers.selectRepresentativeItems(context);
 
-            const macro = await Pl1eMacro.createMacro(dropData, nextSlot);
-            if (item.type === "weapon") {
-                let equippedType = null;
-                if (item.system.isEquippedMain) equippedType = "main";
-                else if (item.system.isEquippedSecondary) equippedType = "secondary";
+    // Sort each type of item
+    context = Pl1eHelpers.sortDocuments(context);
 
-                if (equippedType) {
-                    await macro.setFlag("pl1e", "equippedWeapon", equippedType);
-                }
-                else {
-                    await macro.unsetFlag("pl1e", "equippedWeapon");
-                }
-            }
+    // Get favorites items
+    const weapons = context.weapons.filter(item => actor.isFavorite("items", item.sourceId));
+    const abilities = context.abilities.filter(item => actor.isFavorite("items", item.sourceId));
+    const consumables = context.consumables.filter(item => actor.isFavorite("items", item.sourceId));
+    const allItems = [...weapons, ...abilities, ...consumables];
 
-            nextSlot++;
+    // Generate one macro per item, in order
+    for (const item of allItems) {
+        const dropData = {
+            type: "Item",
+            data: item,
+            id: item._id // must use _id from the original item
+        };
+
+        const macro = await Pl1eMacro.createMacro(dropData, nextSlot, {
+            flags: { pl1e: { isDynamic: true } },
+            folderName: "Dynamic"
+        });
+
+        if (item.type === "weapon") {
+            const isEquipped = item.system.isEquippedMain || item.system.isEquippedSecondary;
+            await macro.setFlag("pl1e", "equippedWeapon", isEquipped);
         }
+
+        nextSlot++;
     }
 
-    // Clear remaining slots
+    // Clear unused slots
     for (let i = nextSlot; i <= 50; i++) {
         await game.user.assignHotbarMacro(null, i);
     }
@@ -103,7 +103,14 @@ async function _restoreUserMacros() {
     }
 }
 
-// Hook setup
+Hooks.once("setup", async () => {
+    await _restoreUserMacros();
+    const dynamicMacros = game.macros.contents.filter(m => m.getFlag("pl1e", "isDynamic"));
+    for (const macro of dynamicMacros) {
+        if (macro.isOwner) await macro.delete();
+    }
+});
+
 Hooks.once("ready", () => {
     /**
      * Allow manual drop of items to hotbar, generating a macro in the process.
@@ -115,6 +122,9 @@ Hooks.once("ready", () => {
         }
     });
 
+    /**
+     * Add a frame on the equipped item macro
+     */
     Hooks.on("renderHotbar", (hotbar, html, data) => {
         html.find(".macro").each((_, el) => {
             const slot = el.dataset.slot;
@@ -123,10 +133,8 @@ Hooks.once("ready", () => {
             if (!macro) return;
 
             const equipped = macro.getFlag("pl1e", "equippedWeapon");
-            if (equipped === "main") {
-                el.classList.add("equipped-main");
-            } else if (equipped === "secondary") {
-                el.classList.add("equipped-secondary");
+            if (equipped) {
+                el.classList.add("equipped");
             }
         });
     });
@@ -217,8 +225,8 @@ Hooks.on("updateItem", async (item, changes, options, userId) => {
     if (!selectedToken || !selectedToken.actor) return;
     if (selectedToken.actor.id !== item.parent?.id) return;
 
-    // Wait 100ms to allow any follow-up updates to settle
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Wait 50ms to allow any follow-up updates to settle
+    await new Promise(resolve => setTimeout(resolve, 50));
 
     await _generateTokenMacros(selectedToken);
 });
