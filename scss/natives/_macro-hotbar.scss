@@ -1,9 +1,15 @@
+@import '../utils/variables';
+
 #hotbar {
   .macro-key {
     z-index: 2;
   }
 
   .macro.equipped img {
-    border: solid 2px gold;
+    border: solid 2px green;
+  }
+
+  .macro.disabled img {
+    border: solid 2px red;
   }
 }

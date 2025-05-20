@@ -31,15 +31,15 @@ async function _generateTokenMacros(token) {
 
     // Get favorites items
     const weapons = context.weapons.filter(item => actor.isFavorite("items", item.sourceId));
-    const abilities = context.abilities.filter(item => actor.isFavorite("items", item.sourceId));
     const consumables = context.consumables.filter(item => actor.isFavorite("items", item.sourceId));
-    const allItems = [...weapons, ...abilities, ...consumables];
+    const abilities = context.abilities.filter(item => actor.isFavorite("items", item.sourceId));
+    const allItems = [...weapons, ...consumables, ...abilities];
 
     // Generate one macro per item, in order
     for (const item of allItems) {
         const dropData = {
             type: "Item",
-            data: item,
+            data: foundry.utils.deepClone(item),
             id: item._id // must use _id from the original item
         };
 
@@ -51,6 +51,9 @@ async function _generateTokenMacros(token) {
         if (item.type === "weapon") {
             const isEquipped = item.system.isEquippedMain || item.system.isEquippedSecondary;
             await macro.setFlag("pl1e", "equippedWeapon", isEquipped);
+        }
+        else {
+            await macro.setFlag("pl1e", "disabled", !item.isEnabled);
         }
 
         nextSlot++;
@@ -135,6 +138,10 @@ Hooks.once("ready", () => {
             const equipped = macro.getFlag("pl1e", "equippedWeapon");
             if (equipped) {
                 el.classList.add("equipped");
+            }
+            const disabled = macro.getFlag("pl1e", "disabled");
+            if (disabled) {
+                el.classList.add("disabled");
             }
         });
     });
