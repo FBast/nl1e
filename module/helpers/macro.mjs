@@ -33,13 +33,14 @@ export class Pl1eMacro {
 
     /**
      * Attempt to create a macro from the dropped data. Will use an existing macro if one exists.
-     * @param {object} dropData     The dropped data
-     * @param {number} slot         The hotbar slot to use
-     * @param {object} [options]    Additional options
+     * @param {object} dropData             The dropped data
+     * @param {number} slot                 The hotbar slot to use
+     * @param {object} [options]            Additional options
      * @param {object} [options.flags]      Optional flags to apply to the macro
+     * @param {object} [options.slot]       Optional flags to define a slot for the macro
      * @param {string} [options.folderName] Optional folder name to place the macro into
      */
-    static async createMacro(dropData, slot, { flags = {}, folderName = undefined } = {}) {
+    static async createMacro(dropData, { flags = {}, folderName = undefined, slot = undefined } = {}) {
         if (dropData.type !== "Item") return;
 
         const itemData = await Item.implementation.fromDropData(dropData);
@@ -50,6 +51,7 @@ export class Pl1eMacro {
             scope: "actor",
             name: itemData.name,
             img: itemData.img,
+            itemId: itemData.id,
             command: `game.pl1e.Pl1eMacro.activateItem("${itemData.name}")`,
             flags
         };
@@ -70,11 +72,12 @@ export class Pl1eMacro {
         // Reuse existing macro if same name + command + author
         const macro = game.macros.find(m =>
             m.name === macroData.name &&
+            m.itemId === macroData.itemId &&
             m.command === macroData.command &&
             m.author === game.user
         ) || await Macro.create(macroData);
 
-        await game.user.assignHotbarMacro(macro, slot);
+        if (slot) await game.user.assignHotbarMacro(macro, slot);
         return macro;
     }
 

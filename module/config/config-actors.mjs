@@ -354,7 +354,6 @@ export function getConfigActor() {
             "icon": "far fa-coins color-gold",
             "type": "number",
             "path": "system.money.gold",
-            "favoritePath": "system.misc.isGoldFavorite",
             "img": "systems/pl1e/assets/coins/coins-crown-stack-gold.webp",
             "conversions": {
                 "silver": 10,

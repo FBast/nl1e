@@ -9,60 +9,68 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
  * @returns {Promise<void>}
  */
 async function _generateTokenMacros(token) {
-    let nextSlot = 1;
     const actor = token.actor;
     if (!actor) return;
 
-    // Create a temp context and categorize items
     let context = {
         weapons: [],
         abilities: [],
         consumables: []
     };
 
-    // Categorize all items into their respective collections
     context = await Pl1eHelpers.categorizeItems(context, actor.items);
-
-    // Once all items are categorized, select the representatives
     context = await Pl1eHelpers.selectRepresentativeItems(context);
-
-    // Sort each type of item
     context = Pl1eHelpers.sortDocuments(context);
 
-    // Get favorites items
     const weapons = context.weapons.filter(item => actor.isFavorite("items", item.sourceId));
     const consumables = context.consumables.filter(item => actor.isFavorite("items", item.sourceId));
     const abilities = context.abilities.filter(item => actor.isFavorite("items", item.sourceId));
     const allItems = [...weapons, ...consumables, ...abilities];
 
-    // Generate one macro per item, in order
+    const hotbarUpdates = {};
+    const macroPromises = [];
+
+    let nextSlot = 1;
+
     for (const item of allItems) {
         const dropData = {
             type: "Item",
             data: foundry.utils.deepClone(item),
-            id: item._id // must use _id from the original item
+            id: item._id
         };
 
-        const macro = await Pl1eMacro.createMacro(dropData, nextSlot, {
-            flags: { pl1e: { isDynamic: true } },
-            folderName: "Dynamic"
-        });
+        const isWeapon = item.type === "weapon";
+        const isEquipped = item.system.isEquippedMain || item.system.isEquippedSecondary;
+        const isDisabled = !item.isEnabled;
 
-        if (item.type === "weapon") {
-            const isEquipped = item.system.isEquippedMain || item.system.isEquippedSecondary;
-            await macro.setFlag("pl1e", "equippedWeapon", isEquipped);
-        }
-        else {
-            await macro.setFlag("pl1e", "disabled", !item.isEnabled);
-        }
+        const flags = {
+            pl1e: {
+                isDynamic: true,
+                equipped: isWeapon ? isEquipped : false,
+                disabled: !isWeapon ? isDisabled : false
+            }
+        };
 
-        nextSlot++;
+        macroPromises.push(
+            Pl1eMacro.createMacro(dropData, {
+                flags,
+                folderName: "Dynamic"
+            }).then(macro => {
+                if (macro) {
+                    hotbarUpdates[String(nextSlot)] = macro.id;
+                    nextSlot++;
+                }
+            })
+        );
     }
 
-    // Clear unused slots
-    for (let i = nextSlot; i <= 50; i++) {
-        await game.user.assignHotbarMacro(null, i);
-    }
+    await Promise.all(macroPromises);
+
+    console.log("clear slots")
+    await game.user.update({ hotbar: {} }, {diff: false, recursive: false, noHook: true})
+
+    console.log("add slots")
+    await game.user.update({ hotbar: hotbarUpdates }, { diff: false });
 }
 
 /**
@@ -88,22 +96,19 @@ async function _saveUserMacros() {
 
 /**
  * Restore the user's saved hotbar macros to their previous state.
- * If no macro is found for a slot, the slot is cleared.
+ * If no macro is found for a slot, the slot is simply omitted.
  * @returns {Promise<void>}
  */
 async function _restoreUserMacros() {
     const defaultHotbar = game.user.getFlag('pl1e', 'defaultHotbarMacros') || [];
 
-    const slotMap = new Map();
-    for (const { id, slot } of defaultHotbar) {
-        slotMap.set(slot, id);
+    const hotbar = {};
+    for (const { slot, id } of defaultHotbar) {
+        if (id) hotbar[slot] = id;
     }
 
-    for (let slot = 1; slot <= 50; slot++) {
-        const macroId = slotMap.get(slot);
-        const macro = macroId ? game.macros.get(macroId) : null;
-        await game.user.assignHotbarMacro(macro ?? null, slot);
-    }
+    await game.user.update({ hotbar: {} }, {diff: false, recursive: false, noHook: true})
+    await game.user.update({ hotbar }, { diff: false });
 }
 
 Hooks.once("setup", async () => {
@@ -114,13 +119,15 @@ Hooks.once("setup", async () => {
     }
 });
 
-Hooks.once("ready", () => {
+// Hooks.once("ready", () => {
     /**
      * Allow manual drop of items to hotbar, generating a macro in the process.
      */
     Hooks.on("hotbarDrop", async (bar, data, slot) => {
         if (data.type === "Item") {
-            await Pl1eMacro.createMacro(data, slot);
+            await Pl1eMacro.createMacro(data, {
+                slot: slot
+            })
             return false;
         }
     });
@@ -130,19 +137,17 @@ Hooks.once("ready", () => {
      */
     Hooks.on("renderHotbar", (hotbar, html, data) => {
         html.find(".macro").each((_, el) => {
-            const slot = el.dataset.slot;
             const macroId = el.dataset.macroId;
             const macro = game.macros.get(macroId);
             if (!macro) return;
 
-            const equipped = macro.getFlag("pl1e", "equippedWeapon");
-            if (equipped) {
-                el.classList.add("equipped");
-            }
-            const disabled = macro.getFlag("pl1e", "disabled");
-            if (disabled) {
-                el.classList.add("disabled");
-            }
+            if (!macro.getFlag("pl1e", "isDynamic")) return;
+
+            const isEquipped = macro.getFlag("pl1e", "equipped");
+            const isDisabled = macro.getFlag("pl1e", "disabled");
+
+            el.classList.toggle("equipped", isEquipped);
+            el.classList.toggle("disabled", isDisabled);
         });
     });
 
@@ -178,7 +183,7 @@ Hooks.once("ready", () => {
             }
         });
     });
-});
+// });
 
 /**
  * Handle token selection to generate or restore macros depending on selection state.
@@ -188,14 +193,13 @@ Hooks.on("controlToken", async (token, isSelected) => {
     if (!dynamicHotbar) return;
 
     if (isSelected) {
-        await _generateTokenMacros(token);
+        void _generateTokenMacrosSafe("generate", token);
     } else {
-        // Wait until next task to ensure selection state is accurate
-        await new Promise(resolve => setTimeout(resolve, 0));
+        await new Promise(resolve => setTimeout(resolve, 100));
 
-        const stillSelected = canvas.tokens.controlled.length > 0;
-        if (!stillSelected) {
-            await _restoreUserMacros();
+        const stillNoneSelected = canvas.tokens.controlled.length === 0;
+        if (stillNoneSelected) {
+            void _generateTokenMacrosSafe("restore");
         }
     }
 });
@@ -210,7 +214,7 @@ Hooks.on("updateActor", async (actor, changes, options, userId) => {
     const selectedToken = canvas.tokens.controlled[0];
     const token = actor.getActiveTokens()[0];
     if (selectedToken && token && selectedToken.document === token.document) {
-        await _generateTokenMacros(token);
+        void _generateTokenMacrosSafe("generate", token);
     }
 });
 
@@ -232,8 +236,39 @@ Hooks.on("updateItem", async (item, changes, options, userId) => {
     if (!selectedToken || !selectedToken.actor) return;
     if (selectedToken.actor.id !== item.parent?.id) return;
 
-    // Wait 50ms to allow any follow-up updates to settle
-    await new Promise(resolve => setTimeout(resolve, 50));
-
-    await _generateTokenMacros(selectedToken);
+    void _generateTokenMacrosSafe("generate", selectedToken);
 });
+
+let _currentGeneration = null;
+let _nextTask = null;
+
+/**
+ * Schedule a macro generation or restore.
+ * If one is already running, it queues the last action only.
+ * @param {"generate"|"restore"} type - The type of operation
+ * @param {Token|null} token - The token to use for generation (ignored for restore)
+ */
+async function _generateTokenMacrosSafe(type, token = null) {
+    // Si une tâche est en cours, on remplace la prochaine action par celle-ci
+    if (_currentGeneration) {
+        _nextTask = { type, token };
+        return;
+    }
+
+    _currentGeneration = true;
+    let currentTask = { type, token };
+
+    while (currentTask) {
+        _nextTask = null;
+
+        if (currentTask.type === "generate" && currentTask.token) {
+            await _generateTokenMacros(currentTask.token);
+        } else if (currentTask.type === "restore") {
+            await _restoreUserMacros();
+        }
+
+        currentTask = _nextTask;
+    }
+
+    _currentGeneration = null;
+}
