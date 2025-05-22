@@ -166,13 +166,15 @@
       .item-tooltip {
         text-align: justify;
         background-color: $colorPanel;
+        display: none;
+        padding: 5px 10px;
         border-top: 1px solid $colorBorder;
         border-bottom: 1px solid $colorBorder;
-        display: none;
-        padding: 5px;
-
-        .expanded {
+        
+        &.expanded {
           display: block;
+          border-top: 1px solid $colorBorder;
+          border-bottom: 1px solid $colorBorder;
         }
       }
     }

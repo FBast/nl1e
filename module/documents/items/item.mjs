@@ -794,7 +794,7 @@ export class Pl1eItem extends Item {
             const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
 
             // Execute activationMacro
-            if (enableVFXAndSFX && activationMacro !== null) await activationMacro.execute({
+            if (game.pl1e.hasSequencer && enableVFXAndSFX && activationMacro !== null) await activationMacro.execute({
                 characterData: characterData,
                 active: true
             });
@@ -998,7 +998,7 @@ export class Pl1eItem extends Item {
         const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
 
         // Execute activationMacro
-        if (enableVFXAndSFX && activationMacro !== undefined && characterData.token) {
+        if (game.pl1e.hasSequencer && enableVFXAndSFX && activationMacro !== undefined && characterData.token) {
             await activationMacro.execute({
                 characterData: characterData,
                 active: false
@@ -1055,7 +1055,7 @@ export class Pl1eItem extends Item {
         const preLaunchMacro = await Pl1eHelpers.getDocument("Macro", preLaunchMacroId);
 
         // Execute pre-launch macro
-        if (enableVFXAndSFX && preLaunchMacro !== null && characterData.token) {
+        if (game.pl1e.hasSequencer && enableVFXAndSFX && preLaunchMacro !== null && characterData.token) {
             await preLaunchMacro.execute({
                 characterData: characterData,
                 targetsData: targetsData
@@ -1072,7 +1072,7 @@ export class Pl1eItem extends Item {
         const postLaunchMacro = await Pl1eHelpers.getDocument("Macro", postLaunchMacroId);
 
         // Execute post-launch macro
-        if (enableVFXAndSFX && postLaunchMacro !== null && characterData.token) {
+        if (game.pl1e.hasSequencer && enableVFXAndSFX && postLaunchMacro !== null && characterData.token) {
             await postLaunchMacro.execute({
                 characterData: characterData,
                 targetsData: targetsData

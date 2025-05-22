@@ -1,3 +1,17 @@
+/* -------------------------------------------- */
+/*  Globals                                     */
+/* -------------------------------------------- */
+
+// Export PL1E for easier access
+export const PL1E = {};
+
+// Register PL1E on system config
+CONFIG.PL1E = PL1E;
+
+/* -------------------------------------------- */
+/*  Imports                                     */
+/* -------------------------------------------- */
+
 import {preloadHandlebarsTemplates} from "./main/templates.mjs";
 import {Pl1eActor} from "./documents/actors/actor.mjs";
 import {Pl1eItem} from "./documents/items/item.mjs";
@@ -23,38 +37,24 @@ import {getConfigRest} from "./config/config-rest.mjs";
 import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
-import {giftItem} from "./helpers/trade.mjs";
-
-/* -------------------------------------------- */
-/*  Utils import                                */
-/* -------------------------------------------- */
 
 import "./utils/placeable-tooltip.mjs";
 import "./utils/token-hotbar.mjs";
 import "./utils/color-sheets.mjs";
+import "./utils/socket.mjs";
 import {registerDragHighlighting} from "./utils/drag-highlight.mjs";
-
-/* -------------------------------------------- */
-/*  Globals                                     */
-/* -------------------------------------------- */
-
-// Export PL1E for easier access
-export const PL1E = {};
-
-// Register PL1E on system config
-CONFIG.PL1E = PL1E;
 
 /* -------------------------------------------- */
 /*  System Hooks                                */
 /* -------------------------------------------- */
 
 Hooks.once('init', async function () {
-    // Add utility classes to the layout game object so that they're more easily
-    // accessible in layout contexts.
+    // Global dynamic data
     game.pl1e = {
         Pl1eActor,
         Pl1eItem,
-        Pl1eMacro
+        Pl1eMacro,
+        hasSequencer: false
     };
 
     // Set an initiative formula for the system
@@ -129,25 +129,25 @@ Hooks.once("ready", async function () {
 /*  Module Hooks                        */
 /* ------------------------------------ */
 
-Hooks.once("socketlib.ready", () => {
-    PL1E.socket = socketlib.registerSystem("pl1e");
-    PL1E.socket.register("giftItem", async function (data) {
-        await giftItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
-    });
-    PL1E.socket.register("tokenUpdate", async function (data) {
-        const token = await Pl1eHelpers.getDocument("Token", data.tokenId, {
-            scene: await Pl1eHelpers.getDocument("Scene", data.sceneId)
-        });
-        await token.actor.update(data.updateData);
-        //TODO in case of no token for ability directly on actors
-    });
-    PL1E.socket.register("displayScrollingText", function (data) {
-        Pl1eHelpers.displayScrollingText(data);
-    });
-    PL1E.socket.register("centerAndSelectToken", async (tokenId) => {
-        await Pl1eHelpers.centerAndSelectToken(tokenId);
-    });
-});
+// Hooks.once("socketlib.ready", () => {
+//     PL1E.socket = socketlib.registerSystem("pl1e");
+//     PL1E.socket.register("giftItem", async function (data) {
+//         await giftItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
+//     });
+//     PL1E.socket.register("tokenUpdate", async function (data) {
+//         const token = await Pl1eHelpers.getDocument("Token", data.tokenId, {
+//             scene: await Pl1eHelpers.getDocument("Scene", data.sceneId)
+//         });
+//         await token.actor.update(data.updateData);
+//         //TODO in case of no token for ability directly on actors
+//     });
+//     PL1E.socket.register("displayScrollingText", function (data) {
+//         Pl1eHelpers.displayScrollingText(data);
+//     });
+//     PL1E.socket.register("centerAndSelectToken", async (tokenId) => {
+//         await Pl1eHelpers.centerAndSelectToken(tokenId);
+//     });
+// });
 
 Hooks.once("dragRuler.ready", (SpeedProvider) => {
     class Pl1eSpeedProvider extends SpeedProvider {
@@ -182,4 +182,10 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => {
     }
 
     dragRuler.registerSystem("pl1e", Pl1eSpeedProvider);
+});
+
+Hooks.once("sequencer.ready", () => {
+    game.pl1e.hasSequencer = true;
+
+    console.log("PL1E | Sequencer support enabled.");
 });
