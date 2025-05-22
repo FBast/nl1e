@@ -587,6 +587,7 @@ export class Pl1eHelpers {
             itemCopy.realImg = item.realImg;
             itemCopy.warnings = item.warnings;
             itemCopy.isEnabled = item.isEnabled;
+            itemCopy.priority = item.priority;
 
             itemCopy.combinedPassiveAspects = await item.getCombinedPassiveAspects();
             itemCopy.combinedActiveAspects = await item.getCombinedActiveAspects();

@@ -337,7 +337,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         });
 
         // Categorize all items into their respective collections
-        context = await Pl1eHelpers.categorizeItems(context, this.actor.items);
+        context = await Pl1eHelpers.categorizeItems(context, context.items);
 
         // Once all items are categorized, select the representatives
         context = await Pl1eHelpers.selectRepresentativeItems(context);
