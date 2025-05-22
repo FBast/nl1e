@@ -1,14 +1,4 @@
 /* -------------------------------------------- */
-/*  Globals                                     */
-/* -------------------------------------------- */
-
-// Export PL1E for easier access
-export const PL1E = {};
-
-// Register PL1E on system config
-CONFIG.PL1E = PL1E;
-
-/* -------------------------------------------- */
 /*  Imports                                     */
 /* -------------------------------------------- */
 
@@ -41,8 +31,20 @@ import {registerHandlebars} from "./main/handlebars.mjs";
 import "./utils/placeable-tooltip.mjs";
 import "./utils/token-hotbar.mjs";
 import "./utils/color-sheets.mjs";
-import "./utils/socket.mjs";
+import {registerSocketHandlers} from "./utils/socket.mjs";
 import {registerDragHighlighting} from "./utils/drag-highlight.mjs";
+
+/* -------------------------------------------- */
+/*  Globals                                     */
+/* -------------------------------------------- */
+
+export const PL1E = {
+    socket: {}
+};
+
+// Register PL1E on system config
+CONFIG.PL1E = PL1E;
+registerSocketHandlers(PL1E);
 
 /* -------------------------------------------- */
 /*  System Hooks                                */
@@ -114,6 +116,9 @@ Hooks.once("ready", async function () {
         statusEffect.description = game.i18n.localize(statusEffect.description);
     }
 
+    // Register sockets
+    registerSocketHandlers(PL1E);
+    
     // Register dynamic configs
     PL1E.sequencerMacros = await Pl1eHelpers.getDocumentsDataFromPack("legacy-sequencer-macros", true);
     PL1E.actorPreUpdate = await Pl1eHelpers.getDocumentsDataFromPack("legacy-actor-pre-update-macros", true);

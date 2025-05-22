@@ -66,10 +66,7 @@ async function _generateTokenMacros(token) {
 
     await Promise.all(macroPromises);
 
-    console.log("clear slots")
     await game.user.update({ hotbar: {} }, {diff: false, recursive: false, noHook: true})
-
-    console.log("add slots")
     await game.user.update({ hotbar: hotbarUpdates }, { diff: false });
 }
 
@@ -119,7 +116,7 @@ Hooks.once("setup", async () => {
     }
 });
 
-// Hooks.once("ready", () => {
+Hooks.once("ready", () => {
     /**
      * Allow manual drop of items to hotbar, generating a macro in the process.
      */
@@ -150,40 +147,40 @@ Hooks.once("setup", async () => {
             el.classList.toggle("disabled", isDisabled);
         });
     });
+});
 
-    /**
-     * Add a toggle button to enable/disable the dynamic hotbar system.
-     * On enable: saves current hotbar and generates macros.
-     * On disable: restores the saved hotbar.
-     */
-    Hooks.on("getSceneControlButtons", (controls) => {
-        const tokenCategory = controls.find(c => c.name === "token");
-        if (!tokenCategory) return;
+/**
+ * Add a toggle button to enable/disable the dynamic hotbar system.
+ * On enable: saves current hotbar and generates macros.
+ * On disable: restores the saved hotbar.
+ */
+Hooks.on("getSceneControlButtons", (controls) => {
+    const tokenCategory = controls.find(c => c.name === "token");
+    if (!tokenCategory) return;
 
-        tokenCategory.tools.push({
-            name: "dynamicHotBar",
-            title: game.i18n.localize("PL1E.DynamicHotBar"),
-            icon: "fas fa-exchange-alt",
-            active: game.user.getFlag('pl1e', 'dynamicHotBar') || false,
-            toggle: true,
-            button: true,
-            onClick: async (enable) => {
-                await game.user.setFlag('pl1e', 'dynamicHotBar', enable);
+    tokenCategory.tools.push({
+        name: "dynamicHotBar",
+        title: game.i18n.localize("PL1E.DynamicHotBar"),
+        icon: "fas fa-exchange-alt",
+        active: game.user.getFlag('pl1e', 'dynamicHotBar') || false,
+        toggle: true,
+        button: true,
+        onClick: async (enable) => {
+            await game.user.setFlag('pl1e', 'dynamicHotBar', enable);
 
-                if (!enable) {
-                    await _restoreUserMacros();
-                } else {
-                    await _saveUserMacros();
+            if (!enable) {
+                await _restoreUserMacros();
+            } else {
+                await _saveUserMacros();
 
-                    const selected = canvas.tokens.controlled[0];
-                    if (selected && selected.actor?.isOwner) {
-                        await _generateTokenMacros(selected);
-                    }
+                const selected = canvas.tokens.controlled[0];
+                if (selected && selected.actor?.isOwner) {
+                    await _generateTokenMacros(selected);
                 }
             }
-        });
+        }
     });
-// });
+});
 
 /**
  * Handle token selection to generate or restore macros depending on selection state.
