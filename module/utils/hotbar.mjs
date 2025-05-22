@@ -114,11 +114,11 @@ Hooks.once("ready", () => {
     /**
      * Allow manual drop of items to hotbar, generating a macro in the process.
      */
-    Hooks.on("hotbarDrop",  (bar, data, slot) => {
+    Hooks.on("hotbarDrop", async (bar, data, slot) => {
         if (data.type === "Item") {
             const uuid = data.uuid ?? "";
             if (uuid.startsWith("Actor.")) {
-                void Pl1eMacro.createMacroFromDrop(data, { slot });
+                await Pl1eMacro.createMacroFromDrop(data, { slot });
                 return false;
             }
         }
