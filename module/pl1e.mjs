@@ -29,7 +29,7 @@ import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
 
 import "./utils/placeable-tooltip.mjs";
-import "./utils/token-hotbar.mjs";
+import "./utils/hotbar.mjs";
 import "./utils/color-sheets.mjs";
 import {registerSocketHandlers} from "./utils/socket.mjs";
 import {registerDragHighlighting} from "./utils/drag-highlight.mjs";
@@ -133,26 +133,6 @@ Hooks.once("ready", async function () {
 /* ------------------------------------ */
 /*  Module Hooks                        */
 /* ------------------------------------ */
-
-// Hooks.once("socketlib.ready", () => {
-//     PL1E.socket = socketlib.registerSystem("pl1e");
-//     PL1E.socket.register("giftItem", async function (data) {
-//         await giftItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
-//     });
-//     PL1E.socket.register("tokenUpdate", async function (data) {
-//         const token = await Pl1eHelpers.getDocument("Token", data.tokenId, {
-//             scene: await Pl1eHelpers.getDocument("Scene", data.sceneId)
-//         });
-//         await token.actor.update(data.updateData);
-//         //TODO in case of no token for ability directly on actors
-//     });
-//     PL1E.socket.register("displayScrollingText", function (data) {
-//         Pl1eHelpers.displayScrollingText(data);
-//     });
-//     PL1E.socket.register("centerAndSelectToken", async (tokenId) => {
-//         await Pl1eHelpers.centerAndSelectToken(tokenId);
-//     });
-// });
 
 Hooks.once("dragRuler.ready", (SpeedProvider) => {
     class Pl1eSpeedProvider extends SpeedProvider {

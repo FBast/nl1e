@@ -1,60 +1,87 @@
 export class Pl1eMacro {
 
     /**
-    * Trigger an item to roll when a macro.mjs is clicked.
-    * @param {string} itemName                Name of the item on the selected actor to trigger.
-    * @returns {Promise<ChatMessage|object>}  Roll result.
-    */
-    static rollItem(itemName) {
-        return this.getTarget(itemName, "Item")?.use();
-    }
-
-    /**
-    * Toggle an effect on and off when a macro.mjs is clicked.
-    * @param {string} effectLabel       Label for the effect to be toggled.
-    * @returns {Promise<ActiveEffect>}  The effect after it has been toggled.
-    */
-    static toggleEffect(effectLabel) {
-        const effect = this.getTarget(effectLabel, "ActiveEffect");
-        return effect?.update({disabled: !effect.disabled});
-    }
-
-    /**
-     * Activate an item when a macro is clicked
-     * @param {string} itemName
+     * Activate an item by ID on an actor by ID.
+     * @param {string} actorId
+     * @param {string} itemId
      * @returns {Promise<boolean>}
      */
-    static async activateItem(itemName) {
-        const target = this.getTarget(itemName, "Item");
-        if (target) await target.activate();
+    static async activateItem(actorId, itemId) {
+        const actor = game.actors.get(actorId);
+        if (!actor) {
+            console.warn(`Pl1eMacro.activateItem: Actor '${actorId}' not found.`);
+            return false;
+        }
+
+        const item = actor.items.get(itemId);
+        if (!item) {
+            console.warn(`Pl1eMacro.activateItem: Item '${itemId}' not found on '${actor.name}'.`);
+            return false;
+        }
+
+        await item.activate?.();
+        return true;
     }
 
     /**
-     * Attempt to create a macro from the dropped data. Will use an existing macro if one exists.
-     * @param {object} dropData             The dropped data
-     * @param {number} slot                 The hotbar slot to use
-     * @param {object} [options]            Additional options
-     * @param {object} [options.flags]      Optional flags to apply to the macro
-     * @param {object} [options.slot]       Optional flags to define a slot for the macro
-     * @param {string} [options.folderName] Optional folder name to place the macro into
+     * Create a macro from a drag/drop event.
+     * @param {object} dropData
+     * @param {object} [options]
      */
-    static async createMacro(dropData, { flags = {}, folderName = undefined, slot = undefined } = {}) {
+    static async createMacroFromDrop(dropData, options = {}) {
         if (dropData.type !== "Item") return;
 
         const itemData = await Item.implementation.fromDropData(dropData);
-        if (!itemData) return ui.notifications.info(game.i18n.localize("PL1E.Unowned"));
+        if (!itemData) {
+            ui.notifications.info(game.i18n.localize("PL1E.Unowned"));
+            return;
+        }
 
+        const actor = itemData.parent;
+        if (!actor) {
+            ui.notifications.warn("No actor found for macro creation.");
+            return;
+        }
+
+        return this._createMacroFromData({ actorId: actor.id, itemData }, options);
+    }
+
+    /**
+     * Create a macro from actor and item directly.
+     * @param {Actor} actor
+     * @param {Item} item
+     * @param {object} [options]
+     */
+    static async createMacroFromItem(actor, item, options = {}) {
+        if (!actor || !item) return;
+
+        return this._createMacroFromData({
+            actorId: actor.id,
+            itemData: item
+        }, options);
+    }
+
+    /**
+     * Internal shared macro creation logic.
+     * @param {object} input
+     * @param {string} input.actorId
+     * @param {Item} input.itemData
+     * @param {object} options
+     * @param {object} [options.flags]
+     * @param {string} [options.folderName]
+     * @param {number} [options.slot]
+     */
+    static async _createMacroFromData({ actorId, itemData }, { flags = {}, folderName = undefined, slot = undefined } = {}) {
         const macroData = {
             type: "script",
             scope: "actor",
             name: itemData.name,
             img: itemData.img,
             itemId: itemData.id,
-            command: `game.pl1e.Pl1eMacro.activateItem("${itemData.name}")`,
+            command: `game.pl1e.Pl1eMacro.activateItem("${actorId}", "${itemData._id}")`,
             flags
         };
 
-        // Automatically find or create the folder if folderName is provided
         if (folderName) {
             let folder = game.folders.find(f => f.name === folderName && f.type === "Macro");
             if (!folder) {
@@ -67,7 +94,6 @@ export class Pl1eMacro {
             macroData.folder = folder.id;
         }
 
-        // Reuse existing macro if same name + command + author
         const macro = game.macros.find(m =>
             m.name === macroData.name &&
             m.itemId === macroData.itemId &&
@@ -77,34 +103,5 @@ export class Pl1eMacro {
 
         if (slot) await game.user.assignHotbarMacro(macro, slot);
         return macro;
-    }
-
-    /**
-     * Find a document of the specified name and type on an assigned or selected actor.
-     * @param {string} name          Document name to locate.
-     * @param {string} documentType  Type of embedded document (e.g. "Item" or "ActiveEffect").
-     * @returns {Pl1eItem}           Document if found, otherwise nothing.
-     */
-    static getTarget(name, documentType) {
-        let actor;
-        const speaker = ChatMessage.getSpeaker();
-        if ( speaker.token ) actor = game.actors.tokens[speaker.token];
-        actor ??= game.actors.get(speaker.actor);
-        if ( !actor ) {
-            ui.notifications.info(game.i18n.localize("PL1E.NoActorSelected"));
-            return null;
-        }
-
-        const collection = (documentType === "Item") ? actor.items : actor.effects;
-        const nameKeyPath = (documentType === "Item") ? "name" : "label";
-
-        // Find item in collection
-        const documents = collection.filter(i => foundry.utils.getProperty(i, nameKeyPath) === name);
-        const type = game.i18n.localize(`DOCUMENT.${documentType}`);
-        if ( documents.length === 0 ) {
-            ui.notifications.info(game.i18n.format("PL1E.NoItemFound", { actor: actor.name, type, name }));
-            return null;
-        }
-        return documents[0];
     }
 }

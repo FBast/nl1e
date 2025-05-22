@@ -212,6 +212,7 @@ export class Pl1eActor extends Actor {
             }
             // Display the scrolling text on all clients
             PL1E.socket.executeForEveryone("displayScrollingText", data);
+            Pl1eHelpers.displayScrollingText(data);
         }
     }
 
@@ -555,7 +556,7 @@ export class Pl1eActor extends Actor {
     }
 
     async toggleFavorite(type, id, add = true) {
-        if (!["items", "currencies"].includes(type)) return;
+        if (!["items", "weapons", "currencies"].includes(type)) return;
 
         let current = this.getFavoriteIds(type);
         const exists = current.includes(id);

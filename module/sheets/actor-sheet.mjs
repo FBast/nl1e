@@ -369,7 +369,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
 
         // Update the context with favorites items
         context.favoritesAbilities = context.abilities.filter(item => this.actor.isFavorite("items", item.sourceId));
-        context.favoritesWeapons = context.weapons.filter(item => this.actor.isFavorite("items", item.sourceId));
+        context.favoritesWeapons = context.weapons.filter(item => this.actor.isFavorite("weapons", item.id));
         context.favoritesWearables = context.wearables.filter(item => this.actor.isFavorite("items", item.sourceId));
         context.favoritesConsumables = context.consumables.filter(item => this.actor.isFavorite("items", item.sourceId));
         context.favoritesCommons = context.commons.filter(item => this.actor.isFavorite("items", item.sourceId));

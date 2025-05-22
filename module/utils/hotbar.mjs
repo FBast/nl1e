@@ -22,7 +22,7 @@ async function _generateTokenMacros(token) {
     context = await Pl1eHelpers.selectRepresentativeItems(context);
     context = Pl1eHelpers.sortDocuments(context);
 
-    const weapons = context.weapons.filter(item => actor.isFavorite("items", item.sourceId));
+    const weapons = context.weapons.filter(item => actor.isFavorite("weapons", item._id));
     const consumables = context.consumables.filter(item => actor.isFavorite("items", item.sourceId));
     const abilities = context.abilities.filter(item => actor.isFavorite("items", item.sourceId));
     const allItems = [...weapons, ...consumables, ...abilities];
@@ -33,12 +33,6 @@ async function _generateTokenMacros(token) {
     let nextSlot = 1;
 
     for (const item of allItems) {
-        const dropData = {
-            type: "Item",
-            data: foundry.utils.deepClone(item),
-            id: item._id
-        };
-
         const isWeapon = item.type === "weapon";
         const isEquipped = item.system.isEquippedMain || item.system.isEquippedSecondary;
         const isDisabled = !item.isEnabled;
@@ -52,7 +46,7 @@ async function _generateTokenMacros(token) {
         };
 
         macroPromises.push(
-            Pl1eMacro.createMacro(dropData, {
+            Pl1eMacro.createMacroFromItem(actor, item, {
                 flags,
                 folderName: "Dynamic"
             }).then(macro => {
@@ -66,7 +60,7 @@ async function _generateTokenMacros(token) {
 
     await Promise.all(macroPromises);
 
-    await game.user.update({ hotbar: {} }, {diff: false, recursive: false, noHook: true})
+    await game.user.update({ hotbar: {} }, { diff: false, recursive: false, noHook: true });
     await game.user.update({ hotbar: hotbarUpdates }, { diff: false });
 }
 
@@ -120,12 +114,13 @@ Hooks.once("ready", () => {
     /**
      * Allow manual drop of items to hotbar, generating a macro in the process.
      */
-    Hooks.on("hotbarDrop", async (bar, data, slot) => {
+    Hooks.on("hotbarDrop",  (bar, data, slot) => {
         if (data.type === "Item") {
-            await Pl1eMacro.createMacro(data, {
-                slot: slot
-            })
-            return false;
+            const uuid = data.uuid ?? "";
+            if (uuid.startsWith("Actor.")) {
+                void Pl1eMacro.createMacroFromDrop(data, { slot });
+                return false;
+            }
         }
     });
 
