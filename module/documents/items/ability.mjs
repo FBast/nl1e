@@ -31,6 +31,8 @@ export class Pl1eAbility extends Pl1eItem {
         if (this.system.attributes.linkedUsageCost > 0 && !this.isReloaded) warnings.push("PL1E.LinkedItemNotReloaded");
         if (this.system.attributes.isMajorAction && !this.isMajorActionAvailable) warnings.push("PL1E.LinkedItemMajorActionUsed");
 
+        console.log(`${this.name} with warning: ${warnings}`);
+        
         return warnings;
     }
 

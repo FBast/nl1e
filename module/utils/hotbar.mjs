@@ -187,7 +187,7 @@ Hooks.on("controlToken", async (token, isSelected) => {
     if (isSelected) {
         void _generateTokenMacrosSafe("generate", token);
     } else {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 0));
 
         const stillNoneSelected = canvas.tokens.controlled.length === 0;
         if (stillNoneSelected) {
@@ -241,7 +241,6 @@ let _nextTask = null;
  * @param {Token|null} token - The token to use for generation (ignored for restore)
  */
 async function _generateTokenMacrosSafe(type, token = null) {
-    // Si une tâche est en cours, on remplace la prochaine action par celle-ci
     if (_currentGeneration) {
         _nextTask = { type, token };
         return;
