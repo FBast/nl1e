@@ -7,7 +7,6 @@ import {PL1E} from "../pl1e.mjs";
 import {Pl1eChatMessage} from "../documents/chat-message.mjs";
 
 export class Pl1eEvent {
-
     /**
      * Handle clickable rolls.
      * @param {Event} event The originating click event

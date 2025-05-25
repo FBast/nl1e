@@ -182,42 +182,120 @@
                     </div>
                 </div>
             {{/if}}
+
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.MeleeActivationMacro"}}</label>
+                        <label>{{localize "PL1E.CustomMeleeActivationMacro"}}</label>
                     </div>
                     <div class="fields">
-                        <select name="system.attributes.meleeActivationMacro">
-                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleeActivationMacro localize=true}}
-                        </select>
+                        <input type="checkbox" name="system.attributes.customMeleeActivationMacro" {{checked system.attributes.customMeleeActivationMacro}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </div>
+            {{#unless system.attributes.customMeleeActivationMacro}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MeleeActivationPreset"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.meleeActivationPreset">
+                                {{customSelectOptions (config "sequencerPresets") selected=system.attributes.meleeActivationPreset localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MeleeActivationMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.meleeActivationMacro">
+                                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleeActivationMacro localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
+
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.MeleePreLaunchMacro"}}</label>
+                        <label>{{localize "PL1E.CustomMeleePreLaunchMacro"}}</label>
                     </div>
                     <div class="fields">
-                        <select name="system.attributes.meleePreLaunchMacro">
-                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleePreLaunchMacro localize=true}}
-                        </select>
+                        <input type="checkbox" name="system.attributes.customMeleePreLaunchMacro" {{checked system.attributes.customMeleePreLaunchMacro}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </div>
+            {{#unless system.attributes.customMeleePreLaunchMacro}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MeleePreLaunchPreset"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.meleePreLaunchPreset">
+                                {{customSelectOptions (config "sequencerPresets") selected=system.attributes.meleePreLaunchPreset localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MeleePreLaunchMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.meleePreLaunchMacro">
+                                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleePreLaunchMacro localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
+
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.MeleePostLaunchMacro"}}</label>
+                        <label>{{localize "PL1E.CustomMeleePostLaunchMacro"}}</label>
                     </div>
                     <div class="fields">
-                        <select name="system.attributes.meleePostLaunchMacro">
-                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleePostLaunchMacro localize=true}}
-                        </select>
+                        <input type="checkbox" name="system.attributes.customMeleePostLaunchMacro" {{checked system.attributes.customMeleePostLaunchMacro}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </div>
+            {{#unless system.attributes.customMeleePostLaunchMacro}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MeleePostLaunchPreset"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.meleePostLaunchPreset">
+                                {{customSelectOptions (config "sequencerPresets") selected=system.attributes.meleePostLaunchPreset localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MeleePostLaunchMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.meleePostLaunchMacro">
+                                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.meleePostLaunchMacro localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
         </div>
     </div>
 {{/if}}
@@ -274,42 +352,121 @@
                     </div>
                 </div>
             {{/if}}
+
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.RangeActivationMacro"}}</label>
+                        <label>{{localize "PL1E.CustomRangeActivationMacro"}}</label>
                     </div>
                     <div class="fields">
-                        <select name="system.attributes.rangeActivationMacro">
-                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangeActivationMacro localize=true}}
-                        </select>
+                        <input type="checkbox" name="system.attributes.customRangeActivationMacro" {{checked system.attributes.customRangeActivationMacro}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </div>
+            {{#unless system.attributes.customRangeActivationMacro}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.RangeActivationPreset"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.rangeActivationPreset">
+                                {{customSelectOptions (config "sequencerPresets") selected=system.attributes.rangeActivationPreset localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.RangeActivationMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.rangeActivationMacro">
+                                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangeActivationMacro localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
+
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.RangePreLaunchMacro"}}</label>
+                        <label>{{localize "PL1E.CustomRangePreLaunchMacro"}}</label>
                     </div>
                     <div class="fields">
-                        <select name="system.attributes.rangePreLaunchMacro">
-                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangePreLaunchMacro localize=true}}
-                        </select>
+                        <input type="checkbox" name="system.attributes.customRangePreLaunchMacro" {{checked system.attributes.customRangePreLaunchMacro}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </div>
+            {{#unless system.attributes.customRangePreLaunchMacro}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.RangePreLaunchPreset"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.rangePreLaunchPreset">
+                                {{customSelectOptions (config "sequencerPresets") selected=system.attributes.rangePreLaunchPreset localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.RangePreLaunchMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.rangePreLaunchMacro">
+                                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangePreLaunchMacro localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
+
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.RangePostLaunchMacro"}}</label>
+                        <label>{{localize "PL1E.CustomRangePostLaunchMacro"}}</label>
                     </div>
                     <div class="fields">
-                        <select name="system.attributes.rangePostLaunchMacro">
-                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangePostLaunchMacro localize=true}}
-                        </select>
+                        <input type="checkbox" name="system.attributes.customRangePostLaunchMacro" {{checked system.attributes.customRangePostLaunchMacro}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </div>
+            {{#unless system.attributes.customRangePostLaunchMacro}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.RangePostLaunchPreset"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.rangePostLaunchPreset">
+                                {{customSelectOptions (config "sequencerPresets") selected=system.attributes.rangePostLaunchPreset localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.RangePostLaunchMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.rangePostLaunchMacro">
+                                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.rangePostLaunchMacro localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
+
         </div>
     </div>
 {{/if}}
@@ -356,42 +513,121 @@
                     </div>
                 </div>
             {{/if}}
+
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.MagicActivationMacro"}}</label>
+                        <label>{{localize "PL1E.CustomMagicActivationMacro"}}</label>
                     </div>
                     <div class="fields">
-                        <select name="system.attributes.magicActivationMacro">
-                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicActivationMacro localize=true}}
-                        </select>
+                        <input type="checkbox" name="system.attributes.customMagicActivationMacro" {{checked system.attributes.customMagicActivationMacro}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </div>
+            {{#unless system.attributes.customMagicActivationMacro}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MagicActivationPreset"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.magicActivationPreset">
+                                {{customSelectOptions (config "sequencerPresets") selected=system.attributes.magicActivationPreset localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MagicActivationMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.magicActivationMacro">
+                                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicActivationMacro localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
+
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.MagicPreLaunchMacro"}}</label>
+                        <label>{{localize "PL1E.CustomMagicPreLaunchMacro"}}</label>
                     </div>
                     <div class="fields">
-                        <select name="system.attributes.magicPreLaunchMacro">
-                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPreLaunchMacro localize=true}}
-                        </select>
+                        <input type="checkbox" name="system.attributes.customMagicPreLaunchMacro" {{checked system.attributes.customMagicPreLaunchMacro}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </div>
+            {{#unless system.attributes.customMagicPreLaunchMacro}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MagicPreLaunchPreset"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.magicPreLaunchPreset">
+                                {{customSelectOptions (config "sequencerPresets") selected=system.attributes.magicPreLaunchPreset localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MagicPreLaunchMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.magicPreLaunchMacro">
+                                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPreLaunchMacro localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
+
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.MagicPostLaunchMacro"}}</label>
+                        <label>{{localize "PL1E.CustomMagicPostLaunchMacro"}}</label>
                     </div>
                     <div class="fields">
-                        <select name="system.attributes.magicPostLaunchMacro">
-                            {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPostLaunchMacro localize=true}}
-                        </select>
+                        <input type="checkbox" name="system.attributes.customMagicPostLaunchMacro" {{checked system.attributes.customMagicPostLaunchMacro}} data-dtype="Boolean"/>
                     </div>
                 </div>
             </div>
+            {{#unless system.attributes.customMagicPostLaunchMacro}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MagicPostLaunchPreset"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.magicPostLaunchPreset">
+                                {{customSelectOptions (config "sequencerPresets") selected=system.attributes.magicPostLaunchPreset localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.MagicPostLaunchMacro"}}</label>
+                        </div>
+                        <div class="fields">
+                            <select name="system.attributes.magicPostLaunchMacro">
+                                {{customSelectOptions (config "sequencerMacros") selected=system.attributes.magicPostLaunchMacro localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
+
         </div>
     </div>
 {{/if}}

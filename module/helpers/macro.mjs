@@ -1,12 +1,13 @@
-export class Pl1eMacro {
+import {Pl1eHelpers} from "./helpers.mjs";
 
+export const Pl1eMacro = {
     /**
      * Activate an item by ID on an actor by ID.
      * @param {string} actorId
      * @param {string} itemId
      * @returns {Promise<boolean>}
      */
-    static async activateItem(actorId, itemId) {
+    async activateItem(actorId, itemId) {
         const actor = game.actors.get(actorId);
         if (!actor) {
             console.warn(`Pl1eMacro.activateItem: Actor '${actorId}' not found.`);
@@ -21,14 +22,27 @@ export class Pl1eMacro {
 
         await item.activate?.();
         return true;
-    }
+    },
+
+    async launchSequencerMacro(macroId, options = {}) {
+        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
+        if (!game.pl1e.hasSequencer || !enableVFXAndSFX) return;
+
+        const macro = await Pl1eHelpers.getDocument("Macro", macroId);
+        if (!macro) {
+            console.warn(`PL1E | Cannot find macro with id: ${macroId}`);
+            return;
+        }
+
+        await macro.execute(options);
+    },
 
     /**
      * Create a macro from a drag/drop event.
      * @param {object} dropData
      * @param {object} [options]
      */
-    static async createMacroFromDrop(dropData, options = {}) {
+    async createMacroFromDrop(dropData, options = {}) {
         if (dropData.type !== "Item") return;
 
         const itemData = await Item.implementation.fromDropData(dropData);
@@ -44,7 +58,7 @@ export class Pl1eMacro {
         }
 
         return this._createMacroFromData({ actorId: actor.id, itemData }, options);
-    }
+    },
 
     /**
      * Create a macro from actor and item directly.
@@ -52,14 +66,14 @@ export class Pl1eMacro {
      * @param {Item} item
      * @param {object} [options]
      */
-    static async createMacroFromItem(actor, item, options = {}) {
+    async createMacroFromItem(actor, item, options = {}) {
         if (!actor || !item) return;
 
         return this._createMacroFromData({
             actorId: actor.id,
             itemData: item
         }, options);
-    }
+    },
 
     /**
      * Internal shared macro creation logic.
@@ -70,8 +84,9 @@ export class Pl1eMacro {
      * @param {object} [options.flags]
      * @param {string} [options.folderName]
      * @param {number} [options.slot]
+     * @private
      */
-    static async _createMacroFromData({ actorId, itemData }, { flags = {}, folderName = undefined, slot = undefined } = {}) {
+    async _createMacroFromData({ actorId, itemData }, { flags = {}, folderName = undefined, slot = undefined } = {}) {
         const macroData = {
             type: "script",
             scope: "actor",

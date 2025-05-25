@@ -1,15 +1,11 @@
 import {PL1E} from "../pl1e.mjs";
 
-/**
- * Extends the actor to process special things from PL1E.
- */
-export class Pl1eHelpers {
-
+export const Pl1eHelpers = {
     /**
      * Return true is a GM is connected
      * @returns {boolean}
      */
-    static isGMConnected() {
+    isGMConnected() {
         let isGMConnected = false;
         for (let user of game.users) {
             if (user.role === 4 && user.active) { // 4 is the role ID for GM
@@ -18,23 +14,23 @@ export class Pl1eHelpers {
             }
         }
         return isGMConnected;
-    }
+    },
 
     /**
      * Simple object check.
      * @param item
      * @returns {boolean}
      */
-    static isObject(item) {
+    isObject(item) {
         return (item && typeof item === 'object' && !Array.isArray(item));
-    }
+    },
 
     /**
      * Deep merge two objects.
      * @param target
      * @param sources
      */
-    static mergeDeep(target, ...sources) {
+    mergeDeep(target, ...sources) {
         if (!sources.length) return target;
         const source = sources.shift();
         if (this.isObject(target) && this.isObject(source)) {
@@ -48,14 +44,14 @@ export class Pl1eHelpers {
             }
         }
         return this.mergeDeep(target, ...sources);
-    }
+    },
 
     /**
      * Convert a value to money with gold, silver and copper
      * @param value the units sum
      * @returns {{gold: number, copper: number, silver: number}}
      */
-    static unitsToMoney(value) {
+    unitsToMoney(value) {
         let money = {
             "gold": 0,
             "silver": 0,
@@ -67,18 +63,18 @@ export class Pl1eHelpers {
         value -= money['silver'] * 10;
         money['copper'] = value;
         return money;
-    }
+    },
 
     /**
      * Convert money to value
      * @param money gold, silver and copper
      * @returns number
      */
-    static moneyToUnits(money) {
+    moneyToUnits(money) {
         return money.gold * 100 + money.silver * 10 + money.copper;
-    }
+    },
 
-    static deepen(obj) {
+    deepen(obj) {
         const result = {};
 
         // For each object path (property key) in the object
@@ -98,9 +94,9 @@ export class Pl1eHelpers {
         }
 
         return result;
-    }
+    },
 
-    static flatten(obj) {
+    flatten(obj) {
         const toReturn = {};
 
         for (const i in obj) {
@@ -118,22 +114,22 @@ export class Pl1eHelpers {
             }
         }
         return toReturn;
-    }
+    },
 
-    static rankCost(rank) {
+    rankCost(rank) {
         return ((rank * (rank + 1) / 2) - 1);
-    }
+    },
 
     /**
      * Center of the screen
      * @returns {{x: number, y: number}}
      */
-    static screenCenter() {
+    screenCenter() {
         return {
             x: window.innerWidth / 4,
             y: window.innerHeight / 4
         }
-    }
+    },
 
     /**
      * Check recursive loop between parent item and child item or its sub items
@@ -141,13 +137,13 @@ export class Pl1eHelpers {
      * @param childItem {Pl1eItem}
      * @returns {Promise<boolean>}
      */
-    static async createRecursiveLoop(parentItem, childItem) {
+    async createRecursiveLoop(parentItem, childItem) {
         if (parentItem.id === childItem.id) return true;
         for (const refItem of await childItem.getRefItems()) {
             if (await this.createRecursiveLoop(parentItem, refItem.item)) return true;
         }
         return false;
-    }
+    },
 
     /**
      * Get a document from a compendium or from the world by ID
@@ -156,7 +152,7 @@ export class Pl1eHelpers {
      * @param {Object} options - Optional parameters (e.g., scene)
      * @returns {Promise<foundry.abstract.Document>} - The resolved document or undefined
      */
-    static async getDocument(type, id, options = {}) {
+    async getDocument(type, id, options = {}) {
         let document = undefined;
 
         // Check compendiums first
@@ -200,7 +196,7 @@ export class Pl1eHelpers {
             document = await fromUuid(id);
 
         return document;
-    }
+    },
 
     /**
      * Get a document from a compendium if not in the game using id
@@ -209,7 +205,7 @@ export class Pl1eHelpers {
      * @param {string} id
      * @returns {Promise<Pl1eItem[] | Pl1eActor[] | Macro[]>}
      */
-    static async getDocuments(type, subType = undefined, id = undefined) {
+    async getDocuments(type, subType = undefined, id = undefined) {
         let documents = [];
 
         // Inner function to check conditions and add document if it meets criteria
@@ -245,9 +241,9 @@ export class Pl1eHelpers {
         }
 
         return documents;
-    }
+    },
 
-    static async getDocumentsDataFromPack(packName, includeNone = false) {
+    async getDocumentsDataFromPack(packName, includeNone = false) {
         const documents = {};
         if (includeNone) documents["none"] = {
             label: "PL1E.None.M"
@@ -266,9 +262,9 @@ export class Pl1eHelpers {
         }
 
         return documents;
-    }
+    },
 
-    static stringifyWithCircular(obj) {
+    stringifyWithCircular(obj) {
         const seen = new Set();
 
         function replacer(key, value) {
@@ -282,9 +278,9 @@ export class Pl1eHelpers {
         }
 
         return JSON.stringify(obj, replacer);
-    }
+    },
 
-    static getConfig(...keys) {
+    getConfig(...keys) {
         let data = PL1E;
         for (let key of keys) {
             // Ignore if not string
@@ -297,18 +293,18 @@ export class Pl1eHelpers {
             }
         }
         return data;
-    }
+    },
 
-    static multiLocalize(...keys) {
+    multiLocalize(...keys) {
         return keys.map(key => {
             if (!key) return "";  // If the key is undefined or empty, return an empty string
             if (typeof key !== "string") return key;
             let localized = game.i18n.localize(key);
             return localized !== key ? localized : key;  // If localization returns the key itself, it means there's no translation for it
         }).join(' ');
-    }
+    },
 
-    static async CleanupItem(item) {
+    async CleanupItem(item) {
         // Load the model from template.json
         const template = await fetch("/systems/pl1e/template.json").then(r => r.json());
 
@@ -342,16 +338,16 @@ export class Pl1eHelpers {
         cleanObject(itemCopy.system, model, removed);
         console.log("PL1E | removed system properties:", removed);
         await item.update({ system: itemCopy.system }, { merge: false });
-    }
+    },
 
-    static levelToXP(actor, level) {
+    levelToXP(actor, level) {
         if (level === 0) return 0;
         const levelCaps = this.levelCaps(actor);
         const xp = levelCaps[level - 1];
         return xp === undefined ? levelCaps[levelCaps.length - 1] : xp;
-    }
+    },
 
-    static XPToLevel(actor, xp) {
+    XPToLevel(actor, xp) {
         const levelCaps = this.levelCaps(actor);
         let level = 0;
         for (let levelCap of levelCaps) {
@@ -359,9 +355,9 @@ export class Pl1eHelpers {
             else break;
         }
         return level;
-    }
+    },
 
-    static applyResolution(value, roll, resolutionType) {
+    applyResolution(value, roll, resolutionType) {
         let resolvedValue = value;
         switch (resolutionType) {
             case "multipliedBySuccess":
@@ -372,15 +368,15 @@ export class Pl1eHelpers {
                 break;
         }
         return resolvedValue;
-    }
+    },
 
-    static assignIfDefined(source, target, condition, sourceProperty, targetProperty = sourceProperty) {
+    assignIfDefined(source, target, condition, sourceProperty, targetProperty = sourceProperty) {
         if (condition && source[sourceProperty] !== undefined) {
             target[targetProperty] = source[sourceProperty];
         }
-    }
+    },
 
-    static displayScrollingText(data) {
+    displayScrollingText(data) {
         const minSize = game.settings.get("pl1e", "scrollingTextMinFont");
         const maxSize = game.settings.get("pl1e", "scrollingTextMaxFont");
         const duration = game.settings.get("pl1e", "scrollingTextDuration");
@@ -390,9 +386,9 @@ export class Pl1eHelpers {
             fill: data.fillColor,
         }
         canvas.interface.createScrollingText(data.position, data.text, options);
-    }
+    },
 
-    static async centerAndSelectToken(tokenId) {
+    async centerAndSelectToken(tokenId) {
         const token = canvas.tokens.get(tokenId);
         if (!token) return;
 
@@ -407,13 +403,13 @@ export class Pl1eHelpers {
         if (token.owner) {
             token.control({releaseOthers: true});
         }
-    }
+    },
 
-    static levelCaps(actor) {
+    levelCaps(actor) {
         const classNumber = Math.max(actor.items.filter(item => item.type === "class").length, 1);
         const key = classNumber === 1 ? "monoClassLevelCaps" : "multiClassLevelCaps";
         return game.settings.get("pl1e", key).split(',').map(x => parseInt(x.trim()));
-    }
+    },
 
     /**
      * Sort categorized items in the context object using type-specific logic.
@@ -422,7 +418,7 @@ export class Pl1eHelpers {
      * @param {Object} context - The context object containing categorized items
      * @returns {Object} The same context object, now sorted
      */
-    static sortDocuments(context) {
+    sortDocuments(context) {
         // Define an object containing specific sorting functions for each type of document
         const sortFunctions = {
             background: (a, b) => {
@@ -489,9 +485,9 @@ export class Pl1eHelpers {
         }
 
         return context;
-    }
+    },
 
-    static hexToRgba(hex, alpha = 0.5) {
+    hexToRgba(hex, alpha = 0.5) {
         hex = hex.replace('#', '');
 
         let r = parseInt(hex.substring(0, 2), 16);
@@ -499,9 +495,9 @@ export class Pl1eHelpers {
         let b = parseInt(hex.substring(4, 6), 16);
 
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    }
+    },
 
-    static tokensWithinTemplate(template) {
+    tokensWithinTemplate(template) {
         const tokens = template.object.scene.tokens.contents;
 
         const shape = template.object.shape;
@@ -559,16 +555,16 @@ export class Pl1eHelpers {
         });
 
         return containedTokens;
-    }
+    },
 
-    static async templateExists(path) {
+    async templateExists(path) {
         try {
             await renderTemplate(path, {});
             return true;
         } catch (e) {
             return false;
         }
-    }
+    },
 
     /**
      * Categorize a list of items into the provided context object.
@@ -579,7 +575,7 @@ export class Pl1eHelpers {
      * @param {Item[]} items - The list of items to categorize (e.g. actor.items)
      * @returns {Promise<Object>} The same context object, now populated with categorized items
      */
-    static async categorizeItems(context, items) {
+    async categorizeItems(context, items) {
         for (const item of items) {
             const itemCopy = item.toObject();
             itemCopy.sourceId = item.sourceId;
@@ -608,14 +604,14 @@ export class Pl1eHelpers {
         }
 
         return context;
-    }
+    },
 
     /**
      * Reduce each item category to a set of representative items by merging duplicates.
      * Items are compared by sourceId, and the most "relevant" is kept.
      * @param {Object} context - Object with categorized item arrays
      */
-    static async selectRepresentativeItems(context) {
+    async selectRepresentativeItems(context) {
         for (const [type, collectionKey] of Object.entries(PL1E.itemCollections)) {
             const collection = context[collectionKey];
             if (!collection) continue;
@@ -651,7 +647,7 @@ export class Pl1eHelpers {
         }
 
         return context;
-    }
+    },
 
     /**
      * Decide whether two items with the same sourceId should be merged (accumulated).
@@ -662,7 +658,7 @@ export class Pl1eHelpers {
      * @param {Object} newItem - The new incoming item to compare against
      * @returns {boolean} True if the newItem should be merged with the existingItem
      */
-    static shouldAccumulate(existingItem, newItem) {
+    shouldAccumulate(existingItem, newItem) {
         const noAccumulateTypes = ['weapon', 'wearable'];
         if (noAccumulateTypes.includes(newItem.type)) return false;
         if (existingItem.system.removedUses !== newItem.system.removedUses) return false;

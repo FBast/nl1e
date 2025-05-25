@@ -1,8 +1,8 @@
 import { Pl1eEvent } from "../../helpers/events.mjs";
 import { Pl1eHelpers } from "../../helpers/helpers.mjs";
-import { filterDocuments, getFilters, toggleFilter } from "../../helpers/filter-cache.mjs";
-import { sellItem } from "../../helpers/trade.mjs";
+import {Pl1eTrade} from "../../helpers/trade.mjs";
 import {Pl1eJournalPageSheet} from "./journal-page-sheet.mjs";
+import {Pl1eFilter} from "../../helpers/filter.mjs";
 
 const FILTER_CATEGORIES = ["weapons", "wearables", "consumables", "commons", "modules", "services"];
 const ITEM_TYPES = new Set(["weapon", "wearable", "consumable", "common", "module", "service"]);
@@ -18,7 +18,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
     async getData(options) {
         const context = await super.getData(options);
 
-        context.filters = await getFilters(this.document.id, FILTER_CATEGORIES).catch(() => {
+        context.filters = await Pl1eFilter.getFilters(this.document.id, FILTER_CATEGORIES).catch(() => {
             return Object.fromEntries(FILTER_CATEGORIES.map(c => [c, new Set()]));
         });
 
@@ -34,7 +34,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
 
         for (const category of FILTER_CATEGORIES) {
             const type = category.slice(0, -1);
-            context[category] = filterDocuments(items.filter(i => i.type === type), context.filters[category]);
+            context[category] = Pl1eFilter.filterDocuments(items.filter(i => i.type === type), context.filters[category]);
             context[`${category}Count`] = items.filter(i => i.type === type).length;
         }
 
@@ -47,7 +47,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
         html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.document));
 
-        const filters = await getFilters(this.document.id, FILTER_CATEGORIES);
+        const filters = await Pl1eFilter.getFilters(this.document.id, FILTER_CATEGORIES);
         html.find(".item-filter-list").each((i, ul) => this._initializeFilterItemList(ul, filters));
         html.find(".item-filter").on("click", this._onToggleFilter.bind(this));
 
@@ -185,7 +185,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             } else if (item?.isEmbedded && item.parent?.documentName === "Actor") {
                 const seller = item.parent;
                 const buyMultiplier = this.document.getFlag("pl1e", "buyMultiplier") ?? 50;
-                await sellItem(seller, this.document, item, buyMultiplier);
+                await Pl1eTrade.sellItem(seller, this.document, item, buyMultiplier);
             }
         });
     }

@@ -1,13 +1,12 @@
 import {Pl1eHelpers} from "./helpers.mjs";
 import {Pl1eEffect} from "../documents/effect.mjs";
 
-export class Pl1eSynchronizer {
-
+export const Pl1eSynchronizer = {
     /**
      * Reset all actor items using their sourceId, should be used when the sourceItem is modified
      * @returns {Promise<void>}
      */
-    static async resetActorsItems(sourceItem, notifyInfo = false) {
+    async resetActorsItems(sourceItem, notifyInfo = false) {
         let updateNumber = 0;
         const actors = await Pl1eHelpers.getDocuments("Actor");
         for (const actor of actors) {
@@ -38,7 +37,7 @@ export class Pl1eSynchronizer {
         const enableDebugUINotifications = game.settings.get("pl1e", "enableDebugUINotifications");
         if (enableDebugUINotifications && notifyInfo)
             ui.notifications.info(`${game.i18n.localize("PL1E.NumberOfUpdatedClones")} : ${updateNumber}`);
-    }
+    },
 
     /**
      * Reset this item based on the original item
@@ -48,7 +47,7 @@ export class Pl1eSynchronizer {
      * @returns {Promise<void>}
      * @private
      */
-    static async _resetItem(actor, item, originalItem) {
+    async _resetItem(actor, item, originalItem) {
         if (!item.isEmbedded)
             throw new Error(`PL1E | item ${item.name} should not be reset because not embedded`);
 
@@ -113,5 +112,4 @@ export class Pl1eSynchronizer {
         // Additional logic for refItems in the actor
         await handleRefItems(actor, item, await item.getRefItems());
     }
-
 }

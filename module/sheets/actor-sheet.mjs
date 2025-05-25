@@ -3,8 +3,8 @@ import {Pl1eHelpers as P1eHelpers, Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eItem} from "../documents/items/item.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {PL1ESheetMixin} from "./sheet.mjs";
-import {filterDocuments, getFilters, toggleFilter} from "../helpers/filter-cache.mjs";
-import {buyItem, giftItem} from "../helpers/trade.mjs";
+import {Pl1eTrade} from "../helpers/trade.mjs";
+import {Pl1eFilter} from "../helpers/filter.mjs";
 
 const FILTER_CATEGORIES = [
     "background", "features", "abilities", "effects",
@@ -99,7 +99,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         context.items = this.actor.displayedItems;
         context.effects = this.actor.effects;
         context.inCombat = this.actor.bestToken && this.actor.bestToken.inCombat;
-        context.filters = await getFilters(this.actor.id, FILTER_CATEGORIES);
+        context.filters = await Pl1eFilter.getFilters(this.actor.id, FILTER_CATEGORIES);
 
         await this._prepareItems(context);
 
@@ -151,7 +151,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         if (!this.isEditable) return;
 
         // Item filters
-        const filters = await getFilters(this.actor.id, FILTER_CATEGORIES);
+        const filters = await Pl1eFilter.getFilters(this.actor.id, FILTER_CATEGORIES);
         html.find(".item-filter-list").each((i, ul) => {
             this._initializeFilterItemList(ul, filters);
         });
@@ -302,13 +302,13 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
                 });
             } else {
                 // GM or same player dont need socket
-                await giftItem(item.parent, this.actor, item);
+                await Pl1eTrade.giftItem(item.parent, this.actor, item);
             }
         } else {
             // Merchant buy
             if (foundry.utils.getProperty(item, "flags.pl1e.fromMerchant")) {
                 const merchantEntryPage = await Pl1eHelpers.getDocument("JournalEntryPage", item.getFlag("pl1e", "merchantPageId"))
-                await buyItem(this.actor, merchantEntryPage, item);
+                await Pl1eTrade.buyItem(this.actor, merchantEntryPage, item);
             }
             // New item dropped
             else {
@@ -376,15 +376,15 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         context.favoritesModules = context.modules.filter(item => this.actor.isFavorite("items", item.sourceId));
 
         // Finish with filters
-        context.background = filterDocuments(context.background, context.filters.background);
-        context.features = filterDocuments(context.features, context.filters.features);
-        context.abilities = filterDocuments(context.abilities, context.filters.abilities);
-        context.effects = filterDocuments(context.effects, context.filters.effects);
-        context.weapons = filterDocuments(context.weapons, context.filters.weapons);
-        context.wearables = filterDocuments(context.wearables, context.filters.wearables);
-        context.consumables = filterDocuments(context.consumables, context.filters.consumables);
-        context.commons = filterDocuments(context.commons, context.filters.commons);
-        context.modules = filterDocuments(context.modules, context.filters.modules);
+        context.background = Pl1eFilter.filterDocuments(context.background, context.filters.background);
+        context.features = Pl1eFilter.filterDocuments(context.features, context.filters.features);
+        context.abilities = Pl1eFilter.filterDocuments(context.abilities, context.filters.abilities);
+        context.effects = Pl1eFilter.filterDocuments(context.effects, context.filters.effects);
+        context.weapons = Pl1eFilter.filterDocuments(context.weapons, context.filters.weapons);
+        context.wearables = Pl1eFilter.filterDocuments(context.wearables, context.filters.wearables);
+        context.consumables = Pl1eFilter.filterDocuments(context.consumables, context.filters.consumables);
+        context.commons = Pl1eFilter.filterDocuments(context.commons, context.filters.commons);
+        context.modules = Pl1eFilter.filterDocuments(context.modules, context.filters.modules);
     }
 
     /**

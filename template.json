@@ -382,6 +382,12 @@
         "activeAspects": {},
         "attributes": {
           "customMacro": false,
+          "customActivationMacro": false,
+          "customPreLaunchMacro": false,
+          "customPostLaunchMacro": false,
+          "activationPreset": "none",
+          "preLaunchPreset": "none",
+          "postLaunchPreset": "none",
           "activationMacro":  "",
           "preLaunchMacro": "",
           "postLaunchMacro": ""

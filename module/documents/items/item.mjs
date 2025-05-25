@@ -5,6 +5,8 @@ import {Pl1eChatMessage} from "../chat-message.mjs";
 import {Pl1eMeasuredTemplateDocument} from "../measured-template-document.mjs";
 import {Pl1eEffect} from "../effect.mjs";
 import {Pl1eTemplate} from "../../helpers/template.mjs";
+import {Pl1eMacro} from "../../helpers/macro.mjs";
+import {Pl1eSequencer} from "../../utils/sequencer.mjs";
 
 export class Pl1eItem extends Item {
 
@@ -789,15 +791,15 @@ export class Pl1eItem extends Item {
             }
 
             // Find activationMacro (pass for activation)
-            const macroId = characterData.attributes.activationMacro;
-            const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
-            const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
-
-            // Execute activationMacro
-            if (game.pl1e.hasSequencer && enableVFXAndSFX && activationMacro !== null) await activationMacro.execute({
-                characterData: characterData,
-                active: true
-            });
+            if (characterData.attributes.customActivationMacro) {
+                await Pl1eMacro.launchSequencerMacro(characterData.attributes.activationMacro, {
+                    characterData,
+                    active: true
+                });
+            }
+            else {
+                await Pl1eSequencer.playEffect(characterData.attributes.activationPreset, {characterData, active: true});
+            }
 
             // Display message
             chatMessage = await Pl1eChatMessage.launcherRoll(characterData);
@@ -993,16 +995,14 @@ export class Pl1eItem extends Item {
         if (options.action === "launch") await this.launch(characterData);
 
         // Find activationMacro (pass for deactivation)
-        const macroId = characterData.attributes.activationMacro;
-        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
-        const activationMacro = await Pl1eHelpers.getDocument("Macro", macroId);
-
-        // Execute activationMacro
-        if (game.pl1e.hasSequencer && enableVFXAndSFX && activationMacro !== undefined && characterData.token) {
-            await activationMacro.execute({
-                characterData: characterData,
+        if (characterData.attributes.customActivationMacro) {
+            await Pl1eMacro.launchSequencerMacro(characterData.attributes.activationMacro, {
+                characterData,
                 active: false
             });
+        }
+        else {
+            await Pl1eSequencer.playEffect(characterData.attributes.activationPreset, {characterData, active: false});
         }
 
         // Destroy templates after fetching target with df-template
@@ -1050,16 +1050,14 @@ export class Pl1eItem extends Item {
         }
 
         // Find pre-launch macro
-        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
-        const preLaunchMacroId = characterData.attributes.preLaunchMacro;
-        const preLaunchMacro = await Pl1eHelpers.getDocument("Macro", preLaunchMacroId);
-
-        // Execute pre-launch macro
-        if (game.pl1e.hasSequencer && enableVFXAndSFX && preLaunchMacro !== null && characterData.token) {
-            await preLaunchMacro.execute({
-                characterData: characterData,
-                targetsData: targetsData
+        if (characterData.attributes.customPreLaunchMacro) {
+            await Pl1eMacro.launchSequencerMacro(characterData.attributes.preLaunchMacro, {
+                characterData,
+                targetsData
             });
+        }
+        else {
+            await Pl1eSequencer.playEffect(characterData.attributes.preLaunchPreset, {characterData, targetsData});
         }
 
         // Apply aspects, here we calculate each aspect for all targets
@@ -1068,15 +1066,14 @@ export class Pl1eItem extends Item {
         }
 
         // Find post-launch macro
-        const postLaunchMacroId = characterData.attributes.postLaunchMacro;
-        const postLaunchMacro = await Pl1eHelpers.getDocument("Macro", postLaunchMacroId);
-
-        // Execute post-launch macro
-        if (game.pl1e.hasSequencer && enableVFXAndSFX && postLaunchMacro !== null && characterData.token) {
-            await postLaunchMacro.execute({
-                characterData: characterData,
-                targetsData: targetsData
+        if (characterData.attributes.customPostLaunchMacro) {
+            await Pl1eMacro.launchSequencerMacro(characterData.attributes.postLaunchMacro, {
+                characterData,
+                targetsData
             });
+        }
+        else {
+            await Pl1eSequencer.playEffect(characterData.attributes.postLaunchPreset, {characterData, targetsData});
         }
 
         // Display messages if targets found

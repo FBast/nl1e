@@ -1,5 +1,5 @@
-﻿import { giftItem } from "../helpers/trade.mjs";
-import { Pl1eHelpers } from "../helpers/helpers.mjs";
+﻿import { Pl1eHelpers } from "../helpers/helpers.mjs";
+import {Pl1eTrade} from "../helpers/trade.mjs";
 
 export function registerSocketHandlers(PL1E) {
     /**
@@ -41,7 +41,7 @@ export function registerSocketHandlers(PL1E) {
 
             switch (action) {
                 case "giftItem":
-                    await giftItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
+                    await Pl1eTrade.giftItem(data.sourceActorUuid, data.targetActorUuid, data.itemId);
                     break;
                 case "tokenUpdate":
                     const scene = await Pl1eHelpers.getDocument("Scene", data.sceneId);

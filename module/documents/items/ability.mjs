@@ -31,8 +31,6 @@ export class Pl1eAbility extends Pl1eItem {
         if (this.system.attributes.linkedUsageCost > 0 && !this.isReloaded) warnings.push("PL1E.LinkedItemNotReloaded");
         if (this.system.attributes.isMajorAction && !this.isMajorActionAvailable) warnings.push("PL1E.LinkedItemMajorActionUsed");
 
-        console.log(`${this.name} with warning: ${warnings}`);
-        
         return warnings;
     }
 
@@ -89,24 +87,53 @@ export class Pl1eAbility extends Pl1eItem {
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRange, 'reach', 'range');
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRoll, 'meleeRoll', 'roll');
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentOppositeRoll, 'meleeOppositeRoll', 'oppositeRoll');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentActivationMacro, 'meleeActivationMacro', 'activationMacro');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPreLaunchMacro, 'meleePreLaunchMacro', 'preLaunchMacro');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPostLaunchMacro, 'meleePostLaunchMacro', 'postLaunchMacro');
+
+                attributes.customActivationMacro = attributes.useParentActivation ? linkedItemAttributes.customMeleeActivationMacro : attributes.customActivationMacro;
+                attributes.activationMacro = attributes.useParentActivation ? linkedItemAttributes.meleeActivationMacro : attributes.activationMacro;
+                attributes.activationPreset = attributes.useParentActivation ? linkedItemAttributes.meleeActivationPreset : attributes.activationPreset;
+
+                attributes.customPreLaunchMacro = attributes.useParentPreLaunch ? linkedItemAttributes.customMeleePreLaunchMacro : attributes.customPreLaunchMacro;
+                attributes.preLaunchMacro = attributes.useParentPreLaunch ? linkedItemAttributes.meleePreLaunchMacro : attributes.preLaunchMacro;
+                attributes.preLaunchPreset = attributes.useParentPreLaunch ? linkedItemAttributes.meleePreLaunchPreset : attributes.preLaunchPreset;
+
+                attributes.customPostLaunchMacro = attributes.useParentPostLaunch ? linkedItemAttributes.customMeleePostLaunchMacro : attributes.customPostLaunchMacro;
+                attributes.postLaunchMacro = attributes.useParentPostLaunch ? linkedItemAttributes.meleePostLaunchMacro : attributes.postLaunchMacro;
+                attributes.postLaunchPreset = attributes.useParentPostLaunch ? linkedItemAttributes.meleePostLaunchPreset : attributes.postLaunchPreset;
                 break;
+
             case "range":
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRange, 'range');
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRoll, 'rangeRoll', 'roll');
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentOppositeRoll, 'rangeOppositeRoll', 'oppositeRoll');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentActivationMacro, 'rangeActivationMacro', 'activationMacro');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPreLaunchMacro, 'rangePreLaunchMacro', 'preLaunchMacro');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPostLaunchMacro, 'rangePostLaunchMacro', 'postLaunchMacro');
+
+                attributes.customActivationMacro = attributes.useParentActivation ? linkedItemAttributes.customRangeActivationMacro : attributes.customActivationMacro;
+                attributes.activationMacro = attributes.useParentActivation ? linkedItemAttributes.rangeActivationMacro : attributes.activationMacro;
+                attributes.activationPreset = attributes.useParentActivation ? linkedItemAttributes.rangeActivationPreset : attributes.activationPreset;
+
+                attributes.customPreLaunchMacro = attributes.useParentPreLaunch ? linkedItemAttributes.customRangePreLaunchMacro : attributes.customPreLaunchMacro;
+                attributes.preLaunchMacro = attributes.useParentPreLaunch ? linkedItemAttributes.rangePreLaunchMacro : attributes.preLaunchMacro;
+                attributes.preLaunchPreset = attributes.useParentPreLaunch ? linkedItemAttributes.rangePreLaunchPreset : attributes.preLaunchPreset;
+
+                attributes.customPostLaunchMacro = attributes.useParentPostLaunch ? linkedItemAttributes.customRangePostLaunchMacro : attributes.customPostLaunchMacro;
+                attributes.postLaunchMacro = attributes.useParentPostLaunch ? linkedItemAttributes.rangePostLaunchMacro : attributes.postLaunchMacro;
+                attributes.postLaunchPreset = attributes.useParentPostLaunch ? linkedItemAttributes.rangePostLaunchPreset : attributes.postLaunchPreset;
                 break;
+
             case "magic":
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentRoll, 'magicRoll', 'roll');
                 Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentOppositeRoll, 'magicOppositeRoll', 'oppositeRoll');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentActivationMacro, 'magicActivationMacro', 'activationMacro');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPreLaunchMacro, 'magicPreLaunchMacro', 'preLaunchMacro');
-                Pl1eHelpers.assignIfDefined(linkedItemAttributes, attributes, attributes.useParentPostLaunchMacro, 'magicPostLaunchMacro', 'postLaunchMacro');
+
+                attributes.customActivationMacro = attributes.useParentActivation ? linkedItemAttributes.customMagicActivationMacro : attributes.customActivationMacro;
+                attributes.activationMacro = attributes.useParentActivation ? linkedItemAttributes.magicActivationMacro : attributes.activationMacro;
+                attributes.activationPreset = attributes.useParentActivation ? linkedItemAttributes.magicActivationPreset : attributes.activationPreset;
+
+                attributes.customPreLaunchMacro = attributes.useParentPreLaunch ? linkedItemAttributes.customMagicPreLaunchMacro : attributes.customPreLaunchMacro;
+                attributes.preLaunchMacro = attributes.useParentPreLaunch ? linkedItemAttributes.magicPreLaunchMacro : attributes.preLaunchMacro;
+                attributes.preLaunchPreset = attributes.useParentPreLaunch ? linkedItemAttributes.magicPreLaunchPreset : attributes.preLaunchPreset;
+
+                attributes.customPostLaunchMacro = attributes.useParentPostLaunch ? linkedItemAttributes.customMagicPostLaunchMacro : attributes.customPostLaunchMacro;
+                attributes.postLaunchMacro = attributes.useParentPostLaunch ? linkedItemAttributes.magicPostLaunchMacro : attributes.postLaunchMacro;
+                attributes.postLaunchPreset = attributes.useParentPostLaunch ? linkedItemAttributes.magicPostLaunchPreset : attributes.postLaunchPreset;
                 break;
         }
 

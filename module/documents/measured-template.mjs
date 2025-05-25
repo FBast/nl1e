@@ -50,7 +50,7 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         const position = Pl1eTemplate.getSecondaryPosition(this.document);
         const gridSize = canvas.grid.size;
         hl.beginFill(0xFF0000, 1);
-        hl.drawCircle(position.x + gridSize / 2, position.y + gridSize / 2, gridSize / 8);
+        hl.drawCircle(position.x, position.y, gridSize / 8);
         hl.endFill();
     }
 

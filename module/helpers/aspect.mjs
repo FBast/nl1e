@@ -8,7 +8,6 @@ import {InvocationAspectHandler} from "../services/invocation-aspect-handler.mjs
 import {MacroAspectHandler} from "../services/macro-aspect-handler.mjs";
 
 export class Pl1eAspect {
-
     /**
      * Apply a single aspect
      * @param {Object} aspect
@@ -231,5 +230,4 @@ export class Pl1eAspect {
         const { value, ...restOfAspect } = aspect;
         return JSON.stringify(restOfAspect);
     }
-
 }
