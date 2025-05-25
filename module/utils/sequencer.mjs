@@ -2,6 +2,8 @@ import { PL1E } from "../pl1e.mjs";
 
 export const Pl1eSequencer = {
     async playEffect(name, { characterData, targetsData, active }) {
+        if (name === undefined) return;
+
         const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
         if (!game.pl1e.hasSequencer || !enableVFXAndSFX) return;
 
@@ -47,7 +49,8 @@ export const Pl1eSequencer = {
     GetTemplates(templatesData) {
         return templatesData?.map(t => ({
             primaryPosition: t.primaryPosition ?? { x: t.x, y: t.y },
-            secondaryPosition: t.secondaryPosition ?? { x: t.x, y: t.y }
+            secondaryPosition: t.secondaryPosition ?? { x: t.x, y: t.y },
+            distance: t.distance ?? 0
         })) ?? [];
     }
 };

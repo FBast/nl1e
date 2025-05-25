@@ -26,18 +26,25 @@ export class Pl1eActor extends Actor {
      * @returns {TokenDocument | null}
      */
     get bestToken() {
-        // Try to get the token associated with the sheet
-        let token = this.sheet.token;
+        const sheet = this.sheet;
+        if (sheet) {
+            const sheetToken = sheet.token;
+            if (sheetToken) return sheetToken;
 
-        // If there is no sheet token, try to get the token associated with the actor
-        if (!token) token = this.token;
+            // If no token is linked to the sheet, and the actor is linked, we retrieve the first active linked token
+            if (this.prototypeToken?.actorLink) {
+                const linkedTokens = this.getActiveTokens(true, true);
+                if (linkedTokens.length > 0) return linkedTokens[0];
+            }
 
-        // If there is still no token, and actor link is enabled, try to get the first linked token
-        if (!token && this.prototypeToken.actorLink && this.getActiveTokens().length > 0) {
-            token = this.getActiveTokens()[0].document;
+            // If the actor is not linked, we try to find a selected token corresponding to this actor
+            const selectedTokens = canvas.tokens?.controlled ?? [];
+            for (const token of selectedTokens) {
+                if (token.actor?.id === this.id) return token.document;
+            }
         }
 
-        return token;
+        return null;
     }
 
     /**

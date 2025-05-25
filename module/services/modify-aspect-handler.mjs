@@ -33,10 +33,10 @@ export class ModifyAspectHandler extends AspectHandler {
                     console.warn(`PL1E | unknown damage type: ${aspect.damageType}`);
                     continue;
                 }
-                aspectCopy.value -= foundry.utils.getProperty(targetData.actor, damageTypeData.path);
+                if (aspectCopy.value > 0)
+                    aspectCopy.value -= foundry.utils.getProperty(targetData.actor, damageTypeData.path);
                 aspectCopy.value = Math.max(aspectCopy.value, 0); // Ensure no negative values
             }
-
 
             // Ignore this aspect if the resolved value is 0 (no effect to apply)
             if (aspectCopy.value === 0) continue;

@@ -835,7 +835,7 @@ export class Pl1eItem extends Item {
         }
         // Else we need a token to proceed
         else {
-            ui.notifications.info(game.i18n.localize("PL1E.NeedAToken"));
+            ui.notifications.info(game.i18n.localize("PL1E.NoSelectedTokenMatches"));
             return;
         }
 
