@@ -1,401 +1,540 @@
 import { PL1E } from "../pl1e.mjs";
 
-/**
- * PL1E Sequencer Presets
- *
- * Each preset defines one or more visual effects (VFX) for actions in the system.
- *
- * PARAMETERS PER EFFECT:
- * - file: (string) The path to the VFX file to play.
- *
- * POSITIONING:
- * - at: (string | null) If no "to", defines the exact location of a non-stretch effect. Options:
- *   "caster", "target", "templatePrimary", "templateSecondary".
- *
- * - from: (string | null) Origin of the effect (stretch). Options:
- *   "caster" (the actor's token),
- *   "target" (each target token),
- *   "templatePrimary" (main point of the template),
- *   "templateSecondary" (secondary point of the template, e.g., end of a cone or beam),
- *
- * - to: (string | null) Destination of the effect (stretch). Options:
- *   "caster", "target", "templatePrimary", "templateSecondary".
- *
- * AREA / ZONE CONTROL:
- * - zone: (boolean) True if the effect should scale based on a template's area (cone, circle, etc.).
- * - sizeMultiplier: (number) Multiplier for the size of area effects (default: 1).
- *
- * PERSISTENT EFFECTS:
- * - persist: (boolean) If true, the effect remains active (e.g., an aura).
- * - fadeIn / fadeOut: (number) Milliseconds for fade in/out animations (only for persistent effects).
- *
- * TRANSFORMATIONS:
- * - scale: (number) Scale factor for the effect.
- * - randomize: (boolean) Randomizes Y-mirror (e.g., flips vertically for variation).
- * - randomSpeed: (boolean) Random playback speed.
- *
- * TIMING:
- * - postDelay: (number) Milliseconds to wait after the effect completes.
- *
- * HIT/MISS:
- * - missed: (boolean) True if the effect should "miss" (e.g., to show an attack failure).
- */
-
 export function getConfigSequencer() {
     PL1E.sequencerPresets = {
         none: {
             label: "None",
-            effects: []
+            factory: () => null
         },
+
         // Base Melee Effects
         shortAxeAttack: {
             label: "Melee: Short Axe",
-            effects: [
-                {
-                    file: "jb2a.melee_attack.02.handaxe.01",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.melee_attack.02.handaxe.01")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
         longSwordAttack: {
             label: "Melee: Long Sword Attack",
-            effects: [
-                {
-                    file: "jb2a.melee_attack.03.greatsword.01",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.melee_attack.03.greatsword.01")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
         shortSwordAttack: {
             label: "Melee: Short Sword Attack",
-            effects: [
-                {
-                    file: "jb2a.shortsword.melee.01.white",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.shortsword.melee.01.white")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
         spearAttack: {
             label: "Melee: Spear Attack",
-            effects: [
-                {
-                    file: "jb2a.spear.melee.01",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.spear.melee.01")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
 
         // Base Ranged Effects
         arrowShot: {
             label: "Ranged: Arrow Shot",
-            effects: [
-                {
-                    file: "jb2a.arrow.physical.blue",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.arrow.physical.blue")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
         boltShot: {
             label: "Ranged: Bolt Shot",
-            effects: [
-                {
-                    file: "jb2a.bolt.physical.orange",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.bolt.physical.orange")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
         javelinThrow: {
             label: "Ranged: Javelin Throw",
-            effects: [
-                {
-                    file: "jb2a.javelin.01.throw",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.javelin.01.throw")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
         shortBladeThrow: {
             label: "Ranged: Short Blade Throw",
-            effects: [
-                {
-                    file: "jb2a.dagger.throw.01",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.dagger.throw.01")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
         shortAxeThrow: {
             label: "Ranged: Short Axe Throw",
-            effects: [
-                {
-                    file: "jb2a.handaxe.throw.01",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.handaxe.throw.01")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
 
         // Physical Effects
         shieldBash: {
             label: "Physical: Shield Bash",
-            effects: [
-                {
-                    file: "jb2a.melee_attack.06.shield.01",
-                    from: "caster",
-                    to: "target",
-                    missed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
+                    seq
+                        .effect()
+                        .file("jb2a.melee_attack.06.shield.01")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .missed(missed);
                 }
-            ]
+                return seq;
+            }
         },
         shieldEffect: {
             label: "Physical: Shield Effect",
-            effects: [
-                {
-                    file: "jb2a.shield.01.complete",
-                    at: "target",
-                    scale: 0.5,
-                    randomize: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq
+                        .effect()
+                        .file("jb2a.shield.01.complete")
+                        .atLocation(target)
+                        .scale(0.5)
+                        .randomizeMirrorY(true);
                 }
-            ]
+                return seq;
+            }
         },
 
         // Circle Effects
         arcanicCircle: {
             label: "Circle: Arcanic",
-            effects: [
-                {
-                    file: "jb2a.magic_signs.circle.02.abjuration.complete.dark_blue",
-                    persist: true,
-                    fadeIn: 1500,
-                    fadeOut: 1500,
-                    scale: 2
+            factory: (args) => {
+                const seq = new Sequence();
+                if (args.active) {
+                    seq
+                        .effect()
+                        .file("jb2a.magic_signs.circle.02.abjuration.complete.dark_blue")
+                        .attachTo(args.caster)
+                        .belowTokens()
+                        .scaleToObject(2)
+                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
+                        .fadeOut(1500)
+                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
+                        .rotateOut(350, 1500, { ease: "easeInCubic" })
+                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
+                        .scaleOut(0, 1500, { ease: "easeInCubic" })
+                        .persist()
+                        .name(`SpellActivation-${args.caster}`);
+                } else {
+                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster}` })
                 }
-            ]
+                return seq;
+            }
         },
         entropicCircle: {
             label: "Circle: Entropic",
-            effects: [
-                {
-                    file: "jb2a.magic_signs.circle.02.evocation.complete.dark_red",
-                    persist: true,
-                    fadeIn: 1500,
-                    fadeOut: 1500,
-                    scale: 2
+            factory: (args) => {
+                const seq = new Sequence();
+                if (args.active) {
+                    seq
+                        .effect()
+                        .file("jb2a.magic_signs.circle.02.evocation.complete.dark_red")
+                        .attachTo(args.caster)
+                        .belowTokens()
+                        .scaleToObject(2)
+                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
+                        .fadeOut(1500)
+                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
+                        .rotateOut(350, 1500, { ease: "easeInCubic" })
+                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
+                        .scaleOut(0, 1500, { ease: "easeInCubic" })
+                        .persist()
+                        .name(`SpellActivation-${args.caster}`);
+                } else {
+                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster}` })
                 }
-            ]
+                return seq;
+            }
         },
         aethericCircle: {
             label: "Circle: Aetheric",
-            effects: [
-                {
-                    file: "jb2a.magic_signs.circle.02.enchantment.complete.dark_pink",
-                    persist: true,
-                    fadeIn: 1500,
-                    fadeOut: 1500,
-                    scale: 2
+            factory: (args) => {
+                const seq = new Sequence();
+                if (args.active) {
+                    seq
+                        .effect()
+                        .file("jb2a.magic_signs.circle.02.enchantment.complete.dark_pink")
+                        .attachTo(args.caster)
+                        .belowTokens()
+                        .scaleToObject(2)
+                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
+                        .fadeOut(1500)
+                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
+                        .rotateOut(350, 1500, { ease: "easeInCubic" })
+                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
+                        .scaleOut(0, 1500, { ease: "easeInCubic" })
+                        .persist()
+                        .name(`SpellActivation-${args.caster}`);
+                } else {
+                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster}` })
                 }
-            ]
+                return seq;
+            }
         },
         liturgicalCircle: {
             label: "Circle: Liturgical",
-            effects: [
-                {
-                    file: "jb2a.magic_signs.circle.02.conjuration.complete.dark_yellow",
-                    persist: true,
-                    fadeIn: 1500,
-                    fadeOut: 1500,
-                    scale: 2
+            factory: (args) => {
+                const seq = new Sequence();
+                if (args.active) {
+                    seq
+                        .effect()
+                        .file("jb2a.magic_signs.circle.02.conjuration.complete.dark_yellow")
+                        .attachTo(args.caster)
+                        .belowTokens()
+                        .scaleToObject(2)
+                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
+                        .fadeOut(1500)
+                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
+                        .rotateOut(350, 1500, { ease: "easeInCubic" })
+                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
+                        .scaleOut(0, 1500, { ease: "easeInCubic" })
+                        .persist()
+                        .name(`SpellActivation-${args.caster}`);
+                } else {
+                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster}` })
                 }
-            ]
+                return seq;
+            }
         },
         faerieCircle: {
             label: "Circle: Faerie",
-            effects: [
-                {
-                    file: "jb2a.magic_signs.circle.02.necromancy.complete.dark_green",
-                    persist: true,
-                    fadeIn: 1500,
-                    fadeOut: 1500,
-                    scale: 2
+            factory: (args) => {
+                const seq = new Sequence();
+                if (args.active) {
+                    seq
+                        .effect()
+                        .file("jb2a.magic_signs.circle.02.necromancy.complete.dark_green")
+                        .attachTo(args.caster)
+                        .belowTokens()
+                        .scaleToObject(2)
+                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
+                        .fadeOut(1500)
+                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
+                        .rotateOut(350, 1500, { ease: "easeInCubic" })
+                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
+                        .scaleOut(0, 1500, { ease: "easeInCubic" })
+                        .persist()
+                        .name(`SpellActivation-${args.caster}`);
+                } else {
+                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster}` })
                 }
-            ]
+                return seq;
+            }
         },
         asceticCircle: {
             label: "Circle: Ascetic",
-            effects: [
-                {
-                    file: "jb2a.magic_signs.circle.02.transmutation.complete.dark_yellow",
-                    persist: true,
-                    fadeIn: 1500,
-                    fadeOut: 1500,
-                    scale: 2
+            factory: (args) => {
+                const seq = new Sequence();
+                if (args.active) {
+                    seq
+                        .effect()
+                        .file("jb2a.magic_signs.circle.02.transmutation.complete.dark_yellow")
+                        .attachTo(args.caster)
+                        .belowTokens()
+                        .scaleToObject(2)
+                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
+                        .fadeOut(1500)
+                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
+                        .rotateOut(350, 1500, { ease: "easeInCubic" })
+                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
+                        .scaleOut(0, 1500, { ease: "easeInCubic" })
+                        .persist()
+                        .name(`SpellActivation-${args.caster}`);
+                } else {
+                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster}` })
                 }
-            ]
+                return seq;
+            }
         },
 
         // Spell Effects
         magicMissile: {
             label: "Spell: Magic Missile",
-            effects: [
-                {
-                    file: "jb2a.magic_missile",
-                    from: "caster",
-                    to: "target",
-                    randomize: true,
-                    randomSpeed: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq
+                        .effect()
+                        .file("jb2a.magic_missile")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .randomizeMirrorY(true)
+                        .playbackRate(Math.random() * (1.2 - 0.8) + 0.8);
                 }
-            ]
+                return seq;
+            }
         },
         fireball: {
             label: "Spell: Fireball",
-            effects: [
-                {
-                    file: "jb2a.fireball.beam.orange",
-                    from: "caster",
-                    to: "templatePrimary",
-                    speed: 1.2,
-                    missed: false
-                },
-                {
-                    file: "jb2a.fireball.explosion.orange",
-                    at: "templatePrimary",
-                    zone: true,
-                    sizeMultiplier: 3,
-                    postDelay: 2000,
-                    randomize: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const template of args.templates) {
+                    seq
+                        .effect()
+                        .file("jb2a.fireball.beam.orange")
+                        .atLocation(args.caster)
+                        .stretchTo(template.primaryPosition)
+                        .playbackRate(1.2)
+                        .missed(false);
+
+                    seq
+                        .effect()
+                        .file("jb2a.fireball.explosion.orange")
+                        .atLocation(template.primaryPosition)
+                        .size(3)
+                        .randomizeMirrorY(true)
+                        .waitUntilFinished(2000);
                 }
-            ]
+                return seq;
+            }
         },
         lightningLine: {
             label: "Spell: Lightning Line",
-            effects: [
-                {
-                    file: "jb2a.breath_weapons.lightning.line.blue",
-                    from: "caster",
-                    to: "templateSecondary",
-                    zone: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const template of args.templatesSecondary) {
+                    seq
+                        .effect()
+                        .file("jb2a.breath_weapons.lightning.line.blue")
+                        .atLocation(args.caster)
+                        .stretchTo(template.secondaryPosition);
                 }
-            ]
+                return seq;
+            }
         },
         frostCone: {
             label: "Spell: Frost Cone",
-            effects: [
-                {
-                    file: "jb2a.cone_of_cold",
-                    at: "templatePrimary",
-                    zone: true,
-                    sizeMultiplier: 1
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const template of args.templates) {
+                    seq
+                        .effect()
+                        .file("jb2a.cone_of_cold")
+                        .atLocation(template.primaryPosition)
+                        .size(1);
                 }
-            ]
+                return seq;
+            }
         },
         mistyIn: {
             label: "Spell: Misty In",
-            effects: [
-                {
-                    file: "jb2a.misty_step.02",
-                    at: "caster",
-                    randomize: true
-                }
-            ]
+            factory: (args) => {
+                const seq = new Sequence();
+                seq
+                    .effect()
+                    .file("jb2a.misty_step.02")
+                    .atLocation(args.caster)
+                    .randomizeMirrorY(true);
+                return seq;
+            }
         },
         mistyOut: {
             label: "Spell: Misty Out",
-            effects: [
-                {
-                    file: "jb2a.misty_step.01",
-                    at: "templatePrimary",
-                    randomize: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const template of args.templates) {
+                    seq
+                        .effect()
+                        .file("jb2a.misty_step.01")
+                        .atLocation(template.primaryPosition)
+                        .randomizeMirrorY(true);
                 }
-            ]
+                return seq;
+            }
         },
         leafWhirl: {
             label: "Spell: Leaf Whirl",
-            effects: [
-                {
-                    file: "jb2a.swirling_leaves.ranged",
-                    from: "caster",
-                    to: "target",
-                    randomize: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq
+                        .effect()
+                        .file("jb2a.swirling_leaves.ranged")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .randomizeMirrorY(true);
                 }
-            ]
+                return seq;
+            }
         },
         rockFall: {
             label: "Spell: Rock Fall",
-            effects: [
-                {
-                    file: "jb2a.falling_rocks.top.1x1",
-                    at: "target",
-                    zone: true,
-                    sizeMultiplier: 3,
-                    randomize: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq
+                        .effect()
+                        .file("jb2a.falling_rocks.top.1x1")
+                        .atLocation(target)
+                        .size(3)
+                        .randomizeMirrorY(true);
                 }
-            ]
+                return seq;
+            }
         },
         darkStep: {
             label: "Spell: Dark Step",
-            effects: [
-                {
-                    file: "jb2a.misty_step.01.dark_black",
-                    at: "templatePrimary",
-                    randomize: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const template of args.templates) {
+                    seq
+                        .effect()
+                        .file("jb2a.misty_step.01.dark_black")
+                        .atLocation(template.primaryPosition)
+                        .randomizeMirrorY(true);
                 }
-            ]
+                return seq;
+            }
         },
         blueHeal: {
             label: "Spell: Blue Heal",
-            effects: [
-                {
-                    file: "jb2a.healing_generic.200px.blue",
-                    at: "target",
-                    randomize: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq
+                        .effect()
+                        .file("jb2a.healing_generic.200px.blue")
+                        .atLocation(target)
+                        .randomizeMirrorY(true);
                 }
-            ]
+                return seq;
+            }
         },
         redHeal: {
             label: "Spell: Red Heal",
-            effects: [
-                {
-                    file: "jb2a.healing_generic.200px.red",
-                    at: "target",
-                    randomize: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq
+                        .effect()
+                        .file("jb2a.healing_generic.200px.red")
+                        .atLocation(target)
+                        .randomizeMirrorY(true);
                 }
-            ]
+                return seq;
+            }
         },
         greenRayHeal: {
             label: "Spell: Green Ray Heal",
-            effects: [
-                {
-                    file: "jb2a.scorching_ray.01.green",
-                    from: "caster",
-                    to: "target",
-                    postDelay: 2000
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq
+                        .effect()
+                        .file("jb2a.scorching_ray.01.green")
+                        .atLocation(args.caster)
+                        .stretchTo(target)
+                        .waitUntilFinished(2000);
                 }
-            ]
+                return seq;
+            }
         },
         greenHeal: {
             label: "Spell: Green Heal",
-            effects: [
-                {
-                    file: "jb2a.healing_generic.200px.green",
-                    at: "target",
-                    randomize: true
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq
+                        .effect()
+                        .file("jb2a.healing_generic.200px.green")
+                        .atLocation(target)
+                        .randomizeMirrorY(true);
                 }
-            ]
+                return seq;
+            }
         }
     };
 }

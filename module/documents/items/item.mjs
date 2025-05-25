@@ -464,9 +464,9 @@ export class Pl1eItem extends Item {
                         useParentRange: false,
                         useParentRoll: false,
                         useParentOppositeRoll: false,
-                        useParentActivationMacro: false,
-                        useParentPreLaunchMacro: false,
-                        useParentPostLaunchMacro: false,
+                        useParentActivation: false,
+                        useParentPreLaunch: false,
+                        useParentPostLaunch: false,
                     },
                 },
                 roll: {

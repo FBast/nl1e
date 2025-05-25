@@ -274,18 +274,18 @@ export function getConfigItems() {
             "type": "bool",
             "inDescription": false
         },
-        "useParentActivationMacro": {
-            "label": "PL1E.UseParentActivationMacro",
+        "useParentActivation": {
+            "label": "PL1E.UseParentActivation",
             "type": "bool",
             "inDescription": false
         },
-        "useParentPreLaunchMacro": {
-            "label": "PL1E.UseParentPreLaunchMacro",
+        "useParentPreLaunch": {
+            "label": "PL1E.UseParentPreLaunch",
             "type": "bool",
             "inDescription": false
         },
-        "useParentPostLaunchMacro": {
-            "label": "PL1E.UseParentPostLaunchMacro",
+        "useParentPostLaunch": {
+            "label": "PL1E.UseParentPostLaunch",
             "type": "bool",
             "inDescription": false
         },
