@@ -14,9 +14,12 @@ export class MovementAspectHandler extends AspectHandler {
      * @returns {Promise<TargetData[]>} - The modified targets data.
      */
     async apply(aspect, characterData, targetsData) {
-        for (const target of targetsData) {
+        for (const targetData of targetsData) {
+            // Validate the target for this aspect
+            if (!Pl1eAspect.isTargetValid(aspect.targetGroup, targetData, characterData)) continue;
+
             // Calculate destinations for this specific target
-            const movements = this._getDestinationsForTarget(aspect, characterData, target, targetsData);
+            const movements = this._getDestinationsForTarget(aspect, characterData, targetData, targetsData);
 
             // Skip if no valid destinations exist for this target
             if (movements.length === 0) continue;
@@ -25,11 +28,11 @@ export class MovementAspectHandler extends AspectHandler {
             const destination = this._chooseRandomDestination(movements);
 
             // Apply the movement
-            await this._applyMovement(aspect, target, destination);
+            await this._applyMovement(aspect, targetData, destination);
 
             // Add the aspect label to the target
-            target.activeAspects ??= [];
-            target.activeAspects.push({
+            targetData.activeAspects ??= [];
+            targetData.activeAspects.push({
                 ...aspect,
                 label: `Move to (${destination.x}, ${destination.y})`
             });
@@ -48,25 +51,30 @@ export class MovementAspectHandler extends AspectHandler {
      * @private
      */
     _getDestinationsForTarget(aspect, characterData, target, targetsData) {
+        const gridSize = canvas.grid.size;
         const destinations = [];
 
+        // Handle template-based destinations
         if (["templatePrimary", "templateSecondary"].includes(aspect.movementDestination)) {
-            // Handle template-based destinations
             const templates = this._filterTemplatesByScope(aspect.templateScope, target, characterData.templates);
 
             for (const template of templates) {
                 const destination = Pl1eTemplate.getTemplatePosition(template, aspect.movementDestination);
-                if (destination) destinations.push(destination);
+                if (destination) destinations.push({
+                    x: destination.x - gridSize / 2,
+                    y: destination.y - gridSize / 2
+                });
             }
-        } else {
-            // Handle target-based destinations (e.g., allies, opponents, etc.)
+        }
+        // Handle target-based destinations (e.g., allies, opponents, etc.)
+        else {
             for (const otherTarget of targetsData) {
                 if (otherTarget.token === target.token) continue; // Skip self
                 if (!Pl1eAspect.isTargetValid(aspect.movementDestination, otherTarget, characterData)) continue;
 
                 destinations.push({
-                    x: otherTarget.tokenX,
-                    y: otherTarget.tokenY
+                    x: otherTarget.tokenX - gridSize / 2,
+                    y: otherTarget.tokenY - gridSize / 2
                 });
             }
         }

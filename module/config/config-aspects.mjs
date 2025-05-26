@@ -68,7 +68,8 @@ export function getConfigAspects() {
             "data": "none",
             "createEffect": true,
             "effectDuration": 1,
-            "effectDurationResolutionType": "fixed"
+            "effectDurationResolutionType": "fixed",
+            "invocationDestination": "templatePrimary"
         },
         {
             "name": "status",
@@ -754,10 +755,15 @@ export function getConfigAspects() {
         "opponentsAndSelf": "PL1E.OpponentsAndSelf"
     }
 
+    PL1E.templates = {
+        "templatePrimary": "PL1E.TemplatePrimary",
+        "templateSecondary": "PL1E.TemplateSecondary"
+    }
+
     PL1E.templateScopes = {
         "ownTemplate": "PL1E.OwnTemplate",
         "otherTemplates": "PL1E.OtherTemplates",
-        "allTemplates": "Pl1E.AllTemplates",
+        "allTemplates": "PL1E.AllTemplates",
     }
 
     PL1E.statusImmunities = {

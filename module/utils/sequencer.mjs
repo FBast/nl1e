@@ -50,7 +50,8 @@ export const Pl1eSequencer = {
         return templatesData?.map(t => ({
             primaryPosition: t.primaryPosition ?? { x: t.x, y: t.y },
             secondaryPosition: t.secondaryPosition ?? { x: t.x, y: t.y },
-            distance: t.distance ?? 0
+            distance: t.distance ?? 0,
+            direction: t.direction ?? 0
         })) ?? [];
     }
 };

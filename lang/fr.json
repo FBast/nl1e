@@ -422,6 +422,7 @@
   "PL1E.Mouth": "Gueule",
   "PL1E.Movement": "Mouvement",
   "PL1E.MovementDestination": "Destination du mouvement",
+  "PL1E.InvocationDestination": "Destination de l'invocation",
   "PL1E.MovementSource": "Source du mouvement",
   "PL1E.Movements": "Mouvements",
   "PL1E.Multiple": "Multiple",
@@ -579,6 +580,8 @@
   "PL1E.PresetSpellGreenRayHeal": "Sort : Rayon de soin vert",
   "PL1E.PresetSpellLeafWhirl": "Sort : Tourbillon de feuilles",
   "PL1E.PresetSpellLightningLine": "Sort : Ligne d'éclair",
+  "PL1E.PresetSpellFaerieBurst": "Sort: Eclat de fée",
+  "PL1E.PresetSpellEmergingPlant": "Sort: Plante émergente",
   "PL1E.PresetSpellMagicMissile": "Sort : Projectile magique",
   "PL1E.PresetSpellMistyIn": "Sort : Brume (entrée)",
   "PL1E.PresetSpellMistyOut": "Sort : Brume (sortie)",
@@ -889,5 +892,5 @@
   "PL1E.Yes": "Oui",
   "PL1E.YouAlreadyHaveThisFeature": "Vous avez déja ce trait",
   "PL1E.YouAreParalysed": "Vous êtes paralysé",
-  "Pl1E.NoParents": "Cet objet n'a pas de parents"
+  "PL1E.NoParents": "Cet objet n'a pas de parents"
 }

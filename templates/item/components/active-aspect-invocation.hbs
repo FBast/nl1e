@@ -66,4 +66,18 @@
             </div>
         </div>
     {{/if}}
+
+    <div class="item">
+        <div class="item-content">
+            <div class="title">
+                <label>{{localize "PL1E.InvocationDestination"}}</label>
+            </div>
+            <div class="fields">
+                <select name="system.activeAspects.{{@key}}.invocationDestination">
+                    {{customSelectOptions (config "templates") selected=aspect.invocationDestination localize=true}}
+                </select>
+
+            </div>
+        </div>
+    </div>
 </div>

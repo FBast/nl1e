@@ -26,7 +26,7 @@ export class InvocationAspectHandler extends AspectHandler {
             }
 
             // Determine the position (always available due to fallback logic in secondaryPosition)
-            const position = Pl1eTemplate.getTemplatePosition(template, "templatePrimary");
+            const position = Pl1eTemplate.getTemplatePosition(template, aspect.invocationDestination);
 
             // Prepare the token data for the invocation
             const tokenData = await this._prepareTokenData(invocationActor, position, characterData);
@@ -76,9 +76,11 @@ export class InvocationAspectHandler extends AspectHandler {
         const tokenDocument = await invocationActor.getTokenDocument();
         const tokenData = tokenDocument.toObject();
 
+        const gridSize = canvas.grid.size;
+
         // Set the token position
-        tokenData.x = position.x;
-        tokenData.y = position.y;
+        tokenData.x = position.x - gridSize / 2;
+        tokenData.y = position.y - gridSize / 2;
 
         // Set the token disposition to match the invoker
         tokenData.disposition = characterData.token.disposition;

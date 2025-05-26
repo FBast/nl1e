@@ -478,21 +478,22 @@ export function getConfigSequencer() {
                     seq.effect()
                         .file("jb2a.fireball.beam.orange")
                         .atLocation(args.caster)
+                        .scale(2)
                         .stretchTo(template.primaryPosition)
                         .randomizeMirrorY()
-                        .waitUntilFinished(-2000)
+                        .waitUntilFinished(-2000);
                     seq.effect()
                         .file("jb2a.impact.ground_crack.orange")
                         .atLocation(template.primaryPosition)
                         .size(blastSize, { gridUnits: true })
                         .belowTokens()
                         .randomizeMirrorY()
-                        .fadeOut(2000)
+                        .fadeOut(2000);
                     seq.effect()
                         .file("jb2a.fireball.explosion.orange")
                         .atLocation(template.primaryPosition)
                         .size(blastSize, { gridUnits: true })
-                        .randomizeMirrorY()
+                        .randomizeMirrorY();
                 }
                 return seq;
             }
@@ -510,15 +511,62 @@ export function getConfigSequencer() {
                 return seq;
             }
         },
+        faerieBurst: {
+            label: "PL1E.PresetSpellFaerieBurst",
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq.effect()
+                        .file("jb2a.fairies.outward_burst")
+                        .atLocation(target)
+                        .randomizeMirrorY()
+                }
+                return seq;
+            }
+        },
+        flowerSanctuary: {
+            label: "PL1E.PresetSpellFlowerSanctuary",
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const target of args.targets) {
+                    seq.effect()
+                        .file("jb2a.plant_growth.03.round.2x2.complete")
+                        .atLocation(target)
+                        .randomizeMirrorY()
+                        .belowTokens()
+                }
+                return seq;
+            }
+        },
+        emergingPlant: {
+            label: "PL1E.PresetSpellEmergingPlant",
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const template of args.templates) {
+                    const plantSize = template.distance * 2
+                    seq.effect()
+                        .file("jb2a.entangle.02.complete.02.green")
+                        .atLocation(template.primaryPosition)
+                        .size(plantSize, {gridUnits: true})
+                        .randomizeMirrorY()
+                }
+                return seq;
+            }
+        },
         frostCone: {
             label: "PL1E.PresetSpellFrostCone",
             factory: (args) => {
                 const seq = new Sequence();
                 for (const template of args.templates) {
+                    let coneLength = template.distance;
+                    let offset = coneLength / 2;
+                    let direction = 360 - template.direction;
                     seq.effect()
                         .file("jb2a.cone_of_cold")
                         .atLocation(template.primaryPosition)
-                        .size(1);
+                        .spriteOffset({x: offset}, {gridUnits: true})
+                        .size({width: coneLength, height: coneLength}, {gridUnits: true})
+                        .rotate(direction);
                 }
                 return seq;
             }
@@ -541,6 +589,7 @@ export function getConfigSequencer() {
                 for (const template of args.templates) {
                     seq.effect()
                         .file("jb2a.misty_step.01")
+                        .startTime(800)
                         .atLocation(template.primaryPosition)
                         .randomizeMirrorY(true);
                 }
@@ -566,24 +615,13 @@ export function getConfigSequencer() {
             factory: (args) => {
                 const seq = new Sequence();
                 for (const target of args.targets) {
+                    const missed = args.missedTargets.includes(target);
                     seq.effect()
-                        .file("jb2a.falling_rocks.top.1x1")
+                        .file("jb2a.falling_rocks.top.1x1.grey")
                         .atLocation(target)
-                        .size(3)
-                        .randomizeMirrorY(true);
-                }
-                return seq;
-            }
-        },
-        darkStep: {
-            label: "PL1E.PresetSpellDarkStep",
-            factory: (args) => {
-                const seq = new Sequence();
-                for (const template of args.templates) {
-                    seq.effect()
-                        .file("jb2a.misty_step.01.dark_black")
-                        .atLocation(template.primaryPosition)
-                        .randomizeMirrorY(true);
+                        .scale(0.5)
+                        .randomizeMirrorY(true)
+                        .missed(missed);
                 }
                 return seq;
             }
