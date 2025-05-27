@@ -306,6 +306,21 @@ export function getConfigSequencer() {
                 return seq;
             }
         },
+        charge: {
+            label: "PL1E.PresetPhysicalCharge",
+            factory: (args) => {
+                const seq = new Sequence();
+                for (const template of args.templates) {
+                    seq.effect()
+                        .file("jb2a.gust_of_wind.default")
+                        .atLocation(args.caster)
+                        .stretchTo(template.secondaryPosition)
+                        .belowTokens()
+                        .playbackRate(2);
+                }
+                return seq;
+            }
+        },
 
         // Circle Effects
         arcanicCircle: {

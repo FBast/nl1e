@@ -499,117 +499,31 @@ export const Pl1eHelpers = {
 
     tokensWithinTemplate(template) {
         const tokens = template.object.scene.tokens.contents;
-        const shape = template.object.shape;
-        const gridSize = template.object.scene.grid.size;
-
-        const templateX = template.x;
-        const templateY = template.y;
+        const gridSize = canvas.grid.size;
+        const highlightPoints = template.object._getGridHighlightPositions();
+        const coveredCells = new Set(highlightPoints.map(p => `${p.x},${p.y}`));
 
         const containedTokens = [];
-
         for (const token of tokens) {
             const tokenX = token.x;
             const tokenY = token.y;
             const tokenW = (token.width ?? 1) * gridSize;
             const tokenH = (token.height ?? 1) * gridSize;
 
-            // Slightly shrink the token's rectangle to avoid edge-only contact
-            const epsilon = 0.01;
-            const tokenRect = new PIXI.Rectangle(
-                tokenX + epsilon,
-                tokenY + epsilon,
-                tokenW - 2 * epsilon,
-                tokenH - 2 * epsilon
-            );
-
-            let intersects = false;
-
-            switch (shape.constructor) {
-                case PIXI.Rectangle: {
-                    const width = shape.width || gridSize;
-                    const height = shape.height || gridSize;
-                    const shapeRect = new PIXI.Rectangle(
-                        shape.x + templateX,
-                        shape.y + templateY,
-                        width,
-                        height
-                    );
-                    intersects = this.rectsIntersectStrict(tokenRect, shapeRect);
-                    break;
-                }
-                case PIXI.Circle: {
-                    const radius = shape.radius || gridSize / 2;
-                    const circle = new PIXI.Circle(
-                        shape.x + templateX,
-                        shape.y + templateY,
-                        radius
-                    );
-                    intersects = this.rectCircleIntersectStrict(tokenRect, circle);
-                    break;
-                }
-                case PIXI.Polygon: {
-                    const points = shape.points.map((p, i) => i % 2 === 0 ? p + templateX : p + templateY);
-                    const polygon = new PIXI.Polygon(points);
-                    intersects = this.rectPolygonIntersectStrict(tokenRect, polygon);
-                    break;
+            let overlaps = false;
+            for (let dx = 0; dx < tokenW; dx += gridSize) {
+                for (let dy = 0; dy < tokenH; dy += gridSize) {
+                    const cellCenterX = tokenX + dx;
+                    const cellCenterY = tokenY + dy;
+                    const cellKey = `${cellCenterX},${cellCenterY}`;
+                    if (coveredCells.has(cellKey)) overlaps = true;
                 }
             }
 
-            if (intersects) {
-                containedTokens.push(token);
-            }
+            if (overlaps) containedTokens.push(token);
         }
 
         return containedTokens;
-    },
-
-    // Strict rectangle-rectangle intersection (excludes edge-only contact)
-    rectsIntersectStrict(r1, r2) {
-        return r1.x < r2.x + r2.width &&
-            r1.x + r1.width > r2.x &&
-            r1.y < r2.y + r2.height &&
-            r1.y + r1.height > r2.y &&
-            !(r1.x === r2.x + r2.width || r1.x + r1.width === r2.x ||
-                r1.y === r2.y + r2.height || r1.y + r1.height === r2.y);
-    },
-
-    // Strict rectangle-circle intersection (excludes edge-only contact)
-    rectCircleIntersectStrict(rect, circle) {
-        const cx = circle.x;
-        const cy = circle.y;
-        const closestX = Math.max(rect.x, Math.min(cx, rect.x + rect.width));
-        const closestY = Math.max(rect.y, Math.min(cy, rect.y + rect.height));
-        const dx = cx - closestX;
-        const dy = cy - closestY;
-        const distSq = dx * dx + dy * dy;
-        return distSq < (circle.radius * circle.radius) && distSq !== (circle.radius * circle.radius);
-    },
-
-    // Strict rectangle-polygon intersection (excludes edge-only contact)
-    rectPolygonIntersectStrict(rect, polygon) {
-        const polyPoints = [];
-        for (let i = 0; i < polygon.points.length; i += 2) {
-            polyPoints.push({ x: polygon.points[i], y: polygon.points[i + 1] });
-        }
-
-        // Check if any polygon point is strictly inside the rectangle
-        for (const point of polyPoints) {
-            if (point.x > rect.x && point.x < rect.x + rect.width &&
-                point.y > rect.y && point.y < rect.y + rect.height) return true;
-        }
-
-        // Check if any rectangle corner is strictly inside the polygon
-        const corners = [
-            { x: rect.x, y: rect.y },
-            { x: rect.x + rect.width, y: rect.y },
-            { x: rect.x, y: rect.y + rect.height },
-            { x: rect.x + rect.width, y: rect.y + rect.height }
-        ];
-        for (const corner of corners) {
-            if (polygon.contains(corner.x, corner.y)) return true;
-        }
-
-        return false;
     },
 
     async templateExists(path) {
