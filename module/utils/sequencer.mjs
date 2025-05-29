@@ -19,14 +19,19 @@ export const Pl1eSequencer = {
         });
 
         const sequence = preset.factory?.(args);
-        if (sequence) await sequence.play();
+        if (sequence) {
+            for (const target of args.targets) {
+                sequence.addSequence(PL1E.sequencerSubs.defense(target));
+            }
+            await sequence.play();
+        }
     },
 
     GetSequencerArgs({ characterData, targetsData, templatesData, persist, active }) {
         return {
             caster: this.GetCaster(characterData),
             targets: this.GetTargets(targetsData),
-            templates: this.GetTemplates(templatesData),
+            templates: this.GetTemplates(templatesData, targetsData),
             persist,
             active
         };
@@ -41,24 +46,41 @@ export const Pl1eSequencer = {
     },
 
     GetTargets(targetsData) {
-        return targetsData?.map(t => {
-            const token = canvas.tokens.get(t.tokenId);
+        return targetsData?.map(tokenData => {
+            const token = canvas.tokens.get(tokenData.tokenId);
 
             return {
-                id: t.tokenId,
+                id: tokenData.tokenId,
                 position: token.position,
-                result: t.result,
-                skill: t.rollData.skillName
+                result: tokenData.result,
+                skill: tokenData.rollData.skillName,
+                template: {
+                    id: tokenData.template.id,
+                    primaryPosition: tokenData.template.primaryPosition,
+                    secondaryPosition: tokenData.template.secondaryPosition,
+                    distance: tokenData.template.distance ?? 0,
+                    direction: tokenData.template.direction ?? 0
+                }
             };
         }) ?? [];
     },
 
-    GetTemplates(templatesData) {
-        return templatesData?.map(t => ({
-            primaryPosition: t.primaryPosition ?? { x: t.x, y: t.y },
-            secondaryPosition: t.secondaryPosition ?? { x: t.x, y: t.y },
-            distance: t.distance ?? 0,
-            direction: t.direction ?? 0
-        })) ?? [];
+    GetTemplates(templatesData, targetsData) {
+        return templatesData?.map(templateData => {
+            const templateTargets = targetsData?.filter(t => t.template?.id === templateData.id) ?? [];
+            return {
+                id: templateData.id,
+                primaryPosition: templateData.primaryPosition,
+                secondaryPosition: templateData.secondaryPosition,
+                distance: templateData.distance ?? 0,
+                direction: templateData.direction ?? 0,
+                targets: templateTargets.map(t => ({
+                    id: t.tokenId,
+                    position: canvas.tokens.get(t.tokenId)?.position,
+                    result: t.result,
+                    skill: t.rollData?.skillName
+                }))
+            };
+        }) ?? [];
     }
 };

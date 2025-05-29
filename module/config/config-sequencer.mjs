@@ -1,4 +1,5 @@
 import { PL1E } from "../pl1e.mjs";
+import {Pl1ePolygons} from "../helpers/polygones.mjs";
 
 export function getConfigSequencer() {
     PL1E.sequencerPresets = {
@@ -344,7 +345,7 @@ export function getConfigSequencer() {
                         .scale(0.5)
                         .randomizeMirrorY(true);
                 }
-                return [seq];
+                return seq;
             }
         },
         charge: {
@@ -360,11 +361,11 @@ export function getConfigSequencer() {
                         .belowTokens()
                         .playbackRate(2);
                 }
-                return [seq];
+                return seq;
             }
         },
         slashCone: {
-            label: "PL1E.PresetSpellSlashCone",
+            label: "PL1E.PresetPhysicalSlashCone",
             factory: (args) => {
                 const seq = new Sequence();
 
@@ -380,8 +381,7 @@ export function getConfigSequencer() {
                         .rotate(coneDirection);
                 }
 
-                const dodgeSeqs = PL1E.sequencerPresets.dodgeCaster.factory?.(args) ?? [];
-                return [seq, ...dodgeSeqs];
+                return seq;
             }
         },
 
@@ -389,151 +389,61 @@ export function getConfigSequencer() {
         arcanicCircle: {
             label: "PL1E.PresetCircleArcanic",
             factory: (args) => {
-                const seq = new Sequence();
-
-                if (args.active) {
-                    seq.effect()
-                        .file("jb2a.magic_signs.circle.02.abjuration.complete.dark_blue")
-                        .attachTo(args.caster.id)
-                        .belowTokens()
-                        .scaleToObject(2)
-                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
-                        .fadeOut(1500)
-                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
-                        .rotateOut(350, 1500, { ease: "easeInCubic" })
-                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
-                        .scaleOut(0, 1500, { ease: "easeInCubic" })
-                        .persist()
-                        .name(`SpellActivation-${args.caster.id}`);
-                } else {
-                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster.id}` })
-                }
-                return [seq];
+                return PL1E.sequencerSubs.magicCircle(
+                    "jb2a.magic_signs.circle.02.abjuration.complete.dark_blue",
+                    args.caster,
+                    args.active
+                );
             }
         },
         entropicCircle: {
             label: "PL1E.PresetCircleEntropic",
             factory: (args) => {
-                const seq = new Sequence();
-
-                if (args.active) {
-                    seq.effect()
-                        .file("jb2a.magic_signs.circle.02.evocation.complete.dark_red")
-                        .attachTo(args.caster.id)
-                        .belowTokens()
-                        .scaleToObject(2)
-                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
-                        .fadeOut(1500)
-                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
-                        .rotateOut(350, 1500, { ease: "easeInCubic" })
-                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
-                        .scaleOut(0, 1500, { ease: "easeInCubic" })
-                        .persist()
-                        .name(`SpellActivation-${args.caster.id}`);
-                } else {
-                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster.id}` })
-                }
-                return [seq];
+                return PL1E.sequencerSubs.magicCircle(
+                    "jb2a.magic_signs.circle.02.evocation.complete.dark_red",
+                    args.caster,
+                    args.active
+                );
             }
         },
         aethericCircle: {
             label: "PL1E.PresetCircleAetheric",
             factory: (args) => {
-                const seq = new Sequence();
-
-                if (args.active) {
-                    seq.effect()
-                        .file("jb2a.magic_signs.circle.02.enchantment.complete.dark_pink")
-                        .attachTo(args.caster.id)
-                        .belowTokens()
-                        .scaleToObject(2)
-                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
-                        .fadeOut(1500)
-                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
-                        .rotateOut(350, 1500, { ease: "easeInCubic" })
-                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
-                        .scaleOut(0, 1500, { ease: "easeInCubic" })
-                        .persist()
-                        .name(`SpellActivation-${args.caster.id}`);
-                } else {
-                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster.id}` })
-                }
-                return [seq];
+                return PL1E.sequencerSubs.magicCircle(
+                    "jb2a.magic_signs.circle.02.enchantment.complete.dark_pink",
+                    args.caster,
+                    args.active
+                );
             }
         },
         liturgicalCircle: {
             label: "PL1E.PresetCircleLiturgical",
             factory: (args) => {
-                const seq = new Sequence();
-
-                if (args.active) {
-                    seq.effect()
-                        .file("jb2a.magic_signs.circle.02.conjuration.complete.dark_yellow")
-                        .attachTo(args.caster.id)
-                        .belowTokens()
-                        .scaleToObject(2)
-                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
-                        .fadeOut(1500)
-                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
-                        .rotateOut(350, 1500, { ease: "easeInCubic" })
-                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
-                        .scaleOut(0, 1500, { ease: "easeInCubic" })
-                        .persist()
-                        .name(`SpellActivation-${args.caster.id}`);
-                } else {
-                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster.id}` })
-                }
-                return [seq];
+                return PL1E.sequencerSubs.magicCircle(
+                    "jb2a.magic_signs.circle.02.conjuration.complete.dark_yellow",
+                    args.caster,
+                    args.active
+                );
             }
         },
         faerieCircle: {
             label: "PL1E.PresetCircleFaerie",
             factory: (args) => {
-                const seq = new Sequence();
-
-                if (args.active) {
-                    seq.effect()
-                        .file("jb2a.magic_signs.circle.02.necromancy.complete.dark_green")
-                        .attachTo(args.caster.id)
-                        .belowTokens()
-                        .scaleToObject(2)
-                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
-                        .fadeOut(1500)
-                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
-                        .rotateOut(350, 1500, { ease: "easeInCubic" })
-                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
-                        .scaleOut(0, 1500, { ease: "easeInCubic" })
-                        .persist()
-                        .name(`SpellActivation-${args.caster.id}`);
-                } else {
-                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster.id}` })
-                }
-                return [seq];
+                return PL1E.sequencerSubs.magicCircle(
+                    "jb2a.magic_signs.circle.02.necromancy.complete.dark_green",
+                    args.caster,
+                    args.active
+                );
             }
         },
         asceticCircle: {
             label: "PL1E.PresetCircleAscetic",
             factory: (args) => {
-                const seq = new Sequence();
-
-                if (args.active) {
-                    seq.effect()
-                        .file("jb2a.magic_signs.circle.02.transmutation.complete.dark_yellow")
-                        .attachTo(args.caster.id)
-                        .belowTokens()
-                        .scaleToObject(2)
-                        .fadeIn(1500, { ease: "easeOutCubic", delay: 500 })
-                        .fadeOut(1500)
-                        .rotateIn(90, 2500, { ease: "easeInOutCubic" })
-                        .rotateOut(350, 1500, { ease: "easeInCubic" })
-                        .scaleIn(2, 2500, { ease: "easeInOutCubic" })
-                        .scaleOut(0, 1500, { ease: "easeInCubic" })
-                        .persist()
-                        .name(`SpellActivation-${args.caster.id}`);
-                } else {
-                    Sequencer.EffectManager.endEffects({ name: `SpellActivation-${args.caster.id}` })
-                }
-                return [seq];
+                return PL1E.sequencerSubs.magicCircle(
+                    "jb2a.magic_signs.circle.02.transmutation.complete.dark_yellow",
+                    args.caster,
+                    args.active
+                );
             }
         },
 
@@ -551,7 +461,7 @@ export function getConfigSequencer() {
                         .randomizeMirrorY()
                         .playbackRate(Math.random() * (1.2 - 0.8) + 0.8);
                 }
-                return [seq];
+                return seq;
             }
         },
         fireball: {
@@ -568,10 +478,7 @@ export function getConfigSequencer() {
                         .stretchTo(template.primaryPosition)
                         .randomizeMirrorY()
                         .waitUntilFinished(-2000);
-                    seq.thenDo(() => {
-                        const dodgeSeqs = PL1E.sequencerPresets.dodgeTemplate.factory(args);
-                        dodgeSeqs.forEach(seq => seq.play());
-                    });
+
                     seq.effect()
                         .file("jb2a.impact.ground_crack.orange")
                         .atLocation(template.primaryPosition)
@@ -579,13 +486,14 @@ export function getConfigSequencer() {
                         .belowTokens()
                         .randomizeMirrorY()
                         .fadeOut(2000);
+
                     seq.effect()
                         .file("jb2a.fireball.explosion.orange")
                         .atLocation(template.primaryPosition)
                         .size(blastSize, { gridUnits: true })
                         .randomizeMirrorY();
                 }
-                return [seq];
+                return seq;
             }
         },
         lightningLine: {
@@ -599,7 +507,7 @@ export function getConfigSequencer() {
                         .atLocation(args.caster.id)
                         .stretchTo(template.secondaryPosition);
                 }
-                return [seq];
+                return seq;
             }
         },
         faerieBurst: {
@@ -613,7 +521,7 @@ export function getConfigSequencer() {
                         .atLocation(target.id)
                         .randomizeMirrorY()
                 }
-                return [seq];
+                return seq;
             }
         },
         flowerSanctuary: {
@@ -628,7 +536,7 @@ export function getConfigSequencer() {
                         .randomizeMirrorY()
                         .belowTokens()
                 }
-                return [seq];
+                return seq;
             }
         },
         emergingPlant: {
@@ -643,8 +551,9 @@ export function getConfigSequencer() {
                         .atLocation(template.primaryPosition)
                         .size(plantSize, {gridUnits: true})
                         .randomizeMirrorY()
+                        .belowTokens()
                 }
-                return [seq];
+                return seq;
             }
         },
         frostCone: {
@@ -663,7 +572,7 @@ export function getConfigSequencer() {
                         .size({width: coneLength, height: coneLength}, {gridUnits: true})
                         .rotate(direction);
                 }
-                return [seq];
+                return seq;
             }
         },
         mistyIn: {
@@ -675,7 +584,7 @@ export function getConfigSequencer() {
                     .file("jb2a.misty_step.02")
                     .atLocation(args.caster.id)
                     .randomizeMirrorY(true);
-                return [seq];
+                return seq;
             }
         },
         mistyOut: {
@@ -690,7 +599,7 @@ export function getConfigSequencer() {
                         .atLocation(template.primaryPosition)
                         .randomizeMirrorY(true);
                 }
-                return [seq];
+                return seq;
             }
         },
         leafWhirl: {
@@ -705,7 +614,7 @@ export function getConfigSequencer() {
                         .stretchTo(target.id)
                         .randomizeMirrorY(true);
                 }
-                return [seq];
+                return seq;
             }
         },
         rockFall: {
@@ -719,9 +628,9 @@ export function getConfigSequencer() {
                         .atLocation(target.id)
                         .scale(0.5)
                         .randomizeMirrorY(true)
-                        .missed(target.result <= 0);
+                        .missed(caster.result <= 0)
                 }
-                return [seq];
+                return seq;
             }
         },
         blueHeal: {
@@ -735,7 +644,7 @@ export function getConfigSequencer() {
                         .atLocation(target.id)
                         .randomizeMirrorY(true);
                 }
-                return [seq];
+                return seq;
             }
         },
         redHeal: {
@@ -749,7 +658,7 @@ export function getConfigSequencer() {
                         .atLocation(target.id)
                         .randomizeMirrorY(true);
                 }
-                return [seq];
+                return seq;
             }
         },
         greenRayHeal: {
@@ -764,7 +673,7 @@ export function getConfigSequencer() {
                         .stretchTo(target.id)
                         .waitUntilFinished(2000);
                 }
-                return [seq];
+                return seq;
             }
         },
         greenHeal: {
@@ -778,69 +687,7 @@ export function getConfigSequencer() {
                         .atLocation(target.id)
                         .randomizeMirrorY(true);
                 }
-                return [seq];
-            }
-        },
-
-        // Defense Effects
-        dodgeCaster: {
-            label: "PL1E.PresetDefenseDodgeCaster",
-            factory: (args) => {
-                const sequences = [];
-
-                for (const target of args.targets) {
-                    if (target.result <= 0 && target.skill === "reflex") {
-                        const seq = PL1E.sequencerSubs.dodge(
-                            args.caster.position,
-                            target
-                        );
-
-                        if (seq) sequences.push(seq);
-                    }
-                }
-
-                return sequences;
-            }
-        },
-        dodgeTemplate: {
-            label: "PL1E.PresetDefenseDodgeTemplate",
-            factory: (args) => {
-                const sequences = [];
-
-                for (const template of args.templates) {
-                    for (const target of args.targets) {
-                        if (target.result <= 0 && target.skill === "reflex") {
-                            const seq = PL1E.sequencerSubs.dodge(
-                                template.primaryPosition,
-                                target
-                            );
-
-                            if (seq) sequences.push(seq);
-                        }
-                    }
-                }
-
-                return sequences;
-            }
-        },
-        parry: {
-            label: "PL1E.PresetDefenseParry",
-            factory: (args) => {
-                const seq = new Sequence();
-
-                for (const target of args.targets) {
-                    if (target.result <= 0 && target.skill === "parry") {
-                        seq.effect()
-                            .file("jb2a.icon.shield.green")
-                            .scale(0.5)
-                            .atLocation(target.id)
-                        seq.effect()
-                            .file("jb2a.impact.008")
-                            .scale(0.5)
-                            .atLocation(target.id)
-                    }
-                }
-                return [seq];
+                return seq;
             }
         }
     };
@@ -850,63 +697,23 @@ export function getConfigSequencer() {
         moveTowardsAttack: (caster, target, effectFile, options = {}) => {
             const seq = new Sequence();
 
-            const duration = options.duration || 2000;
-            const waitBeforeDodge = -duration * 0.5;
-            const waitBeforeParry = -duration * 0.75;
-
-            const effect = seq.effect()
+            seq.effect()
                 .file(effectFile)
                 .atLocation(caster.id)
-                .moveTowards(target.id)
-                .randomizeMirrorY();
-
-            if (target.result <= 0) {
-                if (target.skill === "reflex") {
-                    effect.waitUntilFinished(waitBeforeDodge);
-                    seq.thenDo(() => {
-                        const dodgeSeq = PL1E.sequencerSubs.dodge(caster.position, target);
-                        if (dodgeSeq) dodgeSeq.play();
-                    });
-                }
-                else if (target.skill === "parry") {
-                    effect.waitUntilFinished(waitBeforeParry);
-                    seq.thenDo(() => {
-                        const parrySeq = PL1E.sequencerSubs.parry(target);
-                        if (parrySeq) parrySeq.play();
-                    });
-                }
-            }
+                .randomizeMirrorY()
+                .moveTowards(target.template.id)
+                .missed(caster.result <= 0)
 
             return seq;
         },
         atLocationAttack: (caster, target, effectFile, options = {}) => {
             const seq = new Sequence();
 
-            const duration = options.duration || 2000;
-            const waitBeforeDodge = -duration * 0.5;
-            const waitBeforeParry = -duration * 0.75;
-
-            const effect = seq.effect()
+            seq.effect()
                 .file(effectFile)
-                .atLocation(target.id)
-                .randomizeMirrorY();
-
-            if (target.result <= 0) {
-                if (target.skill === "reflex") {
-                    effect.waitUntilFinished(waitBeforeDodge);
-                    seq.thenDo(() => {
-                        const dodgeSeq = PL1E.sequencerSubs.dodge(caster.position, target);
-                        if (dodgeSeq) dodgeSeq.play();
-                    });
-                }
-                else if (target.skill === "parry") {
-                    effect.waitUntilFinished(waitBeforeParry);
-                    seq.thenDo(() => {
-                        const parrySeq = PL1E.sequencerSubs.parry(target);
-                        if (parrySeq) parrySeq.play();
-                    });
-                }
-            }
+                .randomizeMirrorY()
+                .atLocation(target.template.id)
+                .missed(caster.result <= 0)
 
             return seq;
         },
@@ -916,78 +723,14 @@ export function getConfigSequencer() {
             seq.effect()
                 .file(effectFile)
                 .atLocation(caster.id)
-                .stretchTo(target.id)
-
-            if (target.result <= 0) {
-                if (target.skill === "reflex") {
-                    seq.thenDo(() => {
-                        const dodgeSeq = PL1E.sequencerSubs.dodge(caster.position, target, options);
-                        if (dodgeSeq) dodgeSeq.play();
-                    });
-                }
-                else if (target.skill === "parry") {
-                    seq.thenDo(() => {
-                        const parrySeq = PL1E.sequencerSubs.parry(target, options);
-                        if (parrySeq) parrySeq.play();
-                    });
-                }
-            }
+                .stretchTo(target.template.id)
+                .missed(caster.result <= 0)
 
             return seq;
         },
 
-        // Defenses
-        dodge: (sourcePosition, target, options = {}) => {
-            const targetTokenX = target.position.x;
-            const targetTokenY = target.position.y;
-
-            const dx = targetTokenX - sourcePosition.x;
-            const dy = targetTokenY - sourcePosition.y;
-
-            if (dx === 0 && dy === 0) return null;
-
-            const defenseWait = options.defenseWait ?? 0;
-            const recoil = options.recoil ?? 100;
-            const duration = options.duration ?? 500;
-            const waitTime = options.waitTime ?? 100;
-
-            const length = Math.sqrt(dx*dx + dy*dy);
-            const recoilPoint = {
-                x: targetTokenX + recoil * dx / length,
-                y: targetTokenY + recoil * dy / length
-            };
-
-            return new Sequence()
-                // .wait(defenseWait)
-                .animation()
-                    .on(target.id)
-                    .moveTowards(recoilPoint, { ease: "easeOutExpo" })
-                    .duration(duration)
-                    .waitUntilFinished(waitTime)
-                .animation()
-                    .on(target.id)
-                    .moveTowards({ x: targetTokenX, y: targetTokenY }, { ease: "easeOutExpo" })
-                    .duration(duration);
-
-        },
-        parry: (target, options = {}) => {
-            const seq = new Sequence();
-
-            seq.effect()
-                .file("jb2a.icon.shield.green")
-                .scale(0.5)
-                .atLocation(target.id);
-
-            seq.effect()
-                .file("jb2a.impact.008")
-                .scale(0.5)
-                .atLocation(target.id);
-
-            return seq;
-        },
-
-        // Others
-        magicCircle: (caster, effectFile, active) => {
+        // Spell
+        magicCircle: (effectFile, caster, active) => {
             const seq = new Sequence();
 
             if (active) {
@@ -1007,6 +750,51 @@ export function getConfigSequencer() {
             } else {
                 Sequencer.EffectManager.endEffects({ name: `SpellActivation-${caster.id}` });
             }
+
+            return seq;
+        },
+
+        // Defense
+        defense: (target) => {
+            const seq = new Sequence();
+            if (target.result > 0) return seq;
+
+            const duration = 2000;
+            const scaleFactor = 0.2;
+            const polygon = Pl1ePolygons[target.skill]
+            const scalePoints = (points, scale) => {
+                return points.map(p => ({ x: p.x * scale, y: p.y * scale }));
+            };
+
+            seq.effect()
+                .atLocation(target.id)
+                .sortLayer(700)
+                .fadeIn(500)
+                .shape("polygon", {
+                    lineSize: 4,
+                    lineColor: "#00BFFF",
+                    fillColor: "#00BFFF",
+                    fillAlpha: 0.3,
+                    points: scalePoints(polygon, scaleFactor),
+                    gridUnits: true,
+                    name: "defenseEffect"
+                })
+                .loopProperty("shapes.defenseEffect", "scale.x", {
+                    from: 0.8,
+                    to: 1.2,
+                    duration: duration / 4,
+                    pingPong: true,
+                    ease: "easeInOutSine"
+                })
+                .loopProperty("shapes.defenseEffect", "scale.y", {
+                    from: 0.8,
+                    to: 1.2,
+                    duration: duration / 4,
+                    pingPong: true,
+                    ease: "easeInOutSine"
+                })
+                .duration(duration)
+                .fadeOut(500)
 
             return seq;
         }
