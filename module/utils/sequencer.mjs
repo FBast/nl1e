@@ -18,9 +18,8 @@ export const Pl1eSequencer = {
             active
         });
 
-        const seq = preset.factory?.(args);
-        if (!seq) return;
-        await seq.play();
+        const sequence = preset.factory?.(args);
+        if (sequence) await sequence.play();
     },
 
     GetSequencerArgs({ characterData, targetsData, templatesData, persist, active }) {
@@ -28,22 +27,30 @@ export const Pl1eSequencer = {
             caster: this.GetCaster(characterData),
             targets: this.GetTargets(targetsData),
             templates: this.GetTemplates(templatesData),
-            missedTargets: this.GetMissedTargets(targetsData),
             persist,
             active
         };
     },
 
     GetCaster(characterData) {
-        return characterData?.tokenId;
+        const casterToken = canvas.tokens.get(characterData.tokenId);
+        return {
+            id: characterData?.tokenId,
+            position: casterToken.position
+        }
     },
 
     GetTargets(targetsData) {
-        return targetsData?.map(t => t.tokenId ?? (t.x !== undefined ? { x: t.x, y: t.y } : undefined)) ?? [];
-    },
+        return targetsData?.map(t => {
+            const token = canvas.tokens.get(t.tokenId);
 
-    GetMissedTargets(targetsData) {
-        return targetsData?.filter(t => t.result <= 0).map(t => t.tokenId ?? (t.x !== undefined ? { x: t.x, y: t.y } : undefined)) ?? [];
+            return {
+                id: t.tokenId,
+                position: token.position,
+                result: t.result,
+                skill: t.rollData.skillName
+            };
+        }) ?? [];
     },
 
     GetTemplates(templatesData) {
