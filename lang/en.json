@@ -433,6 +433,7 @@
   "PL1E.Mystic": "Mystic (Hybrid)",
   "PL1E.NPC": "NPC",
   "PL1E.Name": "Name",
+  "PL1E.AutoTargetSelfIfNoToken": "Auto target self if no token",
   "PL1E.Nature": "Nature",
   "PL1E.NatureBonus": "Nature bonus",
   "PL1E.NatureExplosion": "Nature explosion",

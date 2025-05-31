@@ -65,7 +65,7 @@ export class Pl1eChatMessage extends ChatMessage {
         };
 
         // Render message
-        return await ChatMessage.create(chatData);
+        return ChatMessage.create(chatData);
     }
 
     /**

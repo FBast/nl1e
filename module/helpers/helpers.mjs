@@ -288,7 +288,7 @@ export const Pl1eHelpers = {
 
             data = data[key];
             if (data === undefined) {
-                console.warn(`PL1E | config return is undefined with keys ${keys}`);
+                // console.warn(`PL1E | config return is undefined with keys ${keys}`);
                 break;
             }
         }

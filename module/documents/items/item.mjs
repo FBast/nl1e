@@ -812,15 +812,21 @@ export class Pl1eItem extends Item {
 
             // If the roll is a total failure, then resolve immediately
             if (characterData.result === 0) {
+                // Disable chat confirmation buttons
+                characterData.noConfirmation = true;
+
                 await this.resolve(characterData, {
                     action: "launch"
                 });
             }
         }
-        // If we have no token and there is no area shape
-        else if (characterData.attributes.areaShape === "none") {
+        // If we have no token and auto target self is true
+        else if (characterData.attributes.autoTargetSelfIfNoToken) {
             // Disable chat confirmation buttons
             characterData.noConfirmation = true;
+
+            // Include target
+            characterData.attributes.selfTarget = "add"
 
             // Display message
             await Pl1eChatMessage.launcherRoll(characterData);
@@ -994,6 +1000,8 @@ export class Pl1eItem extends Item {
         // Handle launch action
         if (options.action === "launch") await this.launch(characterData);
 
+        if (characterData.token === null) return;
+
         // Find activationMacro (pass for deactivation)
         if (characterData.attributes.customActivationMacro) {
             await Pl1eMacro.launchSequencerMacro(characterData.attributes.activationMacro, {
@@ -1050,14 +1058,19 @@ export class Pl1eItem extends Item {
         }
 
         // Find pre-launch macro
-        if (characterData.attributes.customPreLaunchMacro) {
-            await Pl1eMacro.launchSequencerMacro(characterData.attributes.preLaunchMacro, {
-                characterData,
-                targetsData
-            });
-        }
-        else {
-            await Pl1eSequencer.playEffect(characterData.attributes.preLaunchPreset, {characterData, targetsData});
+        if (characterData.token) {
+            if (characterData.attributes.customPreLaunchMacro) {
+                await Pl1eMacro.launchSequencerMacro(characterData.attributes.preLaunchMacro, {
+                    characterData,
+                    targetsData
+                });
+            }
+            else {
+                await Pl1eSequencer.playEffect(characterData.attributes.preLaunchPreset, {characterData, targetsData});
+            }
+
+            // Apply defense
+            await Pl1eSequencer.playAutoEffects({characterData, targetsData});
         }
 
         // Apply aspects, here we calculate each aspect for all targets
@@ -1066,14 +1079,15 @@ export class Pl1eItem extends Item {
         }
 
         // Find post-launch macro
-        if (characterData.attributes.customPostLaunchMacro) {
-            await Pl1eMacro.launchSequencerMacro(characterData.attributes.postLaunchMacro, {
-                characterData,
-                targetsData
-            });
-        }
-        else {
-            await Pl1eSequencer.playEffect(characterData.attributes.postLaunchPreset, {characterData, targetsData});
+        if (characterData.token) {
+            if (characterData.attributes.customPostLaunchMacro) {
+                await Pl1eMacro.launchSequencerMacro(characterData.attributes.postLaunchMacro, {
+                    characterData,
+                    targetsData
+                });
+            } else {
+                await Pl1eSequencer.playEffect(characterData.attributes.postLaunchPreset, {characterData, targetsData});
+            }
         }
 
         // Display messages if targets found

@@ -752,49 +752,44 @@ export function getConfigSequencer() {
             }
 
             return seq;
-        },
+        }
+    }
 
-        // Defense
-        defense: (target) => {
+    PL1E.sequencerAuto = {
+        defense: (args) => {
             const seq = new Sequence();
-            if (target.result > 0) return seq;
 
-            const duration = 2000;
-            const scaleFactor = 0.2;
-            const polygon = Pl1ePolygons[target.skill]
-            const scalePoints = (points, scale) => {
-                return points.map(p => ({ x: p.x * scale, y: p.y * scale }));
-            };
+            for (const target of args.targets) {
+                if (target.result > 0) continue;
 
-            seq.effect()
-                .atLocation(target.id)
-                .sortLayer(700)
-                .fadeIn(500)
-                .shape("polygon", {
-                    lineSize: 4,
-                    lineColor: "#00BFFF",
-                    fillColor: "#00BFFF",
-                    fillAlpha: 0.3,
-                    points: scalePoints(polygon, scaleFactor),
-                    gridUnits: true,
-                    name: "defenseEffect"
-                })
-                .loopProperty("shapes.defenseEffect", "scale.x", {
-                    from: 0.8,
-                    to: 1.2,
-                    duration: duration / 4,
-                    pingPong: true,
-                    ease: "easeInOutSine"
-                })
-                .loopProperty("shapes.defenseEffect", "scale.y", {
-                    from: 0.8,
-                    to: 1.2,
-                    duration: duration / 4,
-                    pingPong: true,
-                    ease: "easeInOutSine"
-                })
-                .duration(duration)
-                .fadeOut(500)
+                const duration = 3000;
+                const svgTint = "#00FFFF";
+                const svgPath = `systems/pl1e/assets/svg/${target.skill}.svg`;
+
+                seq.effect()
+                    .file(svgPath)
+                    .atLocation(target.id)
+                    .scaleToObject(0.5)
+                    .sortLayer(700)
+                    .fadeIn(500)
+                    .tint(svgTint)
+                    .loopProperty("sprite", "scale.x", {
+                        from: 0.8,
+                        to: 1.2,
+                        duration: duration / 4,
+                        pingPong: true,
+                        ease: "easeInOutSine"
+                    })
+                    .loopProperty("sprite", "scale.y", {
+                        from: 0.8,
+                        to: 1.2,
+                        duration: duration / 4,
+                        pingPong: true,
+                        ease: "easeInOutSine"
+                    })
+                    .duration(duration)
+                    .fadeOut(500);
+            }
 
             return seq;
         }

@@ -54,36 +54,6 @@
 
 <div class="list-items">
     <div class="list-header">
-        <h4>{{localize "PL1E.Consumable"}}</h4>
-    </div>
-
-    <div class="list-column">
-        <div class="item">
-            <div class="item-content">
-                <div class="title">
-                    <label>{{localize "PL1E.Uses"}}</label>
-                </div>
-                <div class="fields">
-                    <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="item-content">
-                <div class="title">
-                    <label>{{localize "PL1E.IsReloadable"}}</label>
-                </div>
-                <div class="fields">
-                    <input type="checkbox" name="system.attributes.isReloadable" {{checked system.attributes.isReloadable}} data-dtype="Boolean"/>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="list-items">
-    <div class="list-header">
         <h4>{{localize "PL1E.Activation"}}</h4>
     </div>
 
@@ -116,17 +86,6 @@
             <div class="item">
                 <div class="item-content">
                     <div class="title">
-                        <label>{{localize "PL1E.IsMajorAction"}}</label>
-                    </div>
-                    <div class="fields">
-                        <input type="checkbox" name="system.attributes.isMajorAction" {{checked system.attributes.isMajorAction}} data-dtype="Boolean"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-content">
-                    <div class="title">
                         <label>{{localize "PL1E.IsDangerous"}}</label>
                     </div>
                     <div class="fields">
@@ -135,6 +94,158 @@
                 </div>
             </div>
         {{/if}}
+    </div>
+</div>
+
+<div class="list-items">
+    <div class="list-header">
+        <h4>{{localize "PL1E.Usage"}}</h4>
+    </div>
+
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.Uses"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="number" name="system.attributes.uses" value="{{system.attributes.uses}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.IsReloadable"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="checkbox" name="system.attributes.isReloadable" {{checked system.attributes.isReloadable}} data-dtype="Boolean"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="list-items">
+    <div class="list-header">
+        <h4>{{localize "PL1E.Target"}}</h4>
+    </div>
+    <div class="list-column">
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.AreaShape"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.attributes.areaShape">
+                        {{customSelectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        {{#if (ne system.attributes.areaShape "none")}}
+            {{#unless system.attributes.useParentRange}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.Range"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
+                            <select name="system.attributes.rangeNumberResolutionType">
+                                {{customSelectOptions (config "resolutionTypes") selected=system.attributes.rangeNumberResolutionType localize=true}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            {{/unless}}
+
+            <div class="item">
+                <div class="item-content">
+                    <div class="title">
+                        <label>{{localize "PL1E.AreaNumber"}}</label>
+                    </div>
+                    <div class="fields">
+                        <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
+                        {{#if (or system.attributes.useParentRoll (ne (length system.attributes.roll) 0))}}
+                            <select name="system.attributes.areaNumberResolutionType">
+                                {{customSelectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                            </select>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+
+            {{#if (eq system.attributes.areaShape "circle")}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.CircleRadius"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="number" name="system.attributes.circleRadius" value="{{system.attributes.circleRadius}}" data-dtype="Number"/>
+                        </div>
+                    </div>
+                </div>
+            {{else if (eq system.attributes.areaShape "cone")}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.ConeLength"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="number" name="system.attributes.coneLength" value="{{system.attributes.coneLength}}" data-dtype="Number"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.ConeAngle"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="number" name="system.attributes.coneAngle" value="{{system.attributes.coneAngle}}" data-dtype="Number"/>
+                        </div>
+                    </div>
+                </div>
+            {{else if (eq system.attributes.areaShape "ray")}}
+                <div class="item">
+                    <div class="item-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.RayLength"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="number" name="system.attributes.rayLength" value="{{system.attributes.rayLength}}" data-dtype="Number"/>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        {{/if}}
+
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.SelfTarget"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.attributes.selfTarget">
+                        {{customSelectOptions (config "selfTargets") selected=system.attributes.selfTarget localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+                <div class="title">
+                    <label>{{localize "PL1E.AutoTargetSelfIfNoToken"}}</label>
+                </div>
+                <div class="fields">
+                    <input type="checkbox" name="system.attributes.autoTargetSelfIfNoToken" {{checked system.attributes.autoTargetSelfIfNoToken}} data-dtype="Boolean"/>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

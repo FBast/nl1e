@@ -381,6 +381,7 @@
         "passiveAspects": {},
         "activeAspects": {},
         "attributes": {
+          "autoTargetSelfIfNoToken": false,
           "customMacro": false,
           "customActivationMacro": false,
           "customPreLaunchMacro": false,

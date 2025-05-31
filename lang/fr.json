@@ -418,6 +418,7 @@
   "PL1E.Modules": "Modules",
   "PL1E.Money": "Monnaie",
   "PL1E.Monk": "Moine (Hybride)",
+  "PL1E.AutoTargetSelfIfNoToken": "Cibler automatiquement soi-même s'il n'y a pas de token",
   "PL1E.Mountains": "Montagnes",
   "PL1E.Mouth": "Gueule",
   "PL1E.Movement": "Mouvement",

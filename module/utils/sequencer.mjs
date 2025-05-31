@@ -19,11 +19,22 @@ export const Pl1eSequencer = {
         });
 
         const sequence = preset.factory?.(args);
-        if (sequence) {
-            for (const target of args.targets) {
-                sequence.addSequence(PL1E.sequencerSubs.defense(target));
-            }
-            await sequence.play();
+        if (sequence) await sequence.play();
+    },
+
+    async playAutoEffects({ characterData, targetsData }) {
+        const enableVFXAndSFX = game.settings.get("pl1e", "enableVFXAndSFX");
+        if (!game.pl1e.hasSequencer || !enableVFXAndSFX) return;
+
+        const args = this.GetSequencerArgs({
+            characterData,
+            targetsData,
+            templatesData: characterData?.templates,
+        });
+
+        for (const [key, func] of Object.entries(PL1E.sequencerAuto)) {
+            const sequence = func(args);
+            if (sequence) sequence.play();
         }
     },
 
@@ -53,11 +64,11 @@ export const Pl1eSequencer = {
                 id: tokenData.tokenId,
                 position: token.position,
                 result: tokenData.result,
-                skill: tokenData.rollData.skillName,
+                skill: tokenData.rollData?.skillName,
                 template: {
-                    id: tokenData.template.id,
-                    primaryPosition: tokenData.template.primaryPosition,
-                    secondaryPosition: tokenData.template.secondaryPosition,
+                    id: tokenData.template?.id,
+                    primaryPosition: tokenData.template?.primaryPosition,
+                    secondaryPosition: tokenData.template?.secondaryPosition,
                     distance: tokenData.template.distance ?? 0,
                     direction: tokenData.template.direction ?? 0
                 }

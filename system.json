@@ -13,7 +13,7 @@
   }],
   "esmodules": ["module/pl1e.mjs"],
   "styles": ["css/pl1e.css"],
-  "scripts": [],
+  "scripts": ["scripts/show-temporary-image.js"],
   "packs": [
     {
       "name": "legacy-characters",
