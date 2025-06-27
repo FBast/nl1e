@@ -127,6 +127,7 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
         html.find(`.item-remove`).on("click", ev => Pl1eEvent.onItemRemove(ev, this.item));
         html.find(`.item-switch-behavior`).on("click", ev => Pl1eEvent.onItemSwitchBehavior(ev, this.item));
         html.find('.item-tooltip-activate').on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find('.field-tooltip-activate').on("click", ev => Pl1eEvent.onFieldTooltip(ev));
         html.find('.spin-number').on("click", ev => Pl1eEvent.onSpinNumber(ev, this.item));
         html.find(".trait-selector").on("click", ev => Pl1eEvent.onTraitSelector(ev, this.item));
         html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));

@@ -454,7 +454,7 @@ export class Pl1eEvent {
     }
 
     /**
-     * Handle clicking of dice tooltip buttons
+     * Handle clicking of item tooltip
      * @param {Event} event
      */
     static async onItemTooltip(event) {
@@ -465,6 +465,24 @@ export class Pl1eEvent {
 
         // Check if tooltip associated
         const tooltip = item.find(".item-tooltip");
+        if (tooltip === undefined) return;
+
+        $(tooltip).slideToggle(200);
+        $(tooltip).toggleClass('expanded');
+    }
+
+    /**
+     * Handle clicking of field tooltip
+     * @param {Event} event
+     */
+    static async onFieldTooltip(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const field = $(event.currentTarget).closest(".field");
+
+        // Check if tooltip associated
+        const tooltip = field.find(".item-tooltip");
         if (tooltip === undefined) return;
 
         $(tooltip).slideToggle(200);

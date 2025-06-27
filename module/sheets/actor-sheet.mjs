@@ -211,7 +211,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         const type = li.parentElement.dataset.filter;
         const value = li.dataset.filter;
 
-        await toggleFilter(this.actor.id, type, value);
+        await Pl1eFilter.toggleFilter(this.actor.id, type, value);
         this.render();
     }
 

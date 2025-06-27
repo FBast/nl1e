@@ -1,5 +1,4 @@
 import { PL1E } from "../pl1e.mjs";
-import {Pl1ePolygons} from "../helpers/polygones.mjs";
 
 export function getConfigSequencer() {
     PL1E.sequencerPresets = {

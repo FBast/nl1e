@@ -1,11 +1,12 @@
 <form class="pl1e" autocomplete="off" onsubmit="event.preventDefault();">
     <section class="modal-body">
         <div class="flex-vertical gap-md">
-            <div class="list-items">
+
+            <div class="list-fields">
                 <div class="list-column">
                     {{#each choices}}
-                        <div class="item">
-                            <div class="item-content">
+                        <div class="field">
+                            <div class="field-content">
                                 <div class="title">
                                     <label>{{localize label}}</label>
                                 </div>
@@ -17,7 +18,11 @@
                     {{/each}}
                 </div>
             </div>
-            <button type="submit"><i class="fas fa-save"></i> {{localize "PL1E.Save"}}</button>
+
+            <button type="submit">
+                <i class="fas fa-save"></i> {{localize "PL1E.Save"}}
+            </button>
+
         </div>
     </section>
 </form>

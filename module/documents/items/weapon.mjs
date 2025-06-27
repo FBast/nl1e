@@ -37,35 +37,6 @@ export class Pl1eWeapon extends Pl1eItem {
     }
 
     /** @inheritDoc */
-    _preUpdate(changed, options, user) {
-        if (!this.isEmbedded) {
-            // Reset default values in case of changes
-            if (changed.system?.attributes?.meleeUse === false) {
-                changed["system.attributes.reach"] = 0;
-                changed["system.attributes.meleeRoll"] = [];
-                changed["system.attributes.meleeOppositeRoll"] = [];
-            }
-            if (changed.system?.attributes?.meleeUse === true) {
-                changed["system.attributes.reach"] = 1;
-            }
-            if (changed.system?.attributes?.rangedUse === false) {
-                changed["system.attributes.range"] = 0;
-                changed["system.attributes.rangeRoll"] = [];
-                changed["system.attributes.rangeOppositeRoll"] = [];
-            }
-            if (changed.system?.attributes?.rangedUse === true) {
-                changed["system.attributes.range"] = 4;
-            }
-            if (changed.system?.attributes?.magicUse === false) {
-                changed["system.attributes.magicRoll"] = [];
-                changed["system.attributes.magicOppositeRoll"] = [];
-            }
-        }
-
-        return super._preUpdate(changed, options, user);
-    }
-
-    /** @inheritDoc */
     canToggle() {
         if (!super.canToggle()) return false;
         const token = this.actor.bestToken;

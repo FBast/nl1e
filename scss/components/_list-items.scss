@@ -118,49 +118,6 @@
             }
           }
         }
-
-        .fields {
-          display: flex;
-          flex: 1;
-          justify-content: flex-end;
-          gap: 10px;
-          margin-right: 10px;
-
-          > * {
-            flex: 1;
-          }
-
-          input[type="checkbox"] {
-            flex: unset;
-          }
-
-          input[type="checkbox"],
-          input[type="number"],
-          button {
-            font-size: inherit;
-            text-align: center;
-            vertical-align: middle;
-          }
-
-          button {
-            background-color: $colorPanel;
-            border: 1px solid $colorBorder;
-            cursor: pointer;
-
-            &:hover {
-              background-color: lighten($colorPanel, 10%);
-            }
-          }
-
-          input[type="number"] {
-            text-align: center;
-          }
-        }
-      }
-
-      .item-hint {
-        font-size: $font-size-xsm;
-        margin-left: 15px;
       }
 
       .item-tooltip {

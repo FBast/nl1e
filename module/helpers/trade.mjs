@@ -43,7 +43,6 @@ export const Pl1eTrade = {
         });
 
         await sellerActor.removeItem(item);
-
         await Pl1eChatMessage.tradeMessage(item, sellerActor, buyerJournal, "sale", priceMoney);
     },
 
@@ -89,7 +88,8 @@ export const Pl1eTrade = {
         }
 
         const originalItem = await Pl1eHelpers.getDocument("Item", item.sourceId ?? item.id);
-        await Pl1eChatMessage.tradeMessage(originalItem, sellerJournal, buyerActor, "purchase", price);
+
         await buyerActor.addItem(originalItem);
+        await Pl1eChatMessage.tradeMessage(originalItem, sellerJournal, buyerActor, "purchase", price);
     }
 }

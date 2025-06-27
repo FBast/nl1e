@@ -1,10 +1,10 @@
-<div class="list-items">
+<div class="list-fields">
     <div class="list-header">
         <h4>{{localize "PL1E.Attributes"}}</h4>
     </div>
     <div class="list-column">
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.Description"}}</label>
                 </div>
@@ -15,8 +15,8 @@
                 </div>
             </div>
         </div>
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.Level"}}</label>
                 </div>
@@ -28,13 +28,13 @@
     </div>
 </div>
 
-<div class="list-items">
+<div class="list-fields">
     <div class="list-header">
         <h4>{{localize "PL1E.Activation"}}</h4>
     </div>
     <div class="list-column">
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.Activation"}}</label>
                 </div>
@@ -47,8 +47,8 @@
         </div>
 
         {{#if (eq system.attributes.activation "action")}}
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.ActionCost"}}</label>
                     </div>
@@ -58,8 +58,8 @@
                 </div>
             </div>
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.IsMajorAction"}}</label>
                     </div>
@@ -69,8 +69,8 @@
                 </div>
             </div>
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.IsDangerous"}}</label>
                     </div>
@@ -84,13 +84,13 @@
 </div>
 
 {{#unless (eq system.attributes.activation "passive")}}
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.Parent"}}</h4>
         </div>
         <div class="list-column">
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.LaunchParentActiveAspects"}}</label>
                     </div>
@@ -99,8 +99,8 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.WeaponMode"}}</label>
                     </div>
@@ -114,8 +114,8 @@
 
             {{#if (ne system.attributes.weaponMode "none")}}
                 {{#if (ne system.attributes.weaponMode "magic")}}
-                    <div class="item">
-                        <div class="item-content">
+                    <div class="field">
+                        <div class="field-content">
                             <div class="title">
                                 <label>{{localize "PL1E.RangeOverride"}}</label>
                             </div>
@@ -125,8 +125,8 @@
                         </div>
                     </div>
                 {{/if}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.UseParentRoll"}}</label>
                         </div>
@@ -135,8 +135,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.UseParentOppositeRoll"}}</label>
                         </div>
@@ -145,8 +145,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.UseParentActivation"}}</label>
                         </div>
@@ -155,8 +155,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.UseParentPreLaunch"}}</label>
                         </div>
@@ -165,8 +165,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.UseParentPostLaunch"}}</label>
                         </div>
@@ -179,13 +179,13 @@
         </div>
     </div>
 
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.Usage"}}</h4>
         </div>
         <div class="list-column">
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.Roll"}}</label>
                     </div>
@@ -201,8 +201,8 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.RollAdvantages"}}</label>
                     </div>
@@ -212,8 +212,8 @@
                 </div>
             </div>
             {{#if (or (gt (length system.attributes.roll) 0) system.attributes.useParentRoll)}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.OppositeRoll"}}</label>
                         </div>
@@ -229,8 +229,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.OppositeRollAdvantages"}}</label>
                         </div>
@@ -240,8 +240,8 @@
                     </div>
                 </div>
             {{/if}}
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.HealthCost"}}</label>
                     </div>
@@ -250,8 +250,8 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.StaminaCost"}}</label>
                     </div>
@@ -260,8 +260,8 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.ManaCost"}}</label>
                     </div>
@@ -270,8 +270,8 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.LinkedUsageCost"}}</label>
                     </div>
@@ -283,13 +283,13 @@
         </div>
     </div>
 
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.Target"}}</h4>
         </div>
         <div class="list-column">
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.AreaShape"}}</label>
                     </div>
@@ -303,8 +303,8 @@
 
             {{#if (ne system.attributes.areaShape "none")}}
                 {{#unless system.attributes.useParentRange}}
-                    <div class="item">
-                        <div class="item-content">
+                    <div class="field">
+                        <div class="field-content">
                             <div class="title">
                                 <label>{{localize "PL1E.Range"}}</label>
                             </div>
@@ -318,8 +318,8 @@
                     </div>
                 {{/unless}}
 
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.AreaNumber"}}</label>
                         </div>
@@ -335,8 +335,8 @@
                 </div>
 
                 {{#if (eq system.attributes.areaShape "circle")}}
-                    <div class="item">
-                        <div class="item-content">
+                    <div class="field">
+                        <div class="field-content">
                             <div class="title">
                                 <label>{{localize "PL1E.CircleRadius"}}</label>
                             </div>
@@ -346,8 +346,8 @@
                         </div>
                     </div>
                 {{else if (eq system.attributes.areaShape "cone")}}
-                    <div class="item">
-                        <div class="item-content">
+                    <div class="field">
+                        <div class="field-content">
                             <div class="title">
                                 <label>{{localize "PL1E.ConeLength"}}</label>
                             </div>
@@ -356,8 +356,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="item">
-                        <div class="item-content">
+                    <div class="field">
+                        <div class="field-content">
                             <div class="title">
                                 <label>{{localize "PL1E.ConeAngle"}}</label>
                             </div>
@@ -367,8 +367,8 @@
                         </div>
                     </div>
                 {{else if (eq system.attributes.areaShape "ray")}}
-                    <div class="item">
-                        <div class="item-content">
+                    <div class="field">
+                        <div class="field-content">
                             <div class="title">
                                 <label>{{localize "PL1E.RayLength"}}</label>
                             </div>
@@ -380,8 +380,8 @@
                 {{/if}}
             {{/if}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.SelfTarget"}}</label>
                     </div>
@@ -392,8 +392,8 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.AutoTargetSelfIfNoToken"}}</label>
                     </div>
@@ -405,13 +405,13 @@
         </div>
     </div>
 
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.VFXAndSFX"}}</h4>
         </div>
         <div class="list-column">
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomActivationMacro"}}</label>
                     </div>
@@ -421,8 +421,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customActivationMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.ActivationPreset"}}</label>
                         </div>
@@ -434,8 +434,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.ActivationMacro"}}</label>
                         </div>
@@ -448,8 +448,8 @@
                 </div>
             {{/unless}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomPreLaunchMacro"}}</label>
                     </div>
@@ -459,8 +459,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customPreLaunchMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.PreLaunchPreset"}}</label>
                         </div>
@@ -472,8 +472,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.PreLaunchMacro"}}</label>
                         </div>
@@ -486,8 +486,8 @@
                 </div>
             {{/unless}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomPostLaunchMacro"}}</label>
                     </div>
@@ -497,8 +497,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customPostLaunchMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.PostLaunchPreset"}}</label>
                         </div>
@@ -510,8 +510,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.PostLaunchMacro"}}</label>
                         </div>

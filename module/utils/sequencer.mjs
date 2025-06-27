@@ -1,4 +1,5 @@
 import { PL1E } from "../pl1e.mjs";
+import {Pl1eTemplate} from "../helpers/template.mjs";
 
 export const Pl1eSequencer = {
     async playEffect(name, { characterData, targetsData, active }) {
@@ -18,8 +19,12 @@ export const Pl1eSequencer = {
             active
         });
 
-        const sequence = preset.factory?.(args);
-        if (sequence) await sequence.play();
+        try {
+            const sequence = preset.factory?.(args);
+            if (sequence) await sequence.play();
+        } catch (error) {
+            console.warn(`Erreur pendant le preset ${preset.label}:`, error);
+        }
     },
 
     async playAutoEffects({ characterData, targetsData }) {
@@ -59,6 +64,7 @@ export const Pl1eSequencer = {
     GetTargets(targetsData) {
         return targetsData?.map(tokenData => {
             const token = canvas.tokens.get(tokenData.tokenId);
+            const templateDoc = canvas.templates.get(tokenData.template?.id);
 
             return {
                 id: tokenData.tokenId,
@@ -67,8 +73,8 @@ export const Pl1eSequencer = {
                 skill: tokenData.rollData?.skillName,
                 template: {
                     id: tokenData.template?.id,
-                    primaryPosition: tokenData.template?.primaryPosition,
-                    secondaryPosition: tokenData.template?.secondaryPosition,
+                    primaryPosition: templateDoc ? Pl1eTemplate.getPrimaryPosition(templateDoc) : undefined,
+                    secondaryPosition: templateDoc ? Pl1eTemplate.getSecondaryPosition(templateDoc) : undefined,
                     distance: tokenData.template.distance ?? 0,
                     direction: tokenData.template.direction ?? 0
                 }
@@ -78,19 +84,24 @@ export const Pl1eSequencer = {
 
     GetTemplates(templatesData, targetsData) {
         return templatesData?.map(templateData => {
+            const templateDoc = canvas.templates.get(templateData.id);
             const templateTargets = targetsData?.filter(t => t.template?.id === templateData.id) ?? [];
+
             return {
                 id: templateData.id,
-                primaryPosition: templateData.primaryPosition,
-                secondaryPosition: templateData.secondaryPosition,
+                primaryPosition: templateDoc ? Pl1eTemplate.getPrimaryPosition(templateDoc) : undefined,
+                secondaryPosition: templateDoc ? Pl1eTemplate.getSecondaryPosition(templateDoc) : undefined,
                 distance: templateData.distance ?? 0,
                 direction: templateData.direction ?? 0,
-                targets: templateTargets.map(t => ({
-                    id: t.tokenId,
-                    position: canvas.tokens.get(t.tokenId)?.position,
-                    result: t.result,
-                    skill: t.rollData?.skillName
-                }))
+                targets: templateTargets.map(t => {
+                    const token = canvas.tokens.get(t.tokenId);
+                    return {
+                        id: t.tokenId,
+                        position: token?.position,
+                        result: t.result,
+                        skill: t.rollData?.skillName
+                    };
+                })
             };
         }) ?? [];
     }

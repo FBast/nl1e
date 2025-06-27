@@ -484,11 +484,11 @@
         "modules": 0,
         "hands": 1,
         "meleeUse": false,
-        "reach": 0,
+        "reach": 1,
         "meleeRoll": [],
         "meleeOppositeRoll": [],
         "rangedUse": false,
-        "range": 0,
+        "range": 4,
         "rangeRoll": [],
         "rangeOppositeRoll": [],
         "magicUse": false,
@@ -565,7 +565,7 @@
     }
   },
   "JournalEntryPage": {
-    "types": ["location", "organization", "character", "merchant", "inn"],
+    "types": ["location", "organization", "character", "merchant"],
     "location": {
       "banner": "",
       "translation": "",
@@ -596,7 +596,7 @@
     },
     "merchant": {
       "banner": "",
-      "buyMultiplier": 100,
+      "buyMultiplier": 50,
       "sellMultiplier": 100,
       "content": ""
     }

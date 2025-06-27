@@ -295,51 +295,6 @@ export const Pl1eHelpers = {
         return data;
     },
 
-    multiLocalize(...keys) {
-        return keys.map(key => {
-            if (!key) return "";  // If the key is undefined or empty, return an empty string
-            if (typeof key !== "string") return key;
-            let localized = game.i18n.localize(key);
-            return localized !== key ? localized : key;  // If localization returns the key itself, it means there's no translation for it
-        }).join(' ');
-    },
-
-    async CleanupItem(item) {
-        // Load the model from template.json
-        const template = await fetch("/systems/pl1e/template.json").then(r => r.json());
-
-        const removed = {}; // Object to store removed properties
-
-        // Function to clean an object based on the model
-        function cleanObject(obj, model, removedObj) {
-            for (let k in obj) {
-                if (k === "passiveAspects" || k === "activeAspects") continue; // Skip these properties
-                if (!(k in model)) {
-                    removedObj[k] = obj[k];
-                    delete obj[k];
-                } else if (typeof obj[k] === "object" && obj[k] !== null && !Array.isArray(obj[k])) {
-                    removedObj[k] = {};
-                    cleanObject(obj[k], model[k], removedObj[k]);
-                    if (Object.keys(removedObj[k]).length === 0) {
-                        delete removedObj[k]; // Remove empty objects from the removed object
-                    }
-                }
-            }
-        }
-
-        let itemType = item.type;
-        let specificTemplates = template.Item[itemType].templates;
-        let model = {...template.Item[itemType]}; // Include direct properties
-        delete model.templates; // Exclude the "templates" property
-        for (let template of specificTemplates) {
-            model = foundry.utils.mergeObject(model, template.Item.templates[template]);
-        }
-        let itemCopy = foundry.utils.duplicate(item);
-        cleanObject(itemCopy.system, model, removed);
-        console.log("PL1E | removed system properties:", removed);
-        await item.update({ system: itemCopy.system }, { merge: false });
-    },
-
     levelToXP(actor, level) {
         if (level === 0) return 0;
         const levelCaps = this.levelCaps(actor);
@@ -633,5 +588,65 @@ export const Pl1eHelpers = {
         if (existingItem.system.removedUses !== newItem.system.removedUses) return false;
         if (newItem.system.attributes.customizable) return false;
         return true;
+    },
+
+    sanitizeCharacterData(data) {
+        const clone = foundry.utils.deepClone(data);
+        const seen = new WeakSet();
+
+        function clean(obj) {
+            if (obj === null || typeof obj !== 'object') return;
+
+            if (seen.has(obj)) return; // Stop si déjà vu
+            seen.add(obj);
+
+            for (const key in obj) {
+                const val = obj[key];
+
+                if (val instanceof Actor || val instanceof TokenDocument || val instanceof Scene || val instanceof Item) {
+                    obj[key + "Id"] = val.id;
+                    delete obj[key];
+                }
+                else if (val instanceof PIXI.Point) {
+                    obj[key] = { x: val.x, y: val.y };
+                }
+                else if (Array.isArray(val)) {
+                    for (let i = 0; i < val.length; i++) {
+                        if (typeof val[i] === 'object' && val[i] !== null) {
+                            clean(val[i]);
+                        }
+                    }
+                }
+                else if (typeof val === 'object' && val !== null) {
+                    clean(val); // Recurse safe
+                }
+            }
+        }
+
+        clean(clone);
+        return clone;
+    },
+
+    rebuildCharacterData(rawData) {
+        const actor = game.actors.get(rawData.actorId);
+        const scene = game.scenes.get(rawData.sceneId);
+        const token = canvas.tokens.get(rawData.tokenId);
+        const item = actor?.items.get(rawData.itemId);
+
+        let templates = [];
+        for (const templateId of rawData.templatesIds ?? []) {
+            const templateDoc = canvas.templates.get(templateId)?.document;
+            if (templateDoc) templates.push(templateDoc);
+        }
+
+        return {
+            ...rawData,
+            actor,
+            scene,
+            token,
+            item,
+            templates,
+            linkedItem: actor?.items.get(rawData.linkedItemId)
+        };
     }
 }

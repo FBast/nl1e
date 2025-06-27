@@ -217,15 +217,9 @@ Hooks.on("updateItem", async (item, changes, options, userId) => {
     const dynamicHotbar = game.user.getFlag('pl1e', 'dynamicHotBar');
     if (!dynamicHotbar) return;
 
-    // Check if any relevant equip state was changed
-    const changedEquippedMain = foundry.utils.hasProperty(changes, "system.isEquippedMain");
-    const changedEquippedSecondary = foundry.utils.hasProperty(changes, "system.isEquippedSecondary");
-
-    if (!changedEquippedMain && !changedEquippedSecondary) return;
-
-    // Ensure the item belongs to the currently selected token
     const selectedToken = canvas.tokens.controlled[0];
     if (!selectedToken || !selectedToken.actor) return;
+
     if (selectedToken.actor.id !== item.parent?.id) return;
 
     void _generateTokenMacrosSafe("generate", selectedToken);

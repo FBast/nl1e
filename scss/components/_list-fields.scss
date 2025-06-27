@@ -1,0 +1,117 @@
+.list-fields {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: $colorBorder solid 1px;
+
+  .list-column {
+    display: flex;
+    flex-direction: column;
+    font-size: $font-size-xsm;
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      padding: 5px 10px 0 10px;
+
+      &.dashed {
+        &:not(:last-child) {
+          border-bottom: $colorBorder dashed 1px;
+        }
+      }
+
+      .field-content {
+        flex: 0 0 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+
+        .title {
+          flex: 0 0 200px;
+          display: flex;
+          align-items: center;
+
+          label {
+            font-weight: bold;
+            align-items: center;
+            text-align: left;
+          }
+
+          a {
+            margin-left: 10px;
+            width: 15px;
+            height: 15px;
+
+            i {
+              align-content: center;
+              text-align: center;
+              font-size: $font-size-sm;
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+
+        .fields {
+          display: flex;
+          flex: 1;
+          justify-content: flex-end;
+          align-items: center;
+          gap: 10px;
+          margin-right: 10px;
+
+          input[type="checkbox"] {
+            flex: unset;
+          }
+
+          input[type="checkbox"],
+          input[type="number"],
+          button {
+            font-size: inherit;
+            text-align: center;
+            vertical-align: middle;
+          }
+
+          button {
+            background-color: $colorPanel;
+            border: 1px solid $colorBorder;
+            cursor: pointer;
+
+            &:hover {
+              background-color: lighten($colorPanel, 10%);
+            }
+          }
+
+          input[type="number"] {
+            text-align: center;
+          }
+
+          label {
+            text-align: end;
+          }
+        }
+      }
+
+      .field-hint {
+        font-size: $font-size-xsm;
+        margin-left: 15px;
+      }
+
+      .field-tooltip {
+        text-align: justify;
+        background-color: $colorPanel;
+        display: none;
+        padding: 5px 10px;
+        border-top: 1px solid $colorBorder;
+        border-bottom: 1px solid $colorBorder;
+
+        &.expanded {
+          display: block;
+          border-top: 1px solid $colorBorder;
+          border-bottom: 1px solid $colorBorder;
+        }
+      }
+    }
+  }
+}

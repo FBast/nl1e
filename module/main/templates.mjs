@@ -7,8 +7,6 @@ export const preloadHandlebarsTemplates = async function () {
     return loadTemplates([
 
         // Actor parts
-        "systems/pl1e/templates/actor/parts/config-parameters.hbs",
-        "systems/pl1e/templates/actor/parts/config-roll-tables.hbs",
         "systems/pl1e/templates/actor/parts/abilities.hbs",
         "systems/pl1e/templates/actor/parts/features-background.hbs",
         "systems/pl1e/templates/actor/parts/features-background-row.hbs",

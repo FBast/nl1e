@@ -2,14 +2,14 @@
     {{> journalEntryPageHeader}}
 
     <div class="sheet-body">
-        <div class="list-items">
+        <div class="list-fields">
             <div class="list-header">
                 <h4>{{localize "PL1E.MerchantDetails"}}</h4>
             </div>
             <div class="list-column">
 
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.Banner"}}</label>
                         </div>
@@ -18,11 +18,11 @@
                             {{filePicker target="system.banner" type="image"}}
                         </div>
                     </div>
-                    <p class="item-hint">{{localize "PL1E.DescriptionBanner"}}</p>
+                    <p class="field-hint">{{localize "PL1E.DescriptionBanner"}}</p>
                 </div>
 
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.SellMultiplier"}}</label>
                         </div>
@@ -31,11 +31,11 @@
                             <span class="unit">%</span>
                         </div>
                     </div>
-                    <p class="item-hint">{{localize "PL1E.DescriptionSellMultiplier"}}</p>
+                    <p class="field-hint">{{localize "PL1E.DescriptionSellMultiplier"}}</p>
                 </div>
 
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.BuyMultiplier"}}</label>
                         </div>
@@ -44,21 +44,21 @@
                             <span class="unit">%</span>
                         </div>
                     </div>
-                    <p class="item-hint">{{localize "PL1E.DescriptionBuyMultiplier"}}</p>
+                    <p class="field-hint">{{localize "PL1E.DescriptionBuyMultiplier"}}</p>
                 </div>
 
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.Content"}}</label>
                         </div>
                         <div class="fields">
-                            <button class="launch-text-editor" data-target="text.content">
+                            <button type="button" class="launch-text-editor" data-target="text.content">
                                 <i class="fas fa-edit"></i> {{localize "PL1E.EditContent"}}
                             </button>
                         </div>
                     </div>
-                    <p class="item-hint">{{localize "PL1E.DescriptionContent"}}</p>
+                    <p class="field-hint">{{localize "PL1E.DescriptionContent"}}</p>
                 </div>
 
             </div>

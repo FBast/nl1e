@@ -1,11 +1,11 @@
-<div class="list-items">
+<div class="list-fields">
     <div class="list-header">
         <h4>{{localize "PL1E.Attributes"}}</h4>
     </div>
 
     <div class="list-column">
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.Description"}}</label>
                 </div>
@@ -17,8 +17,8 @@
             </div>
         </div>
 
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.GoldPrice"}}</label>
                 </div>
@@ -28,8 +28,8 @@
             </div>
         </div>
 
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.SilverPrice"}}</label>
                 </div>
@@ -39,8 +39,8 @@
             </div>
         </div>
 
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.CopperPrice"}}</label>
                 </div>
@@ -52,13 +52,13 @@
     </div>
 </div>
 
-<div class="list-items">
+<div class="list-fields">
     <div class="list-header">
         <h4>{{localize "PL1E.Weapon"}}</h4>
     </div>
     <div class="list-column">
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.Customizable"}}</label>
                 </div>
@@ -67,8 +67,8 @@
                 </div>
             </div>
         </div>
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.Modules"}}</label>
                 </div>
@@ -77,8 +77,8 @@
                 </div>
             </div>
         </div>
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.Hands"}}</label>
                 </div>
@@ -87,8 +87,8 @@
                 </div>
             </div>
         </div>
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.Uses"}}</label>
                 </div>
@@ -97,8 +97,8 @@
                 </div>
             </div>
         </div>
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.MeleeUse"}}</label>
                 </div>
@@ -107,8 +107,8 @@
                 </div>
             </div>
         </div>
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.RangedUse"}}</label>
                 </div>
@@ -117,8 +117,8 @@
                 </div>
             </div>
         </div>
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.MagicUse"}}</label>
                 </div>
@@ -131,13 +131,13 @@
 </div>
 
 {{#if system.attributes.meleeUse}}
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.Melee"}}</h4>
         </div>
         <div class="list-column">
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.Reach"}}</label>
                     </div>
@@ -146,8 +146,8 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.MeleeRoll"}}</label>
                     </div>
@@ -164,8 +164,8 @@
                 </div>
             </div>
             {{#if (gt system.attributes.meleeRoll.length 0)}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MeleeOppositeRoll"}}</label>
                         </div>
@@ -183,8 +183,8 @@
                 </div>
             {{/if}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomMeleeActivationMacro"}}</label>
                     </div>
@@ -194,8 +194,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customMeleeActivationMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MeleeActivationPreset"}}</label>
                         </div>
@@ -207,8 +207,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MeleeActivationMacro"}}</label>
                         </div>
@@ -221,8 +221,8 @@
                 </div>
             {{/unless}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomMeleePreLaunchMacro"}}</label>
                     </div>
@@ -232,8 +232,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customMeleePreLaunchMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MeleePreLaunchPreset"}}</label>
                         </div>
@@ -245,8 +245,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MeleePreLaunchMacro"}}</label>
                         </div>
@@ -259,8 +259,8 @@
                 </div>
             {{/unless}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomMeleePostLaunchMacro"}}</label>
                     </div>
@@ -270,8 +270,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customMeleePostLaunchMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MeleePostLaunchPreset"}}</label>
                         </div>
@@ -283,8 +283,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MeleePostLaunchMacro"}}</label>
                         </div>
@@ -301,13 +301,13 @@
 {{/if}}
 
 {{#if system.attributes.rangedUse}}
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.Ranged"}}</h4>
         </div>
         <div class="list-column">
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.Range"}}</label>
                     </div>
@@ -316,8 +316,8 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.RangeRoll"}}</label>
                     </div>
@@ -334,8 +334,8 @@
                 </div>
             </div>
             {{#if (gt system.attributes.rangeRoll.length 0)}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.RangeOppositeRoll"}}</label>
                         </div>
@@ -353,8 +353,8 @@
                 </div>
             {{/if}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomRangeActivationMacro"}}</label>
                     </div>
@@ -364,8 +364,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customRangeActivationMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.RangeActivationPreset"}}</label>
                         </div>
@@ -377,8 +377,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.RangeActivationMacro"}}</label>
                         </div>
@@ -391,8 +391,8 @@
                 </div>
             {{/unless}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomRangePreLaunchMacro"}}</label>
                     </div>
@@ -402,8 +402,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customRangePreLaunchMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.RangePreLaunchPreset"}}</label>
                         </div>
@@ -415,8 +415,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.RangePreLaunchMacro"}}</label>
                         </div>
@@ -429,8 +429,8 @@
                 </div>
             {{/unless}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomRangePostLaunchMacro"}}</label>
                     </div>
@@ -440,8 +440,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customRangePostLaunchMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.RangePostLaunchPreset"}}</label>
                         </div>
@@ -453,8 +453,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.RangePostLaunchMacro"}}</label>
                         </div>
@@ -472,13 +472,13 @@
 {{/if}}
 
 {{#if system.attributes.magicUse}}
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.Magic"}}</h4>
         </div>
         <div class="list-column">
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.MagicRoll"}}</label>
                     </div>
@@ -495,8 +495,8 @@
                 </div>
             </div>
             {{#if (gt system.attributes.magicRoll.length 0)}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MagicOppositeRoll"}}</label>
                         </div>
@@ -514,8 +514,8 @@
                 </div>
             {{/if}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomMagicActivationMacro"}}</label>
                     </div>
@@ -525,8 +525,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customMagicActivationMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MagicActivationPreset"}}</label>
                         </div>
@@ -538,8 +538,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MagicActivationMacro"}}</label>
                         </div>
@@ -552,8 +552,8 @@
                 </div>
             {{/unless}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomMagicPreLaunchMacro"}}</label>
                     </div>
@@ -563,8 +563,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customMagicPreLaunchMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MagicPreLaunchPreset"}}</label>
                         </div>
@@ -576,8 +576,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MagicPreLaunchMacro"}}</label>
                         </div>
@@ -590,8 +590,8 @@
                 </div>
             {{/unless}}
 
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.CustomMagicPostLaunchMacro"}}</label>
                     </div>
@@ -601,8 +601,8 @@
                 </div>
             </div>
             {{#unless system.attributes.customMagicPostLaunchMacro}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MagicPostLaunchPreset"}}</label>
                         </div>
@@ -614,8 +614,8 @@
                     </div>
                 </div>
             {{else}}
-                <div class="item">
-                    <div class="item-content">
+                <div class="field">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{localize "PL1E.MagicPostLaunchMacro"}}</label>
                         </div>

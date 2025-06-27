@@ -1,9 +1,7 @@
-<div class="list-items">
+<div class="list-fields">
     <div class="list-header">
-        <h4 class="header-title">
-            {{localize "PL1E.ActiveAspects"}}
-        </h4>
-        <div class="header-actions item-filter-list" data-filter="abilities">
+        <h4>{{localize "PL1E.ActiveAspects"}}</h4>
+        <div class="header-actions">
             {{#each activeAspectsObjects}}
                 {{#with (config "aspects" name)}}
                     <a class="aspect-add hover-action" data-aspect-type="active" data-aspect-id="{{@key}}" data-tooltip='{{localize label}}'>
@@ -18,17 +16,17 @@
     <div class="list-column">
         {{#each activeAspects}}
             {{#with (config "aspects" name)}}
-                <div class="item" data-aspect-id="{{@key}}" data-aspect-type="active" data-item-id="{{@key}}">
-                    <div class="item-content">
+                <div class="field" data-aspect-id="{{@key}}" data-aspect-type="active">
+                    <div class="field-content">
                         <div class="title">
                             <a class="hover-info" data-tooltip="{{localize label}}"><i class="far {{icon}}"></i></a>
-                            <label class="hover-info item-tooltip-activate">{{localize ../description}}</label>
+                            <label class="hover-info field-tooltip-activate">{{localize ../description}}</label>
                         </div>
                         <div class="controls">
                             <a class="aspect-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                         </div>
                     </div>
-                    <div class="item-tooltip">
+                    <div class="field-tooltip">
                         {{#if (eq ../name "modify")}}
                             {{> "systems/pl1e/templates/item/components/active-aspect-modify.hbs" this aspect=../this root=@root}}
                         {{else if (eq ../name "transfer")}}

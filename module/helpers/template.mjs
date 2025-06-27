@@ -10,8 +10,11 @@ export const Pl1eTemplate = {
         let x = template.x - gridSize / 2;
         let y = template.y - gridSize / 2;
 
-        const point = new PIXI.Point(x, y);
-        return canvas.grid.getSnappedPoint(point, { mode: CONST.GRID_SNAPPING_MODES.CENTER });
+        const snappedPoint = canvas.grid.getSnappedPoint(new PIXI.Point(x, y), {
+            mode: CONST.GRID_SNAPPING_MODES.CENTER
+        });
+
+        return { x: snappedPoint.x, y: snappedPoint.y };
     },
 
     /**
@@ -33,8 +36,11 @@ export const Pl1eTemplate = {
             return Pl1eTemplate.getPrimaryPosition(template);
         }
 
-        const point = new PIXI.Point(x, y);
-        return canvas.grid.getSnappedPoint(point, { mode: CONST.GRID_SNAPPING_MODES.CENTER });
+        const snappedPoint = canvas.grid.getSnappedPoint(new PIXI.Point(x, y), {
+            mode: CONST.GRID_SNAPPING_MODES.CENTER
+        });
+
+        return { x: snappedPoint.x, y: snappedPoint.y };
     },
 
     /**

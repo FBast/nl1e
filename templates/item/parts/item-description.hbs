@@ -3,14 +3,14 @@
 </div>
 
 {{#unless (isEmpty attributesDisplay)}}
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.Attributes"}}</h4>
         </div>
         <div class="list-column">
             {{#each attributesDisplay}}
-                <div class="item dashed">
-                    <div class="item-content">
+                <div class="field dashed">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{label}}</label>
                         </div>
@@ -23,14 +23,14 @@
 {{/unless}}
 
 {{#unless (isEmpty passiveAspectsDisplay)}}
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.PassiveAspects"}}</h4>
         </div>
         <div class="list-column">
             {{#each passiveAspectsDisplay}}
-                <div class="item dashed">
-                    <div class="item-content">
+                <div class="field dashed">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{label}}</label>
                         </div>
@@ -43,14 +43,14 @@
 {{/unless}}
 
 {{#unless (isEmpty activeAspectsDisplay)}}
-    <div class="list-items">
+    <div class="list-fields">
         <div class="list-header">
             <h4>{{localize "PL1E.ActiveAspects"}}</h4>
         </div>
         <div class="list-column">
             {{#each activeAspectsDisplay}}
-                <div class="item dashed">
-                    <div class="item-content">
+                <div class="field dashed">
+                    <div class="field-content">
                         <div class="title">
                             <label>{{label}}</label>
                         </div>

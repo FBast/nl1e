@@ -69,7 +69,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
         const type = li.parentElement.dataset.filter;
         const value = li.dataset.filter;
 
-        await toggleFilter(this.document.id, type, value);
+        await Pl1eFilter.toggleFilter(this.document.id, type, value);
         this.document.parent?.sheet?.render(true);
     }
 
@@ -81,8 +81,8 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             img: "icons/svg/coins.svg",
             system: {
                 general: {
-                    buyMultiplier: this.object.getFlag("pl1e", "buyMultiplier") ?? 50,
-                    sellMultiplier: this.object.getFlag("pl1e", "sellMultiplier") ?? 100
+                    buyMultiplier: this.object.system.buyMultiplier ?? 50,
+                    sellMultiplier: this.object.system.sellMultiplier ?? 100
                 },
                 merchantPrices: {}
             },
@@ -168,24 +168,26 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
                 return console.warn("PL1E | Invalid drop:", err);
             }
 
-            const item = await Pl1eHelpers.getDocument("Item", data.sourceId ?? data.uuid);
+            const item = await fromUuid(data.uuid);
             const allowedTypes = [...ITEM_TYPES];
             if (data.type !== "Item" || !allowedTypes.includes(item?.type)) return;
 
-            if (this.document.isOwner) {
-                //TODO should use the sourceId or uuid to store the item, this way recreating the items keep the modifications of the original
+            if (item?.isEmbedded && item.parent?.documentName === "Actor") {
+                const seller = item.parent;
+                const buyMultiplier = this.document.getFlag("pl1e", "buyMultiplier") ?? 50;
+                await Pl1eTrade.sellItem(seller, this.document, item, buyMultiplier);
+            }
+            else if (this.document.isOwner) {
+                const item = await Pl1eHelpers.getDocument("Item", data.uuid);
                 const existing = this.document.getFlag("pl1e", "items") || [];
                 const alreadyExists = existing.some(i => i._id === item.id || (i.name === item.name && i.type === item.type));
+
                 if (!alreadyExists) {
                     existing.push(item.toObject());
                     await this.document.setFlag("pl1e", "items", existing);
                     ui.notifications.info(`${item.name} added to merchant.`);
                     this.render();
                 }
-            } else if (item?.isEmbedded && item.parent?.documentName === "Actor") {
-                const seller = item.parent;
-                const buyMultiplier = this.document.getFlag("pl1e", "buyMultiplier") ?? 50;
-                await Pl1eTrade.sellItem(seller, this.document, item, buyMultiplier);
             }
         });
     }
