@@ -423,6 +423,7 @@ export class Pl1eEvent {
         const message = game.messages.get(messageId);
 
         // Retrieve character data on message
+        //TODO undefined bug
         const characterData = JSON.parse(message.getFlag("pl1e", "characterData"));
         characterData.actor = token.actor;
         characterData.token = token;
@@ -482,7 +483,7 @@ export class Pl1eEvent {
         const field = $(event.currentTarget).closest(".field");
 
         // Check if tooltip associated
-        const tooltip = field.find(".item-tooltip");
+        const tooltip = field.find(".field-tooltip");
         if (tooltip === undefined) return;
 
         $(tooltip).slideToggle(200);

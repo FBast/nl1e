@@ -46,13 +46,20 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
     highlightGrid() {
         super.highlightGrid();
         if (!this.isVisible) return;
+
         const hl = canvas.interface.grid.getHighlightLayer(this.highlightId);
-        const position = Pl1eTemplate.getSecondaryPosition(this.document);
-        const gridSize = canvas.grid.size;
+
+        // Use the same token center as origin for consistency
+        const tokenId = this.document.getFlag("pl1e", "tokenId");
+        const tok = canvas.tokens?.get(tokenId) ?? canvas.tokens?.placeables.find(t => t.id === tokenId);
+        const origin = tok ? tok.center : new PIXI.Point(this.document.x, this.document.y);
+
+        const r = canvas.grid.size / 8;
         hl.beginFill(0xFF0000, 1);
-        hl.drawCircle(position.x, position.y, gridSize / 8);
+        hl.drawCircle(origin.x, origin.y, r);
         hl.endFill();
     }
+
 
     async _finishPlacement(event) {
         this.layer._onDragLeftCancel(event);
@@ -63,22 +70,54 @@ export class Pl1eMeasuredTemplate extends MeasuredTemplate {
         this.#initialLayer.activate();
     }
 
+    _clampVectorAnnulus(point, origin, minPx, maxPx) {
+        const dx = point.x - origin.x;
+        const dy = point.y - origin.y;
+        const d  = Math.hypot(dx, dy) || 1; // avoid div by 0
+        const target = Math.min(Math.max(d, minPx), maxPx);
+        const k = target / d;
+        return new PIXI.Point(origin.x + dx * k, origin.y + dy * k);
+    }
+
     _onMovePlacement(event) {
         event.stopPropagation();
-        let now = Date.now();
+        const now = Date.now();
         if (now - this.#moveTime <= 20) return;
-        let templateCenter = event.data.getLocalPosition(this.layer);
-        const offset = canvas.dimensions.size / 2;
-        templateCenter.x -= offset;
-        templateCenter.y -= offset;
 
-        const range = this.document.attributes.range * game.system.grid.distance;
-        templateCenter = this._clampVectorRadius(templateCenter, this.document.token, range * canvas.dimensions.size);
-        templateCenter = canvas.grid.getSnappedPoint(templateCenter, { mode: CONST.GRID_SNAPPING_MODES.TOP_LEFT_CORNER });
-        this.document.updateSource({ x: templateCenter.x + offset, y: templateCenter.y + offset });
+        // Pointer in layer coords
+        let p = event.data.getLocalPosition(this.layer);
+
+        // Token center (V13)
+        const tokenId = this.document.getFlag("pl1e", "tokenId");
+        const tok = canvas.tokens?.get(tokenId) ?? canvas.tokens?.placeables.find(t => t.id === tokenId);
+        const origin = tok ? tok.center : new PIXI.Point(this.document.x, this.document.y);
+
+        // --- distances en pixels ---
+        const sizePx   = canvas.dimensions.size;
+        const gridUnitsPerSq = game.system.grid.distance; // déjà utilisé chez toi
+        const rangeSq  = this.document.attributes.range ?? 0;
+
+        // rayon intérieur = la moitié de la plus grande dimension du token (en cases) * taille case
+        const tokenSquares = Math.max(tok?.document.width ?? 1, tok?.document.height ?? 1);
+        const innerRadiusPx = (tokenSquares * sizePx) / 2;
+
+        // portée en pixels (à partir du bord)
+        const rangePx = rangeSq * sizePx * gridUnitsPerSq;
+
+        // max = depuis le bord → rayon_intérieur + portée
+        const maxPx = innerRadiusPx + rangePx;
+
+        // Clamp within annulus [innerRadiusPx, maxPx]
+        p = this._clampVectorAnnulus(p, origin, innerRadiusPx, maxPx);
+
+        // Snap to grid CENTER
+        const snapped = canvas.grid.getSnappedPoint(p, { mode: CONST.GRID_SNAPPING_MODES.CENTER });
+
+        this.document.updateSource({ x: snapped.x, y: snapped.y });
         this.refresh();
         this.#moveTime = now;
     }
+
 
     _onRotatePlacement(event) {
         if (event.ctrlKey) event.preventDefault();

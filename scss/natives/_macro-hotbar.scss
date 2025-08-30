@@ -1,15 +1,9 @@
-@import '../utils/variables';
+/* Bordure verte pour les macros équipées */
+#hotbar #action-bar li.slot.equipped img.slot-icon {
+  border: 2px solid green !important;
+}
 
-#hotbar {
-  .macro-key {
-    z-index: 2;
-  }
-
-  .macro.equipped img {
-    border: solid 2px green;
-  }
-
-  .macro.disabled img {
-    border: solid 2px red;
-  }
+/* Bordure rouge pour les macros désactivées */
+#hotbar #action-bar li.slot.disabled img.slot-icon {
+  border: 2px solid red !important;
 }

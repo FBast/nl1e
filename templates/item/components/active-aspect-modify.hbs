@@ -1,6 +1,6 @@
 <div class="list-column">
-    <div class="item">
-        <div class="item-content">
+    <div class="field">
+        <div class="field-content">
             <div class="title">
                 <label>{{localize "PL1E.DataGroup"}}</label>
             </div>
@@ -12,8 +12,8 @@
         </div>
     </div>
 
-    <div class="item">
-        <div class="item-content">
+    <div class="field">
+        <div class="field-content">
             <div class="title">
                 <label>{{localize "PL1E.Data"}}</label>
             </div>
@@ -27,8 +27,8 @@
 
     {{#with (config aspect.dataGroup aspect.data)}}
         {{#if (eq type "number")}}
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.Operator"}}</label>
                     </div>
@@ -42,8 +42,8 @@
         {{/if}}
 
         {{#if (and (eq ../aspect.operator "remove") (eq type "number"))}}
-            <div class="item">
-                <div class="item-content">
+            <div class="field">
+                <div class="field-content">
                     <div class="title">
                         <label>{{localize "PL1E.DamageType"}}</label>
                     </div>
@@ -56,8 +56,8 @@
             </div>
         {{/if}}
 
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.Value"}}</label>
                 </div>
@@ -82,8 +82,8 @@
         </div>
     {{/with}}
 
-    <div class="item">
-        <div class="item-content">
+    <div class="field">
+        <div class="field-content">
             <div class="title">
                 <label>{{localize "PL1E.ResolutionType"}}</label>
             </div>
@@ -95,8 +95,8 @@
         </div>
     </div>
 
-    <div class="item">
-        <div class="item-content">
+    <div class="field">
+        <div class="field-content">
             <div class="title">
                 <label>{{localize "PL1E.TargetGroup"}}</label>
             </div>
@@ -108,8 +108,8 @@
         </div>
     </div>
 
-    <div class="item">
-        <div class="item-content">
+    <div class="field">
+        <div class="field-content">
             <div class="title">
                 <a class="hover-info" data-tooltip='{{localize "PL1E.TooltipCreateEffect"}}'>
                     <i class="far fa-circle-exclamation"></i>
@@ -124,8 +124,8 @@
     </div>
 
     {{#if aspect.createEffect}}
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.EffectDuration"}}</label>
                 </div>
@@ -136,8 +136,8 @@
             </div>
         </div>
 
-        <div class="item">
-            <div class="item-content">
+        <div class="field">
+            <div class="field-content">
                 <div class="title">
                     <label>{{localize "PL1E.EffectDurationResolutionType"}}</label>
                 </div>

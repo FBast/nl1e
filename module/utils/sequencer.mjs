@@ -75,8 +75,8 @@ export const Pl1eSequencer = {
                     id: tokenData.template?.id,
                     primaryPosition: templateDoc ? Pl1eTemplate.getPrimaryPosition(templateDoc) : undefined,
                     secondaryPosition: templateDoc ? Pl1eTemplate.getSecondaryPosition(templateDoc) : undefined,
-                    distance: tokenData.template.distance ?? 0,
-                    direction: tokenData.template.direction ?? 0
+                    distance: tokenData.template?.distance ?? 0,
+                    direction: tokenData.template?.direction ?? 0
                 }
             };
         }) ?? [];

@@ -1,11 +1,11 @@
 import {Pl1eHelpers} from "./helpers.mjs";
 import {PL1E} from "../pl1e.mjs";
-import {ModifyAspectHandler} from "../services/modify-aspect-handler.mjs";
-import {TransferAspectHandler} from "../services/transfer-aspect-handler.mjs";
-import {StatusAspectHandler} from "../services/status-aspect-handler.mjs";
-import {MovementAspectHandler} from "../services/movement-aspect-handler.mjs";
-import {InvocationAspectHandler} from "../services/invocation-aspect-handler.mjs";
-import {MacroAspectHandler} from "../services/macro-aspect-handler.mjs";
+import {ModifyAspectHandler} from "../services/aspects/modify-aspect-handler.mjs";
+import {TransferAspectHandler} from "../services/aspects/transfer-aspect-handler.mjs";
+import {StatusAspectHandler} from "../services/aspects/status-aspect-handler.mjs";
+import {MovementAspectHandler} from "../services/aspects/movement-aspect-handler.mjs";
+import {InvocationAspectHandler} from "../services/aspects/invocation-aspect-handler.mjs";
+import {MacroAspectHandler} from "../services/aspects/macro-aspect-handler.mjs";
 
 export class Pl1eAspect {
     /**

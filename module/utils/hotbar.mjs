@@ -127,19 +127,23 @@ Hooks.once("ready", () => {
     /**
      * Add a frame on the equipped item macro
      */
-    Hooks.on("renderHotbar", (hotbar, html, data) => {
-        html.find(".macro").each((_, el) => {
-            const macroId = el.dataset.macroId;
-            const macro = game.macros.get(macroId);
+    Hooks.on("renderHotbar", (app, html) => {
+        const root = html instanceof HTMLElement ? html : html?.[0];
+        if (!root) return;
+
+        const page = app?.page ?? ui.hotbar?.page ?? 1;
+        const entries = game.user.getHotbarMacros?.(page) ?? [];
+
+        root.querySelectorAll('#action-bar > li.slot').forEach(li => {
+            li.classList.remove('equipped', 'disabled');
+
+            const slot = Number(li.dataset.slot);
+            const entry = entries.find(e => e?.slot === slot);
+            const macro = entry?.macro;
             if (!macro) return;
 
-            if (!macro.getFlag("pl1e", "isDynamic")) return;
-
-            const isEquipped = macro.getFlag("pl1e", "equipped");
-            const isDisabled = macro.getFlag("pl1e", "disabled");
-
-            el.classList.toggle("equipped", isEquipped);
-            el.classList.toggle("disabled", isDisabled);
+            li.classList.toggle('equipped', !!macro.getFlag('pl1e', 'equipped'));
+            li.classList.toggle('disabled', !!macro.getFlag('pl1e', 'disabled'));
         });
     });
 });
@@ -150,31 +154,32 @@ Hooks.once("ready", () => {
  * On disable: restores the saved hotbar.
  */
 Hooks.on("getSceneControlButtons", (controls) => {
-    const tokenCategory = controls.find(c => c.name === "token");
+    const tokenCategory = controls.tokens;
     if (!tokenCategory) return;
 
-    tokenCategory.tools.push({
+    tokenCategory.tools.dynamicHotBar = {
         name: "dynamicHotBar",
         title: game.i18n.localize("PL1E.DynamicHotBar"),
         icon: "fas fa-exchange-alt",
-        active: game.user.getFlag('pl1e', 'dynamicHotBar') || false,
         toggle: true,
         button: true,
-        onClick: async (enable) => {
-            await game.user.setFlag('pl1e', 'dynamicHotBar', enable);
+        active: game.user.getFlag("pl1e", "dynamicHotBar") ?? false,
+        order: 999,
+        visible: true,
+        onChange: async (_ev, enable) => {
+            await game.user.setFlag("pl1e", "dynamicHotBar", enable);
 
             if (!enable) {
                 await _restoreUserMacros();
             } else {
                 await _saveUserMacros();
-
-                const selected = canvas.tokens.controlled[0];
-                if (selected && selected.actor?.isOwner) {
+                const selected = canvas.tokens.controlled.at(0);
+                if (selected?.actor?.isOwner) {
                     await _generateTokenMacros(selected);
                 }
             }
         }
-    });
+    };
 });
 
 /**

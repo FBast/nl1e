@@ -33,6 +33,7 @@ import "./utils/hotbar.mjs";
 import "./utils/color-sheets.mjs";
 import {registerSocketHandlers} from "./utils/socket.mjs";
 import {registerDragHighlighting} from "./utils/drag-highlight.mjs";
+import "./services/movement/movement-hooks.mjs";
 
 /* -------------------------------------------- */
 /*  Globals                                     */
