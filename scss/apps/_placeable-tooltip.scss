@@ -46,6 +46,15 @@
       display: -webkit-box;
       -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
+
+      &.full {
+        max-height: none;
+        overflow: visible;
+        text-overflow: initial;
+        display: block;
+        -webkit-line-clamp: unset;
+        -webkit-box-orient: initial;
+      }
     }
 
     .tooltip-stats {

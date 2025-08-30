@@ -1,5 +1,5 @@
-﻿import { Pl1eHelpers } from "../helpers/helpers.mjs";
-import {Pl1eTrade} from "../helpers/trade.mjs";
+﻿import { Pl1eHelpers } from "./helpers.mjs";
+import {Pl1eTrade} from "./trade.mjs";
 
 export function registerSocketHandlers(PL1E) {
     /**

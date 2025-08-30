@@ -1,4 +1,4 @@
-import {Pl1eHelpers} from "../../helpers/helpers.mjs";
+import {Pl1eHelpers} from "../helpers.mjs";
 import {PL1E} from "../../pl1e.mjs";
 
 /**

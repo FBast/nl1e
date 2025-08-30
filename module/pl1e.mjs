@@ -27,13 +27,17 @@ import {getConfigSequencer} from "./config/config-sequencer.mjs";
 import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
 import {registerHandlebars} from "./main/handlebars.mjs";
+import {registerSocketHandlers} from "./helpers/socket.mjs";
 
-import "./utils/placeable-tooltip.mjs";
-import "./utils/hotbar.mjs";
-import "./utils/color-sheets.mjs";
-import {registerSocketHandlers} from "./utils/socket.mjs";
-import {registerDragHighlighting} from "./utils/drag-highlight.mjs";
+/* -------------------------------------------- */
+/*  Services                                    */
+/* -------------------------------------------- */
+
+import "./services/placeable-tooltip.mjs";
+import "./services/hotbar.mjs";
+import "./services/color-sheets.mjs";
 import "./services/movement/movement-hooks.mjs";
+import {registerDragHighlighting} from "./services/drag-highlight.mjs";
 
 /* -------------------------------------------- */
 /*  Globals                                     */

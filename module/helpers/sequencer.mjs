@@ -1,5 +1,5 @@
 import { PL1E } from "../pl1e.mjs";
-import {Pl1eTemplate} from "../helpers/template.mjs";
+import {Pl1eTemplate} from "./template.mjs";
 
 export const Pl1eSequencer = {
     async playEffect(name, { characterData, targetsData, active }) {

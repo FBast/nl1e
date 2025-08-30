@@ -6,7 +6,7 @@ import {Pl1eMeasuredTemplateDocument} from "../measured-template-document.mjs";
 import {Pl1eEffect} from "../effect.mjs";
 import {Pl1eTemplate} from "../../helpers/template.mjs";
 import {Pl1eMacro} from "../../helpers/macro.mjs";
-import {Pl1eSequencer} from "../../utils/sequencer.mjs";
+import {Pl1eSequencer} from "../../helpers/sequencer.mjs";
 
 export class Pl1eItem extends Item {
 

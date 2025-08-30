@@ -27,6 +27,19 @@ export class PlaceableTooltip {
         return el;
     }
 
+    isLimitedForCurrentUser(doc) {
+        if (!doc || !game?.user) return false;
+        const { LIMITED } = CONST.DOCUMENT_OWNERSHIP_LEVELS ?? CONST.DOCUMENT_PERMISSION_LEVELS;
+        return doc.testUserPermission(game.user, LIMITED, { exact: true }) === true;
+    }
+
+    applyFullIfLimited(doc) {
+        const isLimited = this.isLimitedForCurrentUser(doc);
+        this.content.querySelectorAll('.tooltip-body').forEach(el => {
+            el.classList.toggle('full', isLimited);
+        });
+    }
+
     async setContent(target, data) {
         if (!data) return;
 
@@ -35,7 +48,6 @@ export class PlaceableTooltip {
 
         const doc = target?.document;
 
-        // Token
         if (doc instanceof TokenDocument) {
             const resistances = [];
             const vulnerabilities = [];
@@ -86,7 +98,6 @@ export class PlaceableTooltip {
             return;
         }
 
-        // Note
         if (doc instanceof NoteDocument) {
             const page = doc.page;
             if (!page) return;
@@ -103,10 +114,10 @@ export class PlaceableTooltip {
                 system: page.system,
                 data: page
             });
+            this.applyFullIfLimited(page);
             return;
         }
 
-        // Fallback
         this.content.innerHTML = "Type de document non pris en charge.";
     }
 

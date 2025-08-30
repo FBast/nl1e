@@ -1,5 +1,5 @@
 import AspectHandler from "./aspect-handler.mjs";
-import { Pl1eHelpers } from "../../helpers/helpers.mjs";
+import { Pl1eHelpers } from "../helpers.mjs";
 import { Pl1eEffect } from "../../documents/effect.mjs";
 
 /**

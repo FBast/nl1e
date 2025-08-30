@@ -1,6 +1,6 @@
 import AspectHandler from "./aspect-handler.mjs";
-import { Pl1eAspect } from "../../helpers/aspect.mjs";
-import {Pl1eTemplate} from "../../helpers/template.mjs";
+import { Pl1eAspect } from "../aspect.mjs";
+import {Pl1eTemplate} from "../template.mjs";
 
 /**
  * Handler for "movement" aspects.

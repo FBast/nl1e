@@ -1,7 +1,7 @@
 import AspectHandler from "./aspect-handler.mjs";
-import { Pl1eHelpers } from "../../helpers/helpers.mjs";
+import { Pl1eHelpers } from "../helpers.mjs";
 import { Pl1eEffect } from "../../documents/effect.mjs";
-import {Pl1eTemplate} from "../../helpers/template.mjs";
+import {Pl1eTemplate} from "../template.mjs";
 
 /**
  * Handler for "invocation" aspects.
