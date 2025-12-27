@@ -4,6 +4,7 @@ import {Pl1eFormValidation} from "../main/form-validation.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
 import {PL1E} from "../pl1e.mjs";
 import {PL1ESheetMixin} from "./sheet.mjs";
+import {Pl1ePriceCalculator} from "../helpers/price-calculator.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -130,6 +131,7 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
         html.find('.field-tooltip-activate').on("click", ev => Pl1eEvent.onFieldTooltip(ev));
         html.find('.spin-number').on("click", ev => Pl1eEvent.onSpinNumber(ev, this.item));
         html.find(".trait-selector").on("click", ev => Pl1eEvent.onTraitSelector(ev, this.item));
+        html.find(".auto-calc-price").on("click", ev => Pl1ePriceCalculator.autoCalculatePrice(this.item));
         html.find('.aspect-add').on("click", ev => this._onAspectAdd(ev));
         html.find('.aspect-remove').on("click", ev => this._onAspectRemove(ev));
         html.find('.passive-aspects-copy').on("click", ev => this._onAspectsCopy(ev, "passive"));

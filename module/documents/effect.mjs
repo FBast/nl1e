@@ -153,7 +153,6 @@ export class Pl1eEffect extends ActiveEffect {
         }
     }
 
-
     /**
      * Create an active effect
      * @param {Object} aspect
@@ -224,6 +223,7 @@ export class Pl1eEffect extends ActiveEffect {
 
         // Create effect
         const effectData = foundry.utils.mergeObject({
+            name: statusEffect.label,
             label: statusEffect.label,
             description: statusEffect.description,
             icon: statusEffect.icon,
@@ -262,5 +262,4 @@ export class Pl1eEffect extends ActiveEffect {
             await this.removeActiveEffect(actor, activeEffect._id);
         }
     }
-
 }
