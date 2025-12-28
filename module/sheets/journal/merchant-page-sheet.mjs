@@ -101,9 +101,9 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
      */
     _getTradeColor(value, { min, mid, max, invert = false }) {
 
-        const RED   = [200, 80, 80];
+        const RED   = [255, 0, 0];
         const WHITE = [255, 255, 255];
-        const GREEN = [120, 200, 120];
+        const GREEN = [0, 255, 0];
 
         // Clamp
         value = Math.max(min, Math.min(max, value));

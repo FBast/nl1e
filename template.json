@@ -596,8 +596,8 @@
     },
     "merchant": {
       "banner": "",
-      "buyMultiplier": 50,
-      "sellMultiplier": 100,
+      "buyMultiplier": 100,
+      "sellMultiplier": 0,
       "content": ""
     }
   }
