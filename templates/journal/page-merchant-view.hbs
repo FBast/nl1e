@@ -8,30 +8,57 @@
             <img src="{{system.banner}}" alt="Banner" style="width: 100%">
         {{/if}}
 
-        <p><strong>{{localize "PL1E.MerchantSellRate" sell=actor.system.general.sellMultiplier}}</strong></p>
-        <p><strong>{{localize "PL1E.MerchantBuyRate" buy=actor.system.general.buyMultiplier}}</strong></p>
-
         {{{enriched}}}
 
-        <br>
+        <div class="merchant-trade-bar">
+            <div class="trade-rate buy">
+                <i class="fas fa-circle-info hover-info" data-tooltip="{{localize 'PL1E.MerchantBuyHint'}}"></i>
+                <span class="value">
+                  {{actor.system.general.buyMultiplier}}%
+                </span>
+                <span class="label">
+                    {{localize "PL1E.MerchantBuyLabel"}}
+                </span>
+            </div>
+
+            <div class="trade-separator"></div>
+
+            <div class="trade-rate sell">
+                <span class="label">
+                    {{localize "PL1E.MerchantSellLabel"}}
+                </span>
+                <span class="value">
+                  {{actor.system.general.sellMultiplier}}%
+                </span>
+                <i class="fas fa-circle-info hover-info" data-tooltip="{{localize 'PL1E.MerchantSellHint'}}"></i>
+            </div>
+        </div>
+
         <div class="flex-vertical gap-md drop-target"  data-drop-target-uuid="{{document.uuid}}" data-drop-target-type="actor">
-            {{#if (ne servicesCount 0)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-services.hbs }}
-            {{/if}}
-            {{#if (ne weaponsCount 0)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-weapons.hbs }}
-            {{/if}}
-            {{#if (ne wearablesCount 0)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-wearables.hbs }}
-            {{/if}}
-            {{#if (ne consumablesCount 0)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-consumables.hbs }}
-            {{/if}}
-            {{#if (ne commonsCount 0)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
-            {{/if}}
-            {{#if (ne modulesCount 0)}}
-                {{> systems/pl1e/templates/actor/parts/inventory-modules.hbs }}
+            {{#if hasAnyItem}}
+                {{#if (ne servicesCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-services.hbs }}
+                {{/if}}
+                {{#if (ne weaponsCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-weapons.hbs }}
+                {{/if}}
+                {{#if (ne wearablesCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-wearables.hbs }}
+                {{/if}}
+                {{#if (ne consumablesCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-consumables.hbs }}
+                {{/if}}
+                {{#if (ne commonsCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
+                {{/if}}
+                {{#if (ne modulesCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-modules.hbs }}
+                {{/if}}
+            {{else}}
+                <div class="inventory-empty drop-hint">
+                    <strong>{{localize "PL1E.InventoryEmptyTitle"}}</strong>
+                    <p>{{localize "PL1E.InventoryEmptyHint"}}</p>
+                </div>
             {{/if}}
         </div>
     </section>

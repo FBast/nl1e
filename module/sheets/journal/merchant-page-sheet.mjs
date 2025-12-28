@@ -38,6 +38,10 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             context[`${category}Count`] = items.filter(i => i.type === type).length;
         }
 
+        context.hasAnyItem = FILTER_CATEGORIES.some(category => {
+            return context[`${category}Count`] > 0;
+        });
+
         return context;
     }
 
@@ -51,8 +55,69 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
         html.find(".item-filter-list").each((i, ul) => this._initializeFilterItemList(ul, filters));
         html.find(".item-filter").on("click", this._onToggleFilter.bind(this));
 
+        this._applyMerchantTradeColors(html);
         this._setupDragAndDrop(html);
         if (this.document.isOwner) this._setupRemoveListeners(html);
+    }
+
+    /**
+     * Apply trade colors to merchant bar
+     */
+    _applyMerchantTradeColors(html) {
+
+        const buyValue  = parseFloat(html.find(".trade-rate.buy .value").text());
+        const sellValue = parseFloat(html.find(".trade-rate.sell .value").text());
+
+        if (!Number.isNaN(buyValue)) {
+            const color = this._getTradeColor(buyValue, {
+                min: 50,
+                mid: 100,
+                max: 150,
+                invert: true   // BUY = plus bas = mieux
+            });
+            html.find(".trade-rate.buy .value").css("color", color);
+        }
+
+        if (!Number.isNaN(sellValue)) {
+            const color = this._getTradeColor(sellValue, {
+                min: 0,
+                mid: 50,
+                max: 100,
+                invert: false  // SELL = plus haut = mieux
+            });
+            html.find(".trade-rate.sell .value").css("color", color);
+        }
+    }
+
+    /**
+     * Linearly interpolate between two colors
+     */
+    _lerpColor(a, b, t) {
+        return a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    }
+
+    /**
+     * Compute trade color (red ↔ white ↔ green)
+     */
+    _getTradeColor(value, { min, mid, max, invert = false }) {
+
+        const RED   = [200, 80, 80];
+        const WHITE = [255, 255, 255];
+        const GREEN = [120, 200, 120];
+
+        // Clamp
+        value = Math.max(min, Math.min(max, value));
+
+        const low  = invert ? GREEN : RED;
+        const high = invert ? RED   : GREEN;
+
+        if (value <= mid) {
+            const t = (value - min) / (mid - min);
+            return `rgb(${this._lerpColor(low, WHITE, t).join(",")})`;
+        } else {
+            const t = (value - mid) / (max - mid);
+            return `rgb(${this._lerpColor(WHITE, high, t).join(",")})`;
+        }
     }
 
     _initializeFilterItemList(ul, filters) {
@@ -81,8 +146,8 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             img: "icons/svg/coins.svg",
             system: {
                 general: {
-                    buyMultiplier: this.object.system.buyMultiplier ?? 50,
-                    sellMultiplier: this.object.system.sellMultiplier ?? 100
+                    sellMultiplier: this.object.system.sellMultiplier ?? 100,
+                    buyMultiplier: this.object.system.buyMultiplier ?? 50
                 },
                 merchantPrices: {}
             },
@@ -100,7 +165,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
                 copper: item.system.attributes.copperPrice
             };
 
-            const value = Math.round(Pl1eHelpers.moneyToUnits(price) * (fakeActor.system.general.sellMultiplier / 100));
+            const value = Math.round(Pl1eHelpers.moneyToUnits(price) * (fakeActor.system.general.buyMultiplier / 50));
             const adjustedPrice = Pl1eHelpers.unitsToMoney(value);
 
             fakeActor.system.merchantPrices[item.id] = adjustedPrice;
@@ -129,14 +194,14 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
                 const itemData = itemsData.find(i => i._id === itemId);
                 if (!itemData) return;
 
-                const sellMultiplier = this.object.getFlag("pl1e", "sellMultiplier") ?? 100;
+                const buyMultiplier = this.object.getFlag("pl1e", "buyMultiplier") ?? 50;
                 const price = {
                     gold: itemData.system.attributes.goldPrice,
                     silver: itemData.system.attributes.silverPrice,
                     copper: itemData.system.attributes.copperPrice
                 };
 
-                const value = Math.round(Pl1eHelpers.moneyToUnits(price) * (sellMultiplier / 100));
+                const value = Math.round(Pl1eHelpers.moneyToUnits(price) * (buyMultiplier / 50));
                 const adjustedPrice = Pl1eHelpers.unitsToMoney(value);
 
                 const dragData = {
@@ -155,41 +220,55 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             });
         });
 
-        html.find(".drop-target").on("drop", async event => {
-            event.preventDefault();
+        html.find(".drop-target")
+            .on("dragenter", ev => {
+                ev.preventDefault();
+                ev.currentTarget.classList.add("drop-ready");
+            })
+            .on("dragover", ev => {
+                ev.preventDefault(); // OBLIGATOIRE pour autoriser le drop
+            })
+            .on("dragleave", ev => {
+                ev.currentTarget.classList.remove("drop-ready");
+            })
+            .on("drop", async event => {
+                event.preventDefault();
+                event.currentTarget.classList.remove("drop-ready");
 
-            const dataTransfer = event.originalEvent?.dataTransfer;
-            if (!dataTransfer) return;
+                const dataTransfer = event.originalEvent?.dataTransfer;
+                if (!dataTransfer) return;
 
-            let data;
-            try {
-                data = JSON.parse(dataTransfer.getData("text/plain"));
-            } catch (err) {
-                return console.warn("PL1E | Invalid drop:", err);
-            }
-
-            const item = await fromUuid(data.uuid);
-            const allowedTypes = [...ITEM_TYPES];
-            if (data.type !== "Item" || !allowedTypes.includes(item?.type)) return;
-
-            if (item?.isEmbedded && item.parent?.documentName === "Actor") {
-                const seller = item.parent;
-                const buyMultiplier = this.document.getFlag("pl1e", "buyMultiplier") ?? 50;
-                await Pl1eTrade.sellItem(seller, this.document, item, buyMultiplier);
-            }
-            else if (this.document.isOwner) {
-                const item = await Pl1eHelpers.getDocument("Item", data.uuid);
-                const existing = this.document.getFlag("pl1e", "items") || [];
-                const alreadyExists = existing.some(i => i._id === item.id || (i.name === item.name && i.type === item.type));
-
-                if (!alreadyExists) {
-                    existing.push(item.toObject());
-                    await this.document.setFlag("pl1e", "items", existing);
-                    ui.notifications.info(`${item.name} added to merchant.`);
-                    this.render();
+                let data;
+                try {
+                    data = JSON.parse(dataTransfer.getData("text/plain"));
+                } catch (err) {
+                    return console.warn("PL1E | Invalid drop:", err);
                 }
-            }
-        });
+
+                const item = await fromUuid(data.uuid);
+                const allowedTypes = [...ITEM_TYPES];
+                if (data.type !== "Item" || !allowedTypes.includes(item?.type)) return;
+
+                if (item?.isEmbedded && item.parent?.documentName === "Actor") {
+                    const seller = item.parent;
+                    const sellMultiplier = this.document.getFlag("pl1e", "sellMultiplier") ?? 100;
+                    await Pl1eTrade.sellItem(seller, this.document, item, sellMultiplier);
+                }
+                else if (this.document.isOwner) {
+                    const item = await Pl1eHelpers.getDocument("Item", data.uuid);
+                    const existing = this.document.getFlag("pl1e", "items") || [];
+                    const alreadyExists = existing.some(
+                        i => i._id === item.id || (i.name === item.name && i.type === item.type)
+                    );
+
+                    if (!alreadyExists) {
+                        existing.push(item.toObject());
+                        await this.document.setFlag("pl1e", "items", existing);
+                        ui.notifications.info(`${item.name} added to merchant.`);
+                        this.render();
+                    }
+                }
+            });
     }
 
     _setupRemoveListeners(html) {
