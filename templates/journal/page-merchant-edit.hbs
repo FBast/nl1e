@@ -50,6 +50,34 @@
                 <div class="field">
                     <div class="field-content">
                         <div class="title">
+                            <label>{{localize "PL1E.RestrictBuybackSameItem"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="checkbox" name="system.restrictBuybackSameItem"{{checked system.restrictBuybackSameItem}}/>
+                        </div>
+                    </div>
+                    <p class="field-hint">
+                        {{localize "PL1E.MerchantRestrictBuybackSameItem"}}
+                    </p>
+                </div>
+
+                <div class="field">
+                    <div class="field-content">
+                        <div class="title">
+                            <label>{{localize "PL1E.DisableItemTooltip"}}</label>
+                        </div>
+                        <div class="fields">
+                            <input type="checkbox" name="system.disableItemTooltip"{{checked system.disableItemTooltip}}/>
+                        </div>
+                    </div>
+                    <p class="field-hint">
+                        {{localize "PL1E.DisableItemTooltipHint"}}
+                    </p>
+                </div>
+
+                <div class="field">
+                    <div class="field-content">
+                        <div class="title">
                             <label>{{localize "PL1E.Content"}}</label>
                         </div>
                         <div class="fields">

@@ -10,49 +10,76 @@
 
   .merchant-trade-bar {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+    flex-direction: column;
+    gap: 6px;
 
     margin: 8px 0;
     padding: 8px 14px;
 
     border-top: 1px solid rgba(130, 130, 130, 0.2);
     border-bottom: 1px solid rgba(130, 130, 130, 0.2);
-
     background: rgba(130, 130, 130, 0.1);
-  }
 
-  .trade-rate {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-
-    .label {
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #aaa;
+    .merchant-trade-rates {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
     }
 
-    .value {
-      font-size: 1.25rem;
-      font-weight: 600;
+    .trade-rate {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+
+      .label {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #aaa;
+      }
+
+      .value {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      &.buy .value {
+        color: #cfd8ff;
+      }
+
+      &.sell .value {
+        color: #ffd6a0;
+      }
     }
 
-    &.buy .value {
-      color: #cfd8ff;
+    .trade-separator {
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.2);
     }
 
-    &.sell .value {
-      color: #ffd6a0;
-    }
-  }
+    .trade-info-line {
+      font-size: 0.85rem;
+      color: #999;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
 
-  .trade-separator {
-    width: 1px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.2);
+      i {
+        opacity: 0.8;
+      }
+
+      &.restrict-buyback {
+        color: #d8b4b4;
+      }
+
+      &.disable-tooltip {
+        color: #b4c4d8;
+      }
+    }
   }
 
   .drop-target {

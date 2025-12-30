@@ -598,7 +598,9 @@
       "banner": "",
       "buyMultiplier": 100,
       "sellMultiplier": 0,
-      "content": ""
+      "content": "",
+      "restrictBuybackSameItem": false,
+      "disableItemTooltip": false
     }
   }
 }

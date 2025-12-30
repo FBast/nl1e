@@ -222,7 +222,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         if (!rawData) return;
         const data = JSON.parse(rawData);
 
-        let document = await fromUuid(data.uuid)
+        let document = await fromUuid(data.uuid);
         const fromMerchant = foundry.utils.getProperty(data, "flags.pl1e.fromMerchant");
         if (!fromMerchant && !document.isEmbedded && !document.isOwner) {
             ui.notifications.info(game.i18n.localize("PL1E.NotOwnedDocument"));

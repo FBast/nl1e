@@ -49,15 +49,23 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
      */
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
-        if (this.item.isEmbedded && this.item.sourceId !== undefined) {
+        if ((this.item.isEmbedded || this.item.getFlag("pl1e", "fromMerchant")) && this.item.sourceId !== undefined) {
             buttons.unshift({
                 label: 'PL1E.Original',
                 class: 'button-original',
                 icon: 'fas fa-clone',
                 onclick: async () => {
-                    const item = await Pl1eHelpers.getDocument("Item", this.item.sourceId);
-                    if (item.sheet.rendered) item.sheet.bringToTop();
-                    else item.sheet.render(true);
+                    const sourceId = this.item.getFlag("pl1e", "sourceId");
+                    const item = await Pl1eHelpers.getDocument("Item", sourceId);
+                    if (!item) return;
+
+                    const sheet = item.sheet;
+
+                    if (sheet.rendered) {
+                        await sheet.close({ submit: false, force: true });
+                    }
+
+                    await sheet.render(true);
                     await this.close();
                 }
             });

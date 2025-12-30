@@ -34,7 +34,10 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
 
     async _renderInner(...args) {
         const html = await super._renderInner(...args);
-        this.toc = JournalEntryPage.buildTOC(html.get());
+
+        const tocRoot = html[0].cloneNode(true);
+        tocRoot.querySelectorAll("[data-exclude-toc]").forEach(el => el.remove());
+        this.toc = JournalEntryPage.buildTOC(tocRoot);
         return html;
     }
 

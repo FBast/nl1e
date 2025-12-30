@@ -25,6 +25,11 @@ export const Pl1eTrade = {
      * @param {number} buyMultiplier - The merchant's buy multiplier (e.g. 50)
      */
     async sellItem(sellerActor, buyerJournal, item, buyMultiplier) {
+        if (!this._canMerchantBuyItem(buyerJournal, item)) {
+            ui.notifications.warn(game.i18n.localize("PL1E.MerchantRestrictBuybackSameItem"));
+            return;
+        }
+
         const price = {
             gold: item.system.attributes.goldPrice,
             silver: item.system.attributes.silverPrice,
@@ -44,6 +49,16 @@ export const Pl1eTrade = {
 
         await sellerActor.removeItem(item);
         await Pl1eChatMessage.tradeMessage(item, sellerActor, buyerJournal, "sale", priceMoney);
+    },
+
+    _canMerchantBuyItem(merchantPage, item) {
+        if (!merchantPage.system.restrictBuybackSameItem) return true;
+        if (!item.sourceId) return false;
+
+        const sourceItemId = item.sourceId.split(".").pop();
+        const merchantItems = merchantPage.getFlag("pl1e", "items") || [];
+
+        return merchantItems.some(e => e._id === sourceItemId);
     },
 
     /**

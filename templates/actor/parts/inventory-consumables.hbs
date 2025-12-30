@@ -16,7 +16,11 @@
                     <div class="title">
                         <img class="item-edit hover-action" src="{{img}}" title="{{name}}" width="24" height="24"/>
                         <label class="item-tooltip-activate hover-info">
-                            {{units}}x {{name}}
+                            {{#if (eq @root.actor.type "merchant")}}
+                                {{name}}
+                            {{else}}
+                                {{units}}x {{name}}
+                            {{/if}}
                         </label>
                     </div>
                     <div class="icons">
@@ -52,7 +56,7 @@
                         {{/if}}
                     </div>
                 </div>
-                <div class="item-tooltip">{{{enriched}}}</div>
+                <div class="item-tooltip" data-exclude-toc>{{{enriched}}}</div>
             </div>
         {{/each}}
         {{#if (eq consumables.length 0)}}

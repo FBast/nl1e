@@ -11,27 +11,48 @@
         {{{enriched}}}
 
         <div class="merchant-trade-bar">
-            <div class="trade-rate buy">
-                <i class="fas fa-circle-info hover-info" data-tooltip="{{localize 'PL1E.DescriptionBuyMultiplier'}}"></i>
-                <span class="value">
-                  {{actor.system.general.buyMultiplier}}%
-                </span>
-                <span class="label">
-                    {{localize "PL1E.MerchantBuyLabel"}}
-                </span>
+
+            <div class="merchant-trade-rates">
+                <div class="trade-rate buy">
+                    <i class="fas fa-circle-info hover-info" data-tooltip="{{localize 'PL1E.DescriptionBuyMultiplier'}}"></i>
+
+                    <span class="value">
+                      {{actor.system.general.buyMultiplier}}%
+                    </span>
+
+                    <span class="label">
+                        {{localize "PL1E.MerchantBuyLabel"}}
+                    </span>
+                </div>
+
+                <div class="trade-separator"></div>
+
+                <div class="trade-rate sell">
+                    <span class="label">
+                        {{localize "PL1E.MerchantSellLabel"}}
+                    </span>
+
+                    <span class="value">
+                      {{actor.system.general.sellMultiplier}}%
+                    </span>
+
+                    <i class="fas fa-circle-info hover-info" data-tooltip="{{localize 'PL1E.DescriptionSellMultiplier'}}"></i>
+                </div>
             </div>
 
-            <div class="trade-separator"></div>
+            {{#if system.restrictBuybackSameItem}}
+                <span class="trade-info-line restrict-buyback">
+                    <i class="fas fa-ban"></i>
+                    {{localize "PL1E.MerchantRestrictBuybackSameItem"}}
+                </span>
+            {{/if}}
 
-            <div class="trade-rate sell">
-                <span class="label">
-                    {{localize "PL1E.MerchantSellLabel"}}
+            {{#if system.disableItemTooltip}}
+                <span class="trade-info-line disable-tooltip">
+                    <i class="fas fa-eye-slash"></i>
+                    {{localize "PL1E.DisableItemTooltipHint"}}
                 </span>
-                <span class="value">
-                  {{actor.system.general.sellMultiplier}}%
-                </span>
-                <i class="fas fa-circle-info hover-info" data-tooltip="{{localize 'PL1E.DescriptionSellMultiplier'}}"></i>
-            </div>
+            {{/if}}
         </div>
 
         <div class="flex-vertical gap-md drop-target"  data-drop-target-uuid="{{document.uuid}}" data-drop-target-type="actor">
