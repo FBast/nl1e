@@ -410,9 +410,9 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
         context.passiveAspectsDisplay = passiveAspectsDisplay;
 
         // Active aspects
-        context.combinedPassiveAspects = await this.item.getCombinedActiveAspects();
+        context.combinedActiveAspects = await this.item.getCombinedActiveAspects();
         const activeAspectsDisplay = {}
-        for (let [key, aspect] of Object.entries(context.combinedPassiveAspects)) {
+        for (let [key, aspect] of Object.entries(context.combinedActiveAspects)) {
             let aspectCopy = Object.assign({}, aspect);
             const aspectConfig = Pl1eHelpers.getConfig("aspects", aspectCopy.name);
             if (aspectConfig === undefined) continue;
@@ -465,8 +465,11 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
         event.preventDefault();
         event.stopPropagation();
 
-        const aspectId = $(event.currentTarget).closest(".item").data("aspect-id");
-        const aspectType = $(event.currentTarget).closest(".item").data("aspect-type");
+        const aspectId = $(event.currentTarget).closest(".field").data("aspect-id");
+        const aspectType = $(event.currentTarget).closest(".field").data("aspect-type");
+
+        if (!aspectId && !aspectType)
+            throw new Error(`PL1E | unknown aspectId or aspectType`);
 
         let target;
         let aspectsObjects;
@@ -480,6 +483,7 @@ export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
                 aspectsObjects = PL1E.activeAspectsObjects;
                 break;
         }
+
 
         await this.item.update({
             [`system.${target}.-=${aspectId}`]: null

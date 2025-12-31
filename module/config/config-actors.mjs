@@ -24,7 +24,7 @@ export function getConfigActor() {
                     "will"
                 ]
             },
-            "icon": "fa-heart",
+            "icon": "far fa-heart",
             "type": "number",
             "path": "system.resources.health.value"
         },
@@ -37,7 +37,7 @@ export function getConfigActor() {
                     "constitution"
                 ]
             },
-            "icon": "fa-wave-pulse",
+            "icon": "far fa-wave-pulse",
             "type": "number",
             "path": "system.resources.stamina.value"
         },
@@ -50,7 +50,7 @@ export function getConfigActor() {
                     "will"
                 ]
             },
-            "icon": "fa-sparkles",
+            "icon": "far fa-sparkles",
             "type": "number",
             "path": "system.resources.mana.value"
         }
@@ -64,7 +64,7 @@ export function getConfigActor() {
                 "resources": ["stamina"],
                 "skills": ["parry", "vigor", "handling", "throwing", "athletics"]
             },
-            "icon": "fa-fist-raised",
+            "icon": "far fa-fist-raised",
             "type": "number",
             "path": "system.characteristics.strength.mods"
         },
@@ -75,7 +75,7 @@ export function getConfigActor() {
                 "resources": [],
                 "skills": ["reflex", "handling", "acrobatics", "accuracy", "discretion", "craft"]
             },
-            "icon": "fa-running",
+            "icon": "far fa-running",
             "type": "number",
             "path": "system.characteristics.agility.mods"
         },
@@ -86,7 +86,7 @@ export function getConfigActor() {
                 "resources": [],
                 "skills": ["reflex", "throwing", "acrobatics", "accuracy", "vigilance", "discretion"]
             },
-            "icon": "fa-eye",
+            "icon": "far fa-eye",
             "type": "number",
             "path": "system.characteristics.perception.mods"
         },
@@ -97,7 +97,7 @@ export function getConfigActor() {
                 "resources": ["health", "stamina"],
                 "skills": ["parry", "vigor", "athletics"]
             },
-            "icon": "fa-fort",
+            "icon": "far fa-fort",
             "type": "number",
             "path": "system.characteristics.constitution.mods"
         },
@@ -108,7 +108,7 @@ export function getConfigActor() {
                 "resources": ["mana"],
                 "skills": ["resilience", "diplomacy", "bluff", "erudition", "nature"]
             },
-            "icon": "fa-brain",
+            "icon": "far fa-brain",
             "type": "number",
             "path": "system.characteristics.intellect.mods"
         },
@@ -119,7 +119,7 @@ export function getConfigActor() {
                 "resources": [],
                 "skills": ["intuition", "search", "intimidation", "bluff", "craft", "erudition", "occultism"]
             },
-            "icon": "fa-user-secret",
+            "icon": "far fa-user-secret",
             "type": "number",
             "path": "system.characteristics.cunning.mods"
         },
@@ -130,7 +130,7 @@ export function getConfigActor() {
                 "resources": [],
                 "skills": ["intuition", "search", "vigilance", "performance", "diplomacy", "intimidation", "nature"]
             },
-            "icon": "fa-book-open",
+            "icon": "far fa-book-open",
             "type": "number",
             "path": "system.characteristics.wisdom.mods"
         },
@@ -141,7 +141,7 @@ export function getConfigActor() {
                 "resources": ["health", "mana"],
                 "skills": ["resilience", "performance", "occultism"]
             },
-            "icon": "fa-anchor",
+            "icon": "far fa-anchor",
             "type": "number",
             "path": "system.characteristics.will.mods"
         }
@@ -399,21 +399,21 @@ export function getConfigActor() {
     PL1E.general = {
         "level": {
             "label": "PL1E.Level",
-            "icon": "fa-trophy",
+            "icon": "far fa-trophy",
             "type": "number",
             "path": "system.general.level",
             "header": false
         },
         "experience": {
             "label": "PL1E.Experience",
-            "icon": "fa-cube",
+            "icon": "far fa-cube",
             "type": "number",
             "path": "system.general.experience",
             "header": false
         },
         "remainingCharacteristics": {
             "label": "PL1E.RemainingCharacteristics",
-            "icon": "fa-puzzle-piece",
+            "icon": "far fa-puzzle-piece",
             "type": "number",
             "path": "system.general.remainingCharacteristics",
             "header": true,
@@ -421,7 +421,7 @@ export function getConfigActor() {
         },
         "ranks": {
             "label": "PL1E.Ranks",
-            "icon": "fa-circle-x",
+            "icon": "far fa-circle-x",
             "type": "number",
             "path": "system.general.ranks",
             "header": true,
@@ -429,21 +429,21 @@ export function getConfigActor() {
         },
         "maxRank": {
             "label": "PL1E.MaxRank",
-            "icon": "fa-circle-chevron-up",
+            "icon": "far fa-circle-chevron-up",
             "type": "number",
             "path": "system.general.maxRank",
             "header": true
         },
         "advantages": {
             "label": "PL1E.Advantages",
-            "icon": "fa-cube",
+            "icon": "far fa-cube",
             "type": "number",
             "path": "system.general.advantages",
             "header": false
         },
         "statusImmunities": {
             "label": "PL1E.StatusImmunities",
-            "icon": "fa-swords",
+            "icon": "far fa-swords",
             "type": "array",
             "path": "system.misc.statusImmunities",
             "select": "statusImmunities",
@@ -451,7 +451,7 @@ export function getConfigActor() {
         },
         "action": {
             "label": "PL1E.Action",
-            "icon": "fa-clock",
+            "icon": "far fa-clock",
             "type": "number",
             "path": "system.general.action",
             "header": true,
@@ -459,7 +459,7 @@ export function getConfigActor() {
         },
         "reaction": {
             "label": "PL1E.Reaction",
-            "icon": "fa-reply-clock",
+            "icon": "far fa-reply-clock",
             "type": "number",
             "path": "system.general.reaction",
             "header": true,
@@ -467,7 +467,7 @@ export function getConfigActor() {
         },
         "quickAction": {
             "label": "PL1E.QuickAction",
-            "icon": "fa-bell",
+            "icon": "far fa-bell",
             "type": "number",
             "path": "system.general.quickAction",
             "header": true,
@@ -478,56 +478,56 @@ export function getConfigActor() {
     PL1E.reductions = {
         "slashing": {
             "label": "PL1E.SlashingReduction",
-            "icon": "fa-axe-battle",
+            "icon": "far fa-axe-battle",
             "type": "number",
             "path": "system.reductions.slashing",
             "header": true
         },
         "crushing": {
             "label": "PL1E.CrushingReduction",
-            "icon": "fa-hammer-war",
+            "icon": "far fa-hammer-war",
             "type": "number",
             "path": "system.reductions.crushing",
             "header": true
         },
         "piercing": {
             "label": "PL1E.PiercingReduction",
-            "icon": "fa-dagger",
+            "icon": "far fa-dagger",
             "type": "number",
             "path": "system.reductions.piercing",
             "header": true
         },
         "burn": {
             "label": "PL1E.BurnReduction",
-            "icon": "fa-fire",
+            "icon": "far fa-fire",
             "type": "number",
             "path": "system.reductions.burn",
             "header": true
         },
         "cold": {
             "label": "PL1E.ColdReduction",
-            "icon": "fa-snowflake",
+            "icon": "far fa-snowflake",
             "type": "number",
             "path": "system.reductions.cold",
             "header": true
         },
         "acid": {
             "label": "PL1E.AcidReduction",
-            "icon": "fa-droplet",
+            "icon": "far fa-droplet",
             "type": "number",
             "path": "system.reductions.acid",
             "header": true
         },
         "shock": {
             "label": "PL1E.ShockReduction",
-            "icon": "fa-bolt",
+            "icon": "far fa-bolt",
             "type": "number",
             "path": "system.reductions.shock",
             "header": true
         },
         "entropy": {
             "label": "PL1E.EntropyReduction",
-            "icon": "fa-ghost",
+            "icon": "far fa-ghost",
             "type": "number",
             "path": "system.reductions.entropy",
             "header": true
@@ -537,7 +537,7 @@ export function getConfigActor() {
     PL1E.misc = {
         "size": {
             "label": "PL1E.Size",
-            "icon": "fa-arrow-up-big-small",
+            "icon": "far fa-arrow-up-big-small",
             "type": "select",
             "path": "system.misc.size",
             "select": "sizes",
@@ -545,7 +545,7 @@ export function getConfigActor() {
         },
         "sizeMultiplier": {
             "label": "PL1E.SizeMultiplier",
-            "icon": "fa-arrow-up-big-small",
+            "icon": "far fa-arrow-up-big-small",
             "type": "number",
             "path": "system.misc.sizeMultiplier",
             "header": true,
@@ -553,14 +553,14 @@ export function getConfigActor() {
         },
         "tokenSize": {
             "label": "PL1E.TokenSize",
-            "icon": "fa-person-running",
+            "icon": "far fa-person-running",
             "type": "number",
             "path": "system.misc.tokenSize",
             "header": false
         },
         "speed": {
             "label": "PL1E.Speed",
-            "icon": "fa-person-running",
+            "icon": "far fa-person-running",
             "type": "select",
             "path": "system.misc.speed",
             "select": "speeds",
@@ -568,7 +568,7 @@ export function getConfigActor() {
         },
         "movement": {
             "label": "PL1E.Movement",
-            "icon": "fa-person-running",
+            "icon": "far fa-person-running",
             "type": "number",
             "path": "system.misc.movement",
             "header": true,
@@ -576,7 +576,7 @@ export function getConfigActor() {
         },
         "baseInitiative": {
             "label": "PL1E.BaseInitiative",
-            "icon": "fa-flag",
+            "icon": "far fa-flag",
             "type": "number",
             "path": "system.misc.baseInitiative",
             "header": false,
@@ -584,22 +584,30 @@ export function getConfigActor() {
         },
         "initiative": {
             "label": "PL1E.Initiative",
-            "icon": "fa-flag",
+            "icon": "far fa-flag",
             "type": "number",
             "path": "system.misc.initiative",
             "header": true
         },
         "hunger": {
             "label": "PL1E.Hunger",
-            "icon": "fa-stomach",
+            "icon": "far fa-stomach",
             "type": "number",
             "path": "system.misc.hunger",
             "header": true,
             "default": 3
         },
+        "intoxication": {
+            "label": "PL1E.Intoxication",
+            "icon": "far fa-skull-crossbones",
+            "type": "number",
+            "path": "system.misc.intoxication",
+            "header": true,
+            "default": 0
+        },
         "unconsciousDoor": {
             "label": "PL1E.UnconsciousDoor",
-            "icon": "fa-face-sleeping",
+            "icon": "far fa-face-sleeping",
             "type": "number",
             "path": "system.misc.unconsciousDoor",
             "header": true,
@@ -607,7 +615,7 @@ export function getConfigActor() {
         },
         "deathDoor": {
             "label": "PL1E.DeathDoor",
-            "icon": "fa-skull",
+            "icon": "far fa-skull",
             "type": "number",
             "path": "system.misc.deathDoor",
             "header": true,
@@ -615,7 +623,7 @@ export function getConfigActor() {
         },
         "flexibility": {
             "label": "PL1E.Flexibility",
-            "icon": "fa-weight-hanging",
+            "icon": "far fa-weight-hanging",
             "type": "number",
             "path": "system.misc.flexibility",
             "header": true,
@@ -623,7 +631,7 @@ export function getConfigActor() {
         },
         "nightVisionRange": {
             "label": "PL1E.NightVisionRange",
-            "icon": "fa-eye",
+            "icon": "far fa-eye",
             "type": "number",
             "path": "system.misc.nightVisionRange",
             "header": true,

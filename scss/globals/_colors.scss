@@ -1,45 +1,57 @@
 .color-dark {
-  color: $colorDark;
+  color: $color-dark;
 }
 
 .color-faint {
-  color: $colorFaint;
+  color: $color-faint;
 }
 
 .color-beige {
-  color: $colorBeige;
+  color: $color-beige;
 }
 
 .color-tan {
-  color: $colorTan;
+  color: $color-tan;
 }
 
 .color-olive {
-  color: $colorOlive;
+  color: $color-olive;
 }
 
 .color-crimson {
-  color: $colorCrimson;
+  color: $color-crimson;
+}
+
+.color-health {
+  color: $color-health;
+}
+
+.color-stamina {
+  color: $color-stamina;
+}
+
+.color-mana {
+  color: $color-mana;
 }
 
 .color-silver {
-  color: $colorSilver;
+  color: $color-silver;
 }
 
 .color-gold {
-  color: $colorGold;
+  color: $color-gold;
 }
 
 .color-copper {
-  color: $colorCopper;
+  color: $color-copper;
 }
 
 .color-warning {
-  color: $colorWarning;
+  color: $color-warning;
 }
 
 .color-grey {
-  color: $colorGrey
+  color: $color-grey
 }
 
 .color-black {
@@ -47,35 +59,35 @@
 }
 
 .color-disabled {
-  color: $colorDisabled !important;
+  color: $color-disabled !important;
 }
 
 .color-malus {
-  color: $colorMalus !important;
+  color: $color-malus !important;
 }
 
 .color-bonus {
-  color: $colorBonus !important;
+  color: $color-bonus !important;
 }
 
 .hover-action {
   &:hover,
   &:focus {
-    text-shadow: 0 0 10px $colorAction !important;
+    text-shadow: 0 0 10px $color-action !important;
     cursor: pointer;
   }
 }
 
 .enabled-action {
   &:enabled {
-    color: $colorAction !important;
+    color: $color-action !important;
   }
 }
 
 .hover-info {
   &:hover,
   &:focus {
-    text-shadow: 0 0 10px $colorInfo !important;
+    text-shadow: 0 0 10px $color-info !important;
     cursor: help;
   }
 }
@@ -87,21 +99,20 @@
 
 @keyframes pulse {
   0% {
-    text-shadow: 0 0 5px $colorInfo, 0 0 10px $colorInfo, 0 0 15px $colorInfo;
+    text-shadow: 0 0 5px $color-info, 0 0 10px $color-info, 0 0 15px $color-info;
   }
   50% {
-    text-shadow: 0 0 10px lighten($colorInfo, 20%), 0 0 20px lighten($colorInfo, 20%), 0 0 30px lighten($colorInfo, 20%);
+    text-shadow: 0 0 10px lighten($color-info, 20%), 0 0 20px lighten($color-info, 20%), 0 0 30px lighten($color-info, 20%);
   }
   100% {
-    text-shadow: 0 0 5px $colorInfo, 0 0 10px $colorInfo, 0 0 15px $colorInfo;
+    text-shadow: 0 0 5px $color-info, 0 0 10px $color-info, 0 0 15px $color-info;
   }
 }
 
-
 .background-ready {
-  background-color: $colorReady !important;
+  background-color: $color-ready !important;
 }
 
 .background-unavailable {
-  background-color: $colorUnavailable !important;
+  background-color: $color-unavailable !important;
 }

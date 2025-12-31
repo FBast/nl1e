@@ -1,7 +1,7 @@
 .toggle-section {
   display: flex;
   flex-direction: column;
-  border: $colorBorder solid 1px;
+  border: $color-border solid 1px;
 
   .toggle-group {
     display: grid;
@@ -23,7 +23,7 @@
         display: block;
         object-fit: cover;
         border-radius: 5px;
-        border: $colorBorder 5px inset;
+        border: $color-border 5px inset;
       }
 
       &:hover {

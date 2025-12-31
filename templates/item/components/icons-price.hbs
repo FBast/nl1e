@@ -1,0 +1,43 @@
+<div class="icon-group">
+    {{#if (or (eq @root.actor.type "character") @root.item)}}
+        {{#if (gt system.attributes.goldPrice 0)}}
+            <i class="far fa-coins color-gold hover-info"
+               data-tooltip="{{localize "PL1E.Gold"}}">
+                <label>{{system.attributes.goldPrice}}</label>
+            </i>
+        {{/if}}
+        {{#if (gt system.attributes.silverPrice 0)}}
+            <i class="far fa-coins color-silver hover-info"
+               data-tooltip="{{localize "PL1E.Silver"}}">
+                <label>{{system.attributes.silverPrice}}</label>
+            </i>
+        {{/if}}
+        {{#if (gt system.attributes.copperPrice 0)}}
+            <i class="far fa-coins color-copper hover-info"
+               data-tooltip="{{localize "PL1E.Copper"}}">
+                <label>{{system.attributes.copperPrice}}</label>
+            </i>
+        {{/if}}
+    {{else if (eq @root.actor.type "merchant")}}
+        {{#with (lookup @root.merchantPrices _id)}}
+            {{#if (gt gold 0)}}
+                <i class="far fa-coins color-gold hover-info"
+                   data-tooltip="{{localize "PL1E.Gold"}}">
+                    <label>{{gold}}</label>
+                </i>
+            {{/if}}
+            {{#if (gt silver 0)}}
+                <i class="far fa-coins color-silver hover-info"
+                   data-tooltip="{{localize "PL1E.Silver"}}">
+                    <label>{{silver}}</label>
+                </i>
+            {{/if}}
+            {{#if (gt copper 0)}}
+                <i class="far fa-coins color-copper hover-info"
+                   data-tooltip="{{localize "PL1E.Copper"}}">
+                    <label>{{copper}}</label>
+                </i>
+            {{/if}}
+        {{/with}}
+    {{/if}}
+</div>

@@ -3,8 +3,7 @@
   min-width: 200px;
   margin: 0;
   padding: 0;
-  color: $colorText;
-  border: 1px solid $colorBorder;
+  color: $color-text;
 
   .skill {
     display: flex;
@@ -16,11 +15,11 @@
     height: 19px;
 
     &:nth-child(even) {
-      background-color: $colorPanel;
+      background-color: $color-panel;
     }
 
     &:nth-child(odd) {
-      background-color: $colorPanelAccent;
+      background-color: $color-panel-accent;
     }
 
     .skill-roll {

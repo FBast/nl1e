@@ -6,7 +6,7 @@
             {{#each weapons}}
                 <div class="stat-row {{#if equipped}}equipped{{/if}}">
                     <img class="stat-img" src="{{img}}" alt="{{name}}" />
-                    <i class="far {{icon}} stat-icon"></i>
+                    <i class="{{icon}} stat-icon"></i>
                     <span class="stat-label">{{name}}</span>
                 </div>
             {{/each}}
@@ -20,7 +20,7 @@
         {{#each defenses}}
             <div class="stat-row">
                 <span class="stat-value">{{rank}}</span>
-                <i class="far {{icon}} stat-icon"></i>
+                <i class="{{icon}} stat-icon"></i>
                 <span class="stat-label">{{localize label}}</span>
             </div>
         {{/each}}
@@ -32,7 +32,7 @@
             {{#each resistances}}
                 <div class="stat-row">
                     <span class="stat-value">{{#if (isInfinite value)}}∞{{else}}{{value}}{{/if}}</span>
-                    <i class="far {{icon}} stat-icon"></i>
+                    <i class="{{icon}} stat-icon"></i>
                     <span class="stat-label">{{label}}</span>
                 </div>
             {{/each}}
@@ -47,7 +47,7 @@
             {{#each vulnerabilities}}
                 <div class="stat-row">
                     <span class="stat-value">{{value}}</span>
-                    <i class="far {{icon}} stat-icon"></i>
+                    <i class="{{icon}} stat-icon"></i>
                     <span class="stat-label">{{label}}</span>
                 </div>
             {{/each}}

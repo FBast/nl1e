@@ -61,6 +61,9 @@ export const preloadHandlebarsTemplates = async function () {
         "systems/pl1e/templates/item/components/icons-weapon.hbs",
         "systems/pl1e/templates/item/components/icons-wearable.hbs",
         "systems/pl1e/templates/item/components/icons-service.hbs",
+        "systems/pl1e/templates/item/components/icons-passive-aspects.hbs",
+        "systems/pl1e/templates/item/components/icons-active-aspects.hbs",
+        "systems/pl1e/templates/item/components/icons-price.hbs",
         "systems/pl1e/templates/item/components/passive-aspect-macro.hbs",
         "systems/pl1e/templates/item/components/passive-aspect-modify.hbs",
         "systems/pl1e/templates/item/components/passive-aspect-status.hbs"

@@ -4,7 +4,7 @@
   gap: 5px;
   align-items: normal;
   margin: 5px 5px 20px 5px;
-  color: $colorTextNegative;
+  color: $color-text-negative;
   height: max-content;
 
   .profile-container {
@@ -39,8 +39,8 @@
 
       .profile-level {
         display: flex;
-        background-color: $colorPanelNegative;
-        border: $colorBorderNegative solid 2px;
+        background-color: $color-panel-negative;
+        border: $color-border-negative solid 2px;
         border-radius: 20px;
         position: absolute;
         bottom: -15px;
@@ -58,7 +58,7 @@
     }
 
     .xp-bar {
-      @include incremental-bar($colorPanelNegative, $colorBorderNegative, $colorXP, $colorPanelNegative);
+      @include incremental-bar($color-panel-negative, $color-border-negative, $color-xp, $color-panel-negative);
 
     }
   }
@@ -77,7 +77,7 @@
 
       &:not(:disabled):hover,
       &:not(:disabled):active {
-        border: 2px solid $colorBorderNegative;
+        border: 2px solid $color-border-negative;
       }
     }
 
@@ -91,42 +91,26 @@
       .health-bar,
       .stamina-bar,
       .mana-bar {
-        @include input-bar($colorPanelNegative, $colorBorderNegative, $colorHealth, $colorBackgroundNegative, $colorWhite);
+        @include input-bar($color-panel-negative, $color-border-negative, $color-health, $color-background-negative, $color-white);
       }
 
       .stamina-bar {
-        @include input-bar($colorPanelNegative, $colorBorderNegative, $colorStamina, $colorBackgroundNegative, $colorWhite);
+        @include input-bar($color-panel-negative, $color-border-negative, $color-stamina, $color-background-negative, $color-white);
       }
 
       .mana-bar {
-        @include input-bar($colorPanelNegative, $colorBorderNegative, $colorMana, $colorBackgroundNegative, $colorWhite);
+        @include input-bar($color-panel-negative, $color-border-negative, $color-mana, $color-background-negative, $color-white);
       }
     }
 
     .sell-bar {
       height: 40px;
-      @include input-bar($colorPanelNegative, $colorBorderNegative, green, $colorBackgroundNegative, $colorWhite);
+      @include input-bar($color-panel-negative, $color-border-negative, green, $color-background-negative, $color-white);
     }
 
     .buy-bar {
       height: 40px;
-      @include input-bar($colorPanelNegative, $colorBorderNegative, red, $colorBackgroundNegative, $colorWhite);
-    }
-
-    .icons-stats {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      margin: 0 10px;
-      gap: $spacing-md;
-      font-size: $font-size-sm;
-
-      .stat-icon {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 1.2em;
-      }
+      @include input-bar($color-panel-negative, $color-border-negative, red, $color-background-negative, $color-white);
     }
   }
 }
@@ -134,7 +118,7 @@
 .sheet-body {
   overflow: hidden;
   background: url("/ui/parchment.jpg") repeat;
-  border: 1px solid $colorBorder;
+  border: 1px solid $color-border;
   border-top-color: transparent;
   border-radius: 0 0 10px 10px;
   padding: 10px;
@@ -142,8 +126,8 @@
 
 .modal-body {
   overflow: hidden;
-  background-color: $colorBackground;
-  border: 1px solid $colorBorder;
+  background-color: $color-background;
+  border: 1px solid $color-border;
   border-top-color: transparent;
   border-radius: 10px;
   padding: 10px;

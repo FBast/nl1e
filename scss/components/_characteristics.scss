@@ -6,21 +6,21 @@
   padding: 5px;
   position: relative;
   border-radius: 8px;
-  background-color: $colorPanel;
-  border: 1px solid $colorBorder;
+  background-color: $color-panel-accent;
+  //border: 1px solid $color-border;
   align-items: center;
-  color: $colorText;
+  color: $color-text;
 
   .group-icon {
     width: 40px;
     height: 40px;
     margin: 5px;
-    color: $colorText;
-    background-color: $colorPanelAccent;
+    color: $color-text;
+    background-color: $color-panel-accent;
     padding: 0 10px;
     border-radius: 50%;
     z-index: 1;
-    border: 1px solid $colorBorder;
+    border: 1px solid $color-border;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,8 +42,8 @@
 
     input[type="number"]:hover,
     input[type="number"]:focus {
-      border: 2px solid $colorBorder;
-      background-color: $colorBackground;
+      border: 2px solid $color-border;
+      background-color: $color-background;
       border-radius: 5px;
     }
 

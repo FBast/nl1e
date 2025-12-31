@@ -130,7 +130,7 @@ export class Pl1eAspect {
                 descriptionParts.push(aspect.value);
             }
             if (aspect.damageType !== undefined && aspect.damageType !== "raw")
-                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType)));
+                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType, "label")));
             if (aspect.resolutionType !== undefined && aspect.resolutionType !== "fixed")
                 descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
             descriptionParts.push(game.i18n.localize("PL1E.On"));

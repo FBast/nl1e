@@ -10,9 +10,9 @@
     font-size: $font-size-sm;
     text-align: center;
     padding: 10px 15px;
-    border: 1px solid $colorBorder;
+    border: 1px solid $color-border;
     border-radius: 0;
-    background-color: $colorPanelAccent;
+    background-color: $color-background-accent;
 
     &.active {
       border-bottom-color: transparent;

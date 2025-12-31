@@ -56,12 +56,14 @@ export class PlaceableTooltip {
 
             const reductions = data.system?.reductions ?? {};
             for (const [key, value] of Object.entries(reductions)) {
-                const reductionConfig = Pl1eHelpers.getConfig("reductions", key);
-                const labelConfig = Pl1eHelpers.getConfig("damageTypes", key);
-                if (!reductionConfig || !labelConfig) continue;
+                const dmgLabel = Pl1eHelpers.getConfig("damageTypes", key, "label");
+                if (!dmgLabel) continue;
 
-                const label = game.i18n.localize(labelConfig);
-                const icon = reductionConfig.icon ?? "fa-question-circle";
+                const icon =
+                    Pl1eHelpers.getConfig("damageTypes", key, "icon") ??
+                    "far fa-question-circle";
+                const label = game.i18n.localize(dmgLabel);
+
                 const entry = { value, icon, label };
 
                 if (value > 0) resistances.push(entry);

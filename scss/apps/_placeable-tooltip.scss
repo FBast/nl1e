@@ -1,11 +1,11 @@
 &#placeable-tooltip {
   position: absolute;
-  background: rgba($colorDark, 0.85);
-  color: $colorWhite;
+  background: rgba($color-dark, 0.85);
+  color: $color-white;
   padding: $spacing-sm;
   border-radius: $spacing-sm;
-  border: 1px solid $colorBorder;
-  box-shadow: $shadowStandard;
+  border: 1px solid $color-border;
+  box-shadow: $shadow-standard;
   font-size: $font-size-xsm;
   pointer-events: none;
   z-index: 10000;
@@ -20,21 +20,21 @@
     h1,h2,h3,h4,h5,h6 {
       margin: 0;
       text-transform: uppercase;
-      color: $colorGold;
+      color: $color-gold;
     }
 
     h1,h2,h3 {
       padding-bottom: 2px;
-      border-bottom: 1px solid rgba($colorWhite, 0.2);
+      border-bottom: 1px solid rgba($color-white, 0.2);
     }
 
     p {
       margin: 0;
       line-height: 1.3;
-      color: $colorFaint;
+      color: $color-faint;
 
       strong {
-        color: $colorWhite;
+        color: $color-white;
         margin-right: 4px;
       }
     }
@@ -66,7 +66,7 @@
         display: flex;
         align-items: center;
         gap: $spacing-sm;
-        background: rgba($colorWhite, 0.1);
+        background: rgba($color-white, 0.1);
         padding: 2px 4px;
         border-radius: 2px;
         justify-content: space-between;
@@ -75,14 +75,14 @@
         .stat-value {
           font-weight: bold;
           font-size: $font-size-xsm;
-          color: $colorWhite;
+          color: $color-white;
           min-width: 20px;
           text-align: center;
         }
 
         .stat-icon {
           font-size: $font-size-sm;
-          color: $colorWhite;
+          color: $color-white;
           min-width: 18px;
           text-align: center;
         }
@@ -94,7 +94,7 @@
 
         .stat-label {
           font-size: $font-size-xsm;
-          color: $colorFaint;
+          color: $color-faint;
           flex-grow: 1;
           text-align: left;
           white-space: nowrap;

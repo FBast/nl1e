@@ -4,6 +4,11 @@ import {Pl1eHelpers} from "../helpers/helpers.mjs";
  * Custom Handlebars for Pl1e
  */
 export const registerHandlebars = function () {
+    Handlebars.registerHelper("log", function (...args) {
+        args.pop();
+        console.log("[HBS]", ...args);
+    });
+
     Handlebars.registerHelper('concat', function () {
         var outStr = '';
         for (var arg in arguments) {

@@ -331,6 +331,7 @@
           "initiative": 0,
           "hunger": 0,
           "hungerMax": 3,
+          "intoxication": 0,
           "unconsciousDoor": 0,
           "deathDoor": 10,
           "flexibility": 0,
@@ -560,7 +561,8 @@
         "healthGain": 0,
         "staminaGain": 0,
         "manaGain": 0,
-        "hungerReduction": 1
+        "hungerReduction": 1,
+        "intoxication": 0
       }
     }
   },

@@ -10,7 +10,7 @@ fieldset {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1em 1em 0.5em 1em;
-  background-color: $colorWhite;
+  background-color: $color-white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 1em 0 0 0;
   position: relative;
@@ -32,7 +32,7 @@ p {
 }
 
 hr {
-  border: 1px solid $colorTan;
+  border: 1px solid $color-tan;
   height: 1px;
   background-color: #ccc;
   margin: 5px 0;
@@ -43,55 +43,56 @@ a {
 }
 
 button {
-  background-color: $colorPanel;
-  color: $colorText;
+  background-color: $color-panel;
+  color: $color-text;
   font-size: $font-size-sm;
   padding: $spacing-sm $spacing-md;
-  border: 1px solid $colorBorder;
+  border: 1px solid $color-border;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover,
   &:active {
-    background-color: $colorPanelAccent;
+    background-color: $color-panel-accent;
   }
 
   &:disabled {
-    background-color: $colorDisabled;
+    background-color: $color-disabled;
     cursor: not-allowed;
   }
 }
 
 input {
-  background-color: $colorPanel;
-  color: $colorText;
+  background-color: $color-panel;
+  color: $color-text;
   font-size: $font-size-sm;
   padding: $spacing-sm $spacing-md;
-  border: 1px solid $colorBorder;
+  border: 1px solid $color-border;
   border-radius: 5px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:not(:disabled):hover,
   &:active {
-    background-color: $colorBackground;
+    background-color: $color-background;
   }
 }
 
 select {
-  background-color: $colorPanel;
-  color: $colorText;
-  border: 1px solid $colorBorder;
+  flex: 1;
+  background-color: $color-panel;
+  color: $color-text;
+  border: 1px solid $color-border;
   border-radius: 5px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:not(:disabled):hover,
   &:active {
-    background-color: $colorBackground;
+    background-color: $color-background;
   }
 
   &:disabled {
-    background-color: $colorDisabled;
+    background-color: $color-disabled;
     cursor: not-allowed;
   }
 }
@@ -99,23 +100,23 @@ select {
 .color-negative {
   select {
     background-color: transparent;
-    color: $colorTextNegative;
-    border: 2px solid $colorBorderNegative;
+    color: $color-text-negative;
+    border: 2px solid $color-border-negative;
 
     &:not(:disabled):hover,
     &:active {
-      background-color: $colorBackgroundNegative;
+      background-color: $color-background-negative;
     }
   }
 
   input {
     background-color: transparent;
-    color: $colorTextNegative;
-    border: 2px solid $colorBorderNegative;
+    color: $color-text-negative;
+    border: 2px solid $color-border-negative;
 
     &:hover,
     &:active {
-      background-color: $colorBackgroundNegative;
+      background-color: $color-background-negative;
     }
   }
 

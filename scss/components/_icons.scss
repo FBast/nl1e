@@ -1,0 +1,32 @@
+.icons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-sm;
+    opacity: 0.85;
+
+    label {
+      margin-left: 4px;
+    }
+  }
+
+  .icon-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    border-radius: 4px;
+    background: $color-panel-info;
+  }
+
+  .icon-group:not(:has(i)) {
+    display: none;
+  }
+}

@@ -93,7 +93,7 @@ export function getConfigAspects() {
         "modify": {
             "label": "PL1E.Modify",
             "img": "systems/pl1e/assets/svg/modify.svg",
-            "icon": "fa-adjust",
+            "icon": "far fa-adjust",
             "dataGroups": {
                 "aspectsResources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -107,7 +107,7 @@ export function getConfigAspects() {
         "transfer": {
             "label": "PL1E.Transfer",
             "img": "systems/pl1e/assets/svg/transfer.svg",
-            "icon": "fa-share-alt",
+            "icon": "far fa-share-alt",
             "dataGroups": {
                 "aspectsResources": "PL1E.Resources",
                 "characteristics": "PL1E.Characteristics",
@@ -116,7 +116,7 @@ export function getConfigAspects() {
         },
         "status": {
             "label": "PL1E.Status",
-            "icon": "fa-stopwatch",
+            "icon": "far fa-stopwatch",
             "img": "systems/pl1e/assets/svg/status.svg",
             "dataGroups": {
                 "statuses": "PL1E.Statuses"
@@ -125,7 +125,7 @@ export function getConfigAspects() {
         "movement": {
             "label": "PL1E.Movement",
             "img": "systems/pl1e/assets/svg/movement.svg",
-            "icon": "fa-shoe-prints",
+            "icon": "far fa-shoe-prints",
             "dataGroups": {
                 "movements": "PL1E.Movements"
             }
@@ -133,7 +133,7 @@ export function getConfigAspects() {
         "invocation": {
             "label": "PL1E.Invocation",
             "img": "systems/pl1e/assets/svg/invocation.svg",
-            "icon": "fa-user-plus",
+            "icon": "far fa-user-plus",
             "dataGroups": {
                 "invocations": "PL1E.Invocations"
             }
@@ -141,7 +141,7 @@ export function getConfigAspects() {
         "passiveMacro": {
             "label": "PL1E.Macro",
             "img": "systems/pl1e/assets/svg/dice-target.svg",
-            "icon": "fa-terminal",
+            "icon": "far fa-terminal",
             "dataGroups": {
                 "actorPreUpdate": "PL1E.ActorPreUpdate",
                 "tokenPreUpdate": "PL1E.TokenPreUpdate"
@@ -150,7 +150,7 @@ export function getConfigAspects() {
         "activeMacro": {
             "label": "PL1E.Macro",
             "img": "systems/pl1e/assets/svg/dice-target.svg",
-            "icon": "fa-terminal",
+            "icon": "far fa-terminal",
             "dataGroups": {
                 "targetsResolution": "PL1E.TargetsResolution",
                 "actorPreUpdate": "PL1E.ActorPreUpdate",
@@ -164,56 +164,64 @@ export function getConfigAspects() {
             "label": "PL1E.Health",
             "path": "system.resources.health.value",
             "type": "number",
-            "icon": "fa-heart"
+            "icon": "far fa-heart",
+            "colorClass": "color-health"
         },
         "healthMax": {
             "label": "PL1E.MaxHealth",
             "path": "system.resources.health.max",
             "type": "number",
-            "icon": "fa-heart"
-
+            "icon": "far fa-heart",
+            "colorClass": "color-health"
         },
         "healthTemp": {
             "label": "PL1E.TempHealth",
             "path": "system.resources.health.temp",
             "type": "number",
-            "icon": "fa-heart"
+            "icon": "far fa-heart",
+            "colorClass": "color-health"
         },
         "stamina": {
             "label": "PL1E.Stamina",
             "path": "system.resources.stamina.value",
             "type": "number",
-            "icon": "fa-wave-pulse"
+            "icon": "far fa-wave-pulse",
+            "colorClass": "color-stamina"
         },
         "staminaMax": {
             "label": "PL1E.MaxStamina",
             "path": "system.resources.stamina.max",
             "type": "number",
-            "icon": "fa-wave-pulse"
+            "icon": "far fa-wave-pulse",
+            "colorClass": "color-stamina"
         },
         "staminaTemp": {
             "label": "PL1E.TempStamina",
             "path": "system.resources.stamina.temp",
             "type": "number",
-            "icon": "fa-wave-pulse"
+            "icon": "far fa-wave-pulse",
+            "colorClass": "color-stamina"
         },
         "mana": {
             "label": "PL1E.Mana",
             "path": "system.resources.mana.value",
             "type": "number",
-            "icon": "fa-sparkles"
+            "icon": "far fa-sparkles",
+            "colorClass": "color-mana"
         },
         "manaMax": {
             "label": "PL1E.MaxMana",
             "path": "system.resources.mana.max",
             "type": "number",
-            "icon": "fa-sparkles"
+            "icon": "far fa-sparkles",
+            "colorClass": "color-mana"
         },
         "manaTemp": {
             "label": "PL1E.TempMana",
             "path": "system.resources.mana.temp",
             "type": "number",
-            "icon": "fa-sparkles"
+            "icon": "far fa-sparkles",
+            "colorClass": "color-mana"
         }
     }
 
@@ -222,7 +230,7 @@ export function getConfigAspects() {
             "label": "PL1E.CoverBonus",
             "path": "system.skills.cover.numberMod",
             "type": "number",
-            "icon": "fa-shield"
+            "icon": "far fa-shield"
         },
         // "coverDice": {
         //     "label": "PL1E.CoverDice",
@@ -233,25 +241,25 @@ export function getConfigAspects() {
             "label": "PL1E.CoverExplosion",
             "path": "system.skills.cover.explosion",
             "type": "bool",
-            "icon": "fa-shield"
+            "icon": "far fa-shield"
         },
         "coverImplosion": {
             "label": "PL1E.CoverImplosion",
             "path": "system.skills.cover.implosion",
             "type": "bool",
-            "icon": "fa-shield"
+            "icon": "far fa-shield"
         },
         "coverUsable": {
             "label": "PL1E.CoverUsable",
             "path": "system.skills.cover.usable",
             "type": "bool",
-            "icon": "fa-shield"
+            "icon": "far fa-shield"
         },
         "parryNumber": {
             "label": "PL1E.ParryBonus",
             "path": "system.skills.parry.numberMod",
             "type": "number",
-            "icon": "fa-swords"
+            "icon": "far fa-swords"
         },
         // "parryDice": {
         //     "label": "PL1E.ParryDice",
@@ -262,25 +270,25 @@ export function getConfigAspects() {
             "label": "PL1E.ParryExplosion",
             "path": "system.skills.parry.explosion",
             "type": "bool",
-            "icon": "fa-swords"
+            "icon": "far fa-swords"
         },
         "parryImplosion": {
             "label": "PL1E.ParryImplosion",
             "path": "system.skills.parry.implosion",
             "type": "bool",
-            "icon": "fa-swords"
+            "icon": "far fa-swords"
         },
         "parryUsable": {
             "label": "PL1E.ParryUsable",
             "path": "system.skills.parry.usable",
             "type": "bool",
-            "icon": "fa-swords"
+            "icon": "far fa-swords"
         },
         "reflexNumber": {
             "label": "PL1E.ReflexBonus",
             "path": "system.skills.reflex.numberMod",
             "type": "number",
-            "icon": "fa-wind"
+            "icon": "far fa-wind"
         },
         // "reflexDice": {
         //     "label": "PL1E.ReflexDice",
@@ -291,13 +299,13 @@ export function getConfigAspects() {
             "label": "PL1E.ReflexExplosion",
             "path": "system.skills.reflex.explosion",
             "type": "bool",
-            "icon": "fa-wind"
+            "icon": "far fa-wind"
         },
         "reflexImplosion": {
             "label": "PL1E.ReflexImplosion",
             "path": "system.skills.reflex.implosion",
             "type": "bool",
-            "icon": "fa-wind"
+            "icon": "far fa-wind"
         },
         "vigorNumber": {
             "label": "PL1E.VigorBonus",
@@ -684,55 +692,88 @@ export function getConfigAspects() {
     PL1E.aspectsMisc = {
         "size": {
             "label": "PL1E.Size",
-            "icon": "fa-arrow-up-big-small",
+            "icon": "far fa-arrow-up-big-small",
             "type": "select",
             "path": "system.misc.size",
             "select": "sizes"
         },
         "speed": {
             "label": "PL1E.Speed",
-            "icon": "fa-person-running",
+            "icon": "far fa-person-running",
             "type": "select",
             "path": "system.misc.speed",
             "select": "speeds"
         },
+        "intoxication": {
+            "label": "PL1E.Intoxication",
+            "icon": "far fa-skull-crossbones",
+            "type": "number",
+            "path": "system.misc.intoxication"
+        },
         "unconsciousDoor": {
             "label": "PL1E.UnconsciousDoor",
-            "icon": "fa-face-sleeping",
+            "icon": "far fa-face-sleeping",
             "type": "number",
             "path": "system.misc.unconsciousDoor"
         },
         "deathDoor": {
             "label": "PL1E.DeathDoor",
-            "icon": "fa-skull",
+            "icon": "far fa-skull",
             "type": "number",
             "path": "system.misc.deathDoor"
         },
         "flexibility": {
             "label": "PL1E.Flexibility",
-            "icon": "fa-weight-hanging",
+            "icon": "far fa-weight-hanging",
             "type": "number",
             "path": "system.misc.flexibility"
         },
         "nightVisionRange": {
             "label": "PL1E.NightVisionRange",
-            "icon": "fa-eye",
+            "icon": "far fa-eye",
             "type": "number",
             "path": "system.misc.nightVisionRange"
         }
     }
 
     PL1E.damageTypes = {
-        "raw": "PL1E.Raw",
-        "slashing": "PL1E.Slashing",
-        "crushing": "PL1E.Crushing",
-        "piercing": "PL1E.Piercing",
-        "burn": "PL1E.Burn",
-        "cold": "PL1E.Cold",
-        "acid": "PL1E.Acid",
-        "shock": "PL1E.Shock",
-        "entropy": "PL1E.Entropy"
-    }
+        "raw": {
+            "label": "PL1E.Raw",
+            "icon": null
+        },
+        "slashing": {
+            "label": "PL1E.Slashing",
+            "icon": "fas fa-axe-battle"
+        },
+        "crushing": {
+            "label": "PL1E.Crushing",
+            "icon": "fas fa-hammer-war"
+        },
+        "piercing": {
+            "label": "PL1E.Piercing",
+            "icon": "fas fa-dagger"
+        },
+        "burn": {
+            "label": "PL1E.Burn",
+            "icon": "fas fa-fire"
+        },
+        "cold": {
+            "label": "PL1E.Cold",
+            "icon": "fas fa-snowflake"
+        },
+        "acid": {
+            "label": "PL1E.Acid",
+            "icon": "fas fa-droplet"
+        },
+        "shock": {
+            "label": "PL1E.Shock",
+            "icon": "fas fa-bolt"
+        },
+        "entropy": {
+            "label": "PL1E.Entropy",
+            "icon": "fas fa-ghost"
+        }
+    };
 
     PL1E.targetGroups = {
         "targets": "PL1E.Targets",

@@ -106,13 +106,13 @@ export function getConfigItems() {
     PL1E.itemBase = {
         "majorActionUsed": {
             "label": "PL1E.MajorActionUsed",
-            "icon": "fa-star",
+            "icon": "far fa-star",
             "type": "bool",
             "path": "system.majorActionUsed"
         },
         "removedUses": {
             "label": "PL1E.RemovedUses",
-            "icon": "fa-tally",
+            "icon": "far fa-tally",
             "type": "number",
             "path": "system.removedUses"
         }

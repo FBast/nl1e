@@ -61,6 +61,7 @@ export function getConfigBase() {
 
     PL1E.serviceTypes = {
         "food": "PL1E.Food",
+        "substance": "PL1E.Substance",
         "rest": "PL1E.Rest"
     }
 

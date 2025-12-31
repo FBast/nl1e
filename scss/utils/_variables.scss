@@ -19,48 +19,50 @@ $font-primary: 'Roboto', sans-serif;
 $font-secondary: 'Roboto', sans-serif;
 
 // Colors
-$colorWhite: #ffffff;
-$colorDark: #191813;
-$colorGrey: #78788a;
-$colorFaint: #c9c7b8;
-$colorBeige: #b5b3a484;
-$colorTan: #7a7971;
-$colorOlive: #4b4a44;
-$colorCrimson: #44191A;
+$color-white: #ffffff;
+$color-dark: #191813;
+$color-grey: #78788a;
+$color-faint: #c9c7b8;
+$color-beige: #b5b3a484;
+$color-tan: #7a7971;
+$color-olive: #4b4a44;
+$color-crimson: #44191A;
 
-$colorGold: #c7a700;
-$colorSilver: #9f9f9f;
-$colorCopper: #af5134;
+$color-gold: #ffd600;
+$color-silver: #ffffff;
+$color-copper: #d64c29;
 
-$colorText: #000000;
-$colorTextNegative: invert-color($colorText);
+$color-text: #000000;
+$color-text-negative: invert-color($color-text);
 
-$colorBackground: #ffffff;
-$colorPanel: #e6e6e6;
-$colorPanelAccent : #b4b4b4;
-$colorBorder: #8c8c8c;
-$colorDisabled: #969696;
-$colorTransparent: #ffffff00;
+$color-background: #ffffff;
+$color-background-accent: #c8c8c8;
+$color-panel: rgba(255, 255, 255, 0.1);
+$color-panel-accent: rgba(130, 130, 130, 0.2);
+$color-panel-info: rgba(130, 130, 130, 0.3);
+$color-border: #8c8c8c;
+$color-disabled: #969696;
+$color-transparent: #ffffff00;
 
-$colorBackgroundNegative: invert-color($colorBackground);
-$colorPanelNegative: invert-color($colorPanel);
-$colorPanelAccentNegative: invert-color($colorPanelAccent);
-$colorBorderNegative: invert-color($colorBorder);
+$color-background-negative: invert-color($color-background);
+$color-panel-negative: invert-color($color-panel);
+$color-panel-accent-negative: invert-color($color-panel-accent);
+$color-border-negative: invert-color($color-border);
 
-$colorMalus: #c80000;
-$colorBonus: #00c800;
+$color-malus: #c80000;
+$color-bonus: #00c800;
 
-$colorAction: #ff0000;
-$colorInfo: #00ff00;
-$colorReady: #c8ffc8;
-$colorUnavailable: #ffdfe5;
-$colorWarning: #c8c800;
+$color-action: #ff0000;
+$color-info: #00ff00;
+$color-ready: #c8ffc8;
+$color-unavailable: #ffdfe5;
+$color-warning: #c8c800;
 
-$colorHealth: #b40000;
-$colorStamina: #48b400;
-$colorMana: #0099b4;
-$colorDestiny: #ff00ff;
-$colorXP: #969600;
+$color-health: #b40000;
+$color-stamina: #48b400;
+$color-mana: #0099b4;
+$color-destiny: #ff00ff;
+$color-xp: #969600;
 
 // Shadows
-$shadowStandard: 0 0 5px rgba(0, 0, 0, 0.5);
+$shadow-standard: 0 0 5px rgba(0, 0, 0, 0.5);

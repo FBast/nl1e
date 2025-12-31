@@ -12,11 +12,13 @@
                     </div>
                     <div class="icons">
                         {{#unless ../favoriteDisplay}}
-                            {{#each conversions}}
-                                <i class="{{icon}} hover-info" data-tooltip="{{tooltip}}">
-                                    <label>{{label}}</label>
-                                </i>
-                            {{/each}}
+                            <div class="icon-group">
+                                {{#each conversions}}
+                                    <i class="{{icon}} hover-info" data-tooltip="{{tooltip}}">
+                                        <label>{{label}}</label>
+                                    </i>
+                                {{/each}}
+                            </div>
                         {{/unless}}
                     </div>
                     <div class="controls">

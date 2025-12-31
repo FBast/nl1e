@@ -27,7 +27,7 @@
 
       margin: 2px 0;
       border-radius: 6px;
-      background: rgba(255, 255, 255, 0.02);
+      background: $color-panel;
       transition: background-color 0.15s ease;
 
       &:hover {
@@ -91,29 +91,6 @@
           text-align: right;
         }
 
-        /* ---------- ICONS ---------- */
-
-        .icons {
-          display: flex;
-          align-items: center;
-          justify-content: start;
-          flex: 2 1 200px;
-          gap: 8px;
-          flex-wrap: wrap;
-
-          i {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: $font-size-sm;
-            opacity: 0.85;
-
-            label {
-              margin-left: 5px;
-            }
-          }
-        }
-
         /* ---------- CONTROLS ---------- */
 
         .controls {
@@ -154,7 +131,7 @@
         font-size: 0.8rem;
         text-align: justify;
 
-        background: rgba(0, 0, 0, 0.1);
+        background: $color-panel-info;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 0 0 6px 6px;
 

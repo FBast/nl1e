@@ -1,30 +1,24 @@
-{{#if (gt system.attributes.goldPrice 0)}}
-    <i class="far fa-coins color-gold hover-info" data-tooltip="{{localize "PL1E.Gold"}}">
-        <label>{{system.attributes.goldPrice}}</label>
-    </i>
-{{/if}}
-{{#if (gt system.attributes.silverPrice 0)}}
-    <i class="far fa-coins color-silver hover-info" data-tooltip="{{localize "PL1E.Silver"}}">
-        <label>{{system.attributes.silverPrice}}</label>
-    </i>
-{{/if}}
-{{#if (gt system.attributes.copperPrice 0)}}
-    <i class="far fa-coins color-copper hover-info" data-tooltip="{{localize "PL1E.Copper"}}">
-        <label>{{system.attributes.copperPrice}}</label>
-    </i>
-{{/if}}
-{{#if (ne system.attributes.healthGain 0)}}
-    <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.Health"}}'>
-        <label>{{system.attributes.healthGain}}</label>
-    </i>
-{{/if}}
-{{#if (ne system.attributes.staminaGain 0)}}
-    <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.Stamina"}}'>
-        <label>{{system.attributes.staminaGain}}</label>
-    </i>
-{{/if}}
-{{#if (ne system.attributes.manaGain 0)}}
-    <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.Mana"}}'>
-        <label>{{system.attributes.manaGain}}</label>
-    </i>
-{{/if}}
+{{> "systems/pl1e/templates/item/components/icons-price.hbs"}}
+
+<div class="icon-group">
+    {{#if (ne system.attributes.healthGain 0)}}
+        <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.Health"}}'>
+            <label>{{system.attributes.healthGain}}</label>
+        </i>
+    {{/if}}
+    {{#if (ne system.attributes.staminaGain 0)}}
+        <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.Stamina"}}'>
+            <label>{{system.attributes.staminaGain}}</label>
+        </i>
+    {{/if}}
+    {{#if (ne system.attributes.manaGain 0)}}
+        <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.Mana"}}'>
+            <label>{{system.attributes.manaGain}}</label>
+        </i>
+    {{/if}}
+    {{#if (ne system.attributes.intoxication 0)}}
+        <i class="far fa-skull-crossbones hover-info" data-tooltip='{{localize "PL1E.Intoxication"}}'>
+            <label>{{system.attributes.intoxication}}</label>
+        </i>
+    {{/if}}
+</div>

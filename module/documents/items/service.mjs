@@ -21,10 +21,12 @@ export class Pl1eService extends Pl1eItem {
         
         characterData.attributes = await this.calculateAttributes(characterData);
         await this.applyAttributes(characterData);
-        
+
+        const intoxicationPath = "system.misc.intoxication";
         const hungerPath = "system.misc.hunger";
         const hungerMaxPath = "system.misc.hungerMax";
         const currentHunger = foundry.utils.getProperty(actor, hungerPath) ?? 0;
+        const currentIntoxication = foundry.utils.getProperty(actor, intoxicationPath) ?? 0;
         const hungerMax = foundry.utils.getProperty(actor, hungerMaxPath) ?? 100;
 
         switch (this.system.attributes.serviceType) {
@@ -35,8 +37,20 @@ export class Pl1eService extends Pl1eItem {
                 break;
             }
 
+            case "substance": {
+                const intoxication = this.system.attributes.intoxication ?? 0;
+                const newValue = Math.max(currentIntoxication + intoxication, 0);
+                await actor.update({ [intoxicationPath]: newValue });
+                break;
+            }
+
             case "rest": {
-                await actor.update({ [hungerPath]: hungerMax });
+                const reduction = 4;
+                const newValue = Math.max(currentIntoxication - reduction, 0);
+                await actor.update({
+                    [hungerPath]: hungerMax,
+                    [intoxicationPath]: newValue
+                });
                 break;
             }
         }
