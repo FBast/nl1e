@@ -24,28 +24,30 @@
                     </div>
                     <div class="controls">
                         {{#if @root.actor.isOwner}}
-                            {{#if controls.convertUp}}
-                                <a class="convert-currency hover-action" data-type="up" data-currency="{{controls.convertUp}}" data-tooltip='{{localize "PL1E.ConvertUp"}}'>
-                                    <i class="fas fa-arrow-circle-up"></i>
+                            {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                                {{#if controls.convertUp}}
+                                    <a class="convert-currency hover-action" data-type="up" data-currency="{{controls.convertUp}}" data-tooltip='{{localize "PL1E.ConvertUp"}}'>
+                                        <i class="fas fa-arrow-circle-up"></i>
+                                    </a>
+                                {{/if}}
+                                {{#if controls.convertDown}}
+                                    <a class="convert-currency hover-action" data-type="down" data-currency="{{controls.convertDown}}" data-tooltip='{{localize "PL1E.ConvertDown"}}'>
+                                        <i class="fas fa-arrow-circle-down"></i>
+                                    </a>
+                                {{/if}}
+                                <a class="spin-number hover-action" data-path="{{path}}" data-value="1" data-tooltip='{{localize "PL1E.Increment"}}'>
+                                    <i class="fas fa-plus-square"></i>
+                                </a>
+                                <a class="spin-number hover-action" data-path="{{path}}" data-value="-1" data-min="0" data-tooltip='{{localize "PL1E.Decrement"}}'>
+                                    <i class="fas fa-minus-square"></i>
+                                </a>
+                                <a class="edit-number hover-action" data-tooltip='{{localize "PL1E.Edit"}}' data-path="{{path}}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="item-favorite hover-action" data-favorite-type="currencies" data-favorite-id="{{id}}" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                    <i class="fas fa-bookmark {{#unless (contains ../system.favorites.currencies id)}}color-disabled{{/unless}}"></i>
                                 </a>
                             {{/if}}
-                            {{#if controls.convertDown}}
-                                <a class="convert-currency hover-action" data-type="down" data-currency="{{controls.convertDown}}" data-tooltip='{{localize "PL1E.ConvertDown"}}'>
-                                    <i class="fas fa-arrow-circle-down"></i>
-                                </a>
-                            {{/if}}
-                            <a class="spin-number hover-action" data-path="{{path}}" data-value="1" data-tooltip='{{localize "PL1E.Increment"}}'>
-                                <i class="fas fa-plus-square"></i>
-                            </a>
-                            <a class="spin-number hover-action" data-path="{{path}}" data-value="-1" data-min="0" data-tooltip='{{localize "PL1E.Decrement"}}'>
-                                <i class="fas fa-minus-square"></i>
-                            </a>
-                            <a class="edit-number hover-action" data-tooltip='{{localize "PL1E.Edit"}}' data-path="{{path}}">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a class="item-favorite hover-action" data-favorite-type="currencies" data-favorite-id="{{id}}" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                <i class="fas fa-bookmark {{#unless (contains ../system.favorites.currencies id)}}color-disabled{{/unless}}"></i>
-                            </a>
                         {{/if}}
                     </div>
                 </div>

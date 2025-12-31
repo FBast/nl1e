@@ -76,34 +76,60 @@ export class Pl1eEvent {
      * @param event The originating click event
      * @param {Actor|JournalEntryPage} document the parent of the item
      */
-    static async onItemEdit(event, document= null) {
+    static async onItemEdit(event, document = null) {
         event.preventDefault();
         event.stopPropagation();
 
-        let itemId = $(event.currentTarget).data("item-id") ||
-            $(event.currentTarget).closest(".item").data("item-id");
+        const li = $(event.currentTarget).closest(".item");
+        const itemId = li.data("item-id");
 
         let item;
+
+        // No document → resolve by ID/UUID directly
         if (!document) {
             item = await Pl1eHelpers.getDocument("Item", itemId);
         }
-        else if (document instanceof Pl1eActor)
+        // Actor-owned
+        else if (document instanceof Pl1eActor) {
             item = document.items.get(itemId);
+        }
+        // Merchant (JournalEntryPage)
         else if (document instanceof JournalEntryPage) {
-            const itemsData = document.getFlag("pl1e", "items") || [];
-            const itemData = itemsData.find(i => i._id === itemId);
-            if (!itemData) throw new Error(`PL1E | Item ${itemId} not found in journal page`);
+            const sourceId = li.data("source-id");
+            if (!sourceId) {
+                throw new Error("PL1E | Merchant item missing data-source-id");
+            }
 
-            const rawData = foundry.utils.deepClone(itemData);
+            // Resolve the source (compendium fallback → world fallback)
+            const source = await Pl1eHelpers.getDocument("Item", sourceId);
+            if (!source) {
+                throw new Error(`PL1E | Source item ${sourceId} not found`);
+            }
+
+            // Build a preview copy (never open the source directly)
+            const rawData = source.toObject();
+            rawData._id = foundry.utils.randomID();
+
+            // Force observer permissions on the preview item
             rawData.ownership = {
                 [game.user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
             };
+
+            // Keep merchant flags if you want the sheet to display price context, etc.
+            rawData.flags ??= {};
+            rawData.flags.pl1e ??= {};
+            rawData.flags.pl1e = foundry.utils.mergeObject(rawData.flags.pl1e, {
+                fromMerchant: true,
+                sourceId
+            });
 
             item = new CONFIG.Item.documentClass(rawData, { parent: null });
         }
         else {
             throw new Error(`PL1E | unknown ${document}`);
         }
+
+        if (!item) throw new Error("PL1E | Item not resolved");
 
         if (item.sheet.rendered) item.sheet.bringToTop();
         else item.sheet.render(true);

@@ -26,21 +26,21 @@
                         {{/unless}}
                     </div>
                     <div class="controls">
-                        {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
-                            {{#if isEnabled}}
-                                {{#if (ne system.attributes.activation "passive")}}
-                                    <a class="item-use hover-action" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
+                        {{#if @root.actor.isOwner}}
+                            {{#if (or (eq @root.actor.type "character") (eq @root.actor.type "npc"))}}
+                                {{#if isEnabled}}
+                                    {{#if (ne system.attributes.activation "passive")}}
+                                        <a class="item-use hover-action" data-tooltip='{{localize "PL1E.Use"}}'><i class="fas fa-dice-d20"></i></a>
+                                    {{/if}}
+                                {{else if (gt (length warnings) 0)}}
+                                    <a data-tooltip='{{list warnings ', ' true}}'>
+                                        <i class="far fa-exclamation-triangle hover-info color-warning"></i>
+                                    </a>
                                 {{/if}}
-                            {{else if (gt (length warnings) 0)}}
-                                <a data-tooltip='{{list warnings ', ' true}}'>
-                                    <i class="far fa-exclamation-triangle hover-info color-warning"></i>
+                                <a class="item-favorite hover-action" data-favorite-type="items" data-favorite-id="{{sourceId}}" data-tooltip='{{localize "PL1E.Favorite"}}'>
+                                    <i class="fas fa-bookmark {{#unless (contains ../system.favorites.items sourceId)}}color-disabled{{/unless}}"></i>
                                 </a>
                             {{/if}}
-                        {{/if}}
-                        {{#if @root.actor.isOwner}}
-                            <a class="item-favorite hover-action" data-favorite-type="items" data-favorite-id="{{sourceId}}" data-tooltip='{{localize "PL1E.Favorite"}}'>
-                                <i class="fas fa-bookmark {{#unless (contains ../system.favorites.items sourceId)}}color-disabled{{/unless}}"></i>
-                            </a>
                             {{#if (eq flags.pl1e.childId undefined)}}
                                 <a class="item-remove hover-action" data-tooltip='{{localize "PL1E.Delete"}}'><i class="fas fa-trash"></i></a>
                             {{else}}

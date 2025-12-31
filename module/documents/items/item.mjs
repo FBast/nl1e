@@ -61,6 +61,10 @@ export class Pl1eItem extends Item {
         return this.getFlag("pl1e", "behavior");
     }
 
+    get fromMerchant() {
+        return this.getFlag("pl1e", "fromMerchant");
+    }
+
     /**
      * Check if the item is equipped
      * @return {boolean}

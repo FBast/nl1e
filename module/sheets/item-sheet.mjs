@@ -10,7 +10,7 @@ import {Pl1ePriceCalculator} from "../helpers/price-calculator.mjs";
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
+    export class Pl1eItemSheet extends PL1ESheetMixin(ItemSheet) {
 
     constructor(...args) {
         super(...args);

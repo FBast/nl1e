@@ -76,7 +76,7 @@
         {{#if (gt (length system.refItems) 0)}}
             <a class="hover-action enabled-action" data-tab="linked-items">{{localize "PL1E.LinkedItems"}}</a>
         {{/if}}
-        {{#if (and game.user.isGM (not item.isEmbedded))}}
+        {{#if (and game.user.isGM (not item.isEmbedded) (not item.fromMerchant))}}
             <a class="hover-action enabled-action" data-tab="parameters">{{localize "PL1E.Parameters"}}</a>
         {{/if}}
     </nav>

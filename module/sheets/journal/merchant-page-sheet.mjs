@@ -1,13 +1,16 @@
 import { Pl1eEvent } from "../../helpers/events.mjs";
 import { Pl1eHelpers } from "../../helpers/helpers.mjs";
-import {Pl1eTrade} from "../../helpers/trade.mjs";
-import {Pl1eJournalPageSheet} from "./journal-page-sheet.mjs";
-import {Pl1eFilter} from "../../helpers/filter.mjs";
+import { Pl1eJournalPageSheet } from "./journal-page-sheet.mjs";
+import { Pl1eFilter } from "../../helpers/filter.mjs";
 
 const FILTER_CATEGORIES = ["weapons", "wearables", "consumables", "commons", "modules", "services"];
 const ITEM_TYPES = new Set(["weapon", "wearable", "consumable", "common", "module", "service"]);
 
 export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
+
+    /* -------------------------------------------- */
+    /*  Options                                     */
+    /* -------------------------------------------- */
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
@@ -16,139 +19,215 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
         });
     }
 
+    /* -------------------------------------------- */
+    /*  Flags                                       */
+    /* -------------------------------------------- */
+
+    _getEntries() {
+        const raw = this.document.getFlag("pl1e", "items");
+        return Array.isArray(raw) ? raw : [];
+    }
+
+    async _setEntries(entries) {
+        await this.document.setFlag("pl1e", "items", entries);
+    }
+
+    /* -------------------------------------------- */
+    /*  Data                                        */
+    /* -------------------------------------------- */
+
     async getData(options) {
         const context = await super.getData(options);
 
-        context.filters = await Pl1eFilter.getFilters(this.document.id, FILTER_CATEGORIES).catch(() => {
-            return Object.fromEntries(FILTER_CATEGORIES.map(c => [c, new Set()]));
-        });
+        context.filters = await Pl1eFilter
+            .getFilters(this.document.id, FILTER_CATEGORIES)
+            .catch(() => Object.fromEntries(FILTER_CATEGORIES.map(c => [c, new Set()])));
 
-        const itemsData = foundry.utils.getProperty(this.object, "flags.pl1e.items") || [];
-        const items = itemsData.map(data => new CONFIG.Item.documentClass(data, { parent: null }));
+        const entries = this._getEntries();
+        const items = await this._buildRuntimeItems(entries);
 
-        const fakeActor = this._createFakeActor(items);
+        await this._decorateItems(items);
 
-        await this._decorateItems(fakeActor);
-
-        context.actor = fakeActor;
-        context.merchantPrices = fakeActor.system.merchantPrices;
+        context.items = items;
         context.itemNumber = items.length;
+        context.merchantPrices = Object.fromEntries(
+            items.map(i => [i.flags.pl1e.sourceId, i.flags.pl1e.price])
+        );
 
         for (const category of FILTER_CATEGORIES) {
             const type = category.slice(0, -1);
-            context[category] = Pl1eFilter.filterDocuments(items.filter(i => i.type === type), context.filters[category]);
-            context[`${category}Count`] = items.filter(i => i.type === type).length;
+            const typed = items.filter(i => i.type === type);
+
+            context[category] = Pl1eFilter.filterDocuments(
+                typed,
+                context.filters[category]
+            );
+            context[`${category}Count`] = typed.length;
         }
 
-        context.hasAnyItem = FILTER_CATEGORIES.some(category => {
-            return context[`${category}Count`] > 0;
-        });
+        context.hasAnyItem = FILTER_CATEGORIES.some(c => context[`${c}Count`] > 0);
 
         return context;
     }
 
+    /* -------------------------------------------- */
+    /*  Runtime items                               */
+    /* -------------------------------------------- */
+
+    async _buildRuntimeItems(entries) {
+        const items = [];
+
+        for (const { sourceId } of entries) {
+            if (!sourceId) continue;
+
+            const source = await Pl1eHelpers.getDocument("Item", sourceId);
+            if (!source) continue;
+
+            const raw = source.toObject();
+            raw._id = foundry.utils.randomID();
+
+            raw.flags ??= {};
+            raw.flags.pl1e = {
+                sourceId,
+                fromMerchant: true
+            };
+
+            items.push(new CONFIG.Item.documentClass(raw, { parent: null }));
+        }
+
+        return items;
+    }
+
+    /* -------------------------------------------- */
+    /*  Decoration                                  */
+    /* -------------------------------------------- */
+
+    async _decorateItems(items) {
+        const buyMultiplier = this.document.system.buyMultiplier ?? 100;
+
+        for (const item of items) {
+            if (!ITEM_TYPES.has(item.type)) continue;
+
+            const baseUnits = Pl1eHelpers.moneyToUnits({
+                gold: item.system.attributes.goldPrice,
+                silver: item.system.attributes.silverPrice,
+                copper: item.system.attributes.copperPrice
+            });
+
+            const adjusted = Math.round(baseUnits * (buyMultiplier / 100));
+            const price = Pl1eHelpers.unitsToMoney(adjusted);
+
+            item.flags.pl1e.price = price;
+
+            item.combinedPassiveAspects = await item.getCombinedPassiveAspects();
+            item.combinedActiveAspects  = await item.getCombinedActiveAspects();
+
+            item.enriched = await TextEditor.enrichHTML(
+                item.system.description || "",
+                { async: true }
+            );
+        }
+    }
+
+    /* -------------------------------------------- */
+    /*  Listeners                                   */
+    /* -------------------------------------------- */
+
     async activateListeners(html) {
         await super.activateListeners(html);
 
-        const tooltipButtons = html.find(".item-tooltip-activate");
-        const editButtons = html.find(".item-edit");
+        html.find(".item-tooltip-activate")
+            .on("click", ev => Pl1eEvent.onItemTooltip(ev));
 
-        // Sécurité : on enlève tout binding existant
-        tooltipButtons.off("click");
-        editButtons.off("click");
+        html.find(".item-edit")
+            .on("click", ev => Pl1eEvent.onItemEdit(ev, this.document));
 
-        if (this.document.system.disableItemTooltip) {
+        html.find(".item-remove").on("click", async ev => {
+            ev.preventDefault();
+            ev.stopPropagation();
 
-            const warnDisabled = ev => {
-                ev.preventDefault();
-                ev.stopPropagation();
-                ui.notifications.warn(
-                    game.i18n.localize("PL1E.ItemTooltipDisabled")
-                );
-            };
+            const li = ev.currentTarget.closest(".item");
+            const sourceId = li?.dataset.sourceId ?? li?.dataset.itemId;
+            if (!sourceId) return;
 
-            tooltipButtons.on("click", warnDisabled);
-            editButtons.on("click", warnDisabled);
-
-        } else {
-            tooltipButtons.on("click", ev => Pl1eEvent.onItemTooltip(ev));
-            editButtons.on("click", ev => Pl1eEvent.onItemEdit(ev, this.document));
-        }
+            const next = this._getEntries().filter(e => e.sourceId !== sourceId);
+            await this._setEntries(next);
+            this.render();
+        });
 
         const filters = await Pl1eFilter.getFilters(this.document.id, FILTER_CATEGORIES);
-        html.find(".item-filter-list").each((i, ul) =>
+        html.find(".item-filter-list").each((_, ul) =>
             this._initializeFilterItemList(ul, filters)
         );
         html.find(".item-filter").on("click", this._onToggleFilter.bind(this));
 
         this._applyMerchantTradeColors(html);
         this._setupDragAndDrop(html);
-        if (this.document.isOwner) this._setupRemoveListeners(html);
     }
 
-    /**
-     * Apply trade colors to merchant bar
-     */
-    _applyMerchantTradeColors(html) {
+    /* -------------------------------------------- */
+    /*  Drag & Drop                                 */
+    /* -------------------------------------------- */
 
-        const buyValue  = parseFloat(html.find(".trade-rate.buy .value").text());
-        const sellValue = parseFloat(html.find(".trade-rate.sell .value").text());
+    _setupDragAndDrop(html) {
+        html.find(".item").each((_, el) => {
+            el.setAttribute("draggable", true);
 
-        if (!Number.isNaN(buyValue)) {
-            const color = this._getTradeColor(buyValue, {
-                min: 50,
-                mid: 100,
-                max: 150,
-                invert: true   // BUY = plus bas = mieux
+            el.addEventListener("dragstart", ev => {
+                const sourceId = el.dataset.sourceId ?? el.dataset.itemId;
+                if (!sourceId) return;
+
+                ev.dataTransfer.setData("text/plain", JSON.stringify({
+                    type: "Item",
+                    uuid: sourceId,
+                    flags: {
+                        pl1e: {
+                            fromMerchant: true,
+                            sourceId,
+                            merchantPageId: this.document.id
+                        }
+                    }
+                }));
             });
-            html.find(".trade-rate.buy .value").css("color", color);
-        }
+        });
 
-        if (!Number.isNaN(sellValue)) {
-            const color = this._getTradeColor(sellValue, {
-                min: 0,
-                mid: 50,
-                max: 100,
-                invert: false  // SELL = plus haut = mieux
+        html.find(".drop-target")
+            .on("dragover", ev => ev.preventDefault())
+            .on("drop", async ev => {
+                ev.preventDefault();
+
+                let data;
+                try {
+                    data = JSON.parse(ev.originalEvent.dataTransfer.getData("text/plain"));
+                } catch {
+                    return;
+                }
+
+                if (data.type !== "Item" || !data.uuid) return;
+
+                const source =
+                    await fromUuid(data.uuid).catch(() => null)
+                    ?? await Pl1eHelpers.getDocument("Item", data.uuid);
+
+                if (!source || !ITEM_TYPES.has(source.type)) return;
+
+                const entries = this._getEntries();
+                if (entries.some(e => e.sourceId === source.id)) return;
+
+                entries.push({ sourceId: source.id });
+                await this._setEntries(entries);
+                this.render();
             });
-            html.find(".trade-rate.sell .value").css("color", color);
-        }
     }
 
-    /**
-     * Linearly interpolate between two colors
-     */
-    _lerpColor(a, b, t) {
-        return a.map((v, i) => Math.round(v + (b[i] - v) * t));
-    }
-
-    /**
-     * Compute trade color (red ↔ white ↔ green)
-     */
-    _getTradeColor(value, { min, mid, max, invert = false }) {
-
-        const RED   = [255, 0, 0];
-        const WHITE = [255, 255, 255];
-        const GREEN = [0, 255, 0];
-
-        // Clamp
-        value = Math.max(min, Math.min(max, value));
-
-        const low  = invert ? GREEN : RED;
-        const high = invert ? RED   : GREEN;
-
-        if (value <= mid) {
-            const t = (value - min) / (mid - min);
-            return `rgb(${this._lerpColor(low, WHITE, t).join(",")})`;
-        } else {
-            const t = (value - mid) / (max - mid);
-            return `rgb(${this._lerpColor(WHITE, high, t).join(",")})`;
-        }
-    }
+    /* -------------------------------------------- */
+    /*  UI helpers                                  */
+    /* -------------------------------------------- */
 
     _initializeFilterItemList(ul, filters) {
         const type = ul.dataset.filter;
         const set = filters[type] ?? new Set();
+
         ul.querySelectorAll(".item-filter").forEach(li => {
             if (set.has(li.dataset.filter)) li.classList.add("color-disabled");
         });
@@ -156,6 +235,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
 
     async _onToggleFilter(event) {
         event.preventDefault();
+
         const li = event.currentTarget;
         const type = li.parentElement.dataset.filter;
         const value = li.dataset.filter;
@@ -164,167 +244,40 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
         this.document.parent?.sheet?.render(true);
     }
 
-    _createFakeActor(items) {
-        return {
-            type: "merchant",
-            items,
-            isOwner: this.document.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER),
-            img: "icons/svg/coins.svg",
-            system: {
-                general: {
-                    sellMultiplier: this.object.system.sellMultiplier ?? 100,
-                    buyMultiplier: this.object.system.buyMultiplier ?? 50
-                },
-                merchantPrices: {}
-            },
-            flags: { pl1e: {} }
-        };
-    }
+    _applyMerchantTradeColors(html) {
+        const buy = parseFloat(html.find(".trade-rate.buy .value").text());
+        const sell = parseFloat(html.find(".trade-rate.sell .value").text());
 
-    async _decorateItems(fakeActor) {
-        const prices = {};
-
-        for (let item of fakeActor.items) {
-            if (!ITEM_TYPES.has(item.type)) continue;
-
-            const price = {
-                gold: item.system.attributes.goldPrice,
-                silver: item.system.attributes.silverPrice,
-                copper: item.system.attributes.copperPrice
-            };
-
-            const value = Math.round(Pl1eHelpers.moneyToUnits(price) * (fakeActor.system.general.buyMultiplier / 100));
-            const adjustedPrice = Pl1eHelpers.unitsToMoney(value);
-
-            fakeActor.system.merchantPrices[item.id] = adjustedPrice;
-
-            item.flags ??= {};
-            item.flags.pl1e = {
-                ...(item.flags.pl1e ?? {}),
-                fromMerchant: true,
-                price: adjustedPrice,
-            };
-
-            item.system.attributes.goldPrice = adjustedPrice.gold ?? 0;
-            item.system.attributes.silverPrice = adjustedPrice.silver ?? 0;
-            item.system.attributes.copperPrice = adjustedPrice.copper ?? 0;
-
-            item.enriched = await TextEditor.enrichHTML(item.system.description || "", { async: true });
-            prices[item.id] = adjustedPrice;
+        if (!Number.isNaN(buy)) {
+            html.find(".trade-rate.buy .value").css(
+                "color",
+                this._getTradeColor(buy, { min: 50, mid: 100, max: 150, invert: true })
+            );
         }
 
-        await this.document.setFlag("pl1e", "prices", prices);
+        if (!Number.isNaN(sell)) {
+            html.find(".trade-rate.sell .value").css(
+                "color",
+                this._getTradeColor(sell, { min: 0, mid: 50, max: 100 })
+            );
+        }
     }
 
-    _setupDragAndDrop(html) {
-        html.find(".item").each((i, el) => {
-            el.setAttribute("draggable", true);
-            el.addEventListener("dragstart", ev => {
-                ev.stopPropagation()
+    _getTradeColor(value, { min, mid, max, invert = false }) {
+        const RED = [255, 0, 0];
+        const WHITE = [255, 255, 255];
+        const GREEN = [0, 255, 0];
 
-                const itemId = el.dataset.itemId;
-                const itemsData = this.object.getFlag("pl1e", "items") || [];
-                const itemData = itemsData.find(i => i._id === itemId);
-                if (!itemData) return;
+        value = Math.max(min, Math.min(max, value));
+        const low = invert ? GREEN : RED;
+        const high = invert ? RED : GREEN;
 
-                const prices = this.document.getFlag("pl1e", "prices") || {};
-                const price = prices[itemId];
+        const lerp = (a, b, t) =>
+            a.map((v, i) => Math.round(v + (b[i] - v) * t));
 
-                const dragData = {
-                    type: "Item",
-                    itemData,
-                    flags: {
-                        pl1e: {
-                            fromMerchant: true,
-                            price: price,
-                            merchantPageId: this.document.id
-                        }
-                    }
-                };
-
-                ev.dataTransfer.setData("text/plain", JSON.stringify(dragData));
-            });
-        });
-
-        html.find(".drop-target")
-            .on("dragenter", ev => {
-                ev.preventDefault();
-                ev.currentTarget.classList.add("drop-ready");
-            })
-            .on("dragover", ev => {
-                ev.preventDefault(); // OBLIGATOIRE pour autoriser le drop
-            })
-            .on("dragleave", ev => {
-                ev.currentTarget.classList.remove("drop-ready");
-            })
-            .on("drop", async event => {
-                event.preventDefault();
-                event.currentTarget.classList.remove("drop-ready");
-
-                const dataTransfer = event.originalEvent?.dataTransfer;
-                if (!dataTransfer) return;
-
-                let data;
-                try {
-                    data = JSON.parse(dataTransfer.getData("text/plain"));
-                } catch (err) {
-                    return console.warn("PL1E | Invalid drop:", err);
-                }
-
-                const item = await fromUuid(data.uuid);
-                const allowedTypes = [...ITEM_TYPES];
-                if (data.type !== "Item" || !allowedTypes.includes(item?.type)) return;
-
-                if (item?.isEmbedded && item.parent?.documentName === "Actor") {
-                    const seller = item.parent;
-                    const sellMultiplier = this.object.system.sellMultiplier;
-                    await Pl1eTrade.sellItem(seller, this.document, item, sellMultiplier);
-                }
-                else if (this.document.isOwner) {
-                    const item = await Pl1eHelpers.getDocument("Item", data.uuid);
-                    const existing = this.document.getFlag("pl1e", "items") || [];
-
-                    // const alreadyExists = existing.some(
-                    //     i => i._id === item.id || (i.name === item.name && i.type === item.type)
-                    // );
-                    const alreadyExists = existing.some(
-                        i => i.flags?.pl1e?.sourceId === item.id
-                    );
-
-                    if (!alreadyExists) {
-                        const raw = item.toObject();
-
-                        raw._id = foundry.utils.randomID();
-                        raw.flags ??= {};
-                        raw.flags.pl1e ??= {};
-                        raw.flags.pl1e.sourceId = item.id;
-                        raw.flags.pl1e.fromMerchant = true;
-
-                        existing.push(raw);
-
-                        await this.document.setFlag("pl1e", "items", existing);
-                        ui.notifications.info(`${item.name} added to merchant.`);
-                        this.render();
-                    }
-                }
-            });
-    }
-
-    _setupRemoveListeners(html) {
-        html.find(".item-remove").on("click", async event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            const li = event.currentTarget.closest(".item");
-            const itemId = li?.dataset.itemId;
-            if (!itemId) return;
-
-            const currentItems = this.document.getFlag("pl1e", "items") || [];
-            const updatedItems = currentItems.filter(i => i._id !== itemId);
-
-            await this.document.setFlag("pl1e", "items", updatedItems);
-            ui.notifications.info(game.i18n.localize("PL1E.ItemRemoved"));
-            this.render();
-        });
+        if (value <= mid) {
+            return `rgb(${lerp(low, WHITE, (value - min) / (mid - min)).join(",")})`;
+        }
+        return `rgb(${lerp(WHITE, high, (value - mid) / (max - mid)).join(",")})`;
     }
 }

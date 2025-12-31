@@ -351,7 +351,7 @@ export function getConfigActor() {
     PL1E.money = {
         "gold": {
             "label": "PL1E.GoldCoins",
-            "icon": "far fa-coins color-gold",
+            "icon": "fas fa-coins color-gold",
             "type": "number",
             "path": "system.money.gold",
             "img": "systems/pl1e/assets/coins/coins-crown-stack-gold.webp",
@@ -366,7 +366,7 @@ export function getConfigActor() {
         },
         "silver": {
             "label": "PL1E.SilverCoins",
-            "icon": "far fa-coins color-silver",
+            "icon": "fas fa-coins color-silver",
             "type": "number",
             "path": "system.money.silver",
             "img": "systems/pl1e/assets/coins/coins-shield-sword-stack-silver.webp",
@@ -381,7 +381,7 @@ export function getConfigActor() {
         },
         "copper": {
             "label": "PL1E.CopperCoins",
-            "icon": "far fa-coins color-copper",
+            "icon": "fas fa-coins color-copper",
             "type": "number",
             "path": "system.money.copper",
             "img": "systems/pl1e/assets/coins/coins-wheat-stack-copper.webp",
