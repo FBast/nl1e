@@ -230,12 +230,16 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         }
 
         if (data.type === "Item") {
-            if (data.flags?.pl1e?.fromMerchant && data.itemData) {
-                const item = new CONFIG.Item.documentClass(data.itemData, { parent: null });
+            if (data.flags?.pl1e?.fromMerchant) {
+                const source = await fromUuid(data.uuid);
+                if (!source) return;
 
-                item.flags = foundry.utils.mergeObject(item.flags ?? {}, {
-                    pl1e: data.flags.pl1e
-                });
+                const raw = source.toObject();
+                raw._id = foundry.utils.randomID();
+                raw.flags ??= {};
+                raw.flags.pl1e = data.flags.pl1e;
+
+                const item = new CONFIG.Item.documentClass(raw, { parent: null });
 
                 await this._addItem(item);
             }

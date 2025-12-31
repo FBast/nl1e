@@ -1,7 +1,7 @@
-import { Pl1eEvent } from "../../helpers/events.mjs";
-import { Pl1eHelpers } from "../../helpers/helpers.mjs";
-import { Pl1eJournalPageSheet } from "./journal-page-sheet.mjs";
-import { Pl1eFilter } from "../../helpers/filter.mjs";
+import {Pl1eEvent} from "../../helpers/events.mjs";
+import {Pl1eHelpers} from "../../helpers/helpers.mjs";
+import {Pl1eJournalPageSheet} from "./journal-page-sheet.mjs";
+import {Pl1eFilter} from "../../helpers/filter.mjs";
 
 const FILTER_CATEGORIES = ["weapons", "wearables", "consumables", "commons", "modules", "services"];
 const ITEM_TYPES = new Set(["weapon", "wearable", "consumable", "common", "module", "service"]);
@@ -48,6 +48,20 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
 
         await this._decorateItems(items);
 
+        this._runtimeItemsBySourceId = new Map(
+            items.map(i => [i.flags.pl1e.sourceId, i])
+        );
+
+        context.actor = {
+            type: "merchant",
+            isOwner: this.document.testUserPermission(
+                game.user,
+                CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
+            ),
+            system: {
+                favorites: this.document.system?.favorites ?? {}
+            }
+        };
         context.items = items;
         context.itemNumber = items.length;
         context.merchantPrices = Object.fromEntries(
@@ -173,21 +187,31 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
         html.find(".item").each((_, el) => {
             el.setAttribute("draggable", true);
 
-            el.addEventListener("dragstart", ev => {
+            el.addEventListener("dragstart", async ev => {
                 const sourceId = el.dataset.sourceId ?? el.dataset.itemId;
                 if (!sourceId) return;
 
-                ev.dataTransfer.setData("text/plain", JSON.stringify({
-                    type: "Item",
-                    uuid: sourceId,
-                    flags: {
-                        pl1e: {
-                            fromMerchant: true,
-                            sourceId,
-                            merchantPageId: this.document.id
+                const source = await Pl1eHelpers.getDocument("Item", sourceId);
+                if (!source) return;
+
+                const runtimeItem = this._runtimeItemsBySourceId?.get(sourceId);
+                const price = runtimeItem?.flags?.pl1e?.price;
+
+                ev.dataTransfer.setData(
+                    "text/plain",
+                    JSON.stringify({
+                        type: "Item",
+                        uuid: source.uuid,
+                        flags: {
+                            pl1e: {
+                                fromMerchant: true,
+                                merchantPageId: this.document.id,
+                                sourceId: source.id,
+                                price
+                            }
                         }
-                    }
-                }));
+                    })
+                );
             });
         });
 

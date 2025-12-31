@@ -19,7 +19,7 @@
             </div>
         {{/if}}
     {{else if (eq @root.actor.type "merchant")}}
-        {{#with (lookup @root.merchantPrices _id)}}
+        {{#with (lookup @root.merchantPrices flags.pl1e.sourceId)}}
             {{#if (gt gold 0)}}
                 <div class="icon">
                     <i class="fas fa-coins color-gold hover-info" data-tooltip="{{localize "PL1E.Gold"}}"></i>
