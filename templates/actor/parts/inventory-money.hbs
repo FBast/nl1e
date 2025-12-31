@@ -14,9 +14,10 @@
                         {{#unless ../favoriteDisplay}}
                             <div class="icon-group">
                                 {{#each conversions}}
-                                    <i class="{{icon}} hover-info" data-tooltip="{{tooltip}}">
+                                    <div class="icon">
+                                        <i class="{{icon}} hover-info" data-tooltip="{{tooltip}}"></i>
                                         <label>{{label}}</label>
-                                    </i>
+                                    </div>
                                 {{/each}}
                             </div>
                         {{/unless}}

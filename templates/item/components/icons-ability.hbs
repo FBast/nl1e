@@ -1,59 +1,75 @@
 <div class="icon-group">
-    <i class="far fa-trophy hover-info" data-tooltip='{{localize "PL1E.Level"}}'>
+    <div class="icon">
+        <i class="far fa-trophy hover-info" data-tooltip='{{localize "PL1E.Level"}}'></i>
         <label>{{system.attributes.level}}</label>
-    </i>
+    </div>
     {{#if (ne system.attributes.actionCost 0)}}
-        <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+        <div class="icon">
+            <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'></i>
             <label>{{system.attributes.actionCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.reactionCost 0)}}
-        <i class="far fa-reply-clock hover-info" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+        <div class="icon">
+            <i class="far fa-reply-clock hover-info" data-tooltip='{{localize "PL1E.ReactionCost"}}'></i>
             <label>{{system.attributes.reactionCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.quickActionCost 0)}}
-        <i class="far fa-bell hover-info" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
+        <div class="icon">
+            <i class="far fa-bell hover-info" data-tooltip='{{localize "PL1E.QuickActionCost"}}'></i>
             <label>{{system.attributes.quickActionCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.healthCost 0)}}
-        <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthCost"}}'>
+        <div class="icon">
+            <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthCost"}}'></i>
             <label>{{system.attributes.healthCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.staminaCost 0)}}
-        <i class="far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaCost"}}">
+        <div class="icon">
+            <i class="far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaCost"}}"></i>
             <label>{{system.attributes.staminaCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.manaCost 0)}}
-        <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaCost"}}'>
+        <div class="icon">
+            <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaCost"}}'></i>
             <label>{{system.attributes.manaCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (and system.attributes.usageCost (ne system.attributes.usageCost 0))}}
-        <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.UsageCost"}}'>
+        <div class="icon">
+            <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.UsageCost"}}'></i>
             <label>{{system.attributes.usageCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if system.attributes.isMajorAction}}
-        <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
+        <div class="icon">
+            <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
+        </div>
     {{/if}}
     {{#if system.attributes.isDangerous}}
-        <i class="far fa-exclamation-triangle hover-info"
-           data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
+        <div class="icon">
+            <i class="far fa-exclamation-triangle hover-info" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
+        </div>
     {{/if}}
     {{#if (eq system.attributes.linkedItem "melee")}}
-        <i class="far fa-sword hover-info" data-tooltip='{{localize "PL1E.Melee"}}'></i>
+        <div class="icon">
+            <i class="far fa-sword hover-info" data-tooltip='{{localize "PL1E.Melee"}}'></i>
+        </div>
     {{else if (eq system.attributes.linkedItem "range")}}
-        <i class="far fa-bow-arrow hover-info" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
+        <div class="icon">
+            <i class="far fa-bow-arrow hover-info" data-tooltip='{{localize "PL1E.Ranged"}}'></i>
+        </div>
     {{/if}}
     {{#if (eq system.attributes.linkedItem "none")}}
         {{#if (ne system.attributes.range 0)}}
-            <i class="far fa-bullseye hover-info" data-tooltip='{{localize "PL1E.Range"}}'>
+            <div class="icon">
+                <i class="far fa-bullseye hover-info" data-tooltip='{{localize "PL1E.Range"}}'></i>
                 <label>{{system.attributes.range}}</label>
-            </i>
+            </div>
         {{/if}}
     {{/if}}
 </div>

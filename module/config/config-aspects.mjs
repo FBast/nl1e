@@ -164,63 +164,63 @@ export function getConfigAspects() {
             "label": "PL1E.Health",
             "path": "system.resources.health.value",
             "type": "number",
-            "icon": "far fa-heart",
+            "icon": "fas fa-heart",
             "colorClass": "color-health"
         },
         "healthMax": {
             "label": "PL1E.MaxHealth",
             "path": "system.resources.health.max",
             "type": "number",
-            "icon": "far fa-heart",
+            "icon": "fas fa-heart",
             "colorClass": "color-health"
         },
         "healthTemp": {
             "label": "PL1E.TempHealth",
             "path": "system.resources.health.temp",
             "type": "number",
-            "icon": "far fa-heart",
+            "icon": "fas fa-heart",
             "colorClass": "color-health"
         },
         "stamina": {
             "label": "PL1E.Stamina",
             "path": "system.resources.stamina.value",
             "type": "number",
-            "icon": "far fa-wave-pulse",
+            "icon": "fas fa-lungs",
             "colorClass": "color-stamina"
         },
         "staminaMax": {
             "label": "PL1E.MaxStamina",
             "path": "system.resources.stamina.max",
             "type": "number",
-            "icon": "far fa-wave-pulse",
+            "icon": "fas fa-lungs",
             "colorClass": "color-stamina"
         },
         "staminaTemp": {
             "label": "PL1E.TempStamina",
             "path": "system.resources.stamina.temp",
             "type": "number",
-            "icon": "far fa-wave-pulse",
+            "icon": "fas fa-lungs",
             "colorClass": "color-stamina"
         },
         "mana": {
             "label": "PL1E.Mana",
             "path": "system.resources.mana.value",
             "type": "number",
-            "icon": "far fa-sparkles",
+            "icon": "fas fa-brain",
             "colorClass": "color-mana"
         },
         "manaMax": {
             "label": "PL1E.MaxMana",
             "path": "system.resources.mana.max",
             "type": "number",
-            "icon": "far fa-sparkles",
+            "icon": "fas fa-brain",
             "colorClass": "color-mana"
         },
         "manaTemp": {
             "label": "PL1E.TempMana",
             "path": "system.resources.mana.temp",
             "type": "number",
-            "icon": "far fa-sparkles",
+            "icon": "fas fa-brain",
             "colorClass": "color-mana"
         }
     }

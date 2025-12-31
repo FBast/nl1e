@@ -2,20 +2,22 @@
     {{#each combinedActiveAspects as |aspect|}}
         {{#with (config aspect.dataGroup aspect.data) as |dataConfig|}}
             {{#if (eq aspect.damageType "raw")}}
-                <i class="{{dataConfig.icon}} res-{{aspect.data}} {{dataConfig.colorClass}} hover-info"
-                   data-tooltip="{{localize dataConfig.label}}">
+                <div class="icon">
+                    <i class="{{dataConfig.icon}} res-{{aspect.data}} {{dataConfig.colorClass}} hover-info"
+                       data-tooltip="{{localize dataConfig.label}}"></i>
                     <label>
                         {{#if (eq aspect.operator "remove")}}-{{else}}+{{/if}}{{aspect.value}}
                     </label>
-                </i>
+                </div>
             {{else}}
                 {{#with (config "damageTypes" aspect.damageType) as |dmg|}}
-                    <i class="{{#if dmg.icon}}{{dmg.icon}}{{else}}{{dataConfig.icon}}{{/if}} {{dataConfig.colorClass}} res-{{data}} hover-info"
-                       data-tooltip="{{localize dmg.label}} ({{localize dataConfig.label}})">
+                    <div class="icon">
+                        <i class="{{#if dmg.icon}}{{dmg.icon}}{{else}}{{dataConfig.icon}}{{/if}} {{dataConfig.colorClass}} res-{{data}} hover-info"
+                           data-tooltip="{{localize dmg.label}} ({{localize dataConfig.label}})"></i>
                         <label>
                             {{#if (eq aspect.operator "remove")}}-{{else}}+{{/if}}{{aspect.value}}
                         </label>
-                    </i>
+                    </div>
                 {{/with}}
             {{/if}}
         {{/with}}

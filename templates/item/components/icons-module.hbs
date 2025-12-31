@@ -1,19 +1,22 @@
 {{#if (eq @root.actor.type "merchant")}}
     {{#with (lookup @root.merchantPrices _id)}}
         {{#if (gt gold 0)}}
-            <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'>
+            <div class="icon">
+                <i class="far fa-coins color-gold hover-info" data-tooltip='{{localize "PL1E.Gold"}}'></i>
                 <label>{{gold}}</label>
-            </i>
+            </div>
         {{/if}}
         {{#if (gt silver 0)}}
-            <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'>
+            <div class="icon">
+                <i class="far fa-coins color-silver hover-info" data-tooltip='{{localize "PL1E.Silver"}}'></i>
                 <label>{{silver}}</label>
-            </i>
+            </div>
         {{/if}}
         {{#if (gt copper 0)}}
-            <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'>
+            <div class="icon">
+                <i class="far fa-coins color-copper hover-info" data-tooltip='{{localize "PL1E.Copper"}}'></i>
                 <label>{{copper}}</label>
-            </i>
+            </div>
         {{/if}}
     {{/with}}
 {{/if}}

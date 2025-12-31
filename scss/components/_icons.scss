@@ -5,15 +5,20 @@
   flex-wrap: wrap;
   gap: 8px;
 
-  i {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: $font-size-sm;
-    opacity: 0.85;
+  .icon {
+    gap: 4px;
+    display: inline-flex;
+
+    i {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $font-size-sm;
+      opacity: 0.85;
+    }
 
     label {
-      margin-left: 4px;
+      font-size: $font-size-sm;
     }
   }
 

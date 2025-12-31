@@ -2,24 +2,28 @@
 
 <div class="icon-group">
     {{#if (ne system.attributes.hands 0)}}
-        <i class="far fa-hand hover-info" data-tooltip="{{localize "PL1E.Hands"}}">
+        <div class="icon">
+            <i class="far fa-hand hover-info" data-tooltip="{{localize "PL1E.Hands"}}"></i>
             <label>{{system.attributes.hands}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (gt system.attributes.reach 0)}}
-        <i class="far fa-sword hover-info" data-tooltip="{{localize "PL1E.Reach"}}">
+        <div class="icon">
+            <i class="far fa-sword hover-info" data-tooltip="{{localize "PL1E.Reach"}}"></i>
             <label>{{system.attributes.reach}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (gt system.attributes.range 0)}}
-        <i class="far fa-bow-arrow hover-info" data-tooltip="{{localize "PL1E.Range"}}">
+        <div class="icon">
+            <i class="far fa-bow-arrow hover-info" data-tooltip="{{localize "PL1E.Range"}}"></i>
             <label>{{system.attributes.range}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (gt system.attributes.uses 0)}}
-        <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
+        <div class="icon">
+            <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.Uses"}}'></i>
             <label>{{minus system.attributes.uses system.removedUses}}</label>
-        </i>
+        </div>
     {{/if}}
 </div>
 

@@ -2,23 +2,27 @@
 
 <div class="icon-group">
     {{#if (ne system.attributes.healthGain 0)}}
-        <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.Health"}}'>
+        <div class="icon">
+            <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.Health"}}'></i>
             <label>{{system.attributes.healthGain}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.staminaGain 0)}}
-        <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.Stamina"}}'>
+        <div class="icon">
+            <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.Stamina"}}'></i>
             <label>{{system.attributes.staminaGain}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.manaGain 0)}}
-        <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.Mana"}}'>
+        <div class="icon">
+            <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.Mana"}}'></i>
             <label>{{system.attributes.manaGain}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.intoxication 0)}}
-        <i class="far fa-skull-crossbones hover-info" data-tooltip='{{localize "PL1E.Intoxication"}}'>
+        <div class="icon">
+            <i class="far fa-skull-crossbones hover-info" data-tooltip='{{localize "PL1E.Intoxication"}}'></i>
             <label>{{system.attributes.intoxication}}</label>
-        </i>
+        </div>
     {{/if}}
 </div>

@@ -114,10 +114,11 @@
                     {{#each (config "general")}}
                         {{#if header}}
                             {{#with (lookup ../system.general @key)}}
-                                <i class="hover-info {{../icon}} {{#if (gt this ../default)}}color-bonus{{else if (lt this ../default)}}color-malus{{/if}}"
-                                   data-tooltip="{{localize ../label}}">
+                                <div class="icon">
+                                    <i class="hover-info {{../icon}} {{#if (gt this ../default)}}color-bonus{{else if (lt this ../default)}}color-malus{{/if}}"
+                                       data-tooltip="{{localize ../label}}"></i>
                                     <label>{{#if (isInfinite this)}}∞{{else}}{{this}}{{/if}}</label>
-                                </i>
+                                </div>
                             {{/with}}
                         {{/if}}
                     {{/each}}
@@ -126,10 +127,11 @@
                     {{#each (config "reductions")}}
                         {{#if header}}
                             {{#with (lookup ../system.reductions @key)}}
-                                <i class="hover-info {{../icon}} {{#if (gt this 0)}}color-bonus{{else if (lt this 0)}}color-malus{{/if}}"
-                                   data-tooltip="{{localize ../label}}">
+                                <div class="icon">
+                                    <i class="hover-info {{../icon}} {{#if (gt this 0)}}color-bonus{{else if (lt this 0)}}color-malus{{/if}}"
+                                       data-tooltip="{{localize ../label}}"></i>
                                     <label>{{#if (isInfinite this)}}∞{{else}}{{this}}{{/if}}</label>
-                                </i>
+                                </div>
                             {{/with}}
                         {{/if}}
                     {{/each}}
@@ -138,9 +140,10 @@
                     {{#each (config "misc")}}
                         {{#if header}}
                             {{#with (lookup ../system.misc @key)}}
-                                <i class="hover-info {{../icon}}" data-tooltip="{{localize ../label}}">
+                                <div class="icon">
+                                    <i class="hover-info {{../icon}}" data-tooltip="{{localize ../label}}"></i>
                                     <label>{{#if (isInfinite this)}}∞{{else}}{{this}}{{/if}}</label>
-                                </i>
+                                </div>
                             {{/with}}
                         {{/if}}
                     {{/each}}

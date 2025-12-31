@@ -24,7 +24,7 @@ export function getConfigActor() {
                     "will"
                 ]
             },
-            "icon": "far fa-heart",
+            "icon": "fas fa-heart",
             "type": "number",
             "path": "system.resources.health.value"
         },
@@ -37,7 +37,7 @@ export function getConfigActor() {
                     "constitution"
                 ]
             },
-            "icon": "far fa-wave-pulse",
+            "icon": "fas fa-lungs",
             "type": "number",
             "path": "system.resources.stamina.value"
         },
@@ -50,7 +50,7 @@ export function getConfigActor() {
                     "will"
                 ]
             },
-            "icon": "far fa-sparkles",
+            "icon": "fas fa-brain",
             "type": "number",
             "path": "system.resources.mana.value"
         }

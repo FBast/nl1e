@@ -2,42 +2,54 @@
 
 <div class="icon-group">
     {{#if (ne system.attributes.actionCost 0)}}
-        <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'>
+        <div class="icon">
+            <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'></i>
             <label>{{system.attributes.actionCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.reactionCost 0)}}
-        <i class="far fa-reply-clock hover-info" data-tooltip='{{localize "PL1E.ReactionCost"}}'>
+        <div class="icon">
+            <i class="far fa-reply-clock hover-info" data-tooltip='{{localize "PL1E.ReactionCost"}}'></i>
             <label>{{system.attributes.reactionCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if (ne system.attributes.quickActionCost 0)}}
-        <i class="far fa-bell hover-info" data-tooltip='{{localize "PL1E.QuickActionCost"}}'>
+        <div class="icon">
+            <i class="far fa-bell hover-info" data-tooltip='{{localize "PL1E.QuickActionCost"}}'></i>
             <label>{{system.attributes.quickActionCost}}</label>
-        </i>
+        </div>
     {{/if}}
     {{#if system.attributes.isMajorAction}}
-        <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
+        <div class="icon">
+            <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.IsMajorAction"}}'></i>
+        </div>
     {{/if}}
     {{#if system.attributes.isDangerous}}
-        <i class="far fa-exclamation-triangle hover-info" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
+        <div class="icon">
+            <i class="far fa-exclamation-triangle hover-info" data-tooltip='{{localize "PL1E.IsDangerous"}}'></i>
+        </div>
     {{/if}}
     {{#if (gt system.attributes.uses 0)}}
         {{#if (eq system.removedUses 0)}}
-            <i class="far fa-battery-full hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
+            <div class="icon">
+                <i class="far fa-battery-full hover-info" data-tooltip='{{localize "PL1E.Uses"}}'></i>
                 <label>{{minus system.attributes.uses system.removedUses}}</label>
-            </i>
+            </div>
         {{else if (eq system.removedUses system.attributes.uses)}}
-            <i class="far fa-battery-empty hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
+            <div class="icon">
+                <i class="far fa-battery-empty hover-info" data-tooltip='{{localize "PL1E.Uses"}}'></i>
                 <label>{{minus system.attributes.uses system.removedUses}}</label>
-            </i>
+            </div>
         {{else}}
-            <i class="far fa-battery-half hover-info" data-tooltip='{{localize "PL1E.Uses"}}'>
+            <div class="icon">
+                <i class="far fa-battery-half hover-info" data-tooltip='{{localize "PL1E.Uses"}}'></i>
                 <label>{{minus system.attributes.uses system.removedUses}}</label>
-            </i>
+            </div>
         {{/if}}
         {{#if system.attributes.isReloadable}}
-            <i class="far fa-repeat hover-info" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
+            <div class="icon">
+                <i class="far fa-repeat hover-info" data-tooltip='{{localize "PL1E.Reloadable"}}'></i>
+            </div>
         {{/if}}
     {{/if}}
 </div>

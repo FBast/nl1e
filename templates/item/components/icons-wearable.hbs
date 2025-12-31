@@ -2,7 +2,9 @@
 
 {{#if (or (eq @root.actor.type "character") @root.item)}}
     {{#if system.majorActionUsed}}
-        <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
+        <div class="icon">
+            <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
+        </div>
     {{/if}}
 {{/if}}
 

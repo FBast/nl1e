@@ -1,18 +1,16 @@
 <div class="icon-group">
     {{#each combinedPassiveAspects}}
         {{#with (config dataGroup data) as |resource|}}
-            {{#if (eq type "bool")}}
-                <i class="{{resource.icon}} hover-info"
-                   data-tooltip="{{localize resource.label}}">
-                </i>
-            {{else}}
-                <i class="{{resource.icon}} res-{{data}} hover-info"
-                   data-tooltip="{{localize resource.label}}">
+            <div class="icon">
+                {{#if (eq type "bool")}}
+                    <i class="{{resource.icon}} hover-info" data-tooltip="{{localize resource.label}}"></i>
+                {{else}}
+                    <i class="{{resource.icon}} res-{{data}} hover-info" data-tooltip="{{localize resource.label}}"></i>
                     <label class="{{resource.colorClass}}">
                         {{#if (eq ../operator "remove")}}-{{else}}+{{/if}}{{../value}}
                     </label>
-                </i>
-            {{/if}}
+                {{/if}}
+            </div>
         {{/with}}
     {{/each}}
 </div>
