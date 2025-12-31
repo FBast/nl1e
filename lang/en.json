@@ -22,6 +22,7 @@
   "PL1E.BuyModeSameItem": "Buys only items it already sells",
   "PL1E.BuyModeSameType": "Buys only items of the same type",
   "PL1E.BuyModeAll": "Buys everything",
+  "PL1E.PrivateItemsWarning": "You must purchase this item to inspect it.",
   "PL1E.BuyModeNoneHint": "This merchant does not buy items.",
   "PL1E.BuyModeSameItemHint": "This merchant only buys items it already sells.",
   "PL1E.BuyModeSameTypeHint": "This merchant only buys items of types it already sells.",

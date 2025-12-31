@@ -150,15 +150,33 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
 
     async activateListeners(html) {
         await super.activateListeners(html);
-        const canInspectItems = this.document.system?.privateItems;
+        const canInspectItems = !this.document.system?.privateItems;
 
         // Tooltip
-        if (canInspectItems)
-            html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find(".item-tooltip-activate").on("click", ev => {
+            ev.preventDefault();
+            ev.stopPropagation();
+
+            if (!canInspectItems) {
+                ui.notifications.warn(game.i18n.localize("PL1E.PrivateItemsWarning"));
+                return;
+            }
+
+            Pl1eEvent.onItemTooltip(ev);
+        });
 
         // Open item sheet
-        if (canInspectItems)
-            html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.document));
+        html.find(".item-edit").on("click", ev => {
+            ev.preventDefault();
+            ev.stopPropagation();
+
+            if (!canInspectItems) {
+                ui.notifications.warn(game.i18n.localize("PL1E.PrivateItemsWarning"));
+                return;
+            }
+
+            Pl1eEvent.onItemEdit(ev, this.document);
+        });
 
         html.find(".item-remove").on("click", async ev => {
             ev.preventDefault();
@@ -192,7 +210,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             el.setAttribute("draggable", true);
 
             el.addEventListener("dragstart", async ev => {
-                const sourceId = el.dataset.sourceId ?? el.dataset.itemId;
+                const sourceId = el.dataset.itemSourceId;
                 if (!sourceId) return;
 
                 const source = await Pl1eHelpers.getDocument("Item", sourceId);
@@ -210,7 +228,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
                             pl1e: {
                                 fromMerchant: true,
                                 merchantPageId: this.document.id,
-                                sourceId: source.id,
+                                sourceId: sourceId,
                                 price
                             }
                         }

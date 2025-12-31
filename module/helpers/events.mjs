@@ -82,6 +82,7 @@ export class Pl1eEvent {
 
         const li = $(event.currentTarget).closest(".item");
         const itemId = li.data("item-id");
+        const itemSourceId = li.data("item-source-id");
 
         let item;
 
@@ -96,7 +97,7 @@ export class Pl1eEvent {
         // Merchant (JournalEntryPage)
         else if (document instanceof JournalEntryPage) {
             // Resolve the source (compendium fallback → world fallback)
-            const source = await Pl1eHelpers.getDocument("Item", itemId);
+            const source = await Pl1eHelpers.getDocument("Item", itemSourceId);
             if (!source) {
                 throw new Error(`PL1E | Source item ${itemId} not found`);
             }
@@ -115,7 +116,7 @@ export class Pl1eEvent {
             rawData.flags.pl1e ??= {};
             rawData.flags.pl1e = foundry.utils.mergeObject(rawData.flags.pl1e, {
                 fromMerchant: true,
-                sourceId
+                itemSourceId
             });
 
             item = new CONFIG.Item.documentClass(rawData, { parent: null });

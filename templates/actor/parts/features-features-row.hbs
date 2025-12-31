@@ -10,7 +10,7 @@
     <div class="list-row">
         {{#if (gt features.length 0)}}
             {{#each features}}
-                <div class="item" data-item-id="{{_id}}" {{#if flags.pl1e.sourceId}}data-source-id="{{flags.pl1e.sourceId}}"{{/if}}>
+                <div class="item" data-item-id="{{_id}}" data-item-source-id="{{sourceId}}">
                     <img class="item-edit hover-action" src="{{img}}" title="{{name}}"/>
                     {{#if @root.actor.isOwner}}
                         {{#if flags.pl1e.childId}}
