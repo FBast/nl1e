@@ -13,10 +13,10 @@
             {{/if}}
         {{/with}}
     {{/each}}
-    <i class="far fa-heart group-icon hover-info" data-tooltip="{{localize "PL1E.Body"}}"></i>
+    <i class="fas fa-b group-icon hover-info" data-tooltip="{{localize "PL1E.Body"}}"></i>
 </div>
 <div class="characteristics">
-    <i class="far fa-brain group-icon hover-info" data-tooltip="{{localize "PL1E.Mind"}}"></i>
+    <i class="fas fa-m group-icon hover-info" data-tooltip="{{localize "PL1E.Mind"}}"></i>
     {{#each system.characteristics}}
         {{#with (config "characteristics" @key)}}
             {{#if (or (eq @key "intellect") (eq @key "cunning") (eq @key "wisdom") (eq @key "will"))}}

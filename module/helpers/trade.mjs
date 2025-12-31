@@ -26,7 +26,7 @@ export const Pl1eTrade = {
      */
     async sellItem(sellerActor, buyerJournal, item, buyMultiplier) {
         if (!this._canMerchantBuyItem(buyerJournal, item)) {
-            ui.notifications.warn(game.i18n.localize("PL1E.MerchantRestrictBuybackSameItem"));
+            ui.notifications.warn(game.i18n.localize("PL1E.MerchantRestrictBuySameItem"));
             return;
         }
 
@@ -52,7 +52,7 @@ export const Pl1eTrade = {
     },
 
     _canMerchantBuyItem(merchantPage, item) {
-        if (!merchantPage.system.restrictBuybackSameItem) return true;
+        if (!merchantPage.system.restrictBuySameItem) return true;
         if (!item.sourceId) return false;
 
         const sourceItemId = item.sourceId.split(".").pop();

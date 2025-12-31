@@ -55,7 +55,7 @@ export const Pl1eFilter = {
                     if (filters.has("equipped") && item.isEquipped) return false;
                     return true;
                 case "consumable":
-                    return !Object.keys(PL1E.consumableActivations).some(act => filters.has(act) && item.system.attributes.activation === act);
+                    return !Object.keys(PL1E.consumableTypes).some(ct => filters.has(ct) && item.system.attributes.consumableType === ct);
                 case "common":
                     return !Object.keys(PL1E.commonTypes).some(ct => filters.has(ct) && item.system.attributes.commonType === ct);
                 case "module":

@@ -54,6 +54,27 @@
 
 <div class="list-fields">
     <div class="list-header">
+        <h4>{{localize "PL1E.Consumables"}}</h4>
+    </div>
+
+    <div class="list-column">
+        <div class="field">
+            <div class="field-content">
+                <div class="title">
+                    <label>{{localize "PL1E.ComsumableType"}}</label>
+                </div>
+                <div class="fields">
+                    <select name="system.attributes.consumableType">
+                        {{customSelectOptions (config "consumableTypes") selected=system.attributes.consumableType localize=true}}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="list-fields">
+    <div class="list-header">
         <h4>{{localize "PL1E.Activation"}}</h4>
     </div>
 

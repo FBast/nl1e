@@ -3,19 +3,19 @@
 <div class="icon-group">
     {{#if (ne system.attributes.healthGain 0)}}
         <div class="icon">
-            <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.Health"}}'></i>
+            <i class="fas fa-heart color-health hover-info" data-tooltip='{{localize "PL1E.Health"}}'></i>
             <label>{{system.attributes.healthGain}}</label>
         </div>
     {{/if}}
     {{#if (ne system.attributes.staminaGain 0)}}
         <div class="icon">
-            <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.Stamina"}}'></i>
+            <i class="fas fa-lungs color-stamina hover-info" data-tooltip='{{localize "PL1E.Stamina"}}'></i>
             <label>{{system.attributes.staminaGain}}</label>
         </div>
     {{/if}}
     {{#if (ne system.attributes.manaGain 0)}}
         <div class="icon">
-            <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.Mana"}}'></i>
+            <i class="fas fa-brain color-mana hover-info" data-tooltip='{{localize "PL1E.Mana"}}'></i>
             <label>{{system.attributes.manaGain}}</label>
         </div>
     {{/if}}

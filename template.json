@@ -514,6 +514,7 @@
     "consumable": {
       "templates": ["base", "item"],
       "attributes": {
+        "consumableType": "potion",
         "roll": [],
         "rollAdvantages": 0,
         "oppositeRoll": [],
@@ -601,8 +602,8 @@
       "buyMultiplier": 100,
       "sellMultiplier": 0,
       "content": "",
-      "restrictBuybackSameItem": false,
-      "disableItemTooltip": false
+      "buyMode": "none",
+      "privateItems": false
     }
   }
 }

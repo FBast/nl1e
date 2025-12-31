@@ -21,24 +21,9 @@
             <label>{{system.attributes.quickActionCost}}</label>
         </div>
     {{/if}}
-    {{#if (ne system.attributes.healthCost 0)}}
-        <div class="icon">
-            <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthCost"}}'></i>
-            <label>{{system.attributes.healthCost}}</label>
-        </div>
-    {{/if}}
-    {{#if (ne system.attributes.staminaCost 0)}}
-        <div class="icon">
-            <i class="far fa-wave-pulse hover-info" data-tooltip="{{localize "PL1E.StaminaCost"}}"></i>
-            <label>{{system.attributes.staminaCost}}</label>
-        </div>
-    {{/if}}
-    {{#if (ne system.attributes.manaCost 0)}}
-        <div class="icon">
-            <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaCost"}}'></i>
-            <label>{{system.attributes.manaCost}}</label>
-        </div>
-    {{/if}}
+</div>
+
+<div class="icon-group">
     {{#if (and system.attributes.usageCost (ne system.attributes.usageCost 0))}}
         <div class="icon">
             <i class="far fa-tally hover-info" data-tooltip='{{localize "PL1E.UsageCost"}}'></i>
@@ -71,5 +56,26 @@
                 <label>{{system.attributes.range}}</label>
             </div>
         {{/if}}
+    {{/if}}
+</div>
+
+<div class="icon-group">
+    {{#if (ne system.attributes.healthCost 0)}}
+        <div class="icon">
+            <i class="fas fa-heart color-health hover-info" data-tooltip='{{localize "PL1E.HealthCost"}}'></i>
+            <label>{{system.attributes.healthCost}}</label>
+        </div>
+    {{/if}}
+    {{#if (ne system.attributes.staminaCost 0)}}
+        <div class="icon">
+            <i class="fas fa-lungs color-stamina hover-info" data-tooltip="{{localize "PL1E.StaminaCost"}}"></i>
+            <label>{{system.attributes.staminaCost}}</label>
+        </div>
+    {{/if}}
+    {{#if (ne system.attributes.manaCost 0)}}
+        <div class="icon">
+            <i class="fas fa-brain color-mana hover-info" data-tooltip='{{localize "PL1E.ManaCost"}}'></i>
+            <label>{{system.attributes.manaCost}}</label>
+        </div>
     {{/if}}
 </div>

@@ -65,6 +65,14 @@ export function getConfigBase() {
         "rest": "PL1E.Rest"
     }
 
+    PL1E.consumableTypes = {
+        "potion": "PL1E.Potion",
+        "bomb": "PL1E.Bomb",
+        "alcohol": "PL1E.Alcohol",
+        "stimulant": "PL1E.Stimulant",
+        "drug": "PL1E.Drug"
+    }
+
     PL1E.visionMode = {
 
     }

@@ -95,15 +95,10 @@ export class Pl1eEvent {
         }
         // Merchant (JournalEntryPage)
         else if (document instanceof JournalEntryPage) {
-            const sourceId = li.data("source-id");
-            if (!sourceId) {
-                throw new Error("PL1E | Merchant item missing data-source-id");
-            }
-
             // Resolve the source (compendium fallback → world fallback)
-            const source = await Pl1eHelpers.getDocument("Item", sourceId);
+            const source = await Pl1eHelpers.getDocument("Item", itemId);
             if (!source) {
-                throw new Error(`PL1E | Source item ${sourceId} not found`);
+                throw new Error(`PL1E | Source item ${itemId} not found`);
             }
 
             // Build a preview copy (never open the source directly)

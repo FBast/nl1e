@@ -1,30 +1,35 @@
 {{> "systems/pl1e/templates/item/components/icons-price.hbs"}}
 
-{{#if (eq system.attributes.commonType "food")}}
-    <div class="icon">
-        <i class="far fa-pot-food hover-info" data-tooltip='{{localize "PL1E.Food"}}'></i>
-    </div>
-{{/if}}
-{{#if (eq system.attributes.commonType "rest")}}
-    <div class="icon">
-        <i class="far fa-campground hover-info" data-tooltip='{{localize "PL1E.Rest"}}'></i>
-    </div>
-{{/if}}
-{{#if (ne system.attributes.healthRest 0)}}
-    <div class="icon">
-        <i class="far fa-heart hover-info" data-tooltip='{{localize "PL1E.HealthRest"}}'></i>
-        <label>{{system.attributes.healthRest}}</label>
-    </div>
-{{/if}}
-{{#if (ne system.attributes.staminaRest 0)}}
-    <div class="icon">
-        <i class="far fa-wave-pulse hover-info" data-tooltip='{{localize "PL1E.StaminaRest"}}'></i>
-        <label>{{system.attributes.staminaRest}}</label>
-    </div>
-{{/if}}
-{{#if (ne system.attributes.manaRest 0)}}
-    <div class="icon">
-        <i class="far fa-sparkles hover-info" data-tooltip='{{localize "PL1E.ManaRest"}}'></i>
-        <label>{{system.attributes.manaRest}}</label>
-    </div>
-{{/if}}
+<div class="icon-group">
+    {{#if (eq system.attributes.commonType "food")}}
+        <div class="icon">
+            <i class="far fa-pot-food hover-info" data-tooltip='{{localize "PL1E.Food"}}'></i>
+        </div>
+    {{/if}}
+    {{#if (eq system.attributes.commonType "rest")}}
+        <div class="icon">
+            <i class="far fa-campground hover-info" data-tooltip='{{localize "PL1E.Rest"}}'></i>
+        </div>
+    {{/if}}
+</div>
+
+<div class="icon-group">
+    {{#if (ne system.attributes.healthRest 0)}}
+        <div class="icon">
+            <i class="fas fa-heart color-health hover-info" data-tooltip='{{localize "PL1E.HealthRest"}}'></i>
+            <label>{{system.attributes.healthRest}}</label>
+        </div>
+    {{/if}}
+    {{#if (ne system.attributes.staminaRest 0)}}
+        <div class="icon">
+            <i class="fas fa-lungs color-stamina hover-info" data-tooltip='{{localize "PL1E.StaminaRest"}}'></i>
+            <label>{{system.attributes.staminaRest}}</label>
+        </div>
+    {{/if}}
+    {{#if (ne system.attributes.manaRest 0)}}
+        <div class="icon">
+            <i class="fas fa-brain color-mana hover-info" data-tooltip='{{localize "PL1E.ManaRest"}}'></i>
+            <label>{{system.attributes.manaRest}}</label>
+        </div>
+    {{/if}}
+</div>

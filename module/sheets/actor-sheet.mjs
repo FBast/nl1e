@@ -251,6 +251,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         }
     }
 
+    /** @inheritDoc */
     async _onDropFolder(event, data) {
         const folder = await Folder.implementation.fromDropData(data);
 

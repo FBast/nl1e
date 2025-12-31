@@ -50,28 +50,41 @@
                 <div class="field">
                     <div class="field-content">
                         <div class="title">
-                            <label>{{localize "PL1E.RestrictBuybackSameItem"}}</label>
+                            <label>{{localize "PL1E.BuyMode"}}</label>
                         </div>
                         <div class="fields">
-                            <input type="checkbox" name="system.restrictBuybackSameItem"{{checked system.restrictBuybackSameItem}}/>
+                            <select name="system.buyMode">
+                                <option value="none" {{#if (eq system.buyMode "none")}}selected{{/if}}>
+                                    {{localize "PL1E.BuyModeNone"}}
+                                </option>
+                                <option value="same-item" {{#if (eq system.buyMode "same-item")}}selected{{/if}}>
+                                    {{localize "PL1E.BuyModeSameItem"}}
+                                </option>
+                                <option value="same-type" {{#if (eq system.buyMode "same-type")}}selected{{/if}}>
+                                    {{localize "PL1E.BuyModeSameType"}}
+                                </option>
+                                <option value="all" {{#if (eq system.buyMode "all")}}selected{{/if}}>
+                                    {{localize "PL1E.BuyModeAll"}}
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <p class="field-hint">
-                        {{localize "PL1E.MerchantRestrictBuybackSameItem"}}
+                        {{localize "PL1E.MerchantBuyModeHint"}}
                     </p>
                 </div>
 
                 <div class="field">
                     <div class="field-content">
                         <div class="title">
-                            <label>{{localize "PL1E.DisableItemTooltip"}}</label>
+                            <label>{{localize "PL1E.PrivateItems"}}</label>
                         </div>
                         <div class="fields">
-                            <input type="checkbox" name="system.disableItemTooltip"{{checked system.disableItemTooltip}}/>
+                            <input type="checkbox" name="system.privateItems"{{checked system.privateItems}}/>
                         </div>
                     </div>
                     <p class="field-hint">
-                        {{localize "PL1E.DisableItemTooltipHint"}}
+                        {{localize "PL1E.PrivateItemsHint"}}
                     </p>
                 </div>
 

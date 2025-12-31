@@ -150,12 +150,15 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
 
     async activateListeners(html) {
         await super.activateListeners(html);
+        const canInspectItems = this.document.system?.privateItems;
 
-        html.find(".item-tooltip-activate")
-            .on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        // Tooltip
+        if (canInspectItems)
+            html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
 
-        html.find(".item-edit")
-            .on("click", ev => Pl1eEvent.onItemEdit(ev, this.document));
+        // Open item sheet
+        if (canInspectItems)
+            html.find(".item-edit").on("click", ev => Pl1eEvent.onItemEdit(ev, this.document));
 
         html.find(".item-remove").on("click", async ev => {
             ev.preventDefault();
@@ -221,56 +224,145 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             .on("drop", async ev => {
                 ev.preventDefault();
 
-                let data;
-                try {
-                    data = JSON.parse(ev.originalEvent.dataTransfer.getData("text/plain"));
-                } catch {
+                const data = this._getDragData(ev);
+                if (!data) return;
+
+                if (this._isFolderDrop(data)) {
+                    await this._onDropFolder(data);
                     return;
                 }
 
-                if (data.type !== "Item" || !data.uuid) return;
-
-                // Résolution de l’item (Actor / World / Compendium)
-                const item =
-                    await fromUuid(data.uuid).catch(() => null)
-                    ?? await Pl1eHelpers.getDocument("Item", data.uuid);
-
-                if (!item || !ITEM_TYPES.has(item.type)) return;
-
-                // Sell to merchant
-                if (item.isEmbedded && item.parent?.documentName === "Actor") {
-                    const seller = item.parent;
-
-                    // Permission minimale (évite les abus)
-                    if (!seller.isOwner && !game.user.isGM) return;
-
-                    const sellMultiplier =
-                        this.document.getFlag("pl1e", "sellMultiplier")
-                        ?? this.document.system?.sellMultiplier
-                        ?? 100;
-
-                    await Pl1eTrade.sellItem(
-                        seller,
-                        this.document,
-                        item,
-                        sellMultiplier
-                    );
-
-                    return;
+                if (this._isItemDrop(data)) {
+                    await this._onDropItem(data);
                 }
-
-                // Add to merchant stock
-                if (!this.document.isOwner) return;
-
-                const sourceId = item.id;
-                const entries = this._getEntries();
-
-                if (entries.some(e => e.sourceId === sourceId)) return;
-
-                entries.push({ sourceId });
-                await this._setEntries(entries);
-                this.render();
             });
+    }
+
+    _getDragData(ev) {
+        try {
+            return JSON.parse(
+                ev.originalEvent.dataTransfer.getData("text/plain")
+            );
+        } catch {
+            return null;
+        }
+    }
+
+    _isFolderDrop(data) {
+        return data.type === "Folder" || data.documentName === "Folder";
+    }
+
+    _isItemDrop(data) {
+        return data.type === "Item" && !!data.uuid;
+    }
+
+    async _onDropFolder(data) {
+        if (!this.document.isOwner) return;
+
+        const folder = await Folder.implementation.fromDropData(data);
+        if (!folder || folder.type !== "Item") return;
+
+        let added = false;
+
+        for (const itemData of folder.contents) {
+            const item = await Pl1eHelpers.getDocument("Item", itemData._id);
+            if (!item) continue;
+
+            await this._addItemToMerchant(item);
+            added = true;
+        }
+
+        if (added) this.render();
+    }
+
+    async _onDropItem(data) {
+        const item =
+            await fromUuid(data.uuid).catch(() => null)
+            ?? await Pl1eHelpers.getDocument("Item", data.uuid);
+
+        if (!item || !ITEM_TYPES.has(item.type)) return;
+
+        if (this._canSellItem(item)) {
+            await this._sellItemToMerchant(item);
+            return;
+        }
+
+        if (!this.document.isOwner) return;
+
+        const added = await this._addItemToMerchant(item);
+        if (added) this.render();
+    }
+
+    _canSellItem(item) {
+        return (
+            item.isEmbedded &&
+            item.parent?.documentName === "Actor" &&
+            (item.parent.isOwner || game.user.isGM)
+        );
+    }
+
+    async _sellItemToMerchant(item) {
+        if (!item?.isEmbedded) return;
+
+        const seller = item.parent;
+        if (!seller) return;
+
+        if (!seller.isOwner && !game.user.isGM) return;
+
+        if (!this._merchantAcceptsItem(item)) {
+            ui.notifications.warn(game.i18n.localize("PL1E.MerchantRejectsItem"));
+            return;
+        }
+
+        const sellMultiplier = this.document.system?.sellMultiplier ?? 0;
+
+        await Pl1eTrade.sellItem(
+            seller,
+            this.document,
+            item,
+            sellMultiplier
+        );
+    }
+
+    _merchantAcceptsItem(item) {
+        const mode = this.document.system?.buyMode ?? "none";
+        const entries = this._getEntries();
+
+        switch (mode) {
+            case "none":
+                return false;
+
+            case "same-item":
+                return entries.some(e => e.sourceId === item.sourceId);
+
+            case "same-type": {
+                const soldTypes = new Set();
+
+                for (const { sourceId } of entries) {
+                    const sold = this._runtimeItemsBySourceId?.get(sourceId);
+                    if (sold) soldTypes.add(sold.type);
+                }
+
+                return soldTypes.has(item.type);
+            }
+
+            case "all":
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    async _addItemToMerchant(item) {
+        if (!ITEM_TYPES.has(item.type)) return false;
+
+        const entries = this._getEntries();
+        if (entries.some(e => e.sourceId === item.id)) return false;
+
+        entries.push({ sourceId: item.id });
+        await this._setEntries(entries);
+        return true;
     }
 
     /* -------------------------------------------- */
