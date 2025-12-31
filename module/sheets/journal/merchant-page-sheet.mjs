@@ -2,6 +2,7 @@ import {Pl1eEvent} from "../../helpers/events.mjs";
 import {Pl1eHelpers} from "../../helpers/helpers.mjs";
 import {Pl1eJournalPageSheet} from "./journal-page-sheet.mjs";
 import {Pl1eFilter} from "../../helpers/filter.mjs";
+import {Pl1eTrade} from "../../helpers/trade.mjs";
 
 const FILTER_CATEGORIES = ["weapons", "wearables", "consumables", "commons", "modules", "services"];
 const ITEM_TYPES = new Set(["weapon", "wearable", "consumable", "common", "module", "service"]);
@@ -229,16 +230,44 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
 
                 if (data.type !== "Item" || !data.uuid) return;
 
-                const source =
+                // Résolution de l’item (Actor / World / Compendium)
+                const item =
                     await fromUuid(data.uuid).catch(() => null)
                     ?? await Pl1eHelpers.getDocument("Item", data.uuid);
 
-                if (!source || !ITEM_TYPES.has(source.type)) return;
+                if (!item || !ITEM_TYPES.has(item.type)) return;
 
+                // Sell to merchant
+                if (item.isEmbedded && item.parent?.documentName === "Actor") {
+                    const seller = item.parent;
+
+                    // Permission minimale (évite les abus)
+                    if (!seller.isOwner && !game.user.isGM) return;
+
+                    const sellMultiplier =
+                        this.document.getFlag("pl1e", "sellMultiplier")
+                        ?? this.document.system?.sellMultiplier
+                        ?? 100;
+
+                    await Pl1eTrade.sellItem(
+                        seller,
+                        this.document,
+                        item,
+                        sellMultiplier
+                    );
+
+                    return;
+                }
+
+                // Add to merchant stock
+                if (!this.document.isOwner) return;
+
+                const sourceId = item.id;
                 const entries = this._getEntries();
-                if (entries.some(e => e.sourceId === source.id)) return;
 
-                entries.push({ sourceId: source.id });
+                if (entries.some(e => e.sourceId === sourceId)) return;
+
+                entries.push({ sourceId });
                 await this._setEntries(entries);
                 this.render();
             });
