@@ -116,7 +116,7 @@ export class Pl1eEvent {
             rawData.flags.pl1e ??= {};
             rawData.flags.pl1e = foundry.utils.mergeObject(rawData.flags.pl1e, {
                 fromMerchant: true,
-                itemSourceId
+                sourceId: itemSourceId
             });
 
             item = new CONFIG.Item.documentClass(rawData, { parent: null });
