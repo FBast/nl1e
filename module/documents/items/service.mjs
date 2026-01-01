@@ -37,13 +37,6 @@ export class Pl1eService extends Pl1eItem {
                 break;
             }
 
-            case "substance": {
-                const intoxication = this.system.attributes.intoxication ?? 0;
-                const newValue = Math.max(currentIntoxication + intoxication, 0);
-                await actor.update({ [intoxicationPath]: newValue });
-                break;
-            }
-
             case "rest": {
                 const reduction = 4;
                 const newValue = Math.max(currentIntoxication - reduction, 0);

@@ -52,6 +52,11 @@
             </div>
         {{/if}}
     {{/if}}
+    {{#if (eq system.attributes.consumableType "drug")}}
+        <div class="icon">
+            <i class="far fa-biohazard hover-info" data-tooltip='{{localize "PL1E.Drug"}}'></i>
+        </div>
+    {{/if}}
 </div>
 
 {{> "systems/pl1e/templates/item/components/icons-active-aspects.hbs"}}

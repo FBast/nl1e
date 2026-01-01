@@ -14,7 +14,6 @@ export class Pl1ePriceCalculator {
             food: Pl1ePriceCalculator._calcFoodPrice,
             lodging: Pl1ePriceCalculator._calcLodgingPrice,
             transport: Pl1ePriceCalculator._calcTransportPrice,
-            substance: Pl1ePriceCalculator._calcSubstancePrice
         },
 
         // Future example
@@ -91,45 +90,6 @@ export class Pl1ePriceCalculator {
 
         // Linear + 50%
         let costPc = Math.round(points * 5);
-
-        return Pl1ePriceCalculator._convertPc(costPc);
-    }
-
-    /**
-     * Substance (alcohol, stimulant, psychotrope, dopant) pricing
-     * Uses gain, life loss and intoxication
-     *
-     * gain: positive primary effect (manaGain or staminaGain)
-     * lifeLoss: negative life effect (lifeLoss)
-     * intoxication: intoxicationGain
-     *
-     * base_pc =
-     *   gain * 4
-     * + lifeLoss * 10
-     * + intoxication * 2
-     */
-    static _calcSubstancePrice(item, sys) {
-
-        const attrs = sys.attributes ?? {};
-
-        // Determine primary gain (mana OR stamina)
-        const manaGain = Math.max(0, Number(attrs.manaGain ?? 0));
-        const staminaGain = Math.max(0, Number(attrs.staminaGain ?? 0));
-        const gain = Math.max(manaGain, staminaGain);
-
-        // Life loss (always positive value here)
-        const lifeLoss = Math.max(0, Number(attrs.lifeLoss ?? 0));
-
-        // Intoxication
-        const intoxication = Math.max(0, Number(attrs.intoxicationGain ?? 0));
-
-        // Linear but weighted pricing
-        let costPc =
-            (gain * 4) +
-            (lifeLoss * 10) +
-            (intoxication * 2);
-
-        costPc = Math.round(costPc);
 
         return Pl1ePriceCalculator._convertPc(costPc);
     }
