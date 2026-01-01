@@ -11,7 +11,7 @@
     </div>
     <div class="list-column">
         {{#each wearables}}
-            <div class="item {{#if system.isEquipped}}background-ready{{/if}}" data-item-id="{{_id}}">
+            <div class="item {{#if system.isEquipped}}background-ready{{/if}}" data-item-id="{{_id}}" data-item-source-id="{{sourceId}}"">
                 <div class="item-content">
                     <div class="title">
                         <img class="item-edit hover-action" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>

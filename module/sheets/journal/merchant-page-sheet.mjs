@@ -183,7 +183,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             ev.stopPropagation();
 
             const li = ev.currentTarget.closest(".item");
-            const sourceId = li?.dataset.sourceId ?? li?.dataset.itemId;
+            const sourceId = li?.dataset.sourceId ?? li?.dataset.itemSourceId;
             if (!sourceId) return;
 
             const next = this._getEntries().filter(e => e.sourceId !== sourceId);
