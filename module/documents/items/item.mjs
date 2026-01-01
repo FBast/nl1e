@@ -505,11 +505,13 @@ export class Pl1eItem extends Item {
     async _onUpdate(changed, options, userId) {
         super._onUpdate(changed, options, userId);
 
-        // If the item is an original
+        // Only original items, GM side
         if (!this.isEmbedded && game.user.isGM) {
-            // Auto reset actors items on update
             const enableAutoResetActorsItems = game.settings.get("pl1e", "enableAutoResetActorsItems");
+            const enableAutoResetJournalEntryPagesItems = game.settings.get("pl1e", "enableAutoResetJournalEntryPagesItems");
+
             if (enableAutoResetActorsItems) await Pl1eSynchronizer.resetActorsItems(this);
+            if (enableAutoResetJournalEntryPagesItems) await Pl1eSynchronizer.resetJournalEntryPagesItems(this);
         }
     }
 

@@ -21,19 +21,6 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
     }
 
     /* -------------------------------------------- */
-    /*  Flags                                       */
-    /* -------------------------------------------- */
-
-    _getEntries() {
-        const raw = this.document.getFlag("pl1e", "items");
-        return Array.isArray(raw) ? raw : [];
-    }
-
-    async _setEntries(entries) {
-        await this.document.setFlag("pl1e", "items", entries);
-    }
-
-    /* -------------------------------------------- */
     /*  Data                                        */
     /* -------------------------------------------- */
 
@@ -44,8 +31,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             .getFilters(this.document.id, FILTER_CATEGORIES)
             .catch(() => Object.fromEntries(FILTER_CATEGORIES.map(c => [c, new Set()])));
 
-        const entries = this._getEntries();
-        const items = await this._buildRuntimeItems(entries);
+        const items = await this._buildRuntimeItems(this._getPageItems());
 
         await this._decorateItems(items);
 
@@ -92,22 +78,24 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
     async _buildRuntimeItems(entries) {
         const items = [];
 
-        for (const { sourceId } of entries) {
-            if (!sourceId) continue;
+        for (const entry of entries) {
+            const snapshot = entry?.snapshot;
+            const sourceId = entry?.flags?.pl1e?.sourceId;
+            if (!snapshot || !sourceId) continue;
 
-            const source = await Pl1eHelpers.getDocument("Item", sourceId);
-            if (!source) continue;
-
-            const raw = source.toObject();
+            const raw = foundry.utils.deepClone(snapshot);
             raw._id = foundry.utils.randomID();
 
             raw.flags ??= {};
             raw.flags.pl1e = {
+                ...(raw.flags.pl1e ?? {}),
                 sourceId,
                 fromMerchant: true
             };
 
-            items.push(new CONFIG.Item.documentClass(raw, { parent: null }));
+            items.push(
+                new CONFIG.Item.documentClass(raw, { parent: null })
+            );
         }
 
         return items;
@@ -175,7 +163,15 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
                 return;
             }
 
-            Pl1eEvent.onItemEdit(ev, this.document);
+            const li = ev.currentTarget.closest(".item");
+            const sourceId = li?.dataset.itemSourceId;
+            if (!sourceId) return;
+
+            const item = this._runtimeItemsBySourceId?.get(sourceId);
+            if (!item) return;
+
+            if (item.sheet.rendered) item.sheet.bringToTop();
+            else item.sheet.render(true);
         });
 
         html.find(".item-remove").on("click", async ev => {
@@ -183,12 +179,11 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             ev.stopPropagation();
 
             const li = ev.currentTarget.closest(".item");
-            const sourceId = li?.dataset.sourceId ?? li?.dataset.itemSourceId;
+            const sourceId = li?.dataset.itemSourceId;
             if (!sourceId) return;
 
-            const next = this._getEntries().filter(e => e.sourceId !== sourceId);
-            await this._setEntries(next);
-            this.render();
+            const removed = await this._removePageItemBySourceId(sourceId);
+            if (removed) this.render();
         });
 
         const filters = await Pl1eFilter.getFilters(this.document.id, FILTER_CATEGORIES);
@@ -344,7 +339,7 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
 
     _merchantAcceptsItem(item) {
         const mode = this.document.system?.buyMode ?? "none";
-        const entries = this._getEntries();
+        const entries = this._getPageItems();
 
         switch (mode) {
             case "none":
@@ -375,11 +370,23 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
     async _addItemToMerchant(item) {
         if (!ITEM_TYPES.has(item.type)) return false;
 
-        const entries = this._getEntries();
-        if (entries.some(e => e.sourceId === item.id)) return false;
+        const entries = this._getPageItems();
+        if (entries.some(e => e?.flags?.pl1e?.sourceId === item.id)) return false;
 
-        entries.push({ sourceId: item.id });
-        await this._setEntries(entries);
+        const snapshot = item.toObject();
+
+        const entry = {
+            flags: {
+                pl1e: {
+                    sourceId: item.id
+                }
+            },
+            snapshot,
+            syncedAt: Date.now()
+        };
+
+        entries.push(entry);
+        await this._setPageItems(entries);
         return true;
     }
 

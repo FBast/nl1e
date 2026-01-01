@@ -11,6 +11,15 @@ export const registerSettings = function () {
         default: true
     });
 
+    game.settings.register("pl1e", "enableAutoResetJournalEntryPagesItems", {
+        name: "Enable auto reset journal entry page items",
+        hint: "Enable auto reset for items stored in a journal entry page.",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: true
+    });
+
     game.settings.register("pl1e", "enableDebugUINotifications", {
         name: "Enable debug UI notifications",
         hint: "Enable this to display major debug to ui as notification.",

@@ -111,5 +111,52 @@ export const Pl1eSynchronizer = {
 
         // Additional logic for refItems in the actor
         await handleRefItems(actor, item, await item.getRefItems());
+    },
+
+    /**
+     * Reset all JournalEntryPage items snapshots using their sourceId.
+     * Triggered when a source Item is updated.
+     *
+     * @param {Item} sourceItem
+     * @param {boolean} notifyInfo
+     * @returns {Promise<void>}
+     */
+    async resetJournalEntryPagesItems(sourceItem, notifyInfo = false) {
+        let updateNumber = 0;
+
+        // JournalEntryPage are not first-class world collections → custom fetch
+        const pages = await Pl1eHelpers.getDocuments("JournalEntryPage");
+
+        for (const page of pages) {
+            const items = page.getFlag("pl1e", "items");
+            if (!Array.isArray(items) || items.length === 0) continue;
+
+            let hasChange = false;
+
+            for (const entry of items) {
+                const sourceId = entry?.flags?.pl1e?.sourceId;
+                if (!sourceId || sourceId !== sourceItem.id) continue;
+
+                // 🔁 Full snapshot replacement
+                entry.snapshot = sourceItem.toObject();
+                entry.syncedAt = Date.now();
+
+                hasChange = true;
+                updateNumber++;
+            }
+
+            if (hasChange) {
+                await page.setFlag("pl1e", "items", items);
+            }
+        }
+
+        const enableDebugUINotifications =
+            game.settings.get("pl1e", "enableDebugUINotifications");
+
+        if (enableDebugUINotifications && notifyInfo) {
+            ui.notifications.info(
+                `${game.i18n.localize("PL1E.NumberOfUpdatedClones")} : ${updateNumber}`
+            );
+        }
     }
 }

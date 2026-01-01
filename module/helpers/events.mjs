@@ -94,33 +94,6 @@ export class Pl1eEvent {
         else if (document instanceof Pl1eActor) {
             item = document.items.get(itemId);
         }
-        // Merchant (JournalEntryPage)
-        else if (document instanceof JournalEntryPage) {
-            // Resolve the source (compendium fallback → world fallback)
-            const source = await Pl1eHelpers.getDocument("Item", itemSourceId);
-            if (!source) {
-                throw new Error(`PL1E | Source item ${itemId} not found`);
-            }
-
-            // Build a preview copy (never open the source directly)
-            const rawData = source.toObject();
-            rawData._id = foundry.utils.randomID();
-
-            // Force observer permissions on the preview item
-            rawData.ownership = {
-                [game.user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
-            };
-
-            // Keep merchant flags if you want the sheet to display price context, etc.
-            rawData.flags ??= {};
-            rawData.flags.pl1e ??= {};
-            rawData.flags.pl1e = foundry.utils.mergeObject(rawData.flags.pl1e, {
-                fromMerchant: true,
-                sourceId: itemSourceId
-            });
-
-            item = new CONFIG.Item.documentClass(rawData, { parent: null });
-        }
         else {
             throw new Error(`PL1E | unknown ${document}`);
         }

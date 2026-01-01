@@ -208,21 +208,43 @@ export const Pl1eHelpers = {
     async getDocuments(type, subType = undefined, id = undefined) {
         let documents = [];
 
-        // Inner function to check conditions and add document if it meets criteria
         const addIfMatches = (document) => {
-            if ((id === undefined || document._id === id) && (!subType || document.type === subType)) {
+            if ((id === undefined || document._id === id) &&
+                (!subType || document.type === subType)) {
                 documents.push(document);
             }
         };
 
-        // Search inside compendiums
-        for (const pack of game.packs.filter(pack => pack.documentName === type)) {
-            for (const document of await pack.getDocuments()) {
-                addIfMatches(document);
+        // Compendiums
+        if (type === "JournalEntryPage") {
+            // Pages are stored inside JournalEntry packs
+            for (const pack of game.packs.filter(p => p.documentName === "JournalEntry")) {
+                const entries = await pack.getDocuments();
+                for (const entry of entries) {
+                    for (const page of entry.pages) {
+                        addIfMatches(page);
+                    }
+                }
+            }
+        } else {
+            // Standard compendium lookup
+            for (const pack of game.packs.filter(pack => pack.documentName === type)) {
+                for (const document of await pack.getDocuments()) {
+                    addIfMatches(document);
+                }
             }
         }
 
-        // Search inside world collection game
+        // World
+        if (type === "JournalEntryPage") {
+            for (const entry of game.journal) {
+                for (const page of entry.pages) {
+                    addIfMatches(page);
+                }
+            }
+            return documents;
+        }
+
         let worldCollection;
         switch (type) {
             case "Actor":
@@ -234,10 +256,12 @@ export const Pl1eHelpers = {
             case "Macro":
                 worldCollection = game.macros;
                 break;
-            // ... other cases as needed ...
         }
-        for (const document of worldCollection) {
-            addIfMatches(document);
+
+        if (worldCollection) {
+            for (const document of worldCollection) {
+                addIfMatches(document);
+            }
         }
 
         return documents;
