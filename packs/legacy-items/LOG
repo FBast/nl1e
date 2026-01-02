@@ -1,10 +1,11 @@
-2026/01/01-19:34:34.442 732c Recovering log #4032
-2026/01/01-19:34:34.442 732c Level-0 table #4034: started
-2026/01/01-19:34:34.442 732c Level-0 table #4034: 8761 bytes OK
-2026/01/01-19:34:34.445 732c Delete type=0 #4032
-2026/01/01-19:34:34.445 732c Delete type=3 #4030
-2026/01/02-02:15:01.666 8bf8 Expanding@0 1+1 (8761+498063 bytes) to 2+1 (13416+498063 bytes)
-2026/01/02-02:15:01.666 8bf8 Compacting 2@0 + 1@1 files
-2026/01/02-02:15:01.673 8bf8 Generated table #4036@0: 518 keys, 503163 bytes
-2026/01/02-02:15:01.673 8bf8 Compacted 2@0 + 1@1 files => 503163 bytes
-2026/01/02-02:15:01.675 8bf8 compacted to: files[ 0 1 0 0 0 0 0 ]
+2026/01/02-19:37:24.645 4430 Recovering log #4042
+2026/01/02-19:37:24.645 4430 Level-0 table #4044: started
+2026/01/02-19:37:24.647 4430 Level-0 table #4044: 7687 bytes OK
+2026/01/02-19:37:24.649 4430 Delete type=0 #4042
+2026/01/02-19:37:24.649 4430 Delete type=3 #4041
+2026/01/02-19:41:06.098 5fc8 Compacting 1@0 + 1@1 files
+2026/01/02-19:41:06.106 5fc8 Generated table #4046@0: 525 keys, 508466 bytes
+2026/01/02-19:41:06.106 5fc8 Compacted 1@0 + 1@1 files => 508466 bytes
+2026/01/02-19:41:06.106 5fc8 compacted to: files[ 0 1 0 0 0 0 0 ]
+2026/01/02-19:41:06.106 5fc8 Delete type=2 #4040
+2026/01/02-19:41:06.108 5fc8 Delete type=2 #4044

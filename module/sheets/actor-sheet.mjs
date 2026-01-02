@@ -348,7 +348,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         context = await Pl1eHelpers.selectRepresentativeItems(context);
 
         // Sort each type of item
-        context = Pl1eHelpers.sortDocuments(context);
+        Pl1eHelpers.sortDocuments(context);
 
         // Update the context with money
         const moneyConfig = P1eHelpers.getConfig("money");

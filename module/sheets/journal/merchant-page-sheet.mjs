@@ -55,6 +55,8 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             items.map(i => [i.flags.pl1e.sourceId, i.flags.pl1e.price])
         );
 
+        // Filter and Sorting
+        const comparators = Pl1eHelpers.getItemSortComparators();
         for (const category of FILTER_CATEGORIES) {
             const type = category.slice(0, -1);
             const typed = items.filter(i => i.type === type);
@@ -63,7 +65,12 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
                 typed,
                 context.filters[category]
             );
-            context[`${category}Count`] = typed.length;
+
+            if (comparators[category]) {
+                context[category].sort(comparators[category]);
+            }
+
+            context[`${category}Count`] = context[category].length;
         }
 
         context.hasAnyItem = FILTER_CATEGORIES.some(c => context[`${c}Count`] > 0);

@@ -6,6 +6,11 @@ import {PL1E} from "../pl1e.mjs";
 import {PL1ESheetMixin} from "./sheet.mjs";
 import {Pl1ePriceCalculator} from "../helpers/price-calculator.mjs";
 
+const FILTER_CATEGORIES = [
+    "background", "features", "abilities", "effects",
+    "weapons", "wearables", "consumables", "commons", "modules"
+];
+
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -340,7 +345,7 @@ import {Pl1ePriceCalculator} from "../helpers/price-calculator.mjs";
         }
 
         // Sort each type of item
-        context = Pl1eHelpers.sortDocuments(context);
+        Pl1eHelpers.sortDocuments(context);
 
         // Sorting arrays
         context.masters = masters.sort((a, b) => a.item.name.localeCompare(b.item.name));

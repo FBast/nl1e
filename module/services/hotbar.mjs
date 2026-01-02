@@ -20,7 +20,7 @@ async function _generateTokenMacros(token) {
 
     context = await Pl1eHelpers.categorizeItems(context, actor.items);
     context = await Pl1eHelpers.selectRepresentativeItems(context);
-    context = Pl1eHelpers.sortDocuments(context);
+    Pl1eHelpers.sortDocuments(context);
 
     const weapons = context.weapons.filter(item => actor.isFavorite("weapons", item._id));
     const consumables = context.consumables.filter(item => actor.isFavorite("items", item.sourceId));

@@ -398,72 +398,75 @@ export const Pl1eHelpers = {
      * @returns {Object} The same context object, now sorted
      */
     sortDocuments(context) {
-        // Define an object containing specific sorting functions for each type of document
-        const sortFunctions = {
-            background: (a, b) => {
-                const backgroundOrder = ["race", "culture", "class", "mastery"];
+        const categories = [
+            "background", "features", "abilities", "effects",
+            "weapons", "wearables", "consumables", "commons", "modules"
+        ];
 
-                // Compare using background order
-                let typeComparison = backgroundOrder.indexOf(a.type) - backgroundOrder.indexOf(b.type);
-                if (typeComparison !== 0) {
-                    return typeComparison;
-                }
+        const comparators = Pl1eHelpers.getItemSortComparators();
 
-                // Then compare by name
-                return a.name.localeCompare(b.name);
-            },
-            abilities: (a, b) => {
-                const abilitiesOrder = Object.keys(PL1E.activations);
-
-                // Sort enabled abilities first
-                if (a.isEnabled && !b.isEnabled) return -1;
-                if (!a.isEnabled && b.isEnabled) return 1;
-
-                // Compare by level
-                if (a.system.attributes.level < b.system.attributes.level) return -1;
-                if (a.system.attributes.level > b.system.attributes.level) return 1;
-
-                // Then Compare by activation using the abilities order
-                let activationComparison = abilitiesOrder.indexOf(a.system.attributes.activation)
-                    - abilitiesOrder.indexOf(b.system.attributes.activation);
-                if (activationComparison !== 0) {
-                    return activationComparison;
-                }
-
-                // Then compare by name
-                return a.name.localeCompare(b.name);
-            },
-            features: (a, b) => b.system.points - a.system.points,
-            weapons: (a, b) => a.name.localeCompare(b.name),
-            wearables: (a, b) => a.name.localeCompare(b.name),
-            consumables: (a, b) => {
-                const consumables = Object.keys(PL1E.consumableActivations);
-
-                // Compare by activation using the consumable order
-                let activationComparison = consumables.indexOf(a.system.attributes.activation)
-                    - consumables.indexOf(b.system.attributes.activation);
-                if (activationComparison !== 0) {
-                    return activationComparison;
-                }
-
-                // Then compare by name
-                return a.name.localeCompare(b.name);
-            },
-            commons: (a, b) => a.name.localeCompare(b.name),
-            modules: (a, b) => a.name.localeCompare(b.name)
-        };
-
-        // List of object to sort
-        const categories = ["background", "abilities", "features", "weapons", "wearables", "consumables", "commons", "modules"];
-
-        // Apply sorting on context
-        for (let category of categories) {
-            if (context[category] && sortFunctions[category]) {
-                context[category] = context[category].sort(sortFunctions[category]);
+        for (const category of categories) {
+            if (context[category] && comparators[category]) {
+                context[category].sort(comparators[category]);
             }
         }
+    },
 
-        return context;
+    getItemSortComparators() {
+        return {
+            background: (a, b) => {
+                const order = ["race", "culture", "class", "mastery"];
+                return order.indexOf(a.type) - order.indexOf(b.type)
+                    || a.name.localeCompare(b.name);
+            },
+
+            abilities: (a, b) => {
+                const order = Object.keys(PL1E.activations);
+
+                return (b.isEnabled ?? false) - (a.isEnabled ?? false)
+                    || (a.system?.attributes?.level ?? 0) - (b.system?.attributes?.level ?? 0)
+                    || order.indexOf(a.system?.attributes?.activation)
+                    - order.indexOf(b.system?.attributes?.activation)
+                    || a.name.localeCompare(b.name);
+            },
+
+            features: (a, b) => (b.system?.points ?? 0) - (a.system?.points ?? 0),
+
+            weapons:     (a, b) => a.name.localeCompare(b.name),
+            wearables:   (a, b) => a.name.localeCompare(b.name),
+
+            consumables: (a, b) => {
+                const typeOrder = Object.keys(PL1E.consumableTypes ?? {});
+                const activationOrder = Object.keys(PL1E.consumableActivations);
+
+                return typeOrder.indexOf(a.system?.attributes?.consumableType)
+                    - typeOrder.indexOf(b.system?.attributes?.consumableType)
+                    || activationOrder.indexOf(a.system?.attributes?.activation)
+                    - activationOrder.indexOf(b.system?.attributes?.activation)
+                    || a.name.localeCompare(b.name);
+            },
+
+            commons: (a, b) => {
+                const typeOrder = Object.keys(PL1E.commonTypes);
+                return typeOrder.indexOf(a.system?.attributes?.commonType)
+                    - typeOrder.indexOf(b.system?.attributes?.commonType)
+                    || a.name.localeCompare(b.name);
+            },
+
+            modules: (a, b) => {
+                const typeOrder = Object.keys(PL1E.moduleTypes);
+                return typeOrder.indexOf(a.system?.attributes?.moduleType)
+                    - typeOrder.indexOf(b.system?.attributes?.moduleType)
+                    || a.name.localeCompare(b.name);
+            },
+
+            services: (a, b) => {
+                const typeOrder = Object.keys(PL1E.serviceTypes);
+                return typeOrder.indexOf(a.system?.attributes?.serviceType)
+                    - typeOrder.indexOf(b.system?.attributes?.serviceType)
+                    || a.name.localeCompare(b.name);
+            }
+        };
     },
 
     hexToRgba(hex, alpha = 0.5) {
