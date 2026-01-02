@@ -72,7 +72,7 @@ export class PlaceableTooltip {
 
             for (const item of data.items.filter(i => i.type === "weapon")) {
                 weapons.push({
-                    icon: item.isEquipped ? "fa-check" : "fa-xmark",
+                    icon: item.isEquipped ? "fas fa-check" : "fas fa-xmark",
                     img: item.img,
                     name: item.name
                 });
@@ -84,7 +84,7 @@ export class PlaceableTooltip {
 
                 defenses.push({
                     rank: skill.number,
-                    icon: `fa-dice-d${skill.dice}`,
+                    icon: `fas fa-dice-d${skill.dice}`,
                     label: game.i18n.localize(skillConfig.label)
                 });
             }

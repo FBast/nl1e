@@ -3,11 +3,9 @@
         <h4>{{localize "PL1E.Consumables"}}</h4>
         {{#unless favoriteDisplay}}
             <div class="header-actions item-filter-list" data-filter="consumables">
-                <div class="item-filter hover-action enabled-action" data-filter="potion">{{localize "PL1E.Potion"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="bomb">{{localize "PL1E.Bomb"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="alcohol">{{localize "PL1E.Alcohol"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="stimulant">{{localize "PL1E.Stimulant"}}</div>
-                <div class="item-filter hover-action enabled-action" data-filter="drug">{{localize "PL1E.Drug"}}</div>
+                {{#each (config "consumableTypes")}}
+                    <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+                {{/each}}
             </div>
         {{/unless}}
     </div>

@@ -23,6 +23,7 @@
   "PL1E.ConsumableType": "Type de consommable",
   "PL1E.PrivateItemsWarning": "Vous devez acheter cet objet pour pouvoir le consulter.",
   "PL1E.ActionCost": "Cout en action",
+  "PL1E.Tool": "Outil",
   "PL1E.BuyModeNoneHint": "Ce marchand n’achète aucun objet.",
   "PL1E.BuyModeSameItemHint": "Ce marchand n’achète que les objets qu’il vend déjà.",
   "PL1E.BuyModeSameTypeHint": "Ce marchand n’achète que les objets du même type que ceux qu’il vend.",

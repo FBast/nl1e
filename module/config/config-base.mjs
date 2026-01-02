@@ -56,7 +56,16 @@ export function getConfigBase() {
     PL1E.commonTypes = {
         "scrap": "PL1E.Scrap",
         "food": "PL1E.Food",
-        "rest": "PL1E.Rest"
+        "rest": "PL1E.Rest",
+        "tool": "PL1E.Tool"
+    }
+
+    PL1E.wearableTypes = {
+        "garment": "PL1E.Garment",
+        "armor": "PL1E.Armor",
+        "ring": "PL1E.Ring",
+        "necklace": "PL1E.Necklace",
+        "other": "PL1E.Others"
     }
 
     PL1E.serviceTypes = {
@@ -69,7 +78,8 @@ export function getConfigBase() {
         "bomb": "PL1E.Bomb",
         "alcohol": "PL1E.Alcohol",
         "stimulant": "PL1E.Stimulant",
-        "drug": "PL1E.Drug"
+        "drug": "PL1E.Drug",
+        "tool": "PL1E.Tool"
     }
 
     PL1E.visionMode = {

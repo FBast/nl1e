@@ -26,7 +26,7 @@ export class Pl1eConsumable extends Pl1eItem {
         if (options.action === "launch") {
             // If the consumable has no more uses then destroy
             if (!characterData.item.system.attributes.isReloadable &&
-                characterData.item.system.attributes.uses >= characterData.item.system.removedUses) {
+                characterData.item.system.attributes.uses <= characterData.item.system.removedUses) {
                 await this.actor.removeItem(characterData.item);
             }
         }

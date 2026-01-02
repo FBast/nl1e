@@ -2,16 +2,14 @@
     <div class="list-header">
         <h4>{{localize "PL1E.Wearables"}}</h4>
         <div class="header-actions item-filter-list" data-filter="wearables">
-            <div class="item-filter hover-action enabled-action" data-filter="garment">{{localize "PL1E.Garment"}}</div>
-            <div class="item-filter hover-action enabled-action" data-filter="armor">{{localize "PL1E.Armor"}}</div>
-            <div class="item-filter hover-action enabled-action" data-filter="ring">{{localize "PL1E.Ring"}}</div>
-            <div class="item-filter hover-action enabled-action" data-filter="necklace">{{localize "PL1E.Necklace"}}</div>
-            <div class="item-filter hover-action enabled-action" data-filter="none">{{localize "PL1E.Others"}}</div>
+            {{#each (config "wearableTypes")}}
+                <div class="item-filter hover-action enabled-action" data-filter="{{@key}}">{{localize this}}</div>
+            {{/each}}
         </div>
     </div>
     <div class="list-column">
         {{#each wearables}}
-            <div class="item {{#if system.isEquipped}}background-ready{{/if}}" data-item-id="{{_id}}" data-item-source-id="{{sourceId}}"">
+            <div class="item {{#if system.isEquipped}}background-ready{{/if}}" data-item-id="{{_id}}" data-item-source-id="{{sourceId}}">
                 <div class="item-content">
                     <div class="title">
                         <img class="item-edit hover-action" src="{{realImg}}" title="{{realName}}" width="24" height="24"/>

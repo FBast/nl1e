@@ -30,6 +30,7 @@
   "PL1E.MerchantBuyModeHint": "Defines which items this merchant is willing to purchase.",
   "PL1E.MerchantRejectsItem": "This merchant refuses to buy this item.",
   "PL1E.AcrobaticsExplosion": "Acrobatics explosion",
+  "PL1E.Tool": "Tool",
   "PL1E.AcrobaticsImplosion": "Acrobatics implosion",
   "PL1E.Action": "Action",
   "PL1E.ActionCost": "Action cost",

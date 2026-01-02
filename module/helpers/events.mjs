@@ -82,7 +82,6 @@ export class Pl1eEvent {
 
         const li = $(event.currentTarget).closest(".item");
         const itemId = li.data("item-id");
-        const itemSourceId = li.data("item-source-id");
 
         let item;
 

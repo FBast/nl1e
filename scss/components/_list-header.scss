@@ -24,8 +24,10 @@
 
   .header-actions {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    align-items: end;
     gap: 8px;
+    margin-left: 20px;
 
     .action-icon,
     .item-filter {
