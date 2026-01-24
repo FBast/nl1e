@@ -26,12 +26,12 @@
                     </div>
                     <div class="controls">
                         {{#if (eq system.attributes.commonType "food")}}
-                            <a class="item-select hover-action" data-tooltip='{{localize "PL1E.Eat"}}'>
-                                <i class="fas fa-utensils {{#unless (contains ../selectedMealItems _id)}}color-disabled{{/unless}}"></i>
+                            <a class="item-use hover-action" data-tooltip='{{localize "PL1E.Eat"}}'>
+                                <i class="fas fa-utensils"></i>
                             </a>
                         {{else if (eq system.attributes.commonType "rest")}}
-                            <a class="item-select hover-action" data-tooltip='{{localize "PL1E.Use"}}'>
-                                <i class="fas fa-campground {{#unless (contains ../selectedRestItems _id)}}color-disabled{{/unless}}"></i>
+                            <a class="item-use hover-action" data-tooltip='{{localize "PL1E.Use"}}'>
+                                <i class="fas fa-campground"></i>
                             </a>
                         {{/if}}
                         {{#if @root.actor.isOwner}}

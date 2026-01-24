@@ -745,7 +745,7 @@ export class Pl1eItem extends Item {
         await this._linkItem(characterData);
 
         // Character rollData if exist
-        if (characterData.attributes.roll.length > 0) {
+        if (characterData.attributes.roll?.length > 0) {
             characterData.rollData = await characterData.actor.rollSkills(characterData.attributes.roll);
             characterData.result = characterData.rollData.total;
         }
