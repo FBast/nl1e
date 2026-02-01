@@ -51,6 +51,8 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
         };
         context.items = items;
         context.itemNumber = items.length;
+        context.hasItemsTotal = items.length > 0;
+        context.hasItemsFiltered = FILTER_CATEGORIES.some(c => context[`${c}Count`] > 0);
         context.merchantPrices = Object.fromEntries(
             items.map(i => [i.flags.pl1e.sourceId, i.flags.pl1e.price])
         );
@@ -61,19 +63,17 @@ export class Pl1eMerchantPageSheet extends Pl1eJournalPageSheet {
             const type = category.slice(0, -1);
             const typed = items.filter(i => i.type === type);
 
-            context[category] = Pl1eFilter.filterDocuments(
-                typed,
-                context.filters[category]
-            );
+            context[category] = Pl1eFilter.filterDocuments(typed, context.filters[category]);
 
             if (comparators[category]) {
                 context[category].sort(comparators[category]);
             }
 
             context[`${category}Count`] = context[category].length;
+            context[`${category}TotalCount`] = typed.length;
         }
 
-        context.hasAnyItem = FILTER_CATEGORIES.some(c => context[`${c}Count`] > 0);
+        context.hasItemsFiltered = FILTER_CATEGORIES.some(c => context[`${c}Count`] > 0);
 
         return context;
     }

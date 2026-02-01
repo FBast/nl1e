@@ -1,4 +1,4 @@
-<form class="pl1e {{cssClass}} flexcol" autocomplete="off">
+<form class="pl1e {{cssClass}}" autocomplete="off">
     <header class="journal-page-header">
         <h{{title.level1}}>{{data.name}}</h{{title.level1}}>
     </header>
@@ -66,19 +66,33 @@
             {{/if}}
         </div>
 
-        <div class="flex-vertical gap-md drop-target"  data-drop-target-uuid="{{document.uuid}}" data-drop-target-type="actor">
-            {{> systems/pl1e/templates/actor/parts/inventory-services.hbs }}
-            {{> systems/pl1e/templates/actor/parts/inventory-weapons.hbs }}
-            {{> systems/pl1e/templates/actor/parts/inventory-wearables.hbs }}
-            {{> systems/pl1e/templates/actor/parts/inventory-consumables.hbs }}
-            {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
-            {{> systems/pl1e/templates/actor/parts/inventory-modules.hbs }}
-            {{#if (not hasAnyItem)}}
+        <div class="flex-vertical gap-md drop-target" data-drop-target-uuid="{{document.uuid}}" data-drop-target-type="actor">
+            {{#if hasItemsTotal}}
+                {{#if (ne servicesTotalCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-services.hbs }}
+                {{/if}}
+                {{#if (ne weaponsTotalCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-weapons.hbs }}
+                {{/if}}
+                {{#if (ne wearablesTotalCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-wearables.hbs }}
+                {{/if}}
+                {{#if (ne consumablesTotalCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-consumables.hbs }}
+                {{/if}}
+                {{#if (ne commonsTotalCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-commons.hbs }}
+                {{/if}}
+                {{#if (ne modulesTotalCount 0)}}
+                    {{> systems/pl1e/templates/actor/parts/inventory-modules.hbs }}
+                {{/if}}
+            {{else}}
                 <div class="inventory-empty drop-hint">
                     <strong>{{localize "PL1E.InventoryEmptyTitle"}}</strong>
                     <p>{{localize "PL1E.InventoryEmptyHint"}}</p>
                 </div>
             {{/if}}
         </div>
+
     </section>
 </form>

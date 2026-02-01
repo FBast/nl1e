@@ -125,6 +125,14 @@ export class Pl1eJournalPageSheet extends JournalPageSheet {
     async activateListeners(html) {
         super.activateListeners(html);
 
+        html[0].querySelectorAll("button.reveal").forEach(btn => {
+            btn.disabled = false;
+            btn.addEventListener("click", event => {
+                const sec = event.currentTarget.closest("section.secret");
+                sec.classList.toggle("revealed");
+            });
+        });
+
         html[0].querySelectorAll(".launch-text-editor").forEach(el => {
             el.addEventListener("click", ev => Pl1eEvent.onLaunchTextEditor(ev, this.document));
         });

@@ -1,3 +1,7 @@
-2026/01/24-20:07:50.091 6aac Recovering log #2121
-2026/01/24-20:07:50.092 6aac Delete type=0 #2121
-2026/01/24-20:07:50.092 6aac Delete type=3 #2120
+2026/02/01-20:16:20.827 623c Recovering log #2153
+2026/02/01-20:16:20.829 623c Delete type=0 #2153
+2026/02/01-20:16:20.829 623c Delete type=3 #2152
+2026/02/01-21:31:14.638 1384 Level-0 table #2157: started
+2026/02/01-21:31:14.638 1384 Level-0 table #2157: 0 bytes OK
+2026/02/01-21:31:14.638 1384 Delete type=0 #2155
+2026/02/01-21:31:14.643 1384 Manual compaction at level-0 from '!macros!Njg4bkfVieXevMCn' @ 72057594037927935 : 1 .. '!macros!mVqiFhELRLUnBVeB' @ 0 : 0; will stop at (end)
