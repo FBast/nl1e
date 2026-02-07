@@ -1,12 +1,10 @@
 {{> "systems/pl1e/templates/item/components/icons-price.hbs"}}
 
 <div class="icon-group">
-    {{#if (or (eq @root.actor.type "character") @root.item)}}
-        {{#if system.majorActionUsed}}
-            <div class="icon">
-                <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
-            </div>
-        {{/if}}
+    {{#if system.majorActionUsed}}
+        <div class="icon">
+            <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
+        </div>
     {{/if}}
 </div>
 

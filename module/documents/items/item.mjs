@@ -297,6 +297,15 @@ export class Pl1eItem extends Item {
         // If the token is null then the request come from a non-token sheet
         const actor = token ? token.actor : this.actor;
 
+        // Rebind item to actor context
+        let item = this;
+        if (item.actor !== actor) {
+            item = actor.items.find(i => i.sourceId === this.sourceId);
+            if (!item) {
+                throw new Error("PL1E | Item not found on actor context");
+            }
+        }
+
         return {
             actor: actor,
             actorId: actor._id,
@@ -304,11 +313,11 @@ export class Pl1eItem extends Item {
             tokenId: token?._id,
             scene: token?.parent,
             sceneId: token?.parent.id,
-            item: this,
-            itemId: this._id,
+            item: item,
+            itemId: item._id,
             userId : game.userId,
-            attributes: {...this.system.attributes},
-            activeAspects: {...await this.getCombinedActiveAspects()},
+            attributes: {...item.system.attributes},
+            activeAspects: {...await item.getCombinedActiveAspects()},
             templates: [],
             templatesIds: []
         }
@@ -958,6 +967,10 @@ export class Pl1eItem extends Item {
             const attributeConfig = Pl1eHelpers.getConfig("attributes", key);
             if (attributeConfig?.data === undefined || value === 0) continue;
 
+            if (attributeConfig.combatOnly) {
+                if (!characterData.actor?.inCombat) continue;
+            }
+
             // Retrieve document for attribute modification
             let document = undefined;
             switch (attributeConfig.document) {
@@ -1132,5 +1145,4 @@ export class Pl1eItem extends Item {
         targetData.template = template;
         return targetData;
     }
-
 }

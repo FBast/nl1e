@@ -33,11 +33,12 @@ import {registerSocketHandlers} from "./helpers/socket.mjs";
 /*  Services                                    */
 /* -------------------------------------------- */
 
-import "./services/placeable-tooltip.mjs";
-import "./services/hotbar.mjs";
-import "./services/color-sheets.mjs";
 import "./services/movement/movement-hooks.mjs";
-import {registerDragHighlighting} from "./services/drag-highlight.mjs";
+import "./services/color-sheets.mjs";
+import "./services/hotbar.mjs";
+import "./services/placeable-tooltip.mjs";
+import "./services/scrolling-text.mjs";
+
 
 /* -------------------------------------------- */
 /*  Globals                                     */
@@ -130,9 +131,6 @@ Hooks.once("ready", async function () {
     PL1E.tokenPreUpdate = await Pl1eHelpers.getDocumentsDataFromPack("legacy-token-pre-update-macros", true);
     PL1E.targetsResolution = await Pl1eHelpers.getDocumentsDataFromPack("legacy-targets-resolution-macros", true);
     PL1E.invocations = await Pl1eHelpers.getDocumentsDataFromPack("legacy-characters", true);
-    
-    // Highlight drag
-    registerDragHighlighting();
 });
 
 /* ------------------------------------ */

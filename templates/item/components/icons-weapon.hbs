@@ -25,6 +25,11 @@
             <label>{{minus system.attributes.uses system.removedUses}}</label>
         </div>
     {{/if}}
+    {{#if system.majorActionUsed}}
+        <div class="icon">
+            <i class="far fa-star hover-info" data-tooltip='{{localize "PL1E.MajorActionUsed"}}'></i>
+        </div>
+    {{/if}}
 </div>
 
 {{> "systems/pl1e/templates/item/components/icons-passive-aspects.hbs"}}

@@ -65,7 +65,7 @@ export class Pl1eAspect {
     }
 
     static async applyPassiveMacro(aspect, aspectId, scope) {
-        const macroId = aspect.value;
+        const macroId = aspect.data;
         const macro = await Pl1eHelpers.getDocument("Macro", macroId);
 
         // Execute actor update macro

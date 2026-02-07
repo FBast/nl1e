@@ -1,6 +1,5 @@
 import {Pl1eHelpers} from "../helpers/helpers.mjs";
 import {Pl1eAspect} from "../helpers/aspect.mjs";
-import {Pl1eChatMessage} from "./chat-message.mjs";
 
 export class Pl1eTokenDocument extends TokenDocument {
     /** @inheritDoc */

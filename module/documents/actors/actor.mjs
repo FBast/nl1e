@@ -178,50 +178,10 @@ export class Pl1eActor extends Actor {
             }
         }
 
-        // Add scrolling text for resource changes
-        const token = this.bestToken;
-        if (token && changed.system?.resources) {
-            const position = {
-                x: token.x + token.width * token.parent.grid.size / 2,
-                y: token.y + token.height * token.parent.grid.size / 2
-            }
-
-            const flattenSystem = Pl1eHelpers.flatten(changed.system.resources);
-            for (const [key, value] of Object.entries(flattenSystem)) {
-                this._displayResourceScrollingText(key, value, position);
-            }
-        }
-
         return super._preUpdate(changed, options, user);
     }
 
-    /**
-     * Generate a scrolling text above the character token
-     * @param key
-     * @param value
-     * @param position
-     * @private
-     */
-    _displayResourceScrollingText(key, value, position) {
-        const splitKey = key.split(".");
-        const resourceProperty = foundry.utils.getProperty(this.system.resources, splitKey[0]);
-        const diffValue = value - resourceProperty.value;
-        const keyConfig = Pl1eHelpers.getConfig("resources", splitKey[0]);
-        const text = `${diffValue} ${game.i18n.localize(keyConfig.label)}`;
-        const fontSize = Math.abs(diffValue) / resourceProperty.max;
-        const fillColor = diffValue > 0 ? "#00FF00" : "#FF0000";
-        if (keyConfig && diffValue !== 0) {
-            const data = {
-                text: text,
-                position: position,
-                fontSize: fontSize,
-                fillColor: fillColor
-            }
-            // Display the scrolling text on all clients
-            PL1E.socket.executeForEveryone("displayScrollingText", data);
-            Pl1eHelpers.displayScrollingText(data);
-        }
-    }
+
 
     /** @inheritDoc */
     async _preDelete(options, user) {

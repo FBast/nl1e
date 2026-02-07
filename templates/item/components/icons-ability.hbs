@@ -3,6 +3,11 @@
         <i class="far fa-trophy hover-info" data-tooltip='{{localize "PL1E.Level"}}'></i>
         <label>{{system.attributes.level}}</label>
     </div>
+    {{#if (eq system.attributes.activation "outOfCombat")}}
+        <div class="icon">
+            <i class="far fa-dove hover-info" data-tooltip='{{localize "PL1E.OutOfCombatOnly"}}'></i>
+        </div>
+    {{/if}}
     {{#if (ne system.attributes.actionCost 0)}}
         <div class="icon">
             <i class="far fa-clock hover-info" data-tooltip='{{localize "PL1E.ActionCost"}}'></i>
