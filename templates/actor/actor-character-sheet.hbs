@@ -80,8 +80,13 @@
                         {{#if (eq actor.type "character")}}
                             <i class="fas fa-book-open open-journal" data-tooltip="{{localize "PL1E.Journal"}}"></i>
                         {{else if (eq actor.type "npc")}}
-                            <i class="fas fa-gear edit-select" data-tooltip="{{localize "PL1E.Templates"}}"
-                               data-path="system.general.NPCTemplate" data-options="NPCTemplates"></i>
+                            <i class="fas {{#if system.general.autoDistribute}}fa-hand{{else}}fa-shuffle{{/if}} switch-boolean"
+                               data-tooltip="{{#if system.general.autoDistribute}}
+                                   {{localize "PL1E.DisableAutoDistribute"}}
+                               {{else}}
+                                   {{localize "PL1E.EnableAutoDistribute"}}
+                               {{/if}}"
+                               data-path="system.general.autoDistribute"></i>
                         {{/if}}
                         <i class="fas fa-hourglass" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
                         <i class="fas fa-exchange" data-tooltip="{{localize "PL1E.Exchange"}}"></i>

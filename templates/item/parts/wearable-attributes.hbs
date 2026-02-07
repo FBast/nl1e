@@ -115,10 +115,10 @@
                     <div class="fields">
                         <ul>
                             {{#each system.attributes.magicRoll}}
-                                <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                                <li class="tag {{this}}">{{localize (config "rankedSkillsKeys" this)}}</li>
                             {{/each}}
                         </ul>
-                        <a class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.MagicRoll" data-key-path="attributes.magicRoll" data-tooltip="{{localize 'PL1E.MagicRollConfig'}}">
+                        <a class="trait-selector" data-trait="rankedSkillsKeys" data-trait-label="PL1E.MagicRoll" data-key-path="attributes.magicRoll" data-tooltip="{{localize 'PL1E.MagicRollConfig'}}">
                             <i class="fas fa-edit"></i>
                         </a>
                     </div>
@@ -133,10 +133,10 @@
                         <div class="fields">
                             <ul>
                                 {{#each system.attributes.magicOppositeRoll}}
-                                    <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                                    <li class="tag {{this}}">{{localize (config "resistancesKeys" this)}}</li>
                                 {{/each}}
                             </ul>
-                            <a class="trait-selector" data-trait="abilityResistances" data-trait-label="PL1E.MagicOppositeRoll" data-key-path="attributes.magicOppositeRoll" data-tooltip="{{localize 'PL1E.MagicOppositeRollConfig'}}">
+                            <a class="trait-selector" data-trait="resistancesKeys" data-trait-label="PL1E.MagicOppositeRoll" data-key-path="attributes.magicOppositeRoll" data-tooltip="{{localize 'PL1E.MagicOppositeRollConfig'}}">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </div>

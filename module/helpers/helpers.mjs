@@ -520,7 +520,7 @@ export const Pl1eHelpers = {
     /**
      * Categorize a list of items into the provided context object.
      * Each item is enriched (aspects, HTML, flags) and added to the appropriate array
-     * based on its type, using the `itemCollections` mapping.
+     * based on its type, using the `itemCollectionsKeys` mapping.
      *
      * @param {Object} context - The existing context object to populate
      * @param {Item[]} items - The list of items to categorize (e.g. actor.items)
@@ -545,7 +545,7 @@ export const Pl1eHelpers = {
                 relativeTo: item
             });
 
-            const collectionKey = PL1E.itemCollections[itemCopy.type];
+            const collectionKey = PL1E.itemCollectionsKeys[itemCopy.type];
             if (collectionKey) {
                 context[collectionKey] ??= []; // initialize array if undefined
                 context[collectionKey].push(itemCopy);
@@ -563,7 +563,7 @@ export const Pl1eHelpers = {
      * @param {Object} context - Object with categorized item arrays
      */
     async selectRepresentativeItems(context) {
-        for (const [type, collectionKey] of Object.entries(PL1E.itemCollections)) {
+        for (const [type, collectionKey] of Object.entries(PL1E.itemCollectionsKeys)) {
             const collection = context[collectionKey];
             if (!collection) continue;
 

@@ -22,7 +22,6 @@ import {getConfigBase} from "./config/config-base.mjs";
 import {getConfigActor} from "./config/config-actors.mjs";
 import {getConfigItems} from "./config/config-items.mjs";
 import {getConfigAspects} from "./config/config-aspects.mjs";
-import {getConfigTemplates} from "./config/config-templates.mjs";
 import {getConfigSequencer} from "./config/config-sequencer.mjs";
 import {registerStatuses} from "./main/statuses.mjs";
 import {registerSettings} from "./main/settings.mjs";
@@ -36,6 +35,7 @@ import {registerSocketHandlers} from "./helpers/socket.mjs";
 import "./services/movement/movement-hooks.mjs";
 import "./services/color-sheets.mjs";
 import "./services/hotbar.mjs";
+import "./services/npc-auto-distribution.mjs";
 import "./services/placeable-tooltip.mjs";
 import "./services/scrolling-text.mjs";
 
@@ -99,7 +99,6 @@ Hooks.once('init', async function () {
     getConfigActor();
     getConfigItems();
     getConfigAspects();
-    getConfigTemplates();
     getConfigSequencer();
 
     // Register custom statuses

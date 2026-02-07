@@ -89,7 +89,7 @@
             </div>
             <div class="fields">
                 <select name="system.activeAspects.{{@key}}.resolutionType">
-                    {{customSelectOptions (config "resolutionTypes") selected=aspect.resolutionType localize=true}}
+                    {{customSelectOptions (config "resolutionTypesKeys") selected=aspect.resolutionType localize=true}}
                 </select>
             </div>
         </div>
@@ -143,7 +143,7 @@
                 </div>
                 <div class="fields">
                     <select name="system.activeAspects.{{@key}}.effectDurationResolutionType">
-                        {{customSelectOptions (config "resolutionTypes") selected=aspect.effectDurationResolutionType localize=true}}
+                        {{customSelectOptions (config "resolutionTypesKeys") selected=aspect.effectDurationResolutionType localize=true}}
                     </select>
                 </div>
             </div>

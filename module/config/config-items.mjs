@@ -88,21 +88,6 @@ export function getConfigItems() {
         }
     }
 
-    PL1E.itemCollections = {
-        "race": "background",
-        "culture": "background",
-        "class": "background",
-        "mastery": "background",
-        "feature": "features",
-        "ability": "abilities",
-        "weapon": "weapons",
-        "wearable": "wearables",
-        "consumable": "consumables",
-        "common": "commons",
-        "module": "modules",
-        "service": "services"
-    }
-
     PL1E.itemBase = {
         "majorActionUsed": {
             "label": "PL1E.MajorActionUsed",
@@ -235,7 +220,7 @@ export function getConfigItems() {
         "featureType": {
             "label": "PL1E.FeatureType",
             "type": "number",
-            "select": "featureTypes",
+            "select": "featureTypesKeys",
             "inDescription": true
         },
         "cost": {
@@ -395,13 +380,13 @@ export function getConfigItems() {
         "roll": {
             "label": "PL1E.Roll",
             "type": "select",
-            "select": "abilitySkills",
+            "select": "rankedSkillsKeys",
             "inDescription": true
         },
         "areaShape": {
             "label": "PL1E.AreaShape",
             "type": "select",
-            "select": "areaShapes",
+            "select": "areaShapesKeys",
             "fallback": "circle",
             "inDescription": true
         },
@@ -438,7 +423,7 @@ export function getConfigItems() {
         "oppositeRoll": {
             "label": "PL1E.OppositeRoll",
             "type": "select",
-            "select": "abilityResistances",
+            "select": "resistancesKeys",
             "fallback": "none",
             "inDescription": true
         },
@@ -484,7 +469,22 @@ export function getConfigItems() {
         },
     }
 
-    PL1E.abilitySkills = {
+    PL1E.itemCollectionsKeys = {
+        "race": "background",
+        "culture": "background",
+        "class": "background",
+        "mastery": "background",
+        "feature": "features",
+        "ability": "abilities",
+        "weapon": "weapons",
+        "wearable": "wearables",
+        "consumable": "consumables",
+        "common": "commons",
+        "module": "modules",
+        "service": "services"
+    }
+
+    PL1E.rankedSkillsKeys = {
         "handling": "PL1E.Handling",
         "throwing": "PL1E.Throwing",
         "athletics": "PL1E.Athletics",
@@ -503,7 +503,18 @@ export function getConfigItems() {
         "occultism": "PL1E.Occultism",
     }
 
-    PL1E.abilityResistances = {
+    PL1E.characteristicsKeys = {
+        "strength": "PL1E.Strength",
+        "agility": "PL1E.Agility",
+        "perception": "PL1E.Perception",
+        "constitution": "PL1E.Constitution",
+        "intellect": "PL1E.Intellect",
+        "cunning": "PL1E.Cunning",
+        "wisdom": "PL1E.Wisdom",
+        "will": "PL1E.Will"
+    }
+
+    PL1E.resistancesKeys = {
         "cover": "PL1E.Cover",
         "parry": "PL1E.Parry",
         "reflex": "PL1E.Reflex",
@@ -512,7 +523,7 @@ export function getConfigItems() {
         "intuition": "PL1E.Intuition"
     }
 
-    PL1E.areaShapes = {
+    PL1E.areaShapesKeys = {
         "none": "PL1E.None.M",
         "target": "PL1E.Target",
         "circle": "PL1E.Circle",
@@ -520,25 +531,25 @@ export function getConfigItems() {
         "ray": "PL1E.Ray"
     }
 
-    PL1E.resolutionTypes = {
+    PL1E.resolutionTypesKeys = {
         "fixed": "PL1E.Fixed",
         "ifSuccess" : "PL1E.IfSuccess",
         "multipliedBySuccess": "PL1E.MultipliedBySuccess"
     }
 
-    PL1E.selfTargets = {
+    PL1E.selfTargetsKeys = {
         "none": "PL1E.None.M",
         "add": "PL1E.Add",
         "remove": "PL1E.Remove"
     }
 
-    PL1E.linkOverrides = {
+    PL1E.linkOverridesKeys = {
         "none": "PL1E.None.M",
         "reach": "PL1E.Reach",
         "range": "PL1E.Range"
     }
 
-    PL1E.featureTypes = {
+    PL1E.featureTypesKeys = {
         "historical": "PL1E.Historical",
         "mental": "PL1E.Mental",
         "personality": "PL1E.Personality",
@@ -547,13 +558,13 @@ export function getConfigItems() {
         "special": "PL1E.Special"
     }
 
-    PL1E.effectTypes = {
+    PL1E.effectTypesKeys = {
         "passive": "PL1E.Passive",
         "temporary": "PL1E.Temporary",
         "inactive": "PL1E.Inactive"
     }
 
-    PL1E.weaponUsages = {
+    PL1E.weaponUsagesKeys = {
         "melee": "PL1E.Melee",
         "ranged": "PL1E.Ranged",
         "magic": "PL1E.Magic"

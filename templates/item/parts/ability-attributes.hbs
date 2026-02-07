@@ -192,10 +192,10 @@
                     <div class="fields">
                         <ul>
                             {{#each system.attributes.roll}}
-                                <li class="tag {{this}}">{{localize (config "abilitySkills" this)}}</li>
+                                <li class="tag {{this}}">{{localize (config "rankedSkillsKeys" this)}}</li>
                             {{/each}}
                         </ul>
-                        <a style="flex: 0;" class="trait-selector" data-trait="abilitySkills" data-trait-label="PL1E.Roll" data-key-path="attributes.roll" data-tooltip="{{localize 'PL1E.RollConfig'}}">
+                        <a style="flex: 0;" class="trait-selector" data-trait="rankedSkillsKeys" data-trait-label="PL1E.Roll" data-key-path="attributes.roll" data-tooltip="{{localize 'PL1E.RollConfig'}}">
                             <i class="fas fa-edit"></i>
                         </a>
                     </div>
@@ -220,10 +220,10 @@
                         <div class="fields">
                             <ul>
                                 {{#each system.attributes.oppositeRoll}}
-                                    <li class="tag {{this}}">{{localize (config "abilityResistances" this)}}</li>
+                                    <li class="tag {{this}}">{{localize (config "resistancesKeys" this)}}</li>
                                 {{/each}}
                             </ul>
-                            <a style="flex: 0;" class="trait-selector flex-shrink" data-trait="abilityResistances" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll" data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
+                            <a style="flex: 0;" class="trait-selector flex-shrink" data-trait="resistancesKeys" data-trait-label="PL1E.OppositeRoll" data-key-path="attributes.oppositeRoll" data-tooltip="{{localize 'PL1E.OppositeRollConfig'}}">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </div>
@@ -295,7 +295,7 @@
                     </div>
                     <div class="fields">
                         <select name="system.attributes.areaShape">
-                            {{customSelectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
+                            {{customSelectOptions (config "areaShapesKeys") selected=system.attributes.areaShape localize=true}}
                         </select>
                     </div>
                 </div>
@@ -311,7 +311,7 @@
                             <div class="fields">
                                 <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
                                 <select name="system.attributes.rangeNumberResolutionType">
-                                    {{customSelectOptions (config "resolutionTypes") selected=system.attributes.rangeNumberResolutionType localize=true}}
+                                    {{customSelectOptions (config "resolutionTypesKeys") selected=system.attributes.rangeNumberResolutionType localize=true}}
                                 </select>
                             </div>
                         </div>
@@ -327,7 +327,7 @@
                             <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
                             {{#if (or system.attributes.useParentRoll (ne (length system.attributes.roll) 0))}}
                                 <select name="system.attributes.areaNumberResolutionType">
-                                    {{customSelectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                                    {{customSelectOptions (config "resolutionTypesKeys") selected=system.attributes.areaNumberResolutionType localize=true}}
                                 </select>
                             {{/if}}
                         </div>
@@ -387,7 +387,7 @@
                     </div>
                     <div class="fields">
                         <select name="system.attributes.selfTarget">
-                            {{customSelectOptions (config "selfTargets") selected=system.attributes.selfTarget localize=true}}
+                            {{customSelectOptions (config "selfTargetsKeys") selected=system.attributes.selfTarget localize=true}}
                         </select>
                     </div>
                 </div>

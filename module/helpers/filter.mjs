@@ -41,7 +41,7 @@ export const Pl1eFilter = {
                 case "class": return !filters.has("class");
                 case "mastery": return !filters.has("mastery");
                 case "feature":
-                    return !Object.keys(PL1E.featureTypes).some(ft => filters.has(ft) && item.system.attributes.featureType === ft);
+                    return !Object.keys(PL1E.featureTypesKeys).some(ft => filters.has(ft) && item.system.attributes.featureType === ft);
                 case "ability":
                     return !Object.keys(PL1E.activations).some(act => filters.has(act) && item.system.attributes.activation === act);
                 case "weapon":

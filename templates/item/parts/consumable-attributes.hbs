@@ -160,7 +160,7 @@
                 </div>
                 <div class="fields">
                     <select name="system.attributes.areaShape">
-                        {{customSelectOptions (config "areaShapes") selected=system.attributes.areaShape localize=true}}
+                        {{customSelectOptions (config "areaShapesKeys") selected=system.attributes.areaShape localize=true}}
                     </select>
                 </div>
             </div>
@@ -176,7 +176,7 @@
                         <div class="fields">
                             <input type="number" name="system.attributes.range" value="{{system.attributes.range}}" data-dtype="Number"/>
                             <select name="system.attributes.rangeNumberResolutionType">
-                                {{customSelectOptions (config "resolutionTypes") selected=system.attributes.rangeNumberResolutionType localize=true}}
+                                {{customSelectOptions (config "resolutionTypesKeys") selected=system.attributes.rangeNumberResolutionType localize=true}}
                             </select>
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                         <input type="number" name="system.attributes.areaNumber" value="{{system.attributes.areaNumber}}" data-dtype="Number"/>
                         {{#if (or system.attributes.useParentRoll (ne (length system.attributes.roll) 0))}}
                             <select name="system.attributes.areaNumberResolutionType">
-                                {{customSelectOptions (config "resolutionTypes") selected=system.attributes.areaNumberResolutionType localize=true}}
+                                {{customSelectOptions (config "resolutionTypesKeys") selected=system.attributes.areaNumberResolutionType localize=true}}
                             </select>
                         {{/if}}
                     </div>
@@ -252,7 +252,7 @@
                 </div>
                 <div class="fields">
                     <select name="system.attributes.selfTarget">
-                        {{customSelectOptions (config "selfTargets") selected=system.attributes.selfTarget localize=true}}
+                        {{customSelectOptions (config "selfTargetsKeys") selected=system.attributes.selfTarget localize=true}}
                     </select>
                 </div>
             </div>

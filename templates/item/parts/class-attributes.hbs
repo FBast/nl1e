@@ -4,6 +4,7 @@
     </div>
 
     <div class="list-column">
+
         <div class="field">
             <div class="field-content">
                 <div class="title">
@@ -24,11 +25,96 @@
                 </div>
                 <div class="fields">
                     <select name="system.attributes.classType">
-                        {{customSelectOptions (config "classTypes") selected=system.attributes.classType localize=true}}
+                        {{customSelectOptions (config "classTypes")selected=system.attributes.classType localize=true}}
                     </select>
                 </div>
             </div>
         </div>
+
+        <div class="field">
+            <div class="field-content">
+                <div class="title">
+                    <label>{{localize "PL1E.PrimaryCharacteristics"}}</label>
+                </div>
+                <div class="fields">
+                    <ul>
+                        {{#each system.attributes.primaryCharacteristics}}
+                            <li class="tag {{this}}">
+                                {{localize (config "characteristicsKeys" this)}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                    <a class="trait-selector" data-trait="characteristicsKeys" data-trait-label="PL1E.PrimaryCharacteristics"
+                       data-key-path="attributes.primaryCharacteristics" data-tooltip="{{localize 'PL1E.PrimaryCharacteristicsHint'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="field-content">
+                <div class="title">
+                    <label>{{localize "PL1E.SecondaryCharacteristics"}}</label>
+                </div>
+                <div class="fields">
+                    <ul>
+                        {{#each system.attributes.secondaryCharacteristics}}
+                            <li class="tag {{this}}">
+                                {{localize (config "characteristicsKeys" this)}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                    <a class="trait-selector" data-trait="characteristicsKeys" data-trait-label="PL1E.SecondaryCharacteristics"
+                       data-key-path="attributes.secondaryCharacteristics" data-tooltip="{{localize 'PL1E.SecondaryCharacteristicsHint'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="field-content">
+                <div class="title">
+                    <label>{{localize "PL1E.PrimarySkills"}}</label>
+                </div>
+                <div class="fields">
+                    <ul>
+                        {{#each system.attributes.primarySkills}}
+                            <li class="tag {{this}}">
+                                {{localize (config "rankedSkillsKeys" this)}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                    <a class="trait-selector" data-trait="rankedSkillsKeys" data-trait-label="PL1E.PrimarySkills"
+                       data-key-path="attributes.primarySkills" data-tooltip="{{localize 'PL1E.PrimarySkillsHint'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="field-content">
+                <div class="title">
+                    <label>{{localize "PL1E.SecondarySkills"}}</label>
+                </div>
+                <div class="fields">
+                    <ul>
+                        {{#each system.attributes.secondarySkills}}
+                            <li class="tag {{this}}">
+                                {{localize (config "rankedSkillsKeys" this)}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                    <a class="trait-selector" data-trait="rankedSkillsKeys" data-trait-label="PL1E.SecondarySkills"
+                       data-key-path="attributes.secondarySkills" data-tooltip="{{localize 'PL1E.SecondarySkillsHint'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

@@ -368,7 +368,7 @@
     "npc": {
       "templates": ["base"],
       "general": {
-        "NPCTemplate": "balanced"
+        "autoDistribute": true
       }
     }
   },
@@ -421,7 +421,11 @@
     "class": {
       "templates": ["base"],
       "attributes": {
-        "classType": "body"
+        "classType": "body",
+        "primaryCharacteristics": [],
+        "secondaryCharacteristics": [],
+        "primarySkills": [],
+        "secondarySkills": []
       }
     },
     "mastery": {

@@ -132,7 +132,7 @@ export class Pl1eAspect {
             if (aspect.damageType !== undefined && aspect.damageType !== "raw")
                 descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("damageTypes", aspect.damageType, "label")));
             if (aspect.resolutionType !== undefined && aspect.resolutionType !== "fixed")
-                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.resolutionType)));
+                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypesKeys", aspect.resolutionType)));
             descriptionParts.push(game.i18n.localize("PL1E.On"));
         }
         if (aspect.data !== undefined) {
@@ -159,7 +159,7 @@ export class Pl1eAspect {
             descriptionParts.push(aspect.effectDuration);
             descriptionParts.push(game.i18n.localize("PL1E.Turn"));
             if (aspect.effectDurationResolutionType && aspect.effectDurationResolutionType !== "fixed")
-                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypes", aspect.effectDurationResolutionType)));
+                descriptionParts.push(game.i18n.localize(Pl1eHelpers.getConfig("resolutionTypesKeys", aspect.effectDurationResolutionType)));
         }
         const description = descriptionParts.join(' ');
         return description.toLowerCase();
