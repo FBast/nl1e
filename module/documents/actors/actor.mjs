@@ -287,7 +287,7 @@ export class Pl1eActor extends Actor {
                 (actorGeneral.experienceNeeded - experienceReached);
         }
         actorGeneral.ranks = actorGeneral.experience;
-        actorGeneral.maxRank = Math.min(1 + Math.floor(actorGeneral.experience / 10), 5);
+        actorGeneral.maxRank = Math.min(Math.max(2, 1 + Math.floor(actorGeneral.experience / 10)), 5);
     }
 
     /** @inheritDoc */
@@ -532,5 +532,22 @@ export class Pl1eActor extends Actor {
         if (!add && exists) current = current.filter(entry => entry !== id);
 
         return this.update({ [`system.favorites.${type}`]: current });
+    }
+
+    async applyEllipse() {
+        const updates = {};
+
+        // Resources: restore current values to max
+        const resources = this.system.resources ?? {};
+        for (const [key, res] of Object.entries(resources)) {
+            if (res?.max !== undefined) {
+                updates[`system.resources.${key}.value`] = res.max;
+            }
+        }
+
+        // Apply updates
+        if (Object.keys(updates).length) {
+            await this.update(updates);
+        }
     }
 }

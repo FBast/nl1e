@@ -125,6 +125,18 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         html.find(".item-link").on("click", ev => this._onItemLink(ev));
         html.find(".item-origin").on("click", ev => this._onItemOrigin(ev));
         html.find(".item-tooltip-activate").on("click", ev => Pl1eEvent.onItemTooltip(ev));
+        html.find(".apply-ellipse").on("click", async ev => {
+            ev.preventDefault();
+
+            const confirmed = await Dialog.confirm({
+                title: game.i18n.localize("PL1E.EllipseAction"),
+                content: game.i18n.localize("PL1E.EllipseDescription")
+            });
+
+            if (!confirmed) return;
+
+            await this.actor.applyEllipse();
+        });
 
         // Highlights indications
         html.find(".highlight-link").on("mouseenter", ev => Pl1eEvent.onCreateHighlights(ev));

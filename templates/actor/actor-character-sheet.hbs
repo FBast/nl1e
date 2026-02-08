@@ -25,70 +25,73 @@
         <div class="flex-vertical gap-md header-infos">
             <div class="flex-horizontal gap-md flex-shrink flex-items-center">
                 <input class="sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="{{localize "PL1E.Name"}}"/>
-                <div class="dropdown-icons">
-                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Advantages"}}">
-                        {{#if (eq system.general.advantages 2)}}
-                            <i class="fas fa-laugh color-bonus"></i>
-                        {{else if (eq system.general.advantages 1)}}
-                            <i class="fas fa-smile color-bonus"></i>
-                        {{else if (eq system.general.advantages 0)}}
-                            <i class="fas fa-meh"></i>
-                        {{else if (eq system.general.advantages -1)}}
-                            <i class="fas fa-frown color-malus"></i>
-                        {{else if (eq system.general.advantages -2)}}
-                            <i class="fas fa-tired color-malus"></i>
-                        {{/if}}
+                {{#if (eq actor.type "character")}}
+                    <div class="dropdown-icons">
+                        <div class="dropdown-button" data-tooltip="{{localize "PL1E.Advantages"}}">
+                            {{#if (eq system.general.advantages 2)}}
+                                <i class="fas fa-laugh color-bonus"></i>
+                            {{else if (eq system.general.advantages 1)}}
+                                <i class="fas fa-smile color-bonus"></i>
+                            {{else if (eq system.general.advantages 0)}}
+                                <i class="fas fa-meh"></i>
+                            {{else if (eq system.general.advantages -1)}}
+                                <i class="fas fa-frown color-malus"></i>
+                            {{else if (eq system.general.advantages -2)}}
+                                <i class="fas fa-tired color-malus"></i>
+                            {{/if}}
+                        </div>
+                        <div class="dropdown-content">
+                            <i class="set-number" data-path="system.general.advantages" data-value="2">+2</i>
+                            <i class="set-number" data-path="system.general.advantages" data-value="1">+1</i>
+                            <i class="set-number" data-path="system.general.advantages" data-value="0">0</i>
+                            <i class="set-number" data-path="system.general.advantages" data-value="-1">-1</i>
+                            <i class="set-number" data-path="system.general.advantages" data-value="-2">-2</i>
+                        </div>
                     </div>
-                    <div class="dropdown-content">
-                        <i class="set-number" data-path="system.general.advantages" data-value="2">+2</i>
-                        <i class="set-number" data-path="system.general.advantages" data-value="1">+1</i>
-                        <i class="set-number" data-path="system.general.advantages" data-value="0">0</i>
-                        <i class="set-number" data-path="system.general.advantages" data-value="-1">-1</i>
-                        <i class="set-number" data-path="system.general.advantages" data-value="-2">-2</i>
+                    <div class="dropdown-icons">
+                        <div class="dropdown-button" data-tooltip="{{localize "PL1E.Destiny"}}">
+                            {{#if (eq system.general.destiny 0)}}
+                                <i class="fas fa-ban"></i>
+                            {{else if (eq system.general.destiny 1)}}
+                                <i class="fas fa-dice-one color-bonus"></i>
+                            {{else if (eq system.general.destiny 2)}}
+                                <i class="fas fa-dice-two color-bonus"></i>
+                            {{else if (eq system.general.destiny 3)}}
+                                <i class="fas fa-dice-three color-bonus"></i>
+                            {{else if (eq system.general.destiny 4)}}
+                                <i class="fas fa-dice-four color-bonus"></i>
+                            {{else if (eq system.general.destiny 5)}}
+                                <i class="fas fa-dice-five color-bonus"></i>
+                            {{/if}}
+                        </div>
+                        <div class="dropdown-content">
+                            <i class="fas fa-ban set-number" data-path="system.general.destiny" data-value="0"></i>
+                            <i class="fas fa-dice-one set-number" data-path="system.general.destiny" data-value="1"></i>
+                            <i class="fas fa-dice-two set-number" data-path="system.general.destiny" data-value="2"></i>
+                            <i class="fas fa-dice-three set-number" data-path="system.general.destiny" data-value="3"></i>
+                            <i class="fas fa-dice-four set-number" data-path="system.general.destiny" data-value="4"></i>
+                            <i class="fas fa-dice-five set-number" data-path="system.general.destiny" data-value="5"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="dropdown-icons">
-                    <div class="dropdown-button" data-tooltip="{{localize "PL1E.Destiny"}}">
-                        {{#if (eq system.general.destiny 0)}}
-                            <i class="fas fa-ban"></i>
-                        {{else if (eq system.general.destiny 1)}}
-                            <i class="fas fa-dice-one color-bonus"></i>
-                        {{else if (eq system.general.destiny 2)}}
-                            <i class="fas fa-dice-two color-bonus"></i>
-                        {{else if (eq system.general.destiny 3)}}
-                            <i class="fas fa-dice-three color-bonus"></i>
-                        {{else if (eq system.general.destiny 4)}}
-                            <i class="fas fa-dice-four color-bonus"></i>
-                        {{else if (eq system.general.destiny 5)}}
-                            <i class="fas fa-dice-five color-bonus"></i>
-                        {{/if}}
+                    <div class="icon-button open-journal" data-tooltip="{{localize "PL1E.Journal"}}">
+                        <i class="fas fa-book-open"></i>
                     </div>
-                    <div class="dropdown-content">
-                        <i class="fas fa-ban set-number" data-path="system.general.destiny" data-value="0"></i>
-                        <i class="fas fa-dice-one set-number" data-path="system.general.destiny" data-value="1"></i>
-                        <i class="fas fa-dice-two set-number" data-path="system.general.destiny" data-value="2"></i>
-                        <i class="fas fa-dice-three set-number" data-path="system.general.destiny" data-value="3"></i>
-                        <i class="fas fa-dice-four set-number" data-path="system.general.destiny" data-value="4"></i>
-                        <i class="fas fa-dice-five set-number" data-path="system.general.destiny" data-value="5"></i>
+                {{/if}}
+                {{#if (eq actor.type "npc")}}
+                    <div class="icon-button switch-boolean" data-path="system.general.autoDistribute" data-tooltip="{{#if system.general.autoDistribute}}
+                             {{localize "PL1E.DisableAutoDistribute"}}
+                         {{else}}
+                             {{localize "PL1E.EnableAutoDistribute"}}
+                         {{/if}}">
+                        <i class="fas {{#if system.general.autoDistribute}}fa-hand{{else}}fa-shuffle{{/if}}"></i>
                     </div>
-                </div>
+                {{/if}}
                 <div class="dropdown-icons">
                     <div class="dropdown-button" data-tooltip="{{localize "PL1E.Actions"}}">
                         <i class="fas fa-bars"></i>
                     </div>
                     <div class="dropdown-content">
-                        {{#if (eq actor.type "character")}}
-                            <i class="fas fa-book-open open-journal" data-tooltip="{{localize "PL1E.Journal"}}"></i>
-                        {{else if (eq actor.type "npc")}}
-                            <i class="fas {{#if system.general.autoDistribute}}fa-hand{{else}}fa-shuffle{{/if}} switch-boolean"
-                               data-tooltip="{{#if system.general.autoDistribute}}
-                                   {{localize "PL1E.DisableAutoDistribute"}}
-                               {{else}}
-                                   {{localize "PL1E.EnableAutoDistribute"}}
-                               {{/if}}"
-                               data-path="system.general.autoDistribute"></i>
-                        {{/if}}
-                        <i class="fas fa-hourglass" data-tooltip="{{localize "PL1E.Ellipse"}}"></i>
+                        <i class="fas fa-hourglass apply-ellipse" data-tooltip="{{localize "PL1E.EllipseAction"}}"></i>
                         <i class="fas fa-exchange" data-tooltip="{{localize "PL1E.Exchange"}}"></i>
                     </div>
                 </div>

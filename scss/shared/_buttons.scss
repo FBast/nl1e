@@ -1,0 +1,27 @@
+.icon-button {
+  flex: 0 0 auto;
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+
+  background-color: $color-panel-negative;
+  border-radius: 50%;
+  border: $color-border-negative solid 2px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  color: white;
+  font-size: $font-size-md;
+
+  &:hover {
+    background-color: lighten($color-panel-negative, 20%);
+  }
+
+  i {
+    pointer-events: none;
+  }
+}
