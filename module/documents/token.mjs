@@ -1,29 +1,29 @@
 export class Pl1eToken extends Token {
 
-    async draw() {
-        await super.draw();
-
-        const autoTokenEnabled = game.settings.get("pl1e", "autoTokenEnabled");
-        if (!autoTokenEnabled) return;
-
-        await this.addFramedEffect();
-    }
-
-    async addFramedEffect() {
-        if (!this.actor) return;
-
-        const experience = this.actor.system.general.experience;
-        const level = Math.floor(experience / 10);
-        const clampedLevel = Math.max(0, Math.min(6, level));
-
-        const baseImage = this.actor.img;
-        const framePath = `systems/pl1e/assets/frames/token-frame-${clampedLevel}.webp`;
-        const backgroundPath = `systems/pl1e/assets/frames/token-bg-${clampedLevel}.webp`;
-
-        const processedImage = await createFramedTokenImage(baseImage, backgroundPath, framePath);
-
-        this.mesh.texture = await loadTexture(processedImage);
-    }
+    // async draw() {
+    //     await super.draw();
+    //
+    //     const autoTokenEnabled = game.settings.get("pl1e", "autoTokenEnabled");
+    //     if (!autoTokenEnabled) return;
+    //
+    //     await this.addFramedEffect();
+    // }
+    //
+    // async addFramedEffect() {
+    //     if (!this.actor) return;
+    //
+    //     const experience = this.actor.system.general.experience;
+    //     const level = Math.floor(experience / 10);
+    //     const clampedLevel = Math.max(0, Math.min(6, level));
+    //
+    //     const baseImage = this.actor.img;
+    //     const framePath = `systems/pl1e/assets/frames/token-frame-${clampedLevel}.webp`;
+    //     const backgroundPath = `systems/pl1e/assets/frames/token-bg-${clampedLevel}.webp`;
+    //
+    //     const processedImage = await createFramedTokenImage(baseImage, backgroundPath, framePath);
+    //
+    //     this.mesh.texture = await loadTexture(processedImage);
+    // }
 }
 
 async function createFramedTokenImage(baseImage, backgroundPath, framePath) {
