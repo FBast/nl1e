@@ -68,7 +68,7 @@
                             {{else if (not ../usable)}}
                                 <i class="far fa-ban hover-info" data-tooltip='{{localize "PL1E.Unusable"}}'></i>
                             {{/if}}
-                            {{#if system.general.lockedStats}}
+                            {{#if @root.system.general.lockedStats}}
                                 <i class="far fa-circle-{{../rank}}"></i>
                             {{else}}
                                 <i class="rank-control fas fa-circle-{{../rank}} hover-action" data-skill="{{@key}}"></i>
