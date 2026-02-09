@@ -59,19 +59,6 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
     _getHeaderButtons() {
         const buttons = super._getHeaderButtons();
         if (game.user.isGM) {
-            if (this.actor.type === "character") {
-                buttons.unshift({
-                    label: "PL1E.CreationMod",
-                    class: "button-creation-mod",
-                    icon: this.actor.system.general.creationMod ? "fas fa-toggle-on" : "fas fa-toggle-off",
-                    onclick: async () => {
-                        await this.actor.update({
-                            "system.general.creationMod": !this.actor.system.general.creationMod
-                        });
-                        this._getHeaderButtons();
-                    }
-                });
-            }
             buttons.unshift({
                 label: 'PL1E.Debug',
                 class: 'button-debug',
@@ -539,8 +526,7 @@ export class Pl1eActorSheet extends PL1ESheetMixin(ActorSheet) {
         let maxRank = this.actor.system.general.maxRank;
         let newValue = oldValue + 1;
         if (newValue > maxRank || this.actor.system.general.ranks - newValue < 0) {
-            if (this.actor.system.general.creationMod) newValue = 1;
-            else return;
+            return;
         }
         await this.actor.update({
             ["system.skills." + skill + ".rank"]: newValue

@@ -296,7 +296,6 @@
           }
         },
         "general": {
-          "creationMod": true,
           "level": 1,
           "experience": 10,
           "remainingCharacteristics": 8,
@@ -368,6 +367,7 @@
     "npc": {
       "templates": ["base"],
       "general": {
+        "lockedStats": true,
         "autoDistribute": true
       }
     }

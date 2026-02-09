@@ -24,8 +24,6 @@ export class Pl1eToken extends Token {
 
         this.mesh.texture = await loadTexture(processedImage);
     }
-
-
 }
 
 async function createFramedTokenImage(baseImage, backgroundPath, framePath) {

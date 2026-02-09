@@ -15,9 +15,11 @@ export class Pl1eNPC extends Pl1eActor {
     }
 
     async applyAutoDistribution() {
+        await this._syncLockedStats();
         await this._applyAutoCharacteristicsFromClass();
         await this._applyAutoSkillsFromClass();
         await this.syncResourcesToMax();
+
     }
 
     /**
@@ -177,6 +179,16 @@ export class Pl1eNPC extends Pl1eActor {
 
         if (Object.keys(updates).length) {
             await this.update(updates);
+        }
+    }
+
+    async _syncLockedStats() {
+        const shouldLock = !!this.system.general?.autoDistribute;
+
+        if (this.system.general.lockedStats !== shouldLock) {
+            await this.update({
+                "system.general.lockedStats": shouldLock
+            });
         }
     }
 

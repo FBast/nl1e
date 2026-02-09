@@ -5,7 +5,8 @@
                 <div class="characteristic" data-characteristic-id="{{@key}}">
                     <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
                         data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
-                    <input name="system.characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
+                    <input type="number" min="2" max="5" step="1" oninput="this.value = Math.min(5, Math.max(2, this.value))"
+                           name="system.characteristics.{{@key}}.base" value="{{../base}}" {{#if ../../system.general.autoDistribute}}disabled{{/if}}/>
                     <span class="mod {{#if (gt ../mod 0)}}color-bonus{{/if}} {{#if (lt ../mod 0)}}color-malus{{/if}}">
                         {{numberFormat ../mod decimals=0 sign=true}}
                     </span>
@@ -23,7 +24,8 @@
                 <div class="characteristic" data-characteristic-id="{{@key}}">
                     <h4 class="characteristic-label highlight-link hover-info" data-resources="{{weights.resources}}"
                         data-skills="{{weights.skills}}" data-tooltip="{{localize label}}">{{localize short}}</h4>
-                    <input name="system.characteristics.{{@key}}.base" type="number" value="{{../base}}" min="2" max="5"/>
+                    <input type="number" min="2" max="5" step="1" oninput="this.value = Math.min(5, Math.max(2, this.value))"
+                           name="system.characteristics.{{@key}}.base" value="{{../base}}" {{#if ../../system.general.lockedStats}}disabled{{/if}}/>
                     <span class="mod {{#if (gt ../mod 0)}}color-bonus{{/if}} {{#if (lt ../mod 0)}}color-malus{{/if}}">
                         {{numberFormat ../mod decimals=0 sign=true}}
                     </span>
