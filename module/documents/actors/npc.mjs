@@ -3,6 +3,13 @@ import { PL1E } from "../../pl1e.mjs";
 
 export class Pl1eNPC extends Pl1eActor {
 
+    // Primaire : A
+    // Secondaire : B C
+    // A B C D
+    // 2 2 2 2
+
+    // A ->
+
     shouldAutoDistribute({ changed, item, reason } = {}) {
         if (this.type !== "npc") return false;
         if (!this.system.general?.autoDistribute) return false;
@@ -62,47 +69,65 @@ export class Pl1eNPC extends Pl1eActor {
         const allKeys = Object.keys(PL1E.characteristics);
         const bases = new Map();
 
-        // Initialize all characteristics with MIN value
-        for (const key of allKeys) bases.set(key, MIN);
+        // Initialize all characteristics at MIN
+        for (const key of allKeys) {
+            bases.set(key, MIN);
+        }
 
         let pool = TOTAL - allKeys.length * MIN;
         if (pool <= 0) return;
 
         const primary = [...new Set(attrs.primaryCharacteristics ?? [])];
         const secondary = [...new Set(attrs.secondaryCharacteristics ?? [])];
-
-        // Primary attributes take priority over secondary ones
         const secondaryOnly = secondary.filter(k => !primary.includes(k));
 
-        // Budget split (2/3 primary, 1/3 secondary)
-        const primaryBudgetInitial = Math.floor((pool * 2) / 3);
-        const secondaryBudgetInitial = pool - primaryBudgetInitial;
+        // Fixed budgets
+        const primaryBudget = Math.floor((pool * 2) / 3);
+        const secondaryBudget = pool - primaryBudget;
 
-        // Step 1: Even distribution on primary attributes
-        let primaryLeft = this._distributeCharacteristicsEvenly(
+        let RESTE = 0;
+
+        // 1) Distribute 2/3 on primary characteristics
+        RESTE += this._distributeCharacteristicsEvenly(
             bases,
             primary,
-            primaryBudgetInitial,
+            primaryBudget,
             MAX
         );
 
-        // Step 2 + 4: Primary leftover is added to secondary budget
-        let secondaryBudget = secondaryBudgetInitial + primaryLeft;
-
-        // Step 3: Even distribution on secondary attributes
-        let secondaryLeft = this._distributeCharacteristicsEvenly(
+        // 2) Distribute 1/3 on secondary characteristics
+        RESTE += this._distributeCharacteristicsEvenly(
             bases,
             secondaryOnly,
             secondaryBudget,
             MAX
         );
 
-        // Step 5: Final stock
-        let stock = secondaryLeft;
+        // 3) Use remaining points to further maximize primaries
+        if (RESTE > 0 && primary.length) {
+            RESTE = this._distributeCharacteristicsEvenly(
+                bases,
+                primary,
+                RESTE,
+                MAX
+            );
+        }
 
-        // Step 6: Random distribution on remaining attributes
-        const remaining = allKeys.filter(k => (bases.get(k) ?? 0) < MAX);
-        this._fillRandom(bases, remaining, stock, MAX);
+        // 4) Then maximize secondaries with remaining points
+        if (RESTE > 0 && secondaryOnly.length) {
+            RESTE = this._distributeCharacteristicsEvenly(
+                bases,
+                secondaryOnly,
+                RESTE,
+                MAX
+            );
+        }
+
+        // 5) Final random distribution if everything else is maxed
+        if (RESTE > 0) {
+            const remaining = allKeys.filter(k => (bases.get(k) ?? 0) < MAX);
+            this._fillRandom(bases, remaining, RESTE, MAX);
+        }
 
         const updates = {};
         for (const [key, value] of bases.entries()) {
@@ -120,10 +145,11 @@ export class Pl1eNPC extends Pl1eActor {
         const skills = this.system.skills;
 
         const maxRank = this.system.general.maxRank;
-        const totalPool = this.system.general.experience;
+        let pool = this.system.general.experience;
 
         const ranks = new Map();
 
+        // Valid skills
         const validSkills = Object.entries(skills)
             .filter(([id]) => {
                 const cfg = PL1E.skills[id];
@@ -131,50 +157,72 @@ export class Pl1eNPC extends Pl1eActor {
             })
             .map(([id]) => id);
 
-        // Initialize all valid skills at rank 1
-        for (const id of validSkills) ranks.set(id, 1);
+        // Init rank = 1
+        for (const id of validSkills) {
+            ranks.set(id, 1);
+        }
 
-        // Candidate skills (deduplicated and validated)
-        const primary = [...new Set((attrs.primarySkills ?? []).filter(id => validSkills.includes(id)))];
-        const secondary = [...new Set((attrs.secondarySkills ?? []).filter(id => validSkills.includes(id)))];
-
-        // Primary skills take priority over secondary ones
-        const secondaryOnly = secondary.filter(id => !primary.includes(id));
-
-        // Budget split (2/3 primary, 1/3 secondary)
-        const primaryBudgetInitial = Math.floor((totalPool * 2) / 3);
-        const secondaryBudgetInitial = totalPool - primaryBudgetInitial;
-
-        // Step 1: Even distribution on primary skills
-        let primaryBudgetLeft = this._distributeSkillsEvenly(
-            ranks,
-            primary,
-            primaryBudgetInitial,
-            maxRank
+        const primary = new Set(
+            (attrs.primarySkills ?? []).filter(id => validSkills.includes(id))
         );
 
-        // Step 2 + 4: Primary leftover is added to secondary budget
-        let secondaryBudget = secondaryBudgetInitial + primaryBudgetLeft;
-
-        // Step 3: Even distribution on secondary skills
-        let secondaryBudgetLeft = this._distributeSkillsEvenly(
-            ranks,
-            secondaryOnly,
-            secondaryBudget,
-            maxRank
+        const secondary = new Set(
+            (attrs.secondarySkills ?? []).filter(
+                id => validSkills.includes(id) && !primary.has(id)
+            )
         );
 
-        // Step 5: Final stock
-        let stock = secondaryBudgetLeft;
+        const getMin = (ids) => Math.min(...[...ids].map(id => ranks.get(id)));
+        const getMax = (ids) => Math.max(...[...ids].map(id => ranks.get(id)));
 
-        // Step 6: Random distribution on remaining skills
-        const remainingSkills = validSkills.filter(id => (ranks.get(id) ?? 0) < maxRank);
-        this._fillSkillRandom(ranks, remainingSkills, stock, maxRank);
+        while (pool > 0) {
 
+            const primaryMin = primary.size ? getMin(primary) : Infinity;
+            const secondaryMin = secondary.size ? getMin(secondary) : Infinity;
+            const secondaryMax = secondary.size ? getMax(secondary) : 0;
+
+            let candidates = [];
+
+            // Primaries: can go up to secondaryMax + 1
+            for (const id of primary) {
+                const r = ranks.get(id);
+                if (r < maxRank && r < secondaryMax + 1) {
+                    const cost = r + 1;
+                    if (cost <= pool) {
+                        candidates.push({ id, r, cost });
+                    }
+                }
+            }
+
+            // Secondaries: can go up to primaryMin
+            for (const id of secondary) {
+                const r = ranks.get(id);
+                if (r < maxRank && r < primaryMin) {
+                    const cost = r + 1;
+                    if (cost <= pool) {
+                        candidates.push({ id, r, cost });
+                    }
+                }
+            }
+
+            if (!candidates.length) break;
+
+            // Pick lowest rank, then cheapest cost
+            candidates.sort((a, b) =>
+                a.r !== b.r ? a.r - b.r : a.cost - b.cost
+            );
+
+            const pick = candidates[0];
+
+            ranks.set(pick.id, pick.r + 1);
+            pool -= pick.cost;
+        }
+
+        // Apply
         const updates = {};
-        for (const [key, value] of ranks.entries()) {
-            if (!skills[key]) continue;
-            updates[`system.skills.${key}.rank`] = value;
+        for (const [id, value] of ranks.entries()) {
+            if (!skills[id]) continue;
+            updates[`system.skills.${id}.rank`] = value;
         }
 
         if (Object.keys(updates).length) {
@@ -196,110 +244,31 @@ export class Pl1eNPC extends Pl1eActor {
     /*  HELPERS                                     */
     /* -------------------------------------------- */
 
-    /**
-     * Even distribution with TRIANGULAR COST.
-     * Cost to go from rank N to N+1 is (N+1).
-     * Each skill can gain at most +1 per round.
-     * @param {Map<string, number>} ranks
-     * @param {string[]} candidates
-     * @param {number} budget
-     * @param {number} maxRank
-     * @returns {number} remaining budget
-     */
-    _distributeSkillsEvenly(ranks, candidates, budget, maxRank) {
-        if (!candidates?.length || budget <= 0) return budget;
-
-        // Mutable working set (maxed skills are removed progressively)
-        let active = [...candidates];
-
-        // Safety guard against infinite loops
-        while (budget > 0 && active.length) {
-            let spentThisRound = 0;
-
-            for (let i = 0; i < active.length && budget > 0; i++) {
-                const id = active[i];
-                const current = ranks.get(id) ?? 0;
-                if (current >= maxRank) continue;
-
-                const nextRank = current + 1;
-                const cost = nextRank;
-
-                if (budget < cost) continue;
-
-                ranks.set(id, nextRank);
-                budget -= cost;
-                spentThisRound += cost;
-            }
-
-            // Remove fully maxed skills
-            active = active.filter(id => (ranks.get(id) ?? 0) < maxRank);
-
-            if (spentThisRound === 0) break;
-        }
-
-        return budget;
-    }
-
-    /**
-     * Even distribution for characteristics (fixed cost = 1).
-     * One point per characteristic per round.
-     * @param {Map<string, number>} bases
-     * @param {string[]} candidates
-     * @param {number} budget
-     * @param {number} max
-     * @returns {number} remaining budget
-     */
     _distributeCharacteristicsEvenly(bases, candidates, budget, max) {
         if (!candidates?.length || budget <= 0) return budget;
 
-        let active = [...candidates];
+        while (budget > 0) {
+            // Find the lowest current value among candidates
+            const minValue = Math.min(
+                ...candidates.map(k => bases.get(k))
+            );
 
-        while (budget > 0 && active.length) {
-            let spentThisRound = 0;
+            // All candidates at the current minimum level
+            const tier = candidates.filter(
+                k => bases.get(k) === minValue && bases.get(k) < max
+            );
 
-            for (let i = 0; i < active.length && budget > 0; i++) {
-                const key = active[i];
-                const current = bases.get(key) ?? 0;
-                if (current >= max) continue;
+            if (!tier.length) break;
 
-                bases.set(key, current + 1);
+            // Raise the whole tier evenly
+            for (const key of tier) {
+                if (budget <= 0) break;
+                bases.set(key, bases.get(key) + 1);
                 budget--;
-                spentThisRound++;
             }
-
-            // Remove fully maxed characteristics
-            active = active.filter(k => (bases.get(k) ?? 0) < max);
-
-            if (spentThisRound === 0) break;
         }
 
         return budget;
-    }
-
-    /**
-     * Random skill distribution with TRIANGULAR COST.
-     */
-    _fillSkillRandom(map, keys, pool, maxRank) {
-        if (!keys?.length || pool <= 0) return;
-
-        const shuffled = [...keys].sort(() => Math.random() - 0.5);
-        let i = 0;
-
-        while (pool > 0 && shuffled.length) {
-            const key = shuffled[i % shuffled.length];
-            const current = map.get(key) ?? 0;
-
-            if (current < maxRank) {
-                const nextRank = current + 1;
-                const cost = nextRank;
-
-                if (pool < cost) break;
-
-                map.set(key, nextRank);
-                pool -= cost;
-            }
-            i++;
-        }
     }
 
     /**
