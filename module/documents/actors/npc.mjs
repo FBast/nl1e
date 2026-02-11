@@ -88,39 +88,19 @@ export class Pl1eNPC extends Pl1eActor {
         let RESTE = 0;
 
         // 1) Distribute 2/3 on primary characteristics
-        RESTE += this._distributeCharacteristicsEvenly(
-            bases,
-            primary,
-            primaryBudget,
-            MAX
-        );
+        RESTE += this._distributeCharacteristicsEvenly(bases, primary, primaryBudget, MAX);
 
         // 2) Distribute 1/3 on secondary characteristics
-        RESTE += this._distributeCharacteristicsEvenly(
-            bases,
-            secondaryOnly,
-            secondaryBudget,
-            MAX
-        );
+        RESTE += this._distributeCharacteristicsEvenly(bases, secondaryOnly, secondaryBudget, MAX);
 
         // 3) Use remaining points to further maximize primaries
         if (RESTE > 0 && primary.length) {
-            RESTE = this._distributeCharacteristicsEvenly(
-                bases,
-                primary,
-                RESTE,
-                MAX
-            );
+            RESTE = this._distributeCharacteristicsEvenly(bases, primary, RESTE, MAX);
         }
 
         // 4) Then maximize secondaries with remaining points
         if (RESTE > 0 && secondaryOnly.length) {
-            RESTE = this._distributeCharacteristicsEvenly(
-                bases,
-                secondaryOnly,
-                RESTE,
-                MAX
-            );
+            RESTE = this._distributeCharacteristicsEvenly(bases, secondaryOnly, RESTE, MAX);
         }
 
         // 5) Final random distribution if everything else is maxed
